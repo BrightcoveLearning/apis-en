@@ -8,10 +8,10 @@ const myInitCallback = function() {
     console.log('searchbox_el', searchbox_el);
     
     searchbox_el.setAttribute('style', 'background-image:none;');
-    searchbox_el.setAttribute('placeholder', 'Search Video Cloud Studio docs');
+    searchbox_el.setAttribute('placeholder', 'Search Video Cloud Platform APIs docs');
     searchbox_el.addEventListener('click', function() {
       searchbox_el.setAttribute('style', 'background-image:none;');
-      searchbox_el.setAttribute('placeholder', 'Search Video Cloud Studio docs');
+      searchbox_el.setAttribute('placeholder', 'Search Video Cloud Platform APIs docs');
     });
   } else {
     // Document is not ready yet, when CSE element is initialized.
@@ -25,10 +25,10 @@ const myInitCallback = function() {
     console.log('searchbox_el', searchbox_el);
     
     searchbox_el.setAttribute('style', 'background-image:none;border:none');
-    searchbox_el.setAttribute('placeholder', 'Search Video Cloud Studio docs');
+    searchbox_el.setAttribute('placeholder', 'Search Video Cloud Platform APIs docs');
     searchbox_el.addEventListener('click', function() {
       searchbox_el.setAttribute('style', 'background-image:none;border:none');
-      searchbox_el.setAttribute('placeholder', 'Search Video Cloud Studio docs');
+      searchbox_el.setAttribute('placeholder', 'Search Video Cloud Platform APIs docs');
     });
     
     }, true);
