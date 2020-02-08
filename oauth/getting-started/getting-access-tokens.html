@@ -1,0 +1,873 @@
+---
+title: 'Getting Access Tokens'
+description: 'In this topic, you will learn how to get access tokens and show you strategies for implementing this logic in your apps.'
+parent: Getting Started
+grandparent: OAuth API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+  <h2 id="gettingToken">Getting a token</h2>
+  
+  <p>If you just want to generate an access token for testing an API request, you can use this <a href="/node/18520">sample app</a>.</p>
+  
+  <p>Tokens are obtained from the Brightcove OAuth API. Before you can get access tokens, you first need to obtain client credentials (a client id and a client secret) that are specific to the API and operations that you want access to. To get your client credentials, see <a href="/node/14056">Managing API Credentials</a>.</p>
+  
+  <p>Once you have your credentials, you obtain an access token by making a <code class="notranslate">POST</code> request to:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http notranslate">https://oauth.brightcove.com/v4/access_token</code></pre>
+  
+  <p>You must pass the following headers with this call:</p>
+  
+  <ul>
+    <li><code class="language-http notranslate">Content-Type: application/x-www-form-urlencoded</code></li>
+    <li><code class="language-http notranslate">Authorization: Basic {client_id}:{client_secret}</code></li>
+  </ul>
+  
+  <p>The entire <code class="language-http notranslate">{client_id}:{client_secret}</code> string must be Base64-encoded (curl will automatically Base64-encode the string if you pass it as <code class="notranslate">--user</code> credentials; in other languages, you'll need to handle the Base64-encoding yourself).</p>
+  
+  <p>You must also send the following key/value pair as the request body or as URL parameter:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http notranslate">grant_type=client_credentials</code></pre>
+  
+  <aside class="bcls-aside bcls-aside--information">Note that since the <code class="notranslate">Content-Type</code> must be <code class="notranslate">application/x-www-form-urlencoded</code>, the key/value pair will be sent to the API as a URL param even if you put it in the request body.</aside>
+  
+  <p>The response will look like this (pretty-printed here for readability):</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json notranslate">{
+      "access_token": "ANB7xKhiUZmwltVd3f1odcHHM9VAwg02kwmLwtZwHv3SxGCOWLUf5W4G7X22PRjmR9StvFUqzpVZ1suOfyfOigdi-rnohxyEaSSuZceeLw_9OBW7fXldOG05HEgkeK3N-DBZZZyilodmjA1JWZHbgI3IU7Rmz5IPGyi-sDxHN3KlOr1BDZlLZpXPdFPwEyb6idq-z8AL-blKTSMtNI3_fz3oNBisfrHGUv5tXHoQT4B7FYcvdrap16gTOO7_wNt1zmgLJiUHvyxZgsgBchm_AhohVL-AYgcfCbCR0v7d2hgI4ag35pnZNeujDiBLfnCFcVMlqQGq8UEVZrmU9a8y4pVAGih_EImmghqmSrkxLPYZ800-vIWX-lw",
+      "token_type": "Bearer",
+      "expires_in": 300
+  }</code></pre>
+  
+  <p>The <code class="notranslate">access_token</code> value is what you must pass in an <code class="notranslate">Authorization</code> header with your API call in this form:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http notranslate">Authorization: Bearer {access_token}</code></pre>
+  
+  <p>The <code class="notranslate">expires_in</code> value is the number of seconds that the access token is valid for.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="implementation">Implementation Strategies</h2>
+  
+  <p>If your app will only be making sporadic calls to the Brightcove APIs, you might as well ignore the <code class="notranslate">expires_in</code> parameter and just fetch a new access token for every call. In that case, the processing sequence will look like this:</p>
+  
+  <figure class="bcls-figure"><img class="bcls-image" alt="Get New Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-token/get-token-new-token.png" />
+  <figcaption class="bcls-caption--image">Get New Token</figcaption>
+  </figure>
+  
+  <p>On the other hand, if you know that your app will frequently make many API calls in quick succession (for, say, generating long reports), then it will be more efficient to fetch access tokens only when you need them. There are two basic ways of doing this:</p>
+  
+  <ol>
+    <li>Go ahead and try the API call and if you get an <code class="notranslate">UNAUTHORIZED</code> error in response, go fetch a new token and make the API call again. In this case, the processing sequence will look like this:
+  
+    <figure class="bcls-figure"><img class="bcls-image" alt="Get Token with Check for Call Fail" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-token/get-token-check-call-fail.png" />
+    <figcaption class="bcls-caption--image">Get Token with Check for Call Fail</figcaption>
+    </figure>
+    </li>
+    <li>Another approach would be to add the <code class="notranslate">expires_in</code> value to the current time in Epoch seconds each time you fetch a token, and then on later API calls, check the expires time against the current time to see if you need to fetch a new token. In this case, your processing sequence will look like this:
+    <figure class="bcls-figure"><img class="bcls-image" alt="Get Token with Check for Expiration" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-token/get-token-check-expiration.png" />
+    <figcaption class="bcls-caption--image">Get Token with Check for Expiration</figcaption>
+    </figure>
+    </li>
+  </ol>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Postman_and_Insomnia">Postman and Insomnia</h2>
+  
+  <p>Several useful testing tools for REST APIs can be set up to work with the Brightcove OAuth system to get access tokens. We have guides that include steps for doing this for two of most popular cross-platform tools:</p>
+  
+  <ul>
+    <li><a href="/node/17919">Use Postman for API Requests</a></li>
+    <li><a href="/node/18462">Use Insomnia for API Requests</a></li>
+  </ul>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="codeSamples">Code Samples</h2>
+  
+  <p>Here are some code samples to help you get started.</p>
+  
+  <h3>Shell script example</h3>
+  
+  <p>The first example is a shell script that implements the first implementation logic above: it takes inputs from the user, always gets a new token, and then makes the API call. The script will work on any of the Brightcove APIs, and you may find it useful for testing API calls as you build your app.</p>
+  
+  <aside class="bcls-aside bcls-aside--information">
+  <p>Note: this script uses cURL, and also the jq command line app. See <a href="/node/17908">Set up cURL and jq</a> for setup instructions. The Python json.tool is also used to pretty-print the response, but that should already be installed on your system.</p>
+  
+  <p>To run the script, save the code as <strong>api-tester.sh</strong> on your system, open a command line in the same folder, and enter <code class="notranslate">bash api-tester.sh</code> - you will be prompted for the following inputs:</p>
+  
+  <ul>
+    <li>client id (required)</li>
+    <li>client secret (required)</li>
+    <li>the full API call (required)</li>
+    <li>the HTTP verb for the call: GET | POST | PATCH | PUT | DELETE (required)</li>
+    <li>data for the request body (optional)</li>
+  </ul>
+  </aside>
+  
+  <h4 id="shell">Shell script code</h4>
+  
+  <pre class="line-numbers">
+  <code class="language-bash notranslate">bold=`tput bold`
+  normal=`tput sgr0`
+  echo 'Enter your client id:'
+  read CLIENT_ID
+  echo Your client id: $CLIENT_ID
+  echo --------------------------
+  echo 'Enter your client secret:'
+  read CLIENT_SECRET
+  echo Your client secret: $CLIENT_SECRET
+  echo --------------------------
+  echo 'Enter the full API call:'
+  read API_CALL
+  echo Your API call: $API_CALL
+  echo --------------------------
+  echo "Enter the HTTP method: [ ${bold}g${normal} (GET - default) | ${bold}po${normal} (POST) | ${bold}pa${normal} (PATCH) | ${bold}pu${normal} (PUT) | ${bold}d${normal} (DELETE) ]:"
+  read VERB
+  if [ "$VERB" = "" ]
+      then
+      export VERB="GET"
+  elif [ "$VERB" = "g" ] || [ "$VERB" = "GET" ] || [ "$VERB" = "get" ]
+      then
+      export VERB="GET"
+  elif [ "$VERB" = "po" ] || [ "$VERB" = "p" ] || [ "$VERB" = "POST" ] || [ "$VERB" = "post" ]
+      then
+      export VERB="POST"
+  elif [ "$VERB" = "pa" ] || [ "$VERB" = "PATCH" ] || [ "$VERB" = "patch" ]
+      then
+      export VERB="PATCH"
+  elif [ "$VERB" = "pu" ] || [ "$VERB" = "PUT" ] || [ "$VERB" = "put" ]
+      then
+      export VERB="PUT"
+  elif [ "$VERB" = "d" ] || [ "$VERB" = "DELETE" ] || [ "$VERB" = "delete" ]
+      then
+      export VERB="DELETE"
+  fi
+  echo "Your request type: $VERB"
+  echo --------------------------
+  echo 'Enter data to be submitted in the request body:'
+  read DATA
+  echo Your call verb: $DATA
+  echo --------------------------
+  # get access token and use regex to extract it from the response
+  TOKEN=$(curl -s --data "grant_type=client_credentials" https://oauth.brightcove.com/v4/access_token --header "Content-Type: application/x-www-form-urlencoded" --user "$CLIENT_ID:$CLIENT_SECRET" | sed -E 's/.*access_token\"\:\"([^\"]+)\".*/\1/');
+  echo Your token: $TOKEN
+  echo --------------------------
+  RESPONSE=$(curl -s -v -X $VERB "$API_CALL" -d "$DATA" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json")
+  echo Raw response:
+  echo $RESPONSE
+  echo --------------------------
+  echo Pretty-printed response:
+  echo $RESPONSE | python -m json.tool
+  echo
+  </code></pre>
+  
+  <h3 id="ruby">Ruby example</h3>
+  
+  <p>The next example is a Ruby script that also employs the first implementation logic: always get a token and then make the API call. This example makes a call to the Analytics API, but can be adapted to work with any of the APIs.</p>
+  
+  <h4>Ruby code</h4>
+  
+  <pre class="line-numbers">
+  <code class="language-ruby notranslate">#!/usr/bin/env ruby
+  # view id --&gt; content,
+  #!/usr/bin/env ruby
+  require 'rest-client'
+  require 'json'
+  client_id = '5eb0f20e-29a8-4f19-8cb5-80336e2789ab'
+  client_secret = 'Zqpb_2YrvnGUEjqQUndx6GsjQ3JyAgXoA2gNbhoj-yUV4scij0jwCN0OBz9FILEwHupjeqwdbOUSFMi7zkhpVg'
+  response = RestClient.post 'https://oauth.brightcove.com/v4/access_token', :client_id=&gt;client_id,:client_secret=&gt;client_secret,:grant_type=&gt;'client_credentials'
+  token = JSON.parse(response)["access_token"]
+  puts "The extracted token is:" + token + "\n\n\n"
+  data = RestClient.get 'https://data.brightcove.com/analytics-api/videocloud/account/1234567890001/report?dimensions=video&amp;from=2014-01-01&amp;to=2014-03-30', { 'Authorization' =&gt; "Bearer #{token}", 'Accept' =&gt; 'application/json' }
+  puts "This is the result from the query: \n" + data
+  </code></pre>
+  
+  <h3 id="python">Python example</h3>
+  
+  <p>This sample is a Python script that implements the 3rd implementation logic above. It attempts to make an Analytics API call, but if the call fails on an UNAUTHORIZED error, it fetches a new access token and retries the call.</p>
+  
+  <p>This script also reads the client credentials from an external file - the credentials data file is shown below the Python code.</p>
+  
+  <h4>Python code</h4>
+  
+  <pre class="line-numbers">
+  <code class="language-python notranslate">import httplib, urllib, base64, json, sys
+  # This is a python script to test the CMS API.
+  # To use this script, edit the configuration file brightcove_oauth.txt
+  # with your brightcove account ID, and a client ID and client secret for
+  # an Oauth credential that has CMS API - Videos Read permission.
+  # You can find instructions on how to generate Oauth credentials
+  # http://docs.brightcove.com/en/video-cloud/cms-api/getting-started/quick-start-cms.html
+  # This script demonstrates how to refresh the access token
+  # in handling 401 - Unauthorized errors from the CMS API
+  # Because the Oauth tokens have a 300 second time to live,
+  # The refresh logic to handle 401 errors will be a normal part of runtime behavior.
+  # Note that the client_id and client_secret secure the access to the CMS API
+  # Therefore, it is not advisable to expose them to browsers. These are meant for
+  # server to server communication to obtain an access token.
+  # The access token can be exposed to the browser. Its limited permissions and expiry
+  # time make limit the duration and scope of its usage should it be observed in network
+  # traffic or obtained from a browser.
+  class AuthError(Exception):
+  def __init__(self):
+  self.msg = "auth error"
+  # read the oauth secrets and account ID from a configuration file
+  def loadSecret():
+  # read the s3 creds from json file
+  try:
+          credsFile=open('brightcove_oauth.txt')
+          creds = json.load(credsFile)
+  return creds
+  except Exception, e:
+  print "Error loading oauth secret from local file called 'brightcove_oauth.txt'"
+  print "\tThere should be a local file in this directory called brightcove_oauth.txt "
+  print "\tWhich has contents like this:"
+  print """
+  
+      {
+          "account_id": "1234567890001",
+      "client_id": "30ff0909-0909-33d3-ae88-c9887777a7b7",
+      "client_secret": "mzKKjZZyeW5YgsdfBD37c5730g397agU35-Dsgeox6-73giehbeihgleh659dhgjhdegessDge0s0ynegg987t0996nQ"
+      }
+  
+      """
+      sys.exit("System error: " + str(e) );
+  # get the oauth 2.0 token
+  def getAuthToken(creds):
+      conn = httplib.HTTPSConnection("oauth.brightcove.com")
+      url =  "/v4/access_token"
+      params = {
+  "grant_type": "client_credentials"
+      }
+      client = creds["client_id"];
+      client_secret = creds["client_secret"];
+      authString = base64.encodestring('%s:%s' % (client, client_secret)).replace('\n', '')
+      requestUrl = url + "?" + urllib.urlencode(params)
+      headersMap = {
+  "Content-Type": "application/x-www-form-urlencoded",
+  "Authorization": "Basic " + authString
+      };
+      conn.request("POST", requestUrl, headers=headersMap)
+      response = conn.getresponse()
+  if response.status == 200:
+          data = response.read()
+          result = json.loads( data )
+  return result["access_token"]
+  # call analytics api for video views in the last 30 days
+  def getVideoViews( token , account ):
+      conn = httplib.HTTPSConnection("data.brightcove.com")
+      url =  "/analytics-api/videocloud/account/" + account + "/report/"
+      params = {
+  "dimensions": "video",
+  "limit": "10",
+  "sort": "video_view",
+  "fields": "video,video_name,video_view",
+  "format": "json"
+      }
+      requestUrl = url + "?" + urllib.urlencode(params)
+      headersMap = {
+  "Authorization": "Bearer " + token
+      };
+      conn.request("POST", requestUrl, headers=headersMap)
+      response = conn.getresponse()
+  if response.status == 200:
+          data = response.read()
+          result = json.loads( data )
+  return result
+  elif response.status == 401:
+  # if we get a 401 it is most likely because the token is expired.
+  raise AuthError
+  else:
+  raise Exception('API_CALL_ERROR' + " error " + str(response.status) )
+  # call CMS API to return the number of videos in the catalog
+  def getVideos( token , account ):
+      conn = httplib.HTTPSConnection("cms.api.brightcove.com")
+      url =  "/v1/accounts/" + account + "/counts/videos/"
+      requestUrl = url
+  print "GET " + requestUrl
+      headersMap = {
+  "Authorization": "Bearer " + token
+      };
+      conn.request("GET", requestUrl, headers=headersMap)
+      response = conn.getresponse()
+  if response.status == 200:
+          data = response.read()
+          result = json.loads( data )
+  return result
+  elif response.status == 401:
+  # if we get a 401 it is most likely because the token is expired.
+  raise AuthError
+  else:
+  raise Exception('API_CALL_ERROR' + " error " + str(response.status) )
+  def demo():
+      creds = loadSecret()
+      token = getAuthToken(creds)
+      account = creds["account"];
+  try:
+          results = getVideos( token , account )
+  except AuthError, e:
+  # handle an auth error by re-fetching a auth token again
+          token = getAuthToken(creds)
+          results = getVideoViews( token , account )
+  # print the videos
+  print results
+  if __name__ == "__main__":
+    demo();
+  </code></pre>
+  
+  <h5>Credentials file for Python sample</h5>
+  
+  <pre class="line-numbers">
+  <code class="language-json notranslate">{
+      "account" : "1234567890001",
+      "client_id": "30ff0909-0909-33d3-ae88-c9887777a7b7",
+      "client_secret": "XXXXXXXX_XXXXXXXX_XXXXXXXX_XXXXXXX_XXXXXXX_XXXXXXXXXXXXXXXXX_XXXXXXXXXXX"
+  }</code></pre>
+  
+  <h3 id="php">PHP example</h3>
+  
+  <p>This is a simple proxy that takes client credentials and an API call, gets an access token, makes the API request, and returns the results to the client.</p>
+  
+  <h4>PHP code</h4>
+  
+  <pre class="line-numbers">
+  <code class="language-php notranslate">&lt;?php
+  /**
+   * proxy for Brightcove RESTful APIs
+   * gets an access token, makes the request, and returns the response
+   *
+   * Method: POST
+   * include header: "Content-Type", "application/x-www-form-urlencoded"
+   *
+   * @post {string} url - the URL for the API request
+   * @post {string} [requestType=GET] - HTTP method for the request
+   * @post {string} [requestBody=null] - JSON data to be sent with write requests
+   *
+   * @returns {string} $response - JSON response received from the API
+   */
+  // CORS enablement
+  header("Access-Control-Allow-Origin: *");
+  // set up request for access token
+  $data = array();
+  $client_id     = ‘YOUR_CLIENT_ID’;
+  $client_secret = ‘YOUR_CLIENT_SECRET’;
+  $auth_string   = "{$client_id}:{$client_secret}";
+  $request       = "https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials";
+  $ch            = curl_init($request);
+  curl_setopt_array($ch, array(
+    CURLOPT_POST           =&gt; TRUE,
+    CURLOPT_RETURNTRANSFER =&gt; TRUE,
+    CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+    CURLOPT_USERPWD        =&gt; $auth_string,
+    CURLOPT_HTTPHEADER     =&gt; array(
+      'Content-type: application/x-www-form-urlencoded',
+    ),
+    CURLOPT_POSTFIELDS =&gt; $data
+  ));
+  $response = curl_exec($ch);
+  curl_close($ch);
+  // Check for errors
+  if ($response === FALSE) {
+    die(curl_error($ch));
+  }
+  // Decode the response
+  $responseData = json_decode($response, TRUE);
+  $access_token = $responseData["access_token"];
+  // set up the API call
+  // get data
+  if ($_POST["requestBody"]) {
+    $data = json_decode($_POST["requestBody"]);
+  } else {
+    $data = array();
+  }
+  // get request type or default to GET
+  if ($_POST["requestType"]) {
+    $method = $_POST["requestType"];
+  } else {
+    $method = "GET";
+  }
+  // get the URL and authorization info from the form data
+  $request = $_POST["url"];
+  //send the http request
+  $ch = curl_init($request);
+  curl_setopt_array($ch, array(
+      CURLOPT_CUSTOMREQUEST  =&gt; $method,
+      CURLOPT_RETURNTRANSFER =&gt; TRUE,
+      CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+      CURLOPT_HTTPHEADER     =&gt; array(
+        'Content-type: application/json',
+        "Authorization: Bearer {$access_token}",
+      ),
+      CURLOPT_POSTFIELDS =&gt; json_encode($data)
+    ));
+  $response = curl_exec($ch);
+  curl_close($ch);
+  // Check for errors
+  if ($response === FALSE) {
+    $logEntry = "\nError:\n".
+    "\n".date("Y-m-d H:i:s")." UTC \n"
+    .$response;
+    $logFileLocation = "log.txt";
+    $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+    fwrite($fileHandle, $logEntry);
+    fclose($fileHandle);
+    echo "Error: there was a problem with your API call"+
+    die(curl_error($ch));
+  }
+  // Decode the response
+  // $responseData = json_decode($response, TRUE);
+  // return the response to the AJAX caller
+  echo $response;
+  ?&gt;
+  </code></pre>
+  
+  <h3 id="powershell">Powershell Sample</h3>
+  
+  <pre class="line-numbers">
+  <code class="language-bash notranslate">$ParentPath = "C:\Temp"
+  $ParentCsv = "$ParentPath\Videos.csv"
+  
+  
+  
+  Clear-Host
+  
+  
+  
+  &lt;#
+      .SYNOPSIS
+          Retrieves the TokenType and AccessToken from Brightcove.
+  
+      .DESCRIPTION
+          Uses the Brightcove API to retrieve TokenType and AccessToken for use in later
+          API requests. The AccessToken expires after 300 seconds (5 minutes) and a new
+          AccessToken will need to be requested.
+  #&gt;
+  function Get-BrightcoveAuthorization
+  {
+      # https://support.brightcove.com/overview-oauth-api-v4
+  
+      $Uri = "https://oauth.brightcove.com/v4/access_token"
+  
+      $ClientId = "" # &lt;--------------------------------------------------------------------Retrieve from Brightcove and paste here
+      $ClientSecret = "" # &lt;----------------------------------------------------------------Retrieve from Brightcove and paste here
+      $Authorization = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($ClientId + ":" + $ClientSecret))
+  
+      $Headers = @{
+        "Authorization" = "Basic " + $Authorization;
+        "Content-Type" = "application/x-www-form-urlencoded";
+      }
+  
+      Invoke-RestMethod -Method "Post" -Uri $Uri -Body "grant_type=client_credentials" -Headers $Headers
+  }
+  
+  
+  
+  &lt;#
+      .SYNOPSIS
+          Retrieves a count of videos available for a Brightcove Video Cloud account.
+  
+      .DESCRIPTION
+          Uses the Brightcove API to retrieve the count of videos.
+  
+      .PARAMETER TokenType
+          Required. The token type as retrieved from Brightcove's authorization API.
+  
+      .PARAMETER AccessToken
+          Required. The access toke as retrieved from Brightcove's authorization API.
+  #&gt;
+  function Get-BrightcoveVideoCount
+  {
+      # https://support.brightcove.com/getting-counts-videos-and-playlists
+  
+      param(
+          [parameter(Mandatory=$true)]
+          [string]
+          $TokenType,
+  
+          [parameter(Mandatory=$true)]
+          [string]
+          $AccessToken
+      )
+  
+      $Uri = "https://cms.api.brightcove.com/v1/accounts/1044238710001/counts/videos"
+  
+      $Headers = @{
+        "Authorization" = "$TokenType $AccessToken";
+      }
+  
+      (Invoke-RestMethod -Method "Get" -Uri $Uri -Headers $Headers).count
+  }
+  
+  
+  
+  &lt;#
+      .SYNOPSIS
+          Retrieves a list of videos available for a Brightcove Video Cloud account.
+  
+      .DESCRIPTION
+          Uses the Brightcove API to retrieve the information for a list of videos, paged
+          up to a specified Limit and starting ad a specified Offset.
+  
+      .PARAMETER TokenType
+          Required. The token type as retrieved from Brightcove's authorization API.
+  
+      .PARAMETER AccessToken
+          Required. The access toke as retrieved from Brightcove's authorization API.
+  
+      .PARAMETER Limit
+          Optional. Number of videos to return - must be an integer between 1 and 100.
+          Default: 20
+  
+      .PARAMETER Offset
+          Optional. Number of videos to skip (for paging results). Must be a positive integer.
+          Default: 0
+  #&gt;
+  function Get-BrightcoveVideos
+  {
+      # https://support.brightcove.com/overview-cms-api
+      # https://support.brightcove.com/using-cms-api-retrieve-video-data#bc-ipnav-1
+      # https://support.brightcove.com/cmsplayback-api-videos-search
+  
+      param(
+          [parameter(Mandatory=$true)]
+          [string]
+          $TokenType,
+  
+          [parameter(Mandatory=$true)]
+          [string]
+          $AccessToken,
+  
+          [ValidateRange(1, 100)]
+          [int]
+          $Limit = 20,
+  
+          [ValidateRange(0, [int]::MaxValue)]
+          [int]
+          $Offset = 0
+      )
+  
+      $Uri = "https://cms.api.brightcove.com/v1/accounts/1044238710001/videos"
+  
+      if ($Limit)
+      {
+          $Uri += "?limit=$Limit"
+      }
+  
+      if ($Offset -and $Offset -ne 0)
+      {
+          if ($Limit)
+          {
+              $Uri += "&amp;offset=$Offset"
+          }
+          else
+          {
+              $Uri += "?offset=$Offset"
+          }
+      }
+  
+      $Headers = @{
+        "Authorization" = "$TokenType $AccessToken";
+      }
+  
+      Invoke-RestMethod -Method "Get" -Uri $Uri -Headers $Headers
+  }
+  
+  
+  
+  &lt;#
+      .SYNOPSIS
+          Retrieves a list of sources available for a Brightcove video.
+  
+      .DESCRIPTION
+          Uses the Brightcove API to retrieve the list of video file sources for a
+          specific video.
+  
+      .PARAMETER TokenType
+          Required. The token type as retrieved from Brightcove's authorization API.
+  
+      .PARAMETER AccessToken
+          Required. The access toke as retrieved from Brightcove's authorization API.
+  
+      .PARAMETER VideoId
+          Required. ID of the video to get information for. This can be obtained using
+          the Get-BrightcoveVideos function or Brightcove's website.
+  #&gt;
+  function Get-BrightcoveVideoSources
+  {
+      # https://support.brightcove.com/using-cms-api-retrieve-video-data#bc-ipnav-3
+  
+      param(
+          [parameter(Mandatory=$true)]
+          [string]
+          $TokenType,
+  
+          [parameter(Mandatory=$true)]
+          [string]
+          $AccessToken,
+  
+          [parameter(Mandatory=$true)]
+          [string]
+          $VideoId
+      )
+  
+      $Uri = "https://cms.api.brightcove.com/v1/accounts/1044238710001/videos/$VideoId/sources"
+  
+      $Headers = @{
+        "Authorization" = "$TokenType $AccessToken";
+      }
+  
+      Invoke-RestMethod -Method "Get" -Uri $Uri -Headers $Headers
+  }
+  
+  
+  
+  &lt;#
+      .SYNOPSIS
+          Retrieves a list of images associated with a Brightcove video.
+  
+      .DESCRIPTION
+          Uses the Brightcove API to retrieve the information of the thumbnail and poster
+          for a specific video.
+  
+      .PARAMETER TokenType
+          Required. The token type as retrieved from Brightcove's authorization API.
+  
+      .PARAMETER AccessToken
+          Required. The access toke as retrieved from Brightcove's authorization API.
+  
+      .PARAMETER VideoId
+          Required. ID of the video to get information for. This can be obtained using
+          the Get-BrightcoveVideos function or Brightcove's website.
+  #&gt;
+  function Get-BrightcoveVideoImages
+  {
+      # https://support.brightcove.com/using-cms-api-retrieve-video-data#bc-ipnav-4
+  
+      param(
+          [parameter(Mandatory=$true)]
+          [string]
+          $TokenType,
+  
+          [parameter(Mandatory=$true)]
+          [string]
+          $AccessToken,
+  
+          [parameter(Mandatory=$true)]
+          [string]
+          $VideoId
+      )
+  
+      $Uri = "https://cms.api.brightcove.com/v1/accounts/1044238710001/videos/$VideoId/images"
+  
+      $Headers = @{
+        "Authorization" = "$TokenType $AccessToken";
+      }
+  
+      Invoke-RestMethod -Method "Get" -Uri $Uri -Headers $Headers
+  }
+  
+  
+  
+  &lt;#
+      .SYNOPSIS
+          Downloads a file from the web.
+  
+      .DESCRIPTION
+          Uses the BITS to retrieve a file from a given URI.
+  
+      .PARAMETER Path
+          Required. The folder path to save the file to. The filename will be determined
+          by the URI.
+  
+      .PARAMETER Uri
+          Required. The URI for the location of the file on the web. This will be used to
+          determine the filename of the file.
+  
+      .PARAMETER DisplayName
+          Optional. This is what will be displayed at the top of the progress bar.
+  #&gt;
+  function Start-BrightcoveDownload
+  {
+      param(
+          [parameter(Mandatory=$true)]
+          [string]
+          $Path,
+  
+          [parameter(Mandatory=$true)]
+          [string]
+          $Uri,
+  
+          [string]
+          $DisplayName
+      )
+  
+      $FileName = (($Uri -split "/")[-1] -split "\?")[0]
+  
+      if ([string]::IsNullOrWhiteSpace($DisplayName))
+      {
+          $DisplayName = "Downloading file..."
+      }
+  
+      Start-BitsTransfer -Source $Uri -Destination "$Path\$FileName" -DisplayName $DisplayName -Description $FileName
+  }
+  
+  
+  
+  &lt;#
+      .SYNOPSIS
+          Replaces invalid characters from a filename.
+  
+      .DESCRIPTION
+          Replaces the invalid characters in a filename with an underscore (_).
+  
+      .PARAMETER Name
+          Required. Filename to have the invalid characters removed from.
+  #&gt;
+  function Replace-InvalidFileNameChars {
+      param(
+          [Parameter(Mandatory=$true)]
+          [String]$Name
+      )
+  
+      $InvalidFileNameChars = [IO.Path]::GetInvalidFileNameChars() -join ''
+      $Replace = "[{0}]" -f [RegEx]::Escape($InvalidFileNameChars)
+  
+      return ($Name -replace $Replace, "_")
+  }
+  
+  
+  
+  
+  
+  
+  
+  # Get AccessToken for API
+  "Getting AccessToken for API..."
+  $BrightcoveAuthorization = Get-BrightcoveAuthorization
+  
+  $AccessToken = $BrightcoveAuthorization.access_token
+  $AccessTokenExpiresIn = $BrightcoveAuthorization.expires_in #seconds (300)
+  $TokenType = $BrightcoveAuthorization.token_type
+  
+  $AccessTokenExpiry = (Get-Date) + (New-TimeSpan -Seconds $AccessTokenExpiresIn)
+  
+  
+  
+  # Get count of available videos
+  "Getting count of available videos..."
+  $BrightcoveVideoCount = Get-BrightcoveVideoCount -AccessToken $AccessToken -TokenType $TokenType
+  
+  
+  
+  # Get list of all videos 20 at a time
+  "Getting list of all videos..."
+  $BrightcoveVideos = @()
+  for ($i = 0; $i -lt $BrightcoveVideoCount; $i += 20) {
+      $BrightcoveVideos += Get-BrightcoveVideos -AccessToken $AccessToken -TokenType $TokenType -Offset $i
+  }
+  
+  
+  
+  # Parse videos and download information, video, and thumbnail files
+  "Parsing videos and downloading information, video, and thumbnail files..."
+  foreach ($BrightcoveVideo in $BrightcoveVideos)
+  {
+      $Thumbnail = ""
+      $Poster = ""
+  
+      $Video = [pscustomobject][ordered]@{
+          Id = $BrightcoveVideo.id
+          Complete = $BrightcoveVideo.complete
+          CreatedAt = $BrightcoveVideo.created_at
+          Duration = $BrightcoveVideo.duration
+          Name = $BrightcoveVideo.name
+          OriginalFileName = $BrightcoveVideo.original_filename
+          PublishedAt = $BrightcoveVideo.published_at
+          State = $BrightcoveVideo.state
+          Tags = $BrightcoveVideo.tags -join ","
+          UpdatedAt = $BrightcoveVideo.updated_at
+      }
+  
+      $VideoName = $Video.Name
+      $PathFriendlyVideoName = Replace-InvalidFileNameChars -Name $VideoName
+  
+      $Path = "$ParentPath\$PathFriendlyVideoName"
+  
+      # Get new AccessToken if expired
+      if ((Get-Date) -gt $AccessTokenExpiry)
+      {
+          $BrightcoveAuthorization = Get-BrightcoveAuthorization
+  
+          $AccessToken = $BrightcoveAuthorization.access_token
+          $AccessTokenExpiresIn = $BrightcoveAuthorization.expires_in #seconds (300)
+          $TokenType = $BrightcoveAuthorization.token_type
+  
+          $AccessTokenExpiry = (Get-Date) + (New-TimeSpan -Seconds $AccessTokenExpiresIn)
+      }
+  
+      # Get list of rendition sources for video and select last MP4, sorted by width
+      $BrightcoveVideoSources = Get-BrightcoveVideoSources -AccessToken $AccessToken -TokenType $TokenType -VideoId $Video.Id
+      $Source = $BrightcoveVideoSources | where -Property "container" -EQ -Value "MP4" | sort -Property width | select -Last 1
+      $SourceUri = $Source.src
+  
+      # Get list of images for video
+      $BrightcoveVideoImages = Get-BrightcoveVideoImages -AccessToken $AccessToken -TokenType $TokenType -VideoId $Video.Id
+      $Thumbnail = $BrightcoveVideoImages.thumbnail
+      $ThumbnailUri = $Thumbnail.src
+      $Poster = $BrightcoveVideoImages.poster
+      $PosterUri = $Poster.src
+  
+      # Create video download folder
+      if (-not (Test-Path $Path))
+      {
+          New-Item -Path $Path -ItemType Directory |
+              Out-Null
+      }
+  
+      # Append video information to parent CSV
+      $Video |
+          Export-Csv -Path $ParentCsv -NoTypeInformation -Append
+  
+      # Write video inforamtion to video CSV
+      $Video |
+          Export-Csv -Path "$Path\$PathFriendlyVideoName.csv" -NoTypeInformation
+  
+      # Download video thumbnail
+      if (-not [string]::IsNullOrWhiteSpace($ThumbnailUri))
+      {
+          Start-BrightcoveDownload -Path $Path -Uri $ThumbnailUri -DisplayName "Downloading thumbnail for $VideoName"
+      }
+  
+      # Download video poster
+      if (-not [string]::IsNullOrWhiteSpace($PosterUri))
+      {
+          Start-BrightcoveDownload -Path $Path -Uri $PosterUri -DisplayName "Downloading poster for $VideoName"
+      }
+  
+      # Download video file
+      if (-not [string]::IsNullOrWhiteSpace($PosterUri))
+      {
+          Start-BrightcoveDownload -Path $Path -Uri $SourceUri -DisplayName "Downloading video for $VideoName"
+      }
+  }
+  
+  
+  
+  "\n"
+  "Finished downloading files. Look for the list of videos in a CSV file at the root of "
+  "the parent path. Each video is downloaded to its own separate folder along with its "
+  "own CSV and image files."
+  Explorer.exe $ParentPath
+  </code></pre>
+  </section>
+  </article>
+  

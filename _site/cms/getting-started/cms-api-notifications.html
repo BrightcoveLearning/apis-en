@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- remember to remove the following line when the site is ready to go live -->
   <!-- <meta name="robots" content="noindex" /> -->
-  <title>Getting Started Home</title>
+  <title>CMS API Notifications</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -86,9 +86,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/player-management/references/">Getting Started</a></li>
+      <li class="breadcrumb-item"><a href="/cms/getting-started/">Getting Started</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Getting Started Home</li>
+      <li class="breadcrumb-item active" aria-current="page">CMS API Notifications</li>
     </ol>
   </nav>
 </header>
@@ -315,58 +315,170 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <div id="search_box" class="gcse-search"></div>
 </div>
 
-<article class="landing-page-wrapper">
-  <h1>Getting Started Home</h1>
-  <section class="landing-page-header" id="landing_page_header">
-    <p>This section provides guides to help you get started with Brightcove Beacon</p>
+<article class="bcls-article">
+  <h1>CMS API Notifications</h1>
+  <summary>In this topic, you will learn about CMS API notifications. The CMS API provides notifications of changes to the videos in your account, whether made by an account user or the Video Cloud system.</summary>
+  <section class="bcls-section">
+  <h2 id="overview">Overview</h2>
+  
+  <p>You can receive notifications when <code>video-change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <span class="”notranslate”">HTTP</span> <code>POST</code> requests.</p>
+  
+  <h3>Authentication</h3>
+  
+  <p>Like all requests to the CMS API, requests to set up or list notification subscriptions must be authenticated using an <a href="/node/17925">access token</a>. The client credentials used to get the access token must have permissions for <code>video-cloud/notifications/all</code> (<strong class="notranslate">CMS-&gt;Notifications</strong> if you use the <a href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">Studio UI</a> to create the credentials.)</p>
+  
+  <h3>Setup</h3>
+  
+  <p>You can specify up to 10 endpoints to receive notifications by making a <code>POST</code> request to <code class="notranslate language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/subscriptions</code> and including JSON in the request body like this:</p>
+  
+  <pre class="line-numbers">
+        <code class="notranslate language-json">{
+        "endpoint":"http://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
+        "events":["video-change"]
+        }
+        </code>
+        </pre>
+  
+  <p>Notifications are sent in JSON format. Here's an example:</p>
+  
+  <pre class="line-numbers">
+        <code class="notranslate language-json">{"timestamp":1423840514446,
+        "account_id":"775205503001",
+        "event":"video-change",
+        "video":"4020894387001",
+        "version":26}
+        </code>
+        </pre>
+  
+  <aside class="bcls-aside bcls-aside--information language-editable">&gt;There is currently no other way to subscribe to notifications except through the API.</aside>
+  
+  <h3>Notification fields</h3>
+  
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Item</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td class="language-editable"><code>timestamp</code></td>
+        <td class="language-editable">time when the event occurred in <span class="”notranslate”">Epoch</span> milliseconds</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><code>account_id</code></td>
+        <td class="language-editable">the <span class="”notranslate”">Video Cloud</span> account id</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><code>event</code></td>
+        <td class="language-editable">the type of event - currently this will always be <code>video-change</code></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><code>video</code></td>
+        <td class="language-editable">the video ID</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><code>version</code></td>
+        <td class="language-editable">the version of the video - each set of change events increments the video version - for example, creation of a new set of renditions would constitute a set of change events</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <p>Requests to create a subscription will receive an <span class="”notranslate”">HTTP 422</span> error response for the following conditions:</p>
+  
+  <ul>
+    <li class="language-editable">The <code>endpoint</code> or <code>events</code> field is missing from the request body</li>
+    <li class="language-editable">The <code>events</code> field value is not a list (array)</li>
+    <li class="language-editable">The subscription defined already exists</li>
+    <li class="language-editable">You already have 10 subscriptions to this event</li>
+  </ul>
+  
+  <h3>Notification failures</h3>
+  
+  <p>The notification system treats any <code>4xx</code> or <code>5xx</code> return from the customer server as a retry-able failure. Failing callbacks will be retried up to 20 times, with an exponentially increasing delay between subsequent callbacks. The first few retries will happen within minutes of the initial callback attempt. If the callback continues failing, and we get all the way out to the 20th retry, the retry delay will be a few days.</p>
+  
+  <aside class="bcls-aside bcls-aside--information language-editable">&gt;Notes:
+  <ul>
+    <li class="language-editable"><code>video-change</code> events are triggered by automated system processes as well as user actions, so these events will not always corresponds to changes you made to video properties in Studio or via the APIs.</li>
+    <li class="language-editable">Notification handlers on servers built on HTTP2 are not currently supported. Notifications sent to HTTP2 servers may fail to be delivered without returning any error.</li>
+  </ul>
+  </aside>
+  
+  <h3>Firewalls</h3>
+  
+  <p>In case your organization has a strict policy regarding sources of incoming traffic through your firewall, we allow the AWS us-east-1/Virginia IPs. This is subject to change, so all AWS IPs should be whitelisted. See <a href="http://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">http://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html</a> for more information.</p>
+  
+  <h3>Endpoint for notification subscriptions</h3>
+  
+  <pre class="line-numbers">
+        <code class="notranslate language-http">/accounts/{account_id}/subscriptions
+        </code>
+        </pre>
+  
+  <h3 id="createSubscription">Create a new subscription</h3>
+  
+  <p>To create a new subscription, submit a <code>POST</code> request with a request body including the endpoint that you want notifications delivered to and <code>video-change</code> as the single item in an <code>events</code> array:</p>
+  
+  <pre class="line-numbers">
+        <code class="notranslate language-json">{ "endpoint": "http://solutions.brightcove.com:9002", "events": [ "video-change" ] }
+        </code>
+        </pre>
+  
+  <h3 id="getSubscriptions">Get a list of your subscriptions</h3>
+  
+  <p>To get a list of all your subscriptions, send a <code>GET</code> request to the subscriptions endpoint.</p>
+  
+  <h3 id="getSubscription">Get or Delete a single subscription</h3>
+  
+  <p>Use the following endpoint to get or delete a single subscription:</p>
+  
+  <h4>Endpoint</h4>
+  
+  <pre class="line-numbers">
+        <code class="notranslate language-http">/accounts/{account_id}/subscriptions/{subscription_id}
+        </code>
+        </pre>
+  
+  <p>A <code>GET</code> request will retrieve the subscription. A <code>DELETE</code> request will delete the subscription. You cannot update a subscription at this time. If you want to modify a subscription, you will need to delete it and create a new one.</p>
   </section>
-  <br>
-<section class="card-wrapper">
-  <section onclick="window.location.pathname = '/getting-started/learning-guide-bc-beacon.html';" class="bcls-card">
-    <div class="card-icon">
-      <i class="far fa-book-reader"></i>
-    </div>
-    <div class="card-content">
-      <h3 id="learning-guide">Learning Guide</h3>
-      <p>Explains Brightcove Beacon</p>
-    </div>
+  
+  <section class="bcls-section">
+  <h2 id="What_triggers">What triggers notifications?</h2>
+  
+  <p><code>video-change</code> events are triggered by any change in the video metadata. This includes any change to the video made in Studio or through a <span class="notranslate">CMS API</span> write method. There are also system events that will trigger <code>video-change</code> events.</p>
+  
+  <p>Changes that will trigger an event include:</p>
+  
+  <ul>
+    <li class="language-editable">A video is created</li>
+    <li class="language-editable">Ingestion of video or asset file starts</li>
+    <li class="language-editable">Ingestion of video or asset file is completed</li>
+    <li class="language-editable">Encoding of a new rendition finishes</li>
+    <li class="language-editable">A poster image is created</li>
+    <li class="language-editable">A thumbnail image is created</li>
+    <li class="language-editable">A video is deleted</li>
+    <li class="language-editable">Video metadata is changed (by the system or a user)</li>
+  </ul>
+  
+  <h3>Notes</h3>
+  
+  <p>Retranscoding a video will not trigger a <code>video-change</code> event unless the resulting rendition set is different.</p>
+  
+  <p>There are system events that occur after a video is deleted, so you will receive notifications about a video after deleting it.</p>
+  
+  <p>What will <strong>not</strong> trigger a <code>video-change</code> event is a change to a video asset that does not change the video metadata. For example, if you replace a remote text track file or image, but the URL recorded in the video metadata remains the same, no <code>video-change</code> event will occur, and no notification will be sent.</p>
   </section>
-
-  <section onclick="window.location.pathname = '/getting-started/implementation-phases.html';" class="bcls-card">
-    <div class="card-icon">
-      <i class="fal fa-project-diagram"></i>
-    </div>
-    <div class="card-content">
-      <h3 id="implementation-phases">Implementation Phases</h3>
-      <p>Details the implementation process</p>
-    </div>
-  </section>
-
-  <section onclick="window.location.pathname = '/getting-started/app-design-considerations.html';" class="bcls-card">
-    <div class="card-icon">
-      <i class="far fa-pencil-ruler"></i>
-    </div>
-    <div class="card-content">
-      <h3 id="app-design-considerations">Application Design Considerations</h3>
-      <p>Provides examples and tips for your application design</p>
-    </div>
-  </section>
-
-  <section onclick="window.location.pathname = '/getting-started/creating-your-app-design.html';" class="bcls-card">
-    <div class="card-icon">
-      <i class="far fa-edit"></i>
-    </div>
-    <div class="card-content">
-      <h3 id="create-app-design">Creating Your Application Design</h3>
-      <p>Walks you through alternatives for your application design</p>
-    </div>
-  </section>
-</section>
-</article>
-
+  </article>
+  
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
       
     </div>
   </div>
@@ -374,7 +486,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 04 Feb 2020
+  Page last updated on 08 Feb 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
@@ -455,6 +567,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/prism.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
   
   <script src="/assets/js/sites_nav.js"></script>
   <script src="/assets/js/feedback.js"></script>
