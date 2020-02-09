@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- remember to remove the following line when the site is ready to go live -->
   <!-- <meta name="robots" content="noindex" /> -->
-  <title>References Home</title>
+  <title>Managing Playlists Using the CMS API</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -86,9 +86,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/updates-known-issues/">References</a></li>
+      <li class="breadcrumb-item"><a href="/cms/managing-videos/">Managing Videos</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">References Home</li>
+      <li class="breadcrumb-item active" aria-current="page">Managing Playlists Using the CMS API</li>
     </ol>
   </nav>
 </header>
@@ -352,34 +352,244 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <div id="search_box" class="gcse-search"></div>
 </div>
 
-<article class="landing-page-wrapper">
-  <h1>References Home</h1>
-  <section class="landing-page-header" id="landing_page_header">
-    <p>This section contains reference information</p>
-  </section>
-  <br>
-  <section class="landing-page-body-wrapper" id="landing_page_wrapper">
+<article class="bcls-article">
+  <h1>Managing Playlists Using the CMS API</h1>
+  <summary>This topic describes how to create, update, or delete playlists using the CMS API.</summary>
+    <section id="intro" class="bcls-section">
+    <h2>Introduction</h2>
+    <img alt="Sample Playlist" style="float:right;" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/playlist/sample-playlist.png" />
+    <p>Playlists allow you to group a set of related videos together so that they can be loaded into a player and watched as a group. The CMS API contains a set of write methods you can use to create, update, or delete playlists:</p>
     
-      
+    <ul>
+      <li><a href="#create">Create a playlist</a></li>
+      <li><a href="#update">Update a playlist</a></li>
+      <li><a href="#delete">Delete a playlist</a></li>
+    </ul>
     
-      
+    <aside class="bcls-aside bcls-aside--information">These tasks can also be performed in the Studio Media module.</aside>
+    </section>
     
-      
+    <section id="authentication" class="bcls-section">
+    <h2>Authentication</h2>
     
-      
+    <p class="BCL-aside">Requests to the CMS API require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.</p>
+    </section>
     
-      
+    <section class="section" id="GET_playlists">
+    <h2>GET playlists</h2>
     
-      
+    <p>Before we get into creating playlists, let's see how we can retrieve data for existing playlists in your Video Cloud account.</p>
     
-      
+    <h3>Request</h3>
     
-  </section>
-</article>
-
+    <pre class="line-numbers">
+    <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/playlists</code></pre>
+    
+    <h3>Response</h3>
+    
+    <p>(We set the <code class="notranslate">limit</code> on this request to <code class="notranslate">1</code> to keep the response small.)</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">[
+      {
+        "id": "5282200243001",
+        "account_id": "1752604059001",
+        "created_at": "2017-01-15T15:30:09.847Z",
+        "description": "Do not delete",
+        "favorite": true,
+        "name": "Playlist for Alltime Views Sample",
+        "reference_id": null,
+        "type": "EXPLICIT",
+        "updated_at": "2017-01-15T17:49:07.633Z",
+        "video_ids": [
+          "4825279519001",
+          "4845831078001",
+          "4825296720001",
+          "4454620115001",
+          "5141730843001",
+          "4793962133001",
+          "4454620113001",
+          "4511340777001",
+          "5045678909001"
+        ]
+      }
+    ]</code></pre>
+    
+    <aside class="bcls-aside bcls-aside--information">Note that you can also add <a href="/node/18010">search criteria</a> to get a specific set of playlists, and use the <code class="notranslate">/counts/playlists</code> endpoint to get a count of how many playlists there are in the account. See the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-playlistGroup-Get_Playlists">API Reference</a> to see all options.</aside>
+    </section>
+    
+    <section id="Playlist_types" class="bcls-section">
+    <h2>Playlist types</h2>
+    
+    <p>There is one <code class="notranslate">EXPLICIT</code> (manual) playlist type for which you specify the videos to be included as an array of video ids. There are also seven smart playlist types - the smart playlist types differ in how they order a set of videos that are selected dynamically using a search string. The table below shows all the playlist types.</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Playlist Types</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code class="notranslate">EXPLICIT</code></td>
+          <td>A manual playlist. The included videos and the order of their appearance are defined by an array of video ids.</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">ACTIVATED_OLDEST_TO_NEWEST</code></td>
+          <td>A smart playlist in which the selected videos are ordered by activation date (ascending).</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">ACTIVATED_NEWEST_TO_OLDEST</code></td>
+          <td>A smart playlist in which the selected videos are ordered by activation date (descending).</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">ALPHABETICAL</code></td>
+          <td>A smart playlist in which the selected videos are presented in alphabetical order by name.</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">PLAYS_TOTAL</code></td>
+          <td>A smart playlist in which the selected videos are ordered by the number of all-time plays (descending).</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">PLAYS_TRAILING_WEEK</code></td>
+          <td>A smart playlist in which the selected videos are ordered by the number of plays in the previous week (descending).</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">START_DATE_OLDEST_TO_NEWEST</code></td>
+          <td>A smart playlist in which the selected videos are ordered by the scheduled start date (ascending).</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">START_DATE_NEWEST_TO_OLDEST</code></td>
+          <td>A smart playlist in which the selected videos are ordered by the scheduled start date (descending).</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    
+    <section id="Search_field" class="bcls-section">
+    <h2>Search field</h2>
+    
+    <p>For all the smart playlist types, the collection of videos is assembled dynamically based on the <code class="notranslate">search</code> field value for the playlist. The search field value must be a valid search string for a tag <a href="/node/18005">search string</a> for the CMS API. Below are some examples with explanations of the videos they will return.</p>
+    
+    <aside class="bcls-aside bcls-aside--warning">Currently playlists can only be constructed out of a search for one or more tags (separated by commas). Also, you cannot search for videos that do <strong>not</strong> have a particular tag.</aside>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Sample Search Strings</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Search String</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code class="notranslate">+tags:bird</code></td>
+          <td>Returns videos that have the tag "bird"</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">+tags:bird,woodland</code></td>
+          <td>Returns videos that have both the tags "bird" and "woodland"</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">tags:bird,woodland</code></td>
+          <td>Returns videos that have <strong>either</strong> of the tags "bird" or "woodland" (note: leaving the <code class="notranslate">+</code> sign out of the search string makes the difference)</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    
+    <section id="get_count_of_videos" class="bcls-section">
+    <h2>Get count of videos</h2>
+    
+    <p>You can get a count of the videos in a playlist (either smart or manual) using the <code class="notranslate">counts</code> endpoint:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/playlists/<span class="bcls-input">playlist_id</span>/videos</code></pre>
+    
+    <aside class="bcls-aside bcls-aside--information">For smart playlists, the result returned will indicate the number of videos that are currently returned by the search criteria specified for the playlist.</aside>
+    </section>
+    
+    <section id="create" class="bcls-section">
+    <h2>Create a playlist</h2>
+    
+    <p>To create a new playlist, you make a <code class="notranslate">POST</code> request to:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/playlists</code></pre>
+    
+    <h3>Request body</h3>
+    
+    <p>You can include many (but not all!) of the video metadata fields in your request. You <strong>must</strong> include at least a <code class="notranslate">name</code> and <code class="notranslate">type</code> for the playlist. Below are two examples, one creating an EXPLICIT playlist, the second creating a smart playlist of type ACTIVATED_NEWEST_TO_OLDEST, including videos that have two tags:</p>
+    
+    <h4>For EXPLICIT playlist</h4>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "type": "EXPLICIT",
+      "name": "My manual playlist",
+      "video_ids": [
+        "5289680419001",
+        "5289693763001",
+        "5289680417001",
+        "5288472314001"
+      ]
+    }</code></pre>
+    
+    <h4>For smart playlist</h4>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "type": "ACTIVATED_NEWEST_TO_OLDEST",
+      "name": "My smart playlist",
+      "search": "+tags:bird-tags:sea"
+    }</code></pre>
+    
+    <aside class="bcls-aside bcls-aside--information">Note that all playlists have a limit of 100 videos, but you can set that limit lower for smart playlists by using the <code class="notranslate">limit</code> field.</aside>
+    
+    <p>See the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-playlistGroup-Create_Playlist">API Reference</a> for all fields that can be used in creating playlists.</p>
+    </section>
+    
+    <section id="update" class="bcls-section">
+    <h2>Update a playlist</h2>
+    
+    <p>Updating a playlist is very similar to creating one. The only differences are the request method ( <code class="notranslate">PATCH</code> instead of POST) and the playlist id appended to the URL. The fields for the request body are exactly the same.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">Note that you <strong>cannot</strong> change an <code class="notranslate">EXPLICIT</code> playlist to another type, or change another type of playlist to <code class="notranslate">EXPLICIT</code>.</aside>
+    
+    <h3>Request URL</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/playlists/<span class="bcls-input">playlist_id</span></code></pre>
+    
+    <p>Find the complete details in the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-playlistGroup-Update_Playlist">API Reference</a>.</p>
+    </section>
+    
+    <section id="delete" class="bcls-section">
+    <h2>Delete a playlist</h2>
+    
+    <p>To delete a playlist, make a request using the <code class="notranslate">DELETE</code> method to:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/playlists/<span class="bcls-input">playlist_id</span></code></pre>
+    
+    <p>(This is the same URL used to update a playlist.)</p>
+    
+    <aside class="bcls-aside bcls-aside--warning">Note that deletes <strong>cannot</strong> be undone - think twice before you send that request! Deleting a playlist does <strong>not</strong> affect the videos contained in the playlist.</aside>
+    
+    <p>Find the complete details in the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-playlistGroup-Delete_Playlists">API Reference</a>.</p>
+    </section>
+    </article>
+    
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
       
     </div>
   </div>
@@ -387,7 +597,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 04 Feb 2020
+  Page last updated on 09 Feb 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
@@ -468,6 +678,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/prism.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
   
   <script src="/assets/js/sites_nav.js"></script>
   <script src="/assets/js/feedback.js"></script>
