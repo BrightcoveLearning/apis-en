@@ -1,0 +1,293 @@
+---
+title: 'RSS Podcast Feed for iTunes'
+description: 'In this sample, you will learn how to use the CMS API to generate an RSS podcast feed for Apple iTunes.'
+parent: Code Samples
+grandparent: CMS API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>This app creates a podcast <a href="https://itunespartner.apple.com/en/podcasts/overview">RSS feed for iTunes</a> from one or more audio-only titles in your Video Cloud account.</p>
+    
+    <aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
+    
+    <p><strong>Note: if you enter all required information, but no feed is generated, or it contains no videos, please see the <a href="#troubleshooting">Troubleshooting</a> section below.</strong></p>
+    
+    <section class="bcls-subsection">
+    <h3>What you need to use this app:</h3>
+    
+    <ul>
+      <li>All videos returned in the search will be included in the feed. Therefore, you need to use a tag or custom field to identify exactly the videos you want to be included.</li>
+      <li>URLs in the feed <strong>must</strong> point to MP4 renditions. If videos you select have no MP4 renditions, the app will <strong>not</strong> include them in the feed.</li>
+      <li>Be sure you are satisfying <a href="https://help.apple.com/itc/podcasts_connect/#/itc1723472cb">Apple's requirements</a> regarding images and other things. This app will use the poster image for the podcast artwork. You may need to create a custom <a href="/node/15628">Ingest Profile</a> to make your poster size fit the image requirements.</li>
+      <li>Also see <a href="https://help.apple.com/itc/podcasts_connect/?lang=en#/itc2b3780e76">Podcast best practices</a> (this app will follow them as far as inputs allow).</li>
+      <li>Your podcast(s) add to video cloud as audio-only content - see <a href="/node/17951">Audio Content</a> for details of how to do this.</li>
+      <li>A title for the podcast. If no title is given, the <code class="notranslate">name</code> of the video (or first video in a group of episodes) will be used.</li>
+      <li>A description of the podcast.</li>
+      <li>Your site URL (e.g. https://yoursiteurl.com)</li>
+      <li>The URL where this feed will be hosted (e.g. https://yoursiteurl.com/feeds/podcast.rss)</li>
+      <li>The author (individual or organization name).</li>
+      <li>A contact email address for the podcast</li>
+      <li>A summary of the broadcast (if you omit this, we will use the <code class="notranslate">description</code> from Video Cloud).</li>
+    </ul>
+    
+    <p>The app below contains input fields for all the information you need to provide. To see how the app maps your data and video metadata to the podcast feed fields, see the <a href="#Field_mappings">Field mappings</a> section at the bottom of the page.</p>
+    </section>
+    
+    <section class="bcls-subsection">
+    <h3>URL tokenization</h3>
+    
+    <p>In addition to the above requirements, you will need to modify URL tokenization for your account. Video Cloud adds a <code class="notranslate">ttl</code> token to URLs for renditions to prevent your content from being stolen. By default, these token have a very short life - too short for a podcast. You will need to <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a> to have them set the token time-to-live value higher. The allowable range is one hour to one year. Ask them to set the value to something appropriate for the time you want your podcasts to be available. Remember that this is an account setting, however. Don't set the value so high that it might jeopardize the security of your other videos.</p>
+    </section>
+    
+    <section class="bcls-subsection">
+    <h3>Notes on how the app works</h3>
+    
+    <ul>
+      <li>After filling in information needed for the feed, you fetch (up to 20) videos from your account</li>
+      <li>It will be easier if you name, tag, or have a custom field value for the podcast video(s) to make it/them easy to find</li>
+      <li>You then select one or more videos for the feed</li>
+      <li>If you select multiple videos, the app assumes that these are podcast episodes and that the activation date for the videos reflects the order of the episodes</li>
+    </ul>
+    </section>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+    
+    <div class="bcls-expander-content">
+    <p>To use the CMS API you will need proper credentials.</p>
+    
+    <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
+    <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+    </figure>
+    
+    <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+    
+    <pre class="line-numbers">
+        <code class="language-json">"operations": [
+          "video-cloud/video/all"
+        ]</code></pre>
+    
+    <ul>
+      <li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
+      <li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+    </ul>
+    </div>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="podcast_feed_generator">Podcast feed generator</h2>
+    Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18561-cms-api-sample-generate-mrss-feed-itunes">GitHub repository</a>.
+    
+    <p data-height="2000" data-theme-id="34967" data-slug-hash="MVdZKp" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="CMS API Sample: Generate RSS Podcast Feed for iTunes" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/MVdZKp/">CMS API Sample: Generate RSS Podcast Feed for iTunes</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
+    
+    <section class="bcls-section">
+    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+    
+    <div class="bcls-expander-content">
+    <p>Here are some tips to effectively use the above CodePen:</p>
+    
+    <ul>
+      <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+      <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+      <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18561-cms-api-sample-generate-mrss-feed-itunes">GitHub repository</a>.</li>
+    </ul>
+    </div>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Field_mappings">Field mappings</h2>
+    
+    <p>The first table shows how the app maps data to the overall podcast fields.</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Mapping of Item Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Video Field</th>
+          <th>Podcast Feed Field</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">title</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">link</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">language</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:subtitle</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:image</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:author</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code> (falls back to <code class="notranslate">author</code>)</td>
+          <td><code class="notranslate">itunes:owner:name</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:owner:email</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:summary</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">description</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">current year + owner</code></td>
+          <td><code class="notranslate">copyright</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your selection(s)}</code></td>
+          <td><code class="notranslate">itunes:category/subcategory</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:explicit</code></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <p>The second table shows how this app maps the video metadata to the podcast feed <strong>item</strong> fields.</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Mapping of Item Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Video Field</th>
+          <th>Podcast Feed Field</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code class="notranslate">name</code></td>
+          <td><code class="notranslate">title</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:author</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">description</code></td>
+          <td><code class="notranslate">itunes:subtitle</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">duration</code> (translated into HH:MM:SS format)</td>
+          <td><code class="notranslate">itunes:duration</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">long_description</code></td>
+          <td><code class="notranslate">itunes:summary</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">images.poster.src</code></td>
+          <td><code class="notranslate">itunes:image</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">MP4 source: size</code></td>
+          <td><code class="notranslate">enclosure:length</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">video/mp4</code></td>
+          <td><code class="notranslate">enclosure:type</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">MP4 source:src</code> (the best quality MP4 rendition)</td>
+          <td><code class="notranslate">enclosure:url</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">guid</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">published_at</code> (must be translated into UTC format)</td>
+          <td><code class="notranslate">pubDate</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">duration</code> (converted to <code class="notranslate">HH:MM:SS</code> format)</td>
+          <td><code class="notranslate">itunes:duration</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:explicit</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:isClosedCaptioned</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:season</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:episode</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:episodeType</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">{your input}</code></td>
+          <td><code class="notranslate">itunes:keywords</code></td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    
+    <p>If you are having trouble with this app, here are some things to check:</p>
+    
+    <ul>
+      <li class="language-editable">
+      <p>If the generated feed contains no videos, ensure that the videos you want to include have MP4 renditions. You can check this using the CMS API, but the easiest way is to look at the video files list in the Studio Media module and make sure at least one rendition can be downloaded:</p>
+    
+      <figure class="bcls-figure"><img class="bcls-image" alt="Downloadable Rendition" src="https://learning-services-media.brightcove.com/doc-assets/node/18561-cms-api-sample-generate-mrss-feed-itunes/downloadable-rendition.png" />
+      <figcaption class="bcls-caption--image">Downloadable Rendition</figcaption>
+      </figure>
+    
+      <p>If none of the renditions can be downloaded, you will need to replace or retranscode the video, using an ingest profile that includes MP4 (progressive) renditions.</p>
+      </li>
+      <li class="language-editable">
+      <p>If your videos do have MP4 renditions, but your feed still contains no videos, check to see that the search string you are using returns the correct videos. One way to do this is to copy the request URL below, replace <code>{account_id}</code> and <code>{search_string}</code> with your account id and search string, and try the request in our <a href="/node/17918">API Tester</a> to make sure it returns the videos you expect:</p>
+    
+      <pre>
+        <code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos?q=<span class="bcls-input">{search_string}</span></code></pre>
+      </li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="proxy">Proxy code</h2>
+    
+    <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/node/18132">Using the REST APIs</a>.</p>
+    </section>
+    </article>
+    

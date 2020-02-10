@@ -1,0 +1,120 @@
+---
+title: 'Set 360-Degree Video Properties'
+description: 'In this topic, you will learn how to set 360° video properties using the CMS API. We will use the Postman interface to send our requests and view the responses from the API.'
+parent: Managing Videos
+grandparent: CMS API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section" id="Overview">
+    <h2>Overview</h2>
+    
+    <p>To identify a video as a 360° video, the projection property needs to be set. You can either set this property <a href="/node/15482">using the Media Module in Studio</a>, or you can do it programmatically as shown in this topic.</p>
+    
+    <aside class="bcls-aside bcls-aside--tip">This example uses the Postman app to update video properties with the CMS API. Learn how to get started with the <a href="/node/17919">Use Postman for HTTP Requests</a> document.</aside>
+    
+    <p>In this topic, you will perform the following tasks:</p>
+    
+    <ul>
+      <li><a href="#Get_client_credentials">Get client credentials</a></li>
+      <li><a href="#Retrieve_video_information">Retrieve video information</a></li>
+      <li><a href="#Set_360_video_properties">Set 360° video properties</a></li>
+    </ul>
+    </section>
+    
+    <section id="Get_client_credentials" class="bcls-section">
+    <h2>Get client credentials</h2>
+    
+    <p>To work with the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use.</p>
+    
+    <ol class="bcls-tasklist">
+      <li>Get your client credentials in Studio by following the directions in <a href="/node/14056">Managing API Authentication Credentials</a>. In the steps below, we will be making Player Management API requests using Postman, so your credentials should have at least the following permissions:
+    
+      <ul>
+        <li>
+        <p><strong>CMS</strong>: <strong>Video Read/Write</strong></p>
+        </li>
+      </ul>
+    
+      <p>You can add as many additional permissions as you like to get credentials that will be usable for a wider range of API requests. Also note that you get credentials that will work for multiple accounts if you like.</p>
+    
+      <aside class="bcls-aside bcls-aside--information">In order to generate client credentials you must have Admin permissions for Studio, or get someone in your organization who has Admin permissions to generate the credentials for you.</aside>
+      </li>
+    </ol>
+    </section>
+    
+    <section id="Retrieve_video_information" class="bcls-section">
+    <h2>Retrieve video information</h2>
+    
+    <p>Once you have uploaded your video to Video Cloud Studio, you are ready to retrieve video information from the CMS API. For information about uploading videos, see the <a href="/node/14456">Uploading Videos Using the Upload Module</a> document.</p>
+    
+    <ol class="bcls-tasklist">
+      <li>Open the Postman app.</li>
+      <li>Get a new access token for your Video Cloud account, and select the <strong>Use Token</strong> button.
+      <figure class="bcls-figure"><img class="bcls-image" alt="Access token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/360-video/access-token.png" />
+      <figcaption class="bcls-caption--image">Access token</figcaption>
+      </figure>
+      </li>
+      <li>Make a <strong>GET</strong> request to the CMS API, using the <strong>Get Video by ID</strong> syntax. You will do this by entering the following URL into the <strong>Enter request URL</strong> field, substituting your account id for <code>{account_id}</code> and your video id for <code>{video_id}</code>:
+      <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}</code></pre>
+      </li>
+      <li>Leave the method as GET, and select <strong>Send</strong>:
+      <figure class="bcls-figure"><img class="bcls-image" alt="GET Request" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/360-video/get-request.png" />
+      <figcaption class="bcls-caption--image">GET Request</figcaption>
+      </figure>
+      </li>
+      <li>In the response body, you should see the <strong>projection</strong> property.
+      <figure class="bcls-figure"><img class="bcls-image" alt="GET Response" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/360-video/projection-null.png" />
+      <figcaption class="bcls-caption--image">GET Response</figcaption>
+      </figure>
+      </li>
+    </ol>
+    </section>
+    
+    <section id="Set_360_video_properties" class="bcls-section">
+    <h2>Set 360° video properties</h2>
+    
+    <p>To indicate that a video is a 360° video, the <strong>projection</strong> property should be set to <strong>equirectangular</strong>.</p>
+    
+    <ol class="bcls-tasklist">
+      <li>Return to the Postman app. You may need to get a new access token.</li>
+      <li>Select <strong>PATCH</strong> as the HTTP method, using the same URL syntax as in the previous section.
+      <figure class="bcls-figure"><img class="bcls-image" alt="PATCH request" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/360-video/patch-request.png" />
+      <figcaption class="bcls-caption--image">PATCH request</figcaption>
+      </figure>
+      </li>
+      <li>Click the <strong>Headers</strong> button, and supply the <strong>key - value</strong> pair <strong>Content-Type - application/json</strong>. Simply begin typing in the input areas and you will be supplied with options from which you can choose the indicated values.
+      <figure class="bcls-figure"><img class="bcls-image" alt="Add Header" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-add-header.png" />
+      <figcaption class="bcls-caption--image">Add Header</figcaption>
+      </figure>
+      </li>
+      <li>Click the <strong>Body</strong> section just under the URL, then the <strong>raw</strong> radio button:
+      <figure class="bcls-figure"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-body-select.png" />
+      <figcaption class="bcls-caption--image">Request Body</figcaption>
+      </figure>
+      </li>
+      <li>For the raw data, enter the following JSON code for the body (the screenshot following the JSON shows how the request should appear):
+      <pre class="line-numbers">
+    <code class="language-json">{
+        "projection" : "equirectangular"
+    }</code></pre>
+    
+      <figure class="bcls-figure"><img class="bcls-image" alt="PATCH Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/360-video/patch-body.png" />
+      <figcaption class="bcls-caption--image">PATCH Body</figcaption>
+      </figure>
+      </li>
+      <li>Click <strong>Send</strong></li>
+      <li>In the response body, you should now see that the value for the <strong>projection</strong> property has been set.
+      <figure class="bcls-figure"><img class="bcls-image" alt="PATCH response" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/360-video/projection-set.png" />
+      <figcaption class="bcls-caption--image">PATCH response</figcaption>
+      </figure>
+    
+      <p>You are now ready to play your video as a 360° video.</p>
+      </li>
+    </ol>
+    </section>
+    </article>
+    

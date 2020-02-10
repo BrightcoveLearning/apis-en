@@ -1,0 +1,853 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- remember to remove the following line when the site is ready to go live -->
+  <!-- <meta name="robots" content="noindex" /> -->
+  <title>Retrieve Video Data</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="/assets/css/site/bc-icons.css"> -->
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/prism.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/styles.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/landing-page.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/tabs.css">
+  <link rel="stylesheet" href="/assets/css/local.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/9e0492656a.js" crossorigin="anonymous"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/google-analytics.js"></script>
+</head>
+
+<body class="body">
+
+<header>
+  <div class="div-header">
+    <a href="/"><img class="product-logo" src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/product-logos/logo-bc-video-cloud.svg" alt="product logo" style="max-height: 100px;max-width: 232px;"></a>
+<!-- GTranslate: https://gtranslate.io/ -->
+<select onchange="doGTranslate(this);" style="margin-right: 1rem;">
+  <option value="">Select a language</option>
+  <option value="en|en">English</option>
+  <option value="en|zh-TW">繁體中文</option>
+  <option value="en|fr">Français</option>
+  <option value="en|de">Deutsch</option>
+  <option value="en|ja">日本語</option>
+  <option value="en|ko">한국어</option>
+  <option value="en|es">Español</option>
+</select>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw')plang='en';location.href=location.protocol+'//'+(lang == 'en' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '\\.'), '')+location.pathname+location.search;}
+/* ]]> */
+</script>
+
+<select id="site_select" style="margin-right: 1rem;">
+  <option value="">Other Brightcove Documentation</option>
+  
+    
+      <option value="https://support.brightcove.com">Documentation Home</option>
+    
+  
+    
+      <option value="https://audience.support.brightcove.com">Brightcove Audience</option>
+    
+  
+    
+      <option value="https://beacon.support.brightcove.com">Brightcove Beacon</option>
+    
+  
+    
+      <option value="https://campaign.support.brightcove.com">Brightcove Campaign</option>
+    
+  
+    
+      <option value="https://gallery.support.brightcove.com">Gallery</option>
+    
+  
+    
+      <option value="https://zencoder.support.brightcove.com">Zencoder</option>
+    
+  
+</select>
+
+
+    <span class="secondary-nav"><a href="https://supportportal.brightcove.com/s/login/?language=en_US"><img src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/support.png" alt="support"> Contact Support</a> <span style="vertical-align: top;margin-left:1em;margin-right:1em;">|</span> <a href="https://status.brightcove.com/"><img src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/status.png" alt="system status"> System Status</a></span>
+  </div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb arr-right">
+      
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      
+      
+      
+      <li class="breadcrumb-item"><a href="/cms/managing-videos/">Managing Videos</a></li>
+      
+      <li class="breadcrumb-item active" aria-current="page">Retrieve Video Data</li>
+    </ol>
+  </nav>
+</header>
+<div class="container">
+    <div class="row">
+      <div class="col-sm-3 left-side-bar">
+        <nav class="sidenav">
+          
+            
+            <h5><a href="/">Home</a></h5>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/getting-started/">Getting Started <strong>+</strong></a></h5>            
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/getting-started/overview-zencoder.html">Overview</a></li>
+                  
+                
+                  
+                    <li><a href="/getting-started/quick-start-zencoder.html">Quick Start</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/general/">General Information <strong>+</strong></a></h5>            
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a></li>
+                  
+                
+                  
+                    <li><a href="/general/integrating-your-cms-video-cloud.html">Integrating Your CMS with Video Cloud</a></li>
+                  
+                
+                  
+                    <li><a href="/general/managing-videos/audio-content.html">Audio Content</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/cms/">CMS API <strong>+</strong></a></h5>            
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/getting-started/">Getting Started <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/getting-started/overview-cms-api.html">Overview: CMS API</a></li>
+                        
+                        <li><a href="/cms/getting-started/practice-area-cms-api.html">Practice Area: CMS API</a></li>
+                        
+                        <li><a href="/cms/getting-started/best-practices-cms-and-playback-apis.html">Best Practices: CMS and Playback APIs</a></li>
+                        
+                        <li><a href="/cms/getting-started/cms-api-notifications.html">CMS API Notifications</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/managing-videos/">Managing Videos <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/managing-videos/using-cms-api-add-geo-filtering.html">Add Geo-Filtering</a></li>
+                        
+                        <li><a href="/cms/managing-videos/cms-api-working-folders.html">Working with Folders</a></li>
+                        
+                        <li><a href="/cms/managing-videos/digital-master-delete-api.html">Digital Master Delete API</a></li>
+                        
+                        <li><a href="/cms/managing-videos/getting-counts-videos-and-playlists.html">Getting Counts of Videos and Playlists</a></li>
+                        
+                        <li><a href="/cms/managing-videos/managing-playlists-using-cms-api.html">Managing Playlists Using the CMS API</a></li>
+                        
+                        <li><a href="/cms/managing-videos/using-cms-api-managing-clips.html">Managing Clips</a></li>
+                        
+                        <li><a href="/cms/managing-videos/media-sharing-cms-api.html">Media Sharing</a></li>
+                        
+                        <li><a href="/cms/managing-videos/using-cms-api-retrieve-video-data.html">Retrieve Video Data</a></li>
+                        
+                        <li><a href="/cms/managing-videos/setting-360-degree-video-properties-cms-api.html">Set 360-Degree Video Properties</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/searching/">Searching <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">CMS and Playback APIs: Video Search v2</a></li>
+                        
+                        <li><a href="/cms/searching/cms-api-playlists-search.html">CMS API: Playlists Search</a></li>
+                        
+                        <li><a href="/cms/searching/using-cms-api-page-search-results.html">Page Search Results</a></li>
+                        
+                        <li><a href="/cms/searching/cmsplayback-api-videos-search.html">CMS and Playback APIs: Video Search v1</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/managing-assets/">Managing Media Assets <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/managing-assets/using-cms-api-remote-assets.html">Remote Assets</a></li>
+                        
+                        <li><a href="/cms/managing-assets/using-cms-api-add-webvtt-captions-text-tracks.html">Add WebVTT Captions (Text Tracks)</a></li>
+                        
+                        <li><a href="/cms/managing-assets/linking-zencoder-and-video-cloud-video-demand.html">Linking Zencoder and Video Cloud</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/references/">CMS API References <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/references/reference.html">CMS API Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-video-fields-reference.html">CMS API Video Fields Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-playlist-fields-reference.html">CMS API Playlist Fields Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-custom-fields-reference.html">CMS API Custom Fields Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-folder-fields-reference.html">CMS API Folder Fields Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-error-message-reference.html">CMS API Error Message Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/code-samples/">Code Samples <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-add-multiple-affiliate-accounts-media-sharing.html">Add Multiple Affiliate Accounts</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-share-multiple-videos.html">Share Multiple Videos</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-media-sharing-report.html">Media Sharing Report</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-shared-media-report.html">Shared Media Report</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-update-videos.html">Update Videos</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-add-custom-field-multiple-videos.html">Add Custom Field to Multiple Videos</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-update-geo-properties.html">Update Geo Properties</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-add-cue-points.html">Add Cue Points</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-report-generator.html">Video Report Generator</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-videos-delivery-type.html">Videos by Delivery Type</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-download-links.html">Download Links</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-sitemap-generator.html">Video Sitemap Generator</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-mrss-generator.html">MRSS Generator</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-mrss-feed-playlist.html">MRSS Feed from Playlist</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-generate-rss-podcast-feed-itunes.html">RSS Podcast Feed for iTunes</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-report-audio-only-content.html">Report on Audio-Only Content</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-schema-builder.html">Video Schema Builder</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-search-app.html">Video Search App</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/cms-other-apis/">CMS with Other APIs <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/references/reference.html">CMS API Reference</a></li>
+                        
+                        <li><a href="/cms/getting-started/practice-area-cms-api.html">Practice Area: CMS API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/dynamic-ingest/">Dynamic Ingest API <strong>+</strong></a></h5>            
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/dynamic-ingest/getting-started/">Getting Started <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/dynamic-ingest/getting-started/overview-oauth-api.html">Overview: OAuth API</a></li>
+                        
+                        <li><a href="dynamic-ingest/getting-started/getting-access-tokens.html">Getting Access Tokens</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/dynamic-ingest/ingest-guides/">Ingest Guides <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/dynamic-ingest/ingest-guides/dynamic-ingest-media-sharing.html">Dynamic Ingest with Media Sharing</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/dynamic-ingest/references/">OAuth API References <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/dynamic-ingest/references/reference.html">OAuth API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/oauth/code-samples/">Code Samples <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">Create Client Credentials</a></li>
+                        
+                        <li><a href="/cms/getting-started/practice-area-cms-api.html">Practice Area: CMS API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/oauth/">OAuth API <strong>+</strong></a></h5>            
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/oauth/getting-started/">Getting Started <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/oauth/getting-started/overview-oauth-api.html">Overview: OAuth API</a></li>
+                        
+                        <li><a href="oauth/getting-started/getting-access-tokens.html">Getting Access Tokens</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/oauth/references/">OAuth API References <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/oauth/references/reference.html">OAuth API Reference</a></li>
+                        
+                        <li><a href="/cms/getting-started/practice-area-cms-api.html">Practice Area: CMS API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/oauth/code-samples/">Code Samples <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">Create Client Credentials</a></li>
+                        
+                        <li><a href="/cms/getting-started/practice-area-cms-api.html">Practice Area: CMS API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/updates-known-issues/">Release Notes/Known Issues <strong>+</strong></a></h5>            
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/updates-known-issues/catalog-apis-cms-api-and-playback-api-release-notes.html">CMS/Playback APIs Release Notes</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/support/">Support <strong>+</strong></a></h5>            
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/support/opening-case-with-brightcove-support.html">Opening a Support Case</a></li>
+                  
+                
+                  
+                    <li><a href="/support/viewing-brightcove-system-status-page.html">Viewing the Brightcove System Status Page</a></li>
+                  
+                
+              </ul>
+            
+          
+      </nav>
+    </div>
+    <div class="col-lg-7" style="background-color: white;color: #333333;margin-top: -1em;margin-bottom: -1em;padding-bottom:1em;">
+  <!-- bootstrap layout -->
+
+<!-- search bar -->
+<div id="search_bar" class="search-bar">
+  <!-- TODO - cx value below must be changed for each site and new GCS instance set up-->
+  <!-- <script async src="https://cse.google.com/cse.js?cx=017969773216783359937:6sd3di5mwuw"></script> -->
+  <div id="search_box" class="gcse-search"></div>
+</div>
+
+<article class="bcls-article">
+  <h1>Retrieve Video Data</h1>
+  <summary>This topic shows a variety of sample requests using the HTTP GET method.</summary>
+    <section id="intro" class="bcls-section">
+    <h2>Introduction</h2>
+    
+    <p>In this topic, you will learn how to retrieve various kinds of information about your Video Cloud videos, using CMS API requests. To create these requests, append the endpoints listed in this document to the base URL with your account id.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/{endpoint}
+    </code>
+    </pre>
+    
+    <p class="BCL-aside">Requests to the CMS API require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.</p>
+    </section>
+    
+    <section class="section" id="GET_videos">
+    <h2>GET videos</h2>
+    
+    <p>Retrieve data for all of the videos in your Video Cloud account.</p>
+    
+    <p>Endpoint: <code>/videos </code></p>
+    
+    <h3>Request</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos
+    </code>
+    </pre>
+    
+    <h3>Response</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-json">[ {
+    "id" : "2114345471001",
+    "account_id" : "1507807800001",
+    "complete" : true,
+    "created_at" : "2013-01-23T19:06:16.328Z",
+    "cue_points" : [ {
+    "name" : "Flying Off",
+    "type" : "CODE",
+    "time" : 2.64,
+    "metadata" : null,
+    "force_stop" : false,
+    "asset_id" : null
+    }, {
+    "name" : "Pre-roll",
+    "type" : "AD",
+    "time" : 0.0,
+    "metadata" : null,
+    "force_stop" : false,
+    "asset_id" : null
+    }, {
+    "name" : "Bird Back",
+    "type" : "CODE",
+    "time" : 5.938,
+    "metadata" : null,
+    "force_stop" : false,
+    "asset_id" : null
+    }, {
+    "name" : "Post-roll",
+    "type" : "AD",
+    "time" : 8.242,
+    "metadata" : null,
+    "force_stop" : false,
+    "asset_id" : null
+    } ],
+    "custom_fields" : {
+    "customfield1" : "Approved",
+    "customfield2" : "Verified"
+    }, ...
+    ]
+    </code>
+    </pre>
+    </section>
+    
+    <section class="section" id="GET_a_video">
+    <h2>GET a video</h2>
+    
+    <p>Retrieve data for a specific video, or multiple videos by id</p>
+    
+    <aside class="bcls-aside bcls-aside--information">Note that <strong>no more than 10 video ids</strong> can be included.</aside>
+    
+    <p>Endpoint: <code>/videos/{video_id}[,{video2_id},{video3_id}] </code></p>
+    
+    <h3>Request</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001
+    </code>
+    </pre>
+    
+    <h3>Response</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+    "id" : "2114345471001",
+    "account_id" : "1507807800001",
+    "complete" : true,
+    "created_at" : "2013-01-23T19:06:16.328Z",
+    "cue_points" : [ {
+    "name" : "Flying Off",
+    "type" : "CODE",
+    "time" : 2.64,
+    "metadata" : null,
+    "force_stop" : false,
+    "asset_id" : null
+    }, {
+    "name" : "Pre-roll",
+    "type" : "AD",
+    "time" : 0.0,
+    "metadata" : null,
+    "force_stop" : false,
+    "asset_id" : null
+    }, {
+    "name" : "Bird Back",
+    "type" : "CODE",
+    "time" : 5.938,
+    "metadata" : null,
+    "force_stop" : false,
+    "asset_id" : null
+    }, ...
+    </code>
+    </pre>
+    </section>
+    
+    <section class="section" id="sourcesEndpoint">
+    <h2>GET sources</h2>
+    
+    <p>Retrieve the sources for a specific video.</p>
+    
+    <p>Endpoint: <code>/videos/{video_id}/sources </code></p>
+    
+    <h3>Request</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001/sources
+    </code>
+    </pre>
+    
+    <h3>Response</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-json">[
+    {
+    "asset_id": "5164827527001",
+    "remote": false,
+    "src": "http://brightcove.vo.llnwd.net/e2/hls/57838016001/57838016001_5164827527001_5164799982001.m3u8?pubId=57838016001&amp;videoId=5164799982001",
+    "type": "application/vnd.apple.mpegurl"
+    },
+    {
+    "asset_id": "5164827527001",
+    "remote": false,
+    "src": "https://brightcove.hs.llnwd.net/e2/hls/57838016001/57838016001_5164827527001_5164799982001.m3u8?pubId=57838016001&amp;videoId=5164799982001",
+    "type": "application/vnd.apple.mpegurl"
+    }, ...
+    ]
+    </code>
+    </pre>
+    </section>
+    
+    <section class="section" id="imagesEndpoint">
+    <h2>GET images</h2>
+    
+    <p>Retrieve the images for a specific video.</p>
+    
+    <p>Endpoint: <code>/videos/{video_id}/images </code></p>
+    
+    <h3>Request</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001/images
+    </code>
+    </pre>
+    
+    <h3>Response</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+    "thumbnail" : {
+    "id" : "3815806023001",
+    "src" : "http://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/2431/1507807800001_3815806023001_thumb.jpg?pubId=1507807800001"
+    },
+    "poster" : {
+    "id" : "3815782921001",
+    "src" : "http://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/273/1507807800001_3815782921001_still.jpg?pubId=1507807800001"
+    }
+    }
+    </code>
+    </pre>
+    </section>
+    
+    <section class="section" id="videoRefidEndpoint">
+    <h2>GET video by refid</h2>
+    
+    <p>Retrieve the data for a specific video using the reference id.</p>
+    
+    <p>Endpoint: <code>/videos/ref:{video_reference_id} </code></p>
+    
+    <h3>Request</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7
+    </code>
+    </pre>
+    
+    <h3>Response</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+    "id" : "2114345471001",
+    "account_id" : "1507807800001",
+    "complete" : true,
+    "created_at" : "2013-01-23T19:06:16.328Z",
+    "cue_points" : [ {
+    "name" : "Flying Off",
+    "type" : "CODE",
+    "time" : 2.64,
+    "metadata" : null,
+    "force_stop" : false,
+    "asset_id" : null
+    }, ...
+    </code>
+    </pre>
+    </section>
+    
+    <section class="section" id="videoRefidSourcesEndpoint">
+    <h2>GET sources by refid</h2>
+    
+    <p>Retrieve the sources for a specific video using its reference id.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">If you want a downloadable rendition, choose an <code>http </code> or <code>https </code> source with container <code>MP4 </code></aside>
+    
+    <p>Endpoint: <code>/videos/ref:{video_reference_id}/sources </code></p>
+    
+    <h3>Request</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7/sources
+    </code>
+    </pre>
+    
+    <h3>Response</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-json">[
+    {
+    "asset_id": "5192219618001",
+    "remote": false,
+    "src": "http://brightcove.vo.llnwd.net/v1/uds/pd/57838016001/201611/3753/57838016001_5192219618001_5192207668001.mp4?pubId=57838016001&amp;videoId=5192207668001",
+    "codec": "H264",
+    "container": "MP4",
+    "encoding_rate": 1823000,
+    "duration": 41237,
+    "height": 540,
+    "width": 960,
+    "size": 9417086,
+    "uploaded_at": "2016-11-01T09:37:37.336Z"
+    },
+    {
+    "asset_id": "5192219618001",
+    "remote": false,
+    "src": "https://brightcove.hs.llnwd.net/v1/uds/pd/57838016001/201611/3753/57838016001_5192219618001_5192207668001.mp4?pubId=57838016001&amp;videoId=5192207668001",
+    "codec": "H264",
+    "container": "MP4",
+    "encoding_rate": 1823000,
+    "duration": 41237,
+    "height": 540,
+    "width": 960,
+    "size": 9417086,
+    "uploaded_at": "2016-11-01T09:37:37.336Z"
+    }, ...
+    ]
+    </code>
+    </pre>
+    </section>
+    
+    <section class="section" id="videoRefidImagesEndpoint">
+    <h2>GET images by refid</h2>
+    
+    <p>Retrieve the images for a specific video using its reference id.</p>
+    
+    <p>Endpoint: <code>/videos/ref:{video_reference_id}/images </code></p>
+    
+    <h3>Request</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7/images
+    </code>
+    </pre>
+    
+    <h3>Response</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+    "thumbnail" : {
+    "id" : "3815806023001",
+    "src" : "http://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/2431/1507807800001_3815806023001_thumb.jpg?pubId=1507807800001"
+    },
+    "poster" : {
+    "id" : "3815782921001",
+    "src" : "http://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/273/1507807800001_3815782921001_still.jpg?pubId=1507807800001"
+    }
+    }
+    </code>
+    </pre>
+    </section>
+    </article>
+    
+<!-- complete bootstrap layout -->
+    </div>
+    <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
+      
+    </div>
+  </div>
+</div>
+
+<hr>
+<div class="last-updated">
+  Page last updated on 09 Feb 2020
+</div>
+
+<footer class="bcls-footer" role="contentinfo">
+  <div class="row">
+    <div class="region region-footer-top-center col-md-12">
+      <nav role="navigation" aria-labelledby="block-brightcovesupport-menu" id="block-brightcovesupport" class="footer-menu">
+
+        <h2>Brightcove Support</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://status.brightcove.com">System Status</a>
+          </li>
+          <li>
+            <a href="https://supportportal.brightcove.com/s/login/?language=en_US">Contact Support</a>
+          </li>
+          <li>
+            <a href="https://support.brightcove.com/">Documentation</a>
+          </li>
+        </ul>
+
+      </nav>
+      <nav role="navigation" aria-labelledby="block-training-menu" id="block-training" class="footer-menu">
+
+        <h2>Training</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://support.brightcove.com/online-training-courses">Online Courses</a>
+          </li>
+          <li>
+            <a href="https://support.brightcove.com/register-training">Register for a course</a>
+          </li>
+        </ul>
+
+      </nav>
+      <nav role="navigation" aria-labelledby="block-brightcove-menu" class="footer-menu">
+
+        <h2>Brightcove</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://www.brightcove.com">Brightcove.com</a>
+          </li>
+          <li>
+            <a href="https://supportportal.brightcove.com/s/login/?language=en_US" data-drupal-link-system-path="node/18330">Contact Us</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="row">
+    <div class="region region-footer-bottom-center col-md-12">
+      <div class="bcls-copyright footer-menu">
+        <table>
+          <tr>
+            <td>
+              <div id="bc_copyright" class="field field--name-field-copyright-year field--type-string field--label-hidden field--item" style="float: left;"> Brightcove Inc. All rights reserved.</div>
+            </td>
+            <td><a href="https://www.brightcove.com/en/legal/privacy">Privacy</a> | <a href="https://www.brightcove.com/en/terms-and-conditions">Terms &amp; Conditions</a></td>
+            <td>
+              <div class="gf-links-cols footer-menu">
+                <div class="gf-social"><a href="https://www.linkedin.com/company/16439" title="LinkedIn" newtab="newtab" class="gf-social-linkedin"><i class="fab fa-linkedin-in" style="font-size: 1.5rem;"></i></a><a href="https://twitter.com/brightcove" title="Twitter" newtab="newtab" class="gf-social-twitter"><i class="fab fa-twitter" style="font-size: 1.5rem;"></i></a><a href="https://www.facebook.com/Brightcove" title="Facebook" newtab="newtab" class="gf-social-facebook"><i class="fab fa-facebook-f" style="font-size: 1.5rem;"></i></a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</footer>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/https-fix.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/setDate.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/prism.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
+  
+  <script src="/assets/js/sites_nav.js"></script>
+  <script src="/assets/js/feedback.js"></script>
+  <script src="/assets/js/search.js"></script>
+  <script async src="https://cse.google.com/cse.js?cx=017969773216783359937:nencjvjwomg"></script>
+</body>
+
+</html>

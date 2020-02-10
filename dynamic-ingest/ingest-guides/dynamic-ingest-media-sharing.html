@@ -1,0 +1,97 @@
+---
+title: 'Dynamic Ingest with Media Sharing'
+description: 'To share videos created with Dynamic Ingest, the CMS API is used. The sharing account must have media sharing enabled - contact Brightcove Support to verify this. The video share CMS API request can be made before transcoding has completed.'
+parent: 
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+    
+    <p>The Dynamic Ingest portion of this guide is no different from the process discussed in other documents and samples, and ingesting the video using the Upload module in Studio can be used as well. However, in the interest of completeness, <a href="/node/17908">curl</a> examples are given for all three steps here:</p>
+    
+    <ol>
+      <li><a href="#Create_video">Create video</a></li>
+      <li><a href="#Create_the_ingest_request">Create the ingest request</a></li>
+      <li><a href="#Share_video_with_CMS_API">Share video with CMS API</a></li>
+    </ol>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Authentication">Authentication</h2>
+    
+    <p>All the requests described in this topic require authentication through the <a href="/node/18376">Brightcove OAuth system</a>.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Create_video">Create video</h2>
+    
+    <p>The video object in the Video Cloud system is created using the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">CMS API</a>. Here is a curl example:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash">curl --request POST \
+      --url https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">MASTER_ACCOUNT_ID</span>/videos \
+      --header 'authorization: Bearer OAUTH_TOKEN' \
+      --header 'content-type: application/json' \
+      --data '{"name": "Video to be shared"}'</code></pre>
+    
+    <p>The JSON returned will include the new video id:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+      "id": "VIDEO_ID",
+      "account_id": "ACCOUNT_ID",
+      ...
+    }</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Create_the_ingest_request">Create the ingest request</h2>
+    
+    <p>The video can then be ingested using the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Dynamic Ingest API</a> with the video id returned from the CMS API request. Here is a curl example of the request:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash">curl --request POST \
+      --url https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">MASTER_ACCOUNT_ID</span>/videos/<span class="bcls-input">VIDEO_ID</span>/ingest-requests \
+      --header 'authorization: Bearer <span class="bcls-input">OAUTH_TOKEN</span>' \
+      --header 'content-type: application/json' \
+      --data '{"master": {"url": "http://example.com/video.mp4"}}'</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Share_video_with_CMS_API">Share video with CMS API</h2>
+    
+    <p>Once the video has been ingested, you can share it to another account using the <a href="/node/18489">CMS API</a>.</p>
+    
+    <p>Note that before you can share a video with another account, you must first set up the sharing relationship - see <a href="/node/18325">Media Sharing with the CMS API</a> for more details.</p>
+    
+    <p>Here is a curl example of the request:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash">curl --request POST \
+    --url 'https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">MASTER_ACCOUNT_ID</span>/videos/<span class="bcls-input">VIDEO_ID</span>/shares?=' \
+    --header 'authorization: Bearer <span class="bcls-input">ACCESS_TOKEN</span>' \
+    --header 'content-type: application/json' \
+    --data '[
+      {
+        "id":"<span class="bcls-input">AFFILIATE_ACCOUNT_ID</span>"
+      }
+    ]'</code></pre>
+    
+    <p>The response includes the id of the new video in the sharee account:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">[ {
+      "video_id" : "5555086013001",
+      "affiliate_id" : "1752604059001",
+      "affiliate_video_id" : null,
+      "status" : "PROCESSING",
+      "shared_at" : "2017-09-01T12:04:39.911Z",
+      "updated_at" : "2017-09-01T12:04:39.911Z"
+    } ]</code></pre>
+    </section>
+    </article>
+    

@@ -1,0 +1,42 @@
+---
+title: LEGACY Dynamic Ingest API
+parent: Home
+description: 'Almost all Video Cloud customers are using the newer <a href="/dynamic-ingest/index.html">Dynamic Delivery Ingest System</a>. Use the documentation there unless you are sure you are on the legacy ingest system.'
+---
+
+<style>
+  h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
+    font-size: 3rem;
+    color:{{site.product_color}};
+    margin-right: .5rem;
+  }
+  .bcls-card-small ul {
+    font-size: small;
+    list-style: none;
+    margin-left: -3em;
+  }
+
+</style>
+
+<article class="bcls-article">
+  <h1>{{ page.icon }} {{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <section class="card-wrapper">
+    {% for item in site.data.navigation %}
+      {% if item.name == page.title %}
+        {% for subsection in item.docs %}
+            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
+              <div class="card-content">
+                <h2>{{ subsection.name }}</h2>
+                <ul>
+                  {% for doc in subsection.docs %}
+                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </section>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </section>
+</article>
