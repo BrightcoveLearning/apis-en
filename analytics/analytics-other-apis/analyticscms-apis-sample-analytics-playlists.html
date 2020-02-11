@@ -1,0 +1,99 @@
+---
+title: 'Analytics by Playlists'
+description: 'In this sample, you will learn how to use the CMS API and Analytics API together to select a playlist from your account and get analytics data for all the videos in the playlist.'
+parent: Analytics with Other APIs
+grandparent: Analytics API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Notes">Limitations</h2>
+    
+    <aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
+    
+    <aside class="bcls-aside bcls-aside--information">
+    <ul>
+      <li>You must retrieve playlist data and select a playlist before submitting the request to the Analytics API</li>
+      <li>For smart playlists, analytics data will be returned for videos currently in the playlist - data will not be returned for videos that are no longer in the playlist because they have been deactivated, deleted, or removed because the definition of the playlist has changed</li>
+      <li>If any of the videos are also published in single video players, or in multiple playlists, you will need to specify the player to get accurate data for a specific playlist</li>
+      <li>The returned data includes the data for individual videos plus cumulative or average values for the playlist</li>
+      <li>If the returned data does not include items for all videos in the playlist, no data was returned for those videos over the time period specified</li>
+    </ul>
+    </aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="logic">App Logic</h2>
+    
+    <p>This is a hybrid app that uses the CMS API to retrieve playlist information, and then the Analytics API to retrieve analytics for the videos in the playlist. There is a slight twist: for EXPLICIT (manual) playlist, the metadata includes the video ids, so we can take those directly to the Analytics API; for smart playlists, however, we need to go back to CMS API using the search, sort, and limit criteria for the playlist to get the video information, which we can then take to the Analytics API:</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="App Logic" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/code-samples/analytics-by-playlist/get-analytics-by-playlist.png" />
+    <figcaption class="bcls-caption--image">App Logic</figcaption>
+    </figure>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
+    
+    <div class="bcls-expander-content">
+    <p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+    
+    <ul>
+      <li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+    </ul>
+    
+    <p>These are the permissions you will need:</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="Analytics API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-playlist-permissions.png" />
+    <figcaption class="bcls-caption--image">Analytics API Permissions</figcaption>
+    </figure>
+    
+    <p>You can also get your credentials via CURL or Postman - see:</p>
+    
+    <ul>
+      <li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+      <li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+    </ul>
+    
+    <p>If you are getting credentials directly from the API, these are the permissions you need:</p>
+    
+    <pre class="line-numbers">
+      <code class="language-json">[
+        "video-cloud/analytics/read",
+        "video-cloud/video/read",
+        "video-cloud/video/read"
+      ]</code></pre>
+    </div>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="codepen">CodePen</h2>
+    Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/17994-analytics-api-sample-analytics-playlists">GitHub repository</a>.
+    
+    <p data-height="1200" data-theme-id="34967" data-slug-hash="NYmPOX" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="Analytics/CMS APIs Sample: Analytics by Playlists" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/NYmPOX/">Analytics/CMS APIs Sample: Analytics by Playlists</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
+    
+    <section class="bcls-section">
+    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+    
+    <div class="bcls-expander-content">
+    <p>Here are some tips to effectively use the above CodePen:</p>
+    
+    <ul>
+      <li>Toggle the actual display of the app by clicking the <strong>Result</strong> button.</li>
+      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+      <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+      <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/17994-analytics-api-sample-analytics-playlists">GitHub repository</a>.</li>
+    </ul>
+    </div>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="proxy">Proxy code</h2>
+    
+    <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/node/18132">Using the REST APIs</a>.</p>
+    </section>
+    </article>
+    
