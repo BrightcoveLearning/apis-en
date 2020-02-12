@@ -1,0 +1,151 @@
+---
+title: Standard Ingest Profiles for Dynamic Delivery and Context Aware Encoding
+parent: Ingest Profiles
+---
+<article class="bcls-article" style="background-color: white">
+  <h1>Standard Ingest Profiles for Dynamic Delivery and Context Aware Encoding</h1>
+  <summary>In this topic, you will learn about the properties of the standard ingest profiles that are provided when using Dynamic Delivery and Context Aware Encoding.</summary>
+  <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+    <p>When creating a Dynamic Ingest request using the Dynamic Ingest API or uploading videos using the Upload module, you must supply a profile which determines the number and type of renditions created by the Video Cloud ingestion process. This topic provides detailed information on each of the Dynamic Delivery profiles. For non Dynamic Delivery accounts, see the <a href="/node/18041">Standard Ingest Profiles</a> topic.</p>
+    <p>For an overview of Dynamic Delivery, see <a href="/node/18476">Overview of Dynamic Delivery</a>. For an overview of Context Aware Encoding, see <a href="/node/18505">Overview of Context Aware Encoding</a>.</p>
+    <p>Notes:</p>
+    <ul>
+      <li>This document shows profiles for regular Dynamic Delivery and Context Aware Encoding. See <a href="/node/18353">Context Aware Encoding</a> for details.</li>
+      <li>Because of the different ways that static Dynamic Delivery and Context Aware Encoding profiles work, you will see different information in profile details below:
+        <ul>
+          <li>For static Dynamic Delivery profiles, a list of included renditions is shown</li>
+          <li>For Context Aware Encoding profiles, a table of Dynamic Profile Settings that are used in determining what renditions to produce are shown</li>
+        </ul>
+      </li>
+    </ul>
+    <p>It is also possible to create your own custom ingest profiles. For information, see the appropriate topic:</p>
+    <ul>
+      <li><a href="node/16840">Creating Ingest Profiles for Dynamic Delivery</a></li>
+      <li><a href="node/18434">Creating Ingest Profiles for Context Aware Encoding</a></li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Renditions">Renditions</h2>
+    <p>For details on all available default renditions that you can use in your ingest profile, see the table below.</p>
+    <aside class="bcls-aside bcls-aside--information">Notes:
+      <ol>
+        <li>These are all the renditions available for use in Dynamic Delivery profiles. Some of them may not be currently used in the standard profiles.</li>
+        <li>The Fragment Duration and Segment Length you see in the table, do not reflect the actual segment lengths that are delivered. Dynamic Delivery can deliver different length segments depending on conditions for a particular playback session. By default, 10 second segments are delivered for HLS and 6 second segments for DASH. See this <a href="#note1-2">note below</a> for a fuller explanation of fragments and segments.</li>
+      </ol>
+    </aside>
+    <h3>Comparison of standard Dynamic Delivery profiles</h3>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">
+      Comparison of Profiles
+      </caption>
+      <thead class="bcls-table__head" id="comparisonTableHead">
+      </thead>
+      <tbody class="bcls-table__body" id="comparisonTableBody">
+      </tbody>
+    </table>
+    <h3>Audio renditions</h3>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">
+      Audio Renditions
+      </caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Name<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></th>
+          <th>Audio Bit Rate (kbps)</th>
+          <th>Audio Channels</th>
+          <th>Audio Codec</th>
+          <th>Forced Keyframe Rate</th>
+          <th>Fragment Duration (ms)</th>
+          <th>Fragment Track Timescale</th>
+          <th>Segment Length (sec)</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body" id="audioTableBody">
+      </tbody>
+    </table>
+    <h4>Notes</h4>
+    <ul style="list-style-type:none">
+      <li id="note1-1"><sup><strong>[1-1]</strong></sup> When you reference a rendition in an ingest profile, <strong>be sure to prefix the name with <code>default/</code></strong> - for example: <code>default/audio128</code></li>
+      <li id="note1-2"><sup><strong>[1-2]</strong></sup> A segment correlates to a downloadable file. For example, with HLS you might segmented the file every 6 seconds. Each segment contains enough information to allow it to be decoded and played independently of other segments. An HLS manifest will list each segment path and its duration.
+        <p>A fragment refers to fragments of an MP4 file. A non-fragmented MP4 contains metadata at the start or end of the file and requires that the data (<code>FTYP</code>, <code>MOOV</code> atoms) be decoded before the media (<code>MDAT</code> atom). To make streaming easier, an MP4 file can be fragmented so that the metadata and necessary for playback as well as the media are chunked into fragments within the file. This allows players to seek to specific chunks of media easily as well as allowing smooth transitions between different renditions. Fragmenting was initially created for DASH but is now also supported by HLS.</p>
+        <p>You can also fragment and dash media such that a segment (file) can contain multiple fragments. It is common to make the segment and fragment duration the same. Note that <code>duration</code> and <code>length</code> refer to the same thing when discussing fragments and segments.</p>
+      </li>
+    </ul>
+    <h3>Dynamic delivery video renditions</h3>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">
+      Video Renditions
+      </caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Name<sup><strong><a href="#note2-2">[2-2]</a></strong></sup></th>
+          <th>Bit Rate (kbps)</th>
+          <th>Height<sup><strong><a href="#note2-1">[2-1]</a></strong></sup> (px)</th>
+          <th>Aspect Mode</th>
+          <th>Decoder Bitrate Cap</th>
+          <th>Decoder Buffer Size</th>
+          <th>Forced Keyframe Rate</th>
+          <th>Fragment Duration (ms)</th>
+          <th>H264 b-frames</th>
+          <th>H264 Profile</th>
+          <th>Segment Length (sec)</th>
+          <th>Speed</th>
+          <th>Video Codec</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body" id="videoTableBody">
+      </tbody>
+    </table>
+    <h4>Notes</h4>
+    <ul style="list-style-type:none">
+      <li id="note2-1"><sup><strong>[2-1]</strong></sup> Width of output renditions depends on input source aspect ratio</li>
+      <li id="note2-2"><sup><strong>[2-2]</strong></sup> When you reference a rendition in an ingest profile, <strong>be sure to prefix the name with <code>default/</code></strong> - for example: <code>default/video2000</code></li>
+    </ul>
+    <h3>Progressive video renditions</h3>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">
+      Progressive Renditions
+      </caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Name<sup><strong><a href="#note3-2">[3-2]</a></strong></sup></th>
+          <th>Video Bit Rate (kbps)</th>
+          <th>Audio Bit Rate (kbps)</th>
+          <th>Height<sup><strong><a href="#note3-1">[3-1]</a></strong></sup> (px)</th>
+          <th>Decoder Bitrate Cap</th>
+          <th>Decoder Buffer Size</th>
+          <th>H264 Profile</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body" id="progressiveTableBody">
+      </tbody>
+    </table>
+    <h4>Notes</h4>
+    <ul style="list-style-type:none">
+      <li id="note3-0"><sup><strong>[3-0]</strong></sup> In addition to the properties shown above, all progressive renditions have the following settings:
+        <ul>
+          <li>Aspect Mode: Preserve</li>
+          <li>Speed: 3</li>
+          <li>Video Codec: h264</li>
+          <li>Upscale: false</li>
+          <li>Audio Codec: aac</li>
+          <li>AAC Profile: aac-lc</li>
+        </ul>
+      </li>
+      <li id="note3-1"><sup><strong>[3-1]</strong></sup> Width of output renditions depends on input source aspect ratio</li>
+      <li id="note3-2"><sup><strong>[3-2]</strong></sup> When you reference a rendition in an ingest profile, <strong>be sure to prefix the name with <code>default/</code></strong> - for example: <code>default/progressive1200</code></li>
+    </ul>
+    <p>If you require renditions with bit rates/resolutions other than those in the tables above, please <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
+  </section>
+  <section class="bcls-section" id="Document_data">
+    <h2 id="profiles">Profiles</h2>
+    <aside class="bcls-aside bcls-aside--information">Notes:
+      <ul>
+        <li>This page is built using live data from the API; it may take a minute to fully load.</li>
+        <li>Standard profiles may <strong>not</strong> be edited - if you want a modified version, you will need to create a custom profile.</li>
+      </ul>
+    </aside>
+  </section>
+  <!-- the rest of the content of this page is generated by a script --></article>
+<script src="https://learning-services-media.brightcove.com/doc-assets/node/18386-standard-ingest-profiles-dynamic-delivery/renditions.js"></script><script src="https://learning-services-media.brightcove.com/doc-assets/node/18386-standard-ingest-profiles-dynamic-delivery/renditions-dynamic-delivery.js"></script><script src="https://learning-services-media.brightcove.com/doc-assets/node/18386-standard-ingest-profiles-dynamic-delivery/BCLSprofilesArray.js"></script><script src="https://learning-services-media.brightcove.com/doc-assets/node/18386-standard-ingest-profiles-dynamic-delivery/standard-profiles.js"></script>
