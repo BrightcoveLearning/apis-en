@@ -1,0 +1,149 @@
+---
+title: 'Unique Users'
+description: 'In this topic, you will learn about how to obtain data on unique users via the Analytics API and how unique users are calulated.'
+parent: 'Analytics API: General Information'
+grandparent: Analytics API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+    
+    <p>The <code class="notranslate">unique_users</code> field which gives customers an estimated number of unique viewers per day at the account level. The data is returned in a field which is called <code class="notranslate">daily_unique_viewers</code>. This field is only available at the account level. See <a href="/node/18243#userData">Overview: Data Collection API</a> for more information on how user data is collected and used.</p>
+    
+    <p>Note that unique users data is returned only for <a href="/node/17980#reconciled">reconciled</a> data.</p>
+    </section>
+    
+    <section class="bcls-section" id="sampleCalls">
+    <h2>Sample calls</h2>
+    
+    <p>Here is a sample call for a user report for a day, using the <code>day</code> dimension:</p>
+    
+    <pre>
+    https://analytics.api.brightcove.com/v1/data?accounts=789967572001&amp;dimensions=date&amp;from=2014-07-09&amp;to=2014-07-22&amp;limit=10&amp;format=json&amp;fields=daily_unique_viewers,date,video_view</pre>
+    
+    <p>Sample output:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+    &nbsp;&nbsp;"item_count": 14,
+    &nbsp;&nbsp;"items": [
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 73,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-09",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 454
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 203,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-10",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 287
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 150,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-15",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 257
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 170,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-12",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 195
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 120,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-14",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 166
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 118,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-11",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 155
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 95,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-16",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 150
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 89,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-17",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 136
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 57,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-18",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 132
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 99,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2014-07-13",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 108
+    &nbsp;&nbsp;&nbsp;&nbsp;}
+    &nbsp;&nbsp;],
+    &nbsp;&nbsp;"summary": {
+    &nbsp;&nbsp;&nbsp;&nbsp;"video_view": 2334
+    &nbsp;&nbsp;},
+    &nbsp;&nbsp;"account": "789967572001"
+    }</code></pre>
+    
+    <p>Based on that results set, this entry...</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+    &nbsp;&nbsp;"daily_unique_viewers": 73,
+    &nbsp;&nbsp;"date": "2014-07-09",
+    &nbsp;&nbsp;"video_view": 454
+    },</code></pre>
+    
+    <p>...means that this account had 454 views from 73 estimated unique users on July 9, 2014.</p>
+    
+    <h3>Span Multiple Days Is Average</h3>
+    
+    <p>If you do a request which spans multiple days, like this:</p>
+    
+    <pre>
+    https://analytics.api.brightcove.com/v1/data?accounts=789967572001&amp;dimensions=account&amp;from=2014-07-09&amp;to=2014-07-22&amp;limit=10&amp;format=json&amp;fields=daily_unique_viewers,video_view</pre>
+    
+    <p>The response will contain the average value of daily_unique_viewers for the time period.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+    &nbsp;&nbsp;"item_count": 1,
+    &nbsp;&nbsp;"items": [
+    &nbsp;&nbsp;&nbsp;&nbsp;{
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"account": "789967572001",
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"daily_unique_viewers": 99,
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"video_view": 2334
+    &nbsp;&nbsp;&nbsp;&nbsp;}
+    &nbsp;&nbsp;],
+    &nbsp;&nbsp;"summary": {
+    &nbsp;&nbsp;&nbsp;&nbsp;"video_view": 2334
+    &nbsp;&nbsp;},
+    &nbsp;&nbsp;"account": "789967572001"
+    }</code></pre>
+    </section>
+    
+    <section class="bcls-section" id="availabilityData">
+    <h2>Availability of data</h2>
+    
+    <p>The uniques estimate happens in the batch processing system, which means this daily_unique_viewers value is not available in real time. The value of daily_unique_viewers will not be available for 3-5 days after the day being measured has passed. If you call the API and get a NULL response that means that the data is not available yet.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">JSON returns NULL and CSV returns "". CSV does not have a method for displaying a null value.</aside>
+    </section>
+    
+    <section class="bcls-section" id="identifyUsers">
+    <h2>Identifying Users</h2>
+    
+    <p>Video Cloud Analytics uses a string composed of the <code>Source IP address + the User-Agent String</code> as the unique identifier for users.</p>
+    </section>
+    
+    <section class="bcls-section" id="estimatingUsers">
+    <h2>Total unique users</h2>
+    
+    <p>Because storing unique identifiers for all users is not feasible, we use an algorithm to estimate the total users for an account.</p>
+    
+    <p>That means if you know the exact number of viewers and compare that to our number, you will see a small discrepancy. This error rate increases as the number of unique viewers increase.</p>
+    </section>
+    </article>
+    

@@ -1,0 +1,243 @@
+---
+title: 'Overview: Analytics API v1'
+description: 'In this topic, you will get an overview of the Analytics API.'
+parent: Getting Started
+grandparent: Analytics API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <div class="training-video-player-ipx" data-experience="5a73630f7afd7a00101bc1b5" data-video-ids="5996554433001">&nbsp;</div>
+  <script src="https://players.brightcove.net/20318290001/experience_5a73630f7afd7a00101bc1b5/live.js"></script>
+  
+  <section class="bcls-section">
+  <h2 id="Introduction">Introduction</h2>
+  
+  <p>The <span class="notranslate">Analytics API</span> allows you to obtain analytics data for your Video Cloud accounts directly. You can also view the built-in analytics reports in the Analytics Module of Video Cloud Studio. Accessing the data programmatically gives you additional flexibility.</p>
+  
+  <p>Also see the <a href="https://docs.brightcove.com/analytics-api/v1/doc/index.html">API Reference</a>.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Typical_uses">Typical uses</h2>
+  
+  <p>Here are some typical uses of the API:</p>
+  
+  <ul>
+    <li>Creating custom charts and displays</li>
+    <li>Working with multiple APIs together - for example, getting video data using the CMS API for videos with the most views over the previous week</li>
+    <li>Combining your video analytic data with other site analytics data</li>
+    <li>For some sample solutions, see
+    <ul>
+      <li><a href="/node/18161">Most Popular Videos</a></li>
+      <li><a href="/node/17994">Analytics for Playlists</a></li>
+      <li><a href="/node/17988">Analytics by Country and Day</a></li>
+    </ul>
+    </li>
+  </ul>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Base_URL">Base URL</h2>
+  
+  <p>The base URL for the <span class="notranslate">Analytics API</span> is:</p>
+  
+  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+  <code class="language-http notranslate">https://analytics.api.brightcove.com/v1</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Headers">Headers</h2>
+  
+  <h3>Authentication (required)</h3>
+  
+  <p>The <span class="notranslate">Analytics API</span> uses the Brightcove <a href="/node/17928">OAuth Service</a> to authenticate calls.</p>
+  
+  <p>You will first need to obtain client credentials (a <code class="notranslate">client_id</code> and <code class="notranslate">client_secret</code>). This is a one-time operation that can be performed using the <a href="/node/14056">OAuth Credentials UI</a>. You can get client credentials directly from the Brightcove OAuth Service using <a href="/node/17924">CURL</a>, <a href="/node/17923">Postman</a>, or <a href="/node/18462">Insomnia</a>.</p>
+  
+  <p>You need both Analytics Read and Video Read permissions for client credentials:</p>
+  
+  <figure class="bcls-figure"><img class="bcls-image" alt="Permissions for Analytics API Credentials" src="https://learning-services-media.brightcove.com/doc-assets/node/17997-overview-analytics-api-v1/credentials-operations.png" />
+  <figcaption class="bcls-caption--image">Permissions for Analytics API Credentials</figcaption>
+  </figure>
+  
+  <p>If you are creating your credentials directly through the OAuth API, the required permissions are:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">[
+    "video-cloud/analytics/read"
+    "video-cloud/video/read"
+  ]</code></pre>
+  
+  <p>You will also need an <code class="notranslate">access_token</code>, which is obtained using the <code class="notranslate">client_id</code> and <code class="notranslate">client_secret</code> and passed in an Authorization header with your API request:</p>
+  
+  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+  <code class="language-http notranslate">Authorization: Bearer <span class="bcls-input">{access_token}</span></code></pre>
+  
+  <p>The <code class="notranslate">access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/node/17925">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
+  
+  <h3>Accept-Encoding: gzip (optional)</h3>
+  
+  <p>Passing this header will cause the response to be returned in compressed form. This may improve performance for large reports.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Caching">Caching</h2>
+  
+  <p>For performance reasons, API responses are cached for approximately 5 minutes, though the exact amount of time may vary based on several factors. For any <span class="notranslate">Analytics API</span> query, you can get information about the cache from the response headers:</p>
+  
+  <figure class="bcls-figure"><img class="bcls-image" alt="Cache Control Headers" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/general-information/api-overview/aapi-cach-headers.png" />
+  <figcaption class="bcls-caption--image">Cache Control Headers</figcaption>
+  </figure>
+  
+  <p>The <code class="notranslate">Cache-Control</code> tells you the maximum time the results will be cached for in seconds (in the example above, 24 seconds). The <code class="notranslate">Last-Modified</code> and <code class="notranslate">Expires</code> headers tell you when the current cache was created and when it will expire.</p>
+  
+  <p>In most cases this is probably not an issue, but if the freshness of analytics data is of critical importance, you should know that the longer a query runs, the longer it will be cached, and reports that fetch realtime (unreconciled hourly) data only will not be cached as long as those that fetch reconciled data (only, or in addition to realtime data). Find a <a href="/node/10743#26">full explanation of realtime and reconciled data</a> if you like; the short version is that the <span class="notranslate">Analytics API</span> relies on two data buckets:</p>
+  
+  <ul>
+    <li>realtime, or hourly unreconciled data, which is made available immediately and stored for 32 days</li>
+    <li>reconciled data, which is stored permanently; realtime data is reconciled to improve accuracy and stored in the reconciled data repository every 24 hours</li>
+  </ul>
+  
+  <p>You can limit the results to reconciled or realtime data using the <a href="#reconciled">reconciled</a> parameter.</p>
+  
+  <p>To minimize caching:</p>
+  
+  <ul>
+    <li>Use the <a href="/node/18756#reconciled"> <code class="language-http notranslate">reconciled=false</code> </a> parameter to limit results to realtime data</li>
+    <li>Use a small <a href="/node/18756#dateRanges">date range</a>, and be sure that the entire range falls within the past 32 days</li>
+  </ul>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="timeouts">Timeouts</h2>
+  
+  <p>Analytics API requests timeout after 8 minutes if not completed. If you see timeouts at less than 8 minutes, then the cause is some client-side limit.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="maximum_items">Maximum items you can return</h2>
+  
+  <p>The maximum number of items that can be returned is one million. In most cases you are unlikely to hit the limit, but if you are requesting reports on the <code>date</code> dimension over a large span of time, for instance, it is possible. If you hit the million item limit, you will need to modify the request to reduce the number of items returned. Generally, the most straightforward way to do this will be to reduce the data range (using the <code>from</code> and <code>to</code> parameters discussed later).</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="concurrency">Concurrent Requests</h2>
+  
+  <p>A single account is limited to one request at a time. Multiple concurrent requests will execute in series.</p>
+  
+  <p>For example:</p>
+  
+  <ol>
+    <li>Start an API request "A".</li>
+    <li>Start API request "B" for the same account.</li>
+    <li>Request "B" will not complete until "A" completes.</li>
+    <li>If request "A" takes too long, request "A" will receive an error saying "your request is pending; try again".</li>
+    <li>If request "A" takes too long, it may cause request "B" to receive the same error. Note that request "B" will get an error if the time to complete A + B is greater than our timeout value.</li>
+  </ol>
+  
+  <p>If you make multiple concurrent requests, they will be processed one at a time, in the order received.</p>
+  
+  <p>Requests that return with a "pending error" will eventually complete and be saved to our cache. This means that future requests for the same data will return almost instantly, but only if the request is made before the five minute cache expires.</p>
+  
+  <p>Your systems should handle the pending error by waiting 2-4 minutes and making the same request again.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Best_practices">Best practices</h2>
+  
+  <aside class="bcls-aside bcls-aside--tip">Based on the information above, we recommend the following as best practices:
+  <ol>
+    <li>Make requests to the <span class="notranslate">Analytics API</span> asynchronously if other operations in your app can proceed without the data</li>
+    <li>Automatically retry requests if the response is <code>Processing query in background</code></li>
+    <li>Don't repeat requests oftener than every 5 minutes, since you will be retrieving cached data anyway</li>
+    <li>If you are making several request concurrently or in quick succession, try to make longer-running requests (those that will return the most items and data) last, so that they don't delay shorter-running requests</li>
+  </ol>
+  </aside>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="requestTypes">Request types</h2>
+  
+  <p>The <span class="notranslate">Analytics API</span> accepts three request types</p>
+  
+  <dl>
+    <dt>Data (also called a Report)</dt>
+    <dd>A report on one or more <a href="/node/18756#metrics">dimensions</a>. The endpoint for a report request is:
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+  <code class="language-http notranslate">https://analytics.api.brightcove.com/v1/data?accounts={account_id(s)}&amp;dimensions={dimensions}</code></pre>
+    </dd>
+    <dt>Engagement report</dt>
+    <dd>Detailed engagement data that is available for periods within the past 32 days. See <a href="#engagement">the engagement section</a> for more details.</dd>
+    <dt>Video information endpoint</dt>
+    <dd>A specific piece of analytics data served with minimal latency. See <a href="/node/17962">Video Data Endpoint</a> for more information.</dd>
+  </dl>
+  
+  <p><a href="/node/18756#filterValues">Where filters</a> and <a href="/node/18756#dateRanges">date ranges</a> can be applied to reports. Report requests can have additional parameters detailed in <a href="/node/18756">this document</a>.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="metrics">Dimensions and fields</h2>
+  
+  <p>Detailed information on dimensions and fields is now in a separate document: <a href="/node/18756">Overview of Dimensions, Fields, and Parameters</a>.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="params">Parameters</h2>
+  
+  <p>Detailed information on parameters is now in a separate document: <a href="/node/18756">Overview of Dimensions, Fields, and Parameters</a>.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="engagement">Engagement reports</h2>
+  
+  <p>Detailed engagement reports showing views for each 100th part of videos (or the averages across all videos for an account or player) are available for periods within the past 32 days. (Requests for date ranges outside the past 32 days will return an error.)</p>
+  
+  <aside class="bcls-aside bcls-aside--warning">
+  <p>There are several limitations on requests to the engagement endpoints:</p>
+  
+  <ul>
+    <li>Reports are available only for a single account, player, or video</li>
+    <li><code class="notranslate">where</code> filters are not supported</li>
+    <li>The only parameters supported are <code class="notranslate">from</code> and <code class="notranslate">to</code></li>
+    <li>If you provide <code class="notranslate">from</code> and <code class="notranslate">to</code> values in date format (MM-DD-YYYY), the report will reflect full day values</li>
+    <li>If you want hourly engagement data, the <code class="notranslate">from</code> and <code class="notranslate">to</code> values must be given in epoch milliseconds values that fall within the hours you want to report on</li>
+  </ul>
+  </aside>
+  
+  <h3>Account engagement</h3>
+  
+  <p>To get average values for engagement on viewed videos, use the endpoint:</p>
+  
+  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+  <code class="language-http notranslate">
+      https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>
+  </code></pre>
+  
+  <h3>Player engagement</h3>
+  
+  <p>To get average values for all videos viewed in a player, use the endpoint:</p>
+  
+  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+  <code class="language-http notranslate">
+      https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>/players/<em>:player_id</em>
+  </code></pre>
+  
+  <h3>Video engagement</h3>
+  
+  <p>To get engagement data for a specific video, use the endpoint:</p>
+  
+  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+  <code class="language-http notranslate">
+      https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>/videos/<em>:video_id</em>
+  </code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="live_analytics">Live Analytics</h2>
+  
+  <p>The Analytics API provides two endpoints for retrieving analytics for Brightcove Live streams, either by a time series or by event. See the <a href="https://docs.brightcove.com/analytics-api/v1/doc/index.html#tag/Live-Analytics">Analytics API Reference</a> for details.</p>
+  </section>
+  </article>
+  <script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-model-v2.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/node/17997-overview-analytics-api-v1/api-overview-v2.js"></script>

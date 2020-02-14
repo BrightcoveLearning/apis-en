@@ -1,0 +1,74 @@
+---
+title: 'Overview: Video Data Endpoint'
+description: 'In this topic, you will learn how to use the video data endpoint for the Analytics API.'
+parent: Getting Started
+grandparent: Analytics API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>The video data endpoint provides a quick way of getting specific data for a particular video. Current requests will return the alltime views for the video. In the future, additional data may be returned. The primary use case for this end point would be delivering alltime views information to players on high-traffic pages, where making large volumes of regular requests to the Analytics API would be too slow.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="endpoint">Endpoint</h2>
+    
+    <p>The endpoint for video data requests is:</p>
+    
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <code class="language-http">https://analytics.api.brightcove.com/v1/alltime/accounts/{$account_id}/videos/{$video_id}</code></pre>
+    
+    <p>All requests are GET.</p>
+    </section>
+    
+    <div class="bcls-section">
+    <h2 id="authentication">Authentication</h2>
+    
+    <p>All requests to the Analytics API are authenticated via Brightcove's OAuth service.</p>
+    
+    <p>Authentication is based on an access token passed in an Authorization header:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash">Authorization: Bearer {your token}</code></pre>
+    
+    <p>You can get client credentials for the Analytics API and use those to retrieve temporary access tokens - see the <a href="/node/17928">OAuth Overview</a> for an explanation of different approaches you can use to obtain client credentials and access tokens, and <a href="/node/14056">Managing API Credentials</a> for information on obtaining client credentials through Studio</p>
+    
+    <div class="bcls-section">
+    <h2 id="response">Response</h2>
+    
+    <p>The response to a request will be JSON in the form:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+        "alltime_video_views": 103123
+    }
+    </code></pre>
+    </div>
+    
+    <div class="bcls-section">
+    <h2 id="implementation">Possible Implementation</h2>
+    
+    <p>Here is how you might use the video data endpoint to display alltime views for a video when it loads in a player:</p>
+    
+    <aside class="bcls-aside bcls-aside--information">Note: this endpoint is available only to Professional and Enterprise accounts. If you are interested in upgrading your account, please contact Brightcove Sales or your account manager.</aside>
+    
+    <ol class="bcls-tasklist">
+      <li>Set up caching to store views by video id for 5-10 minutes.</li>
+      <li>Create logic on your server or in your pages to first check the cache to see if the alltime video views data for the current video is already there, and if so, use it.</li>
+      <li>If the value is not already cached, make a request to the video information endpoint to retrieve it, and store the value in the cache along with displaying it in the page.</li>
+      <li>Be sure to set up exception handling in case the request to the video information endpoint times out or is unsuccessful - you might simply not display the alltime video views, or you might use the last value you have.
+      <p>&nbsp;</p>
+      </li>
+    </ol>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="Implementation Diagram" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/data-endpoints/video-information-endpoint/videodataendpoint.png" />
+    <figcaption class="bcls-caption--image">Implementation Diagram</figcaption>
+    </figure>
+    </div>
+    </div>
+    </article>
+    

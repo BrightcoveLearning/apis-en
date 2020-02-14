@@ -1,51 +1,61 @@
 ---
-title: Getting Started
-description: Guides to help you get started.
-icon: '<i class="far fa-location-arrow"></i>'
+title: Analytics API
 parent: Home
+description: 'The Analytics API allows you to obtain analytics data for your Video Cloud accounts programmatically. You can also view the built-in analytics reports in the Analytics Module of Video Cloud Studio. Accessing the data programmatically gives you additional flexibility.'
+icon: '<i class="far fa-chart-bar"></i>'
 ---
+
 <style>
   h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
     font-size: 3rem;
     color:{{site.product_color}};
     margin-right: .5rem;
   }
-  .card-icon i {
-    color: {{site.product_color}};
-  }
-  .card-wrapper {
-  justify-content: start;
-  }
-  .bcls-card ul li {
+  .bcls-card-small ul {
     font-size: small;
+    list-style: none;
+    margin-left: -3em;
   }
+
 </style>
 
 <article class="bcls-article">
   <h1>{{ page.icon }} {{ page.title }}</h1>
   <summary>{{ page.description }}</summary>
-  <section class="card-wrapper">
-    <section class="bcls-card">
-      <div class="card-content">
-        <h2 id="Topics_in_this_section">Topics in this section</h2>
-        <ul>
-        {% for item in site.data.navigation %}
-        {% if item.name == page.title %}
-              {% for entry in item.docs %}
-                <li><a href="{{ entry.url }}">{{ entry.name }}</a>
-                {% if entry.docs %}
-                  <ul>
-                    {% for subentry in entry.docs %}
-                      <li><a href="{{ subentry.url }}">{{ subentry.name }}</a></li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-                </li>
-              {% endfor %}
-        {% endif %}
-      {% endfor %}
+  <table width="100%" border="0">
+    <tbody>
+      <tr>
+        <td width="30%">
+        <div data-experience="5be4439bb5cd1c00106dc3f5" data-video-ids="5996554433001">&nbsp;</div>
+        <script src="https://players.brightcove.net/20318290001/experience_5be4439bb5cd1c00106dc3f5/live.js"></script></td>
+        <td width="70%">
+        <h3 id="Typical_uses">Typical uses</h3>
   
-      </div>
-    </section>
+        <ul>
+          <li>Creating custom charts and displays</li>
+          <li>Working with multiple APIs together - for example, getting video data using the CMS API for videos with the most views over the previous week</li>
+          <li>Combining your video analytic data with other site analytics data</li>
+        </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <section class="card-wrapper">
+    {% for item in site.data.navigation %}
+      {% if item.name == page.title %}
+        {% for subsection in item.docs %}
+            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
+              <div class="card-content">
+                <h2>{{ subsection.name }}</h2>
+                <ul>
+                  {% for doc in subsection.docs %}
+                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </section>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
   </section>
 </article>
