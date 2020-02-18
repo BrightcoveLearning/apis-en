@@ -1,0 +1,88 @@
+---
+title: 'Overview: Delivery System API'
+description: 'In this topic you will get an overview of the Delivery System APIs, which allow for the management and deployment of a group of files, called a repository. This system was setup as a storage area for player related files, like the JavaScript and CSS files for custom built plugins.'
+parent: Delivery System API
+grandparent: Home
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section id="Overview" class="bcls-section">
+    <h2>Overview</h2>
+    
+    <p>Files associated with the Delivery System are managed through REST APIs, and optionally through Git. These files are delivered to <strong>players.brightcove.net</strong> either through an API call or a "git push".</p>
+    
+    <aside class="bcls-aside bcls-aside--information">The Delivery System API is not needed for most creation and publishing of Brightcove Players. This API is recommended for advanced developers only.</aside>
+    
+    <p>If you haven't gone through the <a href="/node/17913">Step-by-Step: Delivery System API</a>, it's highly suggested you start there. You'll get security set up, learn some of the basics of the system, and then be ready to dive in further here.</p>
+    
+    <p>Also see the <a href="https://docs.brightcove.com/delivery-system-api/v1/doc/index.html">API Reference</a>.</p>
+    </section>
+    
+    <section id="Delivery_System_REST_APIs" class="bcls-section">
+    <h2>Delivery System REST APIs</h2>
+    
+    <p>The delivery system APIs are centered around repositories, otherwise known as repos. You can manage repos through a group of REST APIs that allow you to add, get, and list your repos. You can also use REST API calls to manipulate files in repos.</p>
+    
+    <p>You can use the command-line tool curl to use the REST APIs. The REST APIs return responses in JSON format containing the following information on success:</p>
+    
+    <ul>
+      <li>name: The repo name. This is the same as the name found in the REST API URLs.</li>
+      <li>public_url: The base URL where the repo files can be seen.</li>
+    </ul>
+    
+    <p>The <a href="/node/17913">Step-by-Step: Delivery System</a> provides a hands-on guide to using the Delivery System APIs.</p>
+    </section>
+    
+    <section class="bcls-section" id="authentication">
+    <h2>Authentication</h2>
+    
+    <p>You can authorize yourself using either <a href="/node/17925">OAuth access tokens</a> or through Basic Authentication using your Brightcove username and password. The standard OAuth access tokens should be used for any programmatic usage of the APIs, but the Basic Authentication route is a lot easier for command-line usage and getting started.</p>
+    
+    <p>We'll use Basic Authentication in the <a href="/node/17913">Step-by-Step</a> examples. If you wanted to use access tokens instead, change:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash notranslate">--user $EMAIL</code></pre>
+    
+    <p>to:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash notranslate">--header "Authorization: Bearer $ACCESS_TOKEN"</code></pre>
+    </section>
+    
+    <section class="bcls-section" id="APIerrors">
+    <h2>API Error responses</h2>
+    
+    <p>There are a number of possible error responses that can returned in JSON format when there's an issue with a REST API call:</p>
+    
+    <ul>
+      <li>If you try to call an API which does not exist, including misspelling existing API calls, you will get a status code of 404 and a helpful message about what you may have done wrong.</li>
+      <li>If your call can not be authenticated or authorized, you will get a 403 status code. Try going over the OAuth guide again to ensure you have a valid access token.</li>
+      <li>If you try to use a method other than GET or PUT, the response will contain a 405 status code.</li>
+      <li>If there's a problem with processing your request, you'll get a 500 status code and a standard Brightcove error response.</li>
+    </ul>
+    
+    <p>The standard Brightcove error response mentioned above is a JSON response containing error_code and message properties. The error code will be one of the following:</p>
+    
+    <ul>
+      <li><code class="notranslate">INVALID_LOGIN_CREDENTIALS</code>: the username and password given when using Basic Authentication were not valid</li>
+      <li><code class="notranslate">ACCESS_TOKEN_ERROR</code>: the access token given was not valid</li>
+      <li><code class="notranslate">INVALID_API_CALL</code>: the API call was not formatted properly</li>
+      <li><code class="notranslate">NOT_FOUND</code>: the API call was not pointing to a known resource or was not formatted properly</li>
+      <li><code class="notranslate">NO_PUT_CONTENTS</code>: A multi-part form with a contents key must be used to PUT a repo file</li>
+      <li><code class="notranslate">CREATE_REPO_ERROR</code>: an error occurred while creating a repo</li>
+      <li><code class="notranslate">GET_REPO_ERROR</code>: an error occurred while getting a repo</li>
+      <li><code class="notranslate">GET_REPOS_ERROR</code>: an error occurred while getting all repos</li>
+      <li><code class="notranslate">UNCAUGHT_ERROR</code>: an uncaught error caused things to fail</li>
+      <li><code class="notranslate">UNKNOWN_ERROR</code>: an error which doesn't have an associated error code has happened</li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section" id="limitations">
+    <h2>Limitations</h2>
+    
+    <aside class="bcls-aside bcls-aside--warning">Repositories are not meant for, or designed for, very large files. In other words, please don't store videos in them.</aside>
+    </section>
+    </article>
+    

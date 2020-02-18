@@ -1,0 +1,228 @@
+---
+title: 'Using Context Aware Encoding'
+description: 'In this topic, you will learn how to use Context Aware Encoding (CAE) to ingest your video content into Video Cloud.'
+parent: 'Ingest Guides'
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>Context Aware Encoding is a technology developed by Brightcove that uses machine learning to optimize encoding settings on a per-content item and delivery context basis. CAE is specifically designed to reduce the storage and bandwidth costs associated with video delivery, but without compromising visual quality. For additional information, please see <a href="/node/18505">Overview of Context Aware Encoding</a>.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Limitations">Limitations</h2>
+    
+    <p>The following features are not currently supported:</p>
+    
+    <ul>
+      <li>Advanced Codec Support (H.265, VP9, etc.)</li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Getting_Started">Getting started</h2>
+    
+    <h3>Pre-requisites</h3>
+    
+    <p>Customers who wish to utilize Context Aware Encoding should meet the following requirements:</p>
+    
+    <ol>
+      <li>Video Cloud customer</li>
+      <li>Dynamic Delivery is enabled for their Video Cloud account</li>
+      <li>They no longer use the legacy Brightcove APIs</li>
+      <li>Comfortable using the <a href="/node/18045">Ingest Profiles API</a> and the <a href="/node/17948">Dynamic Ingest API</a></li>
+    </ol>
+    
+    <p class="BCL-aside">Note: Context Aware Encoding is a feature that is not available to all Video Cloud customers. If you have questions about whether or not you can utilize Context Aware Encoding, please contact your Account Manager.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="CAE_Presets">CAE presets</h2>
+    
+    <p>By general release of the service, we intend to support three primary use-cases which are in turn encapsulated by three “presets”. The presets consist of ingest profile settings, which are coupled to CAE optimizations tuned for the specific profile.</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">CAE Presets</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Simple Use Case</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><span class="notranslate">multi-platform-standard-dynamic</span></td>
+          <td>Resolution capped at 720p and bitrate at 2 MBPS</td>
+          <td>General use. For delivery to a range of desktop and mobile devices</td>
+        </tr>
+        <tr>
+          <td><span class="notranslate">multi-platform-extended-dynamic</span></td>
+          <td>Adds 1080p rendition and extends max bitrate to ~4 Mbps</td>
+          <td>Use when 1080p quality is critical. For example, customers delivering HD content to large screens</td>
+        </tr>
+        <tr>
+          <td><span class="notranslate">multi-platform-extended-dynamic</span></td>
+          <td>Shifts encode ladder towards lower bitrate renditions. Capped at 720p</td>
+          <td>For use-cases and regions where scarce bandwidth is a core concern</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3>Using Presets to Encode Content</h3>
+    
+    <p>Once your account has been enabled for CAE, the three profiles listed above will be available to you in the upload tool and ingest profiles sections of studio. By the same token, these profiles can be used with the <a href="/node/17948">Dynamic Ingest API</a>, like any other ingest profile.</p>
+    
+    <h3>Preset Details</h3>
+    
+    <p>A subset of the settings for each of the CAE profiles is listed below.</p>
+    
+    <h4><span class="notranslate">Multiplatform Standard</span></h4>
+    
+    <p>(Last updated: 7/12/17)</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">"dynamic_profile_options":
+    {
+          "min_renditions": 2,
+          "max_renditions": 6,
+          "max_resolution": {
+            "width": 1280,
+            "height": 720
+          },
+          "max_bitrate": 2400,
+          "max_first_rendition_bitrate": 400,
+          "max_frame_rate": 30,
+          "keyframe_rate": 1,
+          "select_baseline_profile_configuration": true,
+    }</code></pre>
+    
+    <h4><span class="notranslate">Multiplatform Extended</span></h4>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">"dynamic_profile_options":
+    {
+          "min_renditions": 3,
+          "max_renditions": 6,
+          "max_resolution": {
+            "width": 1920,
+            "height":1080
+          },
+          "max_bitrate": 4200
+          "max_first_rendition_bitrate": 400,
+          "max_frame_rate": 30,
+          "keyframe_rate": 1,
+          "select_baseline_profile_configuration": true,
+    }</code></pre>
+    
+    <h4><span class="notranslate">Bandwidth Limited</span></h4>
+    
+    <p>(Last updated: 7/12/17)</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">"dynamic_profile_options":
+    {
+          "min_renditions": 2,
+          "max_renditions": 6,
+          "max_resolution": {
+            "width": 1280,
+            "height": 720
+          },
+          "max_bitrate": 1800
+          "max_first_rendition_bitrate": 200,
+          "max_frame_rate": 30,
+          "keyframe_rate": 1,
+          "select_baseline_profile_configuration": true,
+    }</code></pre>
+    
+    <h3>Sample CAE Profile</h3>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+     "id": "1234567890",
+     "version": 1,
+     "name": "custom-cae-profile",
+     "description": "My custom CAE profile",
+     "account_id": 40000000001,
+     "brightcove_standard" : false,
+     "digital_master": {
+       "rendition": "passthrough",
+       "distribute": false
+     },
+     "dynamic_origin": {
+       "renditions": [
+         "default/audio64",
+         "default/audio96",
+         "default/audio128",
+         "default/audio192"
+       ],
+       "dynamic_profile_options": {
+         "min_renditions": 3,
+         "max_renditions": 6,
+         "max_resolution": {
+           "width": 1920,
+           "height": 1080
+         },
+         "max_bitrate": 4200,
+         "max_first_rendition_bitrate": 400,
+         "max_frame_rate": 30,
+         "keyframe_rate": 1,
+         "select_baseline_profile_configuration": true,
+         "min_ssim": 0.95,
+         "video_configurations": [
+             {"width": 1280, "height": 720},
+             {"width": 960,  "height": 540},
+             {"width": 640,  "height": 360}
+         ]
+       },
+       "images": [
+         {
+           "label": "poster",
+           "height": 720,
+           "width": 1280
+         },
+         {
+           "label": "thumbnail",
+           "height": 90,
+           "width": 160
+         }
+       ]
+     }
+    }</code></pre>
+    
+    <p>For additional detail, please see the docs for the <a href="/node/18374">Ingest Profiles API</a> and <a href="/node/18373">Dynamic Ingest API</a>.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Adding_mp4_renditions">Adding MP4 renditions</h2>
+    
+    <p>If you want to have downloadable progressive (MP4) renditions for your video, you can specify them in the <code class="notranslate">dynamic_origin.renditions</code> array:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">
+      "dynamic_origin": {
+        "renditions": [
+          "default/audio64",
+          "default/audio96",
+          "default/audio128",
+          "default/audio192",
+          <span class="bcls-highlight">"default/progressive700",
+          "default/progressive2500"</span>
+        ],</code></pre>
+    </section>
+    <section class="bcls-section">
+      <h2 id="mp4_renditions">MP4 Renditions</h2>
+      <p>The MP4 renditions you can include are shown below - see <a href="/node/18386#Renditions">Standard Ingest Profiles for Dynamic Delivery and Context Aware Encoding</a> for full details of these renditions.</p>
+      
+      <h3>Available MP4 renditions</h3>
+      
+      <ul id="renditions_list">
+      </ul>
+    </section>
+    </article>
+    <script src="//learning-services-media.brightcove.com/doc-assets/node/18353-context-aware-encoding/progress-renditions.js"></script>

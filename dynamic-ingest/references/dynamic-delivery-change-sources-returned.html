@@ -1,0 +1,55 @@
+---
+title: 'Change to Sources Returned'
+description: 'This topic explains a small change in the sources returned for Dynamic Delivery videos.'
+parent: References
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="">Notice: change to sources</h2>
+    
+    <p>During March, 2019, Brightcove is updating the infrastructure for Dynamic Delivery to make a small change in the sources that are returned by the CMS/Playback APIs, and therefore delivered to the Brightcove Player and native SDK players.</p>
+    
+    <p>For the great majority of Video Cloud users, this change is completely transparent. There is nothing you need to do. For a few customers who have built integrations relying on the exact structure of the existing sources, these integrations will need to change.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="what_is_changing">What is changing?</h2>
+    
+    <p>Currently Dynamic Delivery returns 2 flavours (v4 and v5) of HLS when Playback API requests come in. In some special cases, usually delivery to a specific device, accounts are also enabled for v3 delivery.</p>
+    
+    <p>For each of those, we also return the following DRM types:</p>
+    
+    <ul>
+      <li>V3: Clear / AES-128 (if your account is enabled for v3)</li>
+      <li>V4: Clear / AES-128</li>
+      <li>V5: Clear / AES-128 / Fairplay</li>
+    </ul>
+    
+    <p>The only reason we deliver HLSv5 is that it supports Fairplay - for Clear and AES-128, the video and manifests we return are identical.</p>
+    
+    <p>Because the URLs for them are different however (they contain "v4" or "v5"), we are doubling the amount of content that we need to deliver and cache, which is wasteful and impacts the performance of both Dynamic Delivery and SSAI.</p>
+    
+    <p>Therefore, we are changing the infrastructure so that only the Fairplay manifest is returned for v5, so that the sources set will now look like this:</p>
+    
+    <ul>
+      <li>V3: Clear / AES-128 (if your account is enabled for v3)</li>
+      <li>V4: Clear / AES-128</li>
+      <li>V5: Fairplay</li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="would_this_impact_my_players">Would this impact my players?</h2>
+    
+    <ol>
+      <li>If you <strong>do not</strong> use Clear DRM or AES-128 encryption, this change <strong>makes no difference</strong></li>
+      <li>If you <strong>do</strong> use Clear DRM or AES-128 encryption, but let the player select the source automatically, this change <strong>makes no difference</strong> (the player will select the v4 source)</li>
+      <li>If you <strong>do</strong> use Clear DRM or AES-128 encryption, and have written custom code to force the player to use the v5 source URLs, this change <strong>result in the player not having a playable source</strong> - the solution is to allow the player to auto-select the source, or to modify you code to select the v4 source instead.</li>
+    </ol>
+    </section>
+    </article>
+    

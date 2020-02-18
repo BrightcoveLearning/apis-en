@@ -1,0 +1,145 @@
+---
+title: 'Quick Start: Dynamic Ingest API'
+description: 'This quick start will walk you through adding a video to Video Cloud using the Dynamic Ingest API via CURL.'
+parent: Getting Started
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>You can do several things with the Dynamic Ingest API, but its main function is to add videos to Video Cloud. This quick start provides a simple tutorial to walk you through ingesting your first video using the API.</p>
+    
+    <p>This tutorial uses the popular command line tool called CURL for making HTTP requests. If you are not familiar with CURL, see <a href="/node/17908">Set up CURL</a>. Note that CURL installed by default and Mac and Linux systems. On Windows, you will need to install it - instructions are in the Set Up CURL guide.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="steps">Steps</h2>
+    
+    <h3>Get client credentials</h3>
+    
+    <p>This is a one-off step to create client credentials for the API requests. If you already have the necessary client credentials, you can skip this step.</p>
+    
+    <ol class="bcls-tasklist">
+      <li>
+      <p>To the <a href="https://support.brightcove.com/managing-api-authentication-credentials">Managing API Credentials</a> section of Studio.</p>
+      </li>
+      <li>Click <strong>Register New Application</strong></li>
+      <li>
+      <p>Select the appropriate account(s) and select <em>at least</em> these permissions:</p>
+    
+      <ul>
+        <li>Dynamic Ingest Create</li>
+        <li>Ingestion Profiles Configuration Read</li>
+        <li>Ingestion Profiles Read</li>
+      </ul>
+      </li>
+      <li>
+      <p>Copy and save the <strong>client id</strong> and <strong>client secret</strong> that are created (there is no way to get the client secret again once you close the dialog!).</p>
+      </li>
+    </ol>
+    
+    <h3>Get OAuth token</h3>
+    
+    <p>The <code>client_id</code> and <code>client_secret</code> are used as username and password to get a token (basic authentication), which is used to authenticate subsequent requests.</p>
+    
+    <ol class="bcls-tasklist">
+      <li>Copy the code below into a text editor, and replace <code>CLIENT_ID</code> and <code>CLIENT_SECRET</code> with your own client credentials:
+    
+      <pre class="line-numbers">
+    <code class="language-bash notranslate">curl --request POST \
+    --url https://oauth.brightcove.com/v4/access_token \
+    --user <span class="bcls-input">CLIENT_ID</span>:<span class="bcls-input">CLIENT_SECRET</span> \
+    --header 'content-type: application/x-www-form-urlencoded' \
+    --data grant_type=client_credentials</code></pre>
+    
+      <p>Your code will now look something like this:</p>
+    
+      <pre class="line-numbers">
+    <code class="language-bash notranslate">curl --request POST \
+    --url https://oauth.brightcove.com/v4/access_token \
+    --user 0072bebf-0616-442c-84de-7215bb176061:7M0vMete8vP_Dmb9o4a16iws4RQR74PO-JNDKkCOyXFkSIe_iRKdHiiNO6vuBWadn5xFw \
+    --header 'content-type: application/x-www-form-urlencoded' \
+    --data grant_type=client_credentials</code></pre>
+      </li>
+      <li>Copy your modified code and paste it into terminal (or your command line app), press Return to run it.</li>
+      <li>The response should look like this:
+      <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "access_token":"AMv4uy9puUMrSPtfOUo412Euy8gY1pcjv6RozlH9ALrHyekxY_u-83KWMECgigG9u_gSQoh_gpe8ChAQ1FHclNHgU4h_2qj-8ei19Ve-m4OJ2UOmJwJBZQht_6bIMJMZUZBIvIAGT-8av-uMOpqnnXVJ1qu2rPQeGraIjEkhTnXnGaa-RNUxisRkIoIktN1o9BFzrbLa1xstvPgVhdg78uVg8uDA8X0K9kfibxBfdIkDBzKJAViZZ3gQa56uit2r79GZ_t2KSUgLq1rOPsd0TflHwCAGtSaAHlvb44m-hUKFAOJa-FtXakQ72QcIXha5PhSjYTJZiUa4EbjxXpR6aLvPW4mGQcDzo8bQQ4Hnq8bsa_8l5eUjOm51WI96WhTPJCt4bBWVJKyLM8P7va_Ho6zJc2yOJHDamilRlyOS-DxN4U30m_2AxhHF3DKJO8fWl5srtpbZRPANOq5B6cpAkOiQafoXUv0ntP9nzRwyO-oXVvH4iLDTAArOTXPh-A7OD8QogWu9wb13vO48CvRPsGv9PfT4ZCxzUa3M2NXn8wontkSARzHVNqf6fh-iF6ifalPTw-Z9MhpPd-qwpcHbJfmu5EcJAR3K3QDYttjeRrmEvTBOgbQttapvI2h6rMQqgytiHXpxYgz3Hr1yKe1cuVI8z3haT5pb-FIfOfHKyr7vQ3RDXjdTTJZMYpOhKNjL0oEH2ev_bIGmbGnqUMcuAGhQgMiCVQUKwoLUGHTRG91ZWMCP7CfTEdcVc10jDSELcZ1SBig5_G42ymv1w3KauK6ZwE_Xmu4NrPZiPo-r3u_K08x8Rz8gS1b9mFtcPj6yux058WAW--HIoIQRFGeppiO3S6s1hzkU2jiKMGtTnB8X4MIJXLPq8LHcZO81appEzraHFUG5ewtKRTq5Ck6OFndlSmhT8KIKid806wI5b39eeoe-4c8Os23QuyWIQthG-YdcTSueNoqZ3-5e7HztoYbzNIKvtrdLpwgMAclD9fzs3oCclECAQaaLD3hWENE3n78_TzPt4OvQ4o8L17JTmozZYCq3VDnsp_M9Bb6az8mZfDX5_ALunsE65dv91aXFCjTJigVJ_r28k7kLVct-PVZ1XPSjdAyGoxttMeYpl24737aUZBqPAirHJK-griQlPBh04E0Ay5ip03gJvJxvGuzRE5r8hKD0lVQjfre9huiSjJX-xts4kbY",
+      "token_type":"Bearer",
+      "expires_in":300
+    }</code></pre>
+      </li>
+      <li>Note that the <code>access_token</code> expires in 5 minutes, but you can rerun the code to get a new one whenever you need it. You will know you need a new one if the API requests in the following steps return an <code>UNAUTHORIZED</code> error.</li>
+    </ol>
+    
+    <h3>Create video</h3>
+    
+    <p>A call to the CMS API creates the video object in Video Cloud. The body of the request stipulates metadata like <code>name</code> and <code>description</code>. The only required field is the <code>name</code>.</p>
+    
+    <ol class="bcls-tasklist">
+      <li>Copy the following code into a text editor and replace <code>ACCOUNT_ID</code> with your own Video Cloud account id, and <code>ACCESS_TOKEN</code> with the token from the response to the request in the previous steps.
+    
+      <pre class="line-numbers">
+    <code class="language-bash notranslate">curl --request POST \
+    --url https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos/ \
+    --header 'authorization: Bearer <span class="bcls-input">ACCESS_TOKEN</span>' \
+    --header 'content-type: application/json' \
+    --data '{"name": "My Video"}'</code></pre>
+      </li>
+      <li>The JSON response will contain various metadata for the video, but for our purposes, the important field is at the top:
+      <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      <span class="bcls-highlight">"id": "123456789001"</span>,
+      …
+    }</code></pre>
+    
+      <p>You will use this <code>id</code> in the Ingest request below to let Video Cloud know which video to associate your video source file with.</p>
+      </li>
+    </ol>
+    
+    <h3>Ingest request</h3>
+    
+    <p>A call to the Dynamic Ingest gives the location of the file to ingest.</p>
+    
+    <ol class="bcls-tasklist">
+      <li>Copy the following code into a text editor and replace <code>ACCOUNT_ID</code> with your own Video Cloud account id, <code>VIDEO_ID</code> with the <code>id</code> value returned when you created the video, and <code>ACCESS_TOKEN</code> with the token from the response to the request in the previous steps.
+    
+      <pre class="line-numbers">
+    <code class="language-bash notranslate">curl --request POST \
+      --url https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos/<span class="bcls-input">VIDEO_ID</span>/ingest-requests \
+      --header 'authorization: Bearer <span class="bcls-input">ACCESS_TOKEN</span>' \
+      --header 'content-type: application/json' \
+      --data '{
+        "master": {
+          "url": "https://learning-services-media.brightcove.com/videos/mp4/Great_Blue_Heron.mp4"
+        },
+        "callbacks": ["https://solutions.brightcove.com/bcls/di-api/di-callback-app.php"]
+      }'</code></pre>
+    
+      <p>Note that the video and callback app here are provided by Brightcove Learning Services for testing purposes. You can replace these with paths to your own video and/or callback app. If you do not need to receive notifications concerning the ingest job, you can omit the <code>callbacks</code> field.</p>
+    
+      <p>If you do use our callback app, you can <a href="http://solutions.brightcove.com/bcls/di-api/di-log.txt">view the notifications</a>. This app is used for callbacks by several other apps, so use the job id to search for ones associated with your job.</p>
+      </li>
+      <li>You should receive a response that looks like this:
+      <pre class="line-numbers">
+    <code class="language-json notranslate">{"id":"bcc3dd36-50de-4343-b42a-ad02bd8f0241"}</code></pre>
+      </li>
+      <li>You should save the job id, as it is useful in identifying notifications associated with this job, or if you need to contact Support</li>
+    </ol>
+    
+    <p>If you completed the steps above successfully, have ingested a video into your account using the Dynamic Ingest API. If you had trouble or questions, feel free to contact <a href="mailto:training@brightcove.com">Brightcove Learning Services</a> for help.</p>
+    
+    <p>If you will be working extensively with our APIs, you may be interested in trying other testing tools besides CURL:</p>
+    
+    <ul>
+      <li><a href="/node/18462">Insomnia</a></li>
+      <li><a href="/node/17919">Postman</a></li>
+    </ul>
+    </section>
+    </article>
+    

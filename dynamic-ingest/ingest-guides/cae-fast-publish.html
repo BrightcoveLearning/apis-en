@@ -1,0 +1,341 @@
+---
+title: 'CAE Fast Publish'
+description: 'Context Aware Encoding (CAE) yields great renditions, but analyzing the source video adds time to processing. If getting new videos online as quickly as possible is a high priority for you, the fast publish option described in this document allows you to publish videos quickly while still taking advantage of CAE.'
+parent: 'Ingest Guides'
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+    
+    <p>Fast publish allows you to use <a href="/node/18353">CAE</a> and still get videos online as quickly as possible by creating one or more temporary renditions which can be played immediately. The following conditions then apply:</p>
+    
+    <ul>
+      <li>As soon as dynamic renditions are available, they will be used rather than the temporary rendition(s) for playback</li>
+      <li>At some point after all the dynamic renditions have been processed, the temporary rendition(s) will be deleted automatically</li>
+    </ul>
+    
+    <section class="bcls-section">
+    <h2 id="requirements">Requirements</h2>
+    
+    <p>In order to use fast publish, you must:</p>
+    
+    <ol>
+      <li>Have an account enabled for <a href="/node/17949">Dynamic Delivery</a></li>
+      <li>Have the account enabled for <a href="/node/18353">CAE</a></li>
+      <li>Create a custom CAE ingest profile using the <a href="/node/18374">Ingest Profiles API</a> (instructions <a href="#create_fast_publish_profile">below</a>)</li>
+    </ol>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="custom_profile_for_fast_publish">Custom profile for fast publish</h2>
+    
+    <p>Creating a custom profile enabled for fast publish is straightforward. It looks like a regular CAE profile, with one difference: in addition to a <code class="notranslate">renditions</code> array, the <code class="notranslate">dynamic_origin</code> object will contain a <code class="notranslate">temporary_renditions</code> array containing one or more fast publish renditions.</p>
+    
+    <p>The fast publish renditions are specified by name and <strong>must</strong> come from the list below (the number following <strong>video or audio</strong> is the target bitrate for the rendition). You can include audio-only renditions in addition to video renditions if you like.</p>
+    <!-- list is generated from scripts linked at bottom of page -->
+    
+    <ul id="renditionList">
+    </ul>
+    
+    <p>Since the point of fast publish is to make a rendition available for playback as quickly as possible, it probably makes sense to use a low to mid-range bitrate for at least one of the temporary renditions.</p>
+    
+    <h3>Steps for creating a custom profile</h3>
+    
+    <p>Here are the steps for creating a custom fast publish profile with one temporary rendition. In the steps below, we will use the <a href="/node/18436#multi-platform-standard-dynamic"><code class="notranslate">multi-platform-standard-dynamic</code></a> standard profile as the basis for the custom profile, but you can use any of the <strong>CAE</strong> profiles.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">You can create as many custom profiles as you like using the procedure below, but we recommend only creating as many as you really need to avoid confusion and user errors.</aside>
+    
+    <h4>Get client credentials for the Ingest Profiles API</h4>
+    
+    <ol class="bcls-tasklist">
+      <li>Login to Studio and go to the <a href="https://studio.brightcove.com/products/videocloud/admin/oauthsettings">API Authentication section</a> under Admin (you must be an Admin or get an Admin on the account to do this)</li>
+      <li>Click <strong>Register New Application</strong> to create a new set of client credentials.</li>
+      <li>Select the appropriate account(s) and <em>at least</em> these permissions for the credentials:
+      <figure class="bcls-figure"><img class="bcls-image" alt="Ingestion Profiles Permissions" src="//learning-services-media.brightcove.com/doc-assets/node/18502-cae-fast-publish/18502-ingest-profiles-permissions.png" />
+      <figcaption class="bcls-caption--image">Ingestion Profiles Permissions</figcaption>
+      </figure>
+      </li>
+      <li>Save the <strong>Client ID</strong> and <strong>Client Secret</strong> as you will need them for later steps.</li>
+    </ol>
+    
+    <h4>Create the JSON for the custom profile</h4>
+    
+    <ol class="bcls-tasklist">
+      <li>Copy the JSON below (for the <strong>multi-platform-standard-dynamic</strong> profile) into a text editor:
+    
+      <pre class="line-numbers">
+    <code class="language-json notranslate">{
+          "name": "multi-platform-standard-dynamic",
+          "display_name": "Multiplatform Standard (CAE)",
+          "description": "Deliver a wide range of content types across a variety of platforms on mobile and desktop.",
+          "account_id": <span class="bcls-input">YOUR_ACCOUNT_ID</span>,
+          "digital_master": {
+            "rendition": "passthrough",
+            "distribute": false
+          },
+          "renditions": [],
+          "packages": [],
+          "dynamic_origin": {
+            "renditions": [
+              "default/audio64",
+              "default/audio128",
+              "default/audio96"
+            ],
+            "images": [
+              {
+                "label": "thumbnail",
+                "height": 90,
+                "width": 160
+              },
+              {
+                "label": "poster",
+                "height": 720,
+                "width": 1280
+              }
+            ],
+            "dynamic_profile_options": {
+              "min_renditions": 2,
+              "max_renditions": 6,
+              "min_resolution": {
+                "width": 320,
+                "height": 180
+              },
+              "max_resolution": {
+                "width": 1280,
+                "height": 720
+              },
+              "max_frame_rate": 30,
+              "max_bitrate": 2400,
+              "max_first_rendition_bitrate": 250,
+              "keyframe_rate": 0.5,
+              "select_baseline_profile_configuration": true
+            }
+          }
+        }</code></pre>
+      </li>
+      <li>Change the following values:
+      <ul>
+        <li><code class="notranslate">name</code>: "multi-platform-standard-dynamic-fast-publish"</li>
+        <li><code class="notranslate">display_name</code>: "Fast Publish Standard (CAE)"</li>
+        <li><code class="notranslate">account_id</code>: "YOUR_ACCOUNT_ID"</li>
+      </ul>
+      </li>
+      <li>After the <code class="notranslate">dynamic_origin&gt;renditions</code> array, add the following array:
+      <pre class="line-numbers">
+    <code class="language-json notranslate">"temporary_renditions": [
+      {"name": "default/video450"},
+      {"name": "default/video700"},
+      {"name": "default/video900"}
+    ]</code></pre>
+      </li>
+      <li>The full JSON for your custom profile should now look like this:
+      <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "name": "multi-platform-standard-dynamic-fast-publish",
+      "display_name": "Fast Publish Standard (CAE)",
+      "description": "Deliver a wide range of content types across a variety of platforms on mobile and desktop.",
+      "account_id": "<span class="bcls-input">account_id</span>",
+      "digital_master": {
+        "rendition": "passthrough",
+        "distribute": false
+      },
+      "renditions": [],
+      "packages": [],
+      "dynamic_origin": {
+        "renditions": [
+          "default/audio64",
+          "default/audio128",
+          "default/audio96"
+        ],
+        "temporary_renditions": [
+          {"name": "default/video450"},
+          {"name": "default/video700"},
+          {"name": "default/video900"}
+        ],
+        "images": [
+          {
+            "label": "thumbnail",
+            "height": 90,
+            "width": 160
+          },
+          {
+            "label": "poster",
+            "height": 720,
+            "width": 1280
+          }
+        ],
+        "dynamic_profile_options": {
+          "min_renditions": 2,
+          "max_renditions": 6,
+          "min_resolution": {
+            "width": 320,
+            "height": 180
+          },
+          "max_resolution": {
+            "width": 1280,
+            "height": 720
+          },
+          "max_frame_rate": 30,
+          "max_bitrate": 2400,
+          "max_first_rendition_bitrate": 250,
+          "keyframe_rate": 0.5,
+          "select_baseline_profile_configuration": true
+        }
+      }
+    }</code></pre>
+      </li>
+    </ol>
+    
+    <h4>Add the custom profile to your account</h4>
+    
+    <p>Now we will use the Ingest Profiles API to add the custom profile to your account.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">You can use whatever tool you normally do to make REST API requests - if you need help getting this set up, see our guides to using <a href="/node/18462">Insomnia</a>, <a href="/node/17919">Postman</a>, or <a href="/node/17908">cURL</a>.</aside>
+    
+    <h5>Getting access tokens</h5>
+    
+    <p>Each API request needs to be authenticated using an access token (you will see exactly how in later steps).</p>
+    
+    <ol class="bcls-tasklist">
+      <li>You will need to <a href="/node/17925">get an access token</a> from:
+    
+      <pre>
+    <code class="language-http">https://oauth.brightcove.com/v4/access_token</code></pre>
+      </li>
+      <li>If you are using <a href="/node/18462">Insomnia</a> or <a href="/node/17919">Postman</a>, then you can set up OAuth2 authentication using the instructions in the linked documents to have them fetch the access tokens for you.</li>
+      <li>If you are using cURL, here is a cURL command you can use to get an access token - you will need to replace the <code class="notranslate">ENCODED_AUTHENTICATION_STRING</code> with a Base64-encoded string consisting of your <code class="notranslate">client_id:client_secret:</code>
+      <pre class="line-numbers">
+    <code class="language-bash">curl --request POST \
+      --url 'https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials' \
+      --header 'Authorization: Basic <span class="bcls-input">ENCODED_AUTHENTICATION_STRING</span>' \
+      --header 'Content-Type: application/x-www-form-urlencoded'</code></pre>
+    
+      <aside class="bcls-aside bcls-aside--information">You can use <a href="/node/18506">this utility</a> to get your Base64-encoded authentication string.</aside>
+      </li>
+      <li>Note that access tokens expire after 5 minutes - if that happens, just get a new one (Insomnia will get one for you automatically when it's needed).</li>
+    </ol>
+    
+    <h5>Add the custom ingest profile</h5>
+    
+    <ol class="bcls-tasklist">
+      <li>If you are using <a href="/node/18462">Insomnia</a> or <a href="/node/17919">Postman</a>, set up a new POST request to:
+    
+      <pre>
+    <code class="language-http">https://ingestion.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/profiles</code></pre>
+    
+      <p>The request body will be the JSON for the custom profile you created earlier.</p>
+    
+      <p>Include a <code class="notranslate">Content-Type: application/json</code> header</p>
+    
+      <p>Set up OAuth2 authentication according to the instructions in the guides to using Insomnia or Postman.</p>
+      </li>
+      <li>If you are using cURL, you can use the following request, replacing the account_id and access token values with your own:
+      <pre class="line-numbers">
+    <code class="language-bash">curl --request POST \
+      --url https://ingestion.api.brightcove.com/v1/accounts/57838016001/profiles \
+      --header 'authorization: Bearer <span class="bcls-input">YOUR_ACCESS_TOKEN</span>' \
+      --header 'content-type: application/json' \
+      --data '{
+      "name": "multi-platform-standard-dynamic-fast-publish",
+      "display_name": "Fast Publish Standard (CAE)",
+      "description": "Deliver a wide range of content types across a variety of platforms on mobile and desktop.",
+      "account_id": "<span class="bcls-input">YOUR_ACCOUNT_ID</span>",
+      "digital_master": {
+        "rendition": "passthrough",
+        "distribute": false
+      },
+      "renditions": [],
+      "packages": [],
+      "dynamic_origin": {
+        "renditions": [
+          "default/audio64",
+          "default/audio128",
+          "default/audio96"
+        ],
+        "temporary_renditions": [
+          {"name": "default/video450"},
+          {"name": "default/video700"},
+          {"name": "default/video900"}
+        ],
+        "images": [
+          {
+            "label": "thumbnail",
+            "height": 90,
+            "width": 160
+          },
+          {
+            "label": "poster",
+            "height": 720,
+            "width": 1280
+          }
+        ],
+        "dynamic_profile_options": {
+          "min_renditions": 2,
+          "max_renditions": 6,
+          "min_resolution": {
+            "width": 320,
+            "height": 180
+          },
+          "max_resolution": {
+            "width": 1280,
+            "height": 720
+          },
+          "max_frame_rate": 30,
+          "max_bitrate": 2400,
+          "max_first_rendition_bitrate": 250,
+          "keyframe_rate": 0.5,
+          "select_baseline_profile_configuration": true
+        }
+      }
+    }'</code></pre>
+      </li>
+      <li>After you send the request, you should see your new profile echoed back to you in the response.</li>
+    </ol>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="notifications">Notifications</h2>
+    
+    <p>When fast publish temporary renditions are created, you will receive <code class="notranslate">DYNAMIC_RENDITION</code> "CREATE" notifications just as you do for the regular renditions:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "entity": "contextAwareEncoding5",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "413a9938-6d73-478c-b4d9-fdeb45927a4b",
+      "videoId": "5600255921001",
+      "dynamicRenditionId": "contextAwareEncoding5",
+      "bitrate": 364,
+      "width": 512,
+      "height": 384,
+      "accountId": "1910141566001",
+      "status": "SUCCESS"
+    }
+    </code></pre>
+    
+    <p>A new notification will be sent when a temporary rendition has been deleted:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "entity": "fastpublishRendition1",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "DELETE",
+      "jobId": "413a9938-6d73-478c-b4d9-fdeb45927a4b",
+      "videoId": "5600255921001",
+      "dynamicRenditionId": "fastpublishRendition1",
+      "accountId": "1910141566001",
+      "status": "SUCCESS"
+    }
+    </code></pre>
+    </section>
+    </section>
+    </article>
+    <script src="//learning-services-media.brightcove.com/doc-assets/node/18502-cae-fast-publish/boltrenditions-list.js"></script>
+    <script src="//learning-services-media.brightcove.com/doc-assets/node/18502-cae-fast-publish/18502.js"></script>

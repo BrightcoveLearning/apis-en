@@ -1,0 +1,350 @@
+---
+title: 'Notifications for Dynamic Ingest in Video Cloud'
+description: 'In this topic, you will learn about notifications for Dynamic Delivery ingest jobs submitted using the Dynamic Ingest API.'
+parent: 'General Information'
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="diAPI">Dynamic Ingest API notifications</h2>
+    
+    <p>You can specify one or more callback URLs to receive notifications for the results of the ingest process. The URLs you specify should be for apps than can accept POST requests. Notifications will be sent in JSON format.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">
+    <h3>Notes</h3>
+    
+    <ul>
+      <li>Up to 10 subscribers for error notifications are supported. You can include more than 10 URLs to have notifications sent to, but only the first 10 will be processed</li>
+      <li>URLs ending in a slash (/) will not be accepted; for example, the url “https://my.domain.com/notification-receiver” works, but “https://my.domain.com/notification-receiver/” does not</li>
+      <li>Alternatively, you can use the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Get_Status_of_Ingest_Jobs">status APIs of the CMS API</a> to get the status of ingest jobs for a particular video.</li>
+    </ul>
+    </aside>
+    
+    <h3>Setup</h3>
+    
+    <p>Here’s an example.</p>
+    
+    <ul>
+      <li>User with pub id 57838016001</li>
+      <li>Wants to use Dynamic Ingest to upload a source video file located at https://s3.amazonaws.com/bucket/mysourcevideo.mp4</li>
+      <li>Wants to upload an existing title in the catalog with video id 5199670523001</li>
+      <li>Using the multi-platform-standard-static profile</li>
+      <li>Wants to receive callbacks at two endpoints located at http://host1/path1 and http://host2/path2 respectively</li>
+    </ul>
+    
+    <p>The DI request would look like this:</p>
+    
+    <h4>POST Request</h4>
+    <textarea class="bcls-code notranslate">https://ingest.api.brightcove.com/v1/accounts/57838016001/videos/5199670523001/ingest-requests</textarea>
+    
+    <h4>Request body</h4>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "master": {
+        "url": "https://s3.amazonaws.com/bucket/mysourcevideo.mp4"
+      },
+      "profile": "multi-platform-standard-static",
+      "callbacks": ["http://host1/path1”, “http://host2/path2”]
+    }</code></pre>
+    
+    <h3>Sample notification</h3>
+    
+    <p>Notifications are sent as POST requests with the notification in the request body as JSON <sup> <strong> <a href="#note1">[1]</a> </strong> </sup>. Here is a full set of notifications from a typical video ingest job:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "entity": "default\/audio192",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/audio192",
+      "language": "en",
+      "variant": "main",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/audio64",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/audio64",
+      "language": "en",
+      "variant": "main",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/audio96",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/audio96",
+      "language": "en",
+      "variant": "main",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/audio128",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/audio128",
+      "language": "en",
+      "variant": "main",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "5660367449001",
+      "entityType": "DIGITAL_MASTER",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/video450",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/video450",
+      "bitrate": 451,
+      "width": 480,
+      "height": 270,
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "5660367449001",
+      "entityType": "TITLE",
+      "version": "1",
+      "action": "PUBLISH",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "thumbnail",
+      "entityType": "ASSET",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "poster",
+      "entityType": "ASSET",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/video900",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/video900",
+      "bitrate": 901,
+      "width": 640,
+      "height": 360,
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/video700",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/video700",
+      "bitrate": 700,
+      "width": 640,
+      "height": 360,
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/video1200",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/video1200",
+      "bitrate": 1204,
+      "width": 960,
+      "height": 540,
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/video1700",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/video1700",
+      "bitrate": 1703,
+      "width": 960,
+      "height": 540,
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/video3500",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/video3500",
+      "bitrate": 3498,
+      "width": 1920,
+      "height": 1080,
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/video2000",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/video2000",
+      "bitrate": 2000,
+      "width": 1280,
+      "height": 720,
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "default\/video3800",
+      "entityType": "DYNAMIC_RENDITION",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "dynamicRenditionId": "default\/video3800",
+      "bitrate": 3804,
+      "width": 1920,
+      "height": 1080,
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }
+    {
+      "entity": "5660367449001",
+      "entityType": "TITLE",
+      "version": "1",
+      "action": "CREATE",
+      "jobId": "d3ef8751-2b88-4141-95d5-83f0393aca07",
+      "videoId": "5660367449001",
+      "accountId": "57838016001",
+      "status": "SUCCESS"
+    }</code></pre>
+    
+    <h3>Notification fields</h3>
+    
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code class="notranslate">status</code></td>
+          <td>will be <code class="notranslate">FAILED</code> if the ingest or creation of a rendition was not successful, <code class="notranslate">SUCCESS</code> if the request succeeded</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">accountId</code></td>
+          <td>the account id</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">videoId</code></td>
+          <td>the video id</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">jobId</code></td>
+          <td>the job id for the Dynamic Ingest request</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">entity</code></td>
+          <td>either the name of the entity, or the Video Cloud id of the video for the TITLE</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">entityType</code></td>
+          <td>the kind of asset reported on - for example: TITLE (a video), DIGITAL_MASTER, ASSET (a rendition, captions file, or image)</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">bitrate</code></td>
+          <td>bitrate for a rendition</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">width</code></td>
+          <td>frame-width for a rendition</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">height</code></td>
+          <td>frame-height for a rendition</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">errorMessage</code></td>
+          <td>an explanation of why the ingest failed if it did</td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">version</code></td>
+          <td>a string always equal to <code class="notranslate">"1"</code></td>
+        </tr>
+        <tr>
+          <td><code class="notranslate">action</code></td>
+          <td>the action that occurred - for example, CREATE</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Interpreting_notifications">Interpreting notifications</h2>
+    
+    <p>A notification containing <code class="notranslate">"action": "CREATE"</code> and <code class="notranslate">"status": "SUCCESS"</code> indicates completion of a process.</p>
+    
+    <ul>
+      <li>If the <code class="notranslate">entityType</code> is <code class="notranslate">TITLE</code>, then processing of an ingested video is complete.</li>
+      <li>For <code class="notranslate">entityType: TITLE</code>, <code class="notranslate">action: PUBLISH</code> refers to the time the video is activated. For videos that are immediately active, this will be approximately the same time as the <code class="notranslate">CREATE</code> time.</li>
+      <li>If the <code class="notranslate">entityType</code> is <code class="notranslate">ASSET</code>, <code class="notranslate">DYNAMIC_RENDITION</code> or <code class="notranslate">DIGITAL_MASTER</code>, then a rendition, image, manifest, WebVTT file, or digital master has been successfully added to your video.</li>
+    </ul>
+    
+    <aside class="bcls-aside bcls-aside--information">Note: a <code class="notranslate">"status": "SUCCESS"</code> on a <strong>title</strong> indicates that processing is complete, but does not necessarily mean that it was all renditions were created successfully. To determine whether Dynamic Ingest of videos was successful, see <a href="/node/17954">Get Status of Dynamic Ingest Requests</a>.</aside>
+    </section>
+    </article>
+    

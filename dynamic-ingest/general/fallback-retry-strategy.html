@@ -1,0 +1,38 @@
+---
+title: 'Fallback/Retry Strategy'
+description: 'This topic explains the need for a fallback/retry strategy for Dynamic Ingest requests, and provides a high-level description of how to implement one.'
+parent: 'General Information'
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section id="background" class="bcls-section">
+    <h2>Background</h2>
+    
+    <p>Dynamic Ingest imposes rate-limiting (per account) in two ways:</p>
+    
+    <ul>
+      <li>No more than 20 requests (CMS API and/or Ingest API requests) per second are allowed</li>
+      <li>No more than 100 concurrent normal priority jobs are allowed</li>
+    </ul>
+    
+    <p>The first is not difficult to manage in your app - you can just impose a delay of 3 seconds or more between requests. The second is more complicated, as there is no way to query the system directly to determine how many jobs you have currently processing. Alternatively, consider using the <a href="/node/18439">Low Priority queue</a> which will allow you to queue more than 100 jobs.</p>
+    
+    <p>You can simply wait for some period of time and retry requests until they succeed, but you can implement a more rational fallback/retry system by listening for <a href="/node/17939">notifications</a> from the Dynamic Ingest system and using the information to keep track of jobs in-flight yourself.</p>
+    
+    <p>One way to implement this would be to build a transceiver app that both submits the ingest requests and listen for notifications. The diagram below shows the high-level logic of such an app.</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="Transceiver Logic" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/guides/fallback-retry/ingestion-transceiver-architecture.svg" />
+    <figcaption class="bcls-caption--image">Transceiver Logic</figcaption>
+    </figure>
+    </section>
+    
+    <section class="bcls-section" id="sample">
+    <h2>Sample App</h2>
+    
+    <p>You can find the source for a sample <a href="//expressjs.com">Node-Express</a> app in this <a href="https://github.com/BrightcoveLearning/dynamic-ingest-with-throttling">Github repo</a></p>
+    </section>
+    </article>
+    

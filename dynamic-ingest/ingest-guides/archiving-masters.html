@@ -1,0 +1,158 @@
+---
+title: 'Archiving Masters'
+description: 'In this topic, you will learn about archiving the digital master for the video when you ingest it.'
+parent: 'Ingest Guides'
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <aside class="bcls-aside bcls-aside--information">The information in this topic applies mostly to custom ingest profiles. Standard profiles all archive masters (see <a href="#standardProfiles">below</a>)</aside>
+    
+    <p>If you archive a master when you ingest a video, you will be able to re-transcode the video later without ingesting it again. This topic explains your options for archiving your masters. Note that archiving the master means storing the master video file in your account so that it is available.for future processing. See&nbsp;<a href="/node/16840">Creating Ingest Profiles for Dynamic Delivery</a>&nbsp;for more information.</p>
+    
+    <p>Note that if you store the digital master when you ingest the video, and then retranscode the video using a profile that does not archive masters, the digital master for the video will <strong>not</strong> be removed, and you will still be able to retranscode the video.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="archivingMaster">Archiving a master</h2>
+    
+    <p>To archive a master for your video, you need to include the <code class="notranslate">digital_master</code> object in your ingest profile:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">{
+        "account_id": 3423487123048,
+        <span class="bcls-highlight">"digital_master": {
+            "rendition": "passthrough",
+            "distribute": false
+        },</span>
+        "name": "nondrm-default",
+        ...
+    }</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="originalRendition">Source or rendition</h2>
+    
+    <p>For Dynamic Delivery (including Context Aware Encoding) profiles, you can archive the video source file as a master (in other words, set <code class="notranslate">"rendition": "passthrough"</code> in the <code class="notranslate">digital_master</code> part of the profile). The digital_master will <strong>not</strong> be distributed (pushed to the CDN as an available rendition) for these profiles, even if you set <code class="notranslate">"distribute": true</code>.</p>
+    
+    <p>For Legacy Ingest profiles, you can choose to use your video source file as the master, or you can select a high-quality rendition to use as the master.</p>
+    
+    <p>To use the video source file you ingest as the master, include the following code in your ingest profile:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">"digital_master": {
+        "rendition": "passthrough",
+        "distribute": false
+    }</code></pre>
+    
+    <p>To use a rendition for the master instead of your source file (Legacy Ingest profiles only), set the <code class="notranslate">rendition</code> field of the <code class="notranslate">digital_master</code> object to the <strong>reference id</strong> for the rendition:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json"><strong>"digital_master": {
+            "rendition": "av0",
+            "distribute": true
+        }</strong>,
+        "name": "nondrm-av0",
+        "packages": [],
+        "renditions": [
+        {
+            "media_type": "video",
+            <strong>"reference_id": "av0"</strong>, ...</code></pre>
+    
+    <p>If you set <code class="notranslate">rendition</code> to <code class="notranslate">none</code>, <strong>no master will be archived</strong>, and you will <strong>not</strong> be able to retranscode the video. You can, however, <a href="/node/17949#replaceVideo">replace</a> the video by ingesting it again.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="distribution">Distribution</h2>
+    
+    <p>Distribution will only work for <strong>Legacy Ingest profiles</strong>.</p>
+    
+    <p>You can choose whether the master is distributed or not. Distributed means that the master is pushed to the CDN and available as a playable rendition. If the master is not distributed, it is archived by Video Cloud but not pushed to the CDN.</p>
+    
+    <div class="BCL-aside">Notes:
+    <ul>
+      <li>If you selected one of your renditions to be the master, and set <code class="notranslate">distribute</code> to <code class="notranslate">false</code>, that rendition will not be pushed to the CDN and will not be available for playback</li>
+      <li>If the rendition is set to <code class="notranslate">passthrough</code> and <code>distribute</code> to <code>true</code>, the master will only be distributed if it is in h264 format</li>
+      <li>The original video may be modified in order to make it playable over the internet. The archived master will be identical to the original file, however, except in very rare cases where we need to modify it in order to transcode it</li>
+      <li>Distributing the master does <strong>not</strong> work for videos ingested using <a href="/node/17949">Dynamic Delivery</a> profiles. If you look at the Dynamic Delivery ingest profiles, you will see that <code class="notranslate">distribute</code> is set to <code class="notranslate">false</code>. If you duplicate the profile and attempt to change that in Studio, the value will revert to <code class="notranslate">false</code> automatically.</li>
+    </ul>
+    </div>
+    
+    <p>To distribute the master to the CDN, set <code class="notranslate">"distribute": true</code> in the <code class="notranslate">digital_master</code> object:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">"digital_master": {
+        <strong>"distribute": true,</strong>
+        "rendition": "passthrough"
+    }</code></pre>
+    
+    <p>To prevent the master from being distributed, set <code class="notranslate">distribute</code> to false:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">"digital_master": {
+        <strong>"distribute": false,</strong>
+        "rendition": "passthrough"
+    }</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="defaultBehavior">Default behavior</h2>
+    
+    <p>By default (if the profile does not include a <code class="notranslate">digital_master</code> field), the <span class="notranslate"><a href="/node/17949">Dynamic Ingest API</a></span> and <a href="/node/14456">Upload Module</a> will behave exactly as if the following had been included in the profile:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">"digital_master": {
+        "distribute": false,
+        "rendition": "none"
+    }</code></pre>
+    
+    <p>In other words, no digital master will be stored.</p>
+    
+    <p>If you have the following in your profile:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">"digital_master": {
+        "distribute": false
+    }</code></pre>
+    
+    <p>... with no <code class="notranslate">rendition</code> field to specify what should be archived, the source video <strong>will be archived</strong> as the digital master.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="standardProfiles">Standard profiles</h2>
+    
+    <p>The standard profiles for <span class="notranslate">Dynamic Delivery</span> as well as the legacy ingest system will automatically store masters but <em>not</em> distribute them:</p>
+    
+    <h3>Standard <span class="notranslate">Dynamic Delivery</span> profiles</h3>
+    
+    <ul>
+      <li class="notranslate">multi-platform-extended-static</li>
+      <li class="notranslate">multi-platform-extended-static-with-MP4</li>
+      <li class="notranslate">multi-platform-standard-static</li>
+      <li class="notranslate">multi-platform-standard-static-with-MP4</li>
+      <li class="notranslate">multi-platform-extended-dynamic</li>
+      <li class="notranslate">multi-platform-extended-dynamic-with-MP4</li>
+      <li class="notranslate">multi-platform-standard-dynamic</li>
+      <li class="notranslate">multi-platform-standard-dynamic-with-MP4</li>
+      <li class="notranslate">low-bandwidth-dynamic</li>
+    </ul>
+    
+    <h3>Standard legacy ingest system profiles</h3>
+    
+    <ul>
+      <li class="notranslate">videocloud-default-v1</li>
+      <li class="notranslate">high-definition</li>
+      <li class="notranslate">audio-only</li>
+      <li class="notranslate">single-bitrate-standard</li>
+      <li class="notranslate">single-bitrate-high</li>
+      <li class="notranslate">screencast-1280</li>
+      <li class="notranslate">smart-player-transition</li>
+    </ul>
+    </section>
+    </article>
+    

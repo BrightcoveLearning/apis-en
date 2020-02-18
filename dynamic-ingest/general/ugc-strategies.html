@@ -1,0 +1,102 @@
+---
+title: 'UGC Strategies'
+description: 'In this topic, you will learn strategies and best practices for using Video Cloud to integrate user-generated content (UGC) with your web presence.'
+parent: 'General Information'
+grandparent: Dynamic Ingest API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section" id="Overview">
+    <h2>Overview</h2>
+    
+    <p>The key issue in working with user-generated content (UGC; also known as Consumer-Generated Media, or CGM) is how to get the video from your users into your Video Cloud account. Obviously, you can't give everybody who visits your web site access to your Video Cloud Studio account. You need to direct user-generated videos to a server you control, and then ingest those videos to your Video Cloud account in a controlled way using Dynamic Ingest.</p>
+    </section>
+    
+    <section id="Main_steps" class="bcls-section">
+    <h2>Main steps</h2>
+    
+    <ol class="bcls-tasklist">
+      <li><a href="#plan">Plan your UGC campaign</a>. Formulate your call to action and policies. Give guidance to your users about file format and video encoding issues. Consider copyright and trademark issues.</li>
+      <li><a href="#intermediate">Set up an intermediate server</a> to host your upload form and receive the videos.</li>
+      <li><a href="#uploadform">Create an upload form</a> where your users can upload their videos and metadata.</li>
+      <li><a href="#review">Review the videos</a> before they are published. Apply whatever editorial filter you want to the user-generated videos.</li>
+      <li>Ingest the user-generated videos from the intermediate server to your Video Cloud Media Library. You can use <a href="/node/17948">Dynamic Ingest</a> to pull your videos into Video Cloud, or use <a href="/node/18288">Source File Upload API for Dynamic Ingest</a> if you cannot use a repository that Dynamic Ingest can pull from directly.</li>
+      <li><a href="#publish">Publish</a> your choice of the user-generated videos on your web pages. You can use smart playlists for dynamic content.</li>
+    </ol>
+    
+    <p>This diagram shows the recommended workflow:</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="UGC Workflow" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/guides/ugc/ugc-workflow.svg" />
+    <figcaption class="bcls-caption--image">UGC Workflow</figcaption>
+    </figure>
+    </section>
+    
+    <section id="plan" class="bcls-section">
+    <h2>Plan your UGC campaign</h2>
+    
+    <p>You need to plan your UGC campaign in accordance with your business goals. Plan how you will communicate your UGC campaign to your audience. You can use promotions around your existing video content and web properties, as well as those of your affiliates and business partners. Many UGC campaigns have a contest element, in which case you'll need to think about prizes, judging, and the duration of the campaign.</p>
+    
+    <p>In your UGC campaign, you need to communicate your policies to your users. Some factors to consider:</p>
+    
+    <ul>
+      <li>file formats accepted</li>
+      <li>source file encoding recommendations</li>
+      <li>maximum file size and video length</li>
+      <li>legal requirements, like ownership and rights to distribute the uploaded video, and restrictions on the users' use of copyrights and trademarks (both yours and those of third parties).</li>
+    </ul>
+    
+    <p>You'll also need to plan how you want to <a href="#publish">publish the videos</a>.</p>
+    
+    <h3 id="review">Reviewing videos before publishing</h3>
+    
+    <p>In a publicly-available UGC campaign, some users may submit video content that is unacceptable for publishing - content that violates copyright or trademarks, or is obscene, offensive, or just pointless. Plan how you want to select or moderate and publish the user-generated videos. There are several approaches you can take:</p>
+    
+    <ul>
+      <li>Review all the submitted videos on your intermediate server, and then move the acceptable ones to a separate directory from which they can be uploaded to your Video Cloud Media Library.</li>
+      <li>Ingest all the submitted videos directly to your Video Cloud Media Library, but leave them in an inactive state until they have been reviewed and approved.</li>
+    </ul>
+    </section>
+    
+    <section id="intermediate" class="bcls-section">
+    <h2>Set up intermediate repository</h2>
+    
+    <p>You don't want user-generated content to go directly into your Video Cloud Media Library, unless you can really trust all of your users. Instead, you should use an intermediate repository: users upload their videos to the intermediate repository, and you then use Dynamic Ingest to move the videos from the intermediate server into your Video Cloud Media Library.</p>
+    
+    <p>We recommend using an S3 bucket for your intermediate repository, as it is very easy to set up Dynamic Ingest from S3, whether the bucket is public or protected.</p>
+    </section>
+    
+    <section id="uploadform" class="bcls-section">
+    <h2>Create an upload form</h2>
+    
+    <p>The upload form gives users a way to upload videos to your intermediate server. The upload form typically has fields where the user can provide a name, description, and tags for the video, though you can add a field for any property of the Video you want modified by the user. (You can also add other metadata when you ingest the video if you wish.)</p>
+    </section>
+    
+    <section id="intermediate2BC" class="bcls-section">
+    <h2>Ingest the video</h2>
+    
+    <p>When you are ready, you can ingest the UGC content to your Video Cloud account using Dynamic Ingest. There are two API requests involved:</p>
+    
+    <ol>
+      <li>A <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Video-Create_Video_Object">Create Video</a> request to the CMS API, which creates the video object in the Video Cloud system and adds metadata such as description and tags.</li>
+      <li>The <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Ingest request</a>, which pulls in the video file and transcodes it.</li>
+    </ol>
+    
+    <p>See the <a href="/node/17948">Dynamic Ingest API Overview</a> for more information.</p>
+    </section>
+    
+    <section id="publish" class="bcls-section">
+    <h2>Publish the content</h2>
+    
+    <p>Consider how you want to present your user-generated videos. On what pages will you publish them? Do you want a customized player?</p>
+    
+    <p>You can group user-generated videos automatically using smart playlists. Here are two approaches you might consider:</p>
+    
+    <ul>
+      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-playlistGroup-Create_Playlist">Make a smart playlist</a> for the most-viewed user-submitted videos. To do this, tag all of the user-submitted videos with a common tag and create a new smart playlist defined by <code>"search": "tags:\" <span class="bcls-input">{YOUR_UGC_TAG}</span>\"</code> and make the list type <code>PLAYS_TOTAL</code></li>
+      <li>Define subject-based tags and let your users select the best one.</li>
+    </ul>
+    </section>
+    </article>
+    
