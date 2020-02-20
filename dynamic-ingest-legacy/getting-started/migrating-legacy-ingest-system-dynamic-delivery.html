@@ -1,0 +1,95 @@
+---
+title: 'Migrating to Dynamic Delivery'
+description: 'This topic explains what will change In terms of the Dynamic Ingest API when you make the switch from the legacy ingest system to Dynamic Delivery.'
+parent: 'Getting Started'
+grandparent: Dynamic Ingest API Legacy
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>If you want to understand how Dynamic Delivery works and the advantages of using it, see the <a href="/node/18476#faq">Overview of Dynamic Delivery</a>. This topic covers some things you will need to do after switching to Dynamic Delivery, particularly around the using of Dynamic Ingest.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Retranscoding_videos">Retranscoding videos</h2>
+
+<p>Existing videos won't automatically be converted; contact your account manager for details on how to get your old videos moved over.</p>
+
+<p>If you do have your existing videos converted, or retranscode them yourself to move them to Dynamic Delivery, note that the following metadata will for videos will change:</p>
+
+<ul>
+	<li>The <code>update_at</code> date</li>
+	<li>Paths to thumbnail and poster images (note that we recommend <strong>not</strong> hardcoding video asset URLs in your pages and apps generally)</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="drm">DRM</h2>
+
+<p>If you protect your videos with DRM, one of the advantages of Dynamic Delivery is that you do <strong>not</strong> need custom profiles to apply DRM. Instead, all you need to do is contact Support and get your account configured for the DRM types you want to apply to your videos. After that, all videos that are ingested or retranscoded using a Dynamic Delivery profile will be automatically protected. See <a href="/node/18038">Ingesting content with DRM</a> for more details.</p>
+</section>
+
+<section id="successNotifications" class="bcls-section">
+<h2>Notifications</h2>
+
+<p>Notifications for Dynamic Delivery ingests are similar to ones for the legacy ingest but there are a few differences. If you have apps or integrations that depend on Dynamic Ingest notifications to trigger subsequent actions, you will probably need to modify them a little bit.</p>
+
+<p>Below are sample notifications for successful rendition completion for Dynamic Delivery an non-Dynamic Delivery ingests to highlight the differences.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Dynamic Delivery and non-Dynamic Delivery Notifications</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Dynamic Delivery Rendition Success</th>
+			<th>Non-Dynamic Delivery Rendition Success</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>
+			<pre class="line-numbers">
+    <code class="language-json">{
+        "status": "SUCCESS",
+        "entity": "5123312711001",
+        <span class="bcls-highlight">"entityType": "DYNAMIC_RENDITION",</span>
+        "version": "1",
+        "action": "CREATE",
+        "jobId": "48c3a283-40f9-4214-8c27-21e3a040ca6a",
+        "videoId": "5123312711001",
+        <span class="bcls-highlight">"dynamicRenditionId": "default/audio64",</span>
+        "accountId": "57838016001"
+    }</code></pre>
+			</td>
+			<td>
+			<pre class="line-numbers">
+    <code class="language-json">{
+        <span class="bcls-highlight">"entityType": "ASSET",</span>
+        "status": "SUCCESS",
+        "version": "1",
+        "jobId": "93d40db1-df3f-4023-bab6-51459cdda470",
+        "videoId": "5122632511001",
+        <span class="bcls-highlight">"profileRefId": "mp2",</span>
+        "entity": "5122644754001",
+        "action": "CREATE",
+        "accountId": "57838016001"
+    }</code></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>As you can see, the differences here are that the <code>entity_type</code> for Dynamic Delivery ingestion is <code>DYNAMIC_RENDITION</code> instead of <code>ASSET</code>, and you get a <code>dynamicRenditionId</code> instead of a <code>profileRefId</code>.</p>
+
+<p>If you have an app or integration that depends on notifications, therefore, you will probably need to make some small adjustments in what you are looking for in the notifications.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="players">Players</h2>
+
+<p>Good news - if you are using the standard player embed codes, or the native player SDKs, you will not need to make any changes to existing players for Dynamic Delivery. Your videos will continue to work as they did before.</p>
+</section>
+</article>
