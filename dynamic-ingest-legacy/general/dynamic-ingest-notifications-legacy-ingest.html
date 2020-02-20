@@ -1,0 +1,220 @@
+---
+title: 'Dynamic Ingest Notifications'
+description: 'In this topic, you will learn about Dynamic Ingest notifications, which provide information about the progress of your ingest jobs. Note that this document applies only to the legacy ingest system - for Dynamic Delivery, see <a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.html">Notifications for Dynamic Ingest</a> '
+parent: 'General Information'
+grandparent: Dynamic Ingest API Legacy
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="diAPI">Dynamic Ingest API notifications</h2>
+    
+    <p>You can specify one or more callback URLs to receive notifications for the results of the ingest process. The URLs you specify should be for apps than can accept POST requests. Notifications will be sent in JSON format.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">
+    <h3>Notes</h3>
+    
+    <ul>
+      <li>Up to 10 subscribers for error notifications are supported. You can include more than 10 URLs to have notifications sent to, but only the first 10 will be processed</li>
+      <li>URLs ending in a slash (/) will not be accepted; for example, the url “https://my.domain.com/notification-receiver” works, but “https://my.domain.com/notification-receiver/” does not</li>
+      <li>Alternatively, you can use the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Get_Status_of_Ingest_Jobs">status APIs of the CMS API</a> to get the status of ingest jobs for a particular video.</li>
+      <li>Notification handlers on servers built on HTTP2 are not currenly supported. Notifications sent to HTTP2 servers may fail to be delivered without returning any error.</li>
+    </ul>
+    </aside>
+    
+    <h3>Setup</h3>
+    
+    <p>Here’s an example.</p>
+    
+    <ul>
+      <li>User with pub id 57838016001</li>
+      <li>Wants to use Dynamic Ingest to upload a source video file located at https://s3.amazonaws.com/bucket/mysourcevideo.mp4</li>
+      <li>Wants to upload an existing title in the catalog with video id 5199670523001</li>
+      <li>Using the high-resolution profile</li>
+      <li>Wants to receive callbacks at two endpoints located at http://host1/path1 and http://host2/path2 respectively</li>
+    </ul>
+    
+    <p>The DI request would look like this:</p>
+    
+    <h4>POST Request</h4>
+    <textarea class="bcls-code">https://ingest.api.brightcove.com/v1/accounts/57838016001/videos/5199670523001/ingest-requests</textarea>
+    
+    <h4>Request body</h4>
+    <textarea class="bcls-code" style="height:10em;">{ "master": { "url": "https://s3.amazonaws.com/bucket/mysourcevideo.mp4" }, "profile": "high-resolution", "callbacks":
+          ["http://host1/path1”, “http://host2/path2”] }
+        </textarea>
+    
+    <h3>Sample notification</h3>
+    
+    <p>Notifications are sent as POST requests with the notification in the request body as JSON <sup> <strong> <a href="#note1">[1]</a> </strong> </sup>. Here are some sample notification:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">{
+        "accountId": "57838016001",
+        "entityType": "ASSET",
+        "version": "1",
+        "status": "SUCCESS",
+        "videoId": "5199670523001",
+        "entity": "5199679295001",
+        "action": "CREATE",
+        "jobId": "699db2e5-aeb7-4765-a4a7-2cc68c7360bd"
+    }
+    {
+        "action": "CREATE",
+        "status": "SUCCESS",
+        "entityType": "DIGITAL_MASTER",
+        "videoId": "5199670523001",
+        "entity": "5199670523001",
+        "accountId": "57838016001",
+        "version": "1",
+        "jobId": "699db2e5-aeb7-4765-a4a7-2cc68c7360bd"
+    }
+    {
+        "entityType": "ASSET",
+        "status": "SUCCESS",
+        "action": "CREATE",
+        "entity": "5199680423001",
+        "profileRefId": "ts7",
+        "version": "1",
+        "accountId": "57838016001",
+        "videoId": "5199670523001",
+        "jobId": "699db2e5-aeb7-4765-a4a7-2cc68c7360bd"
+    }
+    {
+        "jobId": "699db2e5-aeb7-4765-a4a7-2cc68c7360bd",
+        "accountId": "57838016001",
+        "version": "1",
+        "status": "SUCCESS",
+        "entityType": "TITLE",
+        "entity": "5199670523001",
+        "videoId": "5199670523001",
+        "action": "CREATE"
+    }</code></pre>
+    
+    <h4>Notes</h4>
+    
+    <ul>
+      <li id="note1"><sup><strong>[1]</strong> </sup> Exception: All notifications for DRM-packaged content are returned as key/value pairs. In this case, the <code>Content-Type</code> header will be <code>application/x-www-form-urlencoded</code>. Otherwise, the <code>Content-Type</code> will be <code>application/json</code></li>
+    </ul>
+    
+    <h3>Notification fields</h3>
+    
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>status</code></td>
+          <td>will be <code>FAILED</code> if the ingest or creation of a rendition was not successful, <code>SUCCESS</code> if the request succeeded</td>
+        </tr>
+        <tr>
+          <td><code>accountId</code></td>
+          <td>the account id</td>
+        </tr>
+        <tr>
+          <td><code>videoId</code></td>
+          <td>the video id</td>
+        </tr>
+        <tr>
+          <td><code>jobId</code></td>
+          <td>the job id for the Dynamic Ingest request</td>
+        </tr>
+        <tr>
+          <td style="vertical-align:top;"><code>profileRefId</code></td>
+          <td>
+          <p>For video renditions, this will be the <code>reference id</code> you specified for the rendition in your ingest profile.</p>
+    
+          <p>For manifests, the <code>profileRefId</code> will indicate the type of the manifest:</p>
+    
+          <ul>
+            <li><code>HlsManifest</code> for an HLS NG manifest</li>
+            <li><code>HdsManifest</code> for an HDS manifest</li>
+            <li><code>DashManifest</code> for DASH manifests (2 - one of the Manifest assets is used for consumption in the MAPI, the other is used for consumption in the CMS API)</li>
+            <li><code>SmoothIsmManifest</code> for a Smooth manifest (2 - one of the Manifest assets is used for consumption in the MAPI, the other is used for consumption in the CMS API)</li>
+          </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><code>entity</code></td>
+          <td>if it exists, the Video Cloud id of the asset that was ingested or failed (if the video object was successfully created in Video Cloud)</td>
+        </tr>
+        <tr>
+          <td><code>entityType</code></td>
+          <td>the kind of asset reported on - for example: TITLE (a video), DIGITAL_MASTER, ASSET (a rendition, captions file, or image)</td>
+        </tr>
+        <tr>
+          <td><code>errorMessage</code></td>
+          <td>an explanation of why the ingest failed if it did</td>
+        </tr>
+        <tr>
+          <td><code>version</code></td>
+          <td>a string always equal to <code>"1"</code></td>
+        </tr>
+        <tr>
+          <td><code>action</code></td>
+          <td>the action that occurred - for example, CREATE</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3>Interpreting notifications</h3>
+    
+    <p>A notification containing <code>"action": "CREATE"</code> and <code>"status": "SUCCESS"</code> indicates completion of a process.</p>
+    
+    <ul>
+      <li>If the <code>entityType</code> is <code>TITLE</code>, then processing of an ingested video is complete.</li>
+      <li>If the <code>entityType</code> is <code>ASSET</code>, then a rendition, image, manifest, or WebVTT file has been successfully added to your video.</li>
+    </ul>
+    
+    <p class="BCL-aside">Note: a <code>"status": "SUCCESS"</code> on a <strong>title</strong> indicates that processing is complete, but does not necessarily mean that it was all renditions were created successfully. To determine whether Dynamic Ingest of videos was successful, see <a href="/node/17954">Get Status of Dynamic Ingest Requests</a></p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="sampleApp">Basic Sample app</h2>
+    
+    <p>Below is code for a simple logging app for Dynamic Ingest API notification. This app is written in PHP, but you can use any language, as long as the app has a public-facing URL and can handle http(s) POST requests.</p>
+    
+    <p>You can see the log file that this app generates <a href="//solutions.brightcove.com/bcls/di-api/di-log.txt">here.</a></p>
+    
+    <p class="BCL-aside">Note: if you try to implement this app for yourself, you will need to make sure that the app has permission to write to your log file. Also remember that the log file can grow quickly - you will probably want to empty it on a regular basis.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-php">&lt;?php
+    // POST won't work for JSON data
+    $problem = "No errors";
+    try {
+        $json    = file_get_contents('php://input');
+        $decoded = json_decode($json, true);
+    } catch (Exception $e) {
+        $problem = $e-&gt;getMessage();
+    }
+    
+    // turn notification into pretty printed JSON
+    $notification = json_encode($decoded, JSON_PRETTY_PRINT);
+    
+    
+    
+    $logEntry = $notification.
+    "\nErrors receiving notificatons: ".$problem.
+    "\n-------------------------------\n";
+    
+    // Lastly, tell PHP where it can find the log file and tell PHP to open it
+    // and add the string we created earlier to it.
+    $logFileLocation = "di-log.txt";
+    $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+    fwrite($fileHandle, $logEntry);
+    fclose($fileHandle);
+    
+    // line below is displayed when you browse the app directly
+    echo "Dynamic Ingest callback app is running";
+    ?&gt;
+    </code></pre>
+    </section>
+    </article>
+    
