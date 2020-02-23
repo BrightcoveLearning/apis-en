@@ -1,0 +1,238 @@
+---
+title: 'Conditional Output'
+description: 'In this topic, you will learn how to create conditional outputs in a custom ingest profile by skipping renditions if the source file does not meet certain conditions.'
+parent: Guides
+grandparent: Ingest Profiles API Legacy
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Limitations">Limitations</h2>
+    
+    <aside class="bcls-aside bcls-aside--information">Notes:
+    <ul>
+      <li class="language-editable">The conditional output settings described in this topic apply <strong>only</strong> to legacy ingest profiles, <strong>not</strong> to Dynamic Delivery or Context Aware Encoding profiles.</li>
+      <li class="language-editable">To use conditional outputs with Dynamic Delivery ingestion/transcoding, <a href="/node/18632">contact Brightcove Support</a>.</li>
+    </ul>
+    </aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="why_skip_renditions">Why skip renditions?</h2>
+    
+    <p>Skipping renditions is useful if the source videos you ingest vary widely in quality. This is often case, for example, for news organizations that use video captured by phones or other devices in the field.</p>
+    
+    <p>Without conditional outputs, the Dynamic Ingest system will created exactly as many renditions as are specified in the profile.</p>
+    
+    <p>For example, let's say you ingest a low-quality video (video bitrate around 820 kbps) using a profile that includes the following unconditional video renditions.</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Video Renditions</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Format</th>
+          <th>Audio Bitrate</th>
+          <th>Video Bitrate</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td style="text-align:center;">mp4</td>
+          <td style="text-align:center;">64</td>
+          <td style="text-align:center;">450</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">mp4</td>
+          <td style="text-align:center;">96</td>
+          <td style="text-align:center;">900</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">mp4</td>
+          <td style="text-align:center;">128</td>
+          <td style="text-align:center;">1700</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">HLS</td>
+          <td style="text-align:center;">64</td>
+          <td style="text-align:center;">450</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">HLS</td>
+          <td style="text-align:center;">96</td>
+          <td style="text-align:center;">700</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">HLS</td>
+          <td style="text-align:center;">96</td>
+          <td style="text-align:center;">900</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">HLS</td>
+          <td style="text-align:center;">96</td>
+          <td style="text-align:center;">1200</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">HLS</td>
+          <td style="text-align:center;">128</td>
+          <td style="text-align:center;">1700</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">HLS</td>
+          <td style="text-align:center;">128</td>
+          <td style="text-align:center;">2000</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <p>The resulting renditions in Studio would look something like this:</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="Renditions for Low Quality Video" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/guides/conditional-outputs/renditions-for-low-quality.png" />
+    <figcaption class="bcls-caption--image">Renditions for Low Quality Video</figcaption>
+    </figure>
+    
+    <p>Note that the last three (highlighted) HLS renditions are identical in bitrate, and that the bitrate is only marginally higher than the next best HLS rendition. Also note that the difference in the bitrates for two best MP4 renditions is small. The reason for this is that transcoding can never improve on the bitrate of the source, and the source here had an average bitrate of around 800 kbps, so renditions with higher specified bitrates end up with something in that range (you'll see small differences because of different ways that average bitrate is calculated for segmented and non-segmented video formats).</p>
+    <!-- <p>You might also note that the renditions all have exactly the same dimensions. These are in fact the dimensions of the source, which are smaller than those for any of the renditions specified in the profile. Video Cloud will never upsize a video during transcoding, because this would result in significant degradation of the visual quality.</p> -->
+    
+    <p>The last four renditions in the set, then, are essentially redundant, offering little if any improvement in quality over the "lower-quality" renditions, but they are created and stored anyway. This can be prevented by using conditional outputs that prevent a rendition from being generated if the source doesn't match the quality criteria you specify.</p>
+    
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that we have added conditional output settings to the <a href="/node/18041">Standard Profiles</a> and recommend that you use these profiles whenever possible.</aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Implementation">Implementation</h2>
+    
+    <p>You can add a <code>skip</code> object to some of the renditions. The <code>skip</code> object contains one or more conditions, and if these conditions are not met, the rendition will not be created.</p>
+    
+    <aside class="bcls-aside bcls-aside--information language-editable">Standard profiles will skip renditions automatically if the bitrate of the source video is lower than the specified bitrate for the rendition. If you want this behavior for custom profiles, you must add it in the way described in this topic.</aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Notes_on_usage">Notes on usage</h2>
+    
+    <ol>
+      <li class="language-editable">An ingest profile <strong>must</strong> include at least one non-skippable rendition - if you try to create a profile in which all renditions are skippable, you will receive an error.</li>
+      <li class="language-editable">You must insure that at least one rendition is created for every content type. For example:
+      <ul>
+        <li class="language-editable">If you create both audio-only and video renditions, you must have a non-skippable rendition for each</li>
+        <li class="language-editable">If you use DRM, you must have a non-skippable rendition for each format that works with that DRM type (Smooth, HLS, DASH, etc.)</li>
+      </ul>
+      </li>
+    </ol>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="syntax">Syntax</h2>
+    
+    <p>The syntax for the <code>skip</code> object you can add to a rendition specification is as follows:</p>
+    
+    <pre class="line-numbers">
+            <code class="language-json">"skip": {
+                "condition1": "value1",
+                "condition2": 1300,
+                ...etc
+            }</code></pre>
+    
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that numerical values should <strong>not</strong> be enclosed in quotation marks. This does <strong>not</strong> apply to size values such as "640x360".</aside>
+    
+    <h3>Example</h3>
+    
+    <pre class="line-numbers">
+            <code class="language-json">"renditions": [
+                {
+                  "media_type": "video",
+                  "reference_id": "ts1",
+                  "format": "ts",
+                  "type": "segmented",
+                  "audio_codec": "aac",
+                  "audio_bitrate": 96,
+                  "video_bitrate": 1200.
+                  "video_codec": "h264",
+                  "keyframe_rate": 0.5,
+                  "max_frame_rate": 30,
+                  "width": 1280,
+                  "height": 720,
+                  "h264_profile": "main",
+                  "skip": {
+                      "min_video_bitrate": 1000,
+                      "min_size": "640x360"
+                    }
+                },
+                ... etc
+            ]</code></pre>
+    
+    <p>For the profile (fragment) above, the rendition shown will be created <strong>only</strong> if the source video has a video bitrate of at least 1000 kbps and a frame size of at least 640px x 360px.</p>
+    
+    <aside class="bcls-aside bcls-aside--warning language-editable">An ingest profile <strong>must</strong> include at least one non-skippable rendition. If you try to create a profile in which every rendition contains a <code>skip</code> object, the Ingest Profiles API will return an error.</aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="skip_fields">Skip fields</h2>
+    
+    <p>Below are the fields (conditions) that can be used in the <code>skip</code> object:</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Skip Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>property</th>
+          <th>type</th>
+          <th>description</th>
+          <th>default</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td class="language-editable"><code>min_audio_bitrate</code></td>
+          <td class="language-editable">integer</td>
+          <td class="language-editable">the minimum audio bitrate that the source must have (kbps)</td>
+          <td class="language-editable">null</td>
+        </tr>
+        <tr>
+          <td class="language-editable"><code>max_audio_bitrate</code></td>
+          <td class="language-editable">integer</td>
+          <td class="language-editable">the maximum audio bitrate that the source must have (kbps)</td>
+          <td class="language-editable">null</td>
+        </tr>
+        <tr>
+          <td class="language-editable"><code>min_video_bitrate</code></td>
+          <td class="language-editable">integer</td>
+          <td class="language-editable">the minimum video bitrate that the source must have (kbps)</td>
+          <td class="language-editable">null</td>
+        </tr>
+        <tr>
+          <td class="language-editable"><code>max_video_bitrate</code></td>
+          <td class="language-editable">integer</td>
+          <td class="language-editable">the maximum video bitrate that the source must have (kbps)</td>
+          <td class="language-editable">null</td>
+        </tr>
+        <tr>
+          <td class="language-editable"><code>require_audio</code></td>
+          <td class="language-editable">boolean</td>
+          <td class="language-editable">the source must include an audio track</td>
+          <td class="language-editable">null</td>
+        </tr>
+        <tr>
+          <td class="language-editable"><code>require_video</code></td>
+          <td class="language-editable">boolean</td>
+          <td class="language-editable">the source must include a video track</td>
+          <td class="language-editable">null</td>
+        </tr>
+        <tr>
+          <td class="language-editable"><code>min_size</code></td>
+          <td class="language-editable">string of the form "widthxheight" (e.g. <code>"400x225"</code>)</td>
+          <td class="language-editable">the source must be at least this resolution</td>
+          <td class="language-editable">null</td>
+        </tr>
+        <tr>
+          <td class="language-editable"><code>max_size</code></td>
+          <td class="language-editable">string of the form "widthxheight" (e.g. <code>"1920x1080"</code>)</td>
+          <td class="language-editable">the source must be at most this resolution</td>
+          <td class="language-editable">null</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    </article>
+    

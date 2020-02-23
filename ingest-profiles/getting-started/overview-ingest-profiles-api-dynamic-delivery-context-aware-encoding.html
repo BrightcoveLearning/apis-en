@@ -1,0 +1,285 @@
+---
+title: 'Overview: Ingest Profiles API'
+description: 'In this topic, you will get an overview of the Ingest Profiles API. The Ingest Profiles API allows you to create, retrieve, update, and delete rendition profiles for your Video Cloud account.'
+parent: Getting Started
+grandparent: Ingest Profiles API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+<section class="bcls-section">
+<h2 id="Managing_Ingest_Profiles">Managing Ingest Profiles</h2>
+
+<p>Note that this version of the overview is for accounts that are enabled for <a href="/node/18476">Dynamic Delivery</a>. Those accounts may or may not also be enabled for <a href="/node/18353">Context Aware Encoding</a>. There is a separate overview for <a href="/node/18045">legacy ingest profiles</a>.</p>
+
+<p>Ingest profiles are used as a specification for transcoding when you upload or re-transcode videos. You can manage these profiles using the Ingest Profiles API.</p>
+
+<p>Also see the <a href="https://docs.brightcove.com/ingest-profiles-api/v1/doc/index.html">API Reference</a>.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note: you can also manage your ingest profiles through <a href="/node/15628">Studio</a>, and we recommend that you do that unless you are integrating Video Cloud with your own CMS.</aside>
+
+<aside class="bcls-aside bcls-aside--warning">If a user programmatically pulls a profile with the intent of updating that profile using the retrieved content, the user will need to sanitize the profile, removing things like "id" for renditions, but not the profile, and "version" should be removed entirely.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="glossary">Glossary of terms</h2>
+
+<dl>
+	<dt>Profile JSON</dt>
+	<dd>
+	<p>The term "profile JSON" below means the JSON representation of a profile object. They contain top-level profile fields and a collection of rendition objects as a list. See <a href="/node/18041">Standard Profiles</a> to see the JSON for the standard profiles included in every account and <a href="/node/18038">Content Security (DRM and HLSe)</a> for sample profiles that include DRM packaging.</p>
+	</dd>
+	<dt>Profile id</dt>
+	<dd>
+	<p>A <code>profile id</code> can be either the <code>id</code> or <code>name</code> top-level field in a profile. In this example (a fragment of a profile):</p>
+
+	<pre class="line-numbers">
+<code class="language-json">{
+		"id": "f1b16093e2dc4f81810f1488",
+		"version": 1,
+		"name": "multi-platform-extended-static",
+		"description": "Deliver high quality content for a wide range content types and screen sizes including mobile, desktop and large screens.", ...</code></pre>
+
+	<p>"multi-platform-extended-static" or "f1b16093e2dc4f81810f1488" are both valid profile ids. When you create a profile for the first time, you'll supply a profile with a name but without an id, and the response will contain the created profile including its id. You may then use either on any subsequent API call.</p>
+	</dd>
+	<dt>Reference id</dt>
+	<dd>
+	<p>A <code>reference_id</code> uniquely identifies a rendition within a profile. Reference ids are used for DRM packaging, and may be used for other purposes in the future. Aside from being unique within the profile, reference ids can be any string - it should not include spaces. We recommend using some scheme that will make it easy to identify the format of the rendition, for example: <code>mp4_1</code>, <code>mp4_2</code>, <code>hls1</code>, <code>hls2</code>, etc.</p>
+	</dd>
+	<dt>Profile version</dt>
+	<dd>
+	<p>A <code>version</code> is the revision number of a profile for an account. It is represented by a long integer value. Note: it is not quoted in the JSON representation.</p>
+	</dd>
+	<dt>Active profile</dt>
+	<dd>
+	<p>A profile is <code>active</code> if it can be used for uploads. For instance, if you update a profile, you get a new profile with an incremented version number which is active, and the old version becomes inactive.</p>
+	</dd>
+	<dt>Standard profile</dt>
+	<dd>
+	<p>A profile is <code>standard</code> if it is provided for use by Brightcove (i.e. it is not a custom profile specific to a single account).</p>
+	</dd>
+	<dt>Default profile</dt>
+	<dd>
+	<p>A profile is <code>default</code> if it's used when no profile is explicitly chosen. If you have no account configuration, or do not set a default profile in your configuration, one of the Brightcove <code>standard</code> profiles will be used in accordance with your account type.</p>
+	</dd>
+</dl>
+</section>
+
+<section class="bcls-section">
+<h2 id="serviceURL">Base URL</h2>
+
+<p>The service URL is:</p>
+
+<pre class="line-numbers">
+<code class="language-http">https://ingestion.api.brightcove.com/v1/</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="authorization">Authorization</h2>
+
+<p>Authorization for the API is via Brightcove's OAuth2 implementation. You will need client credentials (a client id and a client secret) that has permissions for the following operations on your account(s):</p>
+
+<ul>
+	<li><code>video-cloud/ingest-profiles/profile/read</code></li>
+	<li><code>video-cloud/ingest-profiles/profile/write</code></li>
+	<li><code>video-cloud/ingest-profiles/account/read</code></li>
+	<li><code>video-cloud/ingest-profiles/account/write</code></li>
+</ul>
+
+<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register an app:</p>
+
+<ul>
+	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+</ul>
+
+<p>You can also get your credentials via CURL or Postman - see:</p>
+
+<ul>
+	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+</ul>
+
+<p>You will use your client credentials to get access tokens that will allow you to make calls to the API. Access tokens are passed in an Authorization header:</p>
+
+<pre class="line-numbers">
+<code class="language-http">Authorization: Bearer {your_access_token}</code></pre>
+
+<p>See the <a href="/node/17928">Oauth Section</a> for more information.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Maximum_renditions">Maximum renditions</h2>
+
+<p>See <a href="/node/18513#How_many_renditions_can_a_profile_have">Ingest Profiles Best Practices</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="accountOperations">Account operations</h2>
+
+<p>At the account level, you can get all profiles for the account and create new ones.</p>
+
+<h3>Endpoint</h3>
+
+<pre class="line-numbers">
+<code class="language-http">/accounts/{account_id}/profiles</code></pre>
+
+<h3>Get all profiles</h3>
+
+<p>To get all profiles for the account (including <a href="/node/18041">standard profiles</a>), you submit a GET request to endpoint shown above.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="create_a_profile">Create a profile</h2>
+
+<p>To create a new profile, you submit a POST request to the endpoint shown above, including JSON data for the profile as the request body. See the <a href="https://docs.brightcove.com/ingest-profiles-api/v1/doc/index.html#api-Profile-Create_Ingest_Profile">API Reference</a> for details and sample request bodies, and the <a href="/node/18518">Profile Fields Reference</a> for the allowable fields.</p>
+</section>
+
+<section class="bcls-section">&nbsp;</section>
+
+<h2 id="create_live_profile">Create a Live profile</h2>
+
+<p>To create a custom ingest profile for Live, you simply need to specify HLS renditions with <code class="notranslate">live_stream</code> set to <code class="notranslate">true</code>:</p>
+
+<pre class="line-numbers">
+<code class="language-json notranslate">{
+  "media_type": "video",
+  "format": "ts",
+  "segment_seconds": 6,
+  "label": "hls1080p",
+  <span class="bcls-highlight">"live_stream": true,</span>
+  "video_codec": "h264",
+  "video_bitrate": 4000,
+  "keyframe_interval": 60,
+  "width": 1920,
+  "height": 1080,
+  "h264_profile": "high"
+}</code></pre>
+
+<p>Note that you should use only the legacy ingest <code class="notranslate">rendition</code> settings for Live profiles, <strong>not</strong> the <code class="notranslate">dynamic_origin</code> settings for Dynamic Delivery profiles.</p>
+
+<section class="bcls-section">
+<h2 id="singleProfileOperations">Single profile operations</h2>
+
+<p>For individual profiles, you can get the profile by name or id, replace a profile, and delete a profile.</p>
+
+<h3>Endpoint</h3>
+
+<pre class="line-numbers">
+<code class="language-http">/accounts/{account_id}/profiles/{profile_id}</code></pre>
+
+<p class="slide">For the <code>profile_id</code>, you can use <em>either</em> the:</p>
+
+<ul>
+	<li>name (e.g. multi-platform-standard-static)</li>
+	<li>generated id (e.g. f1b16093e2dc4f81810f1488)</li>
+</ul>
+
+<h3>Get a profile by id</h3>
+
+<p>To retrieve a single profile, make a GET request to the endpoint shown above.</p>
+
+<h3>Update a profile</h3>
+
+<p>To update a profile, make a PUT request to the endpoint above, including the <em>complete</em> JSON data for profile in the request body.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Note: the JSON for the updated profile <strong>must</strong> include the <code>id</code> property.</aside>
+
+<h3>Delete a profile</h3>
+
+<p>To delete a profile, make a DELETE request to the endpoint above.</p>
+
+<div class="BCL-aside">
+<p>This action is <strong>irreversible</strong></p>
+
+<aside class="bcls-aside bcls-aside--warning">You cannot update or delete any of the <a href="/node/18386">Standard Profiles</a> or default profiles (live).</aside>
+</div>
+
+<div class="bcls-section" id="defaultProfile">
+<h2>Default profile operations</h2>
+
+<p>You can get, set, or update the default video-on-demand and live video profiles for your account using the endpoint:</p>
+
+<pre class="line-numbers">
+<code class="language-http">/accounts/{account_id}/configuration</code></pre>
+
+<h3>Get the default profile</h3>
+
+<p>Retrieve the default profile for your account by making a GET request to endpoint above.</p>
+
+<p>If no default profile has been set, the system default profile will be returned.</p>
+
+<h3>Set the default profile</h3>
+
+<p>To set the default profile, make a POST request to the endpoint shown above, including the JSON in request body:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "account_id": {account_id},
+  "default_profile_id": {default_profile_id}
+}</code></pre>
+
+<p>For the <code>default_profile_id</code>, you can use either of the:</p>
+
+<ul>
+	<li>name (e.g. multi-platform-standard-static)</li>
+	<li>generated id (e.g. f1b16093e2dc4f81810f1488)</li>
+</ul>
+
+<h3>Update the default profile</h3>
+
+<p>To update the default profile, make a PUT request to the endpoint shown above, including this JSON in the request body:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "id": {configuration_id},
+  "account_id": {account_id},
+  "default_profile_id": {default_profile_id}
+}</code></pre>
+
+<p>Get the <code>configuration_id</code> from the response to a GET or POST request.</p>
+
+<h4>Setting the default live profile</h4>
+
+<p>Setting the default live profile is exactly the same as setting the default video-on-demand profile, except for this change in the request body:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "id": {configuration_id},
+  "account_id": {account_id},
+  <strong>"default_live_profile_id": {default_live_profile_id}</strong>
+}</code></pre>
+
+<h4>Setting the default social clipping profile</h4>
+
+<p>Setting the default social clipping profile is exactly the same as setting the default video-on-demand profile, except for this change in the request body:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "id": {configuration_id},
+  "account_id": {account_id},
+  <strong>"default_social_clipping_profile_id": {default_social_clipping_profile_id}</strong>
+}</code></pre>
+
+<h3>Notes:</h3>
+
+<ul>
+	<li>If you specify a non-existent profile, the request will fail</li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="sampleProfile">Sample Profile</h2>
+
+<p>The <a href="/node/18386">Standard Profiles</a> document will show you all the default profiles that currently exist for all Video Cloud accounts.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="watermarks">Watermarks</h2>
+
+<p>If you want to add watermarks (or a logo image) to your videos, <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
+
+<aside class="bcls-aside bcls-aside--information language-editable">Note that watermarks <strong>cannot</strong> be added to CAE profiles.</aside>
+</section>
+</article>

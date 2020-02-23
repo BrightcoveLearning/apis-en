@@ -1,21 +1,19 @@
 ---
 title: 'Overview: Ingest Profiles API'
-description: 'In this topic, you will get an overview of the Ingest Profiles API. The Ingest Profiles API allows you to create, retrieve, update, and delete rendition profiles for your Video Cloud account.'
-parent: Getting Started
-grandparent: Ingest Profiles API
+description: 'In this topic, you will get an overview of the Ingest Profiles API. The Ingest Profiles API allows you to create, retrieve, update, and delete rendition profiles for your Video Cloud account.
+<aside class="bcls-aside bcls-aside--information language-editable">Note that this guide is for the <strong>legacy ingest system</strong>; most customers are on the <strong><a href="/ingest-profiles/">Dynamic Delivery system</a></strong>.</aside>'
+parent: Code Samples
+grandparent: Ingest Profiles API Legacy
 ---
-
 <article class="bcls-article">
   <h1>{{ page.title }}</h1>
   <summary>{{ page.description }}</summary>
     <section class="bcls-section">
     <h2 id="Managing_Ingest_Profiles">Managing Ingest Profiles</h2>
     
-    <p>Note that this version of the overview is for accounts that are enabled for <a href="/node/18476">Dynamic Delivery</a>. Those accounts may or may not also be enabled for <a href="/node/18353">Context Aware Encoding</a>. There is a separate overview for <a href="/node/18045">legacy ingest profiles</a>.</p>
+    <aside class="bcls-aside bcls-aside--information">Note that this version of the overview is for accounts that are enabled for accounts using the legacy ingest system. Those accounts may or may not also be enabled for <a href="/node/18353">Context Aware Encoding</a>. There is a separate overview for <a href="/node/18526">Dynamic Delivery profiles</a>.</aside>
     
     <p>Ingest profiles are used as a specification for transcoding when you upload or re-transcode videos. You can manage these profiles using the Ingest Profiles API.</p>
-    
-    <p>Also see the <a href="https://docs.brightcove.com/ingest-profiles-api/v1/doc/index.html">API Reference</a>.</p>
     
     <aside class="bcls-aside bcls-aside--information">Note: you can also manage your ingest profiles through <a href="/node/15628">Studio</a>, and we recommend that you do that unless you are integrating Video Cloud with your own CMS.</aside>
     
@@ -36,12 +34,12 @@ grandparent: Ingest Profiles API
     
       <pre class="line-numbers">
     <code class="language-json">{
-        "id": "f1b16093e2dc4f81810f1488",
-        "version": 1,
-        "name": "multi-platform-extended-static",
-        "description": "Deliver high quality content for a wide range content types and screen sizes including mobile, desktop and large screens.", ...</code></pre>
+        "id": "5591b5ede4b0f7138939ad8c",
+        "version": 4,
+        "name": "screencast-1280",
+        "description": "A high resolution profile optimized for screencasts with 1280 x 720 resolution.", ...</code></pre>
     
-      <p>"multi-platform-extended-static" or "f1b16093e2dc4f81810f1488" are both valid profile ids. When you create a profile for the first time, you'll supply a profile with a name but without an id, and the response will contain the created profile including its id. You may then use either on any subsequent API call.</p>
+      <p>"screencast-1280" or "5591b5ede4b0f7138939ad8c" are both valid profile ids. When you create a profile for the first time, you'll supply a profile with a name but without an id, and the response will contain the created profile including its id. You may then use either on any subsequent API call.</p>
       </dd>
       <dt>Reference id</dt>
       <dd>
@@ -111,8 +109,14 @@ grandparent: Ingest Profiles API
     <section class="bcls-section">
     <h2 id="Maximum_renditions">Maximum renditions</h2>
     
-    <p>See <a href="/node/18513#How_many_renditions_can_a_profile_have">Ingest Profiles Best Practices</a>.</p>
+    <p>The maximum number of renditions that you can define in an ingest profile is 25. If you define more than that number, the request will return an error 409 response: profile rendition count exceeds configured rendition limit.</p>
+    
+    <aside class="bcls-aside bcls-aside--warning">If you include image renditions for the poster (video still) and thumbnail, these count as two of the maximum twenty five renditions.</aside>
     </section>
+    
+    <h2 id="conditional_outputs">Conditional outputs</h2>
+    
+    <p>If the videos you ingest vary widely in quality - for example, your videos might include user-generated content created on phones with low-quality cameras - you may wish to make the generation of some renditions conditional on the bitrate or some other property of the source video. This will prevent the creation and storage of redundant renditions. See <a href="/node/18040">Conditional Outputs</a> for details on how to do this.</p>
     
     <section class="bcls-section">
     <h2 id="accountOperations">Account operations</h2>
@@ -127,36 +131,11 @@ grandparent: Ingest Profiles API
     <h3>Get all profiles</h3>
     
     <p>To get all profiles for the account (including <a href="/node/18041">standard profiles</a>), you submit a GET request to endpoint shown above.</p>
+    
+    <h3>Create a profile</h3>
+    
+    <p>To create a new profile, you submit a POST request to the endpoint shown above, including JSON data for the profile as the request body. See the <a href="#sampleProfile">sample profile</a> below for an example of the JSON data, and the <a href="/node/18043">Profile Fields Reference</a> for the allowable fields.</p>
     </section>
-    
-    <section class="bcls-section">
-    <h2 id="create_a_profile">Create a profile</h2>
-    
-    <p>To create a new profile, you submit a POST request to the endpoint shown above, including JSON data for the profile as the request body. See the <a href="https://docs.brightcove.com/ingest-profiles-api/v1/doc/index.html#api-Profile-Create_Ingest_Profile">API Reference</a> for details and sample request bodies, and the <a href="/node/18518">Profile Fields Reference</a> for the allowable fields.</p>
-    </section>
-    
-    <section class="bcls-section">&nbsp;</section>
-    
-    <h2 id="create_live_profile">Create a Live profile</h2>
-    
-    <p>To create a custom ingest profile for Live, you simply need to specify HLS renditions with <code class="notranslate">live_stream</code> set to <code class="notranslate">true</code>:</p>
-    
-    <pre class="line-numbers">
-    <code class="language-json notranslate">{
-      "media_type": "video",
-      "format": "ts",
-      "segment_seconds": 6,
-      "label": "hls1080p",
-      <span class="bcls-highlight">"live_stream": true,</span>
-      "video_codec": "h264",
-      "video_bitrate": 4000,
-      "keyframe_interval": 60,
-      "width": 1920,
-      "height": 1080,
-      "h264_profile": "high"
-    }</code></pre>
-    
-    <p>Note that you should use only the legacy ingest <code class="notranslate">rendition</code> settings for Live profiles, <strong>not</strong> the <code class="notranslate">dynamic_origin</code> settings for Dynamic Delivery profiles.</p>
     
     <section class="bcls-section">
     <h2 id="singleProfileOperations">Single profile operations</h2>
@@ -168,11 +147,11 @@ grandparent: Ingest Profiles API
     <pre class="line-numbers">
     <code class="language-http">/accounts/{account_id}/profiles/{profile_id}</code></pre>
     
-    <p class="slide">For the <code>profile_id</code>, you can use <em>either</em> the:</p>
+    <p class="slide">For the <code>profile_id</code>, you can use either the:</p>
     
     <ul>
-      <li>name (e.g. multi-platform-standard-static)</li>
-      <li>generated id (e.g. f1b16093e2dc4f81810f1488)</li>
+      <li class="slide">name (e.g. balanced-high-definition)</li>
+      <li class="slide">generated id (e.g. 54de14cce4b0a6d2bf9cb08a)</li>
     </ul>
     
     <h3>Get a profile by id</h3>
@@ -192,7 +171,7 @@ grandparent: Ingest Profiles API
     <div class="BCL-aside">
     <p>This action is <strong>irreversible</strong></p>
     
-    <aside class="bcls-aside bcls-aside--warning">You cannot update or delete any of the <a href="/node/18386">Standard Profiles</a> or default profiles (live).</aside>
+    <aside class="bcls-aside bcls-aside--warning">You cannot update or delete any of the <a href="/node/18041">Standard Profiles</a> or default profiles (video-on-demand or live).</aside>
     </div>
     
     <div class="bcls-section" id="defaultProfile">
@@ -222,8 +201,8 @@ grandparent: Ingest Profiles API
     <p>For the <code>default_profile_id</code>, you can use either of the:</p>
     
     <ul>
-      <li>name (e.g. multi-platform-standard-static)</li>
-      <li>generated id (e.g. f1b16093e2dc4f81810f1488)</li>
+      <li class="slide">name (e.g. balanced-high-definition)</li>
+      <li class="slide">generated id (e.g. 54de14cce4b0a6d2bf9cb08a)</li>
     </ul>
     
     <h3>Update the default profile</h3>
@@ -250,17 +229,6 @@ grandparent: Ingest Profiles API
       <strong>"default_live_profile_id": {default_live_profile_id}</strong>
     }</code></pre>
     
-    <h4>Setting the default social clipping profile</h4>
-    
-    <p>Setting the default social clipping profile is exactly the same as setting the default video-on-demand profile, except for this change in the request body:</p>
-    
-    <pre class="line-numbers">
-    <code class="language-json">{
-      "id": {configuration_id},
-      "account_id": {account_id},
-      <strong>"default_social_clipping_profile_id": {default_social_clipping_profile_id}</strong>
-    }</code></pre>
-    
     <h3>Notes:</h3>
     
     <ul>
@@ -272,15 +240,58 @@ grandparent: Ingest Profiles API
     <section class="bcls-section">
     <h2 id="sampleProfile">Sample Profile</h2>
     
-    <p>The <a href="/node/18386">Standard Profiles</a> document will show you all the default profiles that currently exist for all Video Cloud accounts.</p>
+    <p>The <a href="/node/18041">Standard Profiles</a> document will show you all the default profiles that currently exist for all Video Cloud accounts.</p>
     </section>
     
     <section class="bcls-section">
     <h2 id="watermarks">Watermarks</h2>
     
-    <p>If you want to add watermarks (or a logo image) to your videos, <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
+    <p>If you want to add watermarks (or a logo image) to your videos, you can use the watermark fields in your ingest profile.</p>
     
-    <aside class="bcls-aside bcls-aside--information language-editable">Note that watermarks <strong>cannot</strong> be added to CAE profiles.</aside>
+    <aside class="bcls-aside bcls-aside--information">Note that these fields must be added to each video rendition.</aside>
+    
+    <p>Here is an example of a rendition profile with watermarks:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">...
+    "renditions": [
+        {
+          "media_type": "video",
+          "id": "559697ece4b072e9641b8404",
+          "reference_id": "mp0",
+          "format": "mp4",
+          "audio_codec": "aac",
+          "audio_bitrate": 64,
+          "video_codec": "h264",
+          "speed": 3,
+          "video_bitrate": 450,
+          "decoder_bitrate_cap": 771,
+          "decoder_buffer_size": 1028,
+          "keyframe_rate": 0.5,
+          "max_frame_rate": 30,
+          "width": 480,
+          "height": 270,
+          "h264_profile": "baseline",
+          "watermarks": [
+            {
+              "y": "70%",
+              "width": "20%",
+              "url": "http://learning-services-media.brightcove.com/images/bc_logo.png"
+            }
+          ]
+      }, ...</code></pre>
+    
+    <p>See the <a href="/node/17865#bc-ipnav-0">Watermark Fields Reference</a> for a complete explanation of the fields.</p>
+    
+    <p>Here is a sample video with a logo image added as a watermark:</p>
+    
+    <figure>
+    <figcaption>Watermark Sample</figcaption>
+    
+    <div style="display: block; position: relative; max-width: 480px;">
+    <div style="padding-top: 56.25%;"><iframe src="//players.brightcove.net/1752604059001/SJ11bz2Bg_default/index.html?videoId=5355503007001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" style="width: 100%; height: 100%; position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;"></iframe></div>
+    </div>
+    </figure>
     </section>
     </article>
     

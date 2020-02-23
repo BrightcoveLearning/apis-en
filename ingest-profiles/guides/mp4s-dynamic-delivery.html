@@ -1,0 +1,42 @@
+---
+title: 'MP4s in Dynamic Delivery'
+description: 'This topic provides an overview of defining MP4 renditions in you Dynamic Delivery ingest profiles.'
+parent: Guides
+grandparent: Ingest Profiles API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>Prior to June 20, 2018, Dynamic Delivery automatically added two fixed MP4 renditions to every Dynamic Delivery ingest job. These MP4s could not be modified or removed at any level. As more customers started adopting Dynamic Delivery, we realized that this did not provide the level of flexibility that you require. Therefore, we developed a feature that allows you to modify your ingest profiles to have complete control over the MP4s created for your content. To view details on how to modify the MP4s in your ingest profile, please see <a href="/node/16840">Creating Ingest Profiles for Dynamic Delivery</a>.</p>
+
+<aside class="bcls-aside bcls-aside--information language-editable">Note that while is possible to create a profile that will generate <strong>only</strong> MP4 renditions, if you ingest videos using that profile, thumbnail and poster images will <strong>not</strong> be captured during transcoding.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="faq">FAQs</h2>
+
+<dl>
+	<dt class="bcls-question">Do I need to create MP4 renditions?</dt>
+	<dd class="bcls-answer">
+	<p>For many years, MP4s were the format of choice for online media. However, as streaming technologies have matured, MP4s have fallen out of favor and have been largely replaced by segmented media types. However, there are still two main use cases where MP4s are common.</p>
+
+	<ol>
+		<li>Downloadable Content: A key reason you may still need MP4s is if you need to provide a downloadable file format. This can be in the form of a download link on your webpage or an RSS feed to syndicate to third parties. (Note: The offline viewing feature of the Brightcove SDKs does not require MP4s.)</li>
+		<li>Streaming to Legacy Devices: Older devices such as Android 4.x and prior as well as Internet Explorer 11 on Windows 7 without Flash require MP4s for “streaming” via progressive download.</li>
+	</ol>
+
+	<p>If either of these use cases are important to you, we recommend including one or more MP4 renditions in your ingest profile.</p>
+	</dd>
+	<dt class="bcls-question">Can I add MP4 renditions to Context Aware Encoding profiles?</dt>
+	<dd class="bcls-answer">Yes, see <a href="/node/18353#Adding_mp4_renditions">Context Aware Encoding</a> for details.</dd>
+	<dt class="bcls-question">Why aren’t MP4s created out of the just in time packager?</dt>
+	<dd class="bcls-answer">We evaluated both options and came to the conclusion that creating separate MP4s is a better option. Often the encoding needs of progressive MP4 (pMP4) renditions are different from those of fragmented MP4 (fMP4) streaming renditions. For example, with dynamic renditions we require keyframes to be placed every one second. However, for non-streaming content, keyframes can be placed further apart without degrading playback quality.</dd>
+	<dt class="bcls-question">What if I want to create a progressive MP4 rendition with settings that don’t match one of the default renditions?</dt>
+	<dd class="bcls-answer">Please <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a> and someone from our team will help you create a custom rendition.</dd>
+</dl>
+</section>
+</article>

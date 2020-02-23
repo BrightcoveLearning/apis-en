@@ -1,0 +1,92 @@
+---
+title: 'Get All Profiles for an Account'
+description: 'This sample shows you how to retrieve all the Ingest Profiles for an account, and also filter out some the items you may not want to display.'
+parent: Code Samples
+grandparent: Ingest Profiles API
+---
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+    
+    <aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
+    
+    <p>Getting all the ingest profiles for an account is straightforward - it is just a simple call to the API. What is less straightforward is what you do with them. If you are going to display the profiles to users in some kind of app to select when they are ingesting videos, there are some potential issues you need to be aware of and deal with. These issues revolve around that fact that Brightcove is in the process of migrating all accounts from <a href="/node/18045">the legacy ingest system</a> to the new <a href="/node/18526">Dynamic Delivery</a>. You can read all about the advantages of the Dynamic Delivery system in <a href="/node/18476">this overview</a>; what is important here are the implications for older accounts.</p>
+    
+    <ul>
+      <li>For accounts created before November, 2017, the account was originally set up for <a href="/node/18045">the legacy ingest system</a></li>
+      <li>If the account <em>has not</em> yet been converted to Dynamic Delivery, Dynamic Delivery profiles are still set up for the account and the Ingest Profiles API will return them. If users attempt to use these profiles when using the Dynamic Ingest API, an error will be returned.</li>
+      <li>If the account <em>has</em> been converted to Dynamic Delivery, but legacy ingest was not disabled, legacy ingest profiles will still be returned; these should generally not be used, and <strong>cannot</strong> be used for operations on videos that have been converted to Dynamic Delivery.</li>
+      <li>If you get back legacy ingest profiles, in addition the current ones, you will get back a number of <em>obsolete</em> profiles that were kept in the system because some customers were still using them. These should <strong>never</strong> be used.</li>
+      <li>The legacy profiles also may include up to 3 profiles for live streaming, which generally should not be used for ingesting VOD content.</li>
+      <li>Finally, for accounts that are configured for Dynamic Delivery only, there are two kinds of Dynamic Delivery profiles that may be returned:
+      <ul>
+        <li>"static" profiles - the ordinary kind with a fixed set of renditions</li>
+        <li>"dynamic" profiles that use <a href="/node/18505">Context Aware Encoding (CAE)</a> to automatically determine the optimum set of renditions to create within constraints set in the profile.</li>
+      </ul>
+      </li>
+    </ul>
+    
+    <p>The purpose of this sample is to show you both how to retrieve the account profiles and filter the results for the different types, and for custom profiles that have been created in the account.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+    
+    <div class="bcls-expander-content">
+    <p>To use the Ingest Profiles API you will need proper credentials.</p>
+    
+    <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all Ingest Profiles API operation:</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="Ingest Profiles API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/ingest-profiles-permissions.png" />
+    <figcaption class="bcls-caption--image">Ingest Profiles API Permissions</figcaption>
+    </figure>
+    
+    <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the Ingest Profiles API:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json">"operations": [
+      "video-cloud/ingest-profiles/profile/read",
+      "video-cloud/ingest-profiles/profile/write",
+      "video-cloud/ingest-profiles/account/read",
+      "video-cloud/ingest-profiles/account/write"
+    ]</code></pre>
+    
+    <ul>
+      <li><a href="/node/18521">OAuth API Sample: Create Client Credentials</a></li>
+      <li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
+      <li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+    </ul>
+    </div>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="the_app">The app</h2>
+    Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18562-ingest-profiles-api-sample-get-all-profiles-account">GitHub repository</a>.
+    
+    <p data-height="1200" data-theme-id="34967" data-slug-hash="MVymGr" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="Ingest Profiles API Sample: Get All Profiles for an Account" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/MVymGr/">Ingest Profiles API Sample: Get All Profiles for an Account</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
+    
+    <section class="bcls-section">
+    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+    
+    <div class="bcls-expander-content">
+    <p>Here are some tips to effectively use the above CodePen:</p>
+    
+    <ul>
+      <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+      <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+      <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18562-ingest-profiles-api-sample-get-all-profiles-account">GitHub repository</a>.</li>
+    </ul>
+    </div>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="proxy">Proxy code</h2>
+    
+    <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/node/18132">Using the REST APIs</a>.</p>
+    </section>
+    </article>
+    
