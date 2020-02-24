@@ -1,0 +1,132 @@
+---
+title: 'Get an Access Token'
+description: 'This sample retrieves an access token from the Brightcove OAuth API from a web app, sending the request through a proxy.'
+parent: Code Samples
+grandparent: OAuth API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>Getting access tokens is a crucial operation for most work with the Brightcove APIs, as the majority of them use access tokens to authenticate requests.</p>
+    
+    <p>For a full explanation of access tokens, see <a href="/node/17928">how the Brightcove OAuth service works</a> and <a href="/node/17925">Getting Access Tokens</a>.</p>
+    
+    <p>This sample shows you how to get an access token from a web app. Because the OAuth API is not CORS-enabled and requests must be made from the server side, the app sends information to a proxy, which then makes the api request and sends the response back to the client. The proxy here is written in PHP, but any server-side language will do - you just need to be able to send a POST request to the app over the internet.</p>
+    
+    <aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
+    
+    <div class="bcls-expander-content">
+    <p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+    
+    <ul>
+      <li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+    </ul>
+    
+    <p>These choose the permissions you will need for the API you are going to use:</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="API Permissions" src="//learning-services-media.brightcove.com/doc-assets/node/18520-oauth-api-sample-get-access-token/api-permissions.png" />
+    <figcaption class="bcls-caption--image">API Permissions</figcaption>
+    </figure>
+    
+    <p>You can also get your credentials via CURL or Postman - see:</p>
+    
+    <ul>
+      <li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+      <li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+    </ul>
+    
+    <p>If you are getting credentials directly from the OAuth API, see <a href="/node/17922">API Operations for Client Credentials Requests</a> for the permissions you need for different API operations.</p>
+    </div>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="get_access_token_app">Get access token app</h2>
+    
+    <p>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18520-oauth-api-sample-get-access-token">GitHub repository</a>.</p>
+    
+    <p data-height="800" data-theme-id="34967" data-slug-hash="LmxBMG" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="OAuth API Sample: Get an Access Token" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/LmxBMG/">OAuth API Sample: Get an Access Token</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
+    
+    <section class="bcls-section">
+    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+    
+    <div class="bcls-expander-content">
+    <p>Here are some tips to effectively use the above CodePen:</p>
+    
+    <ul>
+      <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+      <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+      <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18520-oauth-api-sample-get-access-token">GitHub repository</a>.</li>
+    </ul>
+    </div>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="proxy">Proxy code</h2>
+    
+    <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A version of the proxy code without the origin restrictions is shown below.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-php">&lt;?php
+    /**
+     * access-token-proxy.php - proxy for Brightcove RESTful APIs
+     * gets an access token and returns it
+     * Accessing:
+     *         (note you should *always* access the proxy via HTTPS)
+     *     Method: POST
+     *
+     * @post {string} client_id - OAuth2 client id with sufficient permissions for the request
+     * @post {string} client_secret - OAuth2 client secret with sufficient permissions for the request
+     *
+     * @returns {string} $response - JSON response received from the OAuth API
+     */
+    
+    
+    // CORS enablement and other headers
+    header("Access-Control-Allow-Origin: *");
+    header("Content-type: application/json");
+    header("X-Content-Type-Options: nosniff");
+    header("X-XSS-Protection");
+    
+    // note that if you are using this proxy for a single credential
+    // you can just hardcode the client id and secret below instead of passing them
+    
+    $client_id     = $_POST["client_id"];
+    $client_secret = $_POST["client_secret"];
+    $auth_string   = "{$client_id}:{$client_secret}";
+    $request       = "https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials";
+    $ch            = curl_init($request);
+    curl_setopt_array($ch, array(
+            CURLOPT_POST           =&gt; TRUE,
+            CURLOPT_RETURNTRANSFER =&gt; TRUE,
+            CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+            CURLOPT_USERPWD        =&gt; $auth_string,
+            CURLOPT_HTTPHEADER     =&gt; array(
+                'Content-type: application/x-www-form-urlencoded',
+            )
+        ));
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    // Check for errors
+    if ($response === FALSE) {
+        die(curl_error($ch));
+        echo 'An error occurred';
+    } else {
+      echo $response;
+    }
+    
+    ?&gt;
+    </code></pre>
+    </section>
+    </article>
+    
