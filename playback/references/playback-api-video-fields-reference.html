@@ -1,0 +1,602 @@
+---
+title: 'Video Fields Reference'
+description: 'This is a reference to video fields returned by the Playback API.'
+parent: References
+grandparent: Playback API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Primary_fields">Primary fields</h2>
+    
+    <table class="bcls-table">
+      <caption>Table 1: Primary Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>id</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The video id</td>
+        </tr>
+        <tr>
+          <td><code>account_id</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The id of the account</td>
+        </tr>
+        <!-- <tr>
+            <td>allow_viral_syndication</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>whether social sharing is allowed for this video</td>
+        </tr> -->
+        <tr>
+          <td><code>created_at</code></td>
+          <td>ISO 8601 date-time String</td>
+          <td>none</td>
+          <td>The date-time a video was added to the account; example: "2014-12-09T06:07:11.877Z"</td>
+        </tr>
+        <tr>
+          <td><code>cue_points</code></td>
+          <td>Array of <a href="#cue_point_Object">cue_point Objects</a></td>
+          <td>empty array</td>
+          <td>Markers for midroll ad requests or some other action to be created via the player API</td>
+        </tr>
+        <tr>
+          <td><code>custom_fields</code></td>
+          <td>Object</td>
+          <td>Empty object</td>
+          <td>Map of custom field name:value pairs; only fields that have values are included</td>
+        </tr>
+        <tr>
+          <td><code>description</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>The short description of the video - 250 single-byte characters maximum</td>
+        </tr>
+        <tr>
+          <td><code>duration</code></td>
+          <td>Number</td>
+          <td>null</td>
+          <td>Length of the video in milliseconds</td>
+        </tr>
+        <tr>
+          <td><code>economics</code></td>
+          <td>String</td>
+          <td><code>AD_SUPPORTED</code></td>
+          <td>Indicates whether ad requests are permitted for the video. Values: <code>AD_SUPPORTED</code> or <code>FREE</code></td>
+        </tr>
+        <!-- <tr>
+            <td>geo</td>
+            <td><a href="#geo">geo object</a></td>
+            <td>see <a href="#geo">geo object</a></td>
+            <td>if geo-restriction is enabled for the account<sup class="once-red"><strong><a href="#note1-3">[1-3]</a></strong></sup>, this object will contain geo-restriction properties for the video</td>
+        </tr> -->
+        <tr>
+          <td><code>link</code></td>
+          <td><a href="#link_Object">link Object</a></td>
+          <td>null</td>
+          <td>A related link</td>
+        </tr>
+        <tr>
+          <td><code>long_description</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>5000 single-byte characters maximum</td>
+        </tr>
+        <tr>
+          <td><code>name</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>Video title - required field (256 single-byte characters maximum)</td>
+        </tr>
+        <tr>
+          <td><code>poster</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Poster image URL</td>
+        </tr>
+        <tr>
+          <td><code>published_at</code></td>
+          <td>ISO 8601 date-time String</td>
+          <td>none</td>
+          <td>The date-time a video was published; example: "2014-12-09T06:07:11.877Z"</td>
+        </tr>
+        <tr>
+          <td><code>reference_id</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Any value that is unique within the account (150 single-byte characters maximum)</td>
+        </tr>
+        <!-- <tr>
+            <td>schedule</td>
+            <td><a href="#schedule">schedule object</a></td>
+            <td>see <a href="#schedule">schedule object</a></td>
+            <td>When video becomes available/unavailable<sup class="once-red"><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+        </tr> --><!-- <tr>
+            <td>sharing</td>
+            <td><a href="#sharing">sharing object</a></td>
+            <td>see <a href="#sharing">sharing object</a></td>
+            <td>information about the account the video was shared from or to</td>
+        </tr> --><!-- <tr>
+            <td>state</td>
+            <td>string</td>
+            <td>none</td>
+            <td>current status of the video: ACTIVE | INACTIVE | PENDING | DELETED</td>
+        </tr> -->
+        <tr>
+          <td><code>sources</code></td>
+          <td>Array</td>
+          <td>Empty Array</td>
+          <td>Array of <a href="#source_Object">video source Objects</a></td>
+        </tr>
+        <tr>
+          <td><code>tags</code></td>
+          <td>Array</td>
+          <td>Empty Array</td>
+          <td>Array of tags (strings) added to the video (128 single-byte characters per tag maximum)</td>
+        </tr>
+        <tr>
+          <td><code>text_tracks</code></td>
+          <td>Array of <a href="#text_track_Object">text_track Objects</a></td>
+          <td>Empty Array</td>
+          <td>Data for WebVTT captions associated with the video</td>
+        </tr>
+        <tr>
+          <td><code>thumbnail</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>The thumbnail image URL</td>
+        </tr>
+        <tr>
+          <td><code>updated_at</code></td>
+          <td>ISO 8601 date-time String</td>
+          <td>none</td>
+          <td>The date-time a video was last modified;<sup class="once-red"><strong><a href="#note1-2">[1-2]</a></strong></sup> example: "2015-01-13T17:45:21.977Z"</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3>Notes</h3>
+    
+    <ul>
+      <li class="bcls-footnote" id="note1-2"><sup class="once-red"><strong>[1-2]</strong></sup> The modification may have been made by a user or the Video Cloud system</li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="source_Object">source Object</h2>
+    
+    <table class="bcls-table">
+      <caption>Table 2: source Object Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>asset_id</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The rendition id in Video Cloud</td>
+        </tr>
+        <tr>
+          <td><code>app_name</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The RTMP address for RTMP streams</td>
+        </tr>
+        <tr>
+          <td><code>avg_bitrate</code></td>
+          <td>Integer</td>
+          <td>none</td>
+          <td>Average bitrate for the rendition</td>
+        </tr>
+        <tr>
+          <td><code>codec</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The video codec</td>
+        </tr>
+        <tr>
+          <td><code>container</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The video container type</td>
+        </tr>
+        <tr>
+          <td><code>duration</code></td>
+          <td>Integer</td>
+          <td>none</td>
+          <td>The duration in milliseconds</td>
+        </tr>
+        <tr>
+          <td><code>key_systems</code></td>
+          <td>Object</td>
+          <td>none</td>
+          <td><a href="#key_systems_Object">DRM specification Object</a> - If this Object is defined, then its source is content protected</td>
+        </tr>
+        <tr>
+          <td><code>size</code></td>
+          <td>Integer</td>
+          <td>none</td>
+          <td>The size in bytes</td>
+        </tr>
+        <tr>
+          <td><code>src</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The source URL</td>
+        </tr>
+        <tr>
+          <td><code>stream_name</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The stream name for RTMP streams</td>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>Video MIME type that defines the communication protocol used - values:
+          <ul>
+            <li>HLS: <code>application/x-mpegURL</code></li>
+            <li>HLS: <code>application/vnd.apple.mpegurl</code></li>
+            <li>DASH: <code>application/dash+xml</code></li>
+            <li>MP4: <code>video/mp4</code></li>
+          </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><code>width</code></td>
+          <td>Integer</td>
+          <td>none</td>
+          <td>Pixel width of the rendition</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="cue_point_Object">cue_point Object</h2>
+    
+    <table class="bcls-table">
+      <caption>Table 3: Cue Point Object Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>id</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The cue point id</td>
+        </tr>
+        <tr>
+          <td><code>name</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Optional name for the cue point (128 single-byte characters maximum)</td>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>String</td>
+          <td><code>AD</code></td>
+          <td>Values: <code>AD</code> or <code>CODE</code></td>
+        </tr>
+        <tr>
+          <td><code>time</code></td>
+          <td>Number</td>
+          <td>none</td>
+          <td>Time of the cue point in seconds; example: 10.527</td>
+        </tr>
+        <tr>
+          <td><code>metadata</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Optional metadata string (512 single-byte characters maximum)</td>
+        </tr>
+        <tr>
+          <td><code>force-stop</code></td>
+          <td>Boolean</td>
+          <td><code>false</code></td>
+          <td>Whether video is force-stopped at the cue point</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    <!-- <div class="bcls-section" id="image">
+      <h2>image object</h2>
+      <table class="bcls-table">
+          <caption>Table 4: Image Object Fields</caption>
+          <thead class="bcls-table__head">
+              <tr>
+                  <th>Field</th>
+                  <th>Type</th>
+                  <th>Read-only</th>
+                  <th>Default</th>
+                  <th>Description</th>
+              </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+              <tr>
+                  <td>asset_id</td>
+                  <td>string</td>
+                  <td>null</td>
+                  <td>System-generated id for the image</td>
+              </tr>
+              <tr>
+                  <td>src</td>
+                  <td>string</td>
+                  <td>null</td>
+                  <td>URL for image</td>
+              </tr>
+              <tr>
+                  <td>sources</td>
+                  <td>array of image sources objects</td>
+                  <td>null</td>
+                  <td>Array of <a href="#image_sources">image sources</a> objects</td>
+              </tr>
+          </tbody>
+      </table>
+    </div> --><!-- <div class="bcls-section" id="image_sources">
+      <h2>image sources object</h2>
+      <table class="bcls-table">
+          <caption>Table 5: Image Sources Object</caption>
+          <thead class="bcls-table__head">
+              <tr>
+                  <th>Field</th>
+                  <th>Type</th>
+                  <th>Read-only</th>
+                  <th>Default</th>
+                  <th>Description</th>
+              </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+              <tr>
+                  <td>asset_id</td>
+                  <td>string</td>
+                  <td>null</td>
+                  <td>system-generated id for this image source</td>
+              </tr>
+              <tr>
+                  <td>src</td>
+                  <td>string</td>
+                  <td>null</td>
+                  <td>URL for this image source</td>
+              </tr>
+              <tr>
+                  <td>height</td>
+                  <td>number</td>
+                  <td>null</td>
+                  <td>Height of the image source in pixels</td>
+              </tr>
+              <tr>
+                  <td>width</td>
+                  <td>number</td>
+                  <td>null</td>
+                  <td>Width of the image source in pixels</td>
+              </tr>
+          </tbody>
+      </table>
+    </div> -->
+    
+    <section class="bcls-section">
+    <h2 id="link_Object">link Object</h2>
+    
+    <table class="bcls-table">
+      <caption>Table 4: link Object Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>text</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Display text for the link</td>
+        </tr>
+        <tr>
+          <td><code>url</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>URL for the link</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    <!-- <div class="bcls-section" id="sharing">
+        <h2>sharing object</h2>
+        <table class="bcls-table">
+        <caption>Table 8: Sharing Object Fields</caption>
+            <thead class="bcls-table__head">
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Read-only</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody class="bcls-table__body">
+                <tr>
+                    <td>by_external_acct</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td>whether the video was shared from another account</td>
+                </tr>
+                <tr>
+                    <td>by_id</td>
+                    <td>string</td>
+                    <td>null</td>
+                    <td>id of the account that shared the video - <strong>note that this field is populated only for the shared copy, not for the original video</strong></td>
+                </tr>
+                <tr>
+                    <td>source_id</td>
+                    <td>string</td>
+                    <td>null</td>
+                    <td>id of the video in its original account - <strong>note that this field is populated only for the shared copy, not for the original video</strong></td>
+                </tr>
+                <tr>
+                    <td>to_external_acct</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td>whether the video is shared to another account</td>
+                </tr>
+                <tr>
+                    <td>by_reference</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td>whether the video is shared by reference<sup class="once-red"><strong><a href="#8-1">[8-1]</a></strong></sup></td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Notes</h3>
+        <li class="bcls-footnote" id="8-1"><sup class="once-red"><strong>[8-1]</strong></sup> When a video is shared by reference, replacing or retranscoding the video in the original account will automatically update the renditions in the shared-to account</li>
+    </div> -->
+    
+    <section class="bcls-section">
+    <h2 id="text_track_Object">text_track Object</h2>
+    
+    <table class="bcls-table">
+      <caption>Table 5: Text Track Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>src</code></td>
+          <td>String (URL)</td>
+          <td>null</td>
+          <td>URL where the .vtt file resides</td>
+        </tr>
+        <tr>
+          <td><code>srclang</code></td>
+          <td><a href="http://loc.gov/standards/iso639-2/php/code_list.php">ISO-639-1 language code</a></td>
+          <td>null</td>
+          <td>Language for the captions</td>
+        </tr>
+        <tr>
+          <td><code>label</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>The label to be used in the player menu - it should be in the same language as the captions</td>
+        </tr>
+        <tr>
+          <td><code>kind</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>The only value currently supported is <code>captions</code></td>
+        </tr>
+        <tr>
+          <td><code>mime_type</code></td>
+          <td>Strings</td>
+          <td>null</td>
+          <td>The mime_type of the captions<sup class="once-red"><strong><a href="#note9-1">[9-1]</a></strong></sup></td>
+        </tr>
+        <tr>
+          <td><code>default</code></td>
+          <td>Boolean</td>
+          <td><code>false</code></td>
+          <td>Setting this to true makes this the default captions file in the player menu</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3>Notes</h3>
+    
+    <ul>
+      <li class="bcls-footnote" id="note9-1"><sup class="once-red"><strong>[9-1]</strong></sup> Setting the mime_type is optional, but the captions should be UTF-8 encoded and have a mime_type of "text/vtt"</li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="key_systems_Object">key_systems Object</h2>
+    
+    <p>The key_systems object contains a list of objects, one for each DRM key name. If this object is defined, then its source is content protected.</p>
+    
+    <table class="bcls-table">
+      <caption>Table 4: key_systems Object</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><em>key name</em></td>
+          <td>Object</td>
+          <td>null</td>
+          <td>Name of the Object which specifies the DRM type – valid keys include:<br />
+          <br />
+          * FairPlay: <code>com.apple.fps.1_0</code><br />
+          * PlayReady: <code>com.microsoft.playready</code><br />
+          * Widevine: <code>com.widevine.alpha</code></td>
+        </tr>
+        <tr>
+          <td>FairPlay uses <code>key_request_url</code> and <code>certificate_url</code><br />
+          others use <code>license_url</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>URL for where your DRM license or certificate resides</td>
+        </tr>
+      </tbody>
+    </table>
+    &nbsp;
+    
+    <p>Example 1:</p>
+    
+    <pre class="line-numbers" data-start="1">
+    <code class="notranslate language-json">"key_systems": {
+      "com.apple.fps.10_0": {
+        "key_request_url": "https://....",
+        "certificate_url": "https://..."
+      }
+    }</code></pre>
+    
+    <p>Example 2:</p>
+    
+    <pre class="line-numbers" data-start="1">
+    <code class="notranslate language-json">"key_systems": {
+      "com.microsoft.playready": {
+        "license_url": "https://..."
+      },
+      "com.widevine.alpha": {
+        "license_url": "https://..."
+      }
+    },</code></pre>
+    </section>
+    </article>
+    

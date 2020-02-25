@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- remember to remove the following line when the site is ready to go live -->
   <!-- <meta name="robots" content="noindex" /> -->
-  <title>Remote Assets</title>
+  <title>Error Reference</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -85,9 +85,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/cms/managing-videos/">Managing Videos/Assets</a></li>
+      <li class="breadcrumb-item"><a href="/playback/references/">References</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Remote Assets</li>
+      <li class="breadcrumb-item active" aria-current="page">Error Reference</li>
     </ol>
   </nav>
 </header>
@@ -966,253 +966,186 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 </div>
 
 <article class="bcls-article">
-  <h1>Remote Assets</h1>
-  <summary>In this topic, you will learn how to add remote assets, including videos, renditions, manifests, images, and WebVTT text tracks, to Video Cloud using the CMS API. This topic explains how to set up the video and then add, update, and remove remote assets.</summary>
-    <section class="bcls-section">
-    <h2 id="Overview">Overview</h2>
+  <h1>Error Reference</h1>
+  <summary>This is a reference to errors returned by the Playback API.</summary>
+    <section class="bcls-section" id="primaryFields">
+    <h2>Status codes and errors</h2>
     
-    <p>Remote assets are mainly added through the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#tag/Media-Assets">Assets Operations</a>, with a couple of exceptions noted below. Note that the GET operations for assets can be used for both ingested and remote assets.</p>
-    </section>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Status</th>
+          <th>Error Code</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>200</td>
+          <td><code>SUCCESS</code></td>
+          <td>The normal response is sent.</td>
+        </tr>
+        <tr>
+          <td>400</td>
+          <td><code>BAD_REQUEST</code></td>
+          <td>Mis-formatted request, i.e. duplicate query parameters supplied</td>
+        </tr>
+        <tr>
+          <td>401</td>
+          <td><code>INVALID_POLICY_KEY</code></td>
+          <td>Must provide a BCOV-Policy header with a legal policy key.</td>
+        </tr>
+        <tr>
+          <td>403</td>
+          <td><code>ACCESS_DENIED</code>, <code>VIDEO_NOT_PLAYABLE</code><sup><a href="#n1"> [1]</a></sup>, <code>PLAYLIST_NOT_PLAYABLE</code>, <code>JWT_AUTH</code></td>
+          <td>The policy key provided does not permit this account or video, or the requested resource is inactive.</td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td><code>VIDEO_NOT_FOUND</code>, <code>PLAYLIST_NOT_FOUND</code>, <code>RESOURCE_NOT_FOUND</code>, <code>ACCOUNT_NOT_FOUND</code></td>
+          <td>The designated resource was not found.</td>
+        </tr>
+        <tr>
+          <td>405</td>
+          <td><code>METHOD_NOT_ALLOWED</code></td>
+          <td>Only GET, HEAD and OPTIONS are allowed for this api.</td>
+        </tr>
+        <tr>
+          <td>500</td>
+          <td><code>SERVER_ERROR</code></td>
+          <td>Internal Wedge server error, usually will have more information in the logs.</td>
+        </tr>
+        <tr>
+          <td>502</td>
+          <td><code>SERVER_ERROR</code>, <code>ACCOUNT_RETRIEVE_FAILURE</code>, <code>VIDEO_RETRIEVE_FAILURE</code>, <code>VIDEO_URLS_RETRIEVE_FAILURE</code>, <code>PLAYLIST_RETRIEVE_FAILURE</code>, <code>PLAYLIST_VIDEOS_RETRIEVE_FAILURE</code></td>
+          <td>Got a bad response from a backend server, generally Roebuck or Nomic returned a 5xx error.</td>
+        </tr>
+        <tr>
+          <td>503</td>
+          <td><code>SERVICE_UNAVAILABLE</code></td>
+          <td>Not returned by Wedge. Could happen if there were no active servers in the Load Balancer. That would be bad. (The Playerback API does not do rate limiting, nor do the services it calls.)</td>
+        </tr>
+        <tr>
+          <td>504</td>
+          <td><code>SERVER_TIMEOUT</code></td>
+          <td>A call to a backend server or one of the servers they rely on timed out.</td>
+        </tr>
+      </tbody>
+    </table>
     
-    <section class="bcls-section">
-    <h2 id="authorization">Authorization</h2>
+    <h4>Notes</h4>
     
-    <aside class="bcls-aside bcls-aside--information">Requests to the CMS API require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.
+    <p id="n1"><sup>[1]</sup> <code>VIDEO_NOT_PLAYABLE</code> can be returned from Roebuck by single video requests. It indicates that the video does not pass the playable check (ingested, active, in schedule).</p>
     
-    <p><code class="notranslate">video </code> permissions include permissions for corresponding <code class="notranslate">asset </code> operations - i.e. <code class="notranslate">/video/all </code> gives you permissions for all asset operations, <code class="notranslate">/video/read </code> gives you permissions for asset read operations, etc.</p>
-    </aside>
-    </section>
+    <h3>Error responses</h3>
     
-    <section class="bcls-section">
-    <h2 id="workflow">Workflow</h2>
+    <p>As per the API design standards, error responses (<code>4xx</code> and <code>5xx</code>) consist of an error response list of one or more maps that include an <code>error_code</code>, an optional <code>error_subcode</code>, and optionally a non-localized <code>message</code> with more details.</p>
     
-    <p>Here are steps for setting up a remote asset:</p>
+    <pre>
+    <code class="language-jsaon">[{"error_code": "ERROR_CODE1"},
+     {"error_code": "ERROR_CODE2", "message": "details can go here"}
+     {"error_code": "ERROR_CODE3", "error_subcode": "MORE_SPECIFIC_CODE", "message": "human readable details about what happened"}]</code></pre>
     
-    <figure class="bcls-figure"><img class="bcls-image" alt="Remote Assets Workflow" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/remote-assets/remote-assets-workflow.png" />
-    <figcaption class="bcls-caption--image">Remote Assets Workflow</figcaption>
-    </figure>
+    <h3>Error codes</h3>
     
-    <p>In the following sections, we'll look at each of these steps.</p>
+    <p>The <code>error_code</code> that is meant to be both human understandable and to be used by client code to choose different actions and translatable user messages. The error codes are UPPER_SNAKE_CASE.</p>
     
-    <aside class="bcls-aside bcls-aside--tip">
-    <p>For all requests to the asset endpoints, you can specify the video you are operating on by <strong>id</strong> or <strong>reference_id</strong>:</p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Status</th>
+          <th>Error Code</th>
+          <th>Error Source</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>403</td>
+          <td><code>ACCESS_DENIED</code></td>
+          <td>Nomic policy</td>
+        </tr>
+        <tr>
+          <td>403</td>
+          <td><code>VIDEO_NOT_PLAYABLE</code></td>
+          <td>Roebuck</td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td><code>VIDEO_NOT_FOUND</code></td>
+          <td>Roebuck</td>
+        </tr>
+        <tr>
+          <td>other</td>
+          <td><code>VIDEO_RETRIEVE_FAILURE</code> if could not retrieve video</td>
+          <td>Roebuck</td>
+        </tr>
+        <tr>
+          <td>other</td>
+          <td><code>VIDEO_URLS_RETRIEVE_FAILURE</code> if could not retrieve sources or images</td>
+          <td>Roebuck</td>
+        </tr>
+      </tbody>
+    </table>
     
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/...
-      or
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{reference_id}</strong>/assets/...
-      </code>
-      </pre>
-    </aside>
-    </section>
+    <h3>Error subcodes</h3>
     
-    <section class="bcls-section">
-    <h2 id="creatVideo">Create the video</h2>
+    <p>Here are some but not all of the error subcodes (search for <code>:error_subcode</code> in the source)</p>
     
-    <p>Before you can add remote assets, you must create a video object in your Video Cloud media library, using POST request to:</p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Error Code</th>
+          <th>Error Subcodes</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>BAD_REQUEST</code></td>
+          <td><code>DUPLICATE_PARAMETERS</code></td>
+        </tr>
+        <tr>
+          <td><code>ACCESS_DENIED</code></td>
+          <td><code>POLICY_ERROR</code></td>
+        </tr>
+        <tr>
+          <td><code>ACCESS_DENIED</code></td>
+          <td><code>ACCOUNT_ID</code>, <code>VIDEO_ID</code>, <code>CLIENT_GEO</code>, <code>CLIENT_IP</code>, <code>DOMAIN</code>, <code>POLICY_ERROR</code><sup><a href="#n1"> [1]</a></sup></td>
+        </tr>
+        <tr>
+          <td><code>SOURCES_RESTRICTED</code></td>
+          <td><code>TVE_AUTH</code></td>
+        </tr>
+        <tr>
+          <td><code>SERVER_ERROR</code></td>
+          <td><code>LOOKUP_GEO</code></td>
+        </tr>
+        <tr>
+          <td><code>SERVER_TIMEOUT</code></td>
+          <td><code>LOOKUP_GEO</code></td>
+        </tr>
+      </tbody>
+    </table>
     
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos
-      </code>
-      </pre>
+    <h4>Notes</h4>
     
-    <p>In the request body, include a JSON object that minimally contains the video name, but may contain additional metadata:</p>
+    <p id="n1"><sup>[1]</sup> <code>ACCESS_DENIED</code>/<code>POLICY_ERROR</code> means any unexpected error while evaluating the Policy (including getting the video info for geo restricted accounts). It may be worth checking for exceptions in the log with this error.</p>
     
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "name": "My Remote Video",
-        "description": "A short description of the video",
-        "tags": ["remote", "fall_campaign"],
-        "reference_id": "myUniqueReferenceID"
-      }
-      </code>
-      </pre>
+    <aside class="bcls-aside bcls-aside--information">When you request a playlist, if some videos cannot be played because of geo-restrictions, the server will return a 200 OK status. The response will include both playlist data and an errors array indicating that some videos were omitted.</aside>
+    <!-- <pre class="line-numbers">
+     <code class="language-json">[{
+     "api_call": "search",
+     "error_subcode": "API",
+     "error_code": "ACCESS_DENIED",
+     "message": "Access to this resource is forbidden by access policy."
+     }]</code></pre>
     
-    <p>For details of the create video operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/CreateVideo">API Reference</a>.</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="addRenditions">Add Renditions</h2>
-    
-    <p>Next, add one or more full-length remote video renditions by making a POST request to:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/renditions
-      </code>
-      </pre>
-    
-    <p>The JSON in the request body must contain minimally the remote url, but may contain other metadata for the rendition:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "video_duration": 31487,
-        "name": "RA - Great Blue Heron",
-        "remote_url": "//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4",
-        "encoding_rate": 983000,
-        "frame_height": 360,
-        "size": 3887659,
-        "frame_width": 640,
-        "video_codec": "h264",
-        "video_container": "MP4",
-        "progressive_download": true
-      }
-      </code>
-      </pre>
-    
-    <h3>Notes</h3>
-    
-    <ol>
-      <li>Use this endpoint only for adding full length video renditions (typically an .mp4 or .mov file) - for adding segmented streams like HLS or DASH, use the manifest endpoints described in the next section.</li>
-      <li>
-      <p>Video Cloud does not inspect the remote video files, so providing additional metadata will enable Video Cloud to display this information in Studio (or in the Brightcove player, if you configure the player to display the metadata).</p>
-    
-      <p>For details of the add rendition operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddRendition">API Reference</a>.</p>
-      </li>
-      <li>Renditions for remote assets must have the <code class="notranslate">video_codec </code> and <code class="notranslate">video_container </code> fields to work properly.</li>
-      <li>MP4 renditions <strong>must</strong> have the <code class="notranslate">"progressive_download": true </code> field set to work properly in the Brightcove player</li>
-      <li>Mixed assets are not allowed - you cannot add a remote rendition to an ingested video</li>
-      <li>If your CDN or other remote repository supports both HTTP and HTTPS delivery, then specify the URL for remote assets with a <strong>protocol-neutral URL</strong> as shown in the example above (i.e. use "//my.domain/path/..." instead of "http://my.domain/path/...")</li>
-    </ol>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="addManifests">Add manifests</h2>
-    
-    <p>Note that to add remote segmented types such as DASH and HLS renditions, you only need to create the video and then add the manifests - you do <strong>not</strong> need to "add renditions" as explained in the previous section.</p>
-    
-    <p>In addition to adding full length renditions, you can also add manifests for segmented renditions such as HLS, HDS, and ISM, by making a POST request to the endpoint for the manifest type:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hls_manifest
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hds_manifest
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/ism_manifest
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/ismc_manifest
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/dash_manifests
-      </code>
-      </pre>
-    
-    <p>In the request body JSON, provide the remote url and a name (optional):</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "remote_url": "http://learning-services-media.brightcove.com/avideo/hls/chickadee/chickadee.m3u8",
-        "name": "chickadee_hls"
-      }
-      </code>
-      </pre>
-    
-    <aside class="bcls-aside bcls-aside--information">You can add one manifest of each kind. For the segmented type to be playable, you must install the appropriate plugin for the Brightcove player, and additional browser plugins may be required for some browsers.</aside>
-    
-    <p>For details of using the add manifest operations, consult the relevant section of the API Reference:</p>
-    
-    <ul>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddHlsManifest">Add HLS Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddHdsManifest">Add HDS Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddIsmManifest">Add ISM Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddIsmcManifest">Add ISMC Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddDashManifest">Add DASH Manifest</a></li>
-    </ul>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="addImages">Add poster/thumbnail</h2>
-    
-    <p>You can add a remote poster and thumbnail to your video by making POST requests to these endpoints:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/poster
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/thumbnail
-      </code>
-      </pre>
-    
-    <p>In the request body JSON, you must include the remote url for the image, and you can add a name if you like:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "remote_url": "http://learning-services-media.brightcove.com/images/great-blue-heron-poster.png"
-      }
-      </code>
-      </pre>
-    
-    <p>For details of the operations, see the API Reference:</p>
-    
-    <ul>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddPoster">Add Poster</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddThumbnail">Add Thumbnail</a></li>
-    </ul>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="addTextTracks">Add text tracks</h2>
-    
-    <p>Text tracks can be used to add captions, chapters, and other time-based metadata to your video.</p>
-    
-    <p><strong>Unlike renditions and images, text tracks are treated the same for remote asset videos as for videos ingested into the Video Cloud system.</strong> To actually add the text tracks to a video, you must use the Media module in Studio or the CMS API <a href="#api-Video-Update_Video">Update Video operation</a>.</p>
-    
-    <aside class="bcls-aside bcls-aside--information">Text tracks (WebVTT files) are supported in the Brightcove Player. To add captions for the old Smart Player, see <a href="#addCaptions">Add Captions</a>.</aside>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="addCaptions">Add captions</h2>
-    
-    <aside class="bcls-aside bcls-aside--tip">Captions are DFXP files used by the old Smart Player to add captions to videos. If you will be deploying your remote asset video only in the Brightcove Player, you can skip this step.</aside>
-    
-    <p>Add DFXP captions to your video by making a POST request to:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/caption
-      </code>
-      </pre>
-    
-    <p>In the request body JSON, include the remote URL for the DFXP file and a name (optional):</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "remote_url": "http://learning-services-media.brightcove.com/captions/Video-Cloud-Analytics-Performance-Report.DFXP.xml",
-        "name": "EN DFXP Captions"
-      }
-      </code>
-      </pre>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="Replace_remote_with_VOD">Replace remote with ingested</h2>
-    
-    <p>You can replace a remote asset video with an ingested one by making a request to the Dynamic Ingest API:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://ingest.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest-requests
-      </code>
-      </pre>
-    
-    <p>The simplest request body would look like this:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "master": {
-          "url": "http://host/master.mp4"
-        }
-      }
-      </code>
-      </pre>
-    
-    <p>See the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#operation/AccountsVideosIngestRequestsByAccountIdAndVideoIdPost">Dynamic Ingest API Reference</a> for additional options and information.</p>
-    
-    <p>One of the common uses of remote asset videos is to create a placeholder video for use in a live streaming event. Once the event is complete, you may wish to replace the "live" video with a video-on-demand recording of the event that appears in the same player you used for the live stream. You can do this by using the method described above, though it can also be used to turn any remote asset video into one that is ingested into Video Cloud.</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="modifyAssets">Modify assets</h2>
-    
-    <p>In addition to adding remote assets for a video, there are also operations for retrieving, updating, and deleting the asset information. These operations use the endpoints described above, but with GET, PATCH, or DELETE requests. For update and delete requests, you must add the asset id (which is included in the response to POST and GET requests) to request URL:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets<strong>/{asset_type}/{asset_id}</strong>
-      </code>
-      </pre>
-    
-    <p>See the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#tag/Media-Assets">API Reference</a> for details of the get, update, and delete operations.</p>
-    </section>
+     <pre class="line-numbers">
+     <code class="language-json">"errors": [{
+     "error_code": "ACCESS_DENIED",
+     "error_subcode": "CLIENT_GEO",
+     "client_geo": "us",
+     "message": "Access to this resource is forbidden by access policy."
+     }]</code></pre> --></section>
     </article>
     
 <!-- complete bootstrap layout -->
@@ -1230,7 +1163,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 10 Feb 2020
+  Page last updated on 25 Feb 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">

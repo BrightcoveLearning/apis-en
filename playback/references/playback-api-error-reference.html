@@ -1,0 +1,190 @@
+---
+title: 'Error Reference'
+description: 'This is a reference to errors returned by the Playback API.'
+parent: References
+grandparent: Playback API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section" id="primaryFields">
+    <h2>Status codes and errors</h2>
+    
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Status</th>
+          <th>Error Code</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>200</td>
+          <td><code>SUCCESS</code></td>
+          <td>The normal response is sent.</td>
+        </tr>
+        <tr>
+          <td>400</td>
+          <td><code>BAD_REQUEST</code></td>
+          <td>Mis-formatted request, i.e. duplicate query parameters supplied</td>
+        </tr>
+        <tr>
+          <td>401</td>
+          <td><code>INVALID_POLICY_KEY</code></td>
+          <td>Must provide a BCOV-Policy header with a legal policy key.</td>
+        </tr>
+        <tr>
+          <td>403</td>
+          <td><code>ACCESS_DENIED</code>, <code>VIDEO_NOT_PLAYABLE</code><sup><a href="#n1"> [1]</a></sup>, <code>PLAYLIST_NOT_PLAYABLE</code>, <code>JWT_AUTH</code></td>
+          <td>The policy key provided does not permit this account or video, or the requested resource is inactive.</td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td><code>VIDEO_NOT_FOUND</code>, <code>PLAYLIST_NOT_FOUND</code>, <code>RESOURCE_NOT_FOUND</code>, <code>ACCOUNT_NOT_FOUND</code></td>
+          <td>The designated resource was not found.</td>
+        </tr>
+        <tr>
+          <td>405</td>
+          <td><code>METHOD_NOT_ALLOWED</code></td>
+          <td>Only GET, HEAD and OPTIONS are allowed for this api.</td>
+        </tr>
+        <tr>
+          <td>500</td>
+          <td><code>SERVER_ERROR</code></td>
+          <td>Internal Wedge server error, usually will have more information in the logs.</td>
+        </tr>
+        <tr>
+          <td>502</td>
+          <td><code>SERVER_ERROR</code>, <code>ACCOUNT_RETRIEVE_FAILURE</code>, <code>VIDEO_RETRIEVE_FAILURE</code>, <code>VIDEO_URLS_RETRIEVE_FAILURE</code>, <code>PLAYLIST_RETRIEVE_FAILURE</code>, <code>PLAYLIST_VIDEOS_RETRIEVE_FAILURE</code></td>
+          <td>Got a bad response from a backend server, generally Roebuck or Nomic returned a 5xx error.</td>
+        </tr>
+        <tr>
+          <td>503</td>
+          <td><code>SERVICE_UNAVAILABLE</code></td>
+          <td>Not returned by Wedge. Could happen if there were no active servers in the Load Balancer. That would be bad. (The Playerback API does not do rate limiting, nor do the services it calls.)</td>
+        </tr>
+        <tr>
+          <td>504</td>
+          <td><code>SERVER_TIMEOUT</code></td>
+          <td>A call to a backend server or one of the servers they rely on timed out.</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h4>Notes</h4>
+    
+    <p id="n1"><sup>[1]</sup> <code>VIDEO_NOT_PLAYABLE</code> can be returned from Roebuck by single video requests. It indicates that the video does not pass the playable check (ingested, active, in schedule).</p>
+    
+    <h3>Error responses</h3>
+    
+    <p>As per the API design standards, error responses (<code>4xx</code> and <code>5xx</code>) consist of an error response list of one or more maps that include an <code>error_code</code>, an optional <code>error_subcode</code>, and optionally a non-localized <code>message</code> with more details.</p>
+    
+    <pre>
+    <code class="language-jsaon">[{"error_code": "ERROR_CODE1"},
+     {"error_code": "ERROR_CODE2", "message": "details can go here"}
+     {"error_code": "ERROR_CODE3", "error_subcode": "MORE_SPECIFIC_CODE", "message": "human readable details about what happened"}]</code></pre>
+    
+    <h3>Error codes</h3>
+    
+    <p>The <code>error_code</code> that is meant to be both human understandable and to be used by client code to choose different actions and translatable user messages. The error codes are UPPER_SNAKE_CASE.</p>
+    
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Status</th>
+          <th>Error Code</th>
+          <th>Error Source</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>403</td>
+          <td><code>ACCESS_DENIED</code></td>
+          <td>Nomic policy</td>
+        </tr>
+        <tr>
+          <td>403</td>
+          <td><code>VIDEO_NOT_PLAYABLE</code></td>
+          <td>Roebuck</td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td><code>VIDEO_NOT_FOUND</code></td>
+          <td>Roebuck</td>
+        </tr>
+        <tr>
+          <td>other</td>
+          <td><code>VIDEO_RETRIEVE_FAILURE</code> if could not retrieve video</td>
+          <td>Roebuck</td>
+        </tr>
+        <tr>
+          <td>other</td>
+          <td><code>VIDEO_URLS_RETRIEVE_FAILURE</code> if could not retrieve sources or images</td>
+          <td>Roebuck</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3>Error subcodes</h3>
+    
+    <p>Here are some but not all of the error subcodes (search for <code>:error_subcode</code> in the source)</p>
+    
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Error Code</th>
+          <th>Error Subcodes</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>BAD_REQUEST</code></td>
+          <td><code>DUPLICATE_PARAMETERS</code></td>
+        </tr>
+        <tr>
+          <td><code>ACCESS_DENIED</code></td>
+          <td><code>POLICY_ERROR</code></td>
+        </tr>
+        <tr>
+          <td><code>ACCESS_DENIED</code></td>
+          <td><code>ACCOUNT_ID</code>, <code>VIDEO_ID</code>, <code>CLIENT_GEO</code>, <code>CLIENT_IP</code>, <code>DOMAIN</code>, <code>POLICY_ERROR</code><sup><a href="#n1"> [1]</a></sup></td>
+        </tr>
+        <tr>
+          <td><code>SOURCES_RESTRICTED</code></td>
+          <td><code>TVE_AUTH</code></td>
+        </tr>
+        <tr>
+          <td><code>SERVER_ERROR</code></td>
+          <td><code>LOOKUP_GEO</code></td>
+        </tr>
+        <tr>
+          <td><code>SERVER_TIMEOUT</code></td>
+          <td><code>LOOKUP_GEO</code></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h4>Notes</h4>
+    
+    <p id="n1"><sup>[1]</sup> <code>ACCESS_DENIED</code>/<code>POLICY_ERROR</code> means any unexpected error while evaluating the Policy (including getting the video info for geo restricted accounts). It may be worth checking for exceptions in the log with this error.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">When you request a playlist, if some videos cannot be played because of geo-restrictions, the server will return a 200 OK status. The response will include both playlist data and an errors array indicating that some videos were omitted.</aside>
+    <!-- <pre class="line-numbers">
+     <code class="language-json">[{
+     "api_call": "search",
+     "error_subcode": "API",
+     "error_code": "ACCESS_DENIED",
+     "message": "Access to this resource is forbidden by access policy."
+     }]</code></pre>
+    
+     <pre class="line-numbers">
+     <code class="language-json">"errors": [{
+     "error_code": "ACCESS_DENIED",
+     "error_subcode": "CLIENT_GEO",
+     "client_geo": "us",
+     "message": "Access to this resource is forbidden by access policy."
+     }]</code></pre> --></section>
+    </article>
+    

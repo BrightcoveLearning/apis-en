@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- remember to remove the following line when the site is ready to go live -->
   <!-- <meta name="robots" content="noindex" /> -->
-  <title>Remote Assets</title>
+  <title>Video Fields Reference</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -85,9 +85,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/cms/managing-videos/">Managing Videos/Assets</a></li>
+      <li class="breadcrumb-item"><a href="/playback/references/">References</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Remote Assets</li>
+      <li class="breadcrumb-item active" aria-current="page">Video Fields Reference</li>
     </ol>
   </nav>
 </header>
@@ -966,252 +966,597 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 </div>
 
 <article class="bcls-article">
-  <h1>Remote Assets</h1>
-  <summary>In this topic, you will learn how to add remote assets, including videos, renditions, manifests, images, and WebVTT text tracks, to Video Cloud using the CMS API. This topic explains how to set up the video and then add, update, and remove remote assets.</summary>
+  <h1>Video Fields Reference</h1>
+  <summary>This is a reference to video fields returned by the Playback API.</summary>
     <section class="bcls-section">
-    <h2 id="Overview">Overview</h2>
+    <h2 id="Primary_fields">Primary fields</h2>
     
-    <p>Remote assets are mainly added through the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#tag/Media-Assets">Assets Operations</a>, with a couple of exceptions noted below. Note that the GET operations for assets can be used for both ingested and remote assets.</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="authorization">Authorization</h2>
-    
-    <aside class="bcls-aside bcls-aside--information">Requests to the CMS API require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.
-    
-    <p><code class="notranslate">video </code> permissions include permissions for corresponding <code class="notranslate">asset </code> operations - i.e. <code class="notranslate">/video/all </code> gives you permissions for all asset operations, <code class="notranslate">/video/read </code> gives you permissions for asset read operations, etc.</p>
-    </aside>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="workflow">Workflow</h2>
-    
-    <p>Here are steps for setting up a remote asset:</p>
-    
-    <figure class="bcls-figure"><img class="bcls-image" alt="Remote Assets Workflow" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/remote-assets/remote-assets-workflow.png" />
-    <figcaption class="bcls-caption--image">Remote Assets Workflow</figcaption>
-    </figure>
-    
-    <p>In the following sections, we'll look at each of these steps.</p>
-    
-    <aside class="bcls-aside bcls-aside--tip">
-    <p>For all requests to the asset endpoints, you can specify the video you are operating on by <strong>id</strong> or <strong>reference_id</strong>:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/...
-      or
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{reference_id}</strong>/assets/...
-      </code>
-      </pre>
-    </aside>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="creatVideo">Create the video</h2>
-    
-    <p>Before you can add remote assets, you must create a video object in your Video Cloud media library, using POST request to:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos
-      </code>
-      </pre>
-    
-    <p>In the request body, include a JSON object that minimally contains the video name, but may contain additional metadata:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "name": "My Remote Video",
-        "description": "A short description of the video",
-        "tags": ["remote", "fall_campaign"],
-        "reference_id": "myUniqueReferenceID"
-      }
-      </code>
-      </pre>
-    
-    <p>For details of the create video operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/CreateVideo">API Reference</a>.</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="addRenditions">Add Renditions</h2>
-    
-    <p>Next, add one or more full-length remote video renditions by making a POST request to:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/renditions
-      </code>
-      </pre>
-    
-    <p>The JSON in the request body must contain minimally the remote url, but may contain other metadata for the rendition:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "video_duration": 31487,
-        "name": "RA - Great Blue Heron",
-        "remote_url": "//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4",
-        "encoding_rate": 983000,
-        "frame_height": 360,
-        "size": 3887659,
-        "frame_width": 640,
-        "video_codec": "h264",
-        "video_container": "MP4",
-        "progressive_download": true
-      }
-      </code>
-      </pre>
+    <table class="bcls-table">
+      <caption>Table 1: Primary Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>id</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The video id</td>
+        </tr>
+        <tr>
+          <td><code>account_id</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The id of the account</td>
+        </tr>
+        <!-- <tr>
+            <td>allow_viral_syndication</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>whether social sharing is allowed for this video</td>
+        </tr> -->
+        <tr>
+          <td><code>created_at</code></td>
+          <td>ISO 8601 date-time String</td>
+          <td>none</td>
+          <td>The date-time a video was added to the account; example: "2014-12-09T06:07:11.877Z"</td>
+        </tr>
+        <tr>
+          <td><code>cue_points</code></td>
+          <td>Array of <a href="#cue_point_Object">cue_point Objects</a></td>
+          <td>empty array</td>
+          <td>Markers for midroll ad requests or some other action to be created via the player API</td>
+        </tr>
+        <tr>
+          <td><code>custom_fields</code></td>
+          <td>Object</td>
+          <td>Empty object</td>
+          <td>Map of custom field name:value pairs; only fields that have values are included</td>
+        </tr>
+        <tr>
+          <td><code>description</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>The short description of the video - 250 single-byte characters maximum</td>
+        </tr>
+        <tr>
+          <td><code>duration</code></td>
+          <td>Number</td>
+          <td>null</td>
+          <td>Length of the video in milliseconds</td>
+        </tr>
+        <tr>
+          <td><code>economics</code></td>
+          <td>String</td>
+          <td><code>AD_SUPPORTED</code></td>
+          <td>Indicates whether ad requests are permitted for the video. Values: <code>AD_SUPPORTED</code> or <code>FREE</code></td>
+        </tr>
+        <!-- <tr>
+            <td>geo</td>
+            <td><a href="#geo">geo object</a></td>
+            <td>see <a href="#geo">geo object</a></td>
+            <td>if geo-restriction is enabled for the account<sup class="once-red"><strong><a href="#note1-3">[1-3]</a></strong></sup>, this object will contain geo-restriction properties for the video</td>
+        </tr> -->
+        <tr>
+          <td><code>link</code></td>
+          <td><a href="#link_Object">link Object</a></td>
+          <td>null</td>
+          <td>A related link</td>
+        </tr>
+        <tr>
+          <td><code>long_description</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>5000 single-byte characters maximum</td>
+        </tr>
+        <tr>
+          <td><code>name</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>Video title - required field (256 single-byte characters maximum)</td>
+        </tr>
+        <tr>
+          <td><code>poster</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Poster image URL</td>
+        </tr>
+        <tr>
+          <td><code>published_at</code></td>
+          <td>ISO 8601 date-time String</td>
+          <td>none</td>
+          <td>The date-time a video was published; example: "2014-12-09T06:07:11.877Z"</td>
+        </tr>
+        <tr>
+          <td><code>reference_id</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Any value that is unique within the account (150 single-byte characters maximum)</td>
+        </tr>
+        <!-- <tr>
+            <td>schedule</td>
+            <td><a href="#schedule">schedule object</a></td>
+            <td>see <a href="#schedule">schedule object</a></td>
+            <td>When video becomes available/unavailable<sup class="once-red"><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+        </tr> --><!-- <tr>
+            <td>sharing</td>
+            <td><a href="#sharing">sharing object</a></td>
+            <td>see <a href="#sharing">sharing object</a></td>
+            <td>information about the account the video was shared from or to</td>
+        </tr> --><!-- <tr>
+            <td>state</td>
+            <td>string</td>
+            <td>none</td>
+            <td>current status of the video: ACTIVE | INACTIVE | PENDING | DELETED</td>
+        </tr> -->
+        <tr>
+          <td><code>sources</code></td>
+          <td>Array</td>
+          <td>Empty Array</td>
+          <td>Array of <a href="#source_Object">video source Objects</a></td>
+        </tr>
+        <tr>
+          <td><code>tags</code></td>
+          <td>Array</td>
+          <td>Empty Array</td>
+          <td>Array of tags (strings) added to the video (128 single-byte characters per tag maximum)</td>
+        </tr>
+        <tr>
+          <td><code>text_tracks</code></td>
+          <td>Array of <a href="#text_track_Object">text_track Objects</a></td>
+          <td>Empty Array</td>
+          <td>Data for WebVTT captions associated with the video</td>
+        </tr>
+        <tr>
+          <td><code>thumbnail</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>The thumbnail image URL</td>
+        </tr>
+        <tr>
+          <td><code>updated_at</code></td>
+          <td>ISO 8601 date-time String</td>
+          <td>none</td>
+          <td>The date-time a video was last modified;<sup class="once-red"><strong><a href="#note1-2">[1-2]</a></strong></sup> example: "2015-01-13T17:45:21.977Z"</td>
+        </tr>
+      </tbody>
+    </table>
     
     <h3>Notes</h3>
     
-    <ol>
-      <li>Use this endpoint only for adding full length video renditions (typically an .mp4 or .mov file) - for adding segmented streams like HLS or DASH, use the manifest endpoints described in the next section.</li>
-      <li>
-      <p>Video Cloud does not inspect the remote video files, so providing additional metadata will enable Video Cloud to display this information in Studio (or in the Brightcove player, if you configure the player to display the metadata).</p>
-    
-      <p>For details of the add rendition operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddRendition">API Reference</a>.</p>
-      </li>
-      <li>Renditions for remote assets must have the <code class="notranslate">video_codec </code> and <code class="notranslate">video_container </code> fields to work properly.</li>
-      <li>MP4 renditions <strong>must</strong> have the <code class="notranslate">"progressive_download": true </code> field set to work properly in the Brightcove player</li>
-      <li>Mixed assets are not allowed - you cannot add a remote rendition to an ingested video</li>
-      <li>If your CDN or other remote repository supports both HTTP and HTTPS delivery, then specify the URL for remote assets with a <strong>protocol-neutral URL</strong> as shown in the example above (i.e. use "//my.domain/path/..." instead of "http://my.domain/path/...")</li>
-    </ol>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="addManifests">Add manifests</h2>
-    
-    <p>Note that to add remote segmented types such as DASH and HLS renditions, you only need to create the video and then add the manifests - you do <strong>not</strong> need to "add renditions" as explained in the previous section.</p>
-    
-    <p>In addition to adding full length renditions, you can also add manifests for segmented renditions such as HLS, HDS, and ISM, by making a POST request to the endpoint for the manifest type:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hls_manifest
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hds_manifest
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/ism_manifest
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/ismc_manifest
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/dash_manifests
-      </code>
-      </pre>
-    
-    <p>In the request body JSON, provide the remote url and a name (optional):</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "remote_url": "http://learning-services-media.brightcove.com/avideo/hls/chickadee/chickadee.m3u8",
-        "name": "chickadee_hls"
-      }
-      </code>
-      </pre>
-    
-    <aside class="bcls-aside bcls-aside--information">You can add one manifest of each kind. For the segmented type to be playable, you must install the appropriate plugin for the Brightcove player, and additional browser plugins may be required for some browsers.</aside>
-    
-    <p>For details of using the add manifest operations, consult the relevant section of the API Reference:</p>
-    
     <ul>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddHlsManifest">Add HLS Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddHdsManifest">Add HDS Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddIsmManifest">Add ISM Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddIsmcManifest">Add ISMC Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddDashManifest">Add DASH Manifest</a></li>
+      <li class="bcls-footnote" id="note1-2"><sup class="once-red"><strong>[1-2]</strong></sup> The modification may have been made by a user or the Video Cloud system</li>
     </ul>
     </section>
     
     <section class="bcls-section">
-    <h2 id="addImages">Add poster/thumbnail</h2>
+    <h2 id="source_Object">source Object</h2>
     
-    <p>You can add a remote poster and thumbnail to your video by making POST requests to these endpoints:</p>
+    <table class="bcls-table">
+      <caption>Table 2: source Object Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>asset_id</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The rendition id in Video Cloud</td>
+        </tr>
+        <tr>
+          <td><code>app_name</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The RTMP address for RTMP streams</td>
+        </tr>
+        <tr>
+          <td><code>avg_bitrate</code></td>
+          <td>Integer</td>
+          <td>none</td>
+          <td>Average bitrate for the rendition</td>
+        </tr>
+        <tr>
+          <td><code>codec</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The video codec</td>
+        </tr>
+        <tr>
+          <td><code>container</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The video container type</td>
+        </tr>
+        <tr>
+          <td><code>duration</code></td>
+          <td>Integer</td>
+          <td>none</td>
+          <td>The duration in milliseconds</td>
+        </tr>
+        <tr>
+          <td><code>key_systems</code></td>
+          <td>Object</td>
+          <td>none</td>
+          <td><a href="#key_systems_Object">DRM specification Object</a> - If this Object is defined, then its source is content protected</td>
+        </tr>
+        <tr>
+          <td><code>size</code></td>
+          <td>Integer</td>
+          <td>none</td>
+          <td>The size in bytes</td>
+        </tr>
+        <tr>
+          <td><code>src</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The source URL</td>
+        </tr>
+        <tr>
+          <td><code>stream_name</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The stream name for RTMP streams</td>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>Video MIME type that defines the communication protocol used - values:
+          <ul>
+            <li>HLS: <code>application/x-mpegURL</code></li>
+            <li>HLS: <code>application/vnd.apple.mpegurl</code></li>
+            <li>DASH: <code>application/dash+xml</code></li>
+            <li>MP4: <code>video/mp4</code></li>
+          </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><code>width</code></td>
+          <td>Integer</td>
+          <td>none</td>
+          <td>Pixel width of the rendition</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
     
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/poster
-      https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/thumbnail
-      </code>
-      </pre>
+    <section class="bcls-section">
+    <h2 id="cue_point_Object">cue_point Object</h2>
     
-    <p>In the request body JSON, you must include the remote url for the image, and you can add a name if you like:</p>
+    <table class="bcls-table">
+      <caption>Table 3: Cue Point Object Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>id</code></td>
+          <td>String</td>
+          <td>none</td>
+          <td>The cue point id</td>
+        </tr>
+        <tr>
+          <td><code>name</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Optional name for the cue point (128 single-byte characters maximum)</td>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>String</td>
+          <td><code>AD</code></td>
+          <td>Values: <code>AD</code> or <code>CODE</code></td>
+        </tr>
+        <tr>
+          <td><code>time</code></td>
+          <td>Number</td>
+          <td>none</td>
+          <td>Time of the cue point in seconds; example: 10.527</td>
+        </tr>
+        <tr>
+          <td><code>metadata</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Optional metadata string (512 single-byte characters maximum)</td>
+        </tr>
+        <tr>
+          <td><code>force-stop</code></td>
+          <td>Boolean</td>
+          <td><code>false</code></td>
+          <td>Whether video is force-stopped at the cue point</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    <!-- <div class="bcls-section" id="image">
+      <h2>image object</h2>
+      <table class="bcls-table">
+          <caption>Table 4: Image Object Fields</caption>
+          <thead class="bcls-table__head">
+              <tr>
+                  <th>Field</th>
+                  <th>Type</th>
+                  <th>Read-only</th>
+                  <th>Default</th>
+                  <th>Description</th>
+              </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+              <tr>
+                  <td>asset_id</td>
+                  <td>string</td>
+                  <td>null</td>
+                  <td>System-generated id for the image</td>
+              </tr>
+              <tr>
+                  <td>src</td>
+                  <td>string</td>
+                  <td>null</td>
+                  <td>URL for image</td>
+              </tr>
+              <tr>
+                  <td>sources</td>
+                  <td>array of image sources objects</td>
+                  <td>null</td>
+                  <td>Array of <a href="#image_sources">image sources</a> objects</td>
+              </tr>
+          </tbody>
+      </table>
+    </div> --><!-- <div class="bcls-section" id="image_sources">
+      <h2>image sources object</h2>
+      <table class="bcls-table">
+          <caption>Table 5: Image Sources Object</caption>
+          <thead class="bcls-table__head">
+              <tr>
+                  <th>Field</th>
+                  <th>Type</th>
+                  <th>Read-only</th>
+                  <th>Default</th>
+                  <th>Description</th>
+              </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+              <tr>
+                  <td>asset_id</td>
+                  <td>string</td>
+                  <td>null</td>
+                  <td>system-generated id for this image source</td>
+              </tr>
+              <tr>
+                  <td>src</td>
+                  <td>string</td>
+                  <td>null</td>
+                  <td>URL for this image source</td>
+              </tr>
+              <tr>
+                  <td>height</td>
+                  <td>number</td>
+                  <td>null</td>
+                  <td>Height of the image source in pixels</td>
+              </tr>
+              <tr>
+                  <td>width</td>
+                  <td>number</td>
+                  <td>null</td>
+                  <td>Width of the image source in pixels</td>
+              </tr>
+          </tbody>
+      </table>
+    </div> -->
     
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "remote_url": "http://learning-services-media.brightcove.com/images/great-blue-heron-poster.png"
-      }
-      </code>
-      </pre>
+    <section class="bcls-section">
+    <h2 id="link_Object">link Object</h2>
     
-    <p>For details of the operations, see the API Reference:</p>
+    <table class="bcls-table">
+      <caption>Table 4: link Object Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>text</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>Display text for the link</td>
+        </tr>
+        <tr>
+          <td><code>url</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>URL for the link</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    <!-- <div class="bcls-section" id="sharing">
+        <h2>sharing object</h2>
+        <table class="bcls-table">
+        <caption>Table 8: Sharing Object Fields</caption>
+            <thead class="bcls-table__head">
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Read-only</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody class="bcls-table__body">
+                <tr>
+                    <td>by_external_acct</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td>whether the video was shared from another account</td>
+                </tr>
+                <tr>
+                    <td>by_id</td>
+                    <td>string</td>
+                    <td>null</td>
+                    <td>id of the account that shared the video - <strong>note that this field is populated only for the shared copy, not for the original video</strong></td>
+                </tr>
+                <tr>
+                    <td>source_id</td>
+                    <td>string</td>
+                    <td>null</td>
+                    <td>id of the video in its original account - <strong>note that this field is populated only for the shared copy, not for the original video</strong></td>
+                </tr>
+                <tr>
+                    <td>to_external_acct</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td>whether the video is shared to another account</td>
+                </tr>
+                <tr>
+                    <td>by_reference</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td>whether the video is shared by reference<sup class="once-red"><strong><a href="#8-1">[8-1]</a></strong></sup></td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Notes</h3>
+        <li class="bcls-footnote" id="8-1"><sup class="once-red"><strong>[8-1]</strong></sup> When a video is shared by reference, replacing or retranscoding the video in the original account will automatically update the renditions in the shared-to account</li>
+    </div> -->
+    
+    <section class="bcls-section">
+    <h2 id="text_track_Object">text_track Object</h2>
+    
+    <table class="bcls-table">
+      <caption>Table 5: Text Track Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>src</code></td>
+          <td>String (URL)</td>
+          <td>null</td>
+          <td>URL where the .vtt file resides</td>
+        </tr>
+        <tr>
+          <td><code>srclang</code></td>
+          <td><a href="http://loc.gov/standards/iso639-2/php/code_list.php">ISO-639-1 language code</a></td>
+          <td>null</td>
+          <td>Language for the captions</td>
+        </tr>
+        <tr>
+          <td><code>label</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>The label to be used in the player menu - it should be in the same language as the captions</td>
+        </tr>
+        <tr>
+          <td><code>kind</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>The only value currently supported is <code>captions</code></td>
+        </tr>
+        <tr>
+          <td><code>mime_type</code></td>
+          <td>Strings</td>
+          <td>null</td>
+          <td>The mime_type of the captions<sup class="once-red"><strong><a href="#note9-1">[9-1]</a></strong></sup></td>
+        </tr>
+        <tr>
+          <td><code>default</code></td>
+          <td>Boolean</td>
+          <td><code>false</code></td>
+          <td>Setting this to true makes this the default captions file in the player menu</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3>Notes</h3>
     
     <ul>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddPoster">Add Poster</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/AddThumbnail">Add Thumbnail</a></li>
+      <li class="bcls-footnote" id="note9-1"><sup class="once-red"><strong>[9-1]</strong></sup> Setting the mime_type is optional, but the captions should be UTF-8 encoded and have a mime_type of "text/vtt"</li>
     </ul>
     </section>
     
     <section class="bcls-section">
-    <h2 id="addTextTracks">Add text tracks</h2>
+    <h2 id="key_systems_Object">key_systems Object</h2>
     
-    <p>Text tracks can be used to add captions, chapters, and other time-based metadata to your video.</p>
+    <p>The key_systems object contains a list of objects, one for each DRM key name. If this object is defined, then its source is content protected.</p>
     
-    <p><strong>Unlike renditions and images, text tracks are treated the same for remote asset videos as for videos ingested into the Video Cloud system.</strong> To actually add the text tracks to a video, you must use the Media module in Studio or the CMS API <a href="#api-Video-Update_Video">Update Video operation</a>.</p>
+    <table class="bcls-table">
+      <caption>Table 4: key_systems Object</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><em>key name</em></td>
+          <td>Object</td>
+          <td>null</td>
+          <td>Name of the Object which specifies the DRM type – valid keys include:<br />
+          <br />
+          * FairPlay: <code>com.apple.fps.1_0</code><br />
+          * PlayReady: <code>com.microsoft.playready</code><br />
+          * Widevine: <code>com.widevine.alpha</code></td>
+        </tr>
+        <tr>
+          <td>FairPlay uses <code>key_request_url</code> and <code>certificate_url</code><br />
+          others use <code>license_url</code></td>
+          <td>String</td>
+          <td>null</td>
+          <td>URL for where your DRM license or certificate resides</td>
+        </tr>
+      </tbody>
+    </table>
+    &nbsp;
     
-    <aside class="bcls-aside bcls-aside--information">Text tracks (WebVTT files) are supported in the Brightcove Player. To add captions for the old Smart Player, see <a href="#addCaptions">Add Captions</a>.</aside>
-    </section>
+    <p>Example 1:</p>
     
-    <section class="bcls-section">
-    <h2 id="addCaptions">Add captions</h2>
-    
-    <aside class="bcls-aside bcls-aside--tip">Captions are DFXP files used by the old Smart Player to add captions to videos. If you will be deploying your remote asset video only in the Brightcove Player, you can skip this step.</aside>
-    
-    <p>Add DFXP captions to your video by making a POST request to:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/caption
-      </code>
-      </pre>
-    
-    <p>In the request body JSON, include the remote URL for the DFXP file and a name (optional):</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "remote_url": "http://learning-services-media.brightcove.com/captions/Video-Cloud-Analytics-Performance-Report.DFXP.xml",
-        "name": "EN DFXP Captions"
+    <pre class="line-numbers" data-start="1">
+    <code class="notranslate language-json">"key_systems": {
+      "com.apple.fps.10_0": {
+        "key_request_url": "https://....",
+        "certificate_url": "https://..."
       }
-      </code>
-      </pre>
-    </section>
+    }</code></pre>
     
-    <section class="bcls-section">
-    <h2 id="Replace_remote_with_VOD">Replace remote with ingested</h2>
+    <p>Example 2:</p>
     
-    <p>You can replace a remote asset video with an ingested one by making a request to the Dynamic Ingest API:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://ingest.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest-requests
-      </code>
-      </pre>
-    
-    <p>The simplest request body would look like this:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-json notranslate">{
-        "master": {
-          "url": "http://host/master.mp4"
-        }
+    <pre class="line-numbers" data-start="1">
+    <code class="notranslate language-json">"key_systems": {
+      "com.microsoft.playready": {
+        "license_url": "https://..."
+      },
+      "com.widevine.alpha": {
+        "license_url": "https://..."
       }
-      </code>
-      </pre>
-    
-    <p>See the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#operation/AccountsVideosIngestRequestsByAccountIdAndVideoIdPost">Dynamic Ingest API Reference</a> for additional options and information.</p>
-    
-    <p>One of the common uses of remote asset videos is to create a placeholder video for use in a live streaming event. Once the event is complete, you may wish to replace the "live" video with a video-on-demand recording of the event that appears in the same player you used for the live stream. You can do this by using the method described above, though it can also be used to turn any remote asset video into one that is ingested into Video Cloud.</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="modifyAssets">Modify assets</h2>
-    
-    <p>In addition to adding remote assets for a video, there are also operations for retrieving, updating, and deleting the asset information. These operations use the endpoints described above, but with GET, PATCH, or DELETE requests. For update and delete requests, you must add the asset id (which is included in the response to POST and GET requests) to request URL:</p>
-    
-    <pre class="line-numbers">
-      <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets<strong>/{asset_type}/{asset_id}</strong>
-      </code>
-      </pre>
-    
-    <p>See the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#tag/Media-Assets">API Reference</a> for details of the get, update, and delete operations.</p>
+    },</code></pre>
     </section>
     </article>
     
@@ -1230,7 +1575,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 10 Feb 2020
+  Page last updated on 25 Feb 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
