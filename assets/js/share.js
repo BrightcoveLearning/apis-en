@@ -1,7 +1,3 @@
----
-layout: null
----
-
 var BCLS_share = ( function (window, document, BCLS_toc, Prism) {
   window.onload = function() {
     console.log('here');
