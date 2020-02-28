@@ -2,6 +2,7 @@ var BCLS_share = ( function (window, document, BCLS_toc, Prism) {
   document.onload = function() {
     $(function() {
       if (shared_content) {
+        console.log('shared_content', shared_content);
         $('#bcls_article').load(
           'https://general.support.brightcove.com' + shared_content
         );
