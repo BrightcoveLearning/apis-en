@@ -1,5 +1,5 @@
 var BCLS_share = ( function (window, document, BCLS_toc, Prism) {
-  window.onload = function() {
+  document.onload = function() {
     console.log('here');
     $(function() {
       $('#bcls_article').load(
