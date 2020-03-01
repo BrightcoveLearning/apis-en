@@ -5,7 +5,6 @@ var BCLS_share = ( function (window, document, BCLS_toc, Prism) {
     $(function() {
       console.log('here');
         $('#bcls_article').load(
-          console.log('still here');
           'https://general.support.brightcove.com' + shared_content
         );
       });
