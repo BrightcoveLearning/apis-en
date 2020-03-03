@@ -1,0 +1,175 @@
+---
+title: 'Catalog Search Architecture'
+description: 'In this topic, you will learn about the architecture for the catalog search technology used for both the CMS and Playback APIs.'
+parent: Guides
+grandparent: Playback API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Overview">Overview</h2>
+    
+    <p class="language-editable">As of April 2019 the Catalog Search functionality was upgraded to Elasticsearch. This upgrade provides a number of benefits, chief among them are improved relevance and accuracy, and dramatically improved performance -- response time is much more consistent and generally twice as fast. This new functionality will affect the CMS API, Playback API, Studio interactive search and the catalog search methods.</p>
+    
+    <p class="language-editable">While Brightcove has invested a substantial amount of effort in making Elasticsearch results consistent there are differences, and there is some small possibility that if you have coded specific dependencies on search results your integration may not behave as expected.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Search_Result_Differences_and_Impact">Search Result Differences and Impact</h2>
+    
+    <p class="language-editable">In studying the potential impact, Brightcove has found that more than 90% of searches return results that match in terms of the number of results returned. This is an indicator that expected results should not be different enough to cause any problems with API integrations.</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="comparison" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/elasticsearch/comparison.png" /></figure>
+    
+    <p class="language-editable">This graph shows the number of search results that match exactly the number of results between the two systems in blue, and those that differ in number in red.</p>
+    
+    <p class="language-editable">As part of our roll-out, all default searches, those searches on the empty string, have already been provided by Elasticsearch for several months now -- so users are already seeing and using Elasticsearch results without problems.</p>
+    
+    <p class="language-editable">There are limitations to what we can learn from this kind of comparison, however. At best we can only infer the intent of a particular search, and catalog data is fluid.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Known_Differences">Known Differences</h2>
+    
+    <p class="language-editable">The differences below are largely fundamental, or the result of decisions reached after extensive analysis of search results -- they are impossible to completely eliminate.</p>
+    
+    <h3>Stemming</h3>
+    
+    <p class="language-editable"><a href="https://en.wikipedia.org/wiki/Stemming">Stemming</a> is the process of reducing inflected (or sometimes derived) words to their <a href="https://en.wikipedia.org/wiki/Word_stem">word stem</a>, base or <a href="https://en.wikipedia.org/wiki/Root_(linguistics)">root</a> form — generally a written word form.</p>
+    
+    <p class="language-editable">A stemmer for English operating on the stem <em>cat</em> should identify such <a href="https://en.wikipedia.org/wiki/String_literal">strings</a> as <em>cats</em>, <em>catlike</em> and <em>catty</em>. A stemming algorithm might also reduce the words <em>fishing</em>, <em>fished</em> and <em>fisher</em> to the stem <em>fish</em>. The stem need not be a word, for example the Porter algorithm reduces <em>argue</em>, <em>argued</em>, <em>argues</em>, <em>arguing</em> and <em>argus</em> to the stem <em>argu</em>.</p>
+    
+    <p class="language-editable">Our existing search uses the Lancaster (Paice/Husk) stemmer, this algorithm is generally regarded as being overly aggressive — this results in a lack of distinction, for example <em>lighter</em> and <em>light</em> would be regarded as the same term under Lancaster.</p>
+    
+    <p class="language-editable">Elasticsearch uses a more recent and much less aggressive algorithm (Porter2) that has gained broad adoption in industry and is generally regarded as a significant improvement (Lancaster is now rare). The change of stemmer potentially impacts a significant (~35%) proportion of searches: that is not to say that results <strong>will</strong> be different, just that they <strong>might</strong> be different — but in general this should be for the better: that said, some subset of customers may be reliant on the old behavior.</p>
+    
+    <h3>Relevance</h3>
+    
+    <p class="language-editable">Our existing search seems to have a more strict TF normalization. This causes a different relevance sort for terms that are found in larger fields (i.e. existing considers the match less relevant since it gives less weight to the term as it is smaller relative to the length of the document).</p>
+    
+    <h3>Special Characters</h3>
+    
+    <p class="language-editable">Special characters are stripped inside our existing search, this pretty much equates to stripping punctuation and related characters — instead of stripping, we generally escape them in Elasticsearch, thus there is a chance that a search will instead take them into account.</p>
+    
+    <h3>Term Handling</h3>
+    
+    <p class="language-editable">Existing search queries perform `term smooshing` whereas in Elasticsearch we drop malformed terms, consider this search with an empty <code>tags:</code> term: <code>q=tags: state:ACTIVE</code></p>
+    
+    <ul>
+      <li class="language-editable"><strong>Existing</strong>: <code>tags:state:ACTIVE</code> — search for videos with a tag of <code>state:ACTIVE</code></li>
+      <li class="language-editable"><strong>Elasticsearch</strong>: <code>state:ACTIVE</code> — drop the empty term</li>
+    </ul>
+    
+    <p class="language-editable">There are a number of subtle edge cases related to handling dangling punctuation and queries that are generally malformed, we attempt to produce what we think the query was intended to be, but in these cases we’re unfortunately guessing what a user might have intended (when really we should have returned an error allowing them to refine their search)</p>
+    
+    <h3>Playable Only</h3>
+    
+    <p class="language-editable">There are two mechanisms for restricting a search to videos that are currently playable: the query can include a flag, or the query itself can require some aspect of playability.</p>
+    
+    <ul>
+      <li class="language-editable">Existing: this is queried based on the value of a field that is updated</li>
+      <li class="language-editable">Elasticsearch: this is queried based on computed date ranges</li>
+    </ul>
+    
+    <p class="language-editable">Elasticsearch should generally be more accurate and produce better results (there is a lag associated with the existing mechanism, and the flag maintenance mechanism is not entirely reliable).</p>
+    
+    <h3>Index Accuracy</h3>
+    
+    <p class="language-editable">The Elasticsearch index is ‘fresher’ than the existing index and tends to reflect updates faster — this is not always the case, but in general the experience with Elasticsearch is that results will more accurately reflect the state of the underlying catalog data. Both existing and Elasticsearch are distributed systems and thus not entirely consistent in the results they return: a repeated query against either system can potentially return different results (especially in the case where there are a number of concurrently running delete operations).</p>
+    
+    <p class="language-editable">Existing search results change based on the state of the shard an account is allocated to — the global state of a particular shard can (and does) impact the results of any particular query: Elasticsearch does not have this deficiency.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Examples">Examples</h2>
+    
+    <h3>Example 1</h3>
+    
+    <p class="language-editable">Let’s say there are two videos with the following titles:</p>
+    
+    <pre>
+      <code class="language-html">Video#1: has the title “Don’t look into the light”
+      Video#2: has the title “Using a lighter to make a campfire”</code></pre>
+    
+    <p class="language-editable">The user wishes to return all videos that must have the word “light”. Using the CMS API, the query would look like:</p>
+    
+    <pre>
+      <code class="language-html">q=%2Blight or q=+light</code></pre>
+    
+    <p class="language-editable">With the existing search, this will return both of the videos in the order:</p>
+    
+    <pre>
+      <code class="language-html">Video#2 - “Using a lighter to make a campfire”
+      Video#1 - “Don’t look into the light”</code></pre>
+    
+    <p class="language-editable">There are two problems with this:</p>
+    
+    <ul>
+      <li class="language-editable"><strong>Relevance</strong>: The order is incorrect. “Don’t look into the light” (Video#2) should appear before “Using a lighter to make a campfire” (Video#1)</li>
+      <li class="language-editable"><strong>Accuracy</strong>: “Using a lighter to make a campfire” shouldn’t even appear in the result set as the word “light” doesn’t appear in the video title at all.</li>
+    </ul>
+    
+    <p class="language-editable">With Elasticsearch, this will return only video one:</p>
+    
+    <pre>
+      <code class="language-html">Video#1 - “Don’t look into the light”</code></pre>
+    
+    <p class="language-editable">This is an improvement because:</p>
+    
+    <ul>
+      <li class="language-editable">Relevance: The order is correct.</li>
+      <li class="language-editable">Accuracy: Only Video one is returned as it’s the only video with the word “light” in the title.</li>
+    </ul>
+    
+    <h3>Example 2</h3>
+    
+    <p class="language-editable">As described in our <a href="/node/18005#Stemming">CMS API documentation for stemming</a>, stemming is supported, but not partial word searches. So let’s say there are 5 videos with the following titles:</p>
+    
+    <pre>
+      <code class="language-html">Video#1 - "Parking Ban Announced"
+      Video#2 - "Parking to be Banned"
+      Video#3 - "City Banning Parking"
+      Video#4 - "Bank Holiday"
+      Video#5 - "Bandit Captured"</code></pre>
+    
+    <p class="language-editable">The user wishes to return all videos that must have the word <strong>ban</strong> in the name field. Using the CMS API, the query would look like:</p>
+    
+    <pre>
+      <code class="language-html">q=%2Bname%3Aban or q=+name:ban</code></pre>
+    
+    <p class="language-editable">The expectation is that “Ban”, “Banning” and “Banned” would produce search results as “Ban” is a stem of all three.</p>
+    
+    <p class="language-editable">However, with the current search system, this will return all five videos in this order:</p>
+    
+    <pre>
+      <code class="language-html">Video#2 - "Parking to be Banned"
+      Video#3 - "City Banning Parking"
+      Video#1 - "Parking Ban Announced"
+      Video#4 - "Bank Holiday"
+      Video#5 - "Bandit Captured"</code></pre>
+    
+    <p class="language-editable">Again, there are two problems with this:</p>
+    
+    <ul>
+      <li class="language-editable">Relevance: The order is incorrect. "Parking Ban Announced" should be the first video returned as it has the word “Ban” in it.</li>
+      <li class="language-editable">Accuracy: "Bank Holiday" and "Bandit Captured" should not be returned at all as “Ban” is not part of the word “Bank” or “Bandit”.</li>
+    </ul>
+    
+    <p class="language-editable">With Elasticsearch, the results look like:</p>
+    
+    <pre>
+      <code class="language-html">Video#1 - "Parking Ban Announced"
+      Video#2 - "Parking to be Banned"
+      Video#3 - "City Banning Parking"</code></pre>
+    
+    <p class="language-editable">This is an improvement because:</p>
+    
+    <ul>
+      <li class="language-editable">Relevance: The order is correct.</li>
+      <li class="language-editable">Accuracy: Only Videos with the stems of the word “Ban” (“Ban”, “Banning” and “Banned”) are returned.</li>
+    </ul>
+    </section>
+    </article>
+    
