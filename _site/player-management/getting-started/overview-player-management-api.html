@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- remember to remove the following line when the site is ready to go live -->
   <!-- <meta name="robots" content="noindex" /> -->
-  <title>Dimension: <code>referrer_domain</code></title>
+  <title>Overview: Player Management API</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -85,9 +85,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/analytics/dimension-guides/">Dimension Guides</a></li>
+      <li class="breadcrumb-item"><a href="/player-management/getting-started/">Getting Started</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Dimension: <code>referrer_domain</code></li>
+      <li class="breadcrumb-item active" aria-current="page">Overview: Player Management API</li>
     </ol>
   </nav>
 </header>
@@ -1028,162 +1028,153 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 </div>
 
 <article class="bcls-article">
-  <h1>Dimension: <code>referrer_domain</code></h1>
-  <summary>In this topic, you will learn about the Analytics API <code>referrer_domain</code> dimension. The <code>referrer_domain</code> dimension is the top private domain of the referrer URL (the URL for the page the viewer was on just before coming to the page where the video was viewed) on a page where events are collected for analytics.</summary>
-  <section class="bcls-section">
-  <h2 id="urlParams">URL parameters</h2>
-  
-  <p>Analytics API reports support the following URL parameters.</p>
-  
-  <table class="bcls-table">
-    <caption class="bcls-caption--table">URL Parameters</caption>
-    <thead class="bcls-table__head">
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        <th>Required</th>
-        <th>Values</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody class="bcls-table__body" id="paramTableBody">
-      <tr>
-        <td><code>account</code></td>
-        <td>The accounts you want to report on</td>
-        <td>yes</td>
-        <td>one or more account ids as a comma-delimited list</td>
-        <td>none</td>
-      </tr>
-      <tr>
-        <td><code>dimensions</code></td>
-        <td>The dimension(s) to report on</td>
-        <td>yes</td>
-        <td>one or more dimensions as a comma-delimited list (some combinations are not valid)</td>
-        <td>none</td>
-      </tr>
-      <tr>
-        <td><code>where</code></td>
-        <td>Used to specify filters for reports</td>
-        <td>no</td>
-        <td>{dimension}=={value} - one or more as a semi-colon-delimited list</td>
-        <td>none</td>
-      </tr>
-      <tr>
-        <td><code>limit</code></td>
-        <td>Number of items to return</td>
-        <td>no</td>
-        <td>positive integer</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td><code>offset</code></td>
-        <td>Number of items to skip</td>
-        <td>no</td>
-        <td>positive integer</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <td><code>sort</code></td>
-        <td>Field to sort items on</td>
-        <td>no</td>
-        <td>a valid field for the request</td>
-        <td>video_view</td>
-      </tr>
-      <tr>
-        <td><code>fields</code></td>
-        <td>Fields to return</td>
-        <td>no</td>
-        <td>varies according to the dimension you are reporting on</td>
-        <td>video_view</td>
-      </tr>
-      <tr>
-        <td><code>format</code></td>
-        <td>Format to return results in</td>
-        <td>no</td>
-        <td>json | csv | xlxs</td>
-        <td>json</td>
-      </tr>
-      <tr>
-        <td><code>reconciled</code></td>
-        <td>If included, will limit results to either historical or realtime data</td>
-        <td>no</td>
-        <td>true | false</td>
-        <td>true</td>
-      </tr>
-      <tr>
-        <td><code>from</code></td>
-        <td>The beginning of the date range for the request</td>
-        <td>no</td>
-        <td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string alltime, or relative date (-1m); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
-        <td>30 days prior to now</td>
-      </tr>
-      <tr>
-        <td><code>to</code></td>
-        <td>The end of the date range for the request</td>
-        <td>no</td>
-        <td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
-        <td>now</td>
-      </tr>
-    </tbody>
-  </table>
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="fieldValues">Fields available</h2>
-  
-  <p>The following fields can be returned for the dimension.</p>
-  
-  <ul id="fields">
-    <li class="language-editable"><code>ad_mode_begin</code> - the number of times the player entered ad mode</li>
-    <li class="language-editable"><code>ad_mode_complete</code> - the number of times the player completed ad mode</li>
-    <li class="language-editable"><code>engagement_score</code> - the average engagement score for a videos played in a player</li>
-    <li class="language-editable"><code>play_request</code> - total number of times video playback was requested</li>
-    <li class="language-editable"><code>play_rate</code> - the average play rate (video views divided by impressions) for a video</li>
-    <li class="language-editable"><code>player_load</code> - the number of times a player was loaded</li>
-    <li><code>referrer_domain</code> - the domain the viewer left to reach the page where the player was hosted</li>
-    <li class="language-editable"><code>video_impression</code> - the total number of videos loaded into the player</li>
-    <li class="language-editable"><code>video_percent_viewed</code> - the sum of percent viewed of videos in the player</li>
-    <li class="language-editable"><code>video_seconds_viewed</code> - total seconds of videos viewed in the player</li>
-    <li class="language-editable"><code>video_view</code> - total times video playback started in the player</li>
-  </ul>
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="filterValues">Filter values</h2>
-  
-  <p>Used as a filter, a dimension allows you to narrow the results.</p>
-  
-  <p id="filters">Filter values: A comma-delimited list of domains; e.g. brightcove.com,docs.brightcove.com</p>
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="combinations">Combining dimensions</h2>
-  
-  <p>To see what dimensions this on can be combined with, and what fields are available for the combination, see <a href="/overview-analytics-api-v1#metrics">Dimension and Fields</a>.</p>
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="examples">Request Examples</h2>
-  
-  <h3>Dimension request</h3>
-  
-  <pre class="line-numbers language-http code-toolbar">
-  <code class="language-http" id="dimensionRequest"><span class="token header-name keyword"><span class="token header-name keyword">https:</span></span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=referrer_domain</code></pre>
-  <button class="bcls-button" id="sendDimensionRequest">Test This Request</button>
-  
-  <h3>Filter request</h3>
-  
-  <pre class="line-numbers language-http">
-  <code class="language-http" id="filterRequest"><span class="token header-name keyword">https:</span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=video&amp;where=referrer_domain==brightcove.com,docs.brightcove.com</code></pre>
-  <button class="bcls-button" id="sendFilterRequest">Test This Request</button>
-  
-  <h3>Response</h3>
-  
-  <pre class="line-numbers language-json">
-  <code class="language-json" id="response">Response will appear here when you test a request</code></pre>
-  </section>
-  </article>
-  <script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-model-v2.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/guides/dimension-drupal-v2.js"></script>
+  <h1>Overview: Player Management API</h1>
+  <summary>Player Management refers to the creation, editing and management of players as a resource to publishers. Player Management is achieved by a server-side, REST API that allow its consumers to create, configure, preview and publish player instances.</summary>
+    <div class="training-video-player-ipx" data-experience="5a73630f7afd7a00101bc1b5" data-video-ids="5996554436001">&nbsp;</div>
+    <script src="https://players.brightcove.net/20318290001/experience_5a73630f7afd7a00101bc1b5/live.js"></script>
+    
+    <section id="introduction" class="bcls-section">
+    <h2>Introduction</h2>
+    
+    <p>Creating and updating players is done in a two-phased approach. Rather than having all changes automatically applied to production players, the changes are separated into preview and published. You can now make all of the updates that you wish to your preview player without affecting what your end users see. You can choose to publish the changes whenever you like.</p>
+    
+    <p>The Player Management API allows a user to:</p>
+    
+    <ol>
+      <li>Create a player</li>
+      <li>View the settings of a player</li>
+      <li>Change the settings of a player</li>
+      <li>List all the players associated with the publisher</li>
+      <li>Publish a player to make it available to the consumer</li>
+    </ol>
+    
+    <p>Also see the <a href="https://docs.brightcove.com/player-management-api/v2/doc/index.html">API Reference</a>.</p>
+    
+    <aside class="bcls-aside bcls-aside--tip">If you haven't gone through the <a href="/node/18268">Step-by-Step: Player Management</a>, it's highly suggested you start there. You'll get security set up, learn some of the basics of the system and then be ready to dive in further here.</aside>
+    </section>
+    
+    <section class="bcls-section" id="baseURL">
+    <h2>Base URL</h2>
+    
+    <p>The base URL for the API is:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-http">https://players.api.brightcove.com/v2</code></pre>
+    </section>
+    
+    <section class="bcls-section" id="understanding">
+    <h2>Introduction</h2>
+    
+    <p>The player management system is comprised of three key objects. They are the default template, players and child players.</p>
+    
+    <p><em>Brightcove Default Template</em> - The template is a set of files and settings used as the basis for creating the viewing experiences presented to users, and the basis for all players created. These files are eventually compiled with customized player settings and result in the actual code that is loaded in the browser (the player). There is currently only one single template which is used system-wide. As such, there is no visibility into the template via the API.</p>
+    
+    <p><em>Players</em> - Players are customer-specific settings that capture general information and customizations to be applied to the template. These settings are sent to the API and a player object results. Customizations can include settings, styles and plugins. For a complete list of customization possibilities see the <a href="/node/18262">Player Configuration Guide</a>.</p>
+    
+    <p><em>Child Players</em> - Child players, created using the Embed APIs, are the result of creating multiple instances of a player. The player has the bulk of the properties you wish your player to have, and then you can use a child player to customize subsets of properties on different player instances. A child player may only define media to add to a given player, or it could define any setting or style overrides that alter the common player to which it belongs. Changes to the parent player settings will apply to all child players spawned from the parent player. Check out the <a href="/node/18263">Embed APIs Guide</a> for more detail.</p>
+    
+    <p>This diagram shows the relationships between the default template, players and child players.</p>
+    
+    <figure class="bcls-figure"><img class="bcls-image" alt="Player Entity Hierarchy" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/getting-started/api-overview/player-entity-hierarchy-child-player-verbiage.png" />
+    <figcaption class="bcls-caption--image">Player Entity Hierarchy</figcaption>
+    </figure>
+    
+    <p>When you use the Player Management API for the first time, a Brightcove Default Player is generated in your account. That player object is for you to do with as you choose. You could use it as is, change its settings, restyle it or add plugins. You could choose to use only the Brightcove Default Player with your customizations, or you could choose to create other players to capture different looks and settings for different locations on your website.</p>
+    </section>
+    
+    <section class="bcls-section" id="publishingOverview">
+    <h2>Publishing overview</h2>
+    
+    <p>One of the features of the Player Management system is the ability to separate changes that you want to test from the version of your player which is publicly published. In both the UI and the API, when you make changes to a player's configuration, the changes are made available immediately via the preview versions of the player. These preview versions are fully usable and testable. You can share the preview URL for approval or work on the player preview until satisfied with the changes, all before publishing the player to make it publicly available.</p>
+    
+    <h3>Update waterfalls</h3>
+    
+    <p>Publishing a player has consequences that can affect child players. Here are details on publishing:</p>
+    
+    <ul>
+      <li>A player publish triggers a re-publish of all child player instances created from that player.</li>
+      <li>A child player publish affects only that child player.</li>
+      <li>A Brightcove Default Template update (Brightcove controlled) will trigger a re-publish of all players, and the player re-publish will in turn trigger a re-publish of all child players created from each player.</li>
+    </ul>
+    
+    <p>Settings are applied in a child wins manner. This means that settings at the child level will take precedence over changes made at the parent level. Consider the following:</p>
+    
+    <ul>
+      <li>The default template defines a CSS value to be red.</li>
+      <li>A player defines the same CSS value to be white.</li>
+      <li>A child player defines the same CSS value to be blue.</li>
+    </ul>
+    
+    <p>Since the child wins, the results would be:</p>
+    
+    <ul>
+      <li>The player's CSS value is white.</li>
+      <li>The child player's CSS value is blue.</li>
+    </ul>
+    
+    <p>This inheritance behavior can be changed if the data type of the property is an array. The <a href="/node/18263#bc-ipnav-9"><em>Array fields</em></a> section of the Embed APIs Guide describes the details.</p>
+    </section>
+    
+    <section class="bcls-section" id="configuration">
+    <h2>Configuration options</h2>
+    
+    <p>In order to create a player more advanced than just the default player, you must provide a <a href="/node/18262">Player Configuration</a>. The configuration is defined using JSON.</p>
+    </section>
+    
+    <section id="ratelimiting" class="bcls-section">
+    <h2>Rate limiting</h2>
+    
+    <p>The Player Management API has rate limiting per each unique IP enabled. Following are the rate limits:</p>
+    
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Request Type</th>
+          <th>Limit</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>Publish and Create (players and embeds)</td>
+          <td>60 requests/minute</td>
+        </tr>
+        <tr>
+          <td>Read (GET)</td>
+          <td>600 requests/minute</td>
+        </tr>
+        <tr>
+          <td>Write (POST, PUT, PATCH and DELETE)</td>
+          <td>300 requests/minute</td>
+        </tr>
+        <tr>
+          <td>Player Preview</td>
+          <td>100 requests/minute</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <aside class="bcls-aside bcls-aside--information">All rate limits count towards each request of it’s category. For example, attempting to do 200 POSTs and 200 PUTs in under a minute will exceed the Write Requests limit of 300 request/minute.
+    <p>Any requests that cause the limits to be exceeded will return a status code of <strong>429</strong> and a response body of <code>{"error": "Rate limit exceeded"}</code>.</p>
+    </aside>
+    </section>
+    
+    <section class="bcls-section" id="errorMessages">
+    <h2>Response status codes</h2>
+    
+    <p>Response and error codes/messages are based upon those <a href="//www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10">defined by W3</a>. Some of the most commonly seen codes are:</p>
+    
+    <ul>
+      <li><strong>200</strong> Request success</li>
+      <li><strong>201</strong> Created (a player, a configuration)</li>
+      <li><strong>400</strong> Bad request - the syntax of the API call is likely incorrect</li>
+      <li><strong>401</strong> Invalid Authentication - check if the password was entered correctly, or that you have followed the <a href="/node/18259">OAuth instructions</a> correctly</li>
+      <li><strong>404</strong> Not found - check if the resource exists and the URL used in the API call is correct</li>
+      <li><strong>429</strong>Rate limit exceeded</li>
+      <li><strong>500</strong> Internal Server Error - there was an error trying to fulfill the request</li>
+    </ul>
+    </section>
+    </article>
+    
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -1199,7 +1190,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 18 Feb 2020
+  Page last updated on 04 Mar 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
