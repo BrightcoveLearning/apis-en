@@ -1,0 +1,139 @@
+---
+title: 'OAuth Guide'
+description: 'Brightcove has created an <a href="/oauth/">OAuth 2 system</a> that can be used across all of our new APIs for authorization. This topic shows you how to use OAuth to communicate with the Player Management API.'
+parent: Getting Started
+grandparent: Player Management API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+    
+    <p>You don't need to know anything about OAuth in order to use the system, and we'll explain everything you need to do to get started below. For a detailed overview of OAuth, see the <a href="/node/18376">Brightcove OAuth API</a> documents.</p>
+    
+    <p>To use OAuth authentication, follow these steps:</p>
+    
+    <ol>
+      <li><a href="#credentials">Get your client credentials</a></li>
+      <li><a href="#accesstoken">Get your access token</a></li>
+      <li><a href="#playermgmtapi">Call <span class="notranslate">Player Management API</span></a></li>
+      <li><a href="#proxy">To simplify steps 2 and 3, use a server-side proxy</a></li>
+    </ol>
+    
+    <p>When working with the <span class="notranslate">Player Management API</span>, you can also use basic authentication. For details, see the <a href="/node/18268">Step-by-Step: Player Management</a> document.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="credentials">Get client credentials</h2>
+    
+    <p>To use OAuth, you first need to get your client credentials ( <code class="notranslate">client_id</code> and <code class="notranslate">client secret</code>). These credentials are valid for the account(s) and API operation(s) that you are working with. This is a one-time operation provided that you save these credentials in a secure place for future use.</p>
+    
+    <p>There are 2 ways to get your credentials:</p>
+    
+    <p>Here are the operations you need permissions for:</p>
+    
+    <ul>
+      <li>The preferred method is to use the Studio Admin UI as described in the <a href="/node/14056">Managing API Authentication Credentials</a> document.</li>
+      <li>You can also use cURL as shown in the <a href="/node/17924">Get Client Credentials Using cURL</a> document.
+      <ol>
+        <li>In Studio:
+        <figure class="bcls-figure"><img class="bcls-image" alt="Player Management API Permissions" src="//learning-services-media.brightcove.com/doc-assets/node/18259-oauth-guide/player-operations.png" />
+        <figcaption class="bcls-caption--image">Player Management API Permissions</figcaption>
+        </figure>
+        </li>
+        <li>For getting credentials via the OAuth API:
+        <ul>
+          <li><code class="notranslate">video-cloud/player/read</code></li>
+          <li><code class="notranslate">video-cloud/player/all</code></li>
+        </ul>
+        </li>
+      </ol>
+      </li>
+    </ul>
+    
+    <p>Next, you will need to get an OAuth access token.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="accesstoken">Get access token</h2>
+    
+    <p>The client credentials you got in the previous step are used to request your access token ( <code class="notranslate">access_token</code>), which then provides authorization to make an API call. Since this token is only valid for 5 mins, in most cases you will need to get one for each API call that you make.</p>
+    
+    <p>Follow these steps to get your access token using cURL:</p>
+    
+    <ol class="bcls-tasklist">
+      <li>
+      <p>In your command line, use the <code class="notranslate">export</code> command to set the values for your client id and client secret.</p>
+    
+      <pre class="line-numbers">
+    <code class="language-bash notranslate">export CLIENT_ID=your client id value
+              export CLIENT_SECRET=your client secret value</code></pre>
+      <!-- <p><code data-gist-id="dc39e4e6a6eaab089f15" data-gist-hide-footer="true" data-gist-line="1-2"></code></p></li> --></li>
+      <li>
+      <p>Copy and paste the following cURL statement to your command line and press enter.</p>
+    
+      <pre class="line-numbers">
+    <code class="language-bash notranslate">curl
+              -s
+              --user $CLIENT_ID:$CLIENT_SECRET
+              --header "Content-Type: application/x-www-form-urlencoded"
+              --data "grant_type=client_credentials"
+              https://oauth.brightcove.com/v4/access_token</code></pre>
+      <!-- <p><code data-gist-id="dc39e4e6a6eaab089f15" data-gist-hide-footer="true" data-gist-line="5-10"></code></p></li> --></li>
+      <li>
+      <p>Your response should look similar to this:</p>
+    
+      <pre class="line-numbers">
+    <code class="language-json">{"access_token":"AGUq5IQzLzrRvs8CNbhYlBFeB1_B6jTJrcE8grFHEJaPRsPeEg3-S_Apgv8VKiZ-nzxjDGtKwAco9q3z8tdzrxq76k6B9tUXk9HYQOIYgqziWbuvA50VaW8AK2MQFc0G3-woH_kgQxNQUaVNEpE1sePE9GUb2u9FfeQyLw8XQE_QfriYwkkcQoaGOusoIpujx8H6dLFovPuH5F5N3OSxNYhNZrdOhJwkdN7oe076j3xwNRarHn5IRPYKzjOMbqDk552aAhJxo2pYWoDh3q63pBrzre4Bj1rCHKJPifPEMrgPWzG1Uz1BPhQb5_ubr4P8mtnhCjJn4zzT_1-C8ActMUof45kVFhG4VTWRA8rh05THqEBj_TzPIR7L1t5oHhLo5ziILNSp7mZRM3folvYJC6YIhY7M4qLNGR5iq3nerlv5Ufr_bI-1AnP7a68JasawDpZxjfoGf3h6cwIZJr2uG_iU4FO9Ig-Gotaqv5mLWmUgR-DJ3sfRADc",
+              "token_type":"Bearer",
+              "expires_in":300}</code></pre>
+      <!-- <p><code data-gist-id="dc39e4e6a6eaab089f15" data-gist-hide-footer="true" data-gist-line="13-14"></code></p></li> --></li>
+    </ol>
+    
+    <p>With your access token, you are ready to communicate with the <span class="notranslate">Player Management API</span>.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="playermgmtapi">Call <span class="notranslate">Player Management API</span></h2>
+    
+    <p>To use OAuth to communicate with the <span class="notranslate">Player Management API</span>, you will need the access token that you generated in the previous section. Remember, that this token expires after 5 mins, so you may need to repeat the previous section steps if your access token has expired.</p>
+    
+    <p>Follow these steps to get player configuration information using cURL:</p>
+    
+    <ol class="bcls-tasklist">
+      <li>
+      <p>In your command line, use the <code class="notranslate">export</code> command to set the values for your access token, account id and player id.</p>
+    
+      <pre class="line-numbers">
+    <code class="language-bash notranslate">export ACCESS_TOKEN=your access token value
+              export ACCOUNT_ID=your account id
+              export PLAYER_ID=your player id</code></pre>
+      <!-- <p><code data-gist-id="dc39e4e6a6eaab089f15" data-gist-hide-footer="true" data-gist-line="18-20"></code></p></li> --></li>
+      <li>
+      <p>Copy and paste the following cURL statement to your command line and press enter.</p>
+    
+      <pre class="line-numbers">
+    <code class="language-bash notranslate">curl
+              --header "Content-Type: application/json"
+              --header "Authorization: Bearer $ACCESS_TOKEN"
+              --request GET
+              https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+      <!-- <p><code data-gist-id="dc39e4e6a6eaab089f15" data-gist-hide-footer="true" data-gist-line="23-27"></code></p></li> --></li>
+      <li>
+      <p>Your response should look similar to this:</p>
+    
+      <pre class="line-numbers">
+    <code class="language-json">{"video_cloud":{"video":null,"policy_key":"BCpkADawqM3VpA66ktTO5bdLTmz6kLGMvGZrSyp-YTvbc4MHllmDmuwzEseO1uTeYYRqygGHhB_MgMaM6ndh5ch-cKYtMFx3LerHyziID8M19b162eeIXKYaxDf8uh4OsLTxVijM-qT1N5QR"},
+              "stylesheets":["http://solutions.brightcove.com/bcls/brightcove-player/disabled-scrubber/disabled-scrubber.css"],
+              "scripts":[],"plugins":[],
+              "player":{"template":{"version":"1.14.22","name":"single-video-template"}},
+              "autoadvance":0}</code></pre>
+      <!-- <p><code data-gist-id="dc39e4e6a6eaab089f15" data-gist-hide-footer="true" data-gist-line="30-34"></code></p></li> --></li>
+    </ol>
+    
+    <p>To learn about all the requests you can make to the <span class="notranslate">Player Management API</span>, see the <a href="https://docs.brightcove.com/player-management-api/v1/doc/index.html">Brightcove <span class="notranslate">Player Management API</span></a> reference document.</p>
+    </section>
+    </article>
+    
