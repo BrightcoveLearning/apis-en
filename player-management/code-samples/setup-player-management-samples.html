@@ -1,0 +1,229 @@
+---
+title: 'Setup for Player Management Samples'
+description: 'This page describes how the basic samples for the new player are written. This includes details on basic authentication and how AJAX is used in the Player Management API samples.'
+parent: Code Samples
+grandparent: Player Management API
+---
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>In the Step-by-Step: Player Management document you used curl statements to interact with the API. When an API call was made you were interactively prompted for a password. While this works well for curl, this kind of interactive authentication is not feasible when building an application.</p>
+    
+    <p>Here you will learn how you make the API requests using JavaScript and XMLHttpRequest - also known as AJAX - to build web clients for player management operations</p>
+    
+    <p>Because the Player Management API is <a href="/node/17916">CORS-enabled</a> and allows basic authentication using your Brightcove login credentials, it is possible to make API requests directly from a web page, as we do in Player Management API samples. Brightcove's other RESTful APIs require authentication via <a href="/node/18376">OAuth</a>. Since the API used to retrieve access tokens is not CORS-enabled (nor are the APIs themselves), you must make requests through a server-side app. See <a href="/node/18132">Using the REST APIs</a> for a guide to building hybrid apps with a web UI and proxy to access the REST APIs. This is the approach we recommend for apps using the Player Management API in production as well, because it is more secure, sending no credentials over HTTP connections.</p>
+    
+    <aside class="bcls-aside bcls-aside--warning">
+    <p>The sample apps referred to on this page are meant as a way for you to explore the basics of the Player Management API. They are not meant to be enterprise ready, deployable apps. For instance, form validation is not exhaustive and passwords are sent NOT using HTTPS.</p>
+    </aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Basic_authentication">Basic authentication</h2>
+    
+    <p>In the Step-by-Step: Player Management document you used curl statements to interact with the API. When an API call was made you were interactively prompted for a password. While this works well for curl, this kind of interactive authentication is not feasible when building an application.</p>
+    
+    <p>You can use basic authentication when building an app. In the header you need to send the credentials, encrypted in a base-64 encoded ASCII string. You can use the JavaScript <code>btoa()</code> method to do the encoding. Assuming <code>account_username</code> and <code>account_password</code> are populated from, for example a form, the Authorization header would appear as follows:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-javascript"> "Authorization": "Basic " + btoa(account_username + ":" + account_password),</code></pre>
+    </section>
+    
+    <section id="ajax" class="bcls-section">
+    <h2>AJAX</h2>
+    
+    <aside class="bcls-aside bcls-aside--information">
+    <p>In this section, you will learn how to use AJAX using <a href="//jquery.org">jQuery</a>. jQuery encapsulates the commands involved in making AJAX requests into an ajax() function, and so simplifies things for you as a developer. However, jQuery is not required to AJAX, and in the section that follows, we'll show you how to make AJAX requests with plain JavaScript.</p>
+    </aside>
+    
+    <p>Instead of using curl statements these samples will use JavaScript to communicate with the API. This means using AJAX to issue the request to the API. A specific example request might look something like this:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-javascript">$.ajax({
+        type: "DELETE",
+        headers: {
+        "Authorization": "Basic " + btoa("username:password"),
+        "Content-Type": "application/json"
+        },
+        url: "https://players.api.brightcove.com/v2/accounts/123456789/players/478772a5-a2f2-44c6-a26b-2d7234bd97f5",
+        success: ajaxSuccess,
+        error: ajaxError
+    });</code></pre>
+    
+    <p>Associated <code>success</code> and <code>error</code> handlers could look something like this:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-javascript">var ajaxSuccess = function (data) {
+        document.getElementById("jsonResponse").innerHTML = JSON.stringify(data,null,2);
+        };
+    
+        var ajaxError = function (data) {
+        console.log("error data: ");
+        console.log(data);
+    };</code></pre>
+    
+    <p>Of course, you don't want to hard code all the information in the AJAX call as shown above, so it makes sense to abstract the actual call to a function that is reusable, as shown here:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-javascript">var makeAjaxCall = function (callURL, callType, callData) {
+        if (callData) {
+            $.ajax({
+                type: callType,
+                headers: {
+                    "Authorization": "Basic " + btoa(account_username + ":" + account_password),
+                    "Content-Type": "application/json"
+                },
+                url: callURL,
+                data: JSON.stringify(callData),
+                success: ajaxSuccess,
+                error: ajaxError
+            });
+        } else {
+            $.ajax({
+            type: callType,
+            headers: {
+                "Authorization": "Basic " + btoa(account_username + ":" + account_password),
+                "Content-Type": "application/json"
+            },
+            url: callURL,
+            success: ajaxSuccess,
+            error: ajaxError
+            });
+        }
+    };</code></pre>
+    <!-- <code data-gist-id="9216425" data-gist-hide-footer="true" data-gist-line="22-47"></code><br /> -->
+    
+    <aside class="bcls-aside bcls-aside--information">Separate calls are built if data needs to be passed with the API call. In the Ste-by-Step: Player Management document you have seen both use cases. Publishing a player does not require any data to be passed, whereas creating a player with a media source does require passing data.</aside>
+    
+    <p>You are then ready to call the function. In the following example the <code>account_id</code>, <code>account_password</code> and <code>account_username</code> values are all extracted from a form.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-javascript">var getPlayerInfo = function () {
+        account_id = document.getElementById("account_id").value,
+        account_password = document.getElementById("account_password").value,
+        account_username = document.getElementById("account_username").value;
+        call_url = "https://players.api.brightcove.com/v2/accounts/" + account_id + "/players";
+        makeAjaxCall(call_url, "GET", null);
+    };</code></pre>
+    <!-- <code data-gist-id="9216425" data-gist-hide-footer="true" data-gist-line="49-55"></code><br /> -->
+    
+    <p>If you have completed the Step-by-Step: Player Management document you know that some processes take multiple API calls, like creating and publishing a player. Also, the logic of some apps may require multiple API calls, like getting a list of all players to display, then deleting players the user marked. In these instances you will most likely need to alter your <code>success</code> handler to perform different logic based on which call was just successfully carried out. In these sample apps the implementation logic for these use cases will be implemented using a flag variable, <code>callPurpose</code>, and a <code>case</code> statement using that flag, as shown here:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-javascript">var ajaxSuccess = function (data) {
+        switch (callPurpose) {
+            case "getPlayers":
+                createCheckboxes(data);
+                watchCheckboxes();
+                break;
+            case "deletePlayer":
+                document.getElementById("jsonResponse").textContent += data;
+                break;
+        }
+    };</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="AJAX_without_jquery">AJAX without jQuery</h2>
+    
+    <p>If you would rather not use jQuery, making AJAX requests is a little more complex, but not too much. Here is some sample code, with comments, to get you started:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-javascript">/**
+     * createRequest sets up requests, send them to makeRequest(), and handles responses
+     * @param  {string} type the request type
+     */
+    function createRequest(type) {
+        var options   = {},
+            baseURL = 'https://players.api.brightcove.com/v2/accounts/',
+            account_id = '1234567890',
+            // would be better to get these from form fields
+            // and not hardcode them
+            username = 'jane@myplace.com',
+            password = 'mypassword',
+            responseDecoded;
+    
+        // set credentials
+        options.client_id     = cid.value;
+        options.client_secret = secret.value;
+    
+        switch (type) {
+            case 'getPlayers':
+                options.url         = ipBaseURL + account_id + '/players';
+                options.requestType = 'GET';
+                options.username = username;
+                options.password = password;
+                makeRequest(options, function(response) {
+                    // use try catch in case something went wrong
+                    try {
+                        responseDecoded = JSON.parse(response);
+                        // now do whatever you want with the response
+                    }
+                    catch (e) {
+                        console.log('something went wrong - this was the JSON.parse error: ' + e);
+                    }
+                });
+                break;
+            // additional cases
+            default:
+                console.log('Should not be getting to the default case - bad request type sent');
+                break;
+        }
+    }
+    
+    /**
+     * send API request
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.username username for the account
+     * @param  {String} options.password password for the account
+     * @param  {JSON} [options.requestBody] Data (if any) to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
+     */
+    function makeRequest(options, callback) {
+        var httpRequest = new XMLHttpRequest(),
+            response,
+            requestParams,
+            dataString,
+            // response handler
+            getResponse = function() {
+                try {
+                    if (httpRequest.readyState === 4) {
+                        // don't just check for status = 200
+                        // some requests return other 2xx codes
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
+                            response = httpRequest.responseText;
+                            // return the response to the callback
+                            callback(response);
+                        } else {
+                            alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                        }
+                    }
+                } catch (e) {
+                    alert('Caught Exception: ' + e);
+                }
+            };
+        /**
+         * set up request data
+         */
+        // set response handler
+        httpRequest.onreadystatechange = getResponse;
+        // open the request
+        httpRequest.open(options.requestType, options.url);
+        // set headers
+        httpRequest.setRequestHeader("Content-Type", "application/json");
+        httpRequest.setRequestHeader("Authorization", "Basic " + btoa(options.username + ":" + options.password));
+        // open and send request
+        if (options.requestBody) {
+            httpRequest.send(options.requestBody)
+        } else {
+            httpRequest.send();
+        }
+    }</code></pre>
+    </section>
+    </article>
+    
