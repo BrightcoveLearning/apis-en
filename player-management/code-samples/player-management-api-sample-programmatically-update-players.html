@@ -1,0 +1,70 @@
+---
+title: 'Programmatically Update Players'
+description: 'In this topic, you learn how to use the Player Management API to programmatically update multiple players.'
+parent: Code Samples
+grandparent: Player Management API
+---
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>In this sample there is nothing to interact with. Using the Player Management API the provided code updates a filtered set of players using an HTTP <code>PATCH</code> method, then automatically publishes the updated players.</p>
+    
+    <p>As with all API samples, it is strongly recommended you first study the <a href="/node/18132">Learning Guide: Using the REST APIs</a> to provide a basis on which to build more REST API knowledge.</p>
+    
+    <p>The CodePen is supplied as way to view the code discussed later in the document.</p>
+    
+    <p data-height="644" data-theme-id="34967" data-slug-hash="QJgjmy" data-default-tab="js" data-user="rcrooks1969" data-pen-title="18693-player-management-api-sample-programmatically-update-players" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/QJgjmy/">18693-player-management-api-sample-programmatically-update-players</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
+    <!-- UPDATE application flow -->
+    
+    <section class="bcls-section">
+    <h2 id="Application_flow">Application flow</h2>
+    
+    <p>The basic logic behind this application is:</p>
+    
+    <ul>
+      <li>Retrieve all players from a specified account, then filter the set of players to those you wish to update.</li>
+      <li>Build an array with the IDs of the filtered set of players.</li>
+      <li>Define the updates desired on the filtered set of players, the request that each player be updated accordingly.</li>
+      <li>Publish each of the updated players.</li>
+    </ul>
+    
+    <aside class="bcls-aside bcls-aside--information">The <code>makeRequest</code> function is standard code that rarely needs to be modified for use in the process of using the Brightcove REST APIs. For this reason it is not discussed in this document, but is thoroughly detailed in the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside>
+    <!-- UPDATE task 1 -->
+    
+    <h3>Retrieve a filtered set of players, and build an array of their IDs</h3>
+    
+    <p>Find the code which is labeled:</p>
+    
+    <pre>
+    <code class="language-javascript">// +++ Configure the request to get players and extract their IDs +++</code></pre>
+    
+    <p>After defining the options to pass to the proxy to get all players from a specified account, JavaScript's array <code>filter</code> function is used with the custom <code>filter_players</code> function to filter the player set. You then loop over the filtered set and push their IDs into another array. Finally you call the function that requests that updates be made.</p>
+    <!-- UPDATE task 2 -->
+    
+    <h3>Request the updates be performed on the filtered set of players</h3>
+    
+    <p>Find the code which is labeled:</p>
+    
+    <pre>
+    <code class="language-javascript">// +++ Configure the request to update filtered players +++</code></pre>
+    
+    <p>In the <code>options</code> object you define the options needed to pass to the proxy. Note that this includes the <code>requestBody</code>, which defines the actual changes you wish to make on the filtered set of players. You must loop over each of the player IDs in the <code>playerIDsAra</code> and make the request. Note that the function is called recursively. Finally you call the function that requests the players be published.</p>
+    <!-- UPDATE task 3 -->
+    
+    <h3>Request the updated players be published</h3>
+    
+    <p>Find the code which is labeled:</p>
+    
+    <pre>
+    <code class="language-javascript"> // +++ Configure the request to publish updated players +++</code></pre>
+    
+    <p>Here again you loop over the <code>playerIDsAra</code> array and make requests that the player be published. If not at the end of the array, the function is called recursively.</p>
+    
+    <p>You can see the app's JavaScript code from this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18693-player-management-api-sample-programmatically-update-players/blob/master/index.html">liveCustomError.js18693-player-management-api-sample-programmatically-update-players</a>.</p>
+    </section>
+    </article>
+    

@@ -1,0 +1,259 @@
+---
+title: 'Overview: Policy API'
+description: 'In this topic, you will learn what the Policy API is for and how to use it. The Policy API is used to create or get policy keys.'
+parent: Getting Started
+grandparent: Policy API
+---
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <div class="training-video-player-ipx" data-experience="5a73630f7afd7a00101bc1b5" data-video-ids="5853357211001">&nbsp;</div>
+    <script src="https://players.brightcove.net/20318290001/experience_5a73630f7afd7a00101bc1b5/live.js"></script>
+    
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>The <a href="https://support.brightcove.com/node/18125">policy key</a> is used to retrieve video and playlist content from your Video Cloud library using the <a href="https://support.brightcove.com/node/17906">Playback API</a>.</p>
+    
+    <p>Also see the <a href="https://docs.brightcove.com/policy-api/v1/doc/index.html">API Reference</a>.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Do_you_need_one">Do you need one?</h2>
+    
+    <p>There are only special cases where you need to generate your own policy keys:</p>
+    
+    <ul>
+      <li>Policy keys are generated for Brightcove Players automatically when you create them. You only need to generate policy keys directly using this API if you wish to get a key with geo-filtering for a player, or to access the Playback API without creating a player - typically this would be for apps created using the <a href="/node/18367">device SDKs</a>. See <a href="/node/18125">Policy Keys</a> for instructions on how to obtain the policy key for any Brightcove Player.</li>
+      <li>Performing video search requests:
+      <ul>
+        <li>You must use a <a href="#Search_videos">search-enabled Policy Key</a>.</li>
+        <li>Policy keys generated for new Brightcove Players are not search enabled by default. You must set this manually using the <a href="#Search_videos">Policy API</a>.</li>
+        <li>In general, search-enabled Policy Keys should only be stored on a server and not in a browser player or mobile app, since they can be used to list all playable videos. For some accounts this may not be applicable if you don't mind that all of your playable videos can be discovered.</li>
+        <li>Search requests will only return playable videos. For API request/response details, see the <strong>Get Videos</strong> section of the <a href="http://docs.brightcove.com/playback-api/v1/doc/index.html">Playback API Reference</a>.</li>
+      </ul>
+      </li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="FAQ">FAQ</h2>
+    
+    <p>Here are some questions about the Policy API that we commonly get.</p>
+    
+    <dl>
+      <dt class="bcls-question">Can policy keys be created for multiple accounts, or only one?</dt>
+      <dd class="bcls-answer">Policy keys allow access to videos and playlist for one account. If you have multiple accounts, you need to create policy keys for each one.</dd>
+      <dt class="bcls-question">Do policy keys expire?</dt>
+      <dd class="bcls-answer">No, policy keys are good forever. If you need to revoke a policy key, you must contact <a href="//support.brightcove.com/en/contact">Brightcove Support</a> - include the account id and the policy key you wish to revoke in the request.</dd>
+      <dt class="bcls-question">Will policy keys work for all users on the account?</dt>
+      <dd class="bcls-answer">Yes, anyone who has the policy key can use it.</dd>
+      <dt class="bcls-question">Can a policy key be updated?</dt>
+      <dd class="bcls-answer">No, there is no way to update a policy key. You can either <a href="https://support.brightcove.com/node/18125#Getting_the_policy_key">get the policy key</a> from an existing player in your Video Cloud account, or you can create a new policy key by using the Policy API.</dd>
+    </dl>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Base_URL">Base URL</h2>
+    
+    <p>The base URL for the Policy API is:</p>
+    
+    <pre>
+    <code class="notranslate language-http">https://policy.api.brightcove.com/v1</code></pre>
+    
+    <h3>Account path</h3>
+    
+    <p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add <code class="notranslate">/accounts/ </code> followed by your account id to the base URL:</p>
+    
+    <pre>
+    <code class="notranslate language-http">https://policy.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Authentication">Authentication</h2>
+    
+    <p>Requests are authenticated by an access token passed in an <code class="notranslate">Authorization </code> header:</p>
+    
+    <pre>
+    <code class="notranslate language-json">Authorization: Bearer {access_token}</code></pre>
+    
+    <p>To get access tokens, follow these steps:</p>
+    
+    <ol class="bcls-tasklist">
+      <li>
+      <p>Obtain your client credentials ( <code class="notranslate">client_id </code> and <code class="notranslate">client_secret </code>) through <a href="/node/14056">Video Cloud Studio</a> (recommended).</p>
+    
+      <p>For access tokens that can be used with policy key create requests, your client credentials are required to have the following permissions in Studio: <strong>Players Read and Read/Write</strong></p>
+    
+      <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Authentication permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/policy-api/overview/authentication-permissions.png" />
+      <figcaption class="bcls-caption--image">Authentication permissions</figcaption>
+      </figure>
+    
+      <p>You can also obtain client credentials directly via the <a href="/node/17928">Brightcove OAuth API</a>.</p>
+      </li>
+      <li>Once you have client credentials, you can <a href="/node/17925">obtain temporary access tokens from the OAuth API</a>.</li>
+    </ol>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="required_headers">Required headers</h2>
+    
+    <p>In addition to the <code>Authorization</code> header discussed in the previous section, requests must also have a <code>Content-Type</code> header:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash">Content-Type: application/json</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Create_a_policy_key">Create a policy key</h2>
+    
+    <p>To create a new policy key, make a POST request to:</p>
+    
+    <pre>
+    <code class="notranslate language-http">https://policy.api.brightcove.com/v1/accounts/{account_id}/policy_keys</code></pre>
+    
+    <h3>Request body</h3>
+    
+    <p>In the request body, include the JSON for the policy:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">{
+      "key-data": {
+        "account-id": "{account_id}"
+      }
+    }</code></pre>
+    
+    <p>This is the most basic policy, which restricts access to the account, you must include this in any policy you create. The account id here must match the account id in the request URL, or an error will be returned.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Domain_restriction">Domain restriction</h2>
+    
+    <p>In addition to limiting access to the account, you can also limit access to specific domains by adding the <code class="notranslate">allowed-domains </code> key:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">{
+      "key-data": {
+        "account-id": "123456789001",
+        "allowed-domains": [
+          "http://www.abc.com",
+          "https://www.abc.com",
+          "http://www.xyz.com",
+          "https://www.xyz.com"
+        ]
+      }
+    }</code></pre>
+    
+    <aside class="bcls-aside bcls-aside--warning">
+    <ul>
+      <li>Domains must contain the protocol and domain name, and the port, unless it is the default port for the protocol (e.g. http://www.abc.com, https://www.def.com:8888), but <strong>not paths or trailing slashes ("/")</strong></li>
+      <li>Any key for your account may be used to access the account content via the Playback API, so if you are using domain restriction, we highly recommend that you domain restrict all of your players.</li>
+      <li>Because the <a href="/node/18367">Brightcove Native Player SDKs</a> do not send an origin header, you cannot use a domain-restricted Policy Key. If you try this, you will get a <code>403 Forbidden</code> response when you attempt to fetch content from your Video Cloud library.</li>
+    </ul>
+    </aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Geo_restriction">Geo restriction</h2>
+    
+    <p>The Policy API can be used to implement geo-filtering for a player instead of or in addition to <a href="/node/18011">individual videos.</a></p>
+    
+    <aside class="bcls-aside bcls-aside--information">
+    <ul>
+      <li>A policy may restrict playback based on the viewer's detected country. To create and use a key with this policy, the account must be permitted to use geo-filtering features. This policy will also deny access if the end-user appears to be making their request through or from an anonymizing proxy.</li>
+      <li>Geo restrictions applied in a policy key are enforced <strong>only</strong> by players that use that policy key.</li>
+      <li>Geo-restriction can also be <a href="/node/18011">applied to individual videos</a>. Video Cloud applies both player and video level geo-filtering policies, so if a country is excluded by either, the video will not be available in that country.</li>
+    </ul>
+    </aside>
+    
+    <h3>Sample</h3>
+    
+    <p>Here is an example whitelist policy set that only allows playback from the US and US territories and military bases:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">{"account-id": "8523232323",
+      "geo": {
+        "countries": ["us", "usmil", "pr", "gu", "vi", "as", "mp"],
+        "exclude_countries": false
+      }
+    }</code></pre>
+    
+    <p>To blacklist those countries instead, set <code class="notranslate">exclude_countries </code> to true.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Require_SSAI">Require SSAI</h2>
+    
+    <p>When working with Server-Side Ad Insertion (SSAI), you may want a way to enforce proper ad configuration in your API requests. You can do this by configuring your policy key to require that an <code class="notranslate">ad_config_id </code> is appended as a URL parameter to all Playback API requests.</p>
+    
+    <h3>Sample</h3>
+    
+    <p>Here is an example:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">{
+      "key-data": {
+        "account-id": "1752604059001",
+        "require-ad-config": true
+      }
+    }</code></pre>
+    
+    <p>For details about using the <code class="notranslate">ad_config_id </code> with your Playback API requests, see the <a href="/node/17906#Video_request_with_SSAI">Playback API Overview: Video request with SSAI</a> document.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Search_videos">Search videos</h2>
+    
+    <p>When performing a video search request, you must use a Policy Key that is search-enabled. To create a search-enabled Policy Key, the request body of the call must include the following:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">{
+      "key-data": {
+        "account-id": "57838016001",
+        "apis": ["search"]
+      }
+    }</code></pre>
+    
+    <aside class="bcls-aside bcls-aside--warning">In general, search-enabled Policy Keys should only be stored on a server and not in a browser player or mobile app, since they can be used to list all playable videos. For some accounts this may not be applicable if you do not care if all of your playable videos can be discovered.</aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="API_Response">API Response</h2>
+    
+    <p>The response to policy create requests will be JSON that includes the encrypted <code class="notranslate">key-string </code> that you can use to authenticate requests to the Playback API, as well as the policy associated with the key:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">{
+      "key-data": {
+        "account-id": "57838016001"
+      },
+      "key-string": "BCpkADawqM0NK0Rq8n6sEQyWykemrqeSmIQqqVt3XBrdpl8TYlvqN3hwKphBJRnkPgx6WAbozCW_VgTOBCNf1AQRh8KnmXSXfveQalRc5-pyNlSod5XzP99If2U"
+    }</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Policy_requests">Policy requests</h2>
+    
+    <p>To retrieve the policy object associated with a <code class="notranslate">key-string </code>, make a GET request to:</p>
+    
+    <pre>
+    <code class="notranslate language-json">/accounts/v1/{account_id}/policy_keys/{key_string}</code></pre>
+    
+    <p>The response will be JSON representation of the key-string and policy:</p>
+    
+    <pre class="line-numbers">
+    <code class="notranslate language-json">{
+      "key-data": {
+        "account-id": "57838016001"
+      },
+      "key-string": "BCpkADawqM0NK0Rq8n6sEQyWykemrqeSmIQqqVt3XBrdpl8TYlvqN3hwKphBJRnkPgx6WAbozCW_VgTOBCNf1AQRh8KnmXSXfveQalRc5-pyNlSod5XzP99If2U"
+    }</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Revoke_a_policy">Revoke a policy</h2>
+    
+    <p>If you need to revoke an existing policy, submit a request to <a href="http://support.brightcove.com/en/contact">Brightcove Support</a>. Include the key string for the policy you want to revoke in your request.</p>
+    </section>
+    </article>
+    
