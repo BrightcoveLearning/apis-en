@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- remember to remove the following line when the site is ready to go live -->
   <!-- <meta name="robots" content="noindex" /> -->
-  <title>Programmatically Update Players</title>
+  <title>Learning Guide: Using the REST APIs</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -85,9 +85,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/player-management/code-samples/">Code Samples</a></li>
+      <li class="breadcrumb-item"><a href="/getting-started/">Getting Started</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Programmatically Update Players</li>
+      <li class="breadcrumb-item active" aria-current="page">Learning Guide: Using the REST APIs</li>
     </ol>
   </nav>
 </header>
@@ -1108,70 +1108,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <div id="search_box" class="gcse-search"></div>
 </div>
 
-<article class="bcls-article">
-  <h1>Programmatically Update Players</h1>
-  <summary>In this topic, you learn how to use the Player Management API to programmatically update multiple players.</summary>
-    <section class="bcls-section">
-    <h2 id="Introduction">Introduction</h2>
-    
-    <p>In this sample there is nothing to interact with. Using the Player Management API the provided code updates a filtered set of players using an HTTP <code>PATCH</code> method, then automatically publishes the updated players.</p>
-    
-    <p>As with all API samples, it is strongly recommended you first study the <a href="/node/18132">Learning Guide: Using the REST APIs</a> to provide a basis on which to build more REST API knowledge.</p>
-    
-    <p>The CodePen is supplied as way to view the code discussed later in the document.</p>
-    
-    <p data-height="644" data-theme-id="34967" data-slug-hash="QJgjmy" data-default-tab="js" data-user="rcrooks1969" data-pen-title="18693-player-management-api-sample-programmatically-update-players" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/QJgjmy/">18693-player-management-api-sample-programmatically-update-players</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
-    <!-- UPDATE application flow -->
-    
-    <section class="bcls-section">
-    <h2 id="Application_flow">Application flow</h2>
-    
-    <p>The basic logic behind this application is:</p>
-    
-    <ul>
-      <li>Retrieve all players from a specified account, then filter the set of players to those you wish to update.</li>
-      <li>Build an array with the IDs of the filtered set of players.</li>
-      <li>Define the updates desired on the filtered set of players, the request that each player be updated accordingly.</li>
-      <li>Publish each of the updated players.</li>
-    </ul>
-    
-    <aside class="bcls-aside bcls-aside--information">The <code>makeRequest</code> function is standard code that rarely needs to be modified for use in the process of using the Brightcove REST APIs. For this reason it is not discussed in this document, but is thoroughly detailed in the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside>
-    <!-- UPDATE task 1 -->
-    
-    <h3>Retrieve a filtered set of players, and build an array of their IDs</h3>
-    
-    <p>Find the code which is labeled:</p>
-    
-    <pre>
-    <code class="language-javascript">// +++ Configure the request to get players and extract their IDs +++</code></pre>
-    
-    <p>After defining the options to pass to the proxy to get all players from a specified account, JavaScript's array <code>filter</code> function is used with the custom <code>filter_players</code> function to filter the player set. You then loop over the filtered set and push their IDs into another array. Finally you call the function that requests that updates be made.</p>
-    <!-- UPDATE task 2 -->
-    
-    <h3>Request the updates be performed on the filtered set of players</h3>
-    
-    <p>Find the code which is labeled:</p>
-    
-    <pre>
-    <code class="language-javascript">// +++ Configure the request to update filtered players +++</code></pre>
-    
-    <p>In the <code>options</code> object you define the options needed to pass to the proxy. Note that this includes the <code>requestBody</code>, which defines the actual changes you wish to make on the filtered set of players. You must loop over each of the player IDs in the <code>playerIDsAra</code> and make the request. Note that the function is called recursively. Finally you call the function that requests the players be published.</p>
-    <!-- UPDATE task 3 -->
-    
-    <h3>Request the updated players be published</h3>
-    
-    <p>Find the code which is labeled:</p>
-    
-    <pre>
-    <code class="language-javascript"> // +++ Configure the request to publish updated players +++</code></pre>
-    
-    <p>Here again you loop over the <code>playerIDsAra</code> array and make requests that the player be published. If not at the end of the array, the function is called recursively.</p>
-    
-    <p>You can see the app's JavaScript code from this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18693-player-management-api-sample-programmatically-update-players/blob/master/index.html">liveCustomError.js18693-player-management-api-sample-programmatically-update-players</a>.</p>
-    </section>
-    </article>
-    
+<script>
+  shared_content: '/shared-content/general/learning-guide-using-rest-apis.html';
+</script>
+<h1>Learning Guide: Using the REST APIs</h1>
+<summary>In this topic, you will first get a high level overview of using the REST APIs in web apps via <code>XMLHttpRequest()</code> and a proxy. Then later in the document a deeper dive will discuss example code. The first example uses the Analytics API to retrieve and display in the Brightcove player controlbar the number of views the video currently in the player has had. The second, and slightly more complex, example uses the Analytics API in conjunction with the Brightcove Player catalog to retrieve the most popular videos from an account and show them in a playlist. The code discussion in this document will center on retrieving the desired data from the correct REST API.</summary>
+<article id="bcls_article" class="bcls-article">
+</article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -1187,7 +1131,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 06 Mar 2020
+  Page last updated on 07 Mar 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
@@ -1269,13 +1213,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
   
-  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc-shared-content.js"></script>
   
   <script src="/assets/js/sites_nav.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/bcls-utils.js"></script>
   <script src="/assets/js/feedback.js"></script>
   <script src="/assets/js/search.js"></script>
   <script async src="https://cse.google.com/cse.js?cx=017969773216783359937:nencjvjwomg"></script>
+  <script src="/assets/js/share.js"></script>
 </body>
 
 </html>
