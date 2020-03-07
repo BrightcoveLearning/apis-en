@@ -1,0 +1,95 @@
+---
+title: 'Testing Tools for Brightcove APIs'
+parent: Getting Started
+grandparent: Home
+---
+<article class="bcls-article">
+  <h1>Concepts: Testing Tools for Brightcove APIs</h1>
+  <summary>In this topic, you will learn about tools that Brightcove Learning Services provides to help you test and learn the Brightcove RESTful APIs.</summary>
+  <section class="bcls-section">
+    <h2 id="toolList">List of tools</h2>
+    <p>The following tools are discussed in this guide:</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">API Testing Tools</caption>
+      <thead class="bcls-table__head">
+          <tr>
+              <th>Testing Tool</th>
+              <th>APIs</th>
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+          <tr>
+              <td><a href="#shell">api-tester.sh</a></td>
+              <td>Any API that uses Brightcove OAuth for <a href="/getting-started/authentication-brightcove-api-requests.html">authenticating requests</a></td>
+          </tr>
+          <tr>
+              <td><a href="#online">online tester</a></td>
+              <td>Any API that uses Brightcove OAuth for <a href="/getting-started/authentication-brightcove-api-requests.html">authenticating requests</a></td>
+          </tr>
+          <tr>
+              <td><a href="#Insomnia">Insomnia</a></td>
+              <td>Any REST API, regardless of authentication method</td>
+          </tr>
+          <tr>
+              <td><a href="#Postman">Postman</a></td>
+              <td>Any REST API, regardless of authentication method</td>
+          </tr>
+      </tbody>
+  </table>
+    <ul>
+      <li class="language-editable">A shell script that can be run from the command line if you are working on MacOS or some other UNIX or LINUX system, or if you have <a href="/node/17908">cURL installed</a> on a Windows system</li>
+      <li class="language-editable">An online testing tool that should work in any browser</li>
+      <li class="language-editable">A guide to using the popular Postman REST API Tester</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="shell">The shell script (cURL)</h2>
+    <p>The command-line tool is a shell script called <strong>api-tester.sh</strong> to get access tokens and make the API calls. The api-tester script uses cURL to make http calls. cURL is built in on Mac MacOS and all Unix/Linux systems. To get cURL on Windows, see <a href="/node/17908">Setting up cURL</a>. Then download the <a href="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/assets/api-tester.sh.zip">api-tester.sh script</a></p>
+    <p class="BCL-aside">You can see the full code for the shell script at <a href="/node/17925">Getting Access Tokens</a>.</p>
+    <h3>Running the shell script</h3>
+    <p>After you download the shell script, unzip it wherever you like, and then go to a command line in the same folder. To run the script, type:</p>
+    <pre>
+	<code>bash api-tester.sh</code></pre>
+    <p>Each time you run the script, it will prompt you for 5 variables:</p>
+    <ul>
+      <li class="language-editable">Client ID (see the <a href="#obtaincredentials">section below</a> on obtaining client credentials)</li>
+      <li class="language-editable">Client Secret (see the <a href="#obtaincredentials">section below</a> on obtaining client credentials)</li>
+      <li class="language-editable">The full API call (example: <code>https://cms.api.brightcove.com/v1/accounts/12345678/videos</code></li>
+      <li class="language-editable">The request verb - one of the following: GET | POST | PATCH | PUT | DELETE (GET is the default)</li>
+      <li class="language-editable">Request data - used for POST, PATCH, and PUT; for GET and DELETE requests, you will leave this blank and just press <strong>return</strong></li>
+    </ul>
+    <p>The command-line tool will return the same response as the <a href="#online">online tool</a> - however, it also echoes the full response, which allows you to see the headers and more information if the request fails for some reason. It also echos the raw JSON for the response as well as a pretty-printed version.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="online">The online tool</h2>
+    <p>The online testing tool can be found <a href="/node/17918">here</a>. Like the command-line tool, it asks you for:</p>
+    <ul>
+      <li class="language-editable">A client id</li>
+      <li class="language-editable">A client secret</li>
+      <li class="language-editable">The full API request URL</li>
+      <li class="language-editable">The request type</li>
+      <li class="language-editable">The JSON data to be submitted, if any</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Insomnia">Insomnia</h2>
+    <p>See the <a href="/node/18462">step-by-step guide to making API requests using Insomnia</a>.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Postman">Postman</h2>
+    <p>See the <a href="/node/17919">step-by-step guide to making API requests using Postman</a>.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="obtaincredentials">Obtain credentials</h2>
+    <p>To use the Brightcove APIs you will need proper client credentials, consisting of a <code>client_id</code> and <code>client_secret</code>. See the <a href="/node/17928">OAuth Overview</a> to get a better understanding of the client credential flow.</p>
+    <p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register an app:</p>
+    <ul>
+      <li class="language-editable"><a href="/node/14056">Managing API Authentication Credentials</a></li>
+    </ul>
+    <p>You can also get your credentials via CURL or Postman - see:</p>
+    <ul>
+      <li class="language-editable"><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+      <li class="language-editable"><a href="/node/17919">Get Client Credentials Using Postman</a></li>
+    </ul>
+  </section>
+</article>

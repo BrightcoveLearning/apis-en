@@ -1,0 +1,287 @@
+---
+title: 'Overview: Platform APIs'
+description: 'The Brightcove platform APIs allow you to automate interactions with the Brightcove systems and create integration between Brightcove systems and your CMS and other applications.'
+parent: Getting Started
+grandparent: Home
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+  <h2 id="introduction">Introduction</h2>
+  
+  <p>The Brightcove platform APIs are RESTful APIs that allow you to get and send data to various parts of the Brightcove platform. Some examples of use include:</p>
+  
+  <ul>
+    <li>Ingesting videos into Video Cloud</li>
+    <li>Managing videos on Video Cloud</li>
+    <li>Creating custom analytics reports for a Video Cloud account</li>
+    <li>Creating and managing Brightcove players</li>
+    <li>Creating Brightcove Live jobs for live streaming</li>
+    <li>Creating transcoding jobs for videos in Zencoder</li>
+  </ul>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="restful">RESTful APIs</h2>
+  
+  <p>If you are not familiar with RESTful APIs, they have some common characteristics:</p>
+  
+  <ul>
+    <li>Requests are made by sending an HTTP request, using different methods such as <code>GET</code>, <code>POST</code>, <code>PATCH</code>, and <code>DELETE</code>, depending on the kind of operation performed.</li>
+    <li>The response is usually in the form of a <a href="https://general.support.brightcove.com/general/concepts-introducing-json.html">JSON</a> string, which any programming language can parse into native data types.</li>
+  </ul>
+  
+  <p>The beauty of REST is that RESTful APIs are not dependent on any particular programming language. As long as you can make HTTP requests and parse JSON responses, the API does not care what language you are using.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="cors">CORS</h2>
+  
+  <p>One thing you do need to be aware of is that most of the Brightcove APIs are not <a href="https://general.support.brightcove.com/general/concepts-cors.html">CORS</a> enabled. You can read the linked document for a full explanation, but the upshot is that API requests in almost all cases cannot be made from a web client (a web app, for instance).</p>
+  
+  <p>It is still possible to use web interfaces with the APIs by routing the API requests through a server-side proxy, as we do in many of the sample apps on this site, and explain in <a href="/node/18132">Using the REST APIs</a>.</p>
+  
+  <p>You can make requests from your own internet-connected computer using tools like <a href="/node/17908">cURL</a>, <a href="/node/17919">Postman</a>, or <a href="/node/18462">Insomnia</a></p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="authentication">Authentication</h2>
+  
+  <p>Authentication for most platform APIs is via a temporary OAuth2 access token. A few APIs use a permanent api key or policy key instead. See the documentation on the individual APIs for details.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="videocloudapis">Video Cloud APIs</h2>
+  
+  <table class="bcls-table">
+    <caption class="bcls-caption--table">Video Cloud APIs</caption>
+    <thead class="bcls-table__head">
+      <tr>
+        <th>API</th>
+        <th>Use</th>
+        <th>Landing Page</th>
+        <th>Overview</th>
+        <th>Quick Start</th>
+        <th>Reference</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18372">CMS</a></td>
+        <td class="language-editable">Manage videos and playlists (uncached)</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18372">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18034">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18033">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/cms-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18373">Dynamic Ingest</a></td>
+        <td class="language-editable">Add, replace, and retranscode videos and assets</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18373">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17948">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17950">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18370">Analytics</a></td>
+        <td class="language-editable">Obtain analytics data for your <span class="notranslate">Video Cloud</span> accounts</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18370">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17997">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18000">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/analytics-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18370">Data Collection</a></td>
+        <td class="language-editable">Send analytics data to <span class="notranslate">Video Cloud</span> from non-<span class="notranslate">Brightcove</span> players</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18370">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18243">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17987">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/data-collection-api/v2/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18380">Playback</a></td>
+        <td class="language-editable">Access video and playlist data from clients</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18380">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17906">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17907">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/playback-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18371">Audience</a></td>
+        <td class="language-editable">Obtain audience data for your <span class="notranslate">Video Cloud</span> accounts</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18371">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18047">Overview</a></td>
+        <td class="language-editable">&nbsp;</td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/audience-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18444">Social (beta)</a></td>
+        <td class="language-editable">Obtain history and status of sharing to social platforms for your <span class="notranslate">Video Cloud</span> videos</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18444">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18659">Overview</a></td>
+        <td class="language-editable">&nbsp;</td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/social-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18650">SSAI</a></td>
+        <td class="language-editable">Manage ad configurations for server-side ad integration (VOD)</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18650">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18623">Overview</a></td>
+        <td class="language-editable">&nbsp;</td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/ssai-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18374">Ingest Profiles</a></td>
+        <td class="language-editable">Manage ingest profiles for your account</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18374">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18045">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18046">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/ingest-profiles-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18616">In-Page Experiences (REST)</a></td>
+        <td class="language-editable">Manage your In-Page Experiences</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18616">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18614">Overview</a></td>
+        <td class="language-editable">&nbsp;</td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/in-page-exerience-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18376">OAuth</a></td>
+        <td class="language-editable">Get client credentials and access tokens for the other RESTful APIs</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18376">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17928">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17927">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/oauth-api/v4/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18381">Policy</a></td>
+        <td class="language-editable">Generate policy keys that are used to access the <span class="notranslate">Playback API</span></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18381">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18003">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18004">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/policy-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18378">Player Management</a></td>
+        <td class="language-editable">Create and manage <span class="notranslate">Brightcove</span> Players</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18378">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18269">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18268">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/player-management-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18387">Delivery System</a></td>
+        <td class="language-editable">Management and deployment for player related files</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18387">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17911">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17913">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/delivery-system-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="videocloudapis">Brightcove Player (stand-alone) APIs</h2>
+  
+  <table class="bcls-table">
+    <caption class="bcls-caption--table">Brightcove Player APIs</caption>
+    <thead class="bcls-table__head">
+      <tr>
+        <th>API</th>
+        <th>Use</th>
+        <th>Landing Page</th>
+        <th>Overview</th>
+        <th>Quick Start</th>
+        <th>Reference</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18378">Player Management</a></td>
+        <td class="language-editable">Create and manage <span class="notranslate">Brightcove</span> Players</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18378">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18269">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/18268">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/player-management-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18387">Delivery System</a></td>
+        <td class="language-editable">Management and deployment for player related files</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18387">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17911">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17913">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/delivery-system-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18376">OAuth</a></td>
+        <td class="language-editable">Get client credentials and access tokens for the other RESTful APIs</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18376">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17928">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17927">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/oauth-api/v4/doc/index.html">Reference</a></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="brightcoveliveapi">Brightcove Live API</h2>
+  
+  <table class="bcls-table">
+    <caption class="bcls-caption--table">Brightcove Live API</caption>
+    <thead class="bcls-table__head">
+      <tr>
+        <th>API</th>
+        <th>Use</th>
+        <th>Landing Page</th>
+        <th>Overview</th>
+        <th>Quick Start</th>
+        <th>Reference</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18642">Live</a></td>
+        <td class="language-editable">Create and manage live streams</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18642">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17764">Overview</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17765">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/live-api/v1/doc/index.html">Reference</a></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="zencoderapi">Zencoder API</h2>
+  
+  <table class="bcls-table">
+    <caption class="bcls-caption--table">Zencoder API</caption>
+    <thead class="bcls-table__head">
+      <tr>
+        <th>API</th>
+        <th>Use</th>
+        <th>Landing Page</th>
+        <th>Overview</th>
+        <th>Quick Start</th>
+        <th>Reference</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td class="language-editable"><a class="notranslate" href="/node/18331">Zencoder</a></td>
+        <td class="language-editable">Transcode VOD and live stream assets</td>
+        <td class="language-editable"><a class="notranslate" href="/node/18331">Landing Page</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17901">Quick Start</a></td>
+        <td class="language-editable"><a class="notranslate" href="/node/17877">Encoding Settings</a></td>
+        <td class="language-editable"><a class="notranslate" href="https://docs.brightcove.com/zencoder-api/v2/doc/index.html">Reference</a></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+  </article>
+  
