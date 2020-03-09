@@ -109,11 +109,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                   
                 
                   
-                    <li><a href="/getting-started/concepts-testing-tools-brightcove-apis.html">Authentication for API Requests</a></li>
+                    <li><a href="/getting-started/authentication-brightcove-api-requests.html">Authentication for API Requests</a></li>
                   
                 
                   
-                    <li><a href="/getting-started/authentication-brightcove-api-requests.html">Testing Tools for Brightcove APIs</a></li>
+                    <li><a href="/getting-started/concepts-testing-tools-brightcove-apis.html">Testing Tools for Brightcove APIs</a></li>
                   
                 
                   
@@ -418,6 +418,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                         <li><a href="/cms/code-samples/cms-api-sample-report-audio-only-content.html">Report on Audio-Only Content</a></li>
                         
                         <li><a href="/cms/code-samples/cms-api-sample-video-schema-builder.html">Video Schema Builder</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-python-code-get-request.html">Python Code for a GET Request</a></li>
                         
                         <li><a href="/cms/code-samples/cms-api-sample-video-search-app.html">Video Search App</a></li>
                         
@@ -1116,7 +1118,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <aside class="bcls-aside bcls-aside--information">The information in this topic applies mostly to custom ingest profiles. Standard profiles all archive masters (see <a href="#standardProfiles">below</a>)</aside>
     
-    <p>If you archive a master when you ingest a video, you will be able to re-transcode the video later without ingesting it again. This topic explains your options for archiving your masters. Note that archiving the master means storing the master video file in your account so that it is available.for future processing. See&nbsp;<a href="/node/16840">Creating Ingest Profiles for Dynamic Delivery</a>&nbsp;for more information.</p>
+    <p>If you archive a master when you ingest a video, you will be able to re-transcode the video later without ingesting it again. This topic explains your options for archiving your masters. Note that archiving the master means storing the master video file in your account so that it is available.for future processing. See&nbsp;<a href="https://studio.support.brightcove.com/admin/creating-ingest-profiles-context-aware-encoding.html">Creating Ingest Profiles for Dynamic Delivery</a>&nbsp;for more information.</p>
     
     <p>Note that if you store the digital master when you ingest the video, and then retranscode the video using a profile that does not archive masters, the digital master for the video will <strong>not</strong> be removed, and you will still be able to retranscode the video.</p>
     </section>
@@ -1167,7 +1169,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
             "media_type": "video",
             <strong>"reference_id": "av0"</strong>, ...</code></pre>
     
-    <p>If you set <code class="notranslate">rendition</code> to <code class="notranslate">none</code>, <strong>no master will be archived</strong>, and you will <strong>not</strong> be able to retranscode the video. You can, however, <a href="/node/17949#replaceVideo">replace</a> the video by ingesting it again.</p>
+    <p>If you set <code class="notranslate">rendition</code> to <code class="notranslate">none</code>, <strong>no master will be archived</strong>, and you will <strong>not</strong> be able to retranscode the video. You can, however, <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html#replaceVideo">replace</a> the video by ingesting it again.</p>
     </section>
     
     <section class="bcls-section">
@@ -1182,7 +1184,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>If you selected one of your renditions to be the master, and set <code class="notranslate">distribute</code> to <code class="notranslate">false</code>, that rendition will not be pushed to the CDN and will not be available for playback</li>
       <li>If the rendition is set to <code class="notranslate">passthrough</code> and <code>distribute</code> to <code>true</code>, the master will only be distributed if it is in h264 format</li>
       <li>The original video may be modified in order to make it playable over the internet. The archived master will be identical to the original file, however, except in very rare cases where we need to modify it in order to transcode it</li>
-      <li>Distributing the master does <strong>not</strong> work for videos ingested using <a href="/node/17949">Dynamic Delivery</a> profiles. If you look at the Dynamic Delivery ingest profiles, you will see that <code class="notranslate">distribute</code> is set to <code class="notranslate">false</code>. If you duplicate the profile and attempt to change that in Studio, the value will revert to <code class="notranslate">false</code> automatically.</li>
+      <li>Distributing the master does <strong>not</strong> work for videos ingested using <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Delivery</a> profiles. If you look at the Dynamic Delivery ingest profiles, you will see that <code class="notranslate">distribute</code> is set to <code class="notranslate">false</code>. If you duplicate the profile and attempt to change that in Studio, the value will revert to <code class="notranslate">false</code> automatically.</li>
     </ul>
     </div>
     
@@ -1206,7 +1208,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <section class="bcls-section">
     <h2 id="defaultBehavior">Default behavior</h2>
     
-    <p>By default (if the profile does not include a <code class="notranslate">digital_master</code> field), the <span class="notranslate"><a href="/node/17949">Dynamic Ingest API</a></span> and <a href="https://studio.support.brightcove.com/media/uploading-videos-using-upload-module.html">Upload Module</a> will behave exactly as if the following had been included in the profile:</p>
+    <p>By default (if the profile does not include a <code class="notranslate">digital_master</code> field), the <span class="notranslate"><a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Ingest API</a></span> and <a href="https://studio.support.brightcove.com/media/uploading-videos-using-upload-module.html">Upload Module</a> will behave exactly as if the following had been included in the profile:</p>
     
     <pre class="line-numbers">
     <code class="notranslate language-json">"digital_master": {

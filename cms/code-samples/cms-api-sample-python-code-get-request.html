@@ -1,0 +1,72 @@
+---
+title: 'Python Code for a GET Request'
+description: 'CMS API requests can be scripted using any language. Here we offer you a script written in Python, which you can use for getting videos or as a model for your own script.'
+parent: 'Code Samples'
+grandparent: CMS API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>REST APIs like the Brightcove platform APIs can be used with any language. The Python script included here is just one sample to show you how requests are put together. There is another sample of POST requests to create and ingest a video <a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-python-code.html">here</a>.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="dependencies">Dependencies</h2>
+    
+    <ul>
+      <li><a href="http://docs.python-requests.org/en/latest/">Requests</a></li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section" id="script">
+    <h2>Python script</h2>
+    
+    <p>The gist below shows the script. Note that to use it, you will need to supply your own values for the following:</p>
+    
+    <ul>
+      <li>***ACCOUNT ID HERE**** (line 7)</li>
+      <li>***CLIENT ID HERE**** (line 8)</li>
+      <li>***CLIENT SECRET HERE**** (line 9)</li>
+    </ul>
+    
+    <pre class="line-numbers">
+      <code class="language-python">#!/usr/bin/env python3
+    
+      import sys
+      import requests
+      import json
+    
+      pub_id = "***ACCOUNT ID HERE****"
+      client_id = "***CLIENT ID HERE****"
+      client_secret = "***CLIENT SECRET HERE****"
+      access_token_url = "https://oauth.brightcove.com/v4/access_token"
+      profiles_base_url = "https://cms.api.brightcove.com/v1/accounts/{pub_id}"
+    
+      def get_access_token():
+          access_token = None
+          r = requests.post(access_token_url, params="grant_type=client_credentials", auth=(client_id, client_secret), verify=False)
+          if r.status_code == 200:
+              access_token = r.json().get('access_token')
+              print(access_token)
+          return access_token
+    
+      def get_video():
+          access_token = get_access_token()
+          headers = { 'Authorization': 'Bearer ' + access_token, "Content-Type": "application/json" }
+    
+          url = ("https://cms.api.brightcove.com/v1/accounts/{pubid}/videos/").format(pubid=pub_id)
+    
+          r = requests.get(url, headers=headers)
+          return r.json()
+    
+    
+      v = get_video()
+      print(v)
+    </code></pre>
+    </section>
+    </article>
+    
