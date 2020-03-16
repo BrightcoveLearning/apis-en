@@ -1,1 +1,62 @@
-/oauth/guides/getting-access-tokens.html
+---
+title: 'Generate Video Sitemaps'
+description: 'In this topic, you will learn how to generate video sitemaps using the CMS API. There is a standard document called a sitemap that search engine indexers look for when examining your site. The sitemap concisely tells the search engines what content is exposed on your site, the metadata for that content, and where that content is located on your site. A sitemap is an XML file that follows a standard specification.'
+parent: 'General Information'
+---
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Sitemap_types">Sitemap types</h2>
+        
+    <p>There are two different flavors of sitemaps that you can (and should) create:</p>
+    
+    <ul>
+      <li><em>Sitemap</em> – A sitemap that will index your content in the standard text based search engines such as www.google.com or search.yahoo.com</li>
+      <li><em>Video Sitemap</em> – A sitemap that will index your content in media-centric search engines such as video.google.com</li>
+    </ul>
+    
+    <p>This topic focuses primarily on video sitemaps.</p>
+    
+    <p>A proper SEO strategy for your video content will include creating both a standard sitemaps as well as a video sitemap. From a priority perspective, you want to create a standard sitemap first and then a video sitemap. Using the CMS API, you can create your sitemaps automatically, rather than compiling them by hand.</p>
+    
+    <p>The example in this document is written in (node.js) JavaScript and would run on your server.</p>
+    </section>
+    
+    <section id="standard-sitemap" class="bcls-section">
+    <h2>Standard sitemaps</h2>
+    
+    <p>Sitemaps follow the sitemap specification that is defined here: <a href="//www.sitemaps.org">www.sitemaps.org</a>. The purpose of the sitemap file is to provide a list of URLs on your site to the search engines.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="video-sitemaps">Video sitemaps</h2>
+    
+    <p>A video sitemap is similar in concept to the standard sitemap file; there will be one entry in the sitemap file per video in your account. In fact, a video sitemap uses the sitemap schema as its base and adds additional tags specific to video metadata. For more detailed information, visit <a href="https://support.google.com/webmasters/answer/80471">Google's video sitemap documentation</a>.</p>
+    
+    <p>The code required to create a video sitemap is almost exactly the same as that to create a sitemap. The only difference is that we add additional metadata about each video into each url entry.</p>
+    
+    <p>Using the CMS API you can automatically generate the <code class="notranslate">sitemap.xml</code> file by fetching video data from a Video Cloud account and injecting relevant data into an XML template. CMS API requests require an <a href="/oauth/guides/getting-access-tokens.html">access token</a> for authentication. The access token must carry read permissions for videos.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="sample">Sample app</h2>
+    
+    <p>The sample code has been converted to an <a href="/cms/code-samples/cms-api-sample-video-sitemap-generator.html">online working app</a>.</p>
+    
+    <h3>Notes on building an app</h3>
+    <ul>
+      <li>All the data required for a video sitemap is available via the CMS API with one exception: the <code class="notranslate">loc</code> that provides the page URL where the video is published. You will either need to pull this from some other data source in your CMS, or you can store the information somewhere in the video metadata.</li>
+      <li>Some data from Video Cloud will need to be manipulated a bit. For example, the <code class="notranslate">duration</code> returned by the CMS API is in milliseconds, but in the sitemap you should provide it in seconds.</li>
+      <li>If you are providing <code class="notranslate">player_loc</code> instead of <code class="notranslate">video_loc</code>, you will need to know what the player URL will look like:
+      <pre class="line-numbers">
+    <code class="language-http">http://players.brightcove.net/{player_id}/index.html?videoId={video_id}</code></pre>
+    
+      <p>From this you can easily generate a URL for each video.</p>
+      </li>
+      <li>If instead you are providing <code class="notranslate">video_loc</code>, you will need to make an additional <a href="/cms/references/reference.html#operation/GetVideoSources">sources request</a> for each video and pick out an HTTP MP4 rendition.</li>
+    </ul>
+    
+    </section>
+    </article>
+    
