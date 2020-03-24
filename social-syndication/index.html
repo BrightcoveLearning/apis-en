@@ -1,0 +1,51 @@
+---
+title: Policy API
+parent: Home
+icon: '<i class="fal fa-key"></i>'
+description: 'The Policy API is used to create or get policy keys that can be used to access the <a href="/playback/">Playback API</a>.'
+---
+
+<style>
+  h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
+    font-size: 3rem;
+    color:{{site.product_color}};
+    margin-right: .5rem;
+  }
+  .card-icon i {
+    color: {{site.product_color}};
+  }
+  .card-wrapper {
+  justify-content: start;
+  }
+  .bcls-card ul li {
+    font-size: small;
+  }
+</style>
+
+<article class="bcls-article">
+  <h1>{{ page.icon }} {{ page.title }}</h1>
+  <summary style="display: block;">{{ page.description }}</summary>
+  <div style="width: 50%;">
+      <div data-experience="5be4439bb5cd1c00106dc3f5" data-video-ids="5853357211001">&nbsp;</div>
+			<script src="https://players.brightcove.net/20318290001/experience_5be4439bb5cd1c00106dc3f5/live.js"></script>
+  </div>
+    
+  <section class="card-wrapper">
+    {% for item in site.data.navigation %}
+      {% if item.name == page.title %}
+        {% for subsection in item.docs %}
+            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
+              <div class="card-content">
+                <h2>{{ subsection.name }}</h2>
+                <ul>
+                  {% for doc in subsection.docs %}
+                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </section>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </section>
+</article>

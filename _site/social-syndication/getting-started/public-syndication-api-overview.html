@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+    <meta name="robots" content="noindex">
+    <!-- change title to match the h1 heading -->
+    <title>Public Social Syndication API Overview</title>
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700" rel="stylesheet" type="text/css">
+    <script src="//use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
+    <link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
+    <link rel="stylesheet" href="/en/styles/foundation-fixes.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+
+  </head>
+
+  <body>
+    <!-- header navbar -->
+    <div id="navWrapper" class="fixed"></div>
+    <!-- breadcrumbs -->
+    <nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+    <!-- search -->
+    <div id="searchModal" class="reveal-modal" data-reveal></div>
+    <!-- content -->
+    <div class="row">
+      <div class="sidebar large-2 columns show-for-large-up">
+        <div id="sidenav" class="side-nav"></div>
+      </div>
+      <div id="main" class="large-10 small-12 columns">
+        <h1>Public Social Syndication API Overview</h1>
+        <!-- BEGIN MAIN CONTENT -->
+        <article class="bcls-article">
+          <p><a href="index.html">Return to the Documentation Index</a></p>
+          <aside class="bcls-aside bcls-aside--information language-editable">Note: these topics apply <strong>only</strong> to Ooyala customers recently migrated to Video Cloud.</aside>
+          <h3>In this document</h3>
+          <ul>
+            <li><a href="#introduction"></a>Introduction</li>
+            <li><a href="#OpenAPI_Specification">OpenAPI Specification</a></li>
+            <li><a href="#Authentication">Authentication</a></li>
+            <li><a href="#Base_URLs">Base URLs</a></li>
+            <li><a href="#Syndication_Resource">Syndication Resource</a></li>
+            <li><a href="#Actions">Actions</a></li>
+            <li><a href="#Universal_Template_Language">Universal Template Language</a></li>
+          </ul>
+          <h3>Related documents</h3>
+          <ul>
+            <li><a href="/en/staging/heritage-ooyala/search-syntax-for-syndication.html">Search Syntax for Syndication</a></li>
+            <li><a href="/en/staging/heritage-ooyala/sample-templates-universal-syndication.html">Sample Templates for Universal Syndication</a></li>
+            <li><a href="https://docs.brightcove.com/mrss-config-api/v1/doc/index.html">Syndication Configuration API Reference</a></li>
+            <li><a href="https://docs.brightcove.com/mrss-feed-api/v1/doc/index.html">Syndication Feed API Reference</a></li>
+          </ul>
+      <section class="bcls-section">
+            <h2 id="introduction">Introduction</h2>
+            <p>The Social Syndication API is a publicly accessible API that allows syndications to be created, managed, and used to generate dynamic feeds (such as MRSS feeds) from a VideoCloud account's video catalog.</p>
+            <aside class="bcls-aside bcls-aside--information language-editable">Note that creating syndication feeds must be done through the API described in this document - there is no UI for these operations.</aside>
+          </section>
+          <section class="bcls-section">
+            <h2 id="OpenAPI_Specification">OpenAPI Specification</h2>
+            <p>
+              The formal API specification is defined by a pair of OpenAPI specification files:</p>
+              <ul>
+                <li><a href="https://docs.brightcove.com/mrss-config-api/v1/doc/index.html">The Configuration API</a> for creating and managing Syndications</li>
+                <li><a href="https://docs.brightcove.com/mrss-feed-api/v1/doc/index.html">The Feed API</a> for accessing the feeds defined by Syndications</li>
+              </ul>
+          </section>
+          <section class="bcls-section">
+            <h2 id="Authentication">Authentication</h2>
+            <p>Access to the Configuration API requires specification of a <code>bearer</code> token from the <a href="https://support.brightcove.com/oauth-api">Brightcove OAuth service</a> in the request's <code>Authorization</code> header. The various API methods also require one of the following operations (depending upon the method accessed) to be specified for the credentials in question:</p>
+            <ul>
+              <li><code>video-cloud/social/mrss/read</code></li>
+              <li><code>video-cloud/social/mrss/write</code></li>
+            </ul>
+            <p>These operations can be configured via the <a href="https://support.brightcove.com/managing-api-authentication-credentials">API Authentication section of the Studio Admin Module</a>.</p>
+            <p>If you prefer, you can also create credentials via the OAuth API:</p>
+            <ul>
+              <li><a href="https://support.brightcove.com/oauth-create-client-credentials-using-curl">Create Client Credentials Using cURL</a></li>
+              <li><a href="https://support.brightcove.com/oauth-create-client-credentials-using-postman">Create Client Credentials Using Postman</a></li>
+            </ul>
+            <p>Access to the Feed API does not require authentication, as feeds are intended to be publicly accessible.</p>
+          </section>
+          <section class="bcls-section">
+            <h2 id="Base_URLs">Base URLs and headers</h2>
+            <p>For the Configuration API, the base URL is:</p>
+            <pre><code class="language-http">https://social.api.brightcove.com/v1</code></pre>
+            <p>The Feed API is accessed through a CDN that caches feed requests, with an expiration of 5 minutes currently. The base URL is:</p>
+            <pre><code class="language-http">https://social.feeds.brightcove.com/v1</code></pre>
+            <p>Note that for all requests that include a request body, you must include a <code>Content-Type: application/json</code> header.</p>
+          </section>
+          <section class="bcls-section">
+            <h2 id="Syndication_Resource">Syndication Resource</h2>
+            <p>The syndication resource is an object that defines how the syndication will be created. Here is a sample request body for creating a syndication resource:</p>
+<pre class="line-numbers"><code class="language-json">{
+  "name": "80s music videos syndication",
+  "type": "advanced",
+  "include_all_content": false,
+  "include_filter": "tags:mytag",
+  "title": "80s Music Videos",
+  "description": "Amateur Tokyo drift!",
+  "destination_url": "http://mywebsite.com",
+  "keywords": "80s, rock",
+  "author": "Rick Astley",
+  "category": "Music",
+  "album_art_url": "http://my_album_art.jpg",
+  "explicit": "no",
+  "owner_name": "http://my_album_art.jpg",
+  "owner_email": "rick@astley.com",
+  "language": "en-us",
+  "fetch_sources": true,
+  "fetch_digital_master": false,
+  "fetch_dynamic_renditions": true,
+  "sort": "-created_at"
+}</code></pre>
+<p>The response will add some read-only fields:</p>
+<pre class="line-numbers"><code class="language-json">{
+  "id": "7f594cd3-4853-4174-aff3-203c3e99e9c2",
+  "name": "80s music videos syndication",
+  "type": "advanced",
+  "include_all_content": false,
+  "include_filter": "tags:mytag",
+  "title": "80s Music Videos",
+  "description": "Amateur Tokyo drift!",
+  "syndication_url": "https://social.feeds.brightcove.com/v1/accounts/9999999999999/mrss/accounts/{account_id}/mrss/syndications/7f594cd3-4853-4174-aff3-203c3e99e9c2/feed",
+  "destination_url": "http://mywebsite.com",
+  "keywords": "80s, rock",
+  "author": "Rick Astley",
+  "category": "Music",
+  "album_art_url": "http://my_album_art.jpg",
+  "explicit": "no",
+  "owner_name": "http://my_album_art.jpg",
+  "owner_email": "rick@astley.com",
+  "language": "en-us",
+  "fetch_sources": true,
+  "fetch_digital_master": false,
+  "fetch_dynamic_renditions": true,
+  "sort": "-created_at"
+  }</code></pre>
+<table class="bcls-table">
+  <caption class="bcls-caption--table">Syndication Resource</caption>
+  <thead class="bcls-table__head">
+      <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Read-Only</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+      <tr>
+          <td><code>id</code></td>
+          <td>String</td>
+          <td>Yes</td>
+          <td>generated when syndication is created</td>
+      </tr>
+      <tr>
+          <td><code>name</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>an internal name for this syndication - required for POST requests</td>
+      </tr>
+      <tr>
+          <td><code>include_all_content</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>If true, all catalog videos are included in this syndication</td>
+      </tr>
+      <tr>
+          <td><code>include_filter</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>Must be specified if include_all_content is false.  Value is a CMS search string using the <a href="/en/staging/heritage-ooyala/search-syntax-for-syndication.html">CMS query syntax</a></td>
+      </tr>
+      <tr>
+          <td><code>type</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>The type of feed that will be generated.  The universal type allows custom feeds to be generated by an uploaded feed template. Valid values: <code>advanced</code>, <code>google</code>, <code>iphone</code>, <code>ipad</code>, <code>mp4</code>, <code>itunes</code>, <code>roku</code>, <code>source</code>, <code>universal</code>. Required for POST requests</td>
+      </tr>
+      <tr>
+          <td><code>title</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>The title of this feed. This is included inside of the &lt;channel&gt; tag for applicable feed types</td>
+      </tr>
+      <tr>
+          <td><code>description</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>The description of this feed. This is included inside of the &lt;channel&gt; tag for applicable feed types</td>
+      </tr>
+      <tr>
+          <td><code>syndication_url</code></td>
+          <td>String</td>
+          <td>Yes</td>
+          <td>The URL of this syndication's MRSS feed</td>
+      </tr>
+      <tr>
+          <td><code>destination_url</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>The URL to be included inside of the &lt;channel&gt; tag for applicable feed types</td>
+      </tr>
+      <tr>
+          <td><code>keywords</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>comma-delimited list, only used for itunes and (potentially) universal feeds</td>
+      </tr>
+      <tr>
+          <td><code>author</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>only used for itunes and (potentially) universal feeds</td>
+      </tr>
+      <tr>
+          <td><code>owner_name</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>only used for itunes and (potentially) universal feeds</td>
+      </tr>
+      <tr>
+          <td><code>language</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>only used for itunes and (potentially) universal feeds - two-letter language code in lower-case, such as <code>"en"</code></td>
+      </tr>
+      <tr>
+          <td><code>owner_email</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>only used for itunes and (potentially) universal feeds</td>
+      </tr>
+      <tr>
+          <td><code>category</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>only used for itunes and (potentially) universal feeds. To specify a category with a subcategory, separate them by a colon (:) - for example: <code>"Business:Business News".
+  "category": "Music"</code></td>
+      </tr>
+      <tr>
+          <td><code>album_art_url</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>URL for image, only used for itunes and (potentially) universal feeds</td>
+      </tr>
+      <tr>
+          <td><code>fetch_sources</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>For universal templates, whether to fetch video source metadata - if the template doesn't need this metadata, performance can be improved by specifying <code>false</code>; could be empty if no usable source exists</td>
+      </tr>
+      <tr>
+          <td><code>fetch_digital_master</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>For universal templates, whether to fetch video digital master metadata - if the template doesn't need this metadata, performance can be improved by specifying <code>false</code>; could be empty if no digital master exists</td>
+      </tr>
+      <tr>
+          <td><code>fetch_dynamic_renditions</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>For universal templates, whether to fetch video dynamic rendition metadata - if the template doesn't need this metadata, performance can be improved by specifying <code>false</code></td>
+      </tr>
+      <tr>
+          <td><code>sort</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>A CMS video sorting specifier indicating the desired feed results return order.  CMS-supported values like <code>name</code>, <code>reference_id</code>, <code>created_at</code>, <code>published_at</code>, <code>updated_at</code>, <code>schedule.starts_at</code>, <code>schedule.ends_at</code>, <code>state</code>, <code>plays_total</code>, and <code>plays_trailing_week</code> can be specified.  To sort in descending order, preface the value with a minus (-) sign, i.e. <code>-created_at</code>, specified, the feed will be sorted by most recent <code>updated_at</code> date by default.</td>
+      </tr>
+  </tbody>
+</table>
+            <p>See <a href="search-syntax-for-syndication.html">Search Syntax for the Syndication Resource</a> for details on the <code>include_filter</code> property.</p>
+          </section>
+          <section class="bcls-section">
+            <h2 id="Actions">Actions</h2>
+            <p>See the API References for full details of the actions:</p>
+            <ul>
+              <li><a href="https://docs.brightcove.com/mrss-config-api/v1/doc/index.html">The Configuration API</a></li>
+              <li><a href="https://docs.brightcove.com/mrss-feed-api/v1/doc/index.html">The Feed API</a></li>
+            </ul>
+          <p>The following actions are supported:</p>
+            <ul>
+              <li><a href="#Create_a_syndication">Create a syndication</a></li>
+              <li><a href="#Update_a_syndication">Update a syndication</a></li>
+              <li><a href="#Delete_a_syndication">Delete a syndication</a></li>
+              <li><a href="#Get_all_syndications_for_an_account">Get all syndications for an account</a></li>
+              <li><a href="#Get_a_specific_syndication">Get a specific syndication</a></li>
+              <li><a href="#Set_the_template_for_a_universal_syndication">Set the template for a universal syndication</a></li>
+              <li><a href="#Get_the_template_for_a_universal_syndication">Get the template for a universal syndication</a></li>
+              <li><a href="#Get_the_feed_associated_with_a_syndication">Get the feed associated with a syndication</a></li>
+            </ul>
+            <section class="bcls-subsection">
+              <h3 id="error_messages">Error messages</h3>
+              <p>If any API requests fails, an error message will be returned. Error responses will look like the following:</p>
+<pre class="line-numbers"><code class="language-json">[
+  {
+    "error_code" : "Application error code 1",
+    "message" : "Application error message 1"
+  }, {
+    "error_code" : "Application error code 2",
+    "message" : "Application error message 2"
+  }
+]</code></pre>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Create_a_syndication">Create a syndication</h3>
+              <p>Method: <code>POST</code></p>
+              <p>Endpoint: <code>/accounts/{account_id}/mrss/syndications</code></p>
+              <p>Sample request body:</p>
+<pre class="line-numbers"><code class="language-json">{
+  "name": "my mp4 feed",
+  "type": "mp4"
+}</code></pre>
+<p>Note that the <code>name</code> and <code>type</code> fields are required. Others are optional.</p>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Update_a_syndication">Update a syndication</h3>
+              <p>Method: <code>PATCH</code></p>
+              <p>Endpoint: <code>/accounts/{account_id}/mrss/syndications/{syndication_id}</code></p>
+              <p>Sample request body:</p>
+<pre class="line-numbers"><code class="language-json">{
+  "name": "my new name",
+}</code></pre>
+<p>Note that the request body for PATCH requests must <strong>not</strong> include the fields (<code>type</code>, <code>id</code> and <code>syndication_url</code>).</p>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Delete_a_syndication">Delete a syndication</h3>
+              <p>Method: <code>DELETE</code></p>
+              <p>Endpoint: <code>/accounts/{account_id}/mrss/syndications/{syndication_id}</code></p>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Get_all_syndications_for_an_account">Get all syndications for an account</h3>
+              <p>Method: <code>GET</code></p>
+              <p>Endpoint: <code>/accounts/{account_id}/mrss/syndications</code></p>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Get_a_specific_syndication">Get a specific syndication</h3>
+              <p>Method: <code>GET</code></p>
+              <p>Endpoint: <code>/accounts/{account_id}/mrss/syndications/{syndication_id}</code></p>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Set_the_template_for_a_universal_syndication">Set the template for a universal syndication</h3>
+              <p>Method: <code>PUT</code></p>
+              <p>Endpoint: <code>/accounts/{account_id}/mrss/syndications/{syndication_id}/template</code></p>
+              <p>Sample request body:</p>
+<pre class="line-numbers"><code class="language-json">&lt;feed header&gt;My Feed Header&lt;/feed header&gt;
+{% for asset in assets %}
+&lt;item&gt;
+    &lt;title&gt;{{asset.name}}&lt;/title&gt;
+    &lt;video_info&lt;{{asset.description}}&lt;/video_info&gt;
+    &lt;/item&gt;
+{% endfor %}</code></pre>
+              <p>The above template would generate a feed similar to:</p>
+<pre class="line-numbers"><code class="language-xml">&lt;feed header&gt;My Feed Header&lt;/feed header&gt;
+  &lt;item&gt;
+    &lt;title&gt;Title for Video 1&lt;/title&gt;
+    &lt;video_info&gt;Description for Video 1&lt;/video_info&gt;
+  &lt;/item&gt;
+  &lt;item&gt;
+    &lt;title&gt;Title for Video 2&lt;/title&gt;
+    &lt;video_info&gt;Description for Video 2&lt;/video_info&gt;
+  &lt;/item&gt;</code></pre>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Get_the_template_for_a_universal_syndication">Get the template for a universal syndication</h3>
+              <p>Method: <code>GET</code></p>
+              <p>Endpoint: <code>/accounts/{account_id}/mrss/syndications/{syndication_id}/template</code></p>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Get_the_feed_associated_with_a_syndication">Get the feed associated with a syndication</h3>
+              <p>The feed url can be obtained from the syndication's <code>syndication_url</code> field, or constructed manually. Note that the base url for this call is different than for the other calls described in this document, see the Base Urls section above. Note also that no authentication is needed for this API call.</p>
+              <p>Method: <code>GET</code></p>
+              <p>Endpoint: <code>/accounts/{account_id}/mrss/syndications/{syndication_id}/feed</code></p>
+            </section>
+          </section>
+          <section class="bcls-section">
+            <h2 id="Universal_Template_Language">Universal Template Language</h2>
+            <p>Universal syndications allow catalog data to be merged with a custom template to generate any kind of feed desired. The supported template language is <a href="https://shopify.github.io/liquid/basics/introduction/">Liquid</a>. Feeds for the default syndication types are generated using the same types of templates, You can see the <a href="/en/staging/heritage-ooyala/sample-templates-universal-syndication.html">templates provided as samples</a> to help you build custom templates if you need to.</p>
+            <p>The sections below identify the syndication, asset, source, and digital master properties you can use, as well as an extension to Liquid added for convenience.</p>
+            <p>To see all Video Cloud video metadata fields with descriptions, to go the <a href="https://support.brightcove.com/cms-api-video-fields-reference">CMS API Video Fields Reference</a>.</p>
+
+            <p></p>
+
+            <section class="bcls-subsection">
+              <h3 id="Top_level_properties">Top level properties</h3>
+              <h4>Derived from Syndication fields</h4>
+              <ul>
+                <li><code>album_art_url</code></li>
+                <li><code>author</code></li>
+                <li><code>category</code></li>
+                <li><code>description</code></li>
+                <li><code>destination_url</code></li>
+                <li><code>explicit</code></li>
+                <li><code>keywords</code></li>
+                <li><code>name</code></li>
+                <li><code>owner_name</code></li>
+                <li><code>owner_email</code></li>
+                <li><code>subtitle</code></li>
+                <li><code>syndication_id</code></li>
+                <li><code>syndication_url</code></li>
+                <li><code>title</code></li>
+              </ul>
+              <h4>Video Cloud account id</h4>
+              <ul>
+                <li><code>account_id</code></li>
+              </ul>
+              <h4>VideoCloud default player page url prefix</h4>
+              <p>Use like this:</p>
+              <pre><code class="language-xml">&lt;media:player url="{{player_url}}/{{account_id}}/default_default/index.html?videoId={{asset.id}}"&gt;</code></pre>
+              <ul>
+                <li><code>player_url</code></li>
+              </ul>
+              <h4>URL of the feed's next page</h4>
+              <ul>
+                <li><code>next_page</code></li>
+              </ul>
+              <h4>Collection of video assets retrieved from the catalog (see below for details)</h4>
+              <ul>
+                <li><code>assets</code></li>
+              </ul>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Asset_properties">Asset properties</h3>
+              <p>The resources in the assets collection are derived from the video resources returned by the CMS Get Videos API method, and all of the same properties are supported, including but not limited to the following:</p>
+              <ul>
+                <li><code>created_at</code></li>
+                <li><code>description</code></li>
+                <li><code>duration</code></li>
+                <li><code>id</code></li>
+                <li><code>images</code></li>
+                <li><code>images.thumbnail</code></li>
+                <li><code>images.poster</code></li>
+                <li><code>long_description</code></li>
+                <li><code>name</code></li>
+                <li><code>original_filename</code></li>
+                <li><code>published_at</code></li>
+                <li><code>schedule</code></li>
+                <li><code>state</code></li>
+                <li><code>tags</code></li>
+                <li><code>text_tracks</code></li>
+                <li><code>updated_at</code></li>
+              </ul>
+              <p>Asset resources also support the following properties:</p>
+              <ul>
+                <li><code>sources</code> (collection of sources for the video - see the next section for source properties)</li>
+                <li><code>digital_master</code> (will be empty if no digital master exists - see below for the digital master properties)</li>
+                <li><code>best_mp4_source</code> (the highest quality MP4 source - may be empty if there are no MP4 sources. Properties will be the same as items returned in the <code>sources</code>)</li>
+                <li><code>hls_source</code> (returns the HLS source - will be emptry if none exists)</li>
+                <li><code>best_dynamic_rendition_quality</code> (returns the video quality of the video's dynamic rendition with the largest frame size, if dynamic rendition metadata has been fetched for the video. Allowable values are "SD", "HD", "FHD", and "UHD".)</li>
+              </ul>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Source_properties">Source properties</h3>
+              <p>The resources in the sources collection for an asset are derived from the video source resources returned by the CMS Get Video Sources API method. The following properties are supported:</p>
+              <ul>
+                <li><code>app_name</code></li>
+                <li><code>asset_id</code></li>
+                <li><code>codec</code></li>
+                <li><code>container</code></li>
+                <li><code>created_at</code></li>
+                <li><code>duration</code></li>
+                <li><code>encoding_rate</code></li>
+                <li><code>height</code></li>
+                <li><code>size</code></li>
+                <li><code>src</code></li>
+                <li><code>stream_name</code></li>
+                <li><code>type</code></li>
+                <li><code>uploaded_at</code></li>
+                <li><code>width</code></li>
+              </ul>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Digital_master_properties">Digital master properties</h3>
+              <p>The <code>digital_master</code> resource for an asset is derived from the digital master resource returned by the CMS Get Digital Master Info API method. The following properties are supported:</p>
+              <ul>
+                <li><code>duration</code></li>
+                <li><code>encoding_rate</code></li>
+                <li><code>height</code></li>
+                <li><code>size</code></li>
+                <li><code>url</code></li>
+                <li><code>width</code></li>
+              </ul>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Dynamic_rendition_properties">Dynamic rendition properties</h3>
+              <p>The <code>dynamic_renditions</code> resource for an asset is derived from the dynamic renditions returned by the CMS Get Digital Master Info API method. The following properties are supported:</p>
+              <ul>
+                <li><code>rendition_id</code></li>
+                <li><code>frame_height</code></li>
+                <li><code>frame_width</code></li>
+                <li><code>media_type</code></li>
+                <li><code>encoding_rate</code></li>
+                <li><code>created_at</code></li>
+                <li><code>updated_at</code></li>
+                <li><code>size</code></li>
+                <li><code>duration</code></li>
+                <li><code>audio_configuration</code></li>
+                <li><code>language</code></li>
+                <li><code>variant</code></li>
+              </ul>
+            </section>
+            <section class="bcls-subsection">
+              <h3 id="Extensions_to_Liquid">Extensions to Liquid</h3>
+              <h4>toUTC filter</h4>
+              <p>We have extended our Liquid parser to support a toUTC filter which will parse most standard ISO-8601 datetime string formats and transform them into standard UTC datetime strings. This format is acceptable to Liquid's date filter, which can then be used to reformat the timestamps into datetime strings in any desired format. For example:</p>
+              <pre class="line-numbers"><code class="language-xml">&lt;pubDate&gt;{{asset.published_at | toUTC | date: "%a, %d %b %Y %H:%M:%S %Z"}}&lt;/pubDate&gt;</code></pre>
+              <p>This produces an output like the following if asset.published_at has a value of 2019-08-09T13:32:52.031Z::</p>
+              <pre class="line-numbers"><code class="language-xml">&lt;pubDate&gt;Fri, 09 Aug 2019 09:32:52 +0000&lt;/pubDate&gt;</code></pre>
+              <h4>toEpoch filter</h4>
+              <p>The Liquid parser we use does not support the "%s" token in date filters for converting dates to Unix epoch timestamps. To address this, a toEpoch custom filter is provided that can be used to convert valid date specifications to the epoch format. The filter returns a numeric data value representing milliseconds since the epoch that is suitable for input to mathematical filters. For example:</p>
+<pre class="line-numbers"><code class="language-html">&lt;toEpochMillis&gt;{{"now" | toEpoch }}&lt;/toEpochMillis&gt;
+&lt;toEpochSeconds&gt;{{"now" | toEpoch | divided_by : 1000 }}&lt;/toEpochSeconds&gt;
+&lt;thirtyDaysAgo&gt;{{'now' | toEpoch | minus:2592000000 | fromEpoch }}&lt;/thirtyDaysAgo&gt;</code></pre>
+
+
+<p>
+  produces an output like the following:
+</p>
+<pre class="line-numbers"><code class="language-html">&lt;toEpochMillis&gt;1580917253024&lt;/toEpochMillis&gt;
+&lt;toEpochSeconds&gt;1580917253&lt;/toEpochSeconds&gt;
+&lt;thirtyDaysAgo&gt;2020-01-06T15:40:53.055Z&lt;/thirtyDaysAgo&gt;</code></pre>
+
+<h4>
+  fromEpoch filter
+</h4>
+<p>
+  The fromEpoch filter converts numbers representing milliseconds since the epoch to UTC date strings. The filter will also accept a string containing the epoch value digits as an input. The output can be passed to the date filter for reformatting if necessary.
+</p>
+
+<p>
+  For example:
+</p>
+<pre class="line-numbers"><code class="language-html">
+&lt;fromEpochMillis&gt;{{"now" | toEpoch | fromEpoch }}&lt;/fromEpochMillis&gt;
+&lt;thirtyDaysAgoAltFormat&gt;{{1580917253024 | fromEpoch | date:"%Y-%m-%d" }}&lt;/thirtyDaysAgo&gt;
+</code></pre>
+
+<p>
+  produces an output like the following:
+</p>
+<pre class="line-numbers"><code class="language-html">
+&lt;fromEpochMillis&gt;2020-02-05T16:09:37.809Z&lt;/fromEpochMillis&gt;
+&lt;thirtyDaysAgoAltFormat&gt;2020-02-05&lt;/thirtyDaysAgo&gt;</code></pre>
+            </section>
+          </section>
+        </article>
+
+        <!-- END MAIN CONTENT -->
+      </div>
+    </div>
+
+    <!-- bcl scripts -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+    <script src="/en/scripts/docs-nav-data.min.js"></script>
+    <script src="/en/scripts/bcls-doc-site-v3.js"></script>
+    <script src="//learning-services-media.brightcove.com/doc-assets/js/bcls-utils.js"></script>
+    <script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script>
+    <script>
+    $(document).foundation();
+  </script>
+    <!-- Any scripts specific to page samples should go here -->
+  <script src="https://learning-services-media.brightcove.com/doc-assets/js/https-fix.js"></script>
+<script src="https://learning-services-media.brightcove.com/doc-assets/js/support-feedback.js"></script><script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/feedback-docs.js"></script>
+</body>
+
+</html>
