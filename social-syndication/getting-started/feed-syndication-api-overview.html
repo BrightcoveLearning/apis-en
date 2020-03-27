@@ -1,0 +1,39 @@
+---
+title: 'Overview: Social Syndication API'
+description: 'The Social Syndication API is a publicly accessible API that allows syndications to be created, managed, and used to generate dynamic feeds (such as MRSS feeds) from a VideoCloud account's video catalog.'
+parent: Social Syndication API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <p>The Brightcove Syndication Feed API is a public API for retrieving MRSS feeds created using the <a href="https://support.brightcove.com/overview-public-social-syndication-api">Syndication Configuration API</a>.</p>
+  <p>The Syndication Configuration API can also be used to retrieve feeds by simply opening the <code>syndication_url</code> returned in the syndication object into a browser, but the Feed API is different in that it requires no authentication - anyone having the right URL can retrieve the feed.</p>
+  <p>The primary use cases for retrieving feeds using one API or the other are as follows:</p>
+  <ul>
+    <li>If you only want to host the feed yourself, for subscribers, for example, then you would use the Syndication Configuration API to retrieve the feed.</li>
+    <li>If you have syndication partners who you wish to give the feed to use and host in whatever way they wish, you can give the Feed API URL with the <code>syndication_id</code> to retrieve feeds directly.</li>
+  </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="OpenAPI_Specification">API reference / base URL</h2>
+
+    <p>The <a href="https://docs.brightcove.com/mrss-feed-api/v1/doc/index.html">Feed API Reference</a> contains full details on the available requests and responses.</p>
+    <p>The base URL is:</p>
+    <pre><code class="language-http">https://social.feeds.brightcove.com/v1</code></pre>
+
+  </section>
+  <section class="bcls-section">
+    <h2 id="authentication">Authentication</h2>
+    <p>Access to the Feed API does <strong>not</strong> require authentication, as feeds are intended to be publicly accessible.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="operations">Operations</h2>
+    <p>There is only one operation for the Feed API: GET a feed based on the <code>syndication_id</code>.</p>
+    <p>Request URL</p>
+    <pre><code class="language-http">https://social.feeds.brightcove.com/v1/accounts/{account_id}/mrss/syndications/{syndication_id}/feed</code></pre>
+    <p>Method: GET</p>
+    <p>Request body: none (important! if you include a request body, an error will be returned)</p>
+    <p>Response type: XML</p>
+  </section>
+</article>
