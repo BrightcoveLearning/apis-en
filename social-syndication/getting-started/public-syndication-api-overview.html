@@ -1,6 +1,6 @@
 ---
 title: 'Overview: Social Syndication API'
-description: 'The Social Syndication API is a publicly accessible API that allows syndications to be created, managed, and used to generate dynamic feeds (such as MRSS feeds) from a VideoCloud account's video catalog.'
+description: 'The Social Syndication API is a publicly accessible API that allows syndications to be created, managed, and used to generate dynamic feeds (such as MRSS feeds) from a VideoCloud  video catalog.'
 parent: Social Syndication API
 ---
 
@@ -33,7 +33,7 @@ parent: Social Syndication API
 
     <p>The Brightcove Syndication Configuration API is a publicly accessible API that allows syndications to be created, managed, and used to generate dynamic feeds (such as MRSS feeds) from a Video Cloud account's video catalog.</p>
 
-    <p>There is also an associated <a href="https://support.brightcove.com/overview-syndication-feed-api">Syndication Feed API</a> that can be used to retrieve a feed associated with a syndication.</p>
+    <p>There is also an associated <a href="/social-syndication/getting-started/feed-syndication-api-overview.html">Syndication Feed API</a> that can be used to retrieve a feed associated with a syndication.</p>
 
     <h3>Availability</h3>
     <p>The syndication APIs are available to all Video Cloud customers who have access to the Platform APIs.</p>
@@ -55,14 +55,14 @@ parent: Social Syndication API
   <section class="bcls-section">
     <h2 id="Authentication">Authentication</h2>
 
-    <p>Access to the Configuration API requires specification of a <code>bearer</code> token from the <a href="https://support.brightcove.com/oauth-api">Brightcove OAuth service</a> in the request's <code>Authorization</code> header. The various API methods also require one of the following operations (depending upon the method accessed) to be specified for the credentials in question:</p>
+    <p>Access to the Configuration API requires specification of a <code>bearer</code> token from the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth service</a> in the request's <code>Authorization</code> header. The various API methods also require one of the following operations (depending upon the method accessed) to be specified for the credentials in question:</p>
 
     <ul>
       <li><code>video-cloud/social/mrss/read</code></li>
       <li><code>video-cloud/social/mrss/write</code></li>
     </ul>
 
-    <p>These operations can be configured via the <a href="https://support.brightcove.com/managing-api-authentication-credentials">API Authentication section of the Studio Admin Module</a>:</p>
+    <p>These operations can be configured via the <a href="/general/managing-api-authentication-credentials.html">API Authentication section of the Studio Admin Module</a>:</p>
 
     <figure class="bcls-figure"><img class="bcls-image" alt="Social Syndication Permissions" src="https://apis.support.brightcove.com/assets/images/social-syndication/social-syndication-permissions.png" />
       <figcaption class="bcls-caption--image">Social Syndication Permissions</figcaption>
@@ -71,8 +71,8 @@ parent: Social Syndication API
     <p>If you prefer, you can also create credentials via the OAuth API:</p>
 
     <ul>
-      <li><a href="https://support.brightcove.com/oauth-create-client-credentials-using-curl">Create Client Credentials Using cURL</a></li>
-      <li><a href="https://support.brightcove.com/oauth-create-client-credentials-using-postman">Create Client Credentials Using Postman</a></li>
+      <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Create Client Credentials Using cURL</a></li>
+      <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Create Client Credentials Using Postman</a></li>
     </ul>
 
   </section>
@@ -411,7 +411,7 @@ parent: Social Syndication API
     <section class="bcls-subsection">
       <h3 id="Get_the_feed_associated_with_a_syndication">Get the feed associated with a syndication</h3>
 
-      <p>The feed url can be obtained from the syndication's <code>syndication_url</code> field, or constructed manually. Note that the <a href="https://support.brightcove.com/overview-syndication-feed-api">Syndication Feed API</a> can also be used to retrieve a feed without authentication.</p>
+      <p>The feed url can be obtained from the syndication's <code>syndication_url</code> field, or constructed manually. Note that the <a href="/social-syndication/getting-started/feed-syndication-api-overview.html">Syndication Feed API</a> can also be used to retrieve a feed without authentication.</p>
 
       <p>Method: <code>GET</code></p>
 
@@ -422,11 +422,11 @@ parent: Social Syndication API
   <section class="bcls-section">
     <h2 id="Universal_Template_Language">Universal Template Language</h2>
 
-    <p>Universal syndications allow catalog data to be merged with a custom template to generate any kind of feed desired. The supported template language is <a href="https://shopify.github.io/liquid/basics/introduction/">Liquid</a>. Feeds for the default syndication types are generated using the same types of templates, You can see the <a href="/en/staging/heritage-ooyala/sample-templates-universal-syndication.html">templates provided as samples</a> to help you build custom templates if you need to.</p>
+    <p>Universal syndications allow catalog data to be merged with a custom template to generate any kind of feed desired. The supported template language is <a href="https://shopify.github.io/liquid/basics/introduction/">Liquid</a>. Feeds for the default syndication types are generated using the same types of templates, You can see the <a href="/social-syndication/getting-started/sample-templates-universal-syndication.html">templates provided as samples</a> to help you build custom templates if you need to.</p>
 
     <p>The sections below identify the syndication, asset, source, and digital master properties you can use, as well as an extension to Liquid added for convenience.</p>
 
-    <p>To see all Video Cloud video metadata fields with descriptions, to go the <a href="https://support.brightcove.com/cms-api-video-fields-reference">CMS API Video Fields Reference</a>.</p>
+    <p>To see all Video Cloud video metadata fields with descriptions, to go the <a href="/cms/references/cms-api-video-fields-reference.html">CMS API Video Fields Reference</a>.</p>
 
     <section class="bcls-subsection">
       <h3 id="Top_level_properties">Top level properties</h3>
@@ -510,7 +510,7 @@ parent: Social Syndication API
         <li><code>sources</code> (collection of sources for the video - see the next section for source properties)</li>
         <li><code>digital_master</code> (will be empty if no digital master exists - see below for the digital master properties)</li>
         <li><code>best_mp4_source</code> (the highest quality MP4 source - may be empty if there are no MP4 sources. Properties will be the same as items returned in the <code>sources</code>)</li>
-        <li><code>hls_source</code> (returns the HLS source - will be emptry if none exists)</li>
+        <li><code>hls_source</code> (returns the HLS source - will be empty if none exists)</li>
         <li><code>best_dynamic_rendition_quality</code> (returns the video quality of the video's dynamic rendition with the largest frame size, if dynamic rendition metadata has been fetched for the video. Allowable values are "SD", "HD", "FHD", and "UHD".)</li>
       </ul>
     </section>
