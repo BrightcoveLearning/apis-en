@@ -243,7 +243,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             li = document.createElement('li');
             a = document.createElement('a');
             code = document.createElement('code');
-            a.setAttribute('href', '/' + dimensionGuides[thisDimension]);
+            a.setAttribute('href', '/analytics/dimension-guides/' + dimensionGuides[thisDimension] + '.html');
             txt = document.createTextNode(thisDimension);
             a.appendChild(code);
             code.appendChild(txt);
