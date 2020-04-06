@@ -10,7 +10,7 @@ var token =
     Talla.OptionAnonymous(true),
     Talla.OptionThemeColor('rgb(239, 108, 42)'),
     Talla.OptionDisplayName('Search Video Cloud Platform APIs Docs'),
-    Talla.OptionKnowledgeGroups(['8c6dd203-958d-4ea6-ac62-be95fae8fca1']),
+    Talla.OptionKnowledgeGroups(['cf40cebb-c635-486d-84ba-8c3e752bc29b']),
     Talla.OptionWideBeacon(true),
     Talla.OptionBeaconCTA("Search Video Cloud Platform APIs Docs"),
     Talla.OptionOpenIcon('https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/search.png'),
