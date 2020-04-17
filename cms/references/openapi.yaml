@@ -29,6 +29,9 @@ tags:
   - name: Media Assets
     description: >-
       Operations for managing renditions, manifests, and other media assets. These operations are used mainly for remote assets.
+  - name: Variants
+    description: >-
+      Operations for managing video variants to add video metadata in multiple languages (beta).
   - name: Legacy
     description: >-
       Legacy operations - unless your account is still using the legacy ingest system instead of Dynamic Delivery, these operations are not relevant.
@@ -396,6 +399,169 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VideoImages'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/videos/{video_id}/variants':
+    get:
+      tags:
+        - Variants
+      summary: Get All Video Variants
+      description: 'Gets the language variants for the video metadata'
+      operationId: GetVideoVariants
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoVariants'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    post:
+      tags:
+        - Variants
+      summary: Create a Video Variant
+      description: 'Creates a language variant for a video metadata'
+      operationId: /createVideoVariant
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      requestBody:
+        $ref: '#/components/schemas/VideoVariant'
+      responses:
+        '201':
+          description: '201'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoVariant'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/videos/{video_id}/variants/{language}':
+    get:
+      tags:
+        - Variants
+      summary: Get a Video Varianta
+      description: 'Gets the variant for the video metadata for the specified language'
+      operationId: GetVideoVariant
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoVariant'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    patch:
+      tags:
+        - Variants
+      summary: Update a Video Variant
+      description: 'Updates a language variant for a video metadata'
+      operationId: /createVideoVariant
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      requestBody:
+        $ref: '#/components/schemas/VideoVariant'
+      responses:
+        '201':
+          description: '201'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoVariant'
         '401':
           description: >-
             UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
@@ -5209,6 +5375,15 @@ components:
       schema:
         type: string
       style: simple
+    Language:
+      description: 'The language for the variant in the language-country code format (examples: en-US, es-ES)'
+      explode: false
+      in: path
+      name: language
+      required: true
+      schema:
+        type: string
+      style: simple
     Limit:
       description: 'Number of items to return - see [Paging Search Results](/cms/searching/using-cms-api-page-search-results.html) for more information'
       explode: true
@@ -6471,6 +6646,30 @@ components:
       readOnly: true
       title: User
       type: object
+    VideoVariant:
+      description: Object containing language-specific metadata for a video
+      properties:
+        language:
+          type: string
+          description: 'The language for this variant in the language-country code format (examples: en-US, es-ES)'
+          example: es-ES
+        name:
+          type: string
+          description: The title of the video in this language
+        description:
+          type: string
+          description: The video short description in this language
+        long_description:
+          type: string
+          description: The video long description in this language
+        custom_fields:
+          type: object
+          description: 'map of `fieldname: value` pairs, where values are for this language; values have a maximum length of 1024 single-byte characters. Note: be sure to use the **internal** name for the field, not the display name'
+    VideoVariants:
+      description: Array of video variants
+      type: array
+      items:
+        $ref: '#/components/schemas/VideoVariant'
     Video:
       description: Object containing metadata for a video
       properties:
