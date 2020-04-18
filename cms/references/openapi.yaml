@@ -203,6 +203,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/VideoIds'
+        - $ref: '#/components/parameters/include_variants'
         - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/Authorization'
       responses:
@@ -465,14 +466,19 @@ paths:
         - Variants
       summary: Create a Video Variant
       description: 'Creates a language variant for a video metadata'
-      operationId: /createVideoVariant
+      operationId: createVideoVariant
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/VideoId'
         - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/Authorization'
       requestBody:
-        $ref: '#/components/schemas/VideoVariant'
+        description: >-
+          Request body for a video variant
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoVariant'
       responses:
         '201':
           description: '201'
@@ -547,21 +553,63 @@ paths:
         - Variants
       summary: Update a Video Variant
       description: 'Updates a language variant for a video metadata'
-      operationId: /createVideoVariant
+      operationId: updateVideoVariant
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Language'
         - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/Authorization'
-      requestBody:
-        $ref: '#/components/schemas/VideoVariant'
+      requestBody:  
+        description: 
+          Request body for a video variant
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoVariant'
       responses:
-        '201':
-          description: '201'
+        '200':
+          description: '200'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/VideoVariant'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Variants
+      summary: Update a Video Variant
+      description: 'Updates a language variant for a video metadata'
+      operationId: deleteVideoVariant
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Language'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '204':
+          description: '204 NO CONTENT'
         '401':
           description: >-
             UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
@@ -5366,8 +5414,17 @@ components:
       schema:
         type: string
       style: simple
+    include_variants:
+      description: 'Whether to include the language variants in the respons'
+      explode: true
+      in: query
+      name: include_variants
+      schema:
+        default: true
+        type: boolean
+      style: form
     JobId:
-      description: The Job ID for the ingest job (returned in the response to an ingest request
+      description: The Job ID for the ingest job (returned in the response to an ingest request)
       explode: false
       in: path
       name: job_id
@@ -6842,6 +6899,8 @@ components:
           type: string
         updated_by:
           $ref: '#/components/schemas/User'
+        variants:
+          $ref: '#/components/schemas/VideoVariants'
       title: Video
       type: object
     VideoAsset:
