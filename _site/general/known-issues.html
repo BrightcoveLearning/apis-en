@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- remember to remove the following line when the site is ready to go live -->
   <!-- <meta name="robots" content="noindex" /> -->
-  <title>Getting Started</title>
+  <title>Platform APIs Known Issues</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -115,9 +115,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/dynamic-ingest-legacy/getting-started/">Dynamic Ingest API Legacy</a></li>
+      <li class="breadcrumb-item"><a href="/general/">General Information</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Getting Started</li>
+      <li class="breadcrumb-item active" aria-current="page">Platform APIs Known Issues</li>
     </ol>
   </nav>
 </header>
@@ -1216,100 +1216,58 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </div>
 </div>
 
-<style>
-  h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
-    font-size: 3rem;
-    color:rgb(239, 108, 42);
-    margin-right: .5rem;
-  }
-  .card-icon i {
-    color: rgb(239, 108, 42);
-  }
-  .card-wrapper {
-  justify-content: start;
-}
-.bcls-card h2 {
-  font-size: 1rem;
-}
-.bcls-card ul {
-  font-size: small;
-  margin-left: -3em;
-}
-</style>
-
 <article class="bcls-article">
-  <h1><i class="far fa-brackets-curly"></i> Getting Started</h1>
-  <summary>This section provides topics to help you get started with the Dynamic Ingest API.</summary>
-  <section class="card-wrapper">
-    <section class="bcls-card">
-      <div class="card-content">
-        <h2 id="Topics_in_this_section">Topics in Getting Started</h2>
-        <ul>
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-            
-              
-                
-                  <li><a href="/dynamic-ingest-legacy/getting-started/overview-dynamic-ingest-api-legacy-ingest.html">Overview: Dynamic Ingest API</a></li>
-                
-                  <li><a href="/dynamic-ingest-legacy/getting-started/quick-start-dynamic-ingest-api-legacy-ingest.html">Quick Start: Dynamic Ingest API</a></li>
-                
-                  <li><a href="/dynamic-ingest-legacy/getting-started/migrating-legacy-ingest-system-dynamic-delivery.html">Migrating to Dynamic Delivery</a></li>
-                
-                  <li><a href="/dynamic-ingest/getting-started/source-file-upload-api-dynamic-ingest.html">Source File Upload API for Dynamic Ingest</a></li>
-                
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-          
-        
-          
-        
-          
-        
-      </div>
-    </section>
-  </section>
-</article>
+  <h1>Platform APIs Known Issues</h1>
+  <summary>This is a compilation of platform API known issues.</summary>
+  <section class="bcls-section">
+    <h2 id="Analytics_API">Analytics API</h2>
+      <dl>
+        <dt>Requesting video or player fields in the <code>fields</code> without requesting them as dimensions</dt>
+        <dd>
+          <p>If you use <code>video </code> or <code>player </code> fields (such a <code>video </code>, <code>video_name </code>, <code>player </code> or <code>player_name </code>) in the fields to return but do not include them in the dimensions in the <code>dimensions </code>, the response items will include irrelevant values for those items and should be ignored. Other values in the items will be valid</p>
 
+          <p><strong>Workaround</strong>: Do not include video or player fields in the response fields unless you also include them as <code>dimensions </code>.</p>        
+        </dd>
+        <dt>High number of "other" results for <code>device_manufacturer</code></dt>
+        <dd>In some cases, you may see a high number of "other" results for the <code>device_manufacturer</code> field. This occurs when the Data Collector does not recognize the <code>user_agent</code> delivered to it with analytics data. The most common cause that we have identified for this is a custom user_agent string created by Instagram, but there are probably others.</dd>
+      </dl>
+  </section>
+  <section class="bcls-section">
+    <h2 id="CMS_API">CMS API</h2>
+        <dl>
+          <dt>In certain cases, the <code class="”notranslate”">original_filename </code> gets corrupted</dt>
+          <dd>In some cases, the <code class="”notranslate”">original_filename </code> field for videos gets corrupted and will not contain the real filename.</dd>
+          <dt>Tags may not contain commas</dt>
+          <dd>If you attempt to add a tag to a video that contains a comma (e.g. "SomeCo, Inc") the request will fail with an "illegal tag" error</dd>
+        <dt>Scheduled Videos</dt>
+        <dd>Because the Playback API and Catalog cache videos for up to 10-15 minutes, a player requesting a video scheduled to become available during the next few minutes (up to 20), may not be able to get a playable video until the cache refreshes.</dd>
+        <dt><code>has_digital_master</code></dt>
+        <dd>
+          <p>If you are using this field to test whether a video can be retranscoded, it is not reliable for shared videos, as it will be true if the original video has a master, but still cannot be retranscoded by the affiliate account.</p>
+
+          <p><strong>Workaround</strong>: If videos are shared to the account, you need to test for both <code class="”notranslate”">has_digital_master = true </code> and <code class="”notranslate”">sharing.by_external_account = false </code>. Sample code (JavaScript):</p>
+
+<pre class="line-numbers"><code class="language-javascript">var video={some_video_object}
+if (video.sharing !== null) {
+  if (video.sharing.by_external_account === false) {
+    if (video.has_digital_master) {
+    // video can be retranscoded
+    }
+  }
+}</code></pre>
+        </dd>
+        <dt>Duplicate Reference ID allowed for playlists when using update/PATCH</dt>
+        <dd>When you update a playlist <code>reference_id</code> using the CMS API (or the Media module, since it uses the same API request), a reference id already in use for another playlist will be allowed.</dd>
+      </dl>
+  </section>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
       
     </div>
   </div>
@@ -1317,7 +1275,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 21 Feb 2020
+  Page last updated on 21 Apr 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
@@ -1398,6 +1356,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/prism.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
   
   <script src="/assets/js/sites_nav.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/bcls-utils.js"></script>
