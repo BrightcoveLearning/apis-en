@@ -12,7 +12,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">  
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="/assets/css/site/bc-icons.css"> -->
   <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/prism.css">
   <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/styles.css">
   <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/landing-page.css">
@@ -22,6 +21,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/381443caa8.js" crossorigin="anonymous"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/google-analytics.js"></script>
+  <script src="/assets/js/sajari-head.js"></script>
 </head>
 
 <body class="body">
@@ -124,13 +124,6 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li class="breadcrumb-item active" aria-current="page">Ingesting Videos</li>
     </ol>
   </nav>
-  <div class="search-block">
-    <script type="text/javascript" 
-      id="bcs_js_snippet"
-      src="https://ui.customsearch.ai/api/ux/rendering-js?customConfig=83ade92c-9d44-4784-9226-ccf9babcc298&market=en-US&version=latest&q=">
-    </script>
-  </div>
-
 </header>
 <div class="container">
     <div class="row">
@@ -1218,14 +1211,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <div class="col-lg-7" style="background-color: white;color: #333333;margin-top: -1em;margin-bottom: -1em;padding-bottom:1em;">
 
 <!-- search bar -->
-
-<div id="search_bar" class="search-bar">
-  <!-- TODO - cx value below must be changed for each site and new GCS instance set up-->
-  <!-- <script async src="https://cse.google.com/cse.js?cx=017969773216783359937:6sd3di5mwuw"></script> -->
-  <div style="text-align: right;position:relative;font-weight: bold;">
+<div id="nav-search-box" style="margin-top: 1rem;"></div>
+  
     
-    <p style="position: fixed;right:.1rem;top:7.3rem;z-index: 999999;font-size: small;border: 1px rgb(239, 108, 42)solid;padding:4px;"><a href="https://support.brightcove.com">Search All Docs Instead <i class="far fa-external-link-square-alt"></i></a></p>
-    </div>
+
 
 <article class="bcls-article">
   <h1>Ingesting Videos</h1>
@@ -1401,6 +1390,24 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </div>
   </div>
 </footer>
+<script>
+      
+  var searchBox = sajari.init({
+    mode: "search-box",
+    project: "1588255093746585379", // Set this to your project.
+    collection: "brightcove-documenation", // Set this to your collection.
+    instantPipeline: "autocomplete", // Pipeline used as you type
+    inputPlaceholder: "Search", // Input element placeholder
+    maxSuggestions: 5, // Maximum number of suggestions to show
+    attachSearchBox: document.getElementById("nav-search-box") // DOM element to attach to
+  });
+  
+    searchBox("sub", "pipeline.search-sent", function (_, query) {
+      window.location = "/search.html?q=" + encodeURIComponent(query.q);
+    });
+  
+
+</script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -1415,11 +1422,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <script src="/assets/js/sites_nav.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/bcls-utils.js"></script>
   <script src="/assets/js/feedback.js"></script>
-  <!-- <script src="/assets/js/search.js"></script> -->
-  <!-- <script async src="https://cse.google.com/cse.js?cx=017969773216783359937:nencjvjwomg"></script> -->
-  <script src="https://assets.talla.com/latest/embeddedjs/talla.js"></script>
-  <script src="/assets/js/talla-init.js"></script>
-  <!-- <script>!function(){var b=function(){window.__AudioEyeSiteHash = "196825f38fdbb8e38c7bf4f9dabc589b"; var a=document.createElement("script");a.src="https://wsmcdn.audioeye.com/aem.js";a.type="text/javascript";a.setAttribute("async","");document.getElementsByTagName("body")[0].appendChild(a)};"complete"!==document.readyState?window.addEventListener?window.addEventListener("load",b):window.attachEvent&&window.attachEvent("onload",b):b()}();</script> -->
+  
+  <script src="/assets/js/sajari-search-foot.js"></script>
+  
+  <script src="/assets/js/sajari-index.js"></script>
 </body>
 
 </html>
