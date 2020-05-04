@@ -11,6 +11,8 @@ var BCLS_share = ( function (window, document, BCLS_toc, Prism) {
 
   window.onload = function() {
     var gen_site = 'https://' + lang_prefix + 'general.support.brightcove.com';
+    console.log('site url', gen_site);
+    
     $(function() {
         $('#bcls_article').load(gen_site + shared_content, after_content_load);
       });
