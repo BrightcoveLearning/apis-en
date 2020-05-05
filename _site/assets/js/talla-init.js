@@ -12,7 +12,7 @@ var token =
     Talla.OptionDisplayName('Search Video Cloud Platform APIs Docs'),
     Talla.OptionKnowledgeGroups(['cf40cebb-c635-486d-84ba-8c3e752bc29b']),
     Talla.OptionWideBeacon(true),
-    Talla.OptionBeaconCTA("Search Video Cloud Platform APIs Docs"),
+    Talla.OptionBeaconCTA("Have a question?"),
     Talla.OptionOpenIcon('https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/search.png'),
     Talla.OptionBotIcon('https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/search.png'),
     Talla.OptionAutodetectSession,
