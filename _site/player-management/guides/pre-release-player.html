@@ -1203,6 +1203,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                     <li><a href="/support/viewing-brightcove-system-status-page.html">Viewing the Brightcove System Status Page</a></li>
                   
                 
+                  
+                    <li><a href="/support/online-training-courses.html">Online Training Courses</a></li>
+                  
+                
+                  
+                    <li><a href="/support/register-training.html">Register for Instructor-led Training</a></li>
+                  
+                
               </ul>
             
           
@@ -1217,14 +1225,91 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
-<script>
-  shared_content = '/shared-content/player/pre-release-player.html';
-</script>
-<h1>Pre-release Player</h1>
-<summary>In this topic, you will learn how to create a player that is always on the latest pre-release version.</summary>
-<article id="bcls_article" class="bcls-article">
-</article>
+<!-- 
+  This content appears on:
+  
+  https://apis.support.brightcove.com/player-management/guides/pre-release-player.html
 
+  https://player.support.brightcove.com/publish/pre-release-player.html
+
+  If you update in one place, you MUST update it in all!
+ -->
+
+<article class="bcls-article">
+  <h1>Pre-release Player</h1>
+  <summary>In this topic, you will learn how to create a player that is always on the latest pre-release version.</summary>
+  <section class="bcls-section">
+    <h2 id="Why_a_pre-release_player">Why a pre-release player?</h2>
+    <p>You may wish to frequently test against the latest version of Brightcove Player, including the pre-releases. This document shows you how to configure a player that will be updated every time a new pre-release is available. By setting the <code>"version_alias": "prerelease"</code> configuration option you can be sure this player will always have the latest prerelease version.</p>
+    <p>In the Studio's <strong class="notranslate">PLAYERS</strong> module you can set a player to use always be on the latest pre-release:</p>
+    <figure class="bcls-figure"><img class="bcls-image" alt="Set version alias in Studio" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/samples/studio-make-prerelease.png" /></figure>
+    <p>Studio will show if a player has been configured as a pre-release player:</p>
+    <figure class="bcls-figure"><img class="bcls-image" alt="See version alias in Studio" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/samples/studio-version-alias.png" /></figure>
+  </section>
+  <section class="bcls-section">
+    <h2 id="How_it_works">How it works</h2>
+    <p>Whenever a new prerelease version is released for the current major version, the Player Management API republishes all players that have the prerelease version alias on their master branch.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Creating_a_pre-release_player">Creating a pre-release player with an API</h2>
+    <p>The following curl statement creates a player using the Player Management API to always use the latest pre-release :</p>
+    <pre class="line-numbers">
+  <code class="language-bash notranslate">curl \
+    --header "Content-Type: application/json" \
+    --user $EMAIL \
+    --request POST \
+    --data '{
+        "name": "Player",
+        "configuration": {
+          "player": {
+            "template": {
+              "name": "single-video-template",
+              "version_alias": "prerelease"
+            }
+          }
+        }
+      }' \
+      https://players.api.brightcove.com/v1/accounts/$ACCOUNT_ID/players</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Example_configuration">Example configuration</h2>
+    <p>Following is a player that has been configured to use <code>"version_alias": "prerelease"</code>. In this case, the latest pre-release was version <strong class="notranslate">6.23.0</strong>.</p>
+    <pre class="line-numbers">
+  <code class="language-bash notranslate">{
+    "account_id": "1507807800001",
+    "compatibility": true,
+    "embed_id": "default",
+    "player": {
+      "template": {
+        "name": "single-video-template",
+        <span class="bcls-highlight">"version": "6.23.0",
+        "version_alias": "prerelease"</span>
+      }
+    },
+    "player_id": "ipKAiobF4S",
+    "player_name": "test for \"version_alias\": \"prerelease\"",
+    "updated_at": "2018-08-30T19:51:41.813Z",
+    "video_cloud": {
+      "policy_key": "BCpkADaw...lB71l9h"
+    }
+  }</code></pre>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note: Player configuration <code>GET</code> requests for players with the version alias will not contain the associated player version. However, when a preview or publish request is received for a player with the prerelease <code>version_alias</code>, the correct prerelease version is pulled from the Player Management API database and added to the player configuration before publishing occurs. This means that the player version can be found in the published player's <strong class="notranslate">config.json</strong> file (as shown just above). Following is an example <code>GET</code> request:
+      <pre class="line-numbers">
+  <code class="language-json notranslate">{
+    "video_cloud": {
+      "policy_key": "BCpkADawq...1l9h"
+    },
+    "player": {
+      "template": {
+        "version_alias": "prerelease",
+        "name": "single-video-template"
+      }
+    },
+    "compatibility": true
+  }</code></pre>
+    </aside>
+  </section>
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -1345,17 +1430,18 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
   
-  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc-shared-content.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
   
   <script src="/assets/js/sites_nav.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/bcls-utils.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/local-link-fix.js"></script>
   <script src="/assets/js/feedback.js"></script>
-  <script src="/assets/js/share.js"></script>
   
   <script src="/assets/js/sajari-search-foot.js"></script>
   
   <script src="/assets/js/sajari-index.js"></script>
+  <script src="https://assets.talla.com/latest/embeddedjs/talla.js"></script>
+  <script src="/assets/js/talla-init.js"></script>
 </body>
 
 </html>

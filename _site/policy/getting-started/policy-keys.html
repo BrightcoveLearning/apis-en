@@ -1203,6 +1203,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                     <li><a href="/support/viewing-brightcove-system-status-page.html">Viewing the Brightcove System Status Page</a></li>
                   
                 
+                  
+                    <li><a href="/support/online-training-courses.html">Online Training Courses</a></li>
+                  
+                
+                  
+                    <li><a href="/support/register-training.html">Register for Instructor-led Training</a></li>
+                  
+                
               </ul>
             
           
@@ -1217,14 +1225,97 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
-<script>
-  shared_content = '/shared-content/player/policy-keys.html';
-</script>
-<h1>Policy Key from Player</h1>
-<summary>In this topic, you will learn about creation and use of the policy keys for your account.</summary>
-<article id="bcls_article" class="bcls-article">
-</article>
+<!-- 
+  This content appears on:
+  
+  https://apis.support.brightcove.com/policy/getting-started/policy-keys.html
 
+  https://player.support.brightcove.com/content-protection/policy-keys.html
+
+  If you update in one place, you MUST update it in all!
+ -->
+
+ <article class="bcls-article">
+  <h1>Policy Key from Player</h1>
+  <summary>In this topic, you will learn about creation and use of the policy keys for your account.</summary>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>The policy key is used to retrieve video and playlist content from your Video Cloud library using the Playback API. Since the policy key is set on the player, it allows you to restrict access to your content at the player level. You can also control content availability at the video level by using the <a href="https://studio.support.brightcove.com/media/configuring-video-availability.html">Video Cloud Studio Media module</a>.</p>
+    <p>When you create a Brightcove Player, a policy key is automatically generated for each player. This key is associated with your Brightcove account and controls which videos can be viewed and when they can be viewed, with the condition that the videos are stored in Video Cloud. For instance, policy keys are needed to limit access based on:</p>
+    <ul>
+      <li>Account</li>
+      <li>Domain restrictions, if used</li>
+      <li>Geo-restrictions, if used</li>
+    </ul>
+    <p>For a more detailed information on policy keys see the <a href="https://apis.support.brightcove.com/policy/getting-started/overview-policy-api.html">Overview: Policy API</a> document.</p>
+    <aside class="bcls-aside bcls-aside--information">Notes:
+      <ul>
+        <li>The policy key is only used to control videos that are stored in Video Cloud. If you are using the standalone Brightcove Player, there is no need to access or retrieve the policy key.</li>
+        <li>Policy keys generated for new Brightcove Players are not search-enabled by default. To search videos from the Playback API, you must use the Policy API to create a new policy key that is search-enabled. For details, see the <a href="https://apis.support.brightcove.com/policy/getting-started/overview-policy-api.html">Policy API Overview</a> document.</li>
+      </ul>
+    </aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Getting_the_policy_key">Getting the policy key</h2>
+    <p>The policy key is automatically generated and managed for you. So, in most cases you will not need to request it or manage it. The easiest way to retrieve your policy key is to do the following:</p>
+    <ol class="bcls-tasklist">
+      <li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
+      <li>Select the link for the player to open the player's properties.</li>
+      <li>
+        <p>In the left navigation menu, select <strong>JSON Editor</strong>.</p>
+        <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Left-side navigation" src="//learning-services-media.brightcove.com/doc-assets/player-development/publishing/policy-keys/json-editor.png" />
+          <figcaption class="bcls-caption--image">Left-side navigation</figcaption>
+        </figure>
+      </li>
+      <li>
+        <p>In the displayed JSON code, you will see the policy key:</p>
+        <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Policy key for the player" src="//learning-services-media.brightcove.com/doc-assets/player-development/publishing/policy-keys/policy-studio.png" />
+          <figcaption class="bcls-caption--image">Policy key for the player</figcaption>
+        </figure>
+      </li>
+    </ol>
+    <p>In rare instances you may not have created a Brightcove Player, but still need your policy key (such as developing strictly with the Brightcove Native Player SDKs). In this case you will need to contact <a href="https://support.brightcove.com/en/contact">customer support</a> to get your policy key.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Using_policy_keys">Using policy keys</h2>
+    <p>The policy key can be used to authenticate requests to the Playback API. The Playback API is for use at runtime in web pages or mobile apps for general media management and integration with other systems. For more details, see the <a href="https://apis.support.brightcove.com/playback/">Playback API</a> index page.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Policy_keys_vs_API_credentials">Policy keys vs. API credentials</h2>
+    <p>The policy key is used to access the Playback API, whereas API credentials are used to access your content in the other Video Cloud API's.</p>
+    <h3>Policy keys</h3>
+    <p>The policy key is used for client-side retrieval of your Video Cloud library assets. Here are the details:</p>
+    <ul>
+      <li>Access your video/playlist data using the Playback API</li>
+      <li>Read-only</li>
+      <li>Your video/playlist data is cached on the server by the Playback API</li>
+      <li>Use the <a href="https://apis.support.brightcove.com/policy/getting-started/overview-policy-api.html">Policy API</a> to do the following:
+        <ul>
+          <li>Create policy keys. You need to contact customer support to revoke a policy key.</li>
+          <li>Set domain restrictions and set geographic restrictions at the policy level. Restrictions are enforced by players that use the policy key.</li>
+        </ul>
+      </li>
+    </ul>
+    <aside class="bcls-aside bcls-aside--tip">You can also use the <a href="/references/player-catalog.html">Brightcove Player's catalog methods</a> to retrieve content from your Video Cloud library.</aside>
+    <h3>API credentials</h3>
+    <p>API authentication credentials (also called client credentials) allow server-side applications to manage your Video Cloud library assets. Here are the details:</p>
+    <ul>
+      <li><a href="https://apis.support.brightcove.com/getting-started/getting-started-brightcove-apis.html">Access your data using the Video Cloud APIs</a>. You will need client credentials for the account and API(s) that you wish to use.</li>
+      <li>Read, insert, update, delete</li>
+      <li>Your video/playlist data is not cached on the server by the CMS API</li>
+      <li>Use <a href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">Video Cloud's API Authentication UI</a> to create and manage API credentials</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Managing_policy_keys">Managing policy keys</h2>
+    <p>You can manage your policy keys as follows:</p>
+    <h3>Obtaining</h3>
+    <p>There is no way to update a policy key. You can either <a href="#Getting_the_policy_key">get the policy key</a> from an existing player in your Video Cloud account, or you can create a policy key by using the <a href="https://support.brightcove.comhttps://apis.support.brightcove.com/policy/getting-started/overview-policy-api.html">Policy API</a>.</p>
+    <h3>Revoking</h3>
+    <p>To revoke a policy key, you need to contact <a href="https://supportportal.brightcove.com/s/login/?language=en_US">customer support</a>.</p>
+    <aside class="bcls-aside bcls-aside--information">Policy keys are NOT revoked when a player is deleted. This means that if you use a policy key from a player, and then delete the player, you can still keep using the policy key.</aside>
+  </section>
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -1345,17 +1436,18 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
   
-  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc-shared-content.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
   
   <script src="/assets/js/sites_nav.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/bcls-utils.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/local-link-fix.js"></script>
   <script src="/assets/js/feedback.js"></script>
-  <script src="/assets/js/share.js"></script>
   
   <script src="/assets/js/sajari-search-foot.js"></script>
   
   <script src="/assets/js/sajari-index.js"></script>
+  <script src="https://assets.talla.com/latest/embeddedjs/talla.js"></script>
+  <script src="/assets/js/talla-init.js"></script>
 </body>
 
 </html>

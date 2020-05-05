@@ -3,9 +3,529 @@ title: 'Plugin Registry'
 description: 'In this topic, you will learn how the Plugin Registry can be used to track and manage the plugins your Brightcove Player is using.'
 parent: Guides
 grandparent: Player Management API
-layout: shared_content
 ---
 
-<script>
-  shared_content = '/shared-content/player/plugin-registry.html'
-</script>    
+<!-- 
+  This content appears on:
+  
+  https://player.support.brightcove.com/plugins/plugin-registry.html
+
+  https://apis.support.brightcove.com/player-management/guides/plugin-registry.html
+
+  If you update in one place, you MUST update it in all!
+ -->
+
+ <article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="What_is_the_Plugin_Registry">What is the Plugin Registry?</h2>
+    
+    <p>The Plugin Registry is a section of the Player Management API devoted to storing information about Brightcove plugins. The registry serves as a reference for all versions of each stored plugin, as well as the scripts and stylesheets associated with each. Player configuration leverages the Plugin Registry, displaying the current plugin version, and also allowing you to specify a plugin version.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">The Plugin Registry is implemented in version 2 of the Player Management API.</aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Advantages">Advantages</h2>
+    
+    <p>The advantages of the Plugin Registry for Brightcove Player users are three fold:</p>
+    
+    <ul>
+      <li>You can see exactly what version of plugin is being used with your player, as well as the specific JavaScript and CSS files associated with that specific plugin version.</li>
+      <li>You can configure plugins to be automatically updated when new versions are released that are compatible with your player version.</li>
+      <li>If for some reason you choose to keep a player on a specific player version, your plugins will remain on the same specific versions for that player when it was locked. You do not have to worry about a plugin being upgraded to a version that is not compatible with your player version.</li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Current_eligible_plugins">Current eligible plugins</h2>
+    
+    <p>The following table shows the Brightcove supplied plugins that work with the Plugin Registry. The <strong>Plugin Registry ID</strong> will be used with player configuration in conjunction with the Player Management API. Numerous examples will be shown in this document.</p>
+    
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Plugin Name</th>
+          <th>Plugin Registry ID</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>Adobe Analytics Player</td>
+          <td>@brightcove/videojs-bc-aa</td>
+        </tr>
+        <tr>
+          <td>Chromecast Receiver</td>
+          <td>@brightcove/videojs-chromecast-receiver</td>
+        </tr>
+        <tr>
+          <td>Custom Endscreen</td>
+          <td>@brightcove/videojs-custom-endscreen</td>
+        </tr>
+        <tr>
+          <td>DRM</td>
+          <td>@brightcove/videojs-drm</td>
+        </tr>
+        <tr>
+          <td>Google Analytics Player</td>
+          <td>@brightcove/videojs-bc-ga</td>
+        </tr>
+        <tr>
+          <td>IMA3 Advertising</td>
+          <td>@brightcove/videojs-ima3</td>
+        </tr>
+        <tr>
+          <td>Overlay</td>
+          <td>@brightcove/videojs-overlay</td>
+        </tr>
+        <tr>
+          <td>Picture-In-Picture</td>
+          <td>@brightcove/videojs-pip</td>
+        </tr>
+        <tr>
+          <td>Playlist UI</td>
+          <td>@brightcove/videojs-bc-playlist-ui</td>
+        </tr>
+        <tr>
+          <td>Quality Selection Menu</td>
+          <td>@brightcove/videojs-quality-menu</td>
+        </tr>
+        <tr>
+          <td>Social</td>
+          <td>@brightcove/videojs-social</td>
+        </tr>
+        <tr>
+          <td>SSAI</td>
+          <td>@brightcove/videojs-ssai</td>
+        </tr>
+        <tr>
+          <td>Tealium Player Plugin</td>
+          <td>@brightcove/videojs-bc-tealium</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Specify_use_of_a_plugin">Specify use of a plugin</h2>
+    
+    <p>To specify the use of a plugin, in your player creation you simply supply the registry ID for the desired plugin. You must specify a version number, either a major version that will auto update (for example <strong>2.x</strong>) or a minor version (for example <strong>2.0.10</strong>) which will not auto update. Details on setting the version appear later in this document. You can also provide <code class="notranslate">options</code> for the plugin, if any.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash notranslate">curl \
+      --header "Content-Type: application/json" \
+      --user $EMAIL \
+      --request POST \
+      --data '{
+        "name": "Plugin Registry Test Player",
+        "configuration": {
+          "video_cloud": {
+            "video": "4093372393001"
+          },
+          <span class="bcls-highlight">"plugins": [
+           {
+              "registry_id": "@brightcove/videojs-custom-endscreen",
+              "version": "2.x",
+              "options": { "content": "&lt;strong&gt;Content&lt;/strong&gt; for &lt;em&gt;custom&lt;/em&gt; end screen" }
+           }
+          ]</span>
+        }
+      }' \
+      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code>
+          </pre>
+    
+    <p>Information on the created player is returned by the Player Management API. You can use the <strong>url</strong> value returned, change the <strong>index.html</strong> to <strong>config.json</strong> and browse that URL to see the configuration of the published player.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "id": "rkGD9W22Ob",
+      "url": "<span class="bcls - highlight ">http://players.brightcove.net/1507807800001/rkGD9W22Ob_default/index.html</span>",
+      "embed_code": "&lt;iframe src='//players.brightcove.net/1507807800001/rkGD9W22Ob_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;",
+      "embed_in_page": "http://players.brightcove.net/1507807800001/rkGD9W22Ob_default/in_page.embed",
+      "preview_url": "http://preview-players.brightcove.net/v2/accounts/1507807800001/players/rkGD9W22Ob/preview/embeds/default/master/index.html",
+      "preview_embed_code": "&lt;iframe src='//preview-players.brightcove.net/v2/accounts/1507807800001/players/rkGD9W22Ob/preview/embeds/default/master/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;"
+    }</code></pre>
+    
+    <p>In the configuration of the published player you see the information on the plugin. Note that a specific version of the plugin is displayed, along with the corresponding values for the JavaScript and CSS files.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "account_id": "1507807800001",
+      "compatibility": true,
+      "embed_id": "default",
+      "player": {
+        "template": {
+          "name": "single-video-template",
+          "version": "6.7.0"
+        }
+      },
+      "player_id": "SyITgzdjb",
+      "player_name": "Plugin Registry Test Player",
+      <span class="bcls-highlight">"plugins": [{
+        "injected_version": "2.0.10",
+        "name": "customEndscreen",
+        "registry_id": "@brightcove/videojs-custom-endscreen",
+        "version": "2.x"
+      }],
+      "scripts": [
+        "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.min.js"
+      ],
+      "stylesheets": [
+        "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.css"
+      ]</span>,
+      "updated_at": "2017-09-26T17:39:10.080Z",
+      "video_cloud": {
+        "policy_key": "BCpkADawqM3hOj9I_wRb6jx7SLoklIm8eiW-MH1C0CO5xnf8ndABL7WJQOVdWIusPlnfKUD5EZvjHyJOQGeCFndODaM7CRz4h4GxUTLN3OmO7dTcLnxS3cYrXOZx4eaqaSbVFDx1yFTvWX7m",
+        "video": "4093372393001"
+      }
+    }</code></pre>
+    
+    <aside class="bcls-aside bcls-aside--information">Depending on the template version your player is using, the scripts and stylesheets that get injected may either appear at the top level of the player configuration or nested in the <strong>plugins</strong> object.</aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Specify_specific_major_version">Specify specific major version</h2>
+    
+    <p>You can configure a player to use the latest version of the plugin for a specific <strong>major</strong> version compatible with the player you are using. When you do this, and minor versions of the plugin are released, the plugin will automatically be updated to the latest minor version.</p>
+    
+    <p>For example, if you want your player to contain the latest compatible version of the custom endscreen plugin for <strong>major version 2</strong> of the plugin you would use the following:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash notranslate">curl \
+      --header "Content-Type: application/json" \
+      --user $EMAIL \
+      --request POST \
+      --data '{
+        "name": "Plugin Registry Test Player",
+        "configuration": {
+          "video_cloud": {
+            "video": "4093372393001"
+          },
+          "plugins": [
+            {
+              "registry_id": "@brightcove/videojs-custom-endscreen",
+              <span class="bcls-highlight">"version": "2.x"</span>
+            }
+          ]
+        }
+      }' \
+      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code></pre>
+    
+    <p>The resulting configuration will appear similar to the following:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">"plugins": [{
+      "injected_version": "2.0.10",
+      "name": "customEndscreen",
+      "registry_id": "@brightcove/videojs-custom-endscreen",
+      "version": "2.x"
+    }],
+    "scripts": [
+      "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.min.js"
+    ],
+    "stylesheets": [
+      "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.css"
+    ],</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Specify_specific_version">Specify specific version</h2>
+    
+    <p>You can specify a specific version of the plugin to use. If you do this the plugin will NOT be automatically updated under any circumstances, so you will have to manually update if needed.</p>
+    
+    <aside class="bcls-aside bcls-aside--tip">If you have locked your player version, as described in the <a href="https://studio.support.brightcove.com/players/setting-player-update-mode-and-version.html">Setting the Player Update Mode and Version</a> document, the plugins associated with that player will also be version locked.</aside>
+    
+    <p>To lock a version of the plugin, simply specify the version when creating the player:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash notranslate">curl \
+      --header "Content-Type: application/json" \
+      --user $EMAIL \
+      --request POST \
+      --data '{
+        "name": "Plugin Registry Test Player",
+        "configuration": {
+          "video_cloud": {
+            "video": "4093372393001"
+          },
+          "plugins": [
+            {
+              "registry_id": "@brightcove/videojs-overlay",
+              <span class="bcls-highlight">"version": "1.0.2"</span>
+            }
+          ]
+        }
+      }' \
+      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code>
+          </pre>
+    
+    <p>The player configuration will reflect the specific version, as well as in the JavaScript and CSS files:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">"plugins": [{
+      "name": "overlay",
+      "registry_id": "@brightcove/videojs-overlay",
+      <span class="bcls-highlight">"version": "1.0.2"</span>
+    }],
+    "scripts": [
+      <span class="bcls-highlight">"//players.brightcove.net/videojs-overlay/1.0.2/videojs-overlay.min.js"</span>
+    ],
+    "stylesheets": [
+      <span class="bcls-highlight">"//players.brightcove.net/videojs-overlay/1.0.2/videojs-overlay.css"</span>
+    ],</code>
+          </pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Non-compatible_assignments">Non-compatible assignments</h2>
+    
+    <p>If you try to assign an incompatible plugin to a player, or change the version of a player so a previously assigned plugin is no longer compatible, errors will occur. The errors are detailed here.</p>
+    
+    <h3>Assign plugin to non-compatible player</h3>
+    
+    <p>If at any time, either in player creation or update, you try to specify a plugin version not compatible with a player version, you will get an error. For instance, here is a response from the API when trying to assign a non-compatible, older plugin to a new player:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "message": "There are no versions of the plugin that match the specified major version. The major version specified was 1.x for plugin @brightcove/videojs-bc-playlist-ui",
+      "error_code": "PLAYER_MANAGEMENT_ERROR",
+    }</code>
+          </pre>
+    
+    <h3>Change player version so non-compatible with plugin</h3>
+    
+    <p>If you try to change the version of an existing player, and the player already has a plugin that is not compatible with the newly assigned version of the player, you will get an error similar to the following:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "error_code":"APPLICATION_ERROR",
+      "message":"plugin \"@brightcove/videojs-ima3\" is not compatible with template 5.28.1"
+    }
+    </code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Studio_configured_plugin">Studio configured plugin</h2>
+    
+    <p>If a plugin is loaded via Studio, the plugin will reflect new functionality in the Plugin Registry:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "account_id": "1507807800001",
+      "compatibility": true,
+      "embed_id": "default",
+      "player": {
+        "template": {
+          "name": "single-video-template",
+          "version": "6.7.0"
+        }
+      },
+      "player_id": "SJajDfuiW",
+      "player_name": "Plugin Registry Studio Configuration",
+      <span class="bcls-highlight">"plugins": [{
+        "injected_version": "2.0.10",
+        "name": "customEndscreen",
+        "options": {
+          "content": "&lt;h3&gt;This is the endscreen content&lt;/h3&gt;"
+        },
+        "registry_id": "@brightcove/videojs-custom-endscreen",
+        "version": "2.x"
+      }],
+      "scripts": [
+        "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.min.js"
+      ],
+      "stylesheets": [
+        "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.css"
+      ]</span>,
+      "updated_at": "2017-09-26T18:09:31.940Z",
+      "video_cloud": {
+        "policy_key": "BCpkADawqM3YPJvvfxBgJNEGrPjTPoOw0LyCbiTPnDGtAVExTzXeAW3hcRtPpS8tNeSiA9MosLG076eMXWO8E2Lxv-V7mq1oTIgqK7Xf0HBP_TEm1i-e5zRN_VIW_SjFagYpRxuoM8btiEoD",
+        "video": null
+      }
+    }</code>
+          </pre>
+    
+    <p>As you can see in the player configuration, a plugin loaded in Studio will be updated using the major version behavior, that is, minor version updates will automatically be applied.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Updating_registry_information">Updating registry information</h2>
+    
+    <p>You can update plugin registry information for a player using standard procedures. For instance, the following curl statement uses the HTTP <code class="notranslate">PATCH </code> method to change a plugin from a specific version to major version update behavior:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash notranslate">curl \
+      --header "Content-Type: application/json" \
+      --user $EMAIL \
+      --request PATCH \
+      --data '{
+        "plugins": [{
+          "registry_id": "@brightcove/videojs-custom-endscreen",
+          "version": "2.x"
+        }]
+      }' \
+      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code>
+          </pre>
+    
+    <p>Remember, you must publish your player after making a change.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Plugin_registry_API">Plugin registry API</h2>
+    
+    <p>Two new endpoints have been added to the Player Management API that enable retrieval of plugin information from the registry, which provide functionality for you to:</p>
+    
+    <ul>
+      <li>Retrieve all plugins in the registry.</li>
+      <li>Retrieve information on a specific plugin.</li>
+    </ul>
+    
+    <h3>Get all plugins</h3>
+    
+    <p>Use the following to retrieve information about the plugins currently in the registry.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash notranslate">curl \
+      --header "Content-Type: application/json" \
+      --user $EMAIL \
+      --request GET \
+      https://players.api.brightcove.com/v2/plugins</code>
+          </pre>
+    
+    <aside class="bcls-aside bcls-aside--tip">Note: Adding a query string in the form <code class="notranslate">?template_version=$SVTVERSION </code> to the endpoint will result in a response containing only plugin versions compatible with the specified single-video-template version. For example, to get only plugin versions compatible with Brightcove Player template 6.7.0, use <code class="notranslate">?template_version=6.7.0 </code>.</aside>
+    
+    <p>The returned information will appear similar to the following:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">[{
+      "documentation": "https://support.brightcove.com/configuring-adobe-analytics-event-tracking",
+      "description": "Adobe Analytics Player Plugin",
+      "id": "@brightcove/videojs-bc-aa",
+      "name": "bcAa",
+      "current_version": "1.x"
+    }, {
+      "documentation": "https://support.brightcove.com/configuring-google-analytics-event-tracking",
+      "description": "Google Analytics Player Plugin",
+      "id": "@brightcove/videojs-bc-ga",
+      "name": "bcGa",
+      "current_version": "1.x"
+    }, {
+      "documentation": "https://support.brightcove.com/google-tag-manager-plugin-brightcove-player",
+      "description": "Google Tag Manager Player Plugin",
+      "id": "@brightcove/videojs-bc-gtm",
+      "name": "bcGtm",
+      "current_version": "1.x"
+    }, {
+      "documentation": "https://support.brightcove.com/playlist-ui-plugin",
+      "description": "Brightcove customizations to videojs-playlist-ui",
+      "id": "@brightcove/videojs-bc-playlist-ui",
+      "name": "bcPlaylistUi",
+      "current_version": "3.x"
+    }, {
+      "documentation": "https://support.brightcove.com/tealium-plugin-brightcove-player",
+      "description": "Tealium Player Plugin",
+      "id": "@brightcove/videojs-bc-tealium",
+      "name": "bcTealium",
+      "current_version": "1.x"
+    }, {
+      "documentation": "https://support.brightcove.com/beta-chromecast-plugin-brightcove-player",
+      "description": "A Chromecast Receiver plugin for the Brightcove Player",
+      "id": "@brightcove/videojs-chromecast-receiver",
+      "name": "chromecastReceiver",
+      "current_version": "1.x"
+    }, {
+      "documentation": "https://support.brightcove.com/custom-endscreen-plugin",
+      "description": "Custom endscreens for video.js.",
+      "id": "@brightcove/videojs-custom-endscreen",
+      "name": "customEndscreen",
+      "current_version": "2.x"
+    }, {
+      "documentation": "https://support.brightcove.com/configuring-brightcove-player-drm",
+      "description": "Cross-browser support for MPEG-DASH w/ DRM using dash.js and silverlight and HLS Fairplay DRM",
+      "id": "@brightcove/videojs-drm",
+      "name": "eme",
+      "current_version": "5.x"
+    }, {
+      "documentation": "https://support.brightcove.com/advertising-ima3-plugin",
+      "description": "Google Interactive Media Ads (IMA) v3 support for video.js",
+      "id": "@brightcove/videojs-ima3",
+      "name": "ima3",
+      "current_version": "3.x"
+    }, {
+      "documentation": "https://support.brightcove.com/display-overlay-plugin",
+      "description": "Overlay for video.js.",
+      "id": "@brightcove/videojs-overlay",
+      "name": "overlay",
+      "current_version": "2.x"
+    }, {
+      "documentation": "https://support.brightcove.com/picture-picture-plugin-aka-floating-or-pinned",
+      "description": "A plugin for enabling a Picture-In-Picture mode for the Brightcove Player",
+      "id": "@brightcove/videojs-pip",
+      "name": "pip",
+      "current_version": "1.x"
+    }, {
+      "documentation": "https://support.brightcove.com/manual-rendition-selection-plugin",
+      "description": "Quality Selection Menu UI",
+      "id": "@brightcove/videojs-quality-menu",
+      "name": "qualityMenu",
+      "current_version": "1.x"
+    }, {
+      "documentation": "https://support.brightcove.com/social-media-plugin",
+      "description": "Social sharing integrations for video.js.",
+      "id": "@brightcove/videojs-social",
+      "name": "social",
+      "current_version": "3.x"
+    }, {
+      "documentation": "https://support.brightcove.com/advertising-ssai-plugin",
+      "description": "A plugin for the Brightcove Player implementing playback of SSAI streams.",
+      "id": "@brightcove/videojs-ssai",
+      "name": "ssai",
+      "current_version": "1.x"
+    }]</code>
+          </pre>
+    
+    <h3>Get specific plugin information</h3>
+    
+    <p>Use the following to retrieve information about a specific plugin. Note that the plugin name must be URL encoded, so instead of <code class="notranslate">@brightcove/videojs-ima3 </code> use <code class="notranslate">%40brightcove%2fvideojs-ima3 </code>.</p>
+    
+    <pre class="line-numbers">
+    <code class="language-bash notranslate">curl \
+      --header "Content-Type: application/json" \
+      --user $EMAIL \
+      --request GET \
+      https://players.api.brightcove.com/v2/plugins/%40brightcove%2fvideojs-ima3</code>
+          </pre>
+    
+    <p>The returned information will appear similar to the following:</p>
+    
+    <aside class="bcls-aside bcls-aside--information">The different version details returned is informational only. As shown earlier in this document, you do not need the information to do plugin configurations.</aside>
+    
+    <pre class="line-numbers">
+    <code class="language-json notranslate">{
+      "versions": [{
+        "scripts": ["//players.brightcove.net/videojs-ima3/3/videojs.ima3.min.js"],
+        "stylesheets": ["//players.brightcove.net/videojs-ima3/3/videojs.ima3.min.css"],
+        "version_number": "3.x",
+        "minimum_template_version": "6.0.0"
+      }, {
+        "minimum_template_version": "5.0.0",
+        "version_number": "2.x",
+        "stylesheets": ["//players.brightcove.net/videojs-ima3/2/videojs.ima3.min.css"],
+        "scripts": ["//players.brightcove.net/videojs-ima3/2/videojs.ima3.min.js"]
+      }, {
+        "minimum_template_version": "1.14.0",
+        "version_number": "1.x",
+        "stylesheets": ["//players.brightcove.net/videojs-ima3/1/videojs.ima3.min.css"],
+        "scripts": ["//players.brightcove.net/videojs-ima3/1/videojs.ima3.min.js"]
+      }],
+      "documentation": "https://support.brightcove.com/advertising-ima3-plugin",
+      "description": "Google Interactive Media Ads (IMA) v3 support for video.js",
+      "id": "@brightcove/videojs-ima3",
+      "name": "ima3",
+      "current_version": "3.x"
+    }</code></pre>
+    
+    <p>Although not shown in this response, you can also see a <code class="notranslate">before_template-version </code> property and corresponding value. This will appear for older plugins and sets the latest player template version with which that plugin version is compatible. The <code class="notranslate">minimum_template_version </code> and <code class="notranslate">before_template-version </code> work together to set the range of player template versions with which the plugin is compatible.</p>
+    </section>
+    </article>
