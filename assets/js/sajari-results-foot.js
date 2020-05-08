@@ -9,13 +9,13 @@ layout: null
   lang_filter,
   lang = domain.split('.')[0],
   lang_prefix = '';
-  {title:"Tab 1",filter:"lang='en'"}
+
   if (lang === 'ja' || lang === 'ko' || lang === 'es' || lang === 'fr' || lang === 'de' || lang === 'zh-tw') {
     lang_prefix = lang + '.';
   }
   site_domain = lang_prefix + '{{ site.site_domain }}';
   filter = "domain='" + site_domain +  "'";
-  lang_filter = "lang='" + lang + "'"
+  lang_filter = "lang='" + lang + "'";
   console.log('filter', filter);
   
   var searchInterface = sajari.init({
