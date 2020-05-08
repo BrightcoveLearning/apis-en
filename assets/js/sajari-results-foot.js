@@ -19,6 +19,7 @@ layout: null
   filter = "domain='" + site_domain +  "'";
   lang_filter = "lang='" + lang + "'";
   console.log('filter', filter);
+  console.log('lang_filter', lang_filter);
   
   var searchInterface = sajari.init({
       mode: "inline",
