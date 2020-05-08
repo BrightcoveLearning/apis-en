@@ -2,14 +2,16 @@
   var domain = location.hostname,
   site_domain,
   filter,
+  lang_filter,
   lang = domain.split('.')[0],
   lang_prefix = '';
-
+  {title:"Tab 1",filter:"lang='en'"}
   if (lang === 'ja' || lang === 'ko' || lang === 'es' || lang === 'fr' || lang === 'de' || lang === 'zh-tw') {
     lang_prefix = lang + '.';
   }
   site_domain = lang_prefix + 'apis.support.brightcove.com';
   filter = "domain='" + site_domain +  "'";
+  lang_filter = "lang='" + lang + "'"
   console.log('filter', filter);
   
   var searchInterface = sajari.init({
@@ -26,6 +28,6 @@
       maxSuggestions: 5, // Maximum number of suggestions to show.
       results: {"showImages": false }, // Configure the results.
       values: {"q.override": true, "resultsPerPage": "10","q": getUrlParam("q")}, // Set default values.
-      tabFilters: {defaultTab:"This Site",tabs:[{title:"This Site",filter:filter}, {title:"All Brightcove Documentation",filter:""}]}, // User selectable filters
+      tabFilters: {defaultTab:"This Site",tabs:[{title:"This Site",filter:filter}, {title:"All Brightcove Documentation",filter:lang_filter}]}, // User selectable filters
       styling: { theme: { colors: { brand: { primary: "#333" }}}}
   });
