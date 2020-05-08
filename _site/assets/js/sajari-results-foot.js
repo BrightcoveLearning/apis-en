@@ -9,7 +9,7 @@
   if (lang === 'ja' || lang === 'ko' || lang === 'es' || lang === 'fr' || lang === 'de' || lang === 'zh-tw') {
     lang_prefix = lang + '.';
   } else {
-    lang = 'en';
+    lang = 'en-us';
   }
   site_domain = lang_prefix + 'apis.support.brightcove.com';
   filter = "domain='" + site_domain +  "'";
