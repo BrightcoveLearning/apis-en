@@ -12,6 +12,8 @@ layout: null
 
   if (lang === 'ja' || lang === 'ko' || lang === 'es' || lang === 'fr' || lang === 'de' || lang === 'zh-tw') {
     lang_prefix = lang + '.';
+  } else {
+    lang = 'en';
   }
   site_domain = lang_prefix + '{{ site.site_domain }}';
   filter = "domain='" + site_domain +  "'";
