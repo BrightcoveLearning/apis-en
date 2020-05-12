@@ -414,9 +414,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                         
                         <li><a href="/cms/managing-videos/using-cms-api-add-geo-filtering.html">Add Geo-Filtering</a></li>
                         
-                        <li><a href="/cms/managing-videos/cms-api-working-folders.html">Working with Folders</a></li>
-                        
                         <li><a href="/cms/managing-videos/digital-master-delete-api.html">Digital Master Delete API</a></li>
+                        
+                        <li><a href="/cms/managing-videos/deleting-videos.html">Deleting Videos</a></li>
                         
                         <li><a href="/cms/managing-videos/getting-counts-videos-and-playlists.html">Getting Counts of Videos and Playlists</a></li>
                         
@@ -439,6 +439,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                         <li><a href="/cms/managing-videos/generate-video-sitemaps.html">Generate Video Sitemaps</a></li>
                         
                         <li><a href="/cms/managing-videos/identifying-low-performing-content.html">Identifying Low Performing Content</a></li>
+                        
+                        <li><a href="/cms/managing-videos/cms-api-working-folders.html">Working with Folders</a></li>
                         
                         <li><a href="/cms/managing-videos/linking-zencoder-and-video-cloud-video-demand.html">Linking Zencoder and Video Cloud</a></li>
                         
@@ -1222,8 +1224,40 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <summary>In this topic, you will learn how to delete one or more videos using the CMS API.</summary>
   <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
-      <p></p>
+      <p>You probably need to delete videos from time to time, because they are no longer relevant or for other reasons. This can be done in <a href="https://studio.support.brightcove.com/media/getting-started-media-module.html#delete">Studio</a> or, as explained below, using the CMS API.</p>
+      <p>The process is straightforward, but there are some things you should be aware of:</p>
+      <ul>
+        <li>Deleting video cannot be undone.</li>
+        <li>Because of caching, deleted videos do not immediately disappear from the Video Cloud system or the internet. The only way to make a video immediately unavailable is to remove it from all players.</li>
+        <li>Although you can delete multiple videos, the number that can be deleted at one time is limited by the maximum length of URLs for API requests. Generally, you can delete up to 100 with a single request.</li>
+      </ul>
   </section>
+  <section class="bcls-section">
+      <h2 id="Details_of_the_API_request">Details of the API request</h2>
+        <h3>Endpoint</h3>
+        <pre><code class="language-http">/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video1_id},{video2_id}...</span></code></pre>
+        <h4>HTTP method</h4>
+        <p><code>DELETE</code></p>
+        <h4>Authentication</h4>
+        <p>An access token, <a href="/cms/getting-started/overview-cms-api.html#General_Information">the same as every CMS API request</a>.</p>
+        <h4>Request body</h4>
+        <p>None.</p>
+        <h4>Response</h4>
+        <p><code>204 No Content</code></p>
+        <h4>Example</h4>
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="/assets/images/cms/managing-videos/delete-video.png" alt="Deleting 2 Videos (Insomnia)">
+          <figcaption class="bcls-caption--image">Deleting 2 Videos (Insomnia)</figcaption>
+        </figure>
+        <h5>Notes</h5>
+        <p>Delete will fail for a video that is included in a playlist, returning this 409 Conflict error:</p>
+<pre class="line-numbers"><code class="language-json">[
+  {
+    "error_code": "REFERENCES_EXIST",
+    "message": "Playlist references exist for: [68143720001]"
+  }
+]</code></pre>
+        </section>
 </article>
 <!-- complete bootstrap layout -->
     </div>
