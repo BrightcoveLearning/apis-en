@@ -1236,6 +1236,20 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="Scheduled_videos">Scheduled videos</h2>
     <p>Because the Playback API and Player Catalog cache videos for up to 10-15 minutes, a player requesting a video scheduled to become available during the next few minutes (up to 20), may not be able to get a playable video until the cache refreshes.</p>
   </section>
+  <section class="bcls-section">
+    <h2 id="Has_digital_master">Has digital master</h2>
+    <p>If you are using this field to test whether a video can be retranscoded, it is not reliable for shared videos, as it will be true if the original video has a master, but still cannot be retranscoded by the affiliate account.</p>
+    <h3>Workaround</h3>
+    <p>If videos are shared to the account, you need to test for both <code>has_digital_master === true</code> and <code>sharing.by_external_account === false</code>. Sample code (JavaScript):</p>
+<pre class="line-numbers"><code class="language-javascript">var video={some_video_object}
+if (video.sharing !== null) {
+  if (video.sharing.by_external_account === false) {
+    if (video.has_digital_master) {
+    // video can be retranscoded
+    }
+  }
+}</code></pre>
+  </section>
 </article>
 
 <!-- complete bootstrap layout -->
