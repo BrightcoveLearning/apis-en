@@ -4,21 +4,11 @@ description: 'In this topic, you will get an overview of the Analytics Data Coll
 parent: Data Collection API
 ---
 
-<style media="screen" type="text/css">
-dt {
-  border-top: 1px #ccc solid;
-  padding-top: 1.5rem;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-  </style>
-
 <article class="bcls-article">
   <h1>{{ page.title }}</h1>
   <summary>{{ page.description }}</summary>
-  <p class="player-only">This feature is for Video Cloud customers only.</p>
   <aside class="bcls-aside bcls-aside--warning language-editable"><strong>Note:</strong> You should NOT use this API to track events for the Brightcove Player, or for the Android and iOS SDK players, because that already happens automatically, and you would be adding duplicate data.</aside>
-  <section class="bcls-section video-cloud-only">
+  <section class="bcls-section">
   <h2 id="introduction">Introduction</h2>
   
   <p>Analytics data is sent automatically by the Brightcove Players, including those provided by the Native Player SDKs. If you are <strong>not</strong> using a Brightcove Player to deliver Video Cloud videos, you need to instrument the player you are using to send the data to the Data Collector.</p>
@@ -56,17 +46,17 @@ dt {
   
   <h3 id="additional-parameters">Additional parameters</h3>
   
-  <p class="video-cloud-only">Certain parameters must be included with events so that the Analytics system can successfully analyze them</p>
+  <p>Certain parameters must be included with events so that the Analytics system can successfully analyze them</p>
   
   <aside class="bcls-aside bcls-aside--warning">You should <strong>not</strong> send <code>player</code> (player ID) or <code>player_name</code> information for non-Brightcove players. Instead, use the <code>destination</code> parameter to track where the video was viewed.</aside>
   </section>
   
-  <section class="bcls-section video-cloud-only">
+  <section class="bcls-section">
   <h2 id="responseTypes">Response types</h2>
   
   <p>The response to an analytics data collection API request includes an HTTP response code and a human-readable message.</p>
   
-  <table class="bcls-table" style="background-color:#ffffff;">
+  <table class="bcls-table">
     <thead class="bcls-table__head">
       <tr>
         <th>HTTP Status Code</th>
@@ -108,7 +98,7 @@ dt {
   <aside class="bcls-aside bcls-aside--warning">Note that the Analytics system can only return what you give it - not sending full data will result in a lack of data in Video Cloud analytics.</aside>
   </section>
   
-  <section class="bcls-section video-cloud-only">
+  <section class="bcls-section">
   <h2 id="bestPractices">Best practices</h2>
   
   <p>To be sure that you are sending the correct data to the Collector, you should test your data collection script before generally deploying it. We recommend:</p>
@@ -130,7 +120,7 @@ dt {
   </aside>
   </section>
   
-  <section class="bcls-section video-cloud-only">
+  <section class="bcls-section">
   <h2 id="junk-data">Junk data</h2>
   
   <p><strong>In general, data sent to the Collector will be recorded as truth by the Analytics system.</strong> If an event contains inappropriate or incorrect information, the Analytics system will interpret the data incorrectly.</p>
@@ -140,7 +130,7 @@ dt {
   <aside class="bcls-aside bcls-aside--tip">Examine the URLs you are generating carefully before you start sending data!</aside>
   </section>
   
-  <section class="bcls-section video-cloud-only">
+  <section class="bcls-section">
   <h2 id="encoding">URI Encoding</h2>
   
   <p>Any strings you send to the Data Collection API that might contain spaces or special characters <strong>must be URI encoded</strong> for the request to be successful. If you are submitting the request via JavaScript, you can use the <code class="language-javascript notranslate">encodeURI()</code> method the encode the request string. For example:</p>
@@ -151,7 +141,7 @@ dt {
   </pre>
   </section>
   
-  <section class="bcls-section video-cloud-only">
+  <section class="bcls-section">
   <h2 id="video-cloud-events">Events</h2>
   
   <p>The events listed below are processed by the Analytics system.</p>
@@ -239,7 +229,7 @@ dt {
   dJ-pL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg
   &amp;domain=videocloud
   &amp;account=1749339200
-  &amp;time=1377191644796/code></pre>
+  &amp;time=1377191644796</code></pre>
     </dd>
     <dt><code>ad_mode_begin</code></dt>
     <dd>
@@ -337,7 +327,7 @@ dt {
   </dl>  
   </section>
   
-  <section class="bcls-section video-cloud-only">
+  <section class="bcls-section">
   <h2 id="all-event-parameters">Parameters for all events</h2>
   
   <p>Parameters for these events should include any information relevant to the current state of the system when the event occurred, and be as specific as possible. This section details parameters that can be sent with all events, and the following sections show parameters for specific events.</p>
