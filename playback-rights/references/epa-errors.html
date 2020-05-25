@@ -1,0 +1,209 @@
+---
+title: Playback Rights Error Reference
+description: 'This topic provides an error reference for the Brightcove Playback Rights Management Service.'
+parent: References
+grandparent: Player Authorization API
+layout: staging
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
+
+<section class="bcls-section">
+<h2 id="Error_Reference">Error Reference</h2>
+<p>
+  The following status list and error codes will help you debug issues when working with Brightcove's Playback Rights Management Service:
+</p>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Status</th>
+			<th>Error Code</th>
+			<th>Error Subcode</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>400</td>
+			<td><code>BAD_REQUEST</code></td>
+			<td><code>DUPLICATE_PARAMETERS</code></td>
+			<td>The same parameter name was provided more than once in the request.</td>
+		</tr>
+		<tr>
+			<td>401</td>
+			<td><code>ACCESS_DENIED</code></td>
+			<td><code>TOKEN_REQUIRED</code></td>
+			<td>A JSON Web Token (JWT) is required by Playback Rights but was not provided.</td>
+		</tr>
+    <tr>
+			<td>401</td>
+			<td><code>ACCESS_DENIED</code></td>
+			<td><code>TOKEN_VALIDATION</code></td>
+			<td>The JSON Web Token (JWT) provided did not pass validation.</td>
+		</tr>
+    <tr>
+			<td>403</td>
+			<td><code>FORBIDDEN</code></td>
+			<td><code>ACCOUNT_ID</code></td>
+			<td>The account id in the policy key does not match the account in the API request.</td>
+		</tr>
+    <tr>
+			<td>403</td>
+			<td><code>FORBIDDEN</code></td>
+			<td><code>CLIENT_GEO</code></td>
+			<td>The video is restricted from playing in the current geographic region. The message will contain additional information about the specific issue.</td>
+		</tr>
+    <tr>
+			<td>403</td>
+			<td><code>FORBIDDEN</code></td>
+			<td><code>CLIENT_IP</code></td>
+			<td>The video is restricted at the current IP address.</td>
+		</tr>
+    <tr>
+			<td>403</td>
+			<td><code>FORBIDDEN</code></td>
+			<td><code>DOMAIN</code></td>
+			<td>The video is restricted from playing on the current domain.</td>
+		</tr>
+    <tr>
+			<td>403</td>
+			<td><code>FORBIDDEN</code></td>
+			<td><code>OFFERS</code></td>
+			<td>The JSON Web Token (JWT) does not allow for playback based on offers available in the video.</td>
+		</tr>
+    <tr>
+			<td>403</td>
+			<td><code>FORBIDDEN</code></td>
+			<td><code>TAGS</code></td>
+			<td>The JSON Web Token (JWT) does not allow for playback based on tags available in the video.</td>
+		</tr>
+    <tr>
+			<td>403</td>
+			<td><code>FORBIDDEN</code></td>
+			<td><code>VIDEO_NOT_PLAYABLE</code></td>
+			<td>For a single video request, the video exists, but it is not allowed to be played now.</td>
+		</tr>
+    <tr>
+			<td>404</td>
+			<td><code>NOT_FOUND</code></td>
+			<td><code>VIDEO_NOT_FOUND</code></td>
+			<td>The requested video is not available.</td>
+		</tr>
+    <tr>
+			<td>404</td>
+			<td><code>NOT_FOUND</code></td>
+			<td><code>PLAYLIST_NOT_FOUND</code></td>
+			<td>The requested playlist is not available.</td>
+		</tr>
+    <tr>
+			<td>405</td>
+			<td><code>METHOD_NOT_ALLOWED</code></td>
+			<td><code></code></td>
+			<td>Only GET, HEAD and OPTIONS are allowed for this API.</td>
+		</tr>
+    <tr>
+			<td>500</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code></code></td>
+			<td>Internal server error.</td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>ACCOUNT_RETRIEVE_FAILURE</code></td>
+			<td>Received a bad response from a backend server.</td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>VIDEO_RETRIEVE_FAILURE</code></td>
+			<td></td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>VIDEO_URLS_RETRIEVE_FAILURE</code></td>
+			<td></td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>PLAYLIST_RETRIEVE_FAILURE</code></td>
+			<td></td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>PLAYBACK_RIGHT_RETRIEVE_FAILURE</code></td>
+			<td>Cannot retrieve playback right from CDN.</td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>PLAYLIST_VIDEOS_RETRIEVE_FAILURE</code></td>
+			<td></td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>LICENSE_RETRIEVE_FAILURE</code></td>
+			<td>Failed to get license from License Server for this video.</td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>OFFERS_RETRIEVE_FAILURE</code></td>
+			<td>Failed to get offers from API for this video.</td>
+		</tr>
+    <tr>
+			<td>502</td>
+			<td><code>SERVER_ERROR</code></td>
+			<td><code>RIGHTS_RETRIEVE_FAILURE</code></td>
+			<td>Failed to retrieve Playback Rights for this video.</td>
+		</tr>
+    <tr>
+			<td>503</td>
+			<td><code>SERVICE_UNAVAILABLE</code></td>
+			<td><code></code></td>
+			<td>Returned this response from a backend server.</td>
+		</tr>
+    <tr>
+			<td>504</td>
+			<td><code>SERVER_TIMEOUT</code></td>
+			<td><code></code></td>
+			<td>Either a backend server or one of the servers they rely on timed out.</td>
+		</tr>
+
+	</tbody>
+</table>
+
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Related_topics">Related topics</h2>
+
+<ul>
+  <li>
+    <a href="https://docs.brightcove.com/en/staging/epa/overview-epa.html">Overview: Playback Rights Management Service</a>
+  </li>
+  <li>
+    <a href="https://docs.brightcove.com/en/staging/epa/implementing-epa.html">Implementing Playback Rights Management Service</a>
+  </li>
+  <li>
+    <a href="https://docs.brightcove.com/en/staging/epa/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
+  </li>
+  <li>
+    <a href="https://docs.brightcove.com/en/staging/epa/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
+  </li>
+  <li>
+    <a href="https://docs.brightcove.com/en/staging/pas/stream-concurrency.html">Implementing Stream Concurrency</a>
+  </li>
+</ul>
+
+</section>
+
+</article>
