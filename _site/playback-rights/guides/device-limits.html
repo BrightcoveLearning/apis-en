@@ -1,163 +1,257 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-us">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
-    <meta name="robots" content="noindex">
-  	<!-- change title to match the h1 heading -->
-  	<title>Implementing Device Limits</title>
-
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700" rel="stylesheet" type="text/css">
-    <script src="//use.edgefonts.net/source-code-pro.js"></script>
-    <link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
-    <link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
-    <link rel="stylesheet" href="/en/styles/foundation-fixes.css">
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
-
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="In this topic, you will learn how to enable device limits for video playback using Brightcove's Playback Rights Management Service.">
+  
+  <title>Implementing Device Limits</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/prism.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/styles.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/landing-page.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/tabs.css">
+  <link rel="stylesheet" href="/assets/css/local.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/381443caa8.js" crossorigin="anonymous"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/google-analytics.js"></script>
+  <script src="/assets/js/sajari-head.js"></script>
 </head>
 
-<body>
-	<!-- header navbar -->
-	<div id="navWrapper" class="fixed"></div>
-	<!-- breadcrumbs -->
-	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
-	<!-- search -->
-	<div id="searchModal" class="reveal-modal" data-reveal></div>
-	<!-- content -->
-	<div class="row">
-		<div class="sidebar large-2 columns show-for-large-up">
-			<div id="sidenav" class="side-nav"></div>
-		</div>
-		<div id="main" class="large-10 small-12 columns">
-			<h1>Implementing Device Limits</h1>
-      <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
-      <summary>In this topic, you will learn how to enable device limits for video playback using Brightcove's Playback Rights Management Service.</summary>
+<body class="body">
+
+<header>
+  <div class="div-header">
+    <a href="/"><img class="product-logo" src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/product-logos/logo-bc-video-cloud.svg" alt="product logo" style="max-height: 100px;max-width: 232px;"></a>
+<!-- GTranslate: https://gtranslate.io/ -->
+<select onchange="doGTranslate(this);"><option value="">Select Language</option><option value="en|en">English</option><option value="en|zh-TW">繁體中文</option><option value="en|fr">Français</option><option value="en|de">Deutsch</option><option value="en|ja">日本語</option><option value="en|ko">한국어</option><option value="en|es">Español</option></select>
+
+<script>
+/* <![CDATA[ */
+function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw')plang='en';location.href=location.protocol+'//'+(lang == 'en' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '\\.'), '')+location.pathname+location.search;}
+/* ]]> */
+</script>
+
+    <select id="site_select" class="bcls-select" style="margin-right: 1rem;">
+      <option value="">Other Brightcove Docs</option>
+      
+        
+          <option value="https://support.brightcove.com">Documentation Home</option>
+        
+      
+        
+          <option value="https://audience.support.brightcove.com">Brightcove Audience</option>
+        
+      
+        
+          <option value="https://beacon.support.brightcove.com">Brightcove Beacon</option>
+        
+      
+        
+          <option value="https://campaign.support.brightcove.com">Brightcove Campaign</option>
+        
+      
+        
+          <option value="https://engage.support.brightcove.com">Brightcove Engage</option>
+        
+      
+        
+          <option value="https://live.support.brightcove.com">Brightcove Live</option>
+        
+      
+        
+          <option value="https://gallery.support.brightcove.com">Brightcove Gallery</option>
+        
+      
+        
+          <option value="https://ssai.support.brightcove.com">Brightcove SSAI</option>
+        
+      
+        
+          <option value="https://social.support.brightcove.com">Brightcove Social</option>
+        
+      
+        
+          <option value="https://studio.support.brightcove.com">Video Cloud Studio</option>
+        
+      
+        
+          <option value="https://player.support.brightcove.com">Brightcove Player Development</option>
+        
+      
+        
+          <option value="https://apis.support.brightcove.com">Video Cloud Platform APIs</option>
+        
+      
+        
+          <option value="https://sdks.support.brightcove.com">Video Cloud Device SDKs</option>
+        
+      
+        
+          <option value="https://integrations.support.brightcove.com">Integration / CMS Connectors</option>
+        
+      
+        
+          <option value="https://general.support.brightcove.com">Video Cloud General</option>
+        
+      
+        
+          <option value="https://zencoder.support.brightcove.com">Zencoder</option>
+        
+      
+    </select>
 
 
-	    <!-- BEGIN DRUPAL CONTENT -->
+    <span class="secondary-nav"><a href="https://supportportal.brightcove.com/s/login/?language=en_US"><img src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/support.png" alt="support"> Contact Support</a> <span style="vertical-align: top;margin-left:1em;margin-right:1em;">|</span> <a href="https://status.brightcove.com/"><img src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/status.png" alt="system status"> System Status</a></span>
+    <br>
+    
+  </div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb arr-right">
+      
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      
+      
+      
+      <li class="breadcrumb-item"><a href="/playback-rights/guides/">Guides</a></li>
+      
+      <li class="breadcrumb-item active" aria-current="page">Implementing Device Limits</li>
+    </ol>
+  </nav>
+</header>
+<!-- search bar -->
+<div id="nav-search-box" style="margin-top: 1rem;"></div>
+  
+    
+
 
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
+  <h1>Implementing Device Limits</h1>
+  <summary>In this topic, you will learn how to enable device limits for video playback using Brightcove's Playback Rights Management Service.</summary>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
 
-<p>Brightcove's Playback Rights Management Service allows you to set device limits for video playback. Each user's device is registered with a unique id when a DRM license request is made. You control the number of devices per user.</p>
-<p>
-  The device limit is checked and enforced with each license request. To use this restriction, you will pass a <a href="https://docs.brightcove.com/en/staging/pas/create-jwt.html">JSON Web Token (JWT)</a> with the current user id <code>uid</code> to the Playback API.
-</p>
-
-<p>If you are not familiar with this feature, see the <a href="https://docs.brightcove.com/en/staging/epa/overview-epa.html">Overview: Playback Rights Management Service</a> document.</p>
-
-</section>
-
-<section class="bcls-section">
-<h2 id="Device_registration">Device registration</h2>
-<p>
-  A device is registered with Brightcove when a valid playback request which includes a <a href="https://docs.brightcove.com/en/staging/pas/create-jwt.html">JSON Web Token (JWT)</a> with <code>uid</code> and <code>dlimit</code> claims is received. From that moment, this device will occupy one slot.
-</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="Implementation">Implementation</h2>
-<p>
-  To enable device limits, follow these steps:
-</p>
-<ol class="bcls-tasklist">
-  <li>
+    <p>Brightcove's Playback Rights Management Service allows you to set device limits for video playback. Each user's device is registered with a unique id when a DRM license request is made. You control the number of devices per user.</p>
     <p>
-      Create a <a href="https://docs.brightcove.com/en/staging/pas/create-jwt.html">JSON Web Token (JWT)</a> with the generally required claims along with the <code>uid</code> and <code>dlimit</code> claims.
+      The device limit is checked and enforced with each license request. To use this restriction, you will pass a <a href="/playback-authorization/guides/create-jwt.html">JSON Web Token (JWT)</a> with the current user id <code>uid</code> to the Playback API.
     </p>
+
+    <p>If you are not familiar with this feature, see the <a href="/playback-rights/getting-started/overview-epa.html">Overview: Playback Rights Management Service</a> document.</p>
+
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Device_registration">Device registration</h2>
     <p>
-      Each user's device is registered with a unique id when a DRM license request is made.
+      A device is registered with Brightcove when a valid playback request which includes a <a href="/playback-authorization/guides/create-jwt.html">JSON Web Token (JWT)</a> with <code>uid</code> and <code>dlimit</code> claims is received. From that moment, this device will occupy one slot.
     </p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Implementation">Implementation</h2>
     <p>
-      The <code>dlimit</code> claim lets you control how many devices can be associated with the specified user <code>uid</code>. The value must be &gt; <code>0</code>.
+      To enable device limits, follow these steps:
     </p>
-    <p>If the <code>dlimit</code> claim value is dropped in later requests, previously allowed devices will continue to operate.
-    </p>
+    <ol class="bcls-tasklist">
+      <li>
+        <p>
+          Create a <a href="/playback-authorization/guides/create-jwt.html">JSON Web Token (JWT)</a> with the generally required claims along with the <code>uid</code> and <code>dlimit</code> claims.
+        </p>
+        <p>
+          Each user's device is registered with a unique id when a DRM license request is made.
+        </p>
+        <p>
+          The <code>dlimit</code> claim lets you control how many devices can be associated with the specified user <code>uid</code>. The value must be &gt; <code>0</code>.
+        </p>
+        <p>If the <code>dlimit</code> claim value is dropped in later requests, previously allowed devices will continue to operate.
+        </p>
+        <p>
+          <strong>Example</strong><br />
+          If the <code>dlimit</code> value is set to <code>3</code>, the user can play on devices A, B, & C (all would be allowed). Trying to play on device D would be denied.<br />
+          If the <code>dlimit</code> value is changed to <code>1</code>, the user can still play on all 3 devices A, B, & C, unless the devices are manually revoked by managing devices with the Devices API. To do this, see the <a href="#Manage_devices">Manage devices</a> section.
+        </p>
+        <p>
+
+        </p>
+      </li>
+      <li>
+        <p>
+          <a href="#Manage_devices">Manage user devices</a> with the Devices API. This API allows you to get the devices for a user, delete devices and update the name for a device.
+        </p>
+        <p>
+          When a device is registered, it is identified by id and nickname. The Devices API lets you edit the device nickname, making it easy to manage your list of devices.
+        </p>
+      </li>
+      <li>
+        <a href="https://docs.brightcove.com/en/staging/epa/implementing-epa.html#Configure_your_player">Configure your player</a> to use the JSON Web Token (JWT) created in the previous step.
+      </li>
+    </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Manage_devices">Manage devices</h2>
+
+    <p>You can manage user devices with the <a href="/playback-rights/references/devices-reference.html">Devices API</a>.</p>
+
+    <h3 id="Playback_Rights_API">Devices API</h3>
     <p>
-      <strong>Example</strong><br/>
-      If the <code>dlimit</code> value is set to <code>3</code>, the user can play on devices A, B, & C (all would be allowed). Trying to play on device D would be denied.<br/>
-      If the <code>dlimit</code> value is changed to <code>1</code>, the user can still play on all 3 devices A, B, & C, unless the devices are manually revoked by managing devices with the Devices API. To do this, see the <a href="#Manage_devices">Manage devices</a> section.
+      With the Devices API, you can get and delete user devices.
     </p>
+
+    <h3>Base URL</h3>
     <p>
-
+      The base URL for the API is:
     </p>
-  </li>
-  <li>
+    <pre><code class="language-http">https://playback-auth.api.brightcove.com/v1</code></pre>
+
+    <h3>Account path</h3>
     <p>
-      <a href="#Manage_devices">Manage user devices</a> with the Devices API. This API allows you to get the devices for a user, delete devices and update the name for a device.
+      In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
     </p>
+    <pre><code class="language-http">https://playback-auth.api.brightcove.com/v1/accounts/{accountID}</code></pre>
+
+    <h3>Authorization</h3>
     <p>
-      When a device is registered, it is identified by id and nickname. The Devices API lets you edit the device nickname, making it easy to manage your list of devices.
+      An access token for requests is required and must be present in the Authorization header:
     </p>
-  </li>
-  <li>
-    <a href="https://docs.brightcove.com/en/staging/epa/implementing-epa.html#Configure_your_player">Configure your player</a> to use the JSON Web Token (JWT) created in the previous step.
-  </li>
-</ol>
-</section>
+    <pre><code class="language-http">Authorization: Bearer {access_token}</code></pre>
+    <p>
+      The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
+    </p>
 
+    <h3>Permissions</h3>
+    <p>
+      Requests to the Devices API must be made from <a href="/oauth/">client credentials</a> with the following permissions:
+    </p>
+    <ul>
+      <li>
+        <code>video-cloud/playback-auth/devices/read</code>
+      </li>
+      <li>
+        <code>video-cloud/playback-auth/devices/write</code>
+      </li>
+    </ul>
 
-<section class="bcls-section">
-<h2 id="Manage_devices">Manage devices</h2>
+    <h3>API methods</h3>
+    <p>
+      The Devices API supports the following requests. For details, see the <a href="/playback-rights/references/devices-reference.html">Devices API Reference</a>.
+    </p>
 
-<p>You can manage user devices with the <a href="https://docs.brightcove.com/en/staging/epa/devices-api/v1/doc/">Devices API</a>.</p>
-
-<h3 id="Playback_Rights_API">Devices API</h3>
-<p>
-  With the Devices API, you can get and delete user devices.
-</p>
-
-<h3>Base URL</h3>
-<p>
-  The base URL for the API is:
-</p>
-<pre><code class="language-http">https://playback-auth.api.brightcove.com/v1</code></pre>
-
-<h3>Account path</h3>
-<p>
-  In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
-</p>
-<pre><code class="language-http">https://playback-auth.api.brightcove.com/v1/accounts/{accountID}</code></pre>
-
-<h3>Authorization</h3>
-<p>
-  An access token for requests is required and must be present in the Authorization header:
-</p>
-<pre><code class="language-http">Authorization: Bearer {access_token}</code></pre>
-<p>
-  The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="https://support.brightcove.com/overview-oauth-api-v4">Brightcove OAuth Overview</a>.
-</p>
-
-<h3>Permissions</h3>
-<p>
-  Requests to the Devices API must be made from <a href="https://support.brightcove.com/oauth-api">client credentials</a> with the following permissions:
-</p>
-<ul>
-  <li>
-    <code>video-cloud/playback-auth/devices/read</code>
-  </li>
-  <li>
-    <code>video-cloud/playback-auth/devices/write</code>
-  </li>
-</ul>
-
-<h3>API methods</h3>
-<p>
-  The Devices API supports the following requests. For details, see the <a href="https://docs.brightcove.com/en/staging/epa/devices-api/v1/doc/">Devices API Reference</a>.
-</p>
-
-<h4>Get all user devices</h4>
-<pre><code class="language-http">GET /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
-<h5>Response body</h5>
-<p>
-  The response body contains an array of devices, and should look similar to this:
-</p>
-<pre class="line-numbers"><code class="language-json">[
+    <h4>Get all user devices</h4>
+    <pre><code class="language-http">GET /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
+    <h5>Response body</h5>
+    <p>
+      The response body contains an array of devices, and should look similar to this:
+    </p>
+    <pre class="line-numbers"><code class="language-json">[
   {
     &quot;id&quot;: &quot;device01&quot;,
     &quot;created_at&quot;: 1571242764,
@@ -166,75 +260,74 @@
     &quot;user_agent&quot;: &quot;Client's user agent&quot;
   }
 ]</code></pre>
-<br />
+    <br />
 
-<h4>Update device name</h4>
-<p>
-  The <code>PATCH</code> request lets you set a descriptive name for the device.
-</p>
-<pre><code class="language-http">PATCH  /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}
+    <h4>Update device name</h4>
+    <p>
+      The <code>PATCH</code> request lets you set a descriptive name for the device.
+    </p>
+    <pre><code class="language-http">PATCH  /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}
   Content-Type: application/json
   Body: {devices object}</code></pre>
-<h5>Request body</h5>
-<p>
-  The request body contains the device name.
-</p>
-<pre class="line-numbers"><code class="language-json">{
+    <h5>Request body</h5>
+    <p>
+      The request body contains the device name.
+    </p>
+    <pre class="line-numbers"><code class="language-json">{
     &quot;name&quot;: &quot;patched-name&quot;
 }</code></pre>
 
-<p>
-  Here are the field details:
-</p>
-<table class="bcls-table">
-  <thead class="bcls-table__head">
-    <tr>
-      <th>Field</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody class="bcls-table__body">
-    <tr>
-      <td><code>name</code></td>
-      <td>String</td>
-      <td>A descriptive nickname to help identify the device</td>
-    </tr>
-  </tbody>
-</table>
-<br />
+    <p>
+      Here are the field details:
+    </p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>name</code></td>
+          <td>String</td>
+          <td>A descriptive nickname to help identify the device</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
 
-<h4>Delete all user devices</h4>
-<pre><code class="language-http">DELETE /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
-<br />
+    <h4>Delete all user devices</h4>
+    <pre><code class="language-http">DELETE /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
+    <br />
 
-<h4>Delete a specific user device</h4>
-<pre><code class="language-http">DELETE /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}</code></pre>
-<br />
-</section>
+    <h4>Delete a specific user device</h4>
+    <pre><code class="language-http">DELETE /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}</code></pre>
+    <br />
+  </section>
 
-<!-- <section class="bcls-section">
+  <!-- <section class="bcls-section">
 <h2 id="Related_topics">Related topics</h2>
 
 <ul>
   <li>
-    <a href="https://docs.brightcove.com/en/staging/epa/overview-epa.html">Overview: Playback Rights Management Service</a>
+    <a href="/playback-rights/getting-started/overview-epa.html">Overview: Playback Rights Management Service</a>
   </li>
   <li>
-    <a href="https://docs.brightcove.com/en/staging/epa/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
+    <a href="/playback-rights/guides/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
   </li>
   <li>
-    <a href="https://docs.brightcove.com/en/staging/epa/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
+    <a href="/playback-rights/guides/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
   </li>
   <li>
-    <a href="https://docs.brightcove.com/en/staging/pas/stream-concurrency.html">Implementing Stream Concurrency</a>
+    <a href="/playback-authorization/guides/stream-concurrency.html">Implementing Stream Concurrency</a>
   </li>
 </ul>
 
 </section> -->
 
 </article>
-
 
 <!-- END DRUPAL CONTENT -->
 </div>
@@ -250,11 +343,179 @@
 <script src="//learning-services-media.brightcove.com/doc-assets/js/bcls-utils.js"></script>
 <script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script>
 <script>
-$(document).foundation();
+  $(document).foundation();
 </script>
 <!-- Any scripts specific to page samples should go here -->
 <script src="https://learning-services-media.brightcove.com/doc-assets/js/https-fix.js"></script>
-<script src="https://learning-services-media.brightcove.com/doc-assets/js/support-feedback.js"></script><script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/feedback-docs.js"></script>
+<script src="https://learning-services-media.brightcove.com/doc-assets/js/support-feedback.js"></script>
+<script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/feedback-docs.js"></script>
+</body>
+
+</html>
+<!-- complete bootstrap layout -->
+    </div>
+    <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
+      
+    </div>
+  </div>
+</div>
+
+<hr>
+<div class="last-updated">
+  Page last updated on 25 May 2020
+</div>
+
+<footer class="bcls-footer" role="contentinfo">
+  <div class="row">
+    <div class="region region-footer-top-center col-md-12">
+      <nav role="navigation" aria-labelledby="block-brightcovesupport-menu" id="block-brightcovesupport" class="footer-menu">
+
+        <h2>Brightcove Support</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://status.brightcove.com">System Status</a>
+          </li>
+          <li>
+            <a href="https://supportportal.brightcove.com/s/login/?language=en_US">Contact Support</a>
+          </li>
+          <li>
+            <a href="https://support.brightcove.com/">Documentation</a>
+          </li>
+        </ul>
+
+      </nav>
+      <nav role="navigation" aria-labelledby="block-training-menu" id="block-training" class="footer-menu">
+
+        <h2>Training</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://studio.support.brightcove.com/training/online-training-courses.html">Online Courses</a>
+          </li>
+          <li>
+            <a href="https://studio.support.brightcove.com/training/register-training.html">Register for a course</a>
+          </li>
+          <li>
+            <a href="https://university.brightcove.com/">Brightcove University</a>
+          </li>
+        </ul>
+
+      </nav>
+      <nav role="navigation" aria-labelledby="block-brightcove-menu" class="footer-menu">
+
+        <h2>Brightcove</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://www.brightcove.com">Brightcove.com</a>
+          </li>
+          <li>
+            <a href="https://supportportal.brightcove.com/s/login/?language=en_US" data-drupal-link-system-path="https://supportportal.brightcove.com/s/login/?language=en_US">Contact Us</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="row">
+    <div class="region region-footer-bottom-center col-md-12">
+      <div class="bcls-copyright footer-menu">
+        <table>
+          <tr>
+            <td>
+              <div id="bc_copyright" class="field field--name-field-copyright-year field--type-string field--label-hidden field--item" style="float: left;"> Brightcove Inc. All rights reserved.</div>
+            </td>
+            <td><a href="https://www.brightcove.com/en/legal/privacy">Privacy</a> | <a href="https://www.brightcove.com/en/terms-and-conditions">Terms &amp; Conditions</a></td>
+            <td>
+              <div class="gf-links-cols footer-menu">
+                <div class="gf-social"><a href="https://www.linkedin.com/company/16439" title="LinkedIn" newtab="newtab" class="gf-social-linkedin"><i class="fab fa-linkedin-in" style="font-size: 1.5rem;"></i></a><a href="https://twitter.com/brightcove" title="Twitter" newtab="newtab" class="gf-social-twitter"><i class="fab fa-twitter" style="font-size: 1.5rem;"></i></a><a href="https://www.facebook.com/Brightcove" title="Facebook" newtab="newtab" class="gf-social-facebook"><i class="fab fa-facebook-f" style="font-size: 1.5rem;"></i></a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</footer>
+<div id="talla_wrapper">
+  <p style="text-align: right;position: relative;"><button style="background:rgb(239, 108, 42);color:Snow;padding:.3rem;position:fixed;right:0;bottom:1em;z-index:9999999" onclick="javascript:displayChat()">Have a question? </button> </p>
+  <div id="talla_chat">
+</div>
+</div>
+<script>
+      
+  var searchBox = sajari.init({
+    mode: "search-box",
+    project: "1588255093746585379", // Set this to your project.
+    collection: "brightcove-documenation", // Set this to your collection.
+    instantPipeline: "autocomplete", // Pipeline used as you type
+    inputPlaceholder: "Search", // Input element placeholder
+    maxSuggestions: 5, // Maximum number of suggestions to show
+    attachSearchBox: document.getElementById("nav-search-box") // DOM element to attach to
+  });
+  
+    searchBox("sub", "pipeline.search-sent", function (_, query) {
+      window.location = "/search.html?q=" + encodeURIComponent(query.q);
+    });
+  
+
+</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/https-fix.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/setDate.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/prism.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
+  
+  <script src="/assets/js/sites_nav.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/bcls-utils.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/local-link-fix.js"></script>
+  <script src="/assets/js/feedback.js"></script>
+  
+  <script src="/assets/js/sajari-search-foot.js"></script>
+  
+  <!-- <script src="/assets/js/sajari-index.js"></script> -->
+  <script src="https://assets.talla.com/latest/embeddedjs/talla.js"></script>
+  <script src="/assets/js/talla-init.js"></script>
+  <style>
+    a.sj-paginator__page-number.sj-paginator__page-number--current.css-so0ov7 {
+      background-color: lightblue;
+    }
+    div.sj-tabs__tab {
+      margin-top: 3rem;
+      margin-left: .3rem;
+      border-top-left-radius: .4rem;
+      border-top-right-radius: .4rem;
+      background-color:#e8e8e8;
+    }
+
+    div.sj-tabs__tab.sj-tabs__tab--selected {
+      border-bottom-color: crimson;
+      background-color: #f8f8f8;
+    }
+
+    p.sj-results__result__description.css-p9jvyt {
+      font-size: 1rem;
+    }
+
+    .sj-result__text.css-31l7gp h3 {
+      color: navy;
+      font-size: 1.4rem;
+    }
+    </style>
+
 </body>
 
 </html>

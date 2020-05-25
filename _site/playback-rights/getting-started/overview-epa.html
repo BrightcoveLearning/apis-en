@@ -1,225 +1,319 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-us">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
-    <meta name="robots" content="noindex">
-  	<!-- change title to match the h1 heading -->
-  	<title>Overview: Playback Rights Management Service</title>
-
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700" rel="stylesheet" type="text/css">
-    <script src="//use.edgefonts.net/source-code-pro.js"></script>
-    <link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
-    <link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
-    <link rel="stylesheet" href="/en/styles/foundation-fixes.css">
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
-
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="In this topic, you will learn how Brightcove's Playback Rights Management Service allows you to control playback rights and restrictions associated with videos ingested for Dynamic Delivery.">
+  
+  <title>Implementing Playback Rights Management Service</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/prism.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/styles.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/landing-page.css">
+  <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/site-assets/css/site/tabs.css">
+  <link rel="stylesheet" href="/assets/css/local.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/381443caa8.js" crossorigin="anonymous"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/google-analytics.js"></script>
+  <script src="/assets/js/sajari-head.js"></script>
 </head>
 
-<body>
-	<!-- header navbar -->
-	<div id="navWrapper" class="fixed"></div>
-	<!-- breadcrumbs -->
-	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
-	<!-- search -->
-	<div id="searchModal" class="reveal-modal" data-reveal></div>
-	<!-- content -->
-	<div class="row">
-		<div class="sidebar large-2 columns show-for-large-up">
-			<div id="sidenav" class="side-nav"></div>
-		</div>
-		<div id="main" class="large-10 small-12 columns">
-			<h1>Overview: Playback Rights Management Service</h1>
-      <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
-      <summary>In this topic, you will learn how Brightcove's Playback Rights Management Service allows you to control playback rights and restrictions associated with videos ingested for Dynamic Delivery.</summary>
+<body class="body">
+
+<header>
+  <div class="div-header">
+    <a href="/"><img class="product-logo" src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/product-logos/logo-bc-video-cloud.svg" alt="product logo" style="max-height: 100px;max-width: 232px;"></a>
+<!-- GTranslate: https://gtranslate.io/ -->
+<select onchange="doGTranslate(this);"><option value="">Select Language</option><option value="en|en">English</option><option value="en|zh-TW">繁體中文</option><option value="en|fr">Français</option><option value="en|de">Deutsch</option><option value="en|ja">日本語</option><option value="en|ko">한국어</option><option value="en|es">Español</option></select>
+
+<script>
+/* <![CDATA[ */
+function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw')plang='en';location.href=location.protocol+'//'+(lang == 'en' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '\\.'), '')+location.pathname+location.search;}
+/* ]]> */
+</script>
+
+    <select id="site_select" class="bcls-select" style="margin-right: 1rem;">
+      <option value="">Other Brightcove Docs</option>
+      
+        
+          <option value="https://support.brightcove.com">Documentation Home</option>
+        
+      
+        
+          <option value="https://audience.support.brightcove.com">Brightcove Audience</option>
+        
+      
+        
+          <option value="https://beacon.support.brightcove.com">Brightcove Beacon</option>
+        
+      
+        
+          <option value="https://campaign.support.brightcove.com">Brightcove Campaign</option>
+        
+      
+        
+          <option value="https://engage.support.brightcove.com">Brightcove Engage</option>
+        
+      
+        
+          <option value="https://live.support.brightcove.com">Brightcove Live</option>
+        
+      
+        
+          <option value="https://gallery.support.brightcove.com">Brightcove Gallery</option>
+        
+      
+        
+          <option value="https://ssai.support.brightcove.com">Brightcove SSAI</option>
+        
+      
+        
+          <option value="https://social.support.brightcove.com">Brightcove Social</option>
+        
+      
+        
+          <option value="https://studio.support.brightcove.com">Video Cloud Studio</option>
+        
+      
+        
+          <option value="https://player.support.brightcove.com">Brightcove Player Development</option>
+        
+      
+        
+          <option value="https://apis.support.brightcove.com">Video Cloud Platform APIs</option>
+        
+      
+        
+          <option value="https://sdks.support.brightcove.com">Video Cloud Device SDKs</option>
+        
+      
+        
+          <option value="https://integrations.support.brightcove.com">Integration / CMS Connectors</option>
+        
+      
+        
+          <option value="https://general.support.brightcove.com">Video Cloud General</option>
+        
+      
+        
+          <option value="https://zencoder.support.brightcove.com">Zencoder</option>
+        
+      
+    </select>
 
 
-	    <!-- BEGIN DRUPAL CONTENT -->
+    <span class="secondary-nav"><a href="https://supportportal.brightcove.com/s/login/?language=en_US"><img src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/support.png" alt="support"> Contact Support</a> <span style="vertical-align: top;margin-left:1em;margin-right:1em;">|</span> <a href="https://status.brightcove.com/"><img src="https://learning-services-media.brightcove.com/doc-assets/site-assets/images/site/status.png" alt="system status"> System Status</a></span>
+    <br>
+    
+  </div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb arr-right">
+      
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      
+      
+      
+      <li class="breadcrumb-item"><a href="/playback-rights/getting-started/">Getting Started</a></li>
+      
+      <li class="breadcrumb-item active" aria-current="page">Implementing Playback Rights Management Service</li>
+    </ol>
+  </nav>
+</header>
+<!-- search bar -->
+<div id="nav-search-box" style="margin-top: 1rem;"></div>
+  
+    
+
 
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
+  <h1>Implementing Playback Rights Management Service</h1>
+  <summary>In this topic, you will learn how Brightcove's Playback Rights Management Service allows you to control playback rights and restrictions associated with videos ingested for Dynamic Delivery.</summary>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
 
-<p>Brightcove's Playback Rights Management Service provides a scalable and expressive way to manage video playback. This service includes the following features:</p>
-<ul>
-  <li>
-    Limit playback by geography
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+
+    <p>Brightcove's Playback Rights Management Service provides a scalable and expressive way to manage video playback. This service includes the following features:</p>
     <ul>
       <li>
-        Country
+        Limit playback by geography
+        <ul>
+          <li>
+            Country
+          </li>
+          <li>
+            Zipcode
+          </li>
+          <li>
+            Designated market area (DMA)
+          </li>
+        </ul>
       </li>
       <li>
-        Zipcode
+        Define Proxy restrictions
       </li>
       <li>
-        Designated market area (DMA)
+        Define IP restrictions for each video
+      </li>
+      <li>
+        Define domain restrictions
+      </li>
+      <li>
+        Set recurring schedules
+      </li>
+      <li>
+        Limit viewing by device
+      </li>
+      <li>
+        Limit the number of videos a viewer can watch at one time
       </li>
     </ul>
-  </li>
-  <li>
-    Define Proxy restrictions
-  </li>
-  <li>
-    Define IP restrictions for each video
-  </li>
-  <li>
-    Define domain restrictions
-  </li>
-  <li>
-    Set recurring schedules
-  </li>
-  <li>
-    Limit viewing by device
-  </li>
-  <li>
-    Limit the number of videos a viewer can watch at one time
-  </li>
-</ul>
-<p>
-  This diagram shows the flow from the user's video and license request to playback.
-</p>
-<figure class="bcls-figure">
-  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/node/18953-playback-rights-overview/pas-diagram.png" alt="Playback Rights Management Service">
-  <figcaption class="bcls-caption--image">Playback Rights Management Service</figcaption>
-</figure>
-</section>
+    <p>
+      This diagram shows the flow from the user's video and license request to playback.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/node/18953-playback-rights-overview/pas-diagram.png" alt="Playback Rights Management Service">
+      <figcaption class="bcls-caption--image">Playback Rights Management Service</figcaption>
+    </figure>
+  </section>
 
-<!-- <section class="bcls-section">
+  <!-- <section class="bcls-section">
 <h2 id="Account_setup">Account setup</h2>
 
 <p>Make sure your account is set up for Dynamic Delivery. Then, contact your account manager to enable your account for Brightcove's Playback Authorization Service (PAS). This enforces that you send a PAS token on License requests.</p>
 
 </section> -->
 
-<section class="bcls-section">
-<h2 id="Specifications">Specifications</h2>
+  <section class="bcls-section">
+    <h2 id="Specifications">Specifications</h2>
 
-<p>Brightcove's Playback Rights Management Service provides the following functionality:</p>
+    <p>Brightcove's Playback Rights Management Service provides the following functionality:</p>
 
-<h3>Playback Rights</h3>
-<p>
-  Playback Rights allow you to specify restrictions for video playback. These rights will be stored in the <a href="https://docs.brightcove.com/en/staging/epa/playback-rights-api/v1/doc/">Playback Rights API</a> and each set is assigned a unique id (<code>playback_right_id</code>). A set of rights can be associated with zero or more videos.
-</p>
-<p>
-  When a video has a <code>playback_right_id</code>, the restrictions specified in the Playback Rights object are applied to ALL requests for that video.
-</p>
-<p>
-  Playback Rights include the following categories:
-</p>
+    <h3>Playback Rights</h3>
+    <p>
+      Playback Rights allow you to specify restrictions for video playback. These rights will be stored in the <a href="https://docs.brightcove.com/en/staging/epa/playback-rights-api/v1/doc/">Playback Rights API</a> and each set is assigned a unique id (<code>playback_right_id</code>). A set of rights can be associated with zero or more videos.
+    </p>
+    <p>
+      When a video has a <code>playback_right_id</code>, the restrictions specified in the Playback Rights object are applied to ALL requests for that video.
+    </p>
+    <p>
+      Playback Rights include the following categories:
+    </p>
 
-<h4>Geography</h4>
-<p>
-  Geographic restrictions let you control where your content is viewed. You can specify restrictions based on the following:
-</p>
-<ul>
-  <li>
-    Country
-  </li>
-  <li>
-    Zipcode (US only)
-  </li>
-  <li>
-    Designated market area (DMA - a concept developed by Nielson)
-  </li>
-</ul>
-<p>
-  The geography check is run at the start of video playback as well as during playback. If the mid-stream geo check fails, the player will stop video playback.
-</p>
+    <h4>Geography</h4>
+    <p>
+      Geographic restrictions let you control where your content is viewed. You can specify restrictions based on the following:
+    </p>
+    <ul>
+      <li>
+        Country
+      </li>
+      <li>
+        Zipcode (US only)
+      </li>
+      <li>
+        Designated market area (DMA - a concept developed by Nielson)
+      </li>
+    </ul>
+    <p>
+      The geography check is run at the start of video playback as well as during playback. If the mid-stream geo check fails, the player will stop video playback.
+    </p>
 
-<h4>Proxy restrictions</h4>
-<p>
-  Proxy restrictions allow you to block playback to certain types of connections.
-</p>
+    <h4>Proxy restrictions</h4>
+    <p>
+      Proxy restrictions allow you to block playback to certain types of connections.
+    </p>
 
-<h4>IP addresses and domains</h4>
-<p>
-  Domain restrictions allow you to limit where a video can be viewed to specific domains. IP restrictions limit video playback to specific IP addresses (account or video level).
-</p>
+    <h4>IP addresses and domains</h4>
+    <p>
+      Domain restrictions allow you to limit where a video can be viewed to specific domains. IP restrictions limit video playback to specific IP addresses (account or video level).
+    </p>
 
-<h4>Schedules</h4>
-<p>
-  With recurring schedules,  you can restrict video playback for particular timeframes. For example, you can allow your content to be played on weekends only. Another example would be to allow playback between 8:00 am and 8:00 pm on Mondays, Tuesdays, and Fridays.
-</p>
+    <h4>Schedules</h4>
+    <p>
+      With recurring schedules, you can restrict video playback for particular timeframes. For example, you can allow your content to be played on weekends only. Another example would be to allow playback between 8:00 am and 8:00 pm on Mondays, Tuesdays, and Fridays.
+    </p>
 
-</section>
+  </section>
 
-<section class="bcls-section">
-<h2 id="User_level_restrictions">User-level restrictions</h2>
+  <section class="bcls-section">
+    <h2 id="User_level_restrictions">User-level restrictions</h2>
 
-<p>You have the ability to create a unique id, per account, for each viewer. For user-level restrictions, you will need to use a JWT token with each request. With this, you can set the following restrictions:</p>
+    <p>You have the ability to create a unique id, per account, for each viewer. For user-level restrictions, you will need to use a JWT token with each request. With this, you can set the following restrictions:</p>
 
-<h3>Device limits</h3>
-<p>
-  Device registration happens when a DRM license request is made. A unique id is assigned to each device. With each license request, the device limit is checked and enforced. To use this restriction, you need to generate a JWT with the current user id (uid).
-</p>
+    <h3>Device limits</h3>
+    <p>
+      Device registration happens when a DRM license request is made. A unique id is assigned to each device. With each license request, the device limit is checked and enforced. To use this restriction, you need to generate a JWT with the current user id (uid).
+    </p>
 
-<h3>Concurrent stream limits</h3>
-<p>
-  Limiting concurrent streams per user discourages viewers from sharing their credentials with friends who don’t have accounts. With concurrent stream limits, you define the number of video streams that a specific user can watch at any given time.
-</p>
+    <h3>Concurrent stream limits</h3>
+    <p>
+      Limiting concurrent streams per user discourages viewers from sharing their credentials with friends who don’t have accounts. With concurrent stream limits, you define the number of video streams that a specific user can watch at any given time.
+    </p>
 
-<h3>Tags</h3>
-<p>
-  Limit the content viewers can watch based on subscription entitlement. The JWT token that you generate will specify the tags that are allowable for viewing. The Playback Rights Service ensures that the user can only watch videos with the specified tags.
-</p>
-<p>
-  Let's say you have the following subscription levels:
-</p>
-<ul>
-  <li>
-    Silver - watch any video except first-run movies and live streams
-  </li>
-  <li>
-    Gold - watch any video except live streams
-  </li>
-  <li>
-    Platinum - watch any video or live stream
-  </li>
-</ul>
-<p>
-  First, associate tags with your videos to distinguish between standard, first-run and live. Then, specify the applicable tags in the JWT token that you generate for the user.
-</p>
+    <h3>Tags</h3>
+    <p>
+      Limit the content viewers can watch based on subscription entitlement. The JWT token that you generate will specify the tags that are allowable for viewing. The Playback Rights Service ensures that the user can only watch videos with the specified tags.
+    </p>
+    <p>
+      Let's say you have the following subscription levels:
+    </p>
+    <ul>
+      <li>
+        Silver - watch any video except first-run movies and live streams
+      </li>
+      <li>
+        Gold - watch any video except live streams
+      </li>
+      <li>
+        Platinum - watch any video or live stream
+      </li>
+    </ul>
+    <p>
+      First, associate tags with your videos to distinguish between standard, first-run and live. Then, specify the applicable tags in the JWT token that you generate for the user.
+    </p>
 
-</section>
+  </section>
 
-<section class="bcls-section">
-  <h2 id="Video_restrictions_and_playback_rights">Video restrictions and Playback Rights</h2>
-  <p>The following restrictions can be set on videos via the <a href="https://studio.support.brightcove.com/media/editing-video-properties-using-media-module.html#availability">Media Module</a> or the <a href="https://apis.support.brightcove.com/cms/managing-videos/">CMS API</a>:</p>
-  <ul>
-    <li>Geo-filtering (allow/disallow viewing in certain countries)</li>
-    <li>Scheduling (setting the start and/or end date-time for video availability)</li>
-  </ul>
-  <p>These settings are separate from the Playback Rights Management system, but a video must pass video-level restrictions before Playback Rights Management rules are applied.</p>
-</section>
+  <section class="bcls-section">
+    <h2 id="Video_restrictions_and_playback_rights">Video restrictions and Playback Rights</h2>
+    <p>The following restrictions can be set on videos via the <a href="https://studio.support.brightcove.com/media/editing-video-properties-using-media-module.html#availability">Media Module</a> or the <a href="https://apis.support.brightcove.com/cms/managing-videos/">CMS API</a>:</p>
+    <ul>
+      <li>Geo-filtering (allow/disallow viewing in certain countries)</li>
+      <li>Scheduling (setting the start and/or end date-time for video availability)</li>
+    </ul>
+    <p>These settings are separate from the Playback Rights Management system, but a video must pass video-level restrictions before Playback Rights Management rules are applied.</p>
+  </section>
 
-<section class="bcls-section">
-<h2 id="Related_topics">Related topics</h2>
+  <section class="bcls-section">
+    <h2 id="Related_topics">Related topics</h2>
 
-<ul>
-  <li>
-    <a href="https://docs.brightcove.com/en/staging/epa/implementing-epa.html">Implementing Playback Rights Management Service</a>
-  </li>
-  <li>
-    <a href="https://docs.brightcove.com/en/staging/epa/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
-  </li>
-  <li>
-    <a href="https://docs.brightcove.com/en/staging/epa/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
-  </li>
-  <li>
-    <a href="https://docs.brightcove.com/en/staging/pas/stream-concurrency.html">Implementing Stream Concurrency</a>
-  </li>
-</ul>
+    <ul>
+      <li>
+        <a href="https://docs.brightcove.com/en/staging/epa/implementing-epa.html">Implementing Playback Rights Management Service</a>
+      </li>
+      <li>
+        <a href="/playback-rights/guides/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
+      </li>
+      <li>
+        <a href="/playback-rights/guides/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
+      </li>
+      <li>
+        <a href="/playback-authorization/guides/stream-concurrency.html">Implementing Stream Concurrency</a>
+      </li>
+    </ul>
 
-</section>
+  </section>
 </article>
 
-
 <!-- END DRUPAL CONTENT -->
-
 
 </div>
 </div>
@@ -234,11 +328,179 @@
 <script src="//learning-services-media.brightcove.com/doc-assets/js/bcls-utils.js"></script>
 <script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script>
 <script>
-$(document).foundation();
+  $(document).foundation();
 </script>
 <!-- Any scripts specific to page samples should go here -->
 <script src="https://learning-services-media.brightcove.com/doc-assets/js/https-fix.js"></script>
-<script src="https://learning-services-media.brightcove.com/doc-assets/js/support-feedback.js"></script><script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/feedback-docs.js"></script>
+<script src="https://learning-services-media.brightcove.com/doc-assets/js/support-feedback.js"></script>
+<script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/feedback-docs.js"></script>
+</body>
+
+</html>
+<!-- complete bootstrap layout -->
+    </div>
+    <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
+      
+    </div>
+  </div>
+</div>
+
+<hr>
+<div class="last-updated">
+  Page last updated on 23 May 2020
+</div>
+
+<footer class="bcls-footer" role="contentinfo">
+  <div class="row">
+    <div class="region region-footer-top-center col-md-12">
+      <nav role="navigation" aria-labelledby="block-brightcovesupport-menu" id="block-brightcovesupport" class="footer-menu">
+
+        <h2>Brightcove Support</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://status.brightcove.com">System Status</a>
+          </li>
+          <li>
+            <a href="https://supportportal.brightcove.com/s/login/?language=en_US">Contact Support</a>
+          </li>
+          <li>
+            <a href="https://support.brightcove.com/">Documentation</a>
+          </li>
+        </ul>
+
+      </nav>
+      <nav role="navigation" aria-labelledby="block-training-menu" id="block-training" class="footer-menu">
+
+        <h2>Training</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://studio.support.brightcove.com/training/online-training-courses.html">Online Courses</a>
+          </li>
+          <li>
+            <a href="https://studio.support.brightcove.com/training/register-training.html">Register for a course</a>
+          </li>
+          <li>
+            <a href="https://university.brightcove.com/">Brightcove University</a>
+          </li>
+        </ul>
+
+      </nav>
+      <nav role="navigation" aria-labelledby="block-brightcove-menu" class="footer-menu">
+
+        <h2>Brightcove</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://www.brightcove.com">Brightcove.com</a>
+          </li>
+          <li>
+            <a href="https://supportportal.brightcove.com/s/login/?language=en_US" data-drupal-link-system-path="https://supportportal.brightcove.com/s/login/?language=en_US">Contact Us</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="row">
+    <div class="region region-footer-bottom-center col-md-12">
+      <div class="bcls-copyright footer-menu">
+        <table>
+          <tr>
+            <td>
+              <div id="bc_copyright" class="field field--name-field-copyright-year field--type-string field--label-hidden field--item" style="float: left;"> Brightcove Inc. All rights reserved.</div>
+            </td>
+            <td><a href="https://www.brightcove.com/en/legal/privacy">Privacy</a> | <a href="https://www.brightcove.com/en/terms-and-conditions">Terms &amp; Conditions</a></td>
+            <td>
+              <div class="gf-links-cols footer-menu">
+                <div class="gf-social"><a href="https://www.linkedin.com/company/16439" title="LinkedIn" newtab="newtab" class="gf-social-linkedin"><i class="fab fa-linkedin-in" style="font-size: 1.5rem;"></i></a><a href="https://twitter.com/brightcove" title="Twitter" newtab="newtab" class="gf-social-twitter"><i class="fab fa-twitter" style="font-size: 1.5rem;"></i></a><a href="https://www.facebook.com/Brightcove" title="Facebook" newtab="newtab" class="gf-social-facebook"><i class="fab fa-facebook-f" style="font-size: 1.5rem;"></i></a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</footer>
+<div id="talla_wrapper">
+  <p style="text-align: right;position: relative;"><button style="background:rgb(239, 108, 42);color:Snow;padding:.3rem;position:fixed;right:0;bottom:1em;z-index:9999999" onclick="javascript:displayChat()">Have a question? </button> </p>
+  <div id="talla_chat">
+</div>
+</div>
+<script>
+      
+  var searchBox = sajari.init({
+    mode: "search-box",
+    project: "1588255093746585379", // Set this to your project.
+    collection: "brightcove-documenation", // Set this to your collection.
+    instantPipeline: "autocomplete", // Pipeline used as you type
+    inputPlaceholder: "Search", // Input element placeholder
+    maxSuggestions: 5, // Maximum number of suggestions to show
+    attachSearchBox: document.getElementById("nav-search-box") // DOM element to attach to
+  });
+  
+    searchBox("sub", "pipeline.search-sent", function (_, query) {
+      window.location = "/search.html?q=" + encodeURIComponent(query.q);
+    });
+  
+
+</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/https-fix.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/setDate.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/prism.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
+  
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
+  
+  <script src="/assets/js/sites_nav.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/bcls-utils.js"></script>
+  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/local-link-fix.js"></script>
+  <script src="/assets/js/feedback.js"></script>
+  
+  <script src="/assets/js/sajari-search-foot.js"></script>
+  
+  <!-- <script src="/assets/js/sajari-index.js"></script> -->
+  <script src="https://assets.talla.com/latest/embeddedjs/talla.js"></script>
+  <script src="/assets/js/talla-init.js"></script>
+  <style>
+    a.sj-paginator__page-number.sj-paginator__page-number--current.css-so0ov7 {
+      background-color: lightblue;
+    }
+    div.sj-tabs__tab {
+      margin-top: 3rem;
+      margin-left: .3rem;
+      border-top-left-radius: .4rem;
+      border-top-right-radius: .4rem;
+      background-color:#e8e8e8;
+    }
+
+    div.sj-tabs__tab.sj-tabs__tab--selected {
+      border-bottom-color: crimson;
+      background-color: #f8f8f8;
+    }
+
+    p.sj-results__result__description.css-p9jvyt {
+      font-size: 1rem;
+    }
+
+    .sj-result__text.css-31l7gp h3 {
+      color: navy;
+      font-size: 1.4rem;
+    }
+    </style>
+
 </body>
 
 </html>
