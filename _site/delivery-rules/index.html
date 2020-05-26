@@ -3,11 +3,10 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="This topic provides an error reference for the Brightcove Playback Rights Management Service.">
+  <meta name="description" content="This section provides information on using the Delivery Rules API to fetch Delivery Rules and manage Conditions and Actions.">
   
-  <title>Playback Rights Error Reference</title>
+  <title>Delivery Rules API</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -120,9 +119,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/playback-rights/references/">References</a></li>
-      
-      <li class="breadcrumb-item active" aria-current="page">Playback Rights Error Reference</li>
+      <li class="breadcrumb-item active" aria-current="page">Delivery Rules API</li>
     </ol>
   </nav>
 </header>
@@ -1226,216 +1223,75 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
+<style>
+  h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
+    font-size: 3rem;
+    color:rgb(239, 108, 42);
+    margin-right: .5rem;
+  }
+  .card-icon i {
+    color: rgb(239, 108, 42);
+  }
+  .card-wrapper {
+  justify-content: start;
+  }
+  .bcls-card ul li {
+    font-size: small;
+  }
+</style>
+
 <article class="bcls-article">
-  <h1>Playback Rights Error Reference</h1>
-  <summary>This topic provides an error reference for the Brightcove Playback Rights Management Service.</summary>
-  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
-
-<section class="bcls-section">
-<h2 id="Error_Reference">Error Reference</h2>
-<p>
-  The following status list and error codes will help you debug issues when working with Brightcove's Playback Rights Management Service:
-</p>
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Status</th>
-			<th>Error Code</th>
-			<th>Error Subcode</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>400</td>
-			<td><code>BAD_REQUEST</code></td>
-			<td><code>DUPLICATE_PARAMETERS</code></td>
-			<td>The same parameter name was provided more than once in the request.</td>
-		</tr>
-		<tr>
-			<td>401</td>
-			<td><code>ACCESS_DENIED</code></td>
-			<td><code>TOKEN_REQUIRED</code></td>
-			<td>A JSON Web Token (JWT) is required by Playback Rights but was not provided.</td>
-		</tr>
-    <tr>
-			<td>401</td>
-			<td><code>ACCESS_DENIED</code></td>
-			<td><code>TOKEN_VALIDATION</code></td>
-			<td>The JSON Web Token (JWT) provided did not pass validation.</td>
-		</tr>
-    <tr>
-			<td>403</td>
-			<td><code>FORBIDDEN</code></td>
-			<td><code>ACCOUNT_ID</code></td>
-			<td>The account id in the policy key does not match the account in the API request.</td>
-		</tr>
-    <tr>
-			<td>403</td>
-			<td><code>FORBIDDEN</code></td>
-			<td><code>CLIENT_GEO</code></td>
-			<td>The video is restricted from playing in the current geographic region. The message will contain additional information about the specific issue.</td>
-		</tr>
-    <tr>
-			<td>403</td>
-			<td><code>FORBIDDEN</code></td>
-			<td><code>CLIENT_IP</code></td>
-			<td>The video is restricted at the current IP address.</td>
-		</tr>
-    <tr>
-			<td>403</td>
-			<td><code>FORBIDDEN</code></td>
-			<td><code>DOMAIN</code></td>
-			<td>The video is restricted from playing on the current domain.</td>
-		</tr>
-    <tr>
-			<td>403</td>
-			<td><code>FORBIDDEN</code></td>
-			<td><code>OFFERS</code></td>
-			<td>The JSON Web Token (JWT) does not allow for playback based on offers available in the video.</td>
-		</tr>
-    <tr>
-			<td>403</td>
-			<td><code>FORBIDDEN</code></td>
-			<td><code>TAGS</code></td>
-			<td>The JSON Web Token (JWT) does not allow for playback based on tags available in the video.</td>
-		</tr>
-    <tr>
-			<td>403</td>
-			<td><code>FORBIDDEN</code></td>
-			<td><code>VIDEO_NOT_PLAYABLE</code></td>
-			<td>For a single video request, the video exists, but it is not allowed to be played now.</td>
-		</tr>
-    <tr>
-			<td>404</td>
-			<td><code>NOT_FOUND</code></td>
-			<td><code>VIDEO_NOT_FOUND</code></td>
-			<td>The requested video is not available.</td>
-		</tr>
-    <tr>
-			<td>404</td>
-			<td><code>NOT_FOUND</code></td>
-			<td><code>PLAYLIST_NOT_FOUND</code></td>
-			<td>The requested playlist is not available.</td>
-		</tr>
-    <tr>
-			<td>405</td>
-			<td><code>METHOD_NOT_ALLOWED</code></td>
-			<td><code></code></td>
-			<td>Only GET, HEAD and OPTIONS are allowed for this API.</td>
-		</tr>
-    <tr>
-			<td>500</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code></code></td>
-			<td>Internal server error.</td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>ACCOUNT_RETRIEVE_FAILURE</code></td>
-			<td>Received a bad response from a backend server.</td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>VIDEO_RETRIEVE_FAILURE</code></td>
-			<td></td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>VIDEO_URLS_RETRIEVE_FAILURE</code></td>
-			<td></td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>PLAYLIST_RETRIEVE_FAILURE</code></td>
-			<td></td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>PLAYBACK_RIGHT_RETRIEVE_FAILURE</code></td>
-			<td>Cannot retrieve playback right from CDN.</td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>PLAYLIST_VIDEOS_RETRIEVE_FAILURE</code></td>
-			<td></td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>LICENSE_RETRIEVE_FAILURE</code></td>
-			<td>Failed to get license from License Server for this video.</td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>OFFERS_RETRIEVE_FAILURE</code></td>
-			<td>Failed to get offers from API for this video.</td>
-		</tr>
-    <tr>
-			<td>502</td>
-			<td><code>SERVER_ERROR</code></td>
-			<td><code>RIGHTS_RETRIEVE_FAILURE</code></td>
-			<td>Failed to retrieve Playback Rights for this video.</td>
-		</tr>
-    <tr>
-			<td>503</td>
-			<td><code>SERVICE_UNAVAILABLE</code></td>
-			<td><code></code></td>
-			<td>Returned this response from a backend server.</td>
-		</tr>
-    <tr>
-			<td>504</td>
-			<td><code>SERVER_TIMEOUT</code></td>
-			<td><code></code></td>
-			<td>Either a backend server or one of the servers they rely on timed out.</td>
-		</tr>
-
-	</tbody>
-</table>
-
-
-</section>
-
-<section class="bcls-section">
-<h2 id="Related_topics">Related topics</h2>
-
-<ul>
-  <li>
-    <a href="/playback-rights/getting-started/overview-epa.html">Overview: Playback Rights Management Service</a>
-  </li>
-  <li>
-    <a href="/playback-rights/getting-started/implementing-epa.html">Implementing Playback Rights Management Service</a>
-  </li>
-  <li>
-    <a href="/playback-rights/guides/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
-  </li>
-  <li>
-    <a href="/playback-rights/guides/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
-  </li>
-  <li>
-    <a href="/playback-authorization/guides/stream-concurrency.html">Implementing Stream Concurrency</a>
-  </li>
-</ul>
-
-</section>
-
+  <h1><i class="fal fa-filter"></i> Delivery Rules API</h1>
+  <summary>This section provides information on using the Delivery Rules API to fetch Delivery Rules and manage Conditions and Actions.</summary>
+  <section class="card-wrapper">
+    <section class="bcls-card">
+      <div class="card-content">
+        <h2 id="Topics_in_this_section">Topics in this section</h2>
+        <ul>
+        
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+  
+      </div>
+    </section>
+  </section>
 </article>
 
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
-      
-      <nav class="right-side-nav">
-        <h6 class="toc">Page Contents</h6>
-        <ul id="in_page_nav" class="list-none"></ul>
-      </nav>
       
     </div>
   </div>
@@ -1552,8 +1408,6 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/site.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/tabs.js"></script>
-  
-  <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/toc.js"></script>
   
   <script src="/assets/js/sites_nav.js"></script>
   <script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/bcls-utils.js"></script>
