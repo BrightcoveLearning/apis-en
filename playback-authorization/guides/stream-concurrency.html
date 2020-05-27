@@ -1,92 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
-    <meta name="robots" content="noindex">
-  	<!-- change title to match the h1 heading -->
-  	<title>Limiting Concurrent Streams per Viewer</title>
-
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700" rel="stylesheet" type="text/css">
-    <script src="//use.edgefonts.net/source-code-pro.js"></script>
-    <link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
-    <link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
-    <link rel="stylesheet" href="/en/styles/foundation-fixes.css">
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
-
-</head>
-
-<body>
-	<!-- header navbar -->
-	<div id="navWrapper" class="fixed"></div>
-	<!-- breadcrumbs -->
-	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
-	<!-- search -->
-	<div id="searchModal" class="reveal-modal" data-reveal></div>
-	<!-- content -->
-	<div class="row">
-		<div class="sidebar large-2 columns show-for-large-up">
-			<div id="sidenav" class="side-nav"></div>
-		</div>
-		<div id="main" class="large-10 small-12 columns">
-			<h1>Limiting Concurrent Streams per Viewer</h1>
-      <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
-      <p>In this topic, you will learn how to limit concurrent streams when using Brightcove's Playback Rights Management Service.</p>
-
-
-	    <!-- BEGIN DRUPAL CONTENT -->
+---
+title: "Limiting Concurrent Streams per Viewer"
+description: "In this topic, you will learn how to limit concurrent streams when using Brightcove's Playback Rights Management Service."
+parent: Guides
+grandparent: Playback Authorization
+layout: api-staging
+---
 
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
 
-<p>With concurrent stream limits, you define the number of video streams that a specific user can watch at any given time. Limiting concurrent streams per user discourages viewers from sharing their credentials with friends who don’t have accounts.</p>
-<p>
-  When the maximum number of concurrent streams is reached, and the viewer, or someone with their account credentials, tries to open an additional stream, either the oldest session is stopped or the newest request is blocked. You control this behavior.
-</p>
-<p>
-  This feature hooks into the DRM workflow so it is secure and can be used with minimal integration.
-</p>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
 
-<p>If you are new to this feature, see the <a href="/playback-rights/getting-started/overview-epa.html">Overview: Playback Rights Management Service</a> document.</p>
+    <p>With concurrent stream limits, you define the number of video streams that a specific user can watch at any given time. Limiting concurrent streams per user discourages viewers from sharing their credentials with friends who don’t have accounts.</p>
+    <p>
+      When the maximum number of concurrent streams is reached, and the viewer, or someone with their account credentials, tries to open an additional stream, either the oldest session is stopped or the newest request is blocked. You control this behavior.
+    </p>
+    <p>
+      This feature hooks into the DRM workflow so it is secure and can be used with minimal integration.
+    </p>
 
-</section>
+    <p>If you are new to this feature, see the <a href="/playback-rights/getting-started/overview-epa.html">Overview: Playback Rights Management Service</a> document.</p>
 
-<section class="bcls-section">
-<h2 id="Account_setup">Account setup</h2>
+  </section>
 
-<p>Contact your account manager to have your account enabled for stream concurrency.</p>
-</section>
+  <section class="bcls-section">
+    <h2 id="Account_setup">Account setup</h2>
 
-<section class="bcls-section">
-<h2 id="Implementation">Implementation</h2>
-<p>
-  To implement concurrent stream limits, do the following:
-</p>
-<ol class="bcls-tasklist">
-	<li>Create a JSON Web Tokent (JWT) with claims associated with concurrent stream limits. For details see the <a href="/playback-authorization/guides/create-jwt.html">Creating a JSON Web Token (JWT)</a> document.</li>
-  <li>
-    Configure your player to use playback restrictions and pass the JSON Web Token (JWT) when retrieving your video content. For details, see the <a href="/playback-rights/getting-started/implementing-epa.html#Configure_your_player">Configure your player</a> section of the Implementing Playback Rights Management Service document.
-  </li>
-</ol>
+    <p>Contact your account manager to have your account enabled for stream concurrency.</p>
+  </section>
 
-</section>
+  <section class="bcls-section">
+    <h2 id="Implementation">Implementation</h2>
+    <p>
+      To implement concurrent stream limits, do the following:
+    </p>
+    <ol class="bcls-tasklist">
+      <li>Create a JSON Web Tokent (JWT) with claims associated with concurrent stream limits. For details see the <a href="https://general.support.brightcove.com/developer/create-jwt.html">Creating a JSON Web Token (JWT)</a> document.</li>
+      <li>
+        Configure your player to use playback restrictions and pass the JSON Web Token (JWT) when retrieving your video content. For details, see the <a href="/playback-rights/getting-started/implementing-epa.html#Configure_your_player">Configure your player</a> section of the Implementing Playback Rights Management Service document.
+      </li>
+    </ol>
 
-<section class="bcls-section">
-<h2 id="Renewal_interval">Renewal interval</h2>
-<p>
-  To ensure that concurrent stream limit is enforced, a DRM license renewal request is sent during playback based on a defined renewal interval. At setup time, you are required to define this renewal interval.
-</p>
-<p>
-  Mid-stream playback authorization requests need to specify a concurrency limit in the JWT token along with a public key id.
-</p>
+  </section>
 
-<p>Today each renewal request counts as an additional license that would go towards the number of your purchased licenses. This should be taken into account when you are deciding on an interval.</p>
-<table class="bcls-table">
+  <section class="bcls-section">
+    <h2 id="Renewal_interval">Renewal interval</h2>
+    <p>
+      To ensure that concurrent stream limit is enforced, a DRM license renewal request is sent during playback based on a defined renewal interval. At setup time, you are required to define this renewal interval.
+    </p>
+    <p>
+      Mid-stream playback authorization requests need to specify a concurrency limit in the JWT token along with a public key id.
+    </p>
+
+    <p>Today each renewal request counts as an additional license that would go towards the number of your purchased licenses. This should be taken into account when you are deciding on an interval.</p>
+    <table class="bcls-table">
       <thead class="bcls-table__head">
         <tr>
           <th>Renewal interval</th>
@@ -112,115 +82,115 @@
         </tr>
       </tbody>
     </table>
-</section>
+  </section>
 
-<section class="bcls-section">
-<h2 id="Understanding_behavior">Understanding behavior</h2>
-<p>
-  With this feature, you can choose the behavior for blocking streams.
-</p>
-<h3>Block oldest stream</h3>
-<p>
-  Brightcove supports limiting playback streams for DRM-protected content. When a new renewal request is processed, the oldest session is stopped. This allows new user requests to be given access, while blocking the oldest requests which may no longer be valid, displaying a message about network or device failure.
-</p>
-<p>
-  This is the default behavior.
-</p>
-<figure class="bcls-figure">
-  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/pas/concurrency-general.png" alt="Block oldest stream">
-  <figcaption class="bcls-caption--image">Block oldest stream</figcaption>
-</figure>
+  <section class="bcls-section">
+    <h2 id="Understanding_behavior">Understanding behavior</h2>
+    <p>
+      With this feature, you can choose the behavior for blocking streams.
+    </p>
+    <h3>Block oldest stream</h3>
+    <p>
+      Brightcove supports limiting playback streams for DRM-protected content. When a new renewal request is processed, the oldest session is stopped. This allows new user requests to be given access, while blocking the oldest requests which may no longer be valid, displaying a message about network or device failure.
+    </p>
+    <p>
+      This is the default behavior.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/pas/concurrency-general.png" alt="Block oldest stream">
+      <figcaption class="bcls-caption--image">Block oldest stream</figcaption>
+    </figure>
 
-<p>
-  <strong>User activity:</strong>
-</p>
-<ol>
-  <li>
-    Ben, Jason and Sarah begin watching a movie.
-  </li>
-  <li>
-    Jamie decides to also start watching, causing Ben's upcoming renewal request to be denied.
-  </li>
-  <li>
-    Ben restarts the movie, now causing Jason's renewal request to fail.
-  </li>
-  <li>
-    Jason starts watching another movie some time later, causing Sarah's movie to stop.
-  </li>
-</ol>
+    <p>
+      <strong>User activity:</strong>
+    </p>
+    <ol>
+      <li>
+        Ben, Jason and Sarah begin watching a movie.
+      </li>
+      <li>
+        Jamie decides to also start watching, causing Ben's upcoming renewal request to be denied.
+      </li>
+      <li>
+        Ben restarts the movie, now causing Jason's renewal request to fail.
+      </li>
+      <li>
+        Jason starts watching another movie some time later, causing Sarah's movie to stop.
+      </li>
+    </ol>
 
-<h3>Block new request</h3>
-<p>
-  Alternatively, you can block any new license request when the maximum number of concurrent streams is reached. This allows all of the current users to keep watching, while displaying a message to any new user requests.
-</p>
-<p>
-  To enable this behavior, you need to set the <code>cbeh</code> claim in your <a href="/playback-authorization/guides/create-jwt.html">JSON Web Token (JWT)</a> as follows:
-</p>
-<pre><code class="language-json">&quot;cbeh&quot;: &quot;BLOCK_NEW&quot;</code></pre>
-<br/>
-<p>
-  Here is an example:
-</p>
-<figure class="bcls-figure">
-  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/pas/block-new-request.png" alt="Block new request">
-  <figcaption class="bcls-caption--image">Block new request</figcaption>
-</figure>
+    <h3>Block new request</h3>
+    <p>
+      Alternatively, you can block any new license request when the maximum number of concurrent streams is reached. This allows all of the current users to keep watching, while displaying a message to any new user requests.
+    </p>
+    <p>
+      To enable this behavior, you need to set the <code>cbeh</code> claim in your <a href="https://general.support.brightcove.com/developer/create-jwt.html">JSON Web Token (JWT)</a> as follows:
+    </p>
+    <pre><code class="language-json">&quot;cbeh&quot;: &quot;BLOCK_NEW&quot;</code></pre>
+    <br />
+    <p>
+      Here is an example:
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/pas/block-new-request.png" alt="Block new request">
+      <figcaption class="bcls-caption--image">Block new request</figcaption>
+    </figure>
 
-<p>
-  <strong>User activity:</strong>
-</p>
-<ol>
-  <li>
-    Ben, Jason and Sarah begin watching a movie.
-  </li>
-  <li>
-    Jamie tries to start watching, but her request is blocked because of the maximum limit.
-  </li>
-  <li>
-    Jason stops watching, allowing another viewer to start watching. Jamie starts watching a movie.
-  </li>
-</ol>
-</section>
+    <p>
+      <strong>User activity:</strong>
+    </p>
+    <ol>
+      <li>
+        Ben, Jason and Sarah begin watching a movie.
+      </li>
+      <li>
+        Jamie tries to start watching, but her request is blocked because of the maximum limit.
+      </li>
+      <li>
+        Jason stops watching, allowing another viewer to start watching. Jamie starts watching a movie.
+      </li>
+    </ol>
+  </section>
 
-<section class="bcls-section">
-<h2 id="PlayReady">PlayReady</h2>
-<p>
-  When using PlayReady, you should expect the same general behavior as defined in the previous section. However, you need to implement a manual license renewal in your players as described in <a href="https://docs.microsoft.com/en-us/playready/features/concurrency-limiting">Microsoft's Concurrency Limiting</a> document.
-</p>
-</section>
+  <section class="bcls-section">
+    <h2 id="PlayReady">PlayReady</h2>
+    <p>
+      When using PlayReady, you should expect the same general behavior as defined in the previous section. However, you need to implement a manual license renewal in your players as described in <a href="https://docs.microsoft.com/en-us/playready/features/concurrency-limiting">Microsoft's Concurrency Limiting</a> document.
+    </p>
+  </section>
 
-<section class="bcls-section">
-<h2 id="Safari">Safari</h2>
-<p>
-  Concurrency limit is supported in the Safari browser, but renewal requests will not be sent. This means that new sessions/streams will be blocked for longer time periods than with other browsers.
-</p>
-</section>
+  <section class="bcls-section">
+    <h2 id="Safari">Safari</h2>
+    <p>
+      Concurrency limit is supported in the Safari browser, but renewal requests will not be sent. This means that new sessions/streams will be blocked for longer time periods than with other browsers.
+    </p>
+  </section>
 
-<section class="bcls-section">
-<h2 id="Notes">Notes</h2>
-<p>
-  The following notes apply to this feature:
-</p>
-<ul>
-  <li>
-    Manual license renewal request should be implemented in the following cases:
+  <section class="bcls-section">
+    <h2 id="Notes">Notes</h2>
+    <p>
+      The following notes apply to this feature:
+    </p>
     <ul>
       <li>
-        Concurrency limit in non-Brightcove players, except when protected by Widevine
+        Manual license renewal request should be implemented in the following cases:
+        <ul>
+          <li>
+            Concurrency limit in non-Brightcove players, except when protected by Widevine
+          </li>
+          <li>
+            Concurrency limit for PlayReady in all devices
+          </li>
+        </ul>
       </li>
       <li>
-        Concurrency limit for PlayReady in all devices
+        Manual license renewal should be requested at a shorter period than the defined renewal interval.
       </li>
     </ul>
-  </li>
-  <li>
-    Manual license renewal should be requested at a shorter period than the defined renewal interval.
-  </li>
-</ul>
 
-</section>
+  </section>
 
-<!-- <section class="bcls-section">
+  <!-- <section class="bcls-section">
 <h2 id="Limitations">Limitations</h2>
 <p>
   The following limitations apply to this feature:
@@ -233,47 +203,23 @@
 </ul>
 </section> -->
 
-<section class="bcls-section">
-<h2 id="Related_topics">Related topics</h2>
+  <section class="bcls-section">
+    <h2 id="Related_topics">Related topics</h2>
 
-<ul>
-  <li>
-    <a href="/playback-rights/getting-started/overview-epa.html">Overview: Managing Playback Rights</a>
-  </li>
-  <li>
-    <a href="/playback-rights/getting-started/implementing-epa.html">Implementing Playback Rights</a>
-  </li>
-  <li>
-    <a href="/playback-rights/guides/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
-  </li>
-  <li>
-    <a href="/playback-rights/guides/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
-  </li>
-</ul>
-</section>
+    <ul>
+      <li>
+        <a href="/playback-rights/getting-started/overview-epa.html">Overview: Managing Playback Rights</a>
+      </li>
+      <li>
+        <a href="/playback-rights/getting-started/implementing-epa.html">Implementing Playback Rights</a>
+      </li>
+      <li>
+        <a href="/playback-rights/guides/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
+      </li>
+      <li>
+        <a href="/playback-rights/guides/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
+      </li>
+    </ul>
+  </section>
 
 </article>
-
-
-<!-- END DRUPAL CONTENT -->
-</div>
-</div>
-<!-- bcl scripts -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-<script src="/en/scripts/docs-nav-data.min.js"></script>
-<script src="/en/scripts/bcls-doc-site-v3.js"></script>
-<script src="//learning-services-media.brightcove.com/doc-assets/js/bcls-utils.js"></script>
-<script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script>
-<script>
-$(document).foundation();
-</script>
-<!-- Any scripts specific to page samples should go here -->
-<script src="https://learning-services-media.brightcove.com/doc-assets/js/https-fix.js"></script>
-<script src="https://learning-services-media.brightcove.com/doc-assets/js/support-feedback.js"></script><script src="https://learning-services-media.brightcove.com/doc-assets/site-assets/js/site/feedback-docs.js"></script>
-</body>
-
-</html>
