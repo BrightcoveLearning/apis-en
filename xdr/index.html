@@ -1,0 +1,75 @@
+---
+title: Policy API
+parent: Home
+icon: '<i class="fal fa-phone-laptop"></i>'
+description: "Brightcove's cross-device resume (XDR) feature lets you start watching video on one device, like mobile, and switch to another device, like your home TV. When you switch, you'll continue watching where you left off. This provides a seamless viewing experience for a piece of content."
+---
+
+<style>
+  h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
+    font-size: 3rem;
+    color:{{site.product_color}};
+    margin-right: .5rem;
+  }
+  .card-icon i {
+    color: {{site.product_color}};
+  }
+  .card-wrapper {
+  justify-content: start;
+  }
+  .bcls-card ul li {
+    font-size: small;
+  }
+</style>
+
+<article class="bcls-article">
+  <h1>{{ page.icon }} {{ page.title }}</h1>
+  <summary style="display: block;">{{ page.description }}</summary>
+  <div style="width: 50%;">
+      <div data-experience="5be4439bb5cd1c00106dc3f5" data-video-ids="5853357211001">&nbsp;</div>
+			<script src="https://players.brightcove.net/20318290001/experience_5be4439bb5cd1c00106dc3f5/live.js"></script>
+  </div>
+    
+  <section class="card-wrapper">
+    {% for item in site.data.navigation %}
+      {% if item.name == page.title %}
+        {% for subsection in item.docs %}
+            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
+              <div class="card-content">
+                <h2>{{ subsection.name }}</h2>
+                <ul>
+                  {% for doc in subsection.docs %}
+                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </section>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+        <!-- remove sections below when this goes live -->
+        <section class="bcls-card-small" onclick="window.location.href='/playback-authorization/getting-started/index.html'">
+          <div class="card-content">
+            <h2>Getting Started</h2>
+            <ul>
+             <li><a href="/playback-authorization/getting-started/overview-playback-authorization-service.html">Overview: DRM with Playback Authorization Service</a></li>
+             <li><a href="/playback-authorization/getting-started/technical-workflow-pas.html">Implementing DRM with Playback Authorization Service</a></li>
+            </ul>
+          </div>
+        </section>
+        <section class="bcls-card-small" onclick="window.location.href='/playback-authorization/guides/index.html'">
+          <div class="card-content">
+            <h2>Guides</h2>
+            <ul>
+             <li><a href="/playback-authorization/guides/additional-apis-for-pas.html">Additional APIs for Playback Authorization Service</a></li>
+             <li><a href="/playback-authorization/guides/stream-concurrency.html">Limiting Concurrent Streams per Viewer</a></li>
+             <li><a href="/playback-authorization/guides/using-pas-with-bcp.html">Using Playback Authorization DRM with the Brightcove Player</a></li>
+             <li><a href="/playback-authorization/guides/using-pas-with-sdks.html">Using Playback Authorization DRM with the Native SDKs</a></li>
+            </ul>
+          </div>
+        </section>
+        <!-- end removal -->
+    
+  </section>
+</article>
