@@ -1,0 +1,80 @@
+---
+title: 'Getting your BC_TOKEN'
+description: 'In this topic, you will learn how to get your BC_TOKEN, which you will need to authenticate the request to create client credentials using the OAuth API.'
+parent: Guides
+grandparent: OAuth API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Overview">Overview</h2>
+    
+    <aside class="bcls-aside bcls-aside--information">NOTE: The preferred method to obtain client credentials is to use <a href="/general/managing-api-authentication-credentials.html">the Studio Admin UI</a>. This document is for those choosing to use the OAuth API instead.</aside>
+    
+    <p>The best, first step to understand the information in this document is to look at the <a href="/oauth/getting-started/overview-oauth-api-v4.html">OAuth Overview</a> if you have not done so yet.</p>
+    
+    <p>Your <code>BC_TOKEN</code> is a unique, anonymous identifier for you as a Brightcove user. Apart from its existence in a backend Brightcove system, it is set as a cookie when you login to Studio so that Studio knows your role and what accounts you have access to. This is all transparent and requires no action on your part.</p>
+
+    <p>The use of the <code>BC_TOKEN</code> for you is in authenticating an OAuth API request to create client credentials.</p>
+    
+    <aside class="bcls-aside bcls-aside--information language-editable">
+      <strong>Notes:</strong>
+      <ul>
+        <li>The <code>BC_TOKEN</code> value has no relation to the API Management tokens you deal with in Studio.</li>
+        <li>If you <a href="/general/managing-api-authentication-credentials.html">use the Studio admin to create client credentials</a>, you do not need to retrieve your <code>BC_TOKEN</code> - Studio will take care of that for you.</li>
+      </ul>
+       </aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="requirements">Requirements</h2>
+    
+    <ul>
+      <li>A valid Brightcove account with Admin permissions required to create client credentials</li>
+    </ul>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="steps">Steps</h2>
+    
+    <h3>Get your <code>BC_TOKEN</code></h3>
+    
+    <p>You will need to login to Studio to get your <code>BC_TOKEN</code>.</p>
+    
+    <ol class="bcls-tasklist">
+      <li>Login to Studio as you normally do.</li>
+      <li>With any page in Studio open, open the developer tools for the browser, go to the Console, and paste in the following code:<textarea class="bcls-code" style="height:13em;">var cookiesArray = document.cookie.split(";"), cookiesObj = {}, i, tmpArray = [];
+        for (i = 0; i &lt; cookiesArray.length; i++) {
+            tmpArray = cookiesArray[i].split("=");
+            if (tmpArray[0].indexOf('BC_TOKEN') &gt; -1) {
+                cookiesObj.BC_TOKEN = tmpArray[1];
+            }
+        }
+        window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</textarea>
+      <p>and press return.</p>
+      </li>
+      <li>You should see a prompt appear that contains your <code>BC_TOKEN</code>:
+      <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-client-credentials-curl/prompt-with-token-safari.png" />
+      <figcaption class="bcls-caption--image">BC_TOKEN</figcaption>
+      </figure>
+      </li>
+      <li>If you have your BC_TOKEN, go on to the <a href="#getClientCredentials">Get client credentials</a> section; if for some reason you did not get your BC_TOKEN using the previous steps, just go to the Console, type <code class="language-javascript">document.cookie</code>, and press return.</li>
+      <li>All cookies for the page will be returned in a semi-colon-separated list. Find the BC_TOKEN cookie in the list, and copy the value:
+      <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN in Chrome Developer Tools" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-client-credentials-curl/get-access-token-console.png" />
+      <figcaption class="bcls-caption--image">BC_TOKEN in Chrome Developer Tools"</figcaption>
+      </figure>
+      </li>
+    </ol>
+
+    <h3>Next steps</h3>
+    <p>See one of the following topics for the steps needed to create client credentials</p>
+    <ul>
+      <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Creating Client Credentials Using cURL</a></li>
+      <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Creating Client Credentials Using Postman</a></li>
+    </ul>
+    
+    </section>
+    </article>
+    
