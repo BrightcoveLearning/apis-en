@@ -150,7 +150,7 @@ paths:
       tags:
       - Repositories
       summary: Create or Update Repository
-      description: This will create a Repositories, if it does not exist. A response of 200 means the repository already existed. A response of 201 means repository was successfully created.
+      description: This will create a Repository, if it does not exist. A response of 200 means the repository already existed. A response of 201 means repository was successfully created.
       operationId: AccountsReposByaccount_idAndrepo_namePut
       security:
         - BC_OAuth2:
@@ -162,7 +162,13 @@ paths:
         - $ref: '#/components/parameters/Authorization'
       responses:
         200:
-          description: '200'
+          description: '200 - (repo already exists)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateRepositoryResponse'
+        201:
+          description: '201 (repo created)'
           content:
             application/json:
               schema:
@@ -300,10 +306,6 @@ components:
           description: URL to use for referencing the file (contrasted to the repo URL)
     CreateRepositoryResponse:
       title: Create Repository Response
-      required:
-      - name
-      - public_url
-      - repo_url
       type: object
       properties:
         name:
