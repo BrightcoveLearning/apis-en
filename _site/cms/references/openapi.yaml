@@ -4,7 +4,7 @@ info:
   description: |-
     'Reference for the Brightcove CMS API, used to access and manage your media library. To test API requests, you can use our [API Testing Tools](/getting-started/concepts-testing-tools-brightcove-apis.html). For permissions needed for OAuth credentials, see [API Operations](/oauth/guides/api-operations-client-credentials-requests.html). For information on authenticating API requests, see the [OAuth Overview](/oauth/getting-started/overview-oauth-api-v4.html).'
 
-    For additional in-depth guides to features of the API, see the **[general documentation](/cms/)**.
+    For additional in-depth guides to features of the API, see the **[general documentation](/cms/index.html)**.
 
     **Base URL**: https://cms.api.brightcove.com/v1
   version: 1.0.0
@@ -17,11 +17,12 @@ tags:
     description: 'Operations for managing videos, video metadata, audio tracks, and more.'
   - name: Media Sharing
     description: >-
-      Operations for setting up sharing relationships and sharing videos between
-      different Video Cloud accounts.
+      Operations for creating and managing hierarchical labels that can be associated with videos.
   - name: Playlists
     description: Operations for managing video playlists.
   - name: Folders
+    description: Operations for managing folders to organize your videos.
+  - name: Labels
     description: Operations for managing folders to organize your videos.
   - name: Notifications
     description: >-
@@ -2509,6 +2510,106 @@ paths:
       security:
         - BC_OAuth2:
             - video-cloud/video/update
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/labels':
+    post:
+      tags:
+        - Labels
+      summary: Create a Label
+      description: 'Create a new label for the account '
+      operationId: CreateLabel
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      requestBody:
+        description: Create a new folder for the account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelPath'
+        required: true
+      responses:
+        '201':
+          description: Label created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: >-
+            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: |-
+            UNKNOWN: Issue in Brightcove system; try again later.
+            TIMEOUT: Server likely too busy; try again later.
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/create
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    get:
+      tags:
+        - Labels
+      summary: Get Labels
+      description: 'Gets list of folders for the account '
+      operationId: GetFolders
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: >-
+            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: |-
+            UNKNOWN: Issue in Brightcove system; try again later.
+            TIMEOUT: Server likely too busy; try again later.
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
       x-operation-settings:
         CollectParameters: false
         AllowDynamicQueryParameters: false
@@ -6247,6 +6348,11 @@ components:
           type: string
       title: Ingest Job Status
       type: object
+    LabelPath:
+      description: 'The full path for a label that can be assigned to videos'
+      title: label
+      type: string
+      example: '/nature/birds/seabirds'
     Link:
       description: 'map of related link properties - can only be added on update, not creation'
       properties:
