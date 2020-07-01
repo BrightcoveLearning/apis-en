@@ -124,7 +124,7 @@ grandparent: Ingest Profiles API
       <dd>
         Options for outputs for each of the codecs specified in video_codecs. The properties of <code>video_codec_options</code> are objects with name of an included codec (currently h264 or hevc). The allowed properties for each of these objects are
         <ul>
-          <li><code>min_renditions required</code></li>
+          <li><code>min_renditions</code> <em>required</em></li>
           <li><code>min_bitrate</code></li>
           <li><code>max_bitrate</code></li>
           <li><code>max_first_rendition_bitrate</code></li>
@@ -132,23 +132,75 @@ grandparent: Ingest Profiles API
           <li><code>max_resolution</code></li>
           <li><code>max_first_rendition_resolution</code></li>
         </ul>
-        <aside class="bcls-aside bcls-aside--information language-editable">Note: these settings are also used at the global level. When you are using settings both at the global and per-codec levels, the values must be compatible. For example, <code>max_renditions</code> set at the global level must be greater than or equal to the sum of <code>min_rendition</code> values set at the per-codec level</aside>
+        <aside class="bcls-aside bcls-aside--information language-editable">Notes: 
+          <ol>
+            <li>These settings are also used at the global level. When you are using settings both at the global and per-codec levels, the values must be compatible. For example, <code>max_renditions</code> set at the global level must be greater than or equal to the sum of <code>min_renditions</code> values set at the per-codec level.</li>
+            <li>Both <code>max_renditions</code> and <code>min_renditions</code> are required in the global settings.</li>
+            <li></li>
+          </ol>
+        </aside>
       </dd>
     </dl>
     <h3>Sample</h3>
-    <p>Below is a sample <code>dynamic_profile_options</code> with mixed renditions:</p>
+    <p>Below is a sample CAE profile with mixed renditions:</p>
 <pre class="line-numbers"><code class="language-json">{
-  "dynamic_profile_options": {
-    "max_renditions": 6,
-    "video_codecs" : ["h264", "hevc"'],
-    "video_codec_options": {
-      "h264": {
-        "min_renditions": 2,
-        "max_resolution": { "width": 1280, "height": 720 }
+  "name": "multi-platform-extended-dynamic-hevc-mixed-codec",
+  "display_name": "Multiplatform Extended HEVC (CAE) mixed-codec",
+  "description": "Deliver high quality content for a wide range content types and screen sizes including mobile, desktop and large screens.",
+  "account_id": 1486906377,
+  "digital_master": {
+    "rendition": "passthrough",
+    "distribute": false
+  },
+  "renditions": [],
+  "packages": [],
+  "dynamic_origin": {
+    "renditions": [
+      "default/audio64",
+      "default/audio128",
+      "default/audio96",
+      "default/audio192"
+    ],
+    "images": [
+      {
+        "label": "thumbnail",
+        "height": 90,
+        "width": 160
       },
-      "hevc": {
-        "min_renditions": 2,
-        "max_resolution": { "width": 1920, "height": 1080 }
+      {
+        "label": "poster",
+        "height": 720,
+        "width": 1280
+      }
+    ],
+    "dynamic_profile_options": {
+      "max_renditions": 6,
+      "min_renditions": 2,
+      "max_bitrate": 12000,
+      "max_first_rendition_bitrate": 1000,
+      "max_first_rendition_resolution": {
+        "width": 1280,
+        "height": 720
+      },
+      "video_codecs": [
+        "h264",
+        "hevc"
+      ],
+      "video_codec_options": {
+        "h264": {
+          "min_renditions": 2,
+          "max_resolution": {
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "hevc": {
+          "min_renditions": 2,
+          "max_resolution": {
+            "width": 1920,
+            "height": 1080
+          }
+        }
       }
     }
   }
@@ -169,7 +221,7 @@ grandparent: Ingest Profiles API
           <li>
             Media UI currently displays all the renditions and does not display the codec info next to each rendition.
           </li>
-          <li>The billing UI in Studio will not show HEVC transcoding usage. However, the backend system is tracking HEVC GB separately and will be sending the invoice as part of the normal process. The billing UI will be updated in a later release.</li>
+          <!-- <li>The billing UI in Studio will not show HEVC transcoding usage. However, the backend system is tracking HEVC GB separately and will be sending the invoice as part of the normal process. The billing UI will be updated in a later release.</li> -->
         </ol>
         </section>
   <section class="bcls-section">
