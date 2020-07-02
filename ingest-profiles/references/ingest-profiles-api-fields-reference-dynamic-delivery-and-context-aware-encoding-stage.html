@@ -268,9 +268,21 @@ grandparent: Ingest Profiles API
           <td>none</td>
         </tr>
         <tr>
-          <td><code>video_codecs</code></td>
+          <td><code>video_codec_options</code></td>
           <td>Array</td>
-          <td>For mixed-codec outputs, an object specifying the options for each codec. Each propery is an object with the name <code>h264</code> or <code>hevc</code>, its properties are the set the constraints for renditions for that codec. </td>
+          <td>
+            For mixed-codec outputs, an object specifying the options for each codec. Each property is an object with the name <code>h264</code> or <code>hevc</code>, its properties are the set the constraints for renditions for that codec. The allowed properties for these objects are:
+            <ul>
+              <li><code>min_renditions</code> required</li>
+              <li><code>min_bitrate</code></li>
+              <li><code>max_bitrate</code></li>
+              <li><code>max_first_rendition_bitrate</code></li>
+              <li><code>min_resolution</code></li>
+              <li><code>max_resolution</code></li>
+              <li><code>max_first_rendition_resolution</code></li>
+            </ul>
+            <aside class="bcls-aside bcls-aside--information language-editable">Note: these settings are also used at the global level. When you are using settings both at the global and per-codec levels, the values must be compatible. For example, max_renditions set at the global level must be greater than or equal to the sum of min_rendition values set at the per-codec level</aside>
+          </td>
           <td><img alt="no" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
           <td><img alt="yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /><sup><strong><a href="#note2-2">[2-2]</a></strong></sup></td>
           <td>none</td>
@@ -389,6 +401,9 @@ grandparent: Ingest Profiles API
         </tr>
       </tbody>
     </table>
+    <h3>Notes</h3>
+    <li id="note2-1"><sup><strong>[2-1]</strong></sup> Required if <code>video_codec_options</code> is present. See <a href="/ingest-profiles/guides/hevc-video.html">HEVC Video</a> for more information.</li>
+    <li id="note2-2"><sup><strong>[2-2]</strong></sup> Required if <code>video_codecs</code> is present. See <a href="/ingest-profiles/guides/hevc-video.html">HEVC Video</a> for more information.</li>
     </section>
     
     <section class="bcls-section">
