@@ -2572,21 +2572,18 @@ paths:
       tags:
         - Labels
       summary: Get Labels
-      description: 'Gets list of folders for the account '
-      operationId: GetFolders
+      description: 'Gets list of labels for the account '
+      operationId: GetLabels
       parameters:
         - $ref: '#/components/parameters/AccountId'
-        - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/Limit'
-        - $ref: '#/components/parameters/Offset'
       responses:
         '200':
           description: '200'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Folder'
+                $ref: '#/components/schemas/LabelsList'
         '401':
           description: >-
             UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
@@ -6348,6 +6345,8 @@ components:
           type: string
       title: Ingest Job Status
       type: object
+    LabelsList:
+      description: A list of labels for the account
     LabelPath:
       description: 'The full path for a label that can be assigned to videos'
       title: label
