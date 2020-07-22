@@ -23,7 +23,7 @@ tags:
   - name: Folders
     description: Operations for managing folders to organize your videos.
   - name: Labels
-    description: Operations for managing folders to organize your videos.
+    description: Operations for managing folders to organize your videos. See [Working with Labels](/cms/managing-videos/working-with-labels.html) for more information.
   - name: Notifications
     description: >-
       Operations for setting up and managing notifications of changes to your video library.
@@ -2527,7 +2527,7 @@ paths:
         - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/Authorization'
       requestBody:
-        description: Create a new folder for the account
+        description: Create a new label for the account
         content:
           application/json:
             schema:
@@ -2539,7 +2539,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Folder'
+                $ref: '#/components/schemas/LabelPath'
         '401':
           description: >-
             UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
@@ -2572,21 +2572,117 @@ paths:
       tags:
         - Labels
       summary: Get Labels
-      description: 'Gets list of folders for the account '
-      operationId: GetFolders
+      description: 'Gets list of labels for the account '
+      operationId: GetLabels
       parameters:
         - $ref: '#/components/parameters/AccountId'
-        - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/Authorization'
-        - $ref: '#/components/parameters/Limit'
-        - $ref: '#/components/parameters/Offset'
       responses:
         '200':
           description: '200'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Folder'
+                $ref: '#/components/schemas/LabelsList'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: >-
+            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: |-
+            UNKNOWN: Issue in Brightcove system; try again later.
+            TIMEOUT: Server likely too busy; try again later.
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/labels/by_path/:label_path':
+    patch:
+      tags:
+        - Labels
+      summary: Update a Label
+      description: 'Update a label for the account '
+      operationId: UpdateLabel
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/label_path'
+      requestBody:
+        description: Update a label for the account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelUpdate'
+        required: true
+      responses:
+        '201':
+          description: Label updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelPath'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: >-
+            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: |-
+            UNKNOWN: Issue in Brightcove system; try again later.
+            TIMEOUT: Server likely too busy; try again later.
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/create
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Labels
+      summary: Delete Label
+      description: 'Delete a label'
+      operationId: deleteLabel
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/label_path'
+      responses:
+        '201':
+          description: '201'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelPath'
         '401':
           description: >-
             UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
@@ -5523,6 +5619,16 @@ components:
       schema:
         type: string
       style: simple
+    label_path:
+      description: >-
+        'The path for a label to update or delete. Note that the operation performed is on the last item in the path, so for example, if you specify the path `/nature/birds/seabirds`, only the `seabirds` label will be updated/deleted, but if you specify the path as `/nature/birds`, `birds` and any sub-labels of `birds` will be updated/deleted.'
+      explode: false
+      in: path
+      name: language
+      required: true
+      schema:
+        type: string
+      style: simple
     Language:
       description: 'The language for the variant in the language-country code format (examples: en-US, es-ES)'
       explode: false
@@ -6348,11 +6454,36 @@ components:
           type: string
       title: Ingest Job Status
       type: object
+    LabelsList:
+      description: A list of labels for the account
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: The Video Cloud account id
+          example: "57838016001"
+        labels:
+          type: array
+          description: Array of labels that exist for the account
+          example: [
+              "/nature/birds",
+              "/nature/birds/shorebirds",
+              "/nature/birds/forentbirds",
+              "/nature/mammals/seamammals"
+            ]
+        version: 
+          type: integer
+          description: An internal version tracker
     LabelPath:
       description: 'The full path for a label that can be assigned to videos'
       title: label
-      type: string
-      example: '/nature/birds/seabirds'
+      type: object
+      properties:
+        path: 
+          type: string
+      example: {
+          "path": "/nature/mammals/seamammals"
+        }
     Link:
       description: 'map of related link properties - can only be added on update, not creation'
       properties:
@@ -6930,6 +7061,13 @@ components:
           type: string
         images:
           $ref: '#/components/schemas/VideoImages'
+        labels:
+          type: array
+          description: |-
+            Array of labels assigned to the video. See [Working with Labels](/cms/managing-videos/working-with-labels.html) for more information.
+          items:
+            type: string
+            description: full hierarchical path for a label.
         link:
           $ref: '#/components/schemas/Link'
         # live:
