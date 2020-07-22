@@ -1330,11 +1330,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <pre><code class="language-http">/v1/accounts/1234567890/labels</code></pre>
     <h4>Sample request body</h4>
 <pre class="line-numbers"><code class="language-json">{
-  "path": "/nature/birds/shore_birds"
+  "path": "/nature/birds/shore_birds/"
 }</code></pre>
     <p>Note that <em>all</em> labels in the path that do not already exist will be created. If you want to add another group of <code>forest_birds</code>, you would send:</p>
 <pre class="line-numbers"><code class="language-json">{
-  "path": "/nature/birds/forest_birds"
+  "path": "/nature/birds/forest_birds/"
 }</code></pre>
     <p>This time, only the <code>forest_birds</code> sub-label, will be created, since <code>nature</code> and <code>birds</code> already exist.</p>
     <p>Similarly, if you want to add a new sub-group <code>sandpipers</code> to <code>shore_birds</code>, you would send:</p>
@@ -1343,7 +1343,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 }</code></pre>
     <h4>Sample response</h4>
 <pre class="line-numbers"><code class="language-json">{
-  "path": "/nature/birds/shore_birds/sandpipers"
+  "path": "/nature/birds/shore_birds/sandpipers/"
 }</code></pre>
         <h3>Getting labels</h3>
     <p>You can get all the labels for an account by sending a <code>GET</code> request:</p>
@@ -1353,10 +1353,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <pre class="line-numbers"><code class="language-json">{
   "account_id": "57838016001",
   "labels": [
-    "/nature/birds",
-    "/nature/birds/shorebirds",
-    "/nature/birds/forestbirds",
-    "/nature/mammals/seamammals"
+    "/nature/birds/",
+    "/nature/birds/shore_birds/",
+    "/nature/birds/forest_birds/",
+    "/nature/mammals/seamammals/"
   ],
   "version": 4
 }</code></pre>
@@ -1369,14 +1369,20 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <pre class="line-numbers"><code class="language-json">{
   "new_label": "coastal_birds"
 }</code></pre>
-    <p>Note that the <code>new_label</code> value will replace the last item in the <code>{path}</code> included in the request. So if instead you wanted to replace <code>/birds</code> with <code>/wildlife/avian</code>, the request and body would look like this:</p>
+    <p>Note that the <code>new_label</code> value will replace the last item in the <code>{path}</code> included in the request. So if instead you wanted to replace <code>/birds</code> with <code>/avian</code>, the request and body would look like this:</p>
     <h5>Endpoint</h5>
     <pre><code class="language-http">/v1/accounts/1234567890/labels/by_path//nature/birds/</code></pre>
     <h5>Request body</h5>
 <pre class="line-numbers"><code class="language-json">{
-  "new_label": "wildlife/avian"
+  "new_label": "avian"
 }</code></pre>
     <p>After this request, the <code>coastal_birds</code> path would become <code>/nature/wildlife/avian/coastal_birds</code>. The path would change for any addition sub-labels in the hierarchy, so <code>/nature/birds/forest_birds</code> would become <code>/nature/wildlife/avian/forest_birds</code></p>
+    <p>The response will include the number of labels that were updated.</p>
+    <h5>Sample response</h5>
+<pre class="line-numbers"><code class="language-json">{
+  "path": "/nature/avian",
+  "labels_updated": "2"
+}</code></pre>
     <h3>Delete a label</h3>
     <p>Deleting a label uses a <code>DELETE</code> request sent to the same endpoint as the update request. Only the path ending with that sub-label (and paths that have additional sub-labels) will be deleted, while higher-level labels are retained.</p>
     <p>For example, say you have these three label paths:</p>
