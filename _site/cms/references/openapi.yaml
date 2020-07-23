@@ -2617,7 +2617,7 @@ paths:
       tags:
         - Labels
       summary: Update a Label
-      description: 'Update a label for the account '
+      description: 'Update a label for the account'
       operationId: UpdateLabel
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -5620,7 +5620,7 @@ components:
         'The path for a label to update or delete. Note that the operation performed is on the last item in the path, so for example, if you specify the path `/nature/birds/seabirds`, only the `seabirds` label will be updated/deleted, but if you specify the path as `/nature/birds`, `birds` and any sub-labels of `birds` will be updated/deleted.'
       explode: false
       in: path
-      name: language
+      name: label_path
       required: true
       schema:
         type: string
@@ -6461,6 +6461,9 @@ components:
         labels:
           type: array
           description: Array of labels that exist for the account
+          items:
+            type: string
+            description: a full label path
           example: [
               "/nature/birds",
               "/nature/birds/shorebirds",
@@ -6944,7 +6947,7 @@ components:
               - `internal` a Brightcove system or user
           enum:
             - user
-            - api-key
+            - api_key
             - internal
           type: string
       readOnly: true
