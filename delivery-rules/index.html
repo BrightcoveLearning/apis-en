@@ -5,7 +5,6 @@ icon: '<i class="fal fa-filter"></i>'
 description: 'This section provides information about using the Delivery Rules API to fetch Delivery Rules and manage Conditions and Actions.'
 layout: staging
 ---
-
 <style>
   h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
     font-size: 3rem;
@@ -25,29 +24,51 @@ layout: staging
 
 <article class="bcls-article">
   <h1>{{ page.icon }} {{ page.title }}</h1>
-  <summary>{{ page.description }}</summary>
+    
   <section class="card-wrapper">
-    <section class="bcls-card">
+    {% for item in site.data.navigation %}
+      {% if item.name == page.title %}
+        {% for subsection in item.docs %}
+            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
+              <div class="card-content">
+                <h2>{{ subsection.name }}</h2>
+                <ul>
+                  {% for doc in subsection.docs %}
+                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </section>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+    <!-- remove sections below when this goes live -->
+    <section class="bcls-card-small">
       <div class="card-content">
-        <h2 id="Topics_in_this_section">Topics in this section</h2>
+        <h2>Getting Started</h2>
         <ul>
-        {% for item in site.data.navigation %}
-        {% if item.name == page.title %}
-              {% for entry in item.docs %}
-                <li><a href="{{ entry.url }}">{{ entry.name }}</a>
-                {% if entry.docs %}
-                  <ul>
-                    {% for subentry in entry.docs %}
-                      <li><a href="{{ subentry.url }}">{{ subentry.name }}</a></li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-                </li>
-              {% endfor %}
-        {% endif %}
-      {% endfor %}
-  
+         <li><a href="/delivery-rules/overview-delivery-rules.html">Overview: Delivery Rules</a></li>
+         <li><a href="/delivery-rules/implementing-delivery-rules.html">Implementing Delivery Rules</a></li>
+        </ul>
       </div>
     </section>
+    <section class="bcls-card-small">
+      <div class="card-content">
+        <h2>Guides</h2>
+        <ul>
+         <li><a href="https://player.support.brightcove.com/playback/using-delivery-rules-with-bcp.html">Using Delivery Rules with Brightcove Player</a></li>
+         <li><a href="https://sdks.support.brightcove.com/features/using-delivery-rules-with-sdks.html">Using Delivery Rules with the Native SDKs</a></li>
+        </ul>
+      </div>
+    </section>
+    <section class="bcls-card-small">
+      <div class="card-content">
+        <h2>References</h2>
+        <ul>
+         <li><a href="/delivery-rules/references/reference.html">Delivery Rules API Reference</a></li>
+        </ul>
+      </div>
+    </section>
+    <!-- end removal -->
   </section>
 </article>
