@@ -60,12 +60,12 @@ layout: staging
 <section class="bcls-section">
 <h2 id="Conditions">Conditions</h2>
 
-<p>The "if" conditions, supported in the first phase include the following:</p>
+<p>The "if" conditions, supported in the first phase include the following:</p> 
 
 <ul>
   <li>
     <p>
-      <strong>Explicit Request</strong> - A configuration ID that you can pass to the Playback API at runtime. This ID is mapped to configuration values that allow underlying services to make decisions leveraged by the Playback API to return the appropriate response data.
+      <strong>Explicit Request</strong> - A configuration ID is the id of an action that you have created. You will use this id to pass to the Playback API at runtime. This id is mapped to configuration values that allow underlying services to make decisions leveraged by the Playback API to return the appropriate response data.
     </p>
   </li>
   <li>
@@ -303,7 +303,7 @@ layout: staging
   Use the following GET request to fetch the conditions for an account.
 </p>
 <pre><code class="language-http">GET /accounts/{accountID}/conditions</code></pre>
-<h5>API Response</h5>
+<h5>API response</h5>
 <p>
   Here is the response body.
 </p>
@@ -337,107 +337,9 @@ layout: staging
   Authorization: Bearer {access_token}
   Body: {conditions object}
 </code></pre>
-<p>
+<!-- <p>
   For a list of valid fields, see the <a href="#Request_body_for_conditions">Request body for conditions</a> section.
-</p>
-
-<h4>Get Actions</h4>
-<p>
-  Use the following GET request to fetch the actions for an account.
-</p>
-<pre><code class="language-http">GET /accounts/{accountID}/actions</code></pre>
-<h5>API Response</h5>
-<p>
-  Here is the response body.
-</p>
-<pre class="line-numbers"><code class="language-json">[
-  {
-    &quot;id&quot;: &quot;string&quot;,
-    &quot;properties&quot;: {
-      &quot;min_video_bitrate&quot;: 0,
-      &quot;max_video_bitrate&quot;: 0,
-      &quot;first_video_bitrate&quot;: 0,
-      &quot;min_video_resolution&quot;: &quot;string&quot;,
-      &quot;max_video_resolution&quot;: &quot;string&quot;,
-      &quot;max_video_renditions&quot;: 0,
-      &quot;max_audio_renditions&quot;: 0,
-      &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
-      &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
-    &quot;video_codecs&quot;: [
-      &quot;string&quot;
-    ],
-    &quot;audio_codecs&quot;: [
-      &quot;string&quot;
-    ]
-  }
-  }
-]</code></pre>
-<br />
-
-<h4>Create an action</h4>
-<p>
-  Use the following POST request to create actions for an account.
-</p>
-<pre class="line-numbers"><code class="language-http">POST /accounts/{accountID}/actions
-  Content-Type: application/json
-  Authorization: Bearer {access_token}
-  Body: {actions object}
-</code></pre>
-<p>
-  For a list of valid fields, see the <a href="#Request_body_for_actions">Request body for actions</a> section.
-</p>
-
-<h4>Get an Action</h4>
-<p>
-  Use the following GET request to fetch a specific action for an account.
-</p>
-<pre><code class="language-http">GET /accounts/{accountID}/actions/{actionID}</code></pre>
-<h5>API Response</h5>
-<p>
-  Here is the response body.
-</p>
-<pre class="line-numbers"><code class="language-json">{
-    &quot;id&quot;: &quot;string&quot;,
-    &quot;properties&quot;: {
-      &quot;min_video_bitrate&quot;: 0,
-      &quot;max_video_bitrate&quot;: 0,
-      &quot;first_video_bitrate&quot;: 0,
-      &quot;min_video_resolution&quot;: &quot;string&quot;,
-      &quot;max_video_resolution&quot;: &quot;string&quot;,
-      &quot;max_video_renditions&quot;: 0,
-      &quot;max_audio_renditions&quot;: 0,
-      &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
-      &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
-    &quot;video_codecs&quot;: [
-      &quot;string&quot;
-    ],
-    &quot;audio_codecs&quot;: [
-      &quot;string&quot;
-    ]
-  }
-}</code></pre>
-<br />
-
-<h4>Update an Action</h4>
-<p>
-  Use the following PUT request to update an action for an account.
-</p>
-<pre class="line-numbers"><code class="language-http">PUT /accounts/{accountID}/actions/{actionID}
-  Content-Type: application/json
-  Authorization: Bearer {access_token}
-  Body: {actions object}
-</code></pre>
-<p>
-  For a list of valid fields, see the <a href="#Request_body_for_actions">Request body for actions</a> section.
-</p>
-
-<h4>Delete an Action</h4>
-<p>
-  Use the following DELETE request to remove an action for an account.
-</p>
-<pre class="line-numbers"><code class="language-http">DELETE /accounts/{accountID}/actions/{actionID}</code></pre>
-
-
+</p> -->
 <h4 id="Request_body_for_conditions">Request body for conditions</h4>
 <p>
   Here is the request body for conditions.
@@ -500,7 +402,43 @@ layout: staging
   </tbody>
 </table>
 
+<h4>Create an action</h4>
+<p>
+  Use the following POST request to create actions for an account.
+</p>
+<pre class="line-numbers"><code class="language-http">POST /accounts/{accountID}/actions
+  Content-Type: application/json
+  Authorization: Bearer {access_token}
+  Body: {actions object}
+</code></pre>
+<!-- <p>
+  For a list of valid fields, see the <a href="#Request_body_for_actions">Request body for actions</a> section.
+</p> -->
 <h4 id="Request_body_for_actions">Request body for actions</h4>
+<p>
+  Here is the request body for actions.
+</p>
+<pre class="line-numbers"><code class="language-json">{
+    &quot;properties&quot;: {
+      &quot;min_video_bitrate&quot;: 0,
+      &quot;max_video_bitrate&quot;: 0,
+      &quot;first_video_bitrate&quot;: 0,
+      &quot;min_video_resolution&quot;: &quot;string&quot;,
+      &quot;max_video_resolution&quot;: &quot;string&quot;,
+      &quot;max_video_renditions&quot;: 0,
+      &quot;max_audio_renditions&quot;: 0,
+      &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
+      &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
+      &quot;video_codecs&quot;: [
+        &quot;string&quot;
+      ],
+      &quot;audio_codecs&quot;: [
+        &quot;string&quot;
+      ]
+  }
+}</code></pre>
+
+<h4 id="Response_body_for_actions">API response for actions</h4>
 <p>
   Here is the request body for actions.
 </p>
@@ -516,15 +454,15 @@ layout: staging
       &quot;max_audio_renditions&quot;: 0,
       &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
       &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
-    &quot;video_codecs&quot;: [
-      &quot;string&quot;
-    ],
-    &quot;audio_codecs&quot;: [
-      &quot;string&quot;
-    ]
+      &quot;video_codecs&quot;: [
+       &quot;string&quot;
+      ],
+      &quot;audio_codecs&quot;: [
+       &quot;string&quot;
+      ]
   }
 }</code></pre>
-<br />
+
 <p>
   Here are the field details for actions:
 </p>
@@ -540,7 +478,7 @@ layout: staging
     <tr>
       <td><code>id</code></td>
       <td>String</td>
-      <td>Unique identifier for the action</td>
+       <td>A system generated unique identifier for the action. This is the <code>actionID</code> used in the update and delete methods.</td>
     </tr>
     <tr>
       <td><code>properties</code></td>
@@ -593,12 +531,52 @@ layout: staging
       <td>String</td>
       <td>Array of audio codecs</td>
     </tr>
-
-
   </tbody>
 </table>
 
+<h4>Get Actions</h4>
+<p>
+  Use the following GET request to fetch the actions for an account.
+</p>
+<pre><code class="language-http">GET /accounts/{accountID}/actions</code></pre>
+<h5>API Response</h5>
+<p>
+  See the <a href="#Response_body_for_actions">API response for actions</a>.
+</p>
 
+<h4>Get an Action</h4>
+<p>
+  Use the following GET request to fetch a specific action for an account.
+</p>
+<pre><code class="language-http">GET /accounts/{accountID}/actions/{actionID}</code></pre>
+<h5>API Response</h5>
+<p>
+  See the <a href="#Response_body_for_actions">API response for actions</a>.
+</p>
+
+<h4>Update an Action</h4>
+<p>
+  Use the following PUT request to update an action for an account.
+</p>
+<pre class="line-numbers"><code class="language-http">PUT /accounts/{accountID}/actions/{actionID}
+  Content-Type: application/json
+  Authorization: Bearer {access_token}
+  Body: {actions object}
+</code></pre>
+<h5>API Request</h5>
+<p>
+  See the <a href="#Request_body_for_actions">request body for actions</a>.
+</p>
+<h5>API Response</h5>
+<p>
+  See the <a href="#Response_body_for_actions">API response for actions</a>.
+</p>
+
+<h4>Delete an Action</h4>
+<p>
+  Use the following DELETE request to remove an action for an account.
+</p>
+<pre class="line-numbers"><code class="language-http">DELETE /accounts/{accountID}/actions/{actionID}</code></pre>
 
 
 <!-- <p>
