@@ -1,0 +1,44 @@
+---
+title: 'Thumbnail Grid'
+description: 'In this sample, you will learn how to use the Playback API to retrieve a group of videos by ID, display them in a grid, and launch videos in a player when the user clicks on a thumbnail - in other words, build a simple video portal.'
+parent: Code Samples
+grandparent: Playback API
+---
+
+<article class="bcls-article">
+  <h1>{{ page.icon }} {{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="Overview">Overview</h2>
+    <p>Sometimes, instead of choosing videos for your viewers, you would rather just offer them a portfolio and let them choose for themselves. <a href="https://gallery.support.brightcove.com">Brightcove Gallery</a> offers a sophisticated system for building video portals, but if you are just looking for a way to build a simple do-it-yourself portal, this sample will show you how.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="What_you_will_need">What you will need</h2>
+    <p>All you will need to build this portal are:</p>
+    <ul>
+      <li>A Video Cloud account</li>
+      <li>A search-enabled policy key to authenticate a request to the Playback API</li>
+      <li>Some web development skills (HTML, CSS, and JavaScript)</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Design_considerations">Design considerations</h2>
+    <h3>Getting video data</h3>
+    <p>Although either the CMS API or the Playback API can be used to fetch video data, the Playback API is the obvious choice here for several reasons:</p>
+    <ul>
+      <li>Because response data is cached (for up to 20 minutes), it is much faster</li>
+      <li>It returns all the data you need to play a video, whereas the CMS API requires two seperate requests to get the video metadata and the video sources</li>
+      <li>It is CORS-enabled, meaning you do not need to route the request through a server-side proxy app</li>
+    </ul>
+    <p>However, the Playback API offers two ways to fetch video data. There is a basic method to get a video by id (or reference id), and we could easily iterate over an array of ids to request each one. That is not very efficient, however.</p>
+    <p>A better option is to use the video search method, which allows us to find all the videos by id and return them with one request. The search parameter for the request will look like this:</p>
+    <pre><code class="language-http">q=id:{video1_id}%20id:(video2_id)%20id:{video3_id}...</code></pre>
+    <p>The <code>%20</code> in this search string is a URI-encoded space.</p>
+    <h3>The player</h3>
+    <p>Some users may not watch any videos at all, so there is no point using bandwidth to load a player until it is needed. We will use the <a href="https://player.support.brightcove.com/publish/brightcove-player-loader.html">Brightcove Player Loader</a> to load a player dynamically the first time a video is selected for playback. To maximize performance, we will also pre-load the Brightcove Player JavaScript, but the player loader will do this automatically if it is not already present.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="policy_key">Getting a policy key</h2>
+    <p>Policy keys are automatically generated for all Brightcove Players. For security reasons, however, the standard policy keys do not enable searching for videos using the Playback API. For this sample, we do want a search-enabled key. You can create one using the <a href="https://apis.support.brightcove.com/policy/index.html">Policy API</a>, but the easiest way is to use the <a href="https://apis.support.brightcove.com/policy/getting-started/quick-start-policy-api.html">Brightcove learning sample app</a> and make sure you check the option to get a search-enabled key.</p>
+  </section>
+</article>
