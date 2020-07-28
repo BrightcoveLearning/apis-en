@@ -1,7 +1,7 @@
 openapi: 3.0.0
 x-bc-implicit-head: true
 x-bc-implicit-options: true
-x-bc-upstream: 'http://backend_server'
+x-bc-upstream: 'http://backend_server' 
 info:
   title: Playback Rights API Reference
   description: >-
@@ -461,11 +461,13 @@ components:
           description: "This is the ID and it only is for identify the playback right in GET ALL method. It should not be included in the body for POST, PATCH and PUT methods"
           type: string
         allowed_domains:
+          description: Array of domain names
           type: array
           items:
             type: string
             example: "someDomain.com"
         blocked_domains:
+          description: Array of domain names
           type: array
           items:
             type: string
@@ -474,31 +476,39 @@ components:
           type: object
           properties:
             allowed_countries:
+              description: Array of two letter country codes, which follow the ISO 3166-1 alpha-2 standard. For a list of values, see the [Officially assigned code elements](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
               type: array
               items:
                 type: string
                 example: ["US","MX"]
             blocked_countries:
+              description: Array of two letter country codes, which follow the ISO 3166-1 alpha-2 standard. For a list of values, see the [Officially assigned code elements](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
               type: array
               items:
                 type: string
                 example: ["JP","CN"]
             allowed_zip_codes:
+              description: Array of zip codes, which are prefixed with the two letter country and hyphen. e.g. ["US-90045"].
+                The two letter country code must be upper case and follow the ISO 3166-1 alpha-2 standard, as shown in the [Officially assigned code elements](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
               type: array
               items:
                 type: string
                 example: "us-22222"
             blocked_zip_codes:
+              description: Array of zip codes, which are prefixed with the two letter country and hyphen. e.g. ["US-90045"].
+                The two letter country code must be upper case and follow the ISO 3166-1 alpha-2 standard, as shown in the [Officially assigned code elements](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
               type: array
               items:
                 type: string
                 example: "us-22222"
             allowed_dmas:
+              description: Array of Nielsen Designated Market Area (DMA) numbers. For a list of values, see the [DMA Codes document](https://help.ooyala.com/video-platform/reference/dma_codes.html#gsc.tab=0).
               type: array
               items:
                 type: integer
                 example: 500, 717
             blocked_dmas:
+              description: Array of Nielsen Designated Market Area (DMA) numbers. For a list of values, see the [DMA Codes document](https://help.ooyala.com/video-platform/reference/dma_codes.html#gsc.tab=0).
               type: array
               items:
                 type: integer
@@ -507,54 +517,67 @@ components:
           type: object
           properties:
             anonymous:
+              description: IP address of the client is not available. Includes services that change location to beat DRM, TOR points, temporary proxies, and other masking services.
               type: boolean
               example: true
             public:
+              description: Multiple users proxied from a location allowing public internet access.
               type: boolean
               example: true
             corporate:
+              description: Generally considered harmless, but location can be a concern. Identify if multiple users are proxied through a central location or locations, and can share a single network-apparent IP address.
               type: boolean
               example: true
             transparent:
+              description: IP address of the client is available via HTTP headers, though the value is not necessarily reliable (e.g., it can be spoofed)
               type: boolean
               example: true
         start_time:
+          description: Epoch time
           type: integer
           example: 1571242764
         end_time:
+          description: Epoch time 
           type: integer
           example: 1571242764
         allowed_ips:
+          description: Array of ipv4/ipv6 addresses or CIDR blocks
           type: array
           items:
             type: string
             example: "172.16.254.1"
         blocked_ips:
+          description: Array of ipv4/ipv6 addresses or CIDR blocks
           type: array
           items:
             type: string
             example: "172.16.254.1"
         allowed_days:
+          description: Array of 3-letter lowercase names for the days that the resource is allowed to be retrieved. (mon, tue, wed, thu, fri, sat, sun)
           type: array
           items:
             type: string
             example: "mon, tue"
         allowed_hours:
+          description: Array of hours from the 24-hour clock (starting at 0 and up to 47) during which the resource is allowed to be retrieved. 0 to 23 for current day, and 24 to 47 for next day end-date. If an allowed hours block starts in previous day and ends at the following day then a 24+ notation is required.
           type: array
           items:
             type: string
             example: "3-4, 8-19"
         allow_insecure:
+          description: Setting this to true makes the JWT token optional
           type: boolean
-          example: false
+          default: false
         disabled:
+          description: Setting this to true disables the Playback Right, allowing playback for everyone
           type: boolean
-          example: true
+          default: false
         name:
           type: string
           description: Optional playback right name
           example: "Only EU"
     playback_rights:
+      description: Optional playback right name
       type: array
       items:
         $ref: "#/components/schemas/playback_right"
