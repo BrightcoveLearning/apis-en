@@ -11,7 +11,7 @@ var BCLS = (function (window, document) {
       'BCpkADawqM3CNfUEBYGvWS8QqHHg-g5kzNt63RmoOyVlrIL4zT67_KKSzlaI5TGMXIZZ4Yrtz28v7EcHTsTWAiOolxok8ZNqFrkNGru9OOumeQ8wX5csvYqx7zl468WgbhqDnpePPhQVpQfr',
       video_ids = [
         '6156696074001',
-        '6152440604001',
+        '5811864560001',
         '5715315990001',
         '5550679964001',
         '5686632029001',
@@ -23,26 +23,26 @@ var BCLS = (function (window, document) {
       player_id = 'WRgbJgqAe',
       player_container = document.getElementById('player_container'),
       video_grid = document.getElementById('video_grid');
+      
 
   function buildPlayer (video_id) {
     brightcovePlayerLoader({
       refNode: player_container,
-      refNodeInsert: 'replace',
       accountId: account_id,
       playerId: player_id,
       videoId: video_id,
       embedId: 'default',
     })
       .then(function (success) {
-        player_loaded = true
-        console.log(success.ref)
+        player_loaded = true;
+        console.log(success.ref);
       })
       .catch(function (error) {
-        var p = document.createElement('p')
+        var p = document.createElement('p');
         p.textContent =
-          'Sorry - the player could not be loaded. Please try again later.'
-        player_container.appendChild(p)
-      })
+          'Sorry - the player could not be loaded. Please try again later.';
+        player_container.appendChild(p);
+      });
   }
 
   function buildGrid (video_data) {
@@ -56,14 +56,34 @@ var BCLS = (function (window, document) {
 
     for (i; i < iMax; i++) {
       video = video_data[i];
-      div = document.createElement(div);
-      img = document.createElement(img);
+      div = document.createElement('div');
+      img = document.createElement('img');
       p = document.createElement('p');
       div.setAttribute('id', video.id);
+      div.setAttribute('class', 'grid-item');
       img.setAttribute('src', video.thumbnail);
-      img.setAttribute('style', 'width:160px;height:90px;')
-      p.setAttribute('style', 'font-size:x-small;width:160px;text-align:center;overflow:hidden;text-overflow: ellipsis;white-space:nowrap;');
+      img.setAttribute('class', 'thumbnail');
+      p.setAttribute('class', 'truncate');
       p.textContent = video.name;
+      frag.appendChild(div);
+      div.appendChild(img);
+      div.appendChild(p);
+    }
+    video_grid.appendChild(frag);
+    setListeners();
+  }
+
+  function setListeners() {
+    var i = 0,
+        grid_items = document.getElementsByClassName('grid-item'),
+        iMax = grid_items.length;
+console.log(iMax);
+    for (i; i < iMax; i++) {
+      console.log(grid_items[i]);
+      grid_items[i].addEventListener('click', function(e) {
+        console.log('id', this.id);
+        buildPlayer(this.id);
+      });
     }
   }
 
@@ -73,27 +93,26 @@ var BCLS = (function (window, document) {
         iMax = video_ids.length;
 
     request_data.request =
-      'https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos?q='
+      'https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos?q=';
     for (i; i < iMax; i++) {
-      request_data.request = request_data.request + 'id:' + video_ids[i]
+      request_data.request = request_data.request + 'id:' + video_ids[i];
       if (i < iMax - 1) {
-        request_data.request = request_data.request + '%20'
+        request_data.request = request_data.request + '%20';
       }
     }
-    console.log('request', request_data.request)
+    console.log('request', request_data.request);
     request_data.policy_key = policy_key
     sendRequest(request_data, function (video_data) {
       if (video_data && video_data.length > 0) {
         video_data = JSON.parse(video_data);
-        console.log('video_data', video_data)
-        buildGrid(video_data)
+        buildGrid(video_data.videos)
       } else {
-        var h4 = document.createElement('h4')
+        var h4 = document.createElement('h4');
         h4.textContent =
-          'Videos are currently unavailable. Please try again later.'
-        video_grid.appendChild(h4)
+          'Videos are currently unavailable. Please try again later.';
+        video_grid.appendChild(h4);
       }
-    })
+    });
   }
 
   function sendRequest (request_data, callback) {
@@ -112,7 +131,7 @@ var BCLS = (function (window, document) {
         };
 
     // set response handler
-    httpRequest.onreadystatechange = getResponse
+    httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('GET', request_data.request);
     // set headers
@@ -121,5 +140,5 @@ var BCLS = (function (window, document) {
     httpRequest.send();
   }
 
-  createRequest()
+  createRequest();
 })(window, document)
