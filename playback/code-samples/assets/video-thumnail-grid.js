@@ -1,6 +1,6 @@
 var BCLS = (function (window, document) {
   /**
-   * To build your own version, replace the following:
+   * To build your own version, replace the following with values from your account:
    * account_id
    * policy_key
    * video_ids
@@ -24,7 +24,11 @@ var BCLS = (function (window, document) {
       player_container = document.getElementById('player_container'),
       video_grid = document.getElementById('video_grid');
       
-
+  /**
+   * Create player to play the video
+   *
+   * @param {string} video_id - the video to load into the player
+   */
   function buildPlayer (video_id) {
     brightcovePlayerLoader({
       refNode: player_container,
@@ -34,8 +38,7 @@ var BCLS = (function (window, document) {
       embedId: 'default',
     })
       .then(function (success) {
-        player_loaded = true;
-        console.log(success.ref);
+        console.log('player loaded');
       })
       .catch(function (error) {
         var p = document.createElement('p');
@@ -45,6 +48,11 @@ var BCLS = (function (window, document) {
       });
   }
 
+  /**
+   * Build the video grid
+   *
+   * @param {Array} video_data - the video data retrieved from the Playback API
+   */
   function buildGrid (video_data) {
     var i = 0,
         iMax = video_data.length,
@@ -73,20 +81,24 @@ var BCLS = (function (window, document) {
     setListeners();
   }
 
+  /**
+   * Set event listeners for the grid items
+   */
   function setListeners() {
     var i = 0,
         grid_items = document.getElementsByClassName('grid-item'),
         iMax = grid_items.length;
-console.log(iMax);
     for (i; i < iMax; i++) {
-      console.log(grid_items[i]);
       grid_items[i].addEventListener('click', function(e) {
-        console.log('id', this.id);
+        player_container.innerHTML = '';
         buildPlayer(this.id);
       });
     }
   }
 
+  /**
+   * Set up the API request
+   */
   function createRequest () {
     var request_data = {},
         i = 0,
@@ -94,18 +106,19 @@ console.log(iMax);
 
     request_data.request =
       'https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos?q=';
+    // add video ids to the search string
     for (i; i < iMax; i++) {
       request_data.request = request_data.request + 'id:' + video_ids[i];
       if (i < iMax - 1) {
         request_data.request = request_data.request + '%20';
       }
     }
-    console.log('request', request_data.request);
-    request_data.policy_key = policy_key
+    // add the policy key
+    request_data.policy_key = policy_key;
     sendRequest(request_data, function (video_data) {
       if (video_data && video_data.length > 0) {
         video_data = JSON.parse(video_data);
-        buildGrid(video_data.videos)
+        buildGrid(video_data.videos);
       } else {
         var h4 = document.createElement('h4');
         h4.textContent =
@@ -115,6 +128,12 @@ console.log(iMax);
     });
   }
 
+  /**
+   * Send API request and return response to caller
+   *
+   * @param {object} request_data - the API request and policy key
+   * @param {*} callback - function to handle the response
+   */
   function sendRequest (request_data, callback) {
     var httpRequest = new XMLHttpRequest(),
         // response handler
@@ -140,5 +159,6 @@ console.log(iMax);
     httpRequest.send();
   }
 
+  // kick things off by fetching the video data
   createRequest();
-})(window, document)
+})(window, document);
