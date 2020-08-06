@@ -100,7 +100,7 @@ paths:
         - Syndications
       summary: Update a syndication.
       description: >-
-        Updates the confguration data for a syndication.  A fully populated Syndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
+        Updates the configuration data for a syndication.  A fully populated Syndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
       operationId: putSyndication
       security:
         - BC_OAuth2:
@@ -143,7 +143,7 @@ paths:
         - Syndications
       summary: Update a syndication.
       description: >-
-        Updates the confguration data for a syndication.  A Syndication object specifying non-null values for writable fields to be updated should be passed as the request body.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
+        Updates the configuration data for a syndication.  A Syndication object specifying non-null values for writable fields to be updated should be passed as the request body.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
       operationId: patchSyndication
       security:
         - BC_OAuth2:
@@ -420,6 +420,11 @@ components:
         fetch_dynamic_renditions:
             type: boolean
             description: For universal feeds, specifies whether the feed service should fetch dynamic rendition metadata and make it available to the template.  The default value is false.  If dynamic rendition metadata is not needed by the template, keeping this setting as false can improve feed generation performance.
+        content_type_header:
+            type: string
+            description: >-
+              If set, overrides the Content-Type header returned by the feed server for this syndication's feed. Otherwise the feed defaults to a syndication type-specific header value
+            example: 'application/xml'
     SyndicationList:
       type: array
       items:
