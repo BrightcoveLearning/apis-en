@@ -23,7 +23,7 @@ layout: staging
     
     <p>Brightcove provides static URLs to video manifest files for assets in your Video Cloud library. This gives you the flexibility to manage your content in your own CMS, and deliver it using a custom security schema. </p>
     
-    <p>This is important for customers who have existing architecture that does not allow a Playback API call before needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one call.</p>
+    <p>This is important for customers who have an existing architecture that does not allow a Playback API call before needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one call.</p>
     </section>
     
     <section class="bcls-section">
@@ -33,7 +33,7 @@ layout: staging
       </p>
       <ul>
         <li>Brightcove Playback API v2</li>
-        <li>Your assets are ingested for Dynamic Delivery</li>
+        <li>Videos ingested for Dynamic Delivery</li>
       </ul>
       <!-- <h3>Account setup</h3>
       <p>
@@ -55,7 +55,7 @@ layout: staging
       Today, every playback through VideoCloud requires 2 API calls to start video playback. With the use of static URLs, you can reduce the number of API calls to just one.
     </p>
     
-    <p>The following diagram shows the API calls for video playback, without static URLs.</p>
+    <p>The following diagram shows the API calls for video playback WITHOUT static URLs.</p>
     <figure class="bcls-figure">
       <img class="bcls-image--no-border" width="800" src="//learning-services-media.brightcove.com/doc-assets/node/18961-static-url-delivery/current-playback-calls.png" alt="Video Cloud playback">
       <figcaption class="bcls-caption--image">Video Cloud playback</figcaption>
@@ -65,7 +65,7 @@ layout: staging
     <section class="bcls-section">
     <h2 id="Static_URLs">Static URLs</h2>
     <p>
-      With Brightcove's Playback API v2, static URLs are now avaiable.
+      With Brightcove's Playback API v2, static URLs are available.
     </p>
     
     <h3>Features</h3>
@@ -81,7 +81,7 @@ layout: staging
       </thead>
       <tbody class="bcls-table__body">
         <tr>
-          <td>Static URL support for VOD</td>
+          <td>Video-On-Demand (VOD)</td>
           <td>Supported video formats via Dynamic Delivery only:
             <ul>
               <li>
@@ -101,6 +101,10 @@ layout: staging
               </li>
             </ul>
           </td>
+        </tr>
+        <tr>
+          <td>VOD assets</td>
+          <td>Thumbnails and poster images</td>
         </tr>
         <tr>
           <td>Authorization</td>
@@ -126,21 +130,17 @@ layout: staging
           <td>Only in-manifest captions are currently supported.</td>
         </tr>
         <tr>
-          <td>VOD assets</td>
-          <td>Thumbnails and poster images</td>
-        </tr>
-        <tr>
-          <td>Live assets</td>
+          <td>Live streams</td>
           <td></td>
         </tr>
         <tr>
           <td>Playback Rights Service (EPA)</td>
           <td>Contact your account manager for details.</td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>Delivery Rules</td>
           <td>Contact your account manager for details.</td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
     </section>
@@ -157,14 +157,14 @@ layout: staging
         Video ID (or reference)
       </li>
       <li>
-        Delivery Type (HLS,Dash)
+        Delivery Type (HLS, Dash)
       </li>
       <li>
         Configuration options (SSAI, DRM, CDN, etc.)
       </li>
     </ul>
     <p>
-      These URLs are secured using a customer generated and signed JSON Web Token (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a JSON Web Token</a> section.
+      Static URLs are secured using a customer-generated and signed JSON Web Token (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a JSON Web Token</a> section.
     </p>
     <!-- <p>
       For manifests & VMAPs, the response will be returned directly. For MP4s it will 302 to the right CDN URL. DRM is not necessary to include here. This is controlled by flags on the account & video themselves. You  can use a claim in the JWT, if necessary, to switch between DRM types on the fly.
@@ -250,23 +250,23 @@ layout: staging
                 <td><code>conid</code></td>
                 <td>String</td>
                 <td></td>
-                <td>If present, this token will only authorize license fetching for a specific Video Cloud video id.
+                <td>If present, this token will only authorize license fetching for a specific Video Cloud video id
                   <br /><br />
                   Must be a valid video id.
                 </td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td><code>drules</code></td>
                 <td>Array</td>
                 <td></td>
                 <td>Array of Delivery Rules to be applied to this manifest. If absent, no Delivery Rules will be applied.
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td><code>pro</code></td>
                 <td>String</td>
                 <td></td>
-                <td>Specifies a protection type in the case where multiple are available for a single video.
+                <td>Specifies a protection type in the case where multiple are available for a single video
                   <br /><br />
                   Values:
                   <ul>
@@ -292,13 +292,25 @@ layout: staging
                 <td><code>vod</code></td>
                 <td>Object</td>
                 <td></td>
-                <td>Contains specific configuration options for Video-On-Demand.</td>
+                <td>Contains specific configuration options for Video-On-Demand</td>
               </tr>
               <tr>
                 <td><code>ssai</code></td>
                 <td>String</td>
                 <td></td>
-                <td>Your Server-Side Ad Insertion (SSAI) configuration id.</td>
+                <td>Your Server-Side Ad Insertion (SSAI) configuration id</td>
+              </tr>
+              <tr>
+                <td><code>live</code></td>
+                <td>Object</td>
+                <td></td>
+                <td>Contains specific configuration options for live streams</td>
+              </tr>
+              <tr>
+                <td><code>token</code></td>
+                <td>String</td>
+                <td></td>
+                <td>The playback token for your live stream</td>
               </tr>
             </tbody>
           </table>
