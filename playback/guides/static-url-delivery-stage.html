@@ -327,18 +327,24 @@ layout: staging
   &quot;iat&quot;:1575484132,
   // content id: JWT is only valid for video id or reference id
   &quot;conid&quot;:&quot;5805807122222&quot;,
-  // delivery rules: array of Delivery Rules to be applied to this manifest
+  <!-- // delivery rules: array of Delivery Rules to be applied to this manifest
   &quot;drules&quot;: [
       &quot;11de1111-2222-33ec-444d-f5555555f5&quot;,
       &quot;cb11111-2222e-333c-a444-5d55555555&quot;
-  ],
+  ], -->
   // protection: specify a protection type in the case where multiple are available for a single video
   &quot;pro&quot;:&quot;aes128&quot;,
   // VOD specific configuration options
   &quot;vod&quot;:{
     // SSAI configuration to apply
     &quot;ssai&quot;:&quot;efcc566-b44b-5a77-a0e2-d33333333333&quot;
-  }
+  },
+  // Live: Live configuration options
+  "live": {
+      "Token": "playback token for live stream",
+        // SSAI Config ID
+        "ssai": "e1111111-2bf2-3c33-b444-bf555555555"
+    }
 }</code></pre>
     </section>
     
@@ -373,31 +379,33 @@ layout: staging
         For FairPlay app certificates, the endpoint is:
       </p>
       <pre><code class="language-html">/accounts/{account_id}/fairplay_app_cert</code></pre>
-    
     </section>
     
     <section class="bcls-section">
     <h2 id="Notes">Notes</h2>
-      <p>The following notes apply to Static URL Delivery.</p>
+      <p>The following notes apply to Static URL Delivery:</p>
       <ul>
         <li>
-        In-Manifest captions are supported. Out-of-band sidecar captions will be supported in a future release.
+        In-Manifest captions are supported, but Out-of-band sidecar captions will be supported in a future release.
         </li>
         <li>
           The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest and sub-manifests.
         </li>
         <li>
-          Brightcove does support using a JWT that does not expire. To do this, do not include the <code>exp</code> claim when creating your token.
+          Brightcove supports using a JWT that does not expire. To do this, exclude the <code>exp</code> claim when creating your token.
         </li>
       </ul>
     </section>
     
     <section class="bcls-section">
     <h2 id="Limitations">Limitations</h2>
-      <p>The following limitations apply to Static URL Delivery.</p>
+      <p>The following limitations apply to Static URL Delivery:</p>
       <ul>
-        <li>
+        <!-- <li>
           Live streams will be supported in a later release.
+        </li> -->
+        <li>
+          Delivery Rules will be supported in a later release.
         </li>
       </ul>
     </section>

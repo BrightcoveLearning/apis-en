@@ -1325,7 +1325,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <p>Brightcove provides static URLs to video manifest files for assets in your Video Cloud library. This gives you the flexibility to manage your content in your own CMS, and deliver it using a custom security schema. </p>
     
-    <p>This is important for customers who have existing architecture that does not allow a Playback API call before needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one call.</p>
+    <p>This is important for customers who have an existing architecture that does not allow a Playback API call before needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one call.</p>
     </section>
     
     <section class="bcls-section">
@@ -1335,7 +1335,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </p>
       <ul>
         <li>Brightcove Playback API v2</li>
-        <li>Your assets are ingested for Dynamic Delivery</li>
+        <li>Videos ingested for Dynamic Delivery</li>
       </ul>
       <!-- <h3>Account setup</h3>
       <p>
@@ -1357,7 +1357,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       Today, every playback through VideoCloud requires 2 API calls to start video playback. With the use of static URLs, you can reduce the number of API calls to just one.
     </p>
     
-    <p>The following diagram shows the API calls for video playback, without static URLs.</p>
+    <p>The following diagram shows the API calls for video playback WITHOUT static URLs.</p>
     <figure class="bcls-figure">
       <img class="bcls-image--no-border" width="800" src="//learning-services-media.brightcove.com/doc-assets/node/18961-static-url-delivery/current-playback-calls.png" alt="Video Cloud playback">
       <figcaption class="bcls-caption--image">Video Cloud playback</figcaption>
@@ -1367,7 +1367,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <section class="bcls-section">
     <h2 id="Static_URLs">Static URLs</h2>
     <p>
-      With Brightcove's Playback API v2, static URLs are now avaiable.
+      With Brightcove's Playback API v2, static URLs are available.
     </p>
     
     <h3>Features</h3>
@@ -1383,7 +1383,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </thead>
       <tbody class="bcls-table__body">
         <tr>
-          <td>Static URL support for VOD</td>
+          <td>Video-On-Demand (VOD)</td>
           <td>Supported video formats via Dynamic Delivery only:
             <ul>
               <li>
@@ -1403,6 +1403,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
               </li>
             </ul>
           </td>
+        </tr>
+        <tr>
+          <td>VOD assets</td>
+          <td>Thumbnails and poster images</td>
         </tr>
         <tr>
           <td>Authorization</td>
@@ -1428,21 +1432,17 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           <td>Only in-manifest captions are currently supported.</td>
         </tr>
         <tr>
-          <td>VOD assets</td>
-          <td>Thumbnails and poster images</td>
-        </tr>
-        <tr>
-          <td>Live assets</td>
+          <td>Live streams</td>
           <td></td>
         </tr>
         <tr>
           <td>Playback Rights Service (EPA)</td>
           <td>Contact your account manager for details.</td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>Delivery Rules</td>
           <td>Contact your account manager for details.</td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
     </section>
@@ -1459,14 +1459,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         Video ID (or reference)
       </li>
       <li>
-        Delivery Type (HLS,Dash)
+        Delivery Type (HLS, Dash)
       </li>
       <li>
         Configuration options (SSAI, DRM, CDN, etc.)
       </li>
     </ul>
     <p>
-      These URLs are secured using a customer generated and signed JSON Web Token (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a JSON Web Token</a> section.
+      Static URLs are secured using a customer-generated and signed JSON Web Token (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a JSON Web Token</a> section.
     </p>
     <!-- <p>
       For manifests & VMAPs, the response will be returned directly. For MP4s it will 302 to the right CDN URL. DRM is not necessary to include here. This is controlled by flags on the account & video themselves. You  can use a claim in the JWT, if necessary, to switch between DRM types on the fly.
@@ -1552,23 +1552,23 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                 <td><code>conid</code></td>
                 <td>String</td>
                 <td></td>
-                <td>If present, this token will only authorize license fetching for a specific Video Cloud video id.
+                <td>If present, this token will only authorize license fetching for a specific Video Cloud video id
                   <br /><br />
                   Must be a valid video id.
                 </td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td><code>drules</code></td>
                 <td>Array</td>
                 <td></td>
                 <td>Array of Delivery Rules to be applied to this manifest. If absent, no Delivery Rules will be applied.
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td><code>pro</code></td>
                 <td>String</td>
                 <td></td>
-                <td>Specifies a protection type in the case where multiple are available for a single video.
+                <td>Specifies a protection type in the case where multiple are available for a single video
                   <br /><br />
                   Values:
                   <ul>
@@ -1594,13 +1594,25 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                 <td><code>vod</code></td>
                 <td>Object</td>
                 <td></td>
-                <td>Contains specific configuration options for Video-On-Demand.</td>
+                <td>Contains specific configuration options for Video-On-Demand</td>
               </tr>
               <tr>
                 <td><code>ssai</code></td>
                 <td>String</td>
                 <td></td>
-                <td>Your Server-Side Ad Insertion (SSAI) configuration id.</td>
+                <td>Your Server-Side Ad Insertion (SSAI) configuration id</td>
+              </tr>
+              <tr>
+                <td><code>live</code></td>
+                <td>Object</td>
+                <td></td>
+                <td>Contains specific configuration options for live streams</td>
+              </tr>
+              <tr>
+                <td><code>token</code></td>
+                <td>String</td>
+                <td></td>
+                <td>The playback token for your live stream</td>
               </tr>
             </tbody>
           </table>
@@ -1617,18 +1629,24 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   &quot;iat&quot;:1575484132,
   // content id: JWT is only valid for video id or reference id
   &quot;conid&quot;:&quot;5805807122222&quot;,
-  // delivery rules: array of Delivery Rules to be applied to this manifest
+  <!-- // delivery rules: array of Delivery Rules to be applied to this manifest
   &quot;drules&quot;: [
       &quot;11de1111-2222-33ec-444d-f5555555f5&quot;,
       &quot;cb11111-2222e-333c-a444-5d55555555&quot;
-  ],
+  ], -->
   // protection: specify a protection type in the case where multiple are available for a single video
   &quot;pro&quot;:&quot;aes128&quot;,
   // VOD specific configuration options
   &quot;vod&quot;:{
     // SSAI configuration to apply
     &quot;ssai&quot;:&quot;efcc566-b44b-5a77-a0e2-d33333333333&quot;
-  }
+  },
+  // Live: Live configuration options
+  "live": {
+      "Token": "playback token for live stream",
+        // SSAI Config ID
+        "ssai": "e1111111-2bf2-3c33-b444-bf555555555"
+    }
 }</code></pre>
     </section>
     
@@ -1663,31 +1681,33 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         For FairPlay app certificates, the endpoint is:
       </p>
       <pre><code class="language-html">/accounts/{account_id}/fairplay_app_cert</code></pre>
-    
     </section>
     
     <section class="bcls-section">
     <h2 id="Notes">Notes</h2>
-      <p>The following notes apply to Static URL Delivery.</p>
+      <p>The following notes apply to Static URL Delivery:</p>
       <ul>
         <li>
-        In-Manifest captions are supported. Out-of-band sidecar captions will be supported in a future release.
+        In-Manifest captions are supported, but Out-of-band sidecar captions will be supported in a future release.
         </li>
         <li>
           The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest and sub-manifests.
         </li>
         <li>
-          Brightcove does support using a JWT that does not expire. To do this, do not include the <code>exp</code> claim when creating your token.
+          Brightcove supports using a JWT that does not expire. To do this, exclude the <code>exp</code> claim when creating your token.
         </li>
       </ul>
     </section>
     
     <section class="bcls-section">
     <h2 id="Limitations">Limitations</h2>
-      <p>The following limitations apply to Static URL Delivery.</p>
+      <p>The following limitations apply to Static URL Delivery:</p>
       <ul>
-        <li>
+        <!-- <li>
           Live streams will be supported in a later release.
+        </li> -->
+        <li>
+          Delivery Rules will be supported in a later release.
         </li>
       </ul>
     </section>
@@ -1708,7 +1728,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 24 Jul 2020
+  Page last updated on 07 Aug 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
