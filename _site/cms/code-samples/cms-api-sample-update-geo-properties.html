@@ -1309,79 +1309,81 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <h1>Update Geo Properties</h1>
 <article class="bcls-article">
   <summary>In this sample, you will learn how to update the geo-filtering properties for all videos in an account. The app will only run on one of our sample accounts, but if you want to recreate it, all the code is in the CodePen except for the proxy that is used to get access tokens and make the API requests - the code for the proxy is shown further down the page.</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="limitations">Limitations of this app</h2>
-    
+
     <aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
-    
+
     <ul>
       <li class="language-editable">The app updates all videos in the account with the same geo settings - it would be fairly simple to add options to select only a portion of the videos by requesting them by folder or some search criteria.</li>
       <li class="language-editable">There is no exception-handling - for a small account like the one used here, it doesn't matter much - if an API request times out, the app will fail at that point, and you can simply rerun it; for a large account, you would want to add some exception handling - at least keep track of <code>offset</code> variable, which keeps track of how many videos have been processed, so that you could restart the app at that point.</li>
       <li class="language-editable">For a large account, this would take some time to complete processing; any videos added after the app begins processing will be missed. The app tells you how many videos it processed, however, so you could get another count of videos afterwards to see if any were missed. The result are sorted by creation date ascending, so the missed videos will be the last ones added to account.</li>
     </ul>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
-    
-    <div class="bcls-expander-content">
-    <p class="language-editable">To use the CMS API you will need proper credentials.</p>
-    
-    <p class="language-editable">The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
-    
-    <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
-    <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
-    </figure>
-    
-    <p class="language-editable">If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
-    
-    <pre class="line-numbers">
+  </section>
+
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="getCredentials">Get credentials</h2>
+      </summary>
+
+      <p class="language-editable">To use the CMS API you will need proper credentials.</p>
+
+      <p class="language-editable">The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
+
+      <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
+        <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+      </figure>
+
+      <p class="language-editable">If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+
+      <pre class="line-numbers">
             <code class="language-json">"operations": [
               "video-cloud/video/all",
               "video-cloud/playlist/all",
               "video-cloud/sharing-relationships/all",
               "video-cloud/notifications/all"
             ]</code></pre>
-    
-    <ul>
-      <li class="language-editable"><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
-      <li class="language-editable"><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
-    </ul>
-    </div>
-    </section>
-    
-    <section class="bcls-section">
+
+      <ul>
+        <li class="language-editable"><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
+        <li class="language-editable"><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="bcls-section">
     <h2 id="codepen">Codepen</h2>
-    
-    <p class="language-editable">The Codepen below contains the working app - you can look at the <strong>Result</strong> tab it to see what it does, and then look at the HTML, CSS, and JavaScript code it uses.</p>
-    
+    <h3>Source code</h3>
     <p class="language-editable">Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18029-update-geo-properties-sample">GitHub repository</a>.</p>
-    
+    <h3>Sample app</h3>
     <p data-height="900" data-theme-id="34967" data-slug-hash="mpeNNO" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="CMS API: Update Geo Properties" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/mpeNNO/">CMS API: Update Geo Properties</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-    <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></section>
-    
-    <section class="bcls-section">
-    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
-    
-    <div class="bcls-expander-content">
-    <p class="language-editable">Here are some tips to effectively use the above CodePen:</p>
-    
-    <ul>
-      <li class="language-editable">Toggle the actual display of the app by clicking the <strong>Result</strong> button.</li>
-      <li class="language-editable">Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
-      <li class="language-editable">Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-      <li class="language-editable">Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18029-update-geo-properties-sample">GitHub repository</a>.</li>
-    </ul>
-    </div>
-    </section>
-    
-    <section class="bcls-section">
+    <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+  </section>
+
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="Using_the_CodePen">Using the CodePen</h2>
+      </summary>
+
+      <p class="language-editable">Here are some tips to effectively use the above CodePen:</p>
+
+      <ul>
+        <li class="language-editable">Toggle the actual display of the app by clicking the <strong>Result</strong> button.</li>
+        <li class="language-editable">Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+        <li class="language-editable">Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+        <li class="language-editable">Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18029-update-geo-properties-sample">GitHub repository</a>.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="bcls-section">
     <h2 id="proxy">Proxy code</h2>
-    
+
     <p class="language-editable">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/getting-started/learning-guide-using-rest-apis.html">Using the REST APIs</a>.</p>
-    </section>
-    </article>
-    
+  </section>
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">

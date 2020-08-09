@@ -1309,22 +1309,22 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <h1>Report on Audio-Only Content</h1>
 <article class="bcls-article">
   <summary>If you have audio-only content in your video library, you might find it useful to run a report displaying just those audio-only videos. This sample shows you how to do that.</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    
+
     <aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
-    
+
     <p>Video Cloud allows you to use audio-only content in the form of videos with no video track. However, it doesn't flag these videos as "audio-only" in any way, so if you have a large library of mixed audio and video content, it may not be obvious how to create a report on your audio-only content.</p>
-    
+
     <p>There are properties in the renditions that will tell you if it is audio-only, but the properties are different for videos that were ingested using the legacy ingest system or using the Dynamic Delivery system:</p>
-    
+
     <ul>
       <li>For legacy ingest videos, each rendition will have an <code>audio_only</code> property that is a boolean</li>
       <li>For Dynamic Delivery videos, each rendition will have a <code>media_type</code> property that will be set to <code>audio</code> or <code>video</code></li>
     </ul>
-    
+
     <p>In the sample app here, we use a function that checks for either case:</p>
-    
+
     <pre class="line-numbers">
         <code class="language-javascript">function isAudio(rendition) {
           if (rendition.hasOwnProperty('audio_only') &amp;&amp; rendition.audio_only === false) {
@@ -1334,15 +1334,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           }
           return true;
         }</code></pre>
-    
+
     <h3>Notes on this sample</h3>
-    
+
     <ul>
       <li>Any video in Video Cloud may have audio-only renditions. This sample identifies content that has <strong>only</strong> audio renditions, and therefore checks every rendition. It would be straightforward to modify the code to produce a report on content that has at least one audio-only rendition. This is the only change you should need to make to the sample code:
-    
-      <p>Existing code (to find on audio-only content):</p>
-    
-      <pre class="line-numbers">
+
+        <p>Existing code (to find on audio-only content):</p>
+
+        <pre class="line-numbers">
         <code class="language-javascript">function processRenditions(video, renditions) {
             var i,
               iMax = renditions.length,
@@ -1366,10 +1366,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
               return;
             }
           }</code></pre>
-    
-      <p>Version of the function to identify any content that has audio-only renditions:</p>
-    
-      <pre class="line-numbers">
+
+        <p>Version of the function to identify any content that has audio-only renditions:</p>
+
+        <pre class="line-numbers">
         <code class="language-javascript">function processRenditions(video, renditions) {
             var i,
               iMax = renditions.length,
@@ -1393,66 +1393,73 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </li>
       <li>Remote asset content is <strong>not</strong> checked to see if it is audio-only.</li>
     </ul>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
-    
-    <div class="bcls-expander-content">
-    <p>To use the CMS API you will need proper credentials.</p>
-    
-    <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
-    
-    <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
-    <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
-    </figure>
-    
-    <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
-    
-    <pre class="line-numbers">
+  </section>
+
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="getCredentials">Get credentials</h2>
+      </summary>
+
+      <p>To use the CMS API you will need proper credentials.</p>
+
+      <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
+
+      <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
+        <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+      </figure>
+
+      <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+
+      <pre class="line-numbers">
           <code class="language-json">"operations": [
             "video-cloud/video/all",
             "video-cloud/playlist/all",
             "video-cloud/sharing-relationships/all",
             "video-cloud/notifications/all"
           ]</code></pre>
-    
-    <ul>
-      <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
-      <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
-    </ul>
-    </div>
-    </section>
-    
-    <section class="bcls-section" id="workingSample">
+
+      <ul>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="bcls-section" id="workingSample">
     <h2>Audio content report</h2>
-    Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18729-cms-api-sample-report-audio-only-content">GitHub repository</a>.
-    
+    <h3>Source code</h3>
+    <p>
+      Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18729-cms-api-sample-report-audio-only-content">GitHub repository</a>.
+    </p>
+    <h3>Sample app</h3>
     <p class="codepen" data-height="1400" data-theme-id="34967" data-default-tab="result" data-user="rcrooks1969" data-slug-hash="ZwyVJL" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid black; margin: 1em 0; padding: 1em;" data-pen-title="CMS API Sample: Audio Content Report"><span>See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/ZwyVJL/"> CMS API Sample: Audio Content Report</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</span></p>
-    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
-    
-    <section class="bcls-section">
-    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
-    
-    <div class="bcls-expander-content">
-    <p>Here are some tips to effectively use the above CodePen:</p>
-    
-    <ul>
-      <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
-      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
-      <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-      <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18729-cms-api-sample-report-audio-only-content">GitHub repository</a>.</li>
-    </ul>
-    </div>
-    </section>
-    
-    <section class="bcls-section">
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+  </section>
+
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="Using_the_CodePen">Using the CodePen</h2>
+      </summary>
+
+      <p>Here are some tips to effectively use the above CodePen:</p>
+
+      <ul>
+        <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+        <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+        <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+        <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18729-cms-api-sample-report-audio-only-content">GitHub repository</a>.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="bcls-section">
     <h2 id="proxy">Proxy code</h2>
-    
+
     <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/getting-started/learning-guide-using-rest-apis.html">Using the REST APIs</a>.</p>
-    </section>
-    </article>
-    
+  </section>
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
