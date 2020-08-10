@@ -1309,19 +1309,19 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <h1>Using <code>last_viewed</code> Data</h1>
 <article class="bcls-article">
   <summary>In this topic, you will learn about reports using the player <code>last_viewed</code> data.</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="disclaimer">Disclaimer</h2>
-    
+
     <aside class="bcls-aside bcls-aside--information">This sample app is meant as a way for you to explore the basics of the Player Management API. It is not meant to be an enterprise ready, deployable app. For instance, form validation is not exhaustive and passwords are sent NOT using HTTPS.
-    <p>To learn about the general approach concerning the architecture of this sample app, specifically authentication and AJAX implementations, see the <a href="https://support.brightcove.com/search?search=search=xmlhttprequest">examples that use HTTPRequest</a>.</p>
+      <p>To learn about the general approach concerning the architecture of this sample app, specifically authentication and AJAX implementations, see the <a href="https://support.brightcove.com/search?search=search=xmlhttprequest">examples that use HTTPRequest</a>.</p>
     </aside>
-    </section>
-    
-    <section class="bcls-section">
+  </section>
+
+  <section class="bcls-section">
     <h2 id="section-name">Understanding last_viewed information</h2>
-    
+
     <p>Each player has associated with it an array that contains a record of how many times a player was loaded. This information is stored in an array name <code>last_viewed</code>. You see below an example of such an array. Note that the <code>count</code> records how many time in the day the specific player was loaded. The <code>date</code> specifies the specific day.</p>
-    
+
     <pre class="line-numbers">
     <code class="language-javascript notranslate">[
       {
@@ -1338,23 +1338,23 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         "date": "2018-10-21T05:00:00.000Z"
       }
     ]</code></pre>
-    
+
     <aside class="bcls-aside bcls-aside--information">Note the following:
-    <ul>
-      <li>The count is compiled once a day.</li>
-      <li>The count is for player loads, it is not necessary that a video was actually played to add to the count.</li>
-      <li>The array is limited to 30 entries. Mostly likely this is NOT 30 consecutive days, but 30 days where the count was non-zero.</li>
-      <li>The compiled data does NOT record counts before mid-October 2018.</li>
-      <li>If a player has no data, the array is empty.</li>
-    </ul>
+      <ul>
+        <li>The count is compiled once a day.</li>
+        <li>The count is for player loads, it is not necessary that a video was actually played to add to the count.</li>
+        <li>The array is limited to 30 entries. Mostly likely this is NOT 30 consecutive days, but 30 days where the count was non-zero.</li>
+        <li>The compiled data does NOT record counts before mid-October 2018.</li>
+        <li>If a player has no data, the array is empty.</li>
+      </ul>
     </aside>
-    </section>
-    
-    <section class="bcls-section">
+  </section>
+
+  <section class="bcls-section">
     <h2 id="architecture">App architecture</h2>
-    
+
     <p>The high-level application logic for this app is as follows:</p>
-    
+
     <ol>
       <li>Gather user data necessary to retrieve information for all players in an account</li>
       <li>Build the JSON data structure to pass to the API for player creation</li>
@@ -1362,46 +1362,48 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>On AJAX call success, extract the <strong>last_viewed</strong> array for each player.</li>
       <li>For each player, display the <strong>last_viewed</strong> information in the table</li>
     </ol>
-    </section>
-    
-    <section class="bcls-section">
+  </section>
+
+  <section class="bcls-section">
     <h2 id="sample_app">Sample app</h2>
-    
+    <h3>Source code</h3>
     <p>Find all the code associated with this sample in <a href="https://github.com/BrightcoveLearning/18688-player-management-api-sample-using-lastviewed-data">this GitHub repository</a>.</p>
-    
+
     <p>Notes on the app:</p>
-    
+
     <ul>
       <li>If you do not enter data, a Brightcove Learning Services account is used for demonstration purposed.</li>
       <li>To see the table at a more readable width, click the <strong>EDIT ON CODEPEN</strong> link.</li>
       <li>The raw players data is displayed under the table in a textbox, if you are interested in viewing that.</li>
     </ul>
-    
+
     <p data-height="950" data-theme-id="14832" data-slug-hash="wYRyEb" data-default-tab="result" data-user="rcrooks1969" data-pen-title="Gather Player last_viewed Statistics" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/wYRyEb/">Gather Player last_viewed Statistics</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
-    
-    <section class="bcls-section">
-    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
-    
-    <div class="bcls-expander-content">
-    <p>Here are some tips to effectively use the above CodePen:</p>
-    
-    <ul>
-      <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
-      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
-      <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-      <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18267-player-management-api-sample-create-player">GitHub repository</a>.</li>
-    </ul>
-    </div>
-    </section>
-    
-    <section class="bcls-section">
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+  </section>
+
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="Using_the_CodePen">Using the CodePen</h2>
+      </summary>
+
+      <p>Here are some tips to effectively use the above CodePen:</p>
+
+      <ul>
+        <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+        <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+        <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+        <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18267-player-management-api-sample-create-player">GitHub repository</a>.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="bcls-section">
     <h2 id="proxy">Proxy code</h2>
-    
+
     <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/getting-started/learning-guide-using-rest-apis.html">Using the REST APIs</a>.</p>
-    </section>
-    </article>
-    
+  </section>
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
