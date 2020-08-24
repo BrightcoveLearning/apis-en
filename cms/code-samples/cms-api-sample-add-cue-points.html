@@ -7,43 +7,43 @@ grandparent: CMS API
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
-    
+
     <aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
-    
+
     <p>Cue points are specified places on the video timeline. When the video is played back, an event is automatically broadcast every time a cue point is reached - using the Player API, you can listen for these events and take whatever action you wish. In addition, you can read all the cue point information from the video metadata stored in the player <code>mediainfo</code> object, which allows you to <a href="https://player.support.brightcove.com/code-samples/brightcove-player-sample-ad-indicators-playback-bar.html">mark the cue points on the video timeline</a> in some way if you want to.</p>
-    
+
     <p>There are two kinds of cue points:</p>
-    
+
     <ul>
       <li class="language-editable">Ad cue points: these are used to mark places where an ad request should be made (if the video and player are enabled for advertising).</li>
       <li class="language-editable">Code cue points: these are used to take some action using the Player API - some typical uses are displaying some kind of call-to-action (CTA) or displaying some image or text relating to video content, perhaps as a video overlay or in the page around the player.</li>
     </ul>
-    </section>
-    
-    <section class="bcls-section">
+  </section>
+
+  <section class="bcls-section">
     <h2 id="implementation_overview">Implementation overview</h2>
-    
+
     <p>You can add cue points in <a href="https://studio.support.brightcove.com/media/working-cue-points-media-module.html">the Studio Media module</a>. You can also add them using the CMS API, which is the method we will use in this sample.</p>
-    
+
     <h3>HTTP method</h3>
-    
+
     <p>Cue points can be added either when you <a href="/cms/references/reference.html#api-videoGroup-Create_Video">create the video</a> or later with an <a href="/cms/references/reference.html#api-videoGroup-Update_Video">update request</a>. In this sample, we will add them to an existing video by making a <a href="/cms/references/reference.html#api-videoGroup-Update_Video">video update</a> request, which means you will use the <code>PATCH</code> method.</p>
-    
+
     <aside class="bcls-aside bcls-aside--information language-editable">If you update the video again to change or add additional cue points, you must include the entire array of cue points in the request body.</aside>
-    
+
     <h3>Endpoint</h3>
-    
+
     <p>The endpoint for the update video request is:</p>
-    
+
     <pre class="line-numbers">
           <code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span></code>/videos/<span class="bcls-input">video_id</span></pre>
-    
+
     <h3>Request body</h3>
-    
+
     <p>The request body is a JSON object that can contain many items of video metadata. Here we will just look at the <code>cue_points</code> field, which is set to an array of cue point objects, as in the following sample:</p>
-    
+
     <pre class="line-numbers">
           <code class="language-json">{
           "cue_points": [
@@ -63,11 +63,11 @@ grandparent: CMS API
               }
             ]
           }</code></pre>
-    
+
     <h3>Cue point object fields</h3>
-    
+
     <p>Below is a description of the fields for cue point objects.</p>
-    
+
     <table class="bcls-table">
       <caption class="bcls-caption--table">Cue Point Object Fields</caption>
       <thead class="bcls-table__head">
@@ -111,66 +111,75 @@ grandparent: CMS API
         </tr>
       </tbody>
     </table>
-    
+
     <h3>Notes</h3>
-    
+
     <ul>
       <li id="note1" class="language-editable"><sup><strong>[1]</strong> </sup> Technically, the cue point is active until the next cue point is reached - therefore, in the cue points array that you can retrieve from the Brightcove Player, you will see a <code>startTime</code> and <code>endTime</code> as well at a <code>time</code> for the cue point.</li>
     </ul>
-    </section>
-    
-    <section class="bcls-section">
+  </section>
+
+  <section class="bcls-section">
     <details>
-      <summary><h2 id="getCredentials">Getting Authentication Credentials</h2></summary>
-    <p>To use the CMS API you will need proper credentials.</p>
-    
-    <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
-    
-    <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
-    <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
-    </figure>
-    
-    <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
-    
-    <pre class="line-numbers">
+      <summary>
+        <h2 id="getCredentials">Getting Authentication Credentials</h2>
+      </summary>
+      <p>To use the CMS API you will need proper credentials.</p>
+
+      <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
+
+      <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
+        <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+      </figure>
+
+      <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+
+      <pre class="line-numbers">
           <code class="language-json">"operations": [
             "video-cloud/video/all",
             "video-cloud/playlist/all",
             "video-cloud/sharing-relationships/all",
             "video-cloud/notifications/all"
           ]</code></pre>
-    
-    <ul>
-      <li class="language-editable"><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
-      <li class="language-editable"><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
-    </ul>
+
+      <ul>
+        <li class="language-editable"><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
+        <li class="language-editable"><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
+      </ul>
     </details>
-    </section>
-    
-    <section class="bcls-section">
+  </section>
+
+  <section class="bcls-section">
     <h2 id="sample_app">Sample app</h2>
     Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18030-cms-api-sample-add-cue-points">GitHub repository</a>.
-    
+
     <p data-height="1200" data-theme-id="34967" data-slug-hash="bvqJEp" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="CMS API Sample: Add Cue Points" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/bvqJEp/">CMS API Sample: Add Cue Points</a> by Brightcove Learning Services ( <a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-    <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
-    
-    <section class="bcls-section">
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+  </section>
+
+  <section class="bcls-section">
     <details>
-    <summary><h2 id="Using_the_CodePen">Using the CodePen</h2></summary>
-    
-    <ul>
-      <li class="language-editable">Toggle the actual display of the app by clicking the <strong>Result</strong> button.</li>
-      <li class="language-editable">Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
-      <li class="language-editable">Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-      <li class="language-editable">Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18030-cms-api-sample-add-cue-points">GitHub repository</a>.</li>
-    </ul>
+      <summary>
+        <h2 id="Using_the_CodePen">Using the CodePen</h2>
+      </summary>
+
+      <ul>
+        <li class="language-editable">Toggle the actual display of the app by clicking the <strong>Result</strong> button.</li>
+        <li class="language-editable">Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+        <li class="language-editable">Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+        <li class="language-editable">Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18030-cms-api-sample-add-cue-points">GitHub repository</a>.</li>
+      </ul>
     </details>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="proxy">Proxy code</h2>
-    
-    <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/getting-started/learning-guide-using-rest-apis.html">Using the REST APIs</a>.</p>
-    </section>
-    </article>
-    
+  </section>
+
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="proxy">Proxy code</h2>
+      </summary>
+
+      <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/getting-started/learning-guide-using-rest-apis.html">Using the REST APIs</a>.</p>
+    </details>
+  </section>
+
+</article>
