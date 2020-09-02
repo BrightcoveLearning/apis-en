@@ -96,6 +96,9 @@ grandparent: Playback API
               <li>
                 DASH VMAP
               </li>
+              <li>
+                MP4
+              </li>
             </ul>
           </td>
         </tr>
@@ -184,7 +187,14 @@ grandparent: Playback API
               <td>DASH VMAP</td>
               <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/dash.vmap?bcov_auth={jwt}</code></pre></td>
             </tr>
-    
+            <tr>
+              <td>Highest Bitrate MP4</td>
+              <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/high.mp4?bcov_auth={jwt}</code></pre></td>
+            </tr>
+            <tr>
+              <td>Lowest Bitrate MP4</td>
+              <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/low.mp4?bcov_auth={jwt}</code></pre></td>
+            </tr>
           </tbody>
         </table>
     
@@ -277,27 +287,27 @@ grandparent: Playback API
               </tr>
             </tbody>
           </table>
-    
+    <br/>
       <p>
         Here is an example of the JSON Web Token (JWT) claims that you might use:
       </p>
       <pre class="line-numbers"><code class="language-json">{
-        // account id: JWT is only valid for this accounts
-        &quot;accid&quot;:&quot;4590388311111&quot;,
-        // expires: timestamp when JWT expires
-        &quot;exp&quot;:1577989732,
-        // issued at: timestamp when the JWT was created
-        &quot;iat&quot;:1575484132,
-        // content id: JWT is only valid for video id or reference id
-        &quot;conid&quot;:&quot;5805807122222&quot;,
-        // protection: specify a protection type in the case where multiple are available for a single video
-        &quot;pro&quot;:&quot;aes128&quot;,
-        // VOD specific configuration options
-        &quot;vod&quot;:{
-          // SSAI configuration to apply
-          &quot;ssai&quot;:&quot;efcc566-b44b-5a77-a0e2-d33333333333&quot;
-        }
-      }</code></pre>
+  // account id: JWT is only valid for this accounts
+  &quot;accid&quot;:&quot;4590388311111&quot;,
+  // expires: timestamp when JWT expires
+  &quot;exp&quot;:1577989732,
+  // issued at: timestamp when the JWT was created
+  &quot;iat&quot;:1575484132,
+  // content id: JWT is only valid for video id or reference id
+  &quot;conid&quot;:&quot;5805807122222&quot;,
+  // protection: specify a protection type in the case where multiple are available for a single video
+  &quot;pro&quot;:&quot;aes128&quot;,
+  // VOD specific configuration options
+  &quot;vod&quot;:{
+    // SSAI configuration to apply
+    &quot;ssai&quot;:&quot;efcc566-b44b-5a77-a0e2-d33333333333&quot;
+  }
+}</code></pre>
     </section>
     
     <section class="bcls-section">
@@ -355,9 +365,6 @@ grandparent: Playback API
       <ul>
         <li>
           Live streams will be supported in a later release.
-        </li>
-        <li>
-          MP4s will be supported in a later release.
         </li>
         <li>
           Delivery Rules will be supported in a later release.
