@@ -24,6 +24,8 @@ grandparent: Playback API
     <p>Brightcove provides static URLs to video manifest files for assets in your Video Cloud library. This gives you the flexibility to manage your content in your own CMS, and deliver it using a custom security schema. </p>
     
     <p>This is important for customers who have existing architecture that does not allow a Playback API call before needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one call.</p>
+
+    <p>Also see the <a href="/playback/references/reference_v2.html#tag/Static-URLs">Playback API v2 reference</a>.</p>
     </section>
     
     <section class="bcls-section">
@@ -180,11 +182,11 @@ grandparent: Playback API
               <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/manifest.mpd?bcov_auth={jwt}</code></pre></td>
             </tr>
             <tr>
-              <td>HLS VMAP</td>
+              <td>HLS VMAP<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
               <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/hls.vmap?bcov_auth={jwt}</code></pre></td>
             </tr>
             <tr>
-              <td>DASH VMAP</td>
+              <td>DASH VMAP<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
               <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/dash.vmap?bcov_auth={jwt}</code></pre></td>
             </tr>
             <tr>
@@ -197,7 +199,10 @@ grandparent: Playback API
             </tr>
           </tbody>
         </table>
-    
+        <h4>Notes</h4>
+        <ul>
+          <li id="note1-1"><sup><strong>[1-1]</strong></sup> HLS and DASH VMAPs can only be retrieved if you include the <code>ssai</code> claim when you create the JWT - see the following section.</li>
+        </ul>
     </section>
     
     <section class="bcls-section">
@@ -283,7 +288,7 @@ grandparent: Playback API
                 <td><code>ssai</code></td>
                 <td>String</td>
                 <td></td>
-                <td>Your Server-Side Ad Insertion (SSAI) configuration id.</td>
+                <td>Your Server-Side Ad Insertion (SSAI) configuration id. This claim is <strong>required</strong> to retrieve either an HLS or a DASH VMAP.</td>
               </tr>
             </tbody>
           </table>
