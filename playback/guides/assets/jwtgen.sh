@@ -6,9 +6,8 @@ HEADER='{
 }'
 
 payload='{
-	"pkid": "04761171-9b19-419b-9e29-6c29617735d2",
-	"accid": "1752604059001",
-  "conid": "6156696074001"
+	"pkid": "f5ef3f82-6b58-42ee-8d2f-c3a62fccfb73",
+	"accid": "1752604059001"
 }'
 
 # Use jq to set the dynamic `iat` and `exp`
@@ -31,5 +30,5 @@ JWT_HDR_B64="$(echo -n "$HEADER" | b64enc)"
 JWT_PAY_B64="$(echo -n "$PAYLOAD" | b64enc)"
 UNSIGNED_JWT="$JWT_HDR_B64.$JWT_PAY_B64"
 SIGNATURE=$(echo -n "$UNSIGNED_JWT" | rs_sign | b64enc)
-
+echo "\n"
 echo "$UNSIGNED_JWT.$SIGNATURE"
