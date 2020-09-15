@@ -1311,9 +1311,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <summary>This topic explains the syntax for using version 2 of video search, supported by the CMS API.</summary>
     <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
-    
+
     <p class="language-editable">Version 2 of the video search used by the CMS API simplifies the syntax and makes it simpler to use.</p>
-    
+
     <aside class="bcls-aside bcls-aside--warning language-editable">
       <strong>Notes:</strong>
       <ul>
@@ -1321,9 +1321,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         <li class="language-editable">The original search syntax is still supported by both the CMS and Playback APIs.</li>
       </ul>
     </aside>
-    
+
     <p class="language-editable">Choosing which syntax to use is a simple matter of choosing the appropriate URL parameter:</p>
-    
+
     <ul>
       <li class="language-editable">To use the new v2 search:
       <pre>
@@ -1335,14 +1335,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="basics">Basics</h2>
-    
+
     <p class="language-editable">The basic element of a search string is a <em>search term</em>, which may be prefixed by a field name. If the field name is included, only that metadata field will be searched. Otherwise, several fields (listed below) will be searched.</p>
-    
+
     <p class="language-editable">For example:</p>
-    
+
     <table class="bcls-table">
       <caption class="bcls-caption--table">Basic Search</caption>
       <thead class="bcls-table__head">
@@ -1362,9 +1362,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         </tr>
       </tbody>
     </table>
-    
+
     <p class="language-editable">When you provide no field name to search, the request will search for that value in the following fields:</p>
-    
+
     <ul id="default_fields">
       <li class="language-editable"><code>id</code></li>
       <li class="language-editable"><code>name</code></li>
@@ -1376,9 +1376,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li class="language-editable"><code>custom_fields</code> (searches all custom fields)</li>
       <li class="language-editable"><code>custom_field_name</code> (searches a specific named custom field)</li>
     </ul>
-    
+
     <p class="language-editable">The supported fields to search are:</p>
-    
+
     <table class="bcls-table" id="supported_search_fields">
       <caption class="bcls-caption--table">Supported Search Fields</caption>
       <thead class="bcls-table__head">
@@ -1438,15 +1438,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         </tr>
       </tbody>
     </table>
-    
+
     <p class="language-editable">In both the examples shown above, videos that do not have the word "<code>bird</code>" in any relevant field might still be returned. The next section explains how to limit search results to only videos that have the specified terms.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="advanced_search">Advanced search</h2>
-    
+
     <p class="language-editable">There are some modifiers that help you limit search results to exactly the videos you want.</p>
-    
+
     <table class="bcls-table">
       <caption class="bcls-caption--table">Search Modifiers</caption>
       <thead class="bcls-table__head">
@@ -1493,31 +1493,31 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </tbody>
     </table>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="search_for_a_phrase">Phrase search</h2>
-    
+
     <p class="language-editable">You can search for a phrase (rather than a single word) by placing in quotation marks:</p>
-    
+
     <ul>
       <li class="language-editable"><code>"blue heron"</code></li>
       <li class="language-editable"><code>name:"blue heron"</code></li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="date_times">Date/Times</h2>
-    
+
     <p class="language-editable">You can search on a date-time interval by using:</p>
-    
+
     <p class="language-editable"><code>[{start} TO {end}]</code></p>
-    
+
     <p class="language-editable">To search on a single date/time, set the <code>start</code> and <code>end</code> to the same value:</p>
-    
+
     <p class="language-editable"><code>[2019-09-30T00:00:00.000Z TO 2019-09-30T00:00:00.000Z]</code></p>
-    
+
     <p class="language-editable">Date-time values are specified using the ISO 8601 format:</p>
-    
+
     <table class="bcls-table">
       <caption class="bcls-caption--table">Date/Time Formats</caption>
       <thead class="bcls-table__head">
@@ -1530,7 +1530,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <tbody class="bcls-table__body">
         <tr>
           <td class="language-editable">Date-Time</td>
-          <td class="language-editable"><code>yyyy-MM-ddThh-mm-ss.sssZ</code></td>
+          <td class="language-editable"><code>yyyy-MM-ddThh:mm:ss.sssZ</code></td>
           <td class="language-editable"><code>2019-09-30T14:24:33.512Z</code></td>
         </tr>
         <tr>
@@ -1545,11 +1545,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         </tr>
       </tbody>
     </table>
-    
+
     <aside class="bcls-aside bcls-aside--information language-editable">Note the required <code>Z</code> in the timezone indicator. Currently the value must be blank (indicating UTC as the timezone).</aside>
-    
+
     <p class="language-editable">Below are some sample date/time search strings.</p>
-    
+
     <table class="bcls-table">
       <caption class="bcls-caption--table">Sample Data/Time Searches</caption>
       <thead class="bcls-table__head">
@@ -1579,7 +1579,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </table>
     </section>
     </article>
-    
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
