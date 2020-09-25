@@ -10,69 +10,68 @@ grandparent: Dynamic Ingest API
   <summary>{{ page.description }}</summary>
     <section class="bcls-section">
     <h2 id="Overview">Overview</h2>
-    
+
     <p>DRM (Digital Rights Management) protects your video content by encrypting the video data and unlocking it based on license policies. When the video content is loaded into a Brightcove player, the player calls back to a licensing server and obtains permission to play the video. This transaction is transparent to viewers.</p>
-    
+
     <p>For a general overview of DRM and Video Cloud support it, see <a href="https://studio.support.brightcove.com/general/overview-digital-rights-management-drm-video-cloud.html">Overview: Digital Rights Management in Video Cloud</a>.</p>
-    
+
     <aside class="bcls-aside bcls-aside--information"><strong>Notes:</strong>
-    
+
     <ul>
       <li class="language-editable">To use DRM or HLS encryption, your account must be enabled for these features. Contact your account manager for more information.</li>
       <li class="language-editable">When videos are enabled for DRM, MP4 sources/renditions are automatically hidden (meaning that they exist, but are not sent to player as sources) in Studio, the CMS API, and the Playback API.</li>
       <li class="language-editable">
       <p>DRM is currently supported in the following mobile OS browsers:</p>
-    
+
       <ul>
         <li class="language-editable">iOS Safari (11.2+)</li>
         <li class="language-editable">Android Chrome</li>
       </ul>
-    
+
       <p>Widevine is supported for Android apps and FairPlay is supported for iOS apps. For details about creating mobile apps, see the <a href="https://sdks.support.brightcove.com">Brightcove Native Player SDKs</a> index page.</p>
       </li>
       <li class="language-editable">Brightcove currently does not support video-only or audio-only DRM playback.</li>
     </ul>
     </aside>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="DRM_for_dynamic_delivery">DRM for Dynamic Delivery</h2>
-    
-    <p>If your account is enabled for <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Delivery</a> <strong><em>and it has been enabled for DRM by your account manager</em></strong>, all the videos newly uploaded will be protected. If you wish to apply protection to existing DD videos, please contact Brightcove Support.</p>
-    
-    <aside class="bcls-aside bcls-aside--information">If you have older videos in a Dynamic Delivery account that were ingested using the legacy ingest system, they will need to be re-transcoded using a Dynamic Delivery profile before DRM will be applied. Existing videos already ingested for Dynamic Delivery <strong>do not need to be re-transcoded</strong> when DRM is enabled for the account in order to be DRM-protected.</aside>
-    
+
+    <p>If your account is enabled for <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Delivery</a> <strong><em>and it has been enabled for DRM by your account manager</em></strong>, all the videos newly uploaded will be protected. If you wish to apply protection to existing <strong>Dynamic Delivery</strong> videos, please contact Brightcove Support.</p>
+
+    <aside class="bcls-aside bcls-aside--information">If you have older videos in a Dynamic Delivery account that were ingested using the <strong>legacy ingest system</strong> (not Dynamic Delivery), they will need to be re-transcoded using a Dynamic Delivery profile before DRM will be applied. Existing videos already ingested for Dynamic Delivery <strong>do not need to be re-transcoded</strong>, but as noted above, you do need to contact Support and ask them to apply DRM protection to those videos.</aside>
+
     <p>If your account is enabled for DRM and you want to deliver some titles without DRM, set the <code class="notranslate">drm_disabled</code> flag via CMS API to <code class="notranslate">true</code> using an <a href="/cms/references/reference.html#api-videoGroup-Update_Video">Update Video request</a>.</p>
-    
+
     <h3>Sample request</h3>
-    
+
     <h4>Request</h4>
-    
+
     <p>The request is <code class="notranslate">PATCH</code> request to:</p>
-    
+
     <pre class="line-numbers">
               <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code></pre>
-    
+
     <h4>Request body</h4>
-    
+
     <pre class="line-numbers">
               <code class="language-json notranslate">{
                   "drm_disabled": true
               }</code></pre>
-    
+
     <p>You can also turn off DRM for particular videos by going to the video properties in Studio and clicking the DRM toggle:</p>
-    
+
     <figure class="bcls-figure"><img class="bcls-image" alt="Studio DRM Toggle" src="/assets/images/dynamic-ingest/ingest-guides/17949-studio-drm-toggle.png" />
     <figcaption class="bcls-caption--image">Studio DRM Toggle</figcaption>
     </figure>
-    
+
     <p>After you click the toggle, it will look like this:</p>
-    
+
     <figure class="bcls-figure"><img class="bcls-image" alt="Studio DRM Toggle Off" src="/assets/images/dynamic-ingest/ingest-guides/17949-studio-drm-toggle-off.png" />
     <figcaption class="bcls-caption--image">Studio DRM Toggle Off</figcaption>
     </figure>
-    
+
     <p>You do <strong>not</strong> need to create custom ingest profiles for DRM.</p>
     </section>
     </article>
-    
