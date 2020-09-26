@@ -1311,7 +1311,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <h1>Implementing Playback Rights Management Service</h1>
 <article class="bcls-article">
   <summary>In this topic, you will learn how to manage video playback using Brightcove's Playback Rights Management Service.</summary>
-  
+
   <br/>
   <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
 
@@ -1403,12 +1403,20 @@ window.prompt(&quot;BC_TOKEN:&quot;, cookiesObj.BC_TOKEN);</code></pre>
 
 <h3>Request client credentials</h3>
 <p>
-  Add accout permissions for the Playback Rights API.
+  Add account permissions for the Playback Rights API.
 </p>
 <ol class="bcls-tasklist">
   <li>
+    The simplest way to create client credentials for the Playback Rights API is to use <a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">this online app</a> and ensure that you include these permissions when you create the credentials:
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/playback-rights/getting-started/playback-rights-permissions.png" alt="Playback Rights Permissions">
+      <figcaption class="bcls-caption--image">Playback Rights Permissions</figcaption>
+    </figure>
+  </li>
+  <li>If you prefer generating your credentials using the OAuth API directly, continue with the following steps.</li>
+  <li>
     <p>
-  Here is an example of an OAuth client request with the permissions needed.
+  Here is an example of an OAuth client request with the permissions needed. See <a href="https://apis.support.brightcove.com/oauth/guides/get-your-bc-token.html">Getting your BC_TOKEN</a> for information on getting your BC_TOKEN.
 </p>
 <pre class="line-numbers"><code class="language-curl">curl \
   --include \
@@ -1542,13 +1550,13 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
     <p>
       The <code>playback_rights_id</code> value can be found in the response body as the <code>id</code> field. It should be similar to this:
     </p>
-    <pre class="line-numbers"><code class="language-json">{
-     &quot;id&quot;: &quot;<span class="bcls-highlight">your playback_rights_id</span>&quot;,
-     &quot;geo&quot;: {
-      &quot;allowed_countries&quot;: [
-       &quot;MX&quot;,
-       &quot;US&quot;]
-    }</code></pre>
+<pre class="line-numbers"><code class="language-json">{
+  &quot;id&quot;: &quot;<span class="bcls-highlight">your playback_rights_id</span>&quot;,
+  &quot;geo&quot;: {
+  &quot;allowed_countries&quot;: [
+    &quot;MX&quot;,
+    &quot;US&quot;]
+}</code></pre>
   </li>
 </ul>
 
