@@ -1,6 +1,6 @@
 ---
 title: 'CMS/Playback API: Videos Search v1'
-description: 'In this topic, you will learn how to search for videos in your account using the CMS API. The CMS API provides a programmatic way to search for videos in your Video Cloud library. This topic provides detail on the search syntax. <strong>Note: this is the original search syntax - we recommend that you use the simpler <a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">Video Search Syntax v2</a></strong>.'
+description: 'In this topic, you will learn how to search for videos in your account using the CMS API. The <span translate="No">CMS API</span> provides a programmatic way to search for videos in your Video Cloud library. This topic provides detail on the search syntax. <strong>Note: this is the original search syntax - we recommend that you use the simpler <a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">Video Search Syntax v2</a></strong>.'
 parent: Searching
 grandparent: CMS API
 ---
@@ -30,7 +30,7 @@ grandparent: CMS API
     <section class="bcls-section">
     <h2 id="API_usage">API usage</h2>
     
-    <p>The search functionality can be used with either the CMS API or the Playback API.</p>
+    <p>The search functionality can be used with either the <span translate="No">CMS API</span> or the Playback API.</p>
     
     <aside class="bcls-aside bcls-aside--information">Search strings for either API must contain at least 3 characters.</aside>
     
@@ -70,7 +70,7 @@ grandparent: CMS API
     <p>To perform a search of terms in your media library, use the <code translate="No">q</code> parameter.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q={search terms}</code></pre>
+      <code class="language-http" translate="No">q={search terms}</code></pre>
     
     <p>The search terms that you specify should be a url encoded list of terms separated by a space.</p>
     
@@ -99,13 +99,13 @@ grandparent: CMS API
     <p>Let's say you have a field called <code translate="No">color</code> that can take the values: <code translate="No">red</code>, <code translate="No">green</code>, <code translate="No">yellow</code>, or <code translate="No">blue</code>. You want to find videos that have that field set to the value <code translate="No">green</code> or <code translate="No">blue</code>:</p>
     
     <pre>
-      <code class="language-http">q=color:green%20color:blue</code></pre>
+      <code class="language-http" translate="No">q=color:green%20color:blue</code></pre>
     </div>
     
     <p>Example: This request returns videos which have a value of <code translate="No">bird</code> in at least one of the fields listed above.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=bird </code></pre>
+      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=bird </code></pre>
     
     <aside class="bcls-aside bcls-aside--warning">Search strings of less than 3 characters will not work - instead, all videos will be returned.</aside>
     
@@ -116,7 +116,7 @@ grandparent: CMS API
     <p>Example: This request returns videos which have a value of <code translate="No">wildlife</code> in the <code translate="No">name</code> field.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=name:wildlife</code></pre>
+      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=name:wildlife</code></pre>
     
     <p>The supported search fields are:</p>
     
@@ -264,7 +264,7 @@ grandparent: CMS API
     <p>Example: This request returns videos which HAVE a value of <code translate="No">sea</code> but DO NOT have a value of <code translate="No">lake</code> in the <code translate="No">tags</code> field.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=%2Btags:sea%20-tags:lake</code></pre>
+      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=%2Btags:sea%20-tags:lake</code></pre>
     
     <p>See <a href="#combine_search_criteria">Combining search criteria</a> below to see how to use required/excluded syntax to enforce AND logic for multiple search terms.</p>
     </section>
@@ -282,12 +282,12 @@ grandparent: CMS API
     <p>Example: This request returns videos which must have a value of <code translate="No">bar</code> in the <code translate="No">tag</code> field and may have a <code translate="No">name</code> containing value <code translate="No">foo</code></p>
     
     <pre class="line-numbers">
-      <code class="language-http">.../videos?q=name:foo%20%2Btags:bar&amp;sort=updated_at</code></pre>
+      <code class="language-http" translate="No">.../videos?q=name:foo%20%2Btags:bar&amp;sort=updated_at</code></pre>
     
     <p>Example: This request returns the same videos as above, but additionally sorts those results by the field <code translate="No">updated_at</code> and then limits the results to just 10 videos.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">.../videos?sort=updated_at&amp;q=name:foo%20%2Btags:bar&amp;limit=10</code></pre>
+      <code class="language-http" translate="No">.../videos?sort=updated_at&amp;q=name:foo%20%2Btags:bar&amp;limit=10</code></pre>
     </section>
     <!-- Quoted Search Terms -->
     
@@ -299,7 +299,7 @@ grandparent: CMS API
     <p>Most browsers and other agents will treat literal quotation marks (<code translate="No">"..."</code>) correctly, but if you run into a case where quoted search terms do not appear to be returning correct results, try replacing the quotation marks with <code translate="No">%22</code> (<code translate="No">%22...%22</code>)</p>
     
     <pre class="line-numbers">
-            <code class="language-http">
+            <code class="language-http" translate="No">
               q="foo" or q=%22foo%22
               q="foo%20bar" or q=%22foo%20bar%22
             </code>
@@ -310,7 +310,7 @@ grandparent: CMS API
     <p>This also works when searching against a specific field:</p>
     
     <pre class="line-numbers">
-            <code class="language-http">
+            <code class="language-http" translate="No">
               q=name:"home"
               q=name:"home%20run"
             </code>
@@ -321,12 +321,12 @@ grandparent: CMS API
     <p>Example: Notice that this request returns videos which have either a value of <code translate="No">sea</code> or <code translate="No">mammal</code> in the <code translate="No">tags</code> field.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:sea,mammal</code></pre>
+      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:sea,mammal</code></pre>
     
     <p>But, the following request returns only those videos which have a tag <code translate="No">sea,mammal</code>.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea,mammal"</code></pre>
+      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea,mammal"</code></pre>
     
     <aside class="bcls-aside bcls-aside--warning">Tags are a special case where you can search for multiple tags as a comma-delimited list - that is not true for other fields like name, description, etc. For other kinds of multiple terms, combine terms with <code translate="No">+</code> sign, like this: <code translate="No">q=tags:"bird"%20name:"owl"</code>.</aside>
     </section>
@@ -338,7 +338,7 @@ grandparent: CMS API
     <p>You may search on any custom field that you have defined for your videos.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=my_field:foo
+      <code class="language-http" translate="No">q=my_field:foo
       q=my_field:"foo"</code></pre>
     
     <p class="BCL-aside">Note: all custom field values are treated as strings. For example, if you have a list-type custom field that can take the values <code translate="No">true</code> or <code translate="No">false</code>, search will look for those strings, not boolean values (in many programming languages, <code translate="No">1</code> and <code translate="No">0</code> can be used interchangeably with <code translate="No">true</code> and <code translate="No">false</code> as boolean values, but searching on <code translate="No">q=my_boolean_field:1</code> will not return videos that have <code translate="No">my_boolean_field</code> set to <code translate="No">true</code>).</p>
@@ -346,7 +346,7 @@ grandparent: CMS API
     <p>Example: This request returns videos which have a value of <strong>animal</strong> in the <code translate="No">subject</code> custom field.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=subject:animal</code></pre>
+      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=subject:animal</code></pre>
     </section>
     <!-- Date Search -->
     
@@ -358,12 +358,12 @@ grandparent: CMS API
     <p>This will search for all videos with an <code translate="No">updated_at</code> value between Aug 1, 2012 and October 8, 2012. Here we are specifying each date in UTC format.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=updated_at:2012-08-01T00:00:00Z..2012-10-08T23:59:59Z</code></pre>
+      <code class="language-http" translate="No">q=updated_at:2012-08-01T00:00:00Z..2012-10-08T23:59:59Z</code></pre>
     
     <p>You can simplify this search by dropping the time components. The following is equivalent to the search above.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=updated_at:2012-08-01..2012-10-08</code></pre>
+      <code class="language-http" translate="No">q=updated_at:2012-08-01..2012-10-08</code></pre>
     
     <h3>Supported date formats</h3>
     
@@ -444,14 +444,14 @@ grandparent: CMS API
     <p>Example: Search for all videos modified in the last 2 days</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=updated_at:-2days..
+      <code class="language-http" translate="No">q=updated_at:-2days..
       </code>
       </pre>
     
     <p>Example: Search for all videos modified on or after August 11, 2013:</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=updated_at:2013-08-11T00:00:00Z..
+      <code class="language-http" translate="No">q=updated_at:2013-08-11T00:00:00Z..
       </code>
       </pre>
     
@@ -502,7 +502,7 @@ grandparent: CMS API
     <p>Example: This request searches for videos with a <code translate="No">name</code> value of <strong>gossip</strong>, which were updated between August 1, 2010 and October 8, 2010. It then sorts the response data by <code translate="No">updated_at</code> date in descending order.</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=%2Bname:gossip%20%2Bupdated_at:2010-08-01..2010-10-08&amp;sort=-updated_at</code></pre>
+      <code class="language-http" translate="No">q=%2Bname:gossip%20%2Bupdated_at:2010-08-01..2010-10-08&amp;sort=-updated_at</code></pre>
     
     <h3>Combining terms</h3>
     
@@ -513,17 +513,17 @@ grandparent: CMS API
     <p>For example, if you search on:</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=name:foo +tags:bar (URI-encoded: q=name:foo%20%2Btags:bar)</code></pre>
+      <code class="language-http" translate="No">q=name:foo +tags:bar (URI-encoded: q=name:foo%20%2Btags:bar)</code></pre>
     
     <p>the response will contain videos that have the tag 'bar' and may also have <code translate="No">foo</code> in the name. If you want to return only those videos that have <code translate="No">foo</code> in the name AND the tag 'bar', you must search on:</p>
     
     <pre class="line-numbers">
-      <code class="language-http">(unencoded) q=<strong>+</strong>name:foo <strong>+</strong>tags:bar (URI-encoded) q=<strong>%2B</strong>name:foo%20<strong>%2B</strong>tags:bar</code></pre>
+      <code class="language-http" translate="No">(unencoded) q=<strong>+</strong>name:foo <strong>+</strong>tags:bar (URI-encoded) q=<strong>%2B</strong>name:foo%20<strong>%2B</strong>tags:bar</code></pre>
     
     <p>Similarly, if you want to return only videos that have <code translate="No">foo</code> in the name, but do <strong>not</strong> have the tag 'bar', you would search on:</p>
     
     <pre class="line-numbers">
-      <code class="language-http">(unencoded) q=<strong>+</strong>name:foo<strong> -</strong>tags:bar (encoded) q=<strong>%2B</strong>name:foo%20<strong>-</strong>tags:bar</code></pre>
+      <code class="language-http" translate="No">(unencoded) q=<strong>+</strong>name:foo<strong> -</strong>tags:bar (encoded) q=<strong>%2B</strong>name:foo%20<strong>-</strong>tags:bar</code></pre>
     
     <h4>Examples</h4>
     
@@ -598,7 +598,7 @@ grandparent: CMS API
     <p>Example: This request returns videos with ids <code translate="No">123456789</code>, <code translate="No">987654321</code> and <code translate="No">48376387</code></p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=id:123456789%20id:987654321%20id:48376387</code></pre>
+      <code class="language-http" translate="No">q=id:123456789%20id:987654321%20id:48376387</code></pre>
     </section>
     <!-- State Search -->
     
@@ -608,12 +608,12 @@ grandparent: CMS API
     <p>You can perform or filter searches by the state of the video using the parameter:</p>
     
     <pre class="line-numbers">
-      <code class="language-http">q=state:ACTIVE( | INACTIVE | PENDING | DELETED)<sup><strong><a href="#note3">[3]</a></strong></sup></code></pre>
+      <code class="language-http" translate="No">q=state:ACTIVE( | INACTIVE | PENDING | DELETED)<sup><strong><a href="#note3">[3]</a></strong></sup></code></pre>
     
     <h3>Notes</h3>
     
     <ul>
-      <li id="note3"><sup><strong>[3]</strong></sup> Search for DELETED videos is only available for videos deleted in the past 10 days (the current time minus 10 days), and only through the CMS API (not the Playback API).</li>
+      <li id="note3"><sup><strong>[3]</strong></sup> Search for DELETED videos is only available for videos deleted in the past 10 days (the current time minus 10 days), and only through the <span translate="No">CMS API</span> (not the Playback API).</li>
     </ul>
     </section>
     <!-- Stemming -->
@@ -628,7 +628,7 @@ grandparent: CMS API
     <section class="bcls-section">
     <h2 id="url_encoding">Spaces/Special Characters</h2>
     
-    <p>The CMS API generally handles special characters in search strings, with a couple of exceptions:</p>
+    <p>The <span translate="No">CMS API</span> generally handles special characters in search strings, with a couple of exceptions:</p>
     
     <ul>
       <li>Spaces are not allowed, and must be encoded as <code translate="No">%20</code>. (Unencoded <code translate="No">+</code> signs can also replace spaces, but this can lead to confusion in your queries as <code translate="No">+</code> can also indicate that a term is required. See <a href="#requiredexcludedterms">required/excluded syntax</a>)

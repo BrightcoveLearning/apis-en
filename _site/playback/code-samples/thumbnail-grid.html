@@ -1326,15 +1326,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <section class="bcls-section">
     <h2 id="Design_considerations">Design considerations</h2>
     <h3>Getting video data</h3>
-    <p>Although either the CMS API or the Playback API can be used to fetch video data, the Playback API is the obvious choice here for several reasons:</p>
+    <p>Although either the <span translate="No">CMS API</span> or the Playback API can be used to fetch video data, the Playback API is the obvious choice here for several reasons:</p>
     <ul>
       <li>Because response data is cached (for up to 20 minutes), it is much faster</li>
-      <li>It returns all the data you need to play a video, whereas the CMS API requires two separate requests to get the video metadata and the video sources</li>
+      <li>It returns all the data you need to play a video, whereas the <span translate="No">CMS API</span> requires two separate requests to get the video metadata and the video sources</li>
       <li>It is CORS-enabled, meaning you do not need to route the API request through a server-side proxy app</li>
     </ul>
     <p>However, the Playback API offers two ways to fetch video data. There is a basic method to get a video by id (or reference id), and we could easily iterate over an array of ids to request each one. That is not very efficient, however.</p>
     <p>A better option is to use the video search method, which allows us to find all the videos by id and return them with one request. The search parameter for the request will look like this:</p>
-    <pre><code class="language-http">q=<span class="bcls-highlight">id:6543217890</span>%20<span class="bcls-highlight">id:1234567890</span>%20<span class="bcls-highlight">id:987654321</span>...</code></pre>
+    <pre><code class="language-http" translate="No">q=<span class="bcls-highlight">id:6543217890</span>%20<span class="bcls-highlight">id:1234567890</span>%20<span class="bcls-highlight">id:987654321</span>...</code></pre>
     <p>The <strong><code translate="No">%20</code></strong> in this search string is a URI-encoded space. For more information on the search syntax, see <a href="https://apis.support.brightcove.com/cms/searching/cmsplayback-api-videos-search.html">CMS/Playback API: Videos Search</a>.</p>
     <h3>The player</h3>
     <p>There are no special requirements for the player - the default Brightcove Player would work fine.</p>

@@ -1309,11 +1309,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <h1>Get Status of Dynamic Ingest Requests</h1>
 <article class="bcls-article">
-  <summary>When you use the Dynamic Ingest API to add videos to your Video Cloud account, what you most want to know is when the video has been processed and whether or not renditions were successfully created.</summary>
+  <summary>When you use the <span translate="No">Dynamic Ingest API</span> to add videos to your Video Cloud account, what you most want to know is when the video has been processed and whether or not renditions were successfully created.</summary>
     <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
     
-    <p>This document explains how you can track the status of jobs by either making status requests to the CMS API or by using Dynamic Ingest API <a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.html">notifications</a>. We also provide a sample dashboard app that automates the process</p>
+    <p>This document explains how you can track the status of jobs by either making status requests to the <span translate="No">CMS API</span> or by using <span translate="No">Dynamic Ingest API</span> <a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.html">notifications</a>. We also provide a sample dashboard app that automates the process</p>
     
     <p>Note that the status of ingest jobs is available only for jobs submitted with the past 7 days.</p>
     </section>
@@ -1321,12 +1321,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <section class="bcls-section">
     <h2 id="requesting_status">Requesting status</h2>
     
-    <p>You get the status of dynamic ingest jobs (ingest, replace, or retranscode) using <a href="/cms/references/reference.html#operation/GetStatusOfIngestJob">these CMS API endpoints</a> - note that these endpoints works for <strong>Dynamic Delivery jobs only</strong>:</p>
+    <p>You get the status of dynamic ingest jobs (ingest, replace, or retranscode) using <a href="/cms/references/reference.html#operation/GetStatusOfIngestJob">these <span translate="No">CMS API</span> endpoints</a> - note that these endpoints works for <strong>Dynamic Delivery jobs only</strong>:</p>
     
     <h3>Get status for all jobs</h3>
     
     <pre>
-    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs</code></pre>
+    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs</code></pre>
     
     <p>The response will look something like this:</p>
     
@@ -1361,7 +1361,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h3>Get status for a specific jobs</h3>
     
     <pre>
-    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs/{job_id}</code></pre>
+    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs/{job_id}</code></pre>
     
     <p>The response will look something like this:</p>
     
@@ -1466,7 +1466,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>If the <code translate="No">status </code> value is "SUCCESS", the video was processed successfully</li>
     </ul>
     
-    <p>To receive notifications, you need to include a "callbacks" field in you Dynamic Ingest API requests, pointing to one or more callback addresses:</p>
+    <p>To receive notifications, you need to include a "callbacks" field in you <span translate="No">Dynamic Ingest API</span> requests, pointing to one or more callback addresses:</p>
     
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
@@ -1482,7 +1482,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <section class="bcls-section" id="sample">
     <h2>Sample Dashboard</h2>
     
-    <p>This section explains how notifications can be put together to build a simple dashboard for the Dynamic Ingest API. The handler for notifications parses notifications from the Dynamic Ingest API to identify processing complete notifications. It then adds the video notifications into an array of objects for each video in a JSON file. The dashboard itself is an HTML page that imports the JSON file to get the notification data. It uses the ids to makes a request to the <a href="/cms/getting-started/overview-cms-api.html">CMS API</a> to get the video metadata.</p>
+    <p>This section explains how notifications can be put together to build a simple dashboard for the Dynamic Ingest API. The handler for notifications parses notifications from the <span translate="No">Dynamic Ingest API</span> to identify processing complete notifications. It then adds the video notifications into an array of objects for each video in a JSON file. The dashboard itself is an HTML page that imports the JSON file to get the notification data. It uses the ids to makes a request to the <a href="/cms/getting-started/overview-cms-api.html">CMS API</a> to get the video metadata.</p>
     <!-- You can view the dashboard <a href="//solutions.brightcove.com/bcls/di-api/di-log.html">here</a> --><!-- <p>All the files for this app, along with instructions for setting it up for your account, are in <a href="https://github.com/BrightcoveLearning/dynamic-ingest-dashboard">this repository</a>.</p> -->
     
     <p>Here is the high-level architecture of the app:</p>
@@ -1576,7 +1576,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <h4>Dashboard</h4>
     
-    <p>The dashboard includes the HTML and JavaScript to fetch the notification data and additional video data from the CMS API and write the results into a table:</p>
+    <p>The dashboard includes the HTML and JavaScript to fetch the notification data and additional video data from the <span translate="No">CMS API</span> and write the results into a table:</p>
     
     <pre class="line-numbers">
       <code class="language-html" translate="No">&lt;!DOCTYPE html&gt;
@@ -1767,7 +1767,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
             submitRequest(requestOptions, proxyURL, 'video');
           }
           /**
-          * initiates the cms api requests
+          * initiates the <span translate="No">CMS API</span> requests
           */
           function getVideoInfo() {
             iMax = videoDataArray.length;
@@ -1779,7 +1779,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
             }
           }
           /**
-          * make the cms api requests
+          * make the <span translate="No">CMS API</span> requests
           * @param {Object} options request options
           * @param (String) url URL to send request to
           * @param (String) type the request type
