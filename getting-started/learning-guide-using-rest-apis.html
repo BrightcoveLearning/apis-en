@@ -1,6 +1,6 @@
 ---
 title: 'Learning Guide: Using the REST APIs'
-description: 'In this topic, you will first get a high level overview of using the REST APIs in web apps via <code>XMLHttpRequest()</code> and a proxy. Then later in the document a deeper dive will discuss example code. The first example uses the Analytics API to retrieve and display in the Brightcove player controlbar the number of views the video currently in the player has had. The second, and slightly more complex, example uses the Analytics API in conjunction with the Brightcove Player catalog to retrieve the most popular videos from an account and show them in a playlist. The code discussion in this document will center on retrieving the desired data from the correct REST API.'
+description: 'In this topic, you will first get a high level overview of using the REST APIs in web apps via <code>XMLHttpRequest()</code> and a proxy. Then later in the document a deeper dive will discuss example code. The first example uses the <span translate="No">Analytics API</span> to retrieve and display in the Brightcove player controlbar the number of views the video currently in the player has had. The second, and slightly more complex, example uses the <span translate="No">Analytics API</span> in conjunction with the Brightcove Player catalog to retrieve the most popular videos from an account and show them in a playlist. The code discussion in this document will center on retrieving the desired data from the correct REST API.'
 parent: Getting Started
 ---
 <!-- 
@@ -93,7 +93,7 @@ parent: Getting Started
     <ul>
       <li>Line 1: Standard code to wait until the player is ready to interact with.</li>
       <li>Lines 2-4: Create/set values for variables needed later in the code.</li>
-      <li>Lines 7-12: Wait for the <code class="notranslate">loadstart</code> event so the <code class="notranslate">mediainfo</code> object is populated. Assign variables to hold values needed for the Analytics API endpoint.</li>
+      <li>Lines 7-12: Wait for the <code class="notranslate">loadstart</code> event so the <code class="notranslate">mediainfo</code> object is populated. Assign variables to hold values needed for the <span translate="No">Analytics API</span> endpoint.</li>
       <li>Line 13: Set the HTTP method for the call.</li>
     </ul>
     <pre class="line-numbers">
@@ -130,7 +130,7 @@ parent: Getting Started
     <p>The following screenshot from the console shows actual displayed data from the <code class="notranslate">console.log</code> statements:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="Processing of data in callback function" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/console-data-process-callback-function.png" /></figure>
     <pre class="line-numbers">
-	<code class="notranslate language-javascript">// +++ Make the request to the Analytics API +++
+	<code class="notranslate language-javascript">// +++ Make the request to the <span translate="No">Analytics API</span> +++
 	// Extract views from data returned by Analytics API
 	makeRequest(options, <span class="bcls-highlight">function(viewsRaw) {
 	var viewsCount;
@@ -329,7 +329,7 @@ parent: Getting Started
       <ul>
         <li>See the previous item - trying to parse an empty sting will throw a JSON exception</li>
         <li>
-          <p>Look at the response and make sure it is a JSON string (beginning with a <code>{</code> or a <code>[</code>). There are a few cases where a request might not return JSON - an Analytics API call, for example, if you set the <code>format</code> parameter to <code>csv</code> or <code>xlxs</code>. Again, if you are making those kinds of requests, you will need to adjust your code to handle non-JSON responses.</p>
+          <p>Look at the response and make sure it is a JSON string (beginning with a <code>{</code> or a <code>[</code>). There are a few cases where a request might not return JSON - an <span translate="No">Analytics API</span> call, for example, if you set the <code>format</code> parameter to <code>csv</code> or <code>xlxs</code>. Again, if you are making those kinds of requests, you will need to adjust your code to handle non-JSON responses.</p>
         </li>
         <li>In most cases, errors returned by the APIs are also in JSON format, but there are a few exceptions where the error is returned as plain text or HTML.</li>
       </ul>
@@ -522,8 +522,8 @@ parent: Getting Started
     <h2 id="Example_2">Example 2</h2>
     <p>This second example is more complex than the one detailed earlier. This example displays the 10 most popular videos from an account in a playlist. The main steps of the code are:</p>
     <ol>
-      <li>Request from the Analytics API the 10 videos with the most views in an account. This step involves an asynchronous call using a callback function.</li>
-      <li>From the returned Analytics API data, extract only the video IDs and place them in an array. A helper function is written to do the extraction of IDs from the returned data.</li>
+      <li>Request from the <span translate="No">Analytics API</span> the 10 videos with the most views in an account. This step involves an asynchronous call using a callback function.</li>
+      <li>From the returned <span translate="No">Analytics API</span> data, extract only the video IDs and place them in an array. A helper function is written to do the extraction of IDs from the returned data.</li>
       <li>Request the complete video objects for each of the videos in the list of IDs in the array. This step involves looping over the array and requesting the video objects using <code class="notranslate">player.catalog.getVideo()</code>. Of course, this involves multiple asynchronous calls using the <code class="notranslate">catalog</code>. A helper function is written to retrieve the video objects based on IDs and place the objects into an array.</li>
       <li>Place the array of video objects into the playlist for a playlist-enabled player.</li>
     </ol>
@@ -534,7 +534,7 @@ parent: Getting Started
       </li>
       <li>Line 3: Create a variable to hold the JSON parsed returned data.</li>
       <li>Line 5: Parse the returned data to convert if from a string to an object.</li>
-      <li>Line 7: Use the helper function to extract video IDs from returned data. Unfortunately, the Analytics API does not return the full video objects, so IDs are needed to access the full objects.</li>
+      <li>Line 7: Use the helper function to extract video IDs from returned data. Unfortunately, the <span translate="No">Analytics API</span> does not return the full video objects, so IDs are needed to access the full objects.</li>
       <li>Lines 9-12: Call the <code class="notranslate">getVideoData</code> helper function that uses a callback function to populate the <code class="notranslate">videoObjects</code> array based on IDs passed.</li>
       <li>Line 11: Populate the playlist with the array of video objects.</li>
     </ul>
