@@ -41,20 +41,20 @@ grandparent: CMS API
     <h4>Sample request endpoint</h4>
     <pre><code class="language-http">/v1/accounts/1234567890/labels</code></pre>
     <h4>Sample request body</h4>
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "path": "/nature/birds/shore_birds/"
 }</code></pre>
     <p>Note that <em>all</em> labels in the path that do not already exist will be created. If you want to add another group of <code translate="No">forest_birds</code>, you would send:</p>
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "path": "/nature/birds/forest_birds/"
 }</code></pre>
     <p>This time, only the <code translate="No">forest_birds</code> sub-label, will be created, since <code translate="No">nature</code> and <code translate="No">birds</code> already exist.</p>
     <p>Similarly, if you want to add a new sub-group <code translate="No">sandpipers</code> to <code translate="No">shore_birds</code>, you would send:</p>
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "path": "/nature/birds/shore_birds/sandpipers"
 }</code></pre>
     <h4>Sample response</h4>
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "path": "/nature/birds/shore_birds/sandpipers/"
 }</code></pre>
         <h3>Getting labels</h3>
@@ -62,7 +62,7 @@ grandparent: CMS API
     <h4>Sample request endpoint</h4>
     <pre><code class="language-http">/v1/accounts/1234567890/labels</code></pre>
     <h4>Sample response</h4>
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "account_id": "57838016001",
   "labels": [
     "/nature/birds/",
@@ -78,20 +78,20 @@ grandparent: CMS API
     <h4>Sample request endpoint</h4>
     <pre><code class="language-http">/v1/accounts/1234567890/labels/by_path//nature/birds/shore_birds</code></pre>
     <h4>Sample request body</h4>
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "new_label": "coastal_birds"
 }</code></pre>
     <p>Note that the <code translate="No">new_label</code> value will replace the last item in the <code translate="No">{path}</code> included in the request. So if instead you wanted to replace <code translate="No">/birds</code> with <code translate="No">/avian</code>, the request and body would look like this:</p>
     <h5>Endpoint</h5>
     <pre><code class="language-http">/v1/accounts/1234567890/labels/by_path//nature/birds/</code></pre>
     <h5>Request body</h5>
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "new_label": "avian"
 }</code></pre>
     <p>After this request, the <code translate="No">coastal_birds</code> path would become <code translate="No">/nature/wildlife/avian/coastal_birds</code>. The path would change for any addition sub-labels in the hierarchy, so <code translate="No">/nature/birds/forest_birds</code> would become <code translate="No">/nature/wildlife/avian/forest_birds</code></p>
     <p>The response will include the number of labels that were updated.</p>
     <h5>Sample response</h5>
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "path": "/nature/avian",
   "labels_updated": "2"
 }</code></pre>
@@ -109,13 +109,13 @@ grandparent: CMS API
   <section class="bcls-section">
     <h2 id="adding_labels_videos">Adding and updating labels to videos</h2>
     <p>Add labels to videos as an array of full label paths:</p>
-    <pre class="line-numbers"><code class="language-json">[
+    <pre class="line-numbers"><code class="language-json" translate="No">[
       "/nature/wildlife/avian/coastal_birds",
       "/nature/wildlife/avian/coastal_birds/sandpipers"
 ]</code></pre>
     <p>The labels array can be included in a <a href="/cms/references/reference.html#operation/CreateVideo">create video (POST) request</a> or an <a href="/cms/references/reference.html#operation/UpdateVideo">update video (PATCH) request</a>.</p>
     <p>To update the video labels, send the full, updated videos array in a <a href="/cms/references/reference.html#operation/UpdateVideo">update video (PATCH) request</a>. So, for example, to add the <code translate="No">/nature/wildlife/avian/forest_birds</code>, you would send the array:</p>
-    <pre class="line-numbers"><code class="language-json">[
+    <pre class="line-numbers"><code class="language-json" translate="No">[
       "/nature/wildlife/avian/coastal_birds",
       "/nature/wildlife/avian/coastal_birds/sandpipers",
       "/nature/wildlife/avian/forest_birds"

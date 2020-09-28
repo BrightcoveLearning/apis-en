@@ -41,7 +41,7 @@ grandparent: OAuth API
       <li class="language-editable">Make sure you have cURL available as explained in <a href="#requirements">Requirements</a>; you can test by going to a command line and typing <code translate="No">curl</code> and pressing return - if cURL is installed, you should see a message like this:
     
       <pre class="line-numbers">
-        <code class="language-bash">curl: try 'curl --help' or 'curl --manual' for more information</code></pre>
+        <code class="language-bash" translate="No">curl: try 'curl --help' or 'curl --manual' for more information</code></pre>
       </li>
       <li class="language-editable">Now you need two pieces of information that you can obtain from Studio. Login to Studio by going to <a target="_blank" rel="noopener noreferrer" href="https://signin.brightcove.com/">Studio</a>.
       <ul>
@@ -88,7 +88,7 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);
       <li class="language-editable">To get your client credentials, copy and paste the following cURL command at your command line and press return:<textarea id="getCredentialsCall" class="bcls-code" style="height:7en;">Your cURL command will appear here after you enter you account id and BC_TOKEN</textarea></li>
       <li class="language-editable">The response should look like this (formatting added):
       <pre class="line-numbers">
-        <code class="language-json">{"redirect_url":null,"maximum_scope":[{"identity":
+        <code class="language-json" translate="No">{"redirect_url":null,"maximum_scope":[{"identity":
         {"type":"video-cloud-account","account-id":57838016001},
         "operations":["video-cloud/player/all"]}],"name_html":"Sample-Client",
         "issued_to":"rcrooks@brightcove.com","trusted":null,"expires_at":null,
@@ -115,7 +115,7 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);
     <section class="bcls-section">
     <h2 id="Get_access_tokens">Get access tokens</h2>
     
-    <p>The <code translate="No">client_id</code> and <code translate="No">client_secret</code> you obtained in the previous steps are used as a <em>username:password</em> combination for authentication when you request an <code translate="No">access_token</code>. In cURL, which we will use here, you can pass these as the <code class="language-bash">--user</code> parameter. In other languages, you will pass these in a Basic Authorization header with your HTTP request:</p>
+    <p>The <code translate="No">client_id</code> and <code translate="No">client_secret</code> you obtained in the previous steps are used as a <em>username:password</em> combination for authentication when you request an <code translate="No">access_token</code>. In cURL, which we will use here, you can pass these as the <code class="language-bash" translate="No">--user</code> parameter. In other languages, you will pass these in a Basic Authorization header with your HTTP request:</p>
     
     <pre class="line-numbers">
         <code class="language-http">Authorization: Basic {client_id:client_secret}</code></pre>
@@ -128,7 +128,7 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);
       <li class="language-editable">To get your access_token, copy and paste the following cURL command to your command line and press enter:<textarea id="getTokenCall" class="bcls-code">Your cURL command will appear here after you enter you client_id and client_secret</textarea></li>
       <li class="language-editable">The output should look like this:
       <pre class="line-numbers">
-        <code class="language-json">{<strong>"access_token":"ACkkpftcuhyzqdf4ftxm304za3anhziG0Ni5-S_dplxMNYNrSrBZRgJL3sf_U38ZZVDdgkmWtrb0_GRZj-VzWOAFWgpEYwgwIWLjcGsTI-9QMUMNv2eFj33clsWFHnGLzgtdcILXpR-wPM0LzKKzRahodwofPfuExYCej18Wpt1x7DxOJDySEjCGOWiTuZVKp1QjG0_nqD9T3TpK3Cchv0suVRTGkYrs15qYSKdxh2-e5XbUiKKptNl8ryvMriavPN66fOh17c09Q0525OPqejkU6uERPTw-sTLU_QjJbRV6psxoSVYKRAetsBikH9XRJbZCSt2JP88O"</strong>,"token_type":"Bearer",<strong>"expires_in":300</strong>}</code></pre>
+        <code class="language-json" translate="No">{<strong>"access_token":"ACkkpftcuhyzqdf4ftxm304za3anhziG0Ni5-S_dplxMNYNrSrBZRgJL3sf_U38ZZVDdgkmWtrb0_GRZj-VzWOAFWgpEYwgwIWLjcGsTI-9QMUMNv2eFj33clsWFHnGLzgtdcILXpR-wPM0LzKKzRahodwofPfuExYCej18Wpt1x7DxOJDySEjCGOWiTuZVKp1QjG0_nqD9T3TpK3Cchv0suVRTGkYrs15qYSKdxh2-e5XbUiKKptNl8ryvMriavPN66fOh17c09Q0525OPqejkU6uERPTw-sTLU_QjJbRV6psxoSVYKRAetsBikH9XRJbZCSt2JP88O"</strong>,"token_type":"Bearer",<strong>"expires_in":300</strong>}</code></pre>
       </li>
       <li class="language-editable">This token can be used to authenticate calls to Player Management API for 5 minutes (then you need to get a new token). The token is passed in the Authorization header with the HTTP request:
       <pre class="line-numbers">

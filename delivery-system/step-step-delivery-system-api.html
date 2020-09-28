@@ -47,7 +47,7 @@ grandparent: Home
             <p>In a curl statement to create the new repo you will use an HTTP <code translate="No">PUT</code> method and include the name of the new repo in the URL. Execute this curl statement to create a repo named <code translate="No">firstRepo</code>.</p>
 
             <pre class="line-numbers">
-    <code class="language-bash">curl \
+    <code class="language-bash" translate="No">curl \
       --user $EMAIL \
       --request PUT \
       https://repos.api.brightcove.com/v1/accounts/$ACCOUNT_ID/repos/firstRepo
@@ -63,7 +63,7 @@ grandparent: Home
             </ul>
 
             <pre class="line-numbers">
-    <code class="language-json">{
+    <code class="language-json" translate="No">{
       "name": "firstRepo",
       "public_url": "http://players.brightcove.net/1507807800001/firstRepo",
       "repo_url": "https://repos.api.brightcove.com/v1/accounts/1507807800001/repos/firstRepo"
@@ -79,7 +79,7 @@ grandparent: Home
             <p>Next you need to create a folder locally on your machine for storage of the files associated with your Brightcove Player. In a location of your choice create the folder and then move (<code translate="No">cd</code>) into that folder.</p>
 
             <pre class="line-numbers">
-    <code class="language-bash">mkdir firstRepo
+    <code class="language-bash" translate="No">mkdir firstRepo
     cd firstRepo</code></pre>
             <!-- <code data-gist-id="8939637" data-gist-hide-footer="true" data-gist-line="13-14"></code><br /> -->
         </div>
@@ -91,7 +91,7 @@ grandparent: Home
         <p>Now you will create a plugin in your folder to copy to the repo. Use the same plugin from the Step-by-Step: Player Management, except change the text displayed. Create the file, paste the text from below into the file, then save it. Use the same file name as used in the Step-by-Step: Player Management, <code translate="No">first-plugin.js</code>.</p>
 
         <pre class="line-numbers">
-    <code class="language-javascript">videojs.registerPlugin('firstPlugin', function() {
+    <code class="language-javascript" translate="No">videojs.registerPlugin('firstPlugin', function() {
       var player = this,
       overlay = document.createElement('p');
       overlay.className = 'vjs-overlay';
@@ -103,7 +103,7 @@ grandparent: Home
         <p>You will now copy the newly created plugin file to the repo. Use the following cURL statement to perform this task.</p>
 
         <pre class="line-numbers">
-    <code class="language-bash">curl \
+    <code class="language-bash" translate="No">curl \
       --user $EMAIL \
       --form contents=@first-plugin.js \
       --request PUT \
@@ -113,7 +113,7 @@ grandparent: Home
         <p>After the copy, you should see a confirmation similar to the following:</p>
 
         <pre class="line-numbers">
-    <code class="language-json">{
+    <code class="language-json" translate="No">{
       "name": "first-plugin.js",
       "public_url": "http://players.brightcove.net/1507807800001/firstRepo/first-plugin.js"
     }</code></pre>
@@ -122,7 +122,7 @@ grandparent: Home
         <p>You can confirm the file was copied correctly by viewing its contents using the following cURL statement.</p>
 
         <pre class="line-numbers">
-    <code class="language-bash">curl http://players.brightcove.net/$ACCOUNT_ID/firstRepo/first-plugin.js</code></pre>
+    <code class="language-bash" translate="No">curl http://players.brightcove.net/$ACCOUNT_ID/firstRepo/first-plugin.js</code></pre>
         <!-- <p><code data-gist-id="8939637" data-gist-hide-footer="true" data-gist-line="125"></code></p> -->
 
         <p>You can also view the file by browsing the <code translate="No">public_url</code> returned from the file copy.</p>
@@ -139,7 +139,7 @@ grandparent: Home
             <aside class="bcls-aside bcls-aside--information">Note: Even if you are not supplying any options, you still must enter the plugin's name, as shown here.</aside>
 
             <pre class="line-numbers">
-    <code class="language-bash">curl \
+    <code class="language-bash" translate="No">curl \
       --header "Content-Type: application/json" \
       --user $EMAIL \
       --request PATCH \
@@ -172,13 +172,13 @@ grandparent: Home
             <p>Open the <code translate="No">first-plugin.js</code> file and update the text to read <strong>NEWer Text!</strong></p>
 
             <pre class="line-numbers">
-    <code class="language-javascript">overlay.innerHTML = "NEWer TEXT!";</code></pre>
+    <code class="language-javascript" translate="No">overlay.innerHTML = "NEWer TEXT!";</code></pre>
             <!-- <code data-gist-id="8939637" data-gist-hide-footer="true" data-gist-line="68"></code><br /> -->
 
             <p>Again copy the file to the repo.</p>
 
             <pre class="line-numbers">
-    <code class="language-bash">curl \
+    <code class="language-bash" translate="No">curl \
       --user $EMAIL \
       --form contents=@first-plugin.js \
       --request PUT \

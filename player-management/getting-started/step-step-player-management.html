@@ -41,13 +41,13 @@ grandparent: Player Management API
       </li>
       <li class="language-editable">At the command line, enter the following to assign the Account ID value to an environment variable:
       <pre class="line-numbers">
-        <code class="language-bash">export ACCOUNT_ID=<em>YourAccountID</em>
+        <code class="language-bash" translate="No">export ACCOUNT_ID=<em>YourAccountID</em>
         </code>
         </pre>
       </li>
       <li class="language-editable">Authentication will be handled by supplying your account email address as part of the curl statement, and then the API will prompt you for a password. Since the email address will be used frequently, also assign that value to an environment variable:
       <pre class="line-numbers">
-        <code class="language-bash">export EMAIL=<em>YourEmailAddress</em>
+        <code class="language-bash" translate="No">export EMAIL=<em>YourEmailAddress</em>
         </code>
         </pre>
       </li>
@@ -71,7 +71,7 @@ grandparent: Player Management API
       <li class="language-editable">The first curl statement creates the player and assigns a name and description. After you paste this statement at the command line and press <em>Enter</em>, you will be prompted for your password.
     
       <pre class="line-numbers">
-        <code class="language-bash">curl \
+        <code class="language-bash" translate="No">curl \
           --header "Content-Type: application/json" \
           --user $EMAIL \
           --request POST \
@@ -86,7 +86,7 @@ grandparent: Player Management API
       <p>You will see the server returns response data in JSON format:</p>
     
       <pre class="line-numbers">
-        <code class="language-json">{
+        <code class="language-json" translate="No">{
           "id": "S1qN4xeG7",
           "url": "http://players.brightcove.net/1507807800001/S1qN4xeG7_default/index.html",
           "embed_code": "&lt;iframe src='//players.brightcove.net/1507807800001/S1qN4xeG7_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;",
@@ -118,7 +118,7 @@ grandparent: Player Management API
     <p>Of course you can create a player using a video from your Video Cloud library. Instead of using a <code translate="No">media </code> section in the JSON data, you use a <code translate="No">video_cloud </code> section. The curl statement below shows player creation using a Video Cloud video's ID.</p>
     
     <pre class="line-numbers">
-        <code class="language-bash">curl \
+        <code class="language-bash" translate="No">curl \
           --header "Content-Type: application/json" \
           --user $EMAIL \
           --request POST \
@@ -140,7 +140,7 @@ grandparent: Player Management API
     <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="258-265"></code></p> -->
     
     <pre class="line-numbers">
-        <code class="language-json">{
+        <code class="language-json" translate="No">{
         "id": "HJyMlHiuZ",
         "url": "http://players.brightcove.net/1507807800001/HJyMlHiuZ_default/index.html",
         "embed_code": "&lt;iframe src="//players.brightcove.net/1507807800001/HJyMlHiuZ_default/index.html" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""&gt;&lt;/iframe&gt;",
@@ -154,7 +154,7 @@ grandparent: Player Management API
     <p>You can see the player's configuration by browsing the URL value returned and change the <strong>index.html</strong> to <strong>config.json</strong>. For the player created by the curl statement above, you would see the following:</p>
     
     <pre class="line-numbers">
-        <code class="language-json">{
+        <code class="language-json" translate="No">{
           "account_id": "1507807800001",
           "compatibility": true,
           "embed_id": "default",
@@ -189,13 +189,13 @@ grandparent: Player Management API
       <li class="language-editable">In the returned JSON from player creation an <code translate="No">id </code> value was displayed. Copy this into a <code translate="No">PLAYER_ID </code> environment variable.
     
       <pre class="line-numbers">
-        <code class="language-bash">export PLAYER_ID=<em>YourPlayerID</em>
+        <code class="language-bash" translate="No">export PLAYER_ID=<em>YourPlayerID</em>
         </code>
         </pre>
       </li>
       <li class="language-editable">To update the player you will use the HTTP <code translate="No">PATCH </code> method. You will send data to update your player. You will set the <code translate="No">autoplay</code> option to <code translate="No">true</code>. Copy and paste the following curl statement and execute it.
       <pre class="line-numbers">
-        <code class="language-bash">curl \
+        <code class="language-bash" translate="No">curl \
           --header "Content-Type: application/json" \
           --user $EMAIL \
           --request PATCH \
@@ -207,7 +207,7 @@ grandparent: Player Management API
       <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="53-74"></code></p></li> --></li>
       <li class="language-editable">Check to be sure the server returns data which includes the <code translate="No">id </code>, <code translate="No">preview_url </code> and <code translate="No">preview_embed_code </code> values in the following JSON format:
       <pre class="line-numbers">
-        <code class="language-json">{
+        <code class="language-json" translate="No">{
           "id": "S1qN4xeG7",
           "preview_url": "http://preview-players.brightcove.net/v2/accounts/1507807800001/players/S1qN4xeG7/preview/embeds/default/master/index.html",
           "preview_embed_in_page": "http://preview-players.brightcove.net/v2/accounts/1507807800001/players/S1qN4xeG7/preview/embeds/default/master/in_page.embed",
@@ -221,7 +221,7 @@ grandparent: Player Management API
       <li class="language-editable">Use either the <code translate="No">preview_url </code> or <code translate="No">preview_embed_code </code> values to see the changes in your player's configuration. You will see autoplay is now true.</li>
       <li class="language-editable">Now you'll publish the player to push it to the correct location for users to view. Enter the following command:
       <pre class="line-numbers">
-        <code class="language-bash">curl \
+        <code class="language-bash" translate="No">curl \
         --header "Content-Type: application/json" \
         --user $EMAIL \
         --request POST \
@@ -242,7 +242,7 @@ grandparent: Player Management API
       </li>
       <li class="language-editable">Check to be sure the JSON response from publishing the player appears as follows:
       <pre class="line-numbers">
-        <code class="language-json">{
+        <code class="language-json" translate="No">{
         "id": "S1qN4xeG7",
         "url": "http://players.brightcove.net/1507807800001/S1qN4xeG7_default/index.html",
         "embed_code": "&lt;iframe src='//players.brightcove.net/1507807800001/S1qN4xeG7_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;",
@@ -265,7 +265,7 @@ grandparent: Player Management API
     <p>In this case you will use a very simple pre-existing plugin to overlay a text message on the video. Following is the code for a plugin that creates an HTML paragraph tag. Note: a classname and text is assigned to the paragraph, then it is appended to the existing player. This plugin already exists for your convenience and is located at <a href="//solutions.brightcove.com/bcls/video-js/new-player/first-plugin.js">//solutions.brightcove.com/bcls/video-js/new-player/first-plugin.js</a>.</p>
     
     <pre class="line-numbers">
-        <code class="language-javascript">videojs.registerPlugin('firstPlugin', function() {
+        <code class="language-javascript" translate="No">videojs.registerPlugin('firstPlugin', function() {
           var player = this,
           overlay = document.createElement('p');
           overlay.className = 'vjs-overlay';
@@ -279,7 +279,7 @@ grandparent: Player Management API
     <p>The paragraph needs to be styled to prevent, in this particular instance, black text on a black background. The following are styles applied to the paragraph's classname. This stylesheet already exists for your convenience and is located at <a href="//solutions.brightcove.com/bcls/video-js/new-player/first-plugin.css">//solutions.brightcove.com/bcls/video-js/new-player/first-plugin.css</a>.</p>
     
     <pre class="line-numbers">
-        <code class="language-javascript">.vjs-overlay {
+        <code class="language-javascript" translate="No">.vjs-overlay {
           background-color: #333333;
           color: white;
           font-size: 2em;
@@ -306,7 +306,7 @@ grandparent: Player Management API
       <aside class="bcls-aside bcls-aside--information">Note: Even if you are not supplying any options, you still must enter the plugin's name, as shown here.</aside>
     
       <pre class="line-numbers">
-        <code class="language-bash">curl\
+        <code class="language-bash" translate="No">curl\
         --header "Content-Type: application/json"\
         --user $EMAIL\
         --request PATCH\
@@ -326,7 +326,7 @@ grandparent: Player Management API
       <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="99-114"></code></p></li> --></li>
       <li class="language-editable">Use the following curl statement to publish the updated player. This is the same publish code that you used in the previous section to publish a player.
       <pre class="line-numbers">
-        <code class="language-bash">curl \
+        <code class="language-bash" translate="No">curl \
           --header "Content-Type: application/json" \
           --user $EMAIL \
           --request POST \
@@ -356,7 +356,7 @@ grandparent: Player Management API
       <li class="language-editable">To do this, use a <code translate="No">GET </code> method with the <code translate="No">configuration </code> URL.
     
       <pre class="line-numbers">
-        <code class="language-bash">curl \
+        <code class="language-bash" translate="No">curl \
           --header "Content-Type: application/json" \
           --user $EMAIL \
           --request GET \
@@ -366,7 +366,7 @@ grandparent: Player Management API
       <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="117-121"></code></p></li> --></li>
       <li class="language-editable">Check to be sure the JSON configuration response is similar to the following:
       <pre class="line-numbers">
-        <code class="language-json">{
+        <code class="language-json" translate="No">{
           "media": {
             "poster": {
               "highres": "//solutions.brightcove.com/bcls/assets/images/Tiger.jpg"

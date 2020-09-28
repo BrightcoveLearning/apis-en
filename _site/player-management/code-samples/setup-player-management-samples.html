@@ -1332,7 +1332,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>You can use basic authentication when building an app. In the header you need to send the credentials, encrypted in a base-64 encoded ASCII string. You can use the JavaScript <code translate="No">btoa()</code> method to do the encoding. Assuming <code translate="No">account_username</code> and <code translate="No">account_password</code> are populated from, for example a form, the Authorization header would appear as follows:</p>
     
     <pre class="line-numbers">
-    <code class="language-javascript"> "Authorization": "Basic " + btoa(account_username + ":" + account_password),</code></pre>
+    <code class="language-javascript" translate="No"> "Authorization": "Basic " + btoa(account_username + ":" + account_password),</code></pre>
     </section>
     
     <section id="ajax" class="bcls-section">
@@ -1345,7 +1345,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>Instead of using curl statements these samples will use JavaScript to communicate with the API. This means using AJAX to issue the request to the API. A specific example request might look something like this:</p>
     
     <pre class="line-numbers">
-    <code class="language-javascript">$.ajax({
+    <code class="language-javascript" translate="No">$.ajax({
         type: "DELETE",
         headers: {
         "Authorization": "Basic " + btoa("username:password"),
@@ -1359,7 +1359,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>Associated <code translate="No">success</code> and <code translate="No">error</code> handlers could look something like this:</p>
     
     <pre class="line-numbers">
-    <code class="language-javascript">var ajaxSuccess = function (data) {
+    <code class="language-javascript" translate="No">var ajaxSuccess = function (data) {
         document.getElementById("jsonResponse").innerHTML = JSON.stringify(data,null,2);
         };
     
@@ -1371,7 +1371,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>Of course, you don't want to hard code all the information in the AJAX call as shown above, so it makes sense to abstract the actual call to a function that is reusable, as shown here:</p>
     
     <pre class="line-numbers">
-    <code class="language-javascript">var makeAjaxCall = function (callURL, callType, callData) {
+    <code class="language-javascript" translate="No">var makeAjaxCall = function (callURL, callType, callData) {
         if (callData) {
             $.ajax({
                 type: callType,
@@ -1404,7 +1404,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>You are then ready to call the function. In the following example the <code translate="No">account_id</code>, <code translate="No">account_password</code> and <code translate="No">account_username</code> values are all extracted from a form.</p>
     
     <pre class="line-numbers">
-    <code class="language-javascript">var getPlayerInfo = function () {
+    <code class="language-javascript" translate="No">var getPlayerInfo = function () {
         account_id = document.getElementById("account_id").value,
         account_password = document.getElementById("account_password").value,
         account_username = document.getElementById("account_username").value;
@@ -1416,7 +1416,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>If you have completed the Step-by-Step: Player Management document you know that some processes take multiple API calls, like creating and publishing a player. Also, the logic of some apps may require multiple API calls, like getting a list of all players to display, then deleting players the user marked. In these instances you will most likely need to alter your <code translate="No">success</code> handler to perform different logic based on which call was just successfully carried out. In these sample apps the implementation logic for these use cases will be implemented using a flag variable, <code translate="No">callPurpose</code>, and a <code translate="No">case</code> statement using that flag, as shown here:</p>
     
     <pre class="line-numbers">
-    <code class="language-javascript">var ajaxSuccess = function (data) {
+    <code class="language-javascript" translate="No">var ajaxSuccess = function (data) {
         switch (callPurpose) {
             case "getPlayers":
                 createCheckboxes(data);
@@ -1435,7 +1435,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>If you would rather not use jQuery, making AJAX requests is a little more complex, but not too much. Here is some sample code, with comments, to get you started:</p>
     
     <pre class="line-numbers">
-    <code class="language-javascript">/**
+    <code class="language-javascript" translate="No">/**
      * createRequest sets up requests, send them to makeRequest(), and handles responses
      * @param  {string} type the request type
      */
@@ -1545,7 +1545,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 12 Jun 2020
+  Page last updated on 28 Sep 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">

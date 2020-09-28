@@ -47,7 +47,7 @@ parent: Social Syndication API
     <p>The base URL is:</p>
     <pre><code class="language-http">https://social.api.brightcove.com/v1</code></pre>
     <p>All requests must be authenticated via an Authorization header:</p>
-    <pre><code class="language-bash">Authorization: Bearer {your_access_token}</code></pre>
+    <pre><code class="language-bash" translate="No">Authorization: Bearer {your_access_token}</code></pre>
     <p>See the next section on authentication for information on access tokens.</p>
     <p>For any request that sends a request body, you must also include a <code translate="No">Content-Type: application/json</code> header.</p>
   </section>
@@ -82,7 +82,7 @@ parent: Social Syndication API
     <p>The syndication resource is an object that defines how the syndication will be created. Here is a sample request body for creating a syndication resource:</p>
 
     <pre class="line-numbers">
-  <code class="language-json">{
+  <code class="language-json" translate="No">{
     "name": "80s music videos syndication",
     "type": "advanced",
     "include_all_content": false,
@@ -108,7 +108,7 @@ parent: Social Syndication API
     <p>The response will add some read-only fields:</p>
 
     <pre class="line-numbers">
-  <code class="language-json">{
+  <code class="language-json" translate="No">{
     "id": "7f594cd3-4853-4174-aff3-203c3e99e9c2",
     "name": "80s music videos syndication",
     "type": "advanced",
@@ -305,7 +305,7 @@ parent: Social Syndication API
       <p>If any API requests fails, an error message will be returned. Error responses will look like the following:</p>
 
       <pre class="line-numbers">
-  <code class="language-json">[
+  <code class="language-json" translate="No">[
     {
       "error_code" : "Application error code 1",
       "message" : "Application error message 1"
@@ -327,7 +327,7 @@ parent: Social Syndication API
       <p>Sample request body:</p>
 
       <pre class="line-numbers">
-  <code class="language-json">{
+  <code class="language-json" translate="No">{
     "name": "my mp4 feed",
     "type": "mp4"
   }</code></pre>
@@ -345,7 +345,7 @@ parent: Social Syndication API
       <p>Sample request body:</p>
 
       <pre class="line-numbers">
-  <code class="language-json">{
+  <code class="language-json" translate="No">{
     "name": "my new name"
   }</code></pre>
 
@@ -386,7 +386,7 @@ parent: Social Syndication API
       <p>Sample request body:</p>
 
       <pre class="line-numbers">
-  <code class="language-json">&lt;feed header&gt;My Feed Header&lt;/feed header&gt;
+  <code class="language-json" translate="No">&lt;feed header&gt;My Feed Header&lt;/feed header&gt;
   {% for asset in assets %}
   &lt;item&gt;
       &lt;title&gt;{{asset.name}}&lt;/title&gt;
@@ -397,7 +397,7 @@ parent: Social Syndication API
       <p>The above template would generate a feed similar to:</p>
 
       <pre class="line-numbers">
-  <code class="language-xml">&lt;feed header&gt;My Feed Header&lt;/feed header&gt;
+  <code class="language-xml" translate="No">&lt;feed header&gt;My Feed Header&lt;/feed header&gt;
     &lt;item&gt;
       &lt;title&gt;Title for Video 1&lt;/title&gt;
       &lt;video_info&gt;Description for Video 1&lt;/video_info&gt;
@@ -469,7 +469,7 @@ parent: Social Syndication API
       <p>Use like this:</p>
 
       <pre>
-  <code class="language-xml">&lt;media:player url="{{player_url}}/{{account_id}}/default_default/index.html?videoId={{asset.id}}"&gt;</code></pre>
+  <code class="language-xml" translate="No">&lt;media:player url="{{player_url}}/{{account_id}}/default_default/index.html?videoId={{asset.id}}"&gt;</code></pre>
 
       <ul>
         <li><code translate="No">player_url</code></li>
@@ -590,26 +590,26 @@ parent: Social Syndication API
       <p>We have extended our Liquid parser to support a toUTC filter which will parse most standard ISO-8601 datetime string formats and transform them into standard UTC datetime strings. This format is acceptable to Liquid's date filter, which can then be used to reformat the timestamps into datetime strings in any desired format. For example:</p>
 
       <pre class="line-numbers">
-  <code class="language-xml">&lt;pubDate&gt;{{asset.published_at | toUTC | date: "%a, %d %b %Y %H:%M:%S %Z"}}&lt;/pubDate&gt;</code></pre>
+  <code class="language-xml" translate="No">&lt;pubDate&gt;{{asset.published_at | toUTC | date: "%a, %d %b %Y %H:%M:%S %Z"}}&lt;/pubDate&gt;</code></pre>
 
       <p>This produces an output like the following if asset.published_at has a value of 2019-08-09T13:32:52.031Z::</p>
 
       <pre class="line-numbers">
-  <code class="language-xml">&lt;pubDate&gt;Fri, 09 Aug 2019 09:32:52 +0000&lt;/pubDate&gt;</code></pre>
+  <code class="language-xml" translate="No">&lt;pubDate&gt;Fri, 09 Aug 2019 09:32:52 +0000&lt;/pubDate&gt;</code></pre>
 
       <h4>toEpoch filter</h4>
 
       <p>The Liquid parser we use does not support the "%s" token in date filters for converting dates to Unix epoch timestamps. To address this, a toEpoch custom filter is provided that can be used to convert valid date specifications to the epoch format. The filter returns a numeric data value representing milliseconds since the epoch that is suitable for input to mathematical filters. For example:</p>
 
       <pre class="line-numbers">
-  <code class="language-html">&lt;toEpochMillis&gt;{{"now" | toEpoch }}&lt;/toEpochMillis&gt;
+  <code class="language-html" translate="No">&lt;toEpochMillis&gt;{{"now" | toEpoch }}&lt;/toEpochMillis&gt;
   &lt;toEpochSeconds&gt;{{"now" | toEpoch | divided_by : 1000 }}&lt;/toEpochSeconds&gt;
   &lt;thirtyDaysAgo&gt;{{'now' | toEpoch | minus:2592000000 | fromEpoch }}&lt;/thirtyDaysAgo&gt;</code></pre>
 
       <p>produces an output like the following:</p>
 
       <pre class="line-numbers">
-  <code class="language-html">&lt;toEpochMillis&gt;1580917253024&lt;/toEpochMillis&gt;
+  <code class="language-html" translate="No">&lt;toEpochMillis&gt;1580917253024&lt;/toEpochMillis&gt;
   &lt;toEpochSeconds&gt;1580917253&lt;/toEpochSeconds&gt;
   &lt;thirtyDaysAgo&gt;2020-01-06T15:40:53.055Z&lt;/thirtyDaysAgo&gt;</code></pre>
 
@@ -620,7 +620,7 @@ parent: Social Syndication API
       <p>For example:</p>
 
       <pre class="line-numbers">
-  <code class="language-html">
+  <code class="language-html" translate="No">
   &lt;fromEpochMillis&gt;{{"now" | toEpoch | fromEpoch }}&lt;/fromEpochMillis&gt;
   &lt;thirtyDaysAgoAltFormat&gt;{{1580917253024 | fromEpoch | date:"%Y-%m-%d" }}&lt;/thirtyDaysAgo&gt;
   </code></pre>
@@ -628,7 +628,7 @@ parent: Social Syndication API
       <p>produces an output like the following:</p>
 
       <pre class="line-numbers">
-  <code class="language-html">
+  <code class="language-html" translate="No">
   &lt;fromEpochMillis&gt;2020-02-05T16:09:37.809Z&lt;/fromEpochMillis&gt;
   &lt;thirtyDaysAgoAltFormat&gt;2020-02-05&lt;/thirtyDaysAgo&gt;</code></pre>
     </section>
