@@ -63,7 +63,7 @@ grandparent: Policy API
     
     <h3>Account path</h3>
     
-    <p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add <code class="notranslate">/accounts/ </code> followed by your account id to the base URL:</p>
+    <p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add <code translate="No">/accounts/ </code> followed by your account id to the base URL:</p>
     
     <pre>
     <code class="notranslate language-http">https://policy.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
@@ -72,16 +72,16 @@ grandparent: Policy API
     <section class="bcls-section">
     <h2 id="Authentication">Authentication</h2>
     
-    <p>Requests are authenticated by an access token passed in an <code class="notranslate">Authorization </code> header:</p>
+    <p>Requests are authenticated by an access token passed in an <code translate="No">Authorization </code> header:</p>
     
     <pre>
-    <code class="notranslate language-json">Authorization: Bearer {access_token}</code></pre>
+    <code class="language-json" translate="No">Authorization: Bearer {access_token}</code></pre>
     
     <p>To get access tokens, follow these steps:</p>
     
     <ol class="bcls-tasklist">
       <li>
-      <p>Obtain your client credentials ( <code class="notranslate">client_id </code> and <code class="notranslate">client_secret </code>) through <a href="/general/managing-api-authentication-credentials.html">Video Cloud Studio</a> (recommended).</p>
+      <p>Obtain your client credentials ( <code translate="No">client_id </code> and <code translate="No">client_secret </code>) through <a href="/general/managing-api-authentication-credentials.html">Video Cloud Studio</a> (recommended).</p>
     
       <p>For access tokens that can be used with policy key create requests, your client credentials are required to have the following permissions in Studio: <strong>Players Read and Read/Write</strong></p>
     
@@ -117,7 +117,7 @@ grandparent: Policy API
     <p>In the request body, include the JSON for the policy:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">{
+    <code class="language-json" translate="No">{
       "key-data": {
         "account-id": "{account_id}"
       }
@@ -129,10 +129,10 @@ grandparent: Policy API
     <section class="bcls-section">
     <h2 id="Domain_restriction">Domain restriction</h2>
     
-    <p>In addition to limiting access to the account, you can also limit access to specific domains by adding the <code class="notranslate">allowed-domains </code> key:</p>
+    <p>In addition to limiting access to the account, you can also limit access to specific domains by adding the <code translate="No">allowed-domains </code> key:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">{
+    <code class="language-json" translate="No">{
       "key-data": {
         "account-id": "123456789001",
         "allowed-domains": [
@@ -171,34 +171,34 @@ grandparent: Policy API
     <p>Here is an example whitelist policy set that only allows playback from the US and US territories and military bases:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">{"account-id": "8523232323",
+    <code class="language-json" translate="No">{"account-id": "8523232323",
       "geo": {
         "countries": ["us", "usmil", "pr", "gu", "vi", "as", "mp"],
         "exclude_countries": false
       }
     }</code></pre>
     
-    <p>To blacklist those countries instead, set <code class="notranslate">exclude_countries </code> to true.</p>
+    <p>To blacklist those countries instead, set <code translate="No">exclude_countries </code> to true.</p>
     </section>
     
     <section class="bcls-section">
     <h2 id="Require_SSAI">Require SSAI</h2>
     
-    <p>When working with Server-Side Ad Insertion (SSAI), you may want a way to enforce proper ad configuration in your API requests. You can do this by configuring your policy key to require that an <code class="notranslate">ad_config_id </code> is appended as a URL parameter to all Playback API requests.</p>
+    <p>When working with Server-Side Ad Insertion (SSAI), you may want a way to enforce proper ad configuration in your API requests. You can do this by configuring your policy key to require that an <code translate="No">ad_config_id </code> is appended as a URL parameter to all Playback API requests.</p>
     
     <h3>Sample</h3>
     
     <p>Here is an example:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">{
+    <code class="language-json" translate="No">{
       "key-data": {
         "account-id": "1752604059001",
         "require-ad-config": true
       }
     }</code></pre>
     
-    <p>For details about using the <code class="notranslate">ad_config_id </code> with your Playback API requests, see the <a href="/playback/getting-started/overview-playback-api.html#Video_request_with_SSAI">Playback API Overview: Video request with SSAI</a> document.</p>
+    <p>For details about using the <code translate="No">ad_config_id </code> with your Playback API requests, see the <a href="/playback/getting-started/overview-playback-api.html#Video_request_with_SSAI">Playback API Overview: Video request with SSAI</a> document.</p>
     </section>
     
     <section class="bcls-section">
@@ -207,7 +207,7 @@ grandparent: Policy API
     <p>When performing a video search request, you must use a Policy Key that is search-enabled. To create a search-enabled Policy Key, the request body of the call must include the following:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">{
+    <code class="language-json" translate="No">{
       "key-data": {
         "account-id": "57838016001",
         "apis": ["search"]
@@ -220,10 +220,10 @@ grandparent: Policy API
     <section class="bcls-section">
     <h2 id="API_Response">API Response</h2>
     
-    <p>The response to policy create requests will be JSON that includes the encrypted <code class="notranslate">key-string </code> that you can use to authenticate requests to the Playback API, as well as the policy associated with the key:</p>
+    <p>The response to policy create requests will be JSON that includes the encrypted <code translate="No">key-string </code> that you can use to authenticate requests to the Playback API, as well as the policy associated with the key:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">{
+    <code class="language-json" translate="No">{
       "key-data": {
         "account-id": "57838016001"
       },
@@ -234,15 +234,15 @@ grandparent: Policy API
     <section class="bcls-section">
     <h2 id="Policy_requests">Policy requests</h2>
     
-    <p>To retrieve the policy object associated with a <code class="notranslate">key-string </code>, make a GET request to:</p>
+    <p>To retrieve the policy object associated with a <code translate="No">key-string </code>, make a GET request to:</p>
     
     <pre>
-    <code class="notranslate language-json">/accounts/v1/{account_id}/policy_keys/{key_string}</code></pre>
+    <code class="language-json" translate="No">/accounts/v1/{account_id}/policy_keys/{key_string}</code></pre>
     
     <p>The response will be JSON representation of the key-string and policy:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">{
+    <code class="language-json" translate="No">{
       "key-data": {
         "account-id": "57838016001"
       },

@@ -1317,7 +1317,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   
   <p>Tokens are obtained from the Brightcove OAuth API. Before you can get access tokens, you first need to obtain client credentials (a client id and a client secret) that are specific to the API and operations that you want access to. To get your client credentials, see <a href="/general/managing-api-authentication-credentials.html">Managing API Credentials</a>.</p>
   
-  <p>Once you have your credentials, you obtain an access token by making a <code class="notranslate">POST</code> request to:</p>
+  <p>Once you have your credentials, you obtain an access token by making a <code translate="No">POST</code> request to:</p>
   
   <pre class="line-numbers">
   <code class="language-http notranslate">https://oauth.brightcove.com/v4/access_token</code></pre>
@@ -1329,14 +1329,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li><code class="language-http notranslate">Authorization: Basic {client_id}:{client_secret}</code></li>
   </ul>
   
-  <p>The entire <code class="language-http notranslate">{client_id}:{client_secret}</code> string must be Base64-encoded (curl will automatically Base64-encode the string if you pass it as <code class="notranslate">--user</code> credentials; in other languages, you'll need to handle the Base64-encoding yourself).</p>
+  <p>The entire <code class="language-http notranslate">{client_id}:{client_secret}</code> string must be Base64-encoded (curl will automatically Base64-encode the string if you pass it as <code translate="No">--user</code> credentials; in other languages, you'll need to handle the Base64-encoding yourself).</p>
   
   <p>You must also send the following key/value pair as the request body or as URL parameter:</p>
   
   <pre class="line-numbers">
   <code class="language-http notranslate">grant_type=client_credentials</code></pre>
   
-  <aside class="bcls-aside bcls-aside--information">Note that since the <code class="notranslate">Content-Type</code> must be <code class="notranslate">application/x-www-form-urlencoded</code>, the key/value pair will be sent to the API as a URL param even if you put it in the request body.</aside>
+  <aside class="bcls-aside bcls-aside--information">Note that since the <code translate="No">Content-Type</code> must be <code translate="No">application/x-www-form-urlencoded</code>, the key/value pair will be sent to the API as a URL param even if you put it in the request body.</aside>
   
   <p>The response will look like this (pretty-printed here for readability):</p>
   
@@ -1347,18 +1347,18 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       "expires_in": 300
   }</code></pre>
   
-  <p>The <code class="notranslate">access_token</code> value is what you must pass in an <code class="notranslate">Authorization</code> header with your API call in this form:</p>
+  <p>The <code translate="No">access_token</code> value is what you must pass in an <code translate="No">Authorization</code> header with your API call in this form:</p>
   
   <pre class="line-numbers">
   <code class="language-http notranslate">Authorization: Bearer {access_token}</code></pre>
   
-  <p>The <code class="notranslate">expires_in</code> value is the number of seconds that the access token is valid for.</p>
+  <p>The <code translate="No">expires_in</code> value is the number of seconds that the access token is valid for.</p>
   </section>
   
   <section class="bcls-section">
   <h2 id="implementation">Implementation Strategies</h2>
   
-  <p>If your app will only be making sporadic calls to the Brightcove APIs, you might as well ignore the <code class="notranslate">expires_in</code> parameter and just fetch a new access token for every call. In that case, the processing sequence will look like this:</p>
+  <p>If your app will only be making sporadic calls to the Brightcove APIs, you might as well ignore the <code translate="No">expires_in</code> parameter and just fetch a new access token for every call. In that case, the processing sequence will look like this:</p>
   
   <figure class="bcls-figure"><img class="bcls-image" alt="Get New Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-token/get-token-new-token.png" />
   <figcaption class="bcls-caption--image">Get New Token</figcaption>
@@ -1367,13 +1367,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <p>On the other hand, if you know that your app will frequently make many API calls in quick succession (for, say, generating long reports), then it will be more efficient to fetch access tokens only when you need them. There are two basic ways of doing this:</p>
   
   <ol>
-    <li>Go ahead and try the API call and if you get an <code class="notranslate">UNAUTHORIZED</code> error in response, go fetch a new token and make the API call again. In this case, the processing sequence will look like this:
+    <li>Go ahead and try the API call and if you get an <code translate="No">UNAUTHORIZED</code> error in response, go fetch a new token and make the API call again. In this case, the processing sequence will look like this:
   
     <figure class="bcls-figure"><img class="bcls-image" alt="Get Token with Check for Call Fail" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-token/get-token-check-call-fail.png" />
     <figcaption class="bcls-caption--image">Get Token with Check for Call Fail</figcaption>
     </figure>
     </li>
-    <li>Another approach would be to add the <code class="notranslate">expires_in</code> value to the current time in Epoch seconds each time you fetch a token, and then on later API calls, check the expires time against the current time to see if you need to fetch a new token. In this case, your processing sequence will look like this:
+    <li>Another approach would be to add the <code translate="No">expires_in</code> value to the current time in Epoch seconds each time you fetch a token, and then on later API calls, check the expires time against the current time to see if you need to fetch a new token. In this case, your processing sequence will look like this:
     <figure class="bcls-figure"><img class="bcls-image" alt="Get Token with Check for Expiration" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-token/get-token-check-expiration.png" />
     <figcaption class="bcls-caption--image">Get Token with Check for Expiration</figcaption>
     </figure>
@@ -1404,7 +1404,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <aside class="bcls-aside bcls-aside--information">
   <p>Note: this script uses cURL, and also the jq command line app. See <a href="https://general.support.brightcove.com/developer/concepts-set-curl.html">Set up cURL and jq</a> for setup instructions. The Python json.tool is also used to pretty-print the response, but that should already be installed on your system.</p>
   
-  <p>To run the script, save the code as <strong>api-tester.sh</strong> on your system, open a command line in the same folder, and enter <code class="notranslate">bash api-tester.sh</code> - you will be prompted for the following inputs:</p>
+  <p>To run the script, save the code as <strong>api-tester.sh</strong> on your system, open a command line in the same folder, and enter <code translate="No">bash api-tester.sh</code> - you will be prompted for the following inputs:</p>
   
   <ul>
     <li>client id (required)</li>

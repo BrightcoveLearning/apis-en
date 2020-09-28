@@ -32,9 +32,9 @@ parent: Getting Started
     <p>The client side code changes significantly depending from which API you are requesting data. As mentioned above, the proxy is a write once and don't modify piece of code, and the APIs are maintained by Brightcove. This is why the emphasis in the document will be on learning how to alter the client code to retrieve the desired data from one of the APIs.</p>
     <p>The diagram below focuses on key parts of the client code, those being:</p>
     <ul>
-      <li>The function that makes the <code class="notranslate">HTTPRequest</code> to the proxy. To avoid ambiguity the function is named <code class="notranslate">makeRequest()</code>. It is pictured on the right side of the diagram below.</li>
+      <li>The function that makes the <code translate="No">HTTPRequest</code> to the proxy. To avoid ambiguity the function is named <code translate="No">makeRequest()</code>. It is pictured on the right side of the diagram below.</li>
       <li>The code that gathers required information for the request. It is pictured on the top-left of the diagram. This code is usually quite straight forward and uses concepts well known to even beginning programmers.</li>
-      <li>The call that executes the previously mentioned <code class="notranslate">makeRequest()</code> function. It is pictured on the bottom-left of the diagram. The call passes a function to <code class="notranslate">makeRequest()</code> as a parameter. Then in <code class="notranslate">makeRequest()</code> that function is called. This is an example of an anonymously defined <strong>callback</strong> function.</li>
+      <li>The call that executes the previously mentioned <code translate="No">makeRequest()</code> function. It is pictured on the bottom-left of the diagram. The call passes a function to <code translate="No">makeRequest()</code> as a parameter. Then in <code translate="No">makeRequest()</code> that function is called. This is an example of an anonymously defined <strong>callback</strong> function.</li>
     </ul>
     <p>You see the two sections in the diagram labeled <strong>Asynchronous Activity</strong>. Although represented in the diagram in two different places, this is actually the same asynchronous activity, and represents the unknown time it takes for:</p>
     <ul>
@@ -43,7 +43,7 @@ parent: Getting Started
       <li>The API to build the result set and return it to the proxy.</li>
       <li>The proxy to return the data to the client.</li>
     </ul>
-    <p>Note that the logic flow arrows from the box that calls <code class="notranslate">makeRequest()</code> (bottom-left box) seem to indicate that the code is executed at two different times, which is exactly the case. The call to the function is made, but the callback function is not executed until <code class="notranslate">makeRequest()</code> has done its job and the callback function is executed, which returns the requested data to the function calling code.</p>
+    <p>Note that the logic flow arrows from the box that calls <code translate="No">makeRequest()</code> (bottom-left box) seem to indicate that the code is executed at two different times, which is exactly the case. The call to the function is made, but the callback function is not executed until <code translate="No">makeRequest()</code> has done its job and the callback function is executed, which returns the requested data to the function calling code.</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="Client functionality overview" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/proxy-API-call.png" /></figure>
   </section>
   <section class="bcls-section">
@@ -52,7 +52,7 @@ parent: Getting Started
     <h3>Standard player code</h3>
     <p>This code section contains the basic Brightcove Player in-page embed code.</p>
     <ul>
-      <li>Lines 11-21: Standard Brightcove Player code with the addition of an&nbsp;<code class="notranslate">id</code> attribute added.</li>
+      <li>Lines 11-21: Standard Brightcove Player code with the addition of an&nbsp;<code translate="No">id</code> attribute added.</li>
     </ul>
     <pre class="line-numbers">
 	<code class="notranslate language-html">&lt;!doctype html&gt;
@@ -77,7 +77,7 @@ parent: Getting Started
 		height="360"&gt;&lt;/video-js&gt;
 	&lt;script src="https://players.brightcove.net/1752604059001/HkAzSmB0l_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
     <h3>Preparing to make call</h3>
-    <p>This code section initializes variables and gets ready to make the call to <code class="notranslate">makeRequest()</code>. Generally speaking, for a read request you will need to provide the following information:</p>
+    <p>This code section initializes variables and gets ready to make the call to <code translate="No">makeRequest()</code>. Generally speaking, for a read request you will need to provide the following information:</p>
     <ol>
       <li>The URL to the proxy you will be using, for example (of course, this needs to be proxy under your control):
         <pre class="line-numbers">
@@ -87,13 +87,13 @@ parent: Getting Started
         <pre class="line-numbers">
 	<code class="notranslate language-html">https://analytics.api.brightcove.com/v1/alltime/accounts/1752604059001/videos/4825279519001</code></pre>
       </li>
-      <li>The HTTP method, for instance <code class="notranslate">GET</code>.</li>
+      <li>The HTTP method, for instance <code translate="No">GET</code>.</li>
     </ol>
     <p>An example follows:</p>
     <ul>
       <li>Line 1: Standard code to wait until the player is ready to interact with.</li>
       <li>Lines 2-4: Create/set values for variables needed later in the code.</li>
-      <li>Lines 7-12: Wait for the <code class="notranslate">loadstart</code> event so the <code class="notranslate">mediainfo</code> object is populated. Assign variables to hold values needed for the <span translate="No">Analytics API</span> endpoint.</li>
+      <li>Lines 7-12: Wait for the <code translate="No">loadstart</code> event so the <code translate="No">mediainfo</code> object is populated. Assign variables to hold values needed for the <span translate="No">Analytics API</span> endpoint.</li>
       <li>Line 13: Set the HTTP method for the call.</li>
     </ul>
     <pre class="line-numbers">
@@ -111,23 +111,23 @@ parent: Getting Started
 			options.url = baseURL + endPoint;
 			options.requestType = "GET";</code></pre>
     <aside class="bcls-aside bcls-aside--information">Note: Lines 9,10 and 12 could easily be placed into a single long line. The code was written as shown to avoid long lines that involve scrolling to view, and also to assist in code reusability.</aside>
-    <h3>Call <code class="notranslate">makeRequest()</code></h3>
-    <p>This code section makes the call to <code class="notranslate">makeRequest()</code> function. Note that two parameters are passed. The first being the options object that holds info for the endpoint, and the second is the callback function. Remember, this is an asynchronous call so the anonymously defined callback function won't be called until data has been returned by the REST API to the <code class="notranslate">makeRequest()</code> function.</p>
+    <h3>Call <code translate="No">makeRequest()</code></h3>
+    <p>This code section makes the call to <code translate="No">makeRequest()</code> function. Note that two parameters are passed. The first being the options object that holds info for the endpoint, and the second is the callback function. Remember, this is an asynchronous call so the anonymously defined callback function won't be called until data has been returned by the REST API to the <code translate="No">makeRequest()</code> function.</p>
     <ul>
-      <li>Line 1: Call the <code class="notranslate">makeRequest()</code> function, passing the required values for the call in the <code class="notranslate">options</code> object. In this case the object contains the following:
+      <li>Line 1: Call the <code translate="No">makeRequest()</code> function, passing the required values for the call in the <code translate="No">options</code> object. In this case the object contains the following:
         <figure class="bcls-figure"><img class="bcls-image" alt="options object" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/options-object-console.png" /></figure>
       </li>
       <li>Lines 3-13: The callback function is defined as an anonymous function (highlighted in yellow). Remember that this function is a parameter and NOT called here but later in the code.</li>
-      <li>Lines 6, 8, 10: <code class="notranslate">console.log()</code> statements that display:
+      <li>Lines 6, 8, 10: <code translate="No">console.log()</code> statements that display:
         <ul>
           <li>The raw JSON string that is returned by the API call.</li>
-          <li>The JSON object generated by the <code class="notranslate">JSON.parse()</code> method that does conversion from string to object.</li>
-          <li>The actual views count, extracted from the object by using simple <code class="notranslate">object.property</code> notation.</li>
+          <li>The JSON object generated by the <code translate="No">JSON.parse()</code> method that does conversion from string to object.</li>
+          <li>The actual views count, extracted from the object by using simple <code translate="No">object.property</code> notation.</li>
         </ul>
       </li>
       <li>Line 12: Calls the function that displays the number of views in the controlbar.</li>
     </ul>
-    <p>The following screenshot from the console shows actual displayed data from the <code class="notranslate">console.log</code> statements:</p>
+    <p>The following screenshot from the console shows actual displayed data from the <code translate="No">console.log</code> statements:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="Processing of data in callback function" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/console-data-process-callback-function.png" /></figure>
     <pre class="line-numbers">
 	<code class="notranslate language-javascript">// +++ Make the request to the <span translate="No">Analytics API</span> +++
@@ -143,9 +143,9 @@ parent: Getting Started
 	// Call function to place data in controlbar
 	placeCountInControlbar(viewsCount);
 	}</span>);</code></pre>
-    <h3>Actual <code class="notranslate">makeRequest()</code> function</h3>
-    <p>This section of the document examines the code that actually defines the <code class="notranslate">makeRequest()</code> function. The code that defines the function is written in such a way that it need NOT be modified, but used repeatedly as is. You may find edge cases that this is not true, but for the vast majority of uses this code need NOT be modified.</p>
-    <aside class="bcls-aside bcls-aside--tip">A key concept in understanding the <code class="notranslate">makeRequest()</code> function is gaining knowledge about how the <code class="notranslate">XMLHttpRequest</code> object behaves. The <code class="notranslate">XMLHttpRequest.onreadystatechange</code> is an event handler that is called whenever the <code class="notranslate">readyState</code> attribute changes. The value assigned to it is the event handler function code that you write. The following table shows the values the <code class="notranslate">readyState</code> attribute can have, and what each value means:
+    <h3>Actual <code translate="No">makeRequest()</code> function</h3>
+    <p>This section of the document examines the code that actually defines the <code translate="No">makeRequest()</code> function. The code that defines the function is written in such a way that it need NOT be modified, but used repeatedly as is. You may find edge cases that this is not true, but for the vast majority of uses this code need NOT be modified.</p>
+    <aside class="bcls-aside bcls-aside--tip">A key concept in understanding the <code translate="No">makeRequest()</code> function is gaining knowledge about how the <code translate="No">XMLHttpRequest</code> object behaves. The <code translate="No">XMLHttpRequest.onreadystatechange</code> is an event handler that is called whenever the <code translate="No">readyState</code> attribute changes. The value assigned to it is the event handler function code that you write. The following table shows the values the <code translate="No">readyState</code> attribute can have, and what each value means:
       <table class="bcls-table">
         <thead class="bcls-table__head">
           <tr>
@@ -156,28 +156,28 @@ parent: Getting Started
         </thead>
         <tbody class="bcls-table__body">
           <tr>
-            <td><code class="notranslate">0</code></td>
-            <td><code class="notranslate">UNSENT</code></td>
-            <td>Client has been created. <code class="notranslate">open()</code> not called yet.</td>
+            <td><code translate="No">0</code></td>
+            <td><code translate="No">UNSENT</code></td>
+            <td>Client has been created. <code translate="No">open()</code> not called yet.</td>
           </tr>
           <tr>
-            <td><code class="notranslate">1</code></td>
-            <td><code class="notranslate">OPENED</code></td>
-            <td><code class="notranslate">open()</code> has been called.</td>
+            <td><code translate="No">1</code></td>
+            <td><code translate="No">OPENED</code></td>
+            <td><code translate="No">open()</code> has been called.</td>
           </tr>
           <tr>
-            <td><code class="notranslate">2</code></td>
-            <td><code class="notranslate">HEADERS_RECEIVED</code></td>
-            <td><code class="notranslate">send()</code> has been called, and headers and status are available.</td>
+            <td><code translate="No">2</code></td>
+            <td><code translate="No">HEADERS_RECEIVED</code></td>
+            <td><code translate="No">send()</code> has been called, and headers and status are available.</td>
           </tr>
           <tr>
-            <td><code class="notranslate">3</code></td>
-            <td><code class="notranslate">LOADING</code></td>
-            <td>Downloading; <code class="notranslate">responseText</code> holds partial data.</td>
+            <td><code translate="No">3</code></td>
+            <td><code translate="No">LOADING</code></td>
+            <td>Downloading; <code translate="No">responseText</code> holds partial data.</td>
           </tr>
           <tr>
-            <td><code class="notranslate">4</code></td>
-            <td><code class="notranslate">DONE</code></td>
+            <td><code translate="No">4</code></td>
+            <td><code translate="No">DONE</code></td>
             <td>The operation is complete.</td>
           </tr>
         </tbody>
@@ -186,14 +186,14 @@ parent: Getting Started
     </aside>
     <p>A line by line discussion of the code follows:</p>
     <ul>
-      <li>Lines 1-6: Function definition and variables creation. A key point is that a new <code class="notranslate">XMLHttpRequest</code> object is created.</li>
-      <li>Lines 8, 26: Defines the event handler function for <code class="notranslate">readyState</code> changes.</li>
-      <li>Lines 9, 23, 25: Use a <code class="notranslate">try-catch</code> in case the request fails at a high level.</li>
-      <li>Lines 10, 11: Use <code class="notranslate">if</code> statements to be sure the request is finished (<code class="notranslate">readyState</code> is 4) and completed successfully, the status is in the 200 range. The following shows console logging of the <code class="notranslate">readyState</code> and <code class="notranslate">status</code> values in the event handler definition:
+      <li>Lines 1-6: Function definition and variables creation. A key point is that a new <code translate="No">XMLHttpRequest</code> object is created.</li>
+      <li>Lines 8, 26: Defines the event handler function for <code translate="No">readyState</code> changes.</li>
+      <li>Lines 9, 23, 25: Use a <code translate="No">try-catch</code> in case the request fails at a high level.</li>
+      <li>Lines 10, 11: Use <code translate="No">if</code> statements to be sure the request is finished (<code translate="No">readyState</code> is 4) and completed successfully, the status is in the 200 range. The following shows console logging of the <code translate="No">readyState</code> and <code translate="No">status</code> values in the event handler definition:
         <figure class="bcls-figure"><img class="bcls-image" alt="Logging readyState and status" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/console-readystate-and-status.png" /></figure>
       </li>
       <li>Line 18: The callback function is executed. This passes the returned data from the API back to the callback function as detailed in the <strong>Call makeRequest()</strong> section above.</li>
-      <li>Line 33: Set the event handler for the <code class="notranslate">XMLHttpRequest.onreadystatechange</code> event.</li>
+      <li>Line 33: Set the event handler for the <code translate="No">XMLHttpRequest.onreadystatechange</code> event.</li>
       <li>Line 35: Initializes the request to the proxy.</li>
       <li>Line 38: Sends the request, which is asynchronous.</li>
     </ul>
@@ -241,12 +241,12 @@ parent: Getting Started
     <p>This code shows how to place the returned data into the controlbar. This function is called at the end of the callback function, shown in <strong>Call makeRequest()</strong> section above.</p>
     <ul>
       <li>Lines 5, 16: Define the function.</li>
-      <li>Line 6: Create a variable for the <code class="notranslate">spacer</code> element in the controlbar.</li>
-      <li>Line 7: Dynamically create a <code class="notranslate">div</code> element.</li>
-      <li>Line 9: Place a label and the value of the views in the newly created <code class="notranslate">div</code> element.</li>
-      <li>Line 11: Use JavaScript's <code class="notranslate">document.getElementsByClassName()</code> method to get the controlbar's <code class="notranslate">spacer</code> element.</li>
-      <li>Line 13: Style the <code class="notranslate">spacer</code> to display the total views right-justified and down 10px from the top of the <code class="notranslate">spacer</code>.</li>
-      <li>Line 15: Add the newly created, populated and styled element to the <code class="notranslate">spacer</code>.</li>
+      <li>Line 6: Create a variable for the <code translate="No">spacer</code> element in the controlbar.</li>
+      <li>Line 7: Dynamically create a <code translate="No">div</code> element.</li>
+      <li>Line 9: Place a label and the value of the views in the newly created <code translate="No">div</code> element.</li>
+      <li>Line 11: Use JavaScript's <code translate="No">document.getElementsByClassName()</code> method to get the controlbar's <code translate="No">spacer</code> element.</li>
+      <li>Line 13: Style the <code translate="No">spacer</code> to display the total views right-justified and down 10px from the top of the <code translate="No">spacer</code>.</li>
+      <li>Line 15: Add the newly created, populated and styled element to the <code translate="No">spacer</code>.</li>
     </ul>
     <pre class="line-numbers">
 	<code class="notranslate language-javascript">/**
@@ -524,18 +524,18 @@ parent: Getting Started
     <ol>
       <li>Request from the <span translate="No">Analytics API</span> the 10 videos with the most views in an account. This step involves an asynchronous call using a callback function.</li>
       <li>From the returned <span translate="No">Analytics API</span> data, extract only the video IDs and place them in an array. A helper function is written to do the extraction of IDs from the returned data.</li>
-      <li>Request the complete video objects for each of the videos in the list of IDs in the array. This step involves looping over the array and requesting the video objects using <code class="notranslate">player.catalog.getVideo()</code>. Of course, this involves multiple asynchronous calls using the <code class="notranslate">catalog</code>. A helper function is written to retrieve the video objects based on IDs and place the objects into an array.</li>
+      <li>Request the complete video objects for each of the videos in the list of IDs in the array. This step involves looping over the array and requesting the video objects using <code translate="No">player.catalog.getVideo()</code>. Of course, this involves multiple asynchronous calls using the <code translate="No">catalog</code>. A helper function is written to retrieve the video objects based on IDs and place the objects into an array.</li>
       <li>Place the array of video objects into the playlist for a playlist-enabled player.</li>
     </ol>
-    <p>Since you are now familiar with many of the concepts and specific code on how to call the APIs, only the code that calls the <code class="notranslate">makeRequest()</code> function is detailed.</p>
+    <p>Since you are now familiar with many of the concepts and specific code on how to call the APIs, only the code that calls the <code translate="No">makeRequest()</code> function is detailed.</p>
     <ul>
-      <li>Line 2: Call the <code class="notranslate">makeRequest()</code> function passing as arguments the options required for a successful REST API call, along with an anonymously defined callback function (highlighted in yellow). This should sound familiar from above. Very importantly, the <code class="notranslate">makeRequest()</code> function that is called IS THE EXACT SAME FUNCTION USED IN THE PREVIOUS EXAMPLE. You can do the same in your code. The <code class="notranslate">makeRequest()</code> function was written to be reused with any calls to a Brightcove REST API.
-        <aside class="bcls-aside bcls-aside--tip">The <code class="notranslate">mostWatchedVideos</code> parameter will have the retrieved value assigned to when the callback function is used in the <code class="notranslate">makeRequest()</code> function.</aside>
+      <li>Line 2: Call the <code translate="No">makeRequest()</code> function passing as arguments the options required for a successful REST API call, along with an anonymously defined callback function (highlighted in yellow). This should sound familiar from above. Very importantly, the <code translate="No">makeRequest()</code> function that is called IS THE EXACT SAME FUNCTION USED IN THE PREVIOUS EXAMPLE. You can do the same in your code. The <code translate="No">makeRequest()</code> function was written to be reused with any calls to a Brightcove REST API.
+        <aside class="bcls-aside bcls-aside--tip">The <code translate="No">mostWatchedVideos</code> parameter will have the retrieved value assigned to when the callback function is used in the <code translate="No">makeRequest()</code> function.</aside>
       </li>
       <li>Line 3: Create a variable to hold the JSON parsed returned data.</li>
       <li>Line 5: Parse the returned data to convert if from a string to an object.</li>
       <li>Line 7: Use the helper function to extract video IDs from returned data. Unfortunately, the <span translate="No">Analytics API</span> does not return the full video objects, so IDs are needed to access the full objects.</li>
-      <li>Lines 9-12: Call the <code class="notranslate">getVideoData</code> helper function that uses a callback function to populate the <code class="notranslate">videoObjects</code> array based on IDs passed.</li>
+      <li>Lines 9-12: Call the <code translate="No">getVideoData</code> helper function that uses a callback function to populate the <code translate="No">videoObjects</code> array based on IDs passed.</li>
       <li>Line 11: Populate the playlist with the array of video objects.</li>
     </ul>
     <pre class="line-numbers">

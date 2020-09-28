@@ -20,9 +20,9 @@ grandparent: Playback API
     <p>Also see the <a href="/playback/references/reference_v1.html">API Reference</a>.</p>
     
     <aside class="bcls-aside bcls-aside--tip">
-    <p class="language-editable">If you only want information about the video currently in the player, you can use the <code class="notranslate">mediainfo</code> object instead of making a Playback API call.</p>
+    <p class="language-editable">If you only want information about the video currently in the player, you can use the <code translate="No">mediainfo</code> object instead of making a Playback API call.</p>
     
-    <p>The <code class="notranslate">mediainfo</code> object contains information about the video currently loaded in the player, whereas the Playback API can retrieve info about any video. For details, see the <a href="https://player.support.brightcove.com/references/video-metadata-mediainfo.html">Video Metadata from mediainfo</a> document.</p>
+    <p>The <code translate="No">mediainfo</code> object contains information about the video currently loaded in the player, whereas the Playback API can retrieve info about any video. For details, see the <a href="https://player.support.brightcove.com/references/video-metadata-mediainfo.html">Video Metadata from mediainfo</a> document.</p>
     </aside>
     </section>
     
@@ -55,13 +55,13 @@ grandparent: Playback API
     <aside class="bcls-aside bcls-aside--warning">
     <ul>
       <li>You must use <strong>https</strong> as the protocol.</li>
-      <li>Customers using IP Restriction <strong>must</strong> use <code class="notranslate">https://edge-elb.api.brightcove.com/playback/v1</code> instead of the standard URL; for more details on players used outside of North America with IP restrictions, be sure to check out the information in the <a href="/player-management/guides/player-configuration-guide.html#iprestrictions">Player Configuration Guide</a> to prevent issues that may arise.</li>
+      <li>Customers using IP Restriction <strong>must</strong> use <code translate="No">https://edge-elb.api.brightcove.com/playback/v1</code> instead of the standard URL; for more details on players used outside of North America with IP restrictions, be sure to check out the information in the <a href="/player-management/guides/player-configuration-guide.html#iprestrictions">Player Configuration Guide</a> to prevent issues that may arise.</li>
     </ul>
     </aside>
     
     <h4>Account path</h4>
     
-    <p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term <code class="notranslate">accounts</code> followed by your account id to the base URL:</p>
+    <p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term <code translate="No">accounts</code> followed by your account id to the base URL:</p>
     
     <pre>
 <code class="language-http notranslate">https://edge.api.brightcove.com/playback/v1/<strong>accounts/{account_id}</strong></code></pre>
@@ -71,18 +71,18 @@ grandparent: Playback API
     <p>Requests are authenticated by a policy key, which can be passed in one of three ways:</p>
     
     <ol class="bcls-tasklist">
-      <li>In an argument to an <code class="notranslate">Accept</code> header:
+      <li>In an argument to an <code translate="No">Accept</code> header:
     
       <pre>
 <code class="language-http notranslate">Accept: application/json;pk={policy_key}</code></pre>
     
       <p>This is the recommended method for a browser-based client, because it allows the request to go ahead without an extra request first as part of the browser CORS "pre-flight" checking. This saves latency on the first time a browser request is made.</p>
       </li>
-      <li>In an <code class="notranslate">Authorization</code> header using the realm keyword <code class="notranslate">BCOV-Policy</code>:
+      <li>In an <code translate="No">Authorization</code> header using the realm keyword <code translate="No">BCOV-Policy</code>:
       <pre >
 <code class="language-http notranslate">Authorization: BCOV-Policy {policy_key}</code></pre>
       </li>
-      <li>In a <code class="notranslate">BCOV-Policy</code> header:
+      <li>In a <code translate="No">BCOV-Policy</code> header:
       <pre >
 <code class="language-http notranslate">BCOV-Policy: {policy_key}</code></pre>
       </li>
@@ -331,7 +331,7 @@ grandparent: Playback API
     
     <h3 id="Parameters">Parameters</h3>
     
-    <p>Note that all parameters are <strong>optional</strong>. They apply to <code class="notranslate">GET Videos</code> requests only.</p>
+    <p>Note that all parameters are <strong>optional</strong>. They apply to <code translate="No">GET Videos</code> requests only.</p>
     
     <table class="bcls-table">
       <caption class="bcls-caption--table">GET Videos Request Parameters</caption>
@@ -343,24 +343,24 @@ grandparent: Playback API
       </thead>
       <tbody class="bcls-table__body">
         <tr>
-          <td><code class="notranslate">q</code></td>
+          <td><code translate="No">q</code></td>
           <td>Query string for searches - for details, see the <a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">search guide</a></td>
         </tr>
         <tr>
-          <td><code class="notranslate"><a href="#paging">limit</a></code></td>
+          <td><code translate="No"><a href="#paging">limit</a></code></td>
           <td>Number of videos to return - must be an integer between 1 and 100. <strong>Default: 20</strong></td>
         </tr>
         <tr>
-          <td><code class="notranslate"><a href="#offset">offset</a> </code></td>
+          <td><code translate="No"><a href="#offset">offset</a> </code></td>
           <td>Number of videos to skip (for paging results). Must be a positive integer. <strong>Default: 0</strong></td>
         </tr>
         <tr>
-          <td><code class="notranslate"><a href="#sort">sort</a></code></td>
+          <td><code translate="No"><a href="#sort">sort</a></code></td>
           <td>A string that specifies the field to sort by.<br />
-          Start with <code class="notranslate">-</code> to sort descending.<br />
-          If a value for <code class="notranslate">q</code> is provided, then the default sort is by "score" (relevance of the search results to the original query).<br />
-          If no value for <code class="notranslate">q</code> is provided, then the default sort is by <code class="notranslate">updated_at</code> descending.<br />
-          The following fields are valid for sort: <code class="notranslate">name</code>, <code class="notranslate">reference_id</code>, <code class="notranslate">created_at</code>, <code class="notranslate">published_at</code>, <code class="notranslate">updated_at</code>, <code class="notranslate">schedule_starts_at</code>, <code class="notranslate">schedule_ends_at</code>, <code class="notranslate">state</code>, <code class="notranslate">plays_total</code>, and <code class="notranslate">plays_trailing_week</code><br />
+          Start with <code translate="No">-</code> to sort descending.<br />
+          If a value for <code translate="No">q</code> is provided, then the default sort is by "score" (relevance of the search results to the original query).<br />
+          If no value for <code translate="No">q</code> is provided, then the default sort is by <code translate="No">updated_at</code> descending.<br />
+          The following fields are valid for sort: <code translate="No">name</code>, <code translate="No">reference_id</code>, <code translate="No">created_at</code>, <code translate="No">published_at</code>, <code translate="No">updated_at</code>, <code translate="No">schedule_starts_at</code>, <code translate="No">schedule_ends_at</code>, <code translate="No">state</code>, <code translate="No">plays_total</code>, and <code translate="No">plays_trailing_week</code><br />
           For details, see the <a href="/playback/references/reference_v1.html#api-videoGroup-Get_Videos">Get Videos</a> section of the Playback API reference</td>
         </tr>
       </tbody>
@@ -370,7 +370,7 @@ grandparent: Playback API
     
     <p>Brightcove's <span class="”notranslate”">Playback API</span> provides a programmatic way to search for videos in your <span class="”notranslate”"><span class="”notranslate”">Video Cloud</span> </span> library.</p>
     
-    <p>To perform basic and complex searches on your video data, you will use the <code class="notranslate">q</code> parameter:</p>
+    <p>To perform basic and complex searches on your video data, you will use the <code translate="No">q</code> parameter:</p>
     
     <pre >
 <code class="language-http notranslate">https://edge.api.brightcove.com/playback/v1/accounts/1752604051111/videos?<strong>q={search terms}</strong></code></pre>
@@ -379,26 +379,26 @@ grandparent: Playback API
     
     <h3 id="paging">Paging results</h3>
     
-    <p>Use the <code class="notranslate"><a href="#Parameters">limit</a></code> parameter to specify how many items you want to return on a request - up to 100. You can then use the <code class="notranslate"><a href="#Parameters">offset</a></code> parameter to page through result sets that are larger than the <code class="notranslate">limit</code>. The <code class="notranslate">offset</code> is the number of items to skip.</p>
+    <p>Use the <code translate="No"><a href="#Parameters">limit</a></code> parameter to specify how many items you want to return on a request - up to 100. You can then use the <code translate="No"><a href="#Parameters">offset</a></code> parameter to page through result sets that are larger than the <code translate="No">limit</code>. The <code translate="No">offset</code> is the number of items to skip.</p>
     
     <p>For example, the following search returns videos 51-75 of the total result set, assuming the total result set has at least 75 videos:</p>
     
     <pre >
 <code class="language-http notranslate">/videos?q=updated_at:2014-01-01..2014-06-30&amp;limit=25&amp;offset=50</code></pre>
     
-    <p>The <code class="notranslate">limit</code> and <code class="notranslate">offset</code> parameters can only be used for videos.</p>
+    <p>The <code translate="No">limit</code> and <code translate="No">offset</code> parameters can only be used for videos.</p>
     
     <h4>Paging best practice</h4>
     
     <p>When paging through your result set from the Playback API, it is recommended to follow these steps:</p>
     
     <ol  class="bcls-tasklist-restart">
-      <li>Use the <code class="notranslate"><a href="/cms/references/reference.html#api-videoGroup-Get_Videos">limit</a></code> and <code class="notranslate"><a href="/cms/references/reference.html#api-videoGroup-Get_Videos">offset</a></code> parameters to return groups of data from your result set.
+      <li>Use the <code translate="No"><a href="/cms/references/reference.html#api-videoGroup-Get_Videos">limit</a></code> and <code translate="No"><a href="/cms/references/reference.html#api-videoGroup-Get_Videos">offset</a></code> parameters to return groups of data from your result set.
     
       <pre >
 <code class="language-http notranslate">/accounts/578380111111/videos?q=tags:nature&amp;limit=20&amp;offset=50</code></pre>
       </li>
-      <li>With each response, you will see that the <code class="notranslate">count</code> field always shows the maximum number of videos in your result set.
+      <li>With each response, you will see that the <code translate="No">count</code> field always shows the maximum number of videos in your result set.
       <pre class="line-numbers">
 <code class="language-json notranslate">{"count": 171,
   "videos": [ ... ]
@@ -406,9 +406,9 @@ grandparent: Playback API
     
       <aside class="bcls-aside bcls-aside--information">Remember that the Playback API search is capped at 1000 videos.</aside>
       </li>
-      <li>The total <code class="notranslate">count</code> of videos from your first request can be used to determine how many more pages you will need to request.<br />
+      <li>The total <code translate="No">count</code> of videos from your first request can be used to determine how many more pages you will need to request.<br />
       <br />
-      Alternatively, you can interrogate the <code class="notranslate">count</code> value with each response and continue until the <code class="notranslate">count</code> is less than or equal to page size times the <code class="notranslate">limit</code>.
+      Alternatively, you can interrogate the <code translate="No">count</code> value with each response and continue until the <code translate="No">count</code> is less than or equal to page size times the <code translate="No">limit</code>.
       <pre >
 <code class="language-http notranslate">count &lt;= page-number * limit</code></pre>
       </li>
@@ -416,9 +416,9 @@ grandparent: Playback API
     
     <h3>Sorting video results</h3>
     
-    <p>Use the parameter <code class="notranslate">sort=field_name</code> to specify how the results should be sorted. You can sort on the following video fields:<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></p>
+    <p>Use the parameter <code translate="No">sort=field_name</code> to specify how the results should be sorted. You can sort on the following video fields:<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></p>
     
-    <aside class="bcls-aside bcls-aside--information">Prefix the field name with a minus sign (<code class="notranslate">sort=<span class="bcls-highlight">-</span>field_name</code>) for descending order.</aside>
+    <aside class="bcls-aside bcls-aside--information">Prefix the field name with a minus sign (<code translate="No">sort=<span class="bcls-highlight">-</span>field_name</code>) for descending order.</aside>
     
     <ul>
       <li>name</li>
@@ -426,8 +426,8 @@ grandparent: Playback API
       <li>created_at</li>
       <li>published_at</li>
       <li>updated_at</li>
-      <li>schedule_starts_at (note: this is the <strong>sort</strong> field - the <strong>search field is <code class="notranslate">schedule.starts_at</code></strong>)</li>
-      <li>schedule_ends_at (note: this is the <strong>sort</strong> field - the <strong>search field is <code class="notranslate">schedule.ends_at</code></strong>)</li>
+      <li>schedule_starts_at (note: this is the <strong>sort</strong> field - the <strong>search field is <code translate="No">schedule.starts_at</code></strong>)</li>
+      <li>schedule_ends_at (note: this is the <strong>sort</strong> field - the <strong>search field is <code translate="No">schedule.ends_at</code></strong>)</li>
       <li>state</li>
       <li>plays_total<sup><strong><a href="#note1-2">[1-2]</a></strong></sup></li>
       <li>plays_trailing_week<sup><strong><a href="#note1-2">[1-2]</a></strong></sup></li>
@@ -436,8 +436,8 @@ grandparent: Playback API
     <p><strong>Notes</strong></p>
     
     <ul>
-      <li id="note1-1"><sup><strong>[1-1]</strong></sup> If you do not provide a sort value for a video search call, the results will be sorted by relevance. If you do not provide a sort value for a <code class="notranslate">GET</code> videos call, the results will be sorted by <code class="notranslate">updated_at</code> descending.</li>
-      <li id="note1-2"><sup><strong>[1-2]</strong></sup> You can sort on <code class="notranslate">plays_total</code> or <code class="notranslate">plays_trailing_week</code>, but these fields are not included in the results</li>
+      <li id="note1-1"><sup><strong>[1-1]</strong></sup> If you do not provide a sort value for a video search call, the results will be sorted by relevance. If you do not provide a sort value for a <code translate="No">GET</code> videos call, the results will be sorted by <code translate="No">updated_at</code> descending.</li>
+      <li id="note1-2"><sup><strong>[1-2]</strong></sup> You can sort on <code translate="No">plays_total</code> or <code translate="No">plays_trailing_week</code>, but these fields are not included in the results</li>
     </ul>
     
     <h4 id="largeDataSets">All videos and large data sets</h4>
@@ -445,7 +445,7 @@ grandparent: Playback API
     <p>If you are retrieving all the videos in your account, or a large number of videos, there are some things you must be aware of:</p>
     
     <ol class="bcls-tasklist-restart">
-      <li>You may be tempted to use the largest allowed <code class="notranslate">limit</code> (100), but it's better to retrieve videos in batches of 25 or less to minimize the possibility of API requests timing out</li>
+      <li>You may be tempted to use the largest allowed <code translate="No">limit</code> (100), but it's better to retrieve videos in batches of 25 or less to minimize the possibility of API requests timing out</li>
       <li>As you are paging through large data sets, it is possible that the video data may be updated during the operation, which could cause items to shift in responses:
       <ul>
         <li>You might see an item repeated on successive pages</li>
@@ -454,7 +454,7 @@ grandparent: Playback API
     
       <p>To account for the first possibility, your app should de-dupe the complete item list after you have finished retrieving videos. To handle the second possibility, you need to compare the total number of items retrieved (after de-duping) to the number you were expecting, and then rerun the requests, sorting the results by last_modified_date (descending) - you shouldn't need to retrieve more than one batch to pick up missed items.</p>
       </li>
-      <li>You can decrease the likelihood of the scenarios in the previous item by sorting the returned results appropriately. The default sorting by <strong>relevance</strong> for searches is based on a complex algorithm that looks combinations of keywords, tags, and custom field values. If you are searching for videos based on multiple keywords, tags, and/or custom fields, sort by relevance is exactly what you want. However, if you are just trying to retrieve all or a large set of your videos, setting the <code class="notranslate">sort</code> parameter explicitly will give you more control over the order of the returned items.</li>
+      <li>You can decrease the likelihood of the scenarios in the previous item by sorting the returned results appropriately. The default sorting by <strong>relevance</strong> for searches is based on a complex algorithm that looks combinations of keywords, tags, and custom field values. If you are searching for videos based on multiple keywords, tags, and/or custom fields, sort by relevance is exactly what you want. However, if you are just trying to retrieve all or a large set of your videos, setting the <code translate="No">sort</code> parameter explicitly will give you more control over the order of the returned items.</li>
     </ol>
     
     <h3 id="Get_videos">Get videos</h3>
@@ -500,13 +500,13 @@ grandparent: Playback API
     <section class="bcls-section">
     <h2 id="Find_related_videos">Find related videos</h2>
     
-    <p>The Playback API allows you to search your account for videos that are related to the specified video. Based on the <code class="notranslate">name</code> and <code class="notranslate">short description</code> of the specified video, the API will search for any partial matches in the following fields:</p>
+    <p>The Playback API allows you to search your account for videos that are related to the specified video. Based on the <code translate="No">name</code> and <code translate="No">short description</code> of the specified video, the API will search for any partial matches in the following fields:</p>
     
     <ul>
-      <li><code class="notranslate">name</code></li>
-      <li><code class="notranslate">short description</code></li>
-      <li><code class="notranslate">long description</code></li>
-      <li><code class="notranslate">tags</code></li>
+      <li><code translate="No">name</code></li>
+      <li><code translate="No">short description</code></li>
+      <li><code translate="No">long description</code></li>
+      <li><code translate="No">tags</code></li>
     </ul>
     
     <p>If geo-restriction is in effect, you may not receive a full page of results.</p>
@@ -532,19 +532,19 @@ grandparent: Playback API
       </thead>
       <tbody class="bcls-table__body">
         <tr>
-          <td><code class="notranslate">limit</code></td>
+          <td><code translate="No">limit</code></td>
           <td>The number of videos to return (default=20; maximum=100)</td>
         </tr>
         <tr>
-          <td><code class="notranslate">ad_config_id</code></td>
+          <td><code translate="No">ad_config_id</code></td>
           <td>Append your ad_config_id to return <a href="#Video_request_with_SSAI">videos with SSAI</a></td>
         </tr>
       </tbody>
     </table>
     
-    <p>By default, the response will contain up to 20 videos. You may use the <code class="notranslate">limit</code> parameter to return up to a maximum of 100 videos, with a cost of increased latency.</p>
+    <p>By default, the response will contain up to 20 videos. You may use the <code translate="No">limit</code> parameter to return up to a maximum of 100 videos, with a cost of increased latency.</p>
     
-    <p>Notice that there is no <code class="notranslate">offset</code> parameter when finding related videos, so you will not be able to page through your video results.</p>
+    <p>Notice that there is no <code translate="No">offset</code> parameter when finding related videos, so you will not be able to page through your video results.</p>
     
     <h3>Get related videos using video id</h3>
     
@@ -572,7 +572,7 @@ grandparent: Playback API
     
     <h3>Sample response</h3>
     
-    <p>In the response below, notice that there is no <code class="notranslate">count</code> field, unlike the <a href="#Search_videos">search videos</a> response.</p>
+    <p>In the response below, notice that there is no <code translate="No">count</code> field, unlike the <a href="#Search_videos">search videos</a> response.</p>
     
     <pre class="line-numbers">
 <code class="language-json notranslate">{
@@ -619,7 +619,7 @@ grandparent: Playback API
     
     <h4>Endpoint with URL parameter</h4>
     
-    <p>Append your <code class="notranslate">ad_config_id</code> to the end of the Playback API request:</p>
+    <p>Append your <code translate="No">ad_config_id</code> to the end of the Playback API request:</p>
     
     <pre >
 <code class="language-http notranslate">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}?ad_config_id={ad_config_id}</code></pre>
@@ -633,9 +633,9 @@ grandparent: Playback API
     
     <ul>
       <li>The response is similar to that if you didn't include an ad config Id.</li>
-      <li>The elements of the <code class="notranslate">sources</code> array will contain a new property called <code class="notranslate">vmap</code>.</li>
-      <li>If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code class="notranslate">vmap</code> property.</li>
-      <li>The <code class="notranslate">src</code> property within the <code class="notranslate">sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code class="notranslate">src</code> will have ads stitched in with the main content.</li>
+      <li>The elements of the <code translate="No">sources</code> array will contain a new property called <code translate="No">vmap</code>.</li>
+      <li>If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code translate="No">vmap</code> property.</li>
+      <li>The <code translate="No">src</code> property within the <code translate="No">sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code translate="No">src</code> will have ads stitched in with the main content.</li>
     </ul>
     
     <details>
@@ -670,9 +670,9 @@ grandparent: Playback API
     
     <h3 id="Require_ad_config_id">Require ad_config_id</h3>
     
-    <p>Using the Policy API, you can create a policy key that requires you to include the <code class="notranslate">ad_config_id</code> URL parameter when making requests to the Playback API. For details about setting this feature, see the <a href="/policy/references/reference.html#operation/CreateAPolicyKey">Policy API Reference</a> document.</p>
+    <p>Using the Policy API, you can create a policy key that requires you to include the <code translate="No">ad_config_id</code> URL parameter when making requests to the Playback API. For details about setting this feature, see the <a href="/policy/references/reference.html#operation/CreateAPolicyKey">Policy API Reference</a> document.</p>
     
-    <p>When the policy key is set to require an <code class="notranslate">ad_config_id</code>, and you do not append it to a Playback API request, you will get the following error:</p>
+    <p>When the policy key is set to require an <code translate="No">ad_config_id</code>, and you do not append it to a Playback API request, you will get the following error:</p>
     
     <pre class="line-numbers">
 <code class="language-json notranslate">[
@@ -1172,7 +1172,7 @@ grandparent: Playback API
     
     <h4>Sample response</h4>
     
-    <p>Below is a sample response from the Playback API where a WebVTT captions file has been added to a video using the Media module. Notice that the text track <code class="notranslate">src</code> properties point to an external captions file.</p>
+    <p>Below is a sample response from the Playback API where a WebVTT captions file has been added to a video using the Media module. Notice that the text track <code translate="No">src</code> properties point to an external captions file.</p>
     
     <pre class="line-numbers">
 <code class="language-json notranslate">{
@@ -1207,7 +1207,7 @@ grandparent: Playback API
     
     <h4>Sample response</h4>
     
-    <p>Below is a sample response from the Playback API where a WebVTT captions file has been added to a video using the Dynamic&nbsp;Ingest API. Notice that the text track <code class="notranslate">src</code> properties point to internal Brightcove files.</p>
+    <p>Below is a sample response from the Playback API where a WebVTT captions file has been added to a video using the Dynamic&nbsp;Ingest API. Notice that the text track <code translate="No">src</code> properties point to internal Brightcove files.</p>
     
     <pre class="line-numbers">
 <code class="language-json notranslate">{

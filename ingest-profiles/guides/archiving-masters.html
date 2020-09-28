@@ -21,10 +21,10 @@ grandparent: Ingest Profiles API
     <section class="bcls-section">
     <h2 id="archivingMaster">Archiving a master</h2>
     
-    <p>To archive a master for your video, you need to include the <code class="notranslate">digital_master</code> object in your ingest profile:</p>
+    <p>To archive a master for your video, you need to include the <code translate="No">digital_master</code> object in your ingest profile:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">{
+    <code class="language-json" translate="No">{
         "account_id": 3423487123048,
         <span class="bcls-highlight">"digital_master": {
             "rendition": "passthrough",
@@ -38,22 +38,22 @@ grandparent: Ingest Profiles API
     <section class="bcls-section">
     <h2 id="originalRendition">Source or rendition</h2>
     
-    <p>For Dynamic Delivery (including Context Aware Encoding) profiles, you can archive the video source file as a master (in other words, set <code class="notranslate">"rendition": "passthrough"</code> in the <code class="notranslate">digital_master</code> part of the profile). The digital_master will <strong>not</strong> be distributed (pushed to the CDN as an available rendition) for these profiles, even if you set <code class="notranslate">"distribute": true</code>.</p>
+    <p>For Dynamic Delivery (including Context Aware Encoding) profiles, you can archive the video source file as a master (in other words, set <code translate="No">"rendition": "passthrough"</code> in the <code translate="No">digital_master</code> part of the profile). The digital_master will <strong>not</strong> be distributed (pushed to the CDN as an available rendition) for these profiles, even if you set <code translate="No">"distribute": true</code>.</p>
     
     <p>For Legacy Ingest profiles, you can choose to use your video source file as the master, or you can select a high-quality rendition to use as the master.</p>
     
     <p>To use the video source file you ingest as the master, include the following code in your ingest profile:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">"digital_master": {
+    <code class="language-json" translate="No">"digital_master": {
         "rendition": "passthrough",
         "distribute": false
     }</code></pre>
     
-    <p>To use a rendition for the master instead of your source file (Legacy Ingest profiles only), set the <code class="notranslate">rendition</code> field of the <code class="notranslate">digital_master</code> object to the <strong>reference id</strong> for the rendition:</p>
+    <p>To use a rendition for the master instead of your source file (Legacy Ingest profiles only), set the <code translate="No">rendition</code> field of the <code translate="No">digital_master</code> object to the <strong>reference id</strong> for the rendition:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json"><strong>"digital_master": {
+    <code class="language-json" translate="No"><strong>"digital_master": {
             "rendition": "av0",
             "distribute": true
         }</strong>,
@@ -64,7 +64,7 @@ grandparent: Ingest Profiles API
             "media_type": "video",
             <strong>"reference_id": "av0"</strong>, ...</code></pre>
     
-    <p>If you set <code class="notranslate">rendition</code> to <code class="notranslate">none</code>, <strong>no master will be archived</strong>, and you will <strong>not</strong> be able to retranscode the video. You can, however, <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html#replaceVideo">replace</a> the video by ingesting it again.</p>
+    <p>If you set <code translate="No">rendition</code> to <code translate="No">none</code>, <strong>no master will be archived</strong>, and you will <strong>not</strong> be able to retranscode the video. You can, however, <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html#replaceVideo">replace</a> the video by ingesting it again.</p>
     </section>
     
     <section class="bcls-section">
@@ -76,25 +76,25 @@ grandparent: Ingest Profiles API
     
     <div class="BCL-aside">Notes:
     <ul>
-      <li>If you selected one of your renditions to be the master, and set <code class="notranslate">distribute</code> to <code class="notranslate">false</code>, that rendition will not be pushed to the CDN and will not be available for playback</li>
-      <li>If the rendition is set to <code class="notranslate">passthrough</code> and <code translate="No">distribute</code> to <code translate="No">true</code>, the master will only be distributed if it is in h264 format</li>
+      <li>If you selected one of your renditions to be the master, and set <code translate="No">distribute</code> to <code translate="No">false</code>, that rendition will not be pushed to the CDN and will not be available for playback</li>
+      <li>If the rendition is set to <code translate="No">passthrough</code> and <code translate="No">distribute</code> to <code translate="No">true</code>, the master will only be distributed if it is in h264 format</li>
       <li>The original video may be modified in order to make it playable over the internet. The archived master will be identical to the original file, however, except in very rare cases where we need to modify it in order to transcode it</li>
-      <li>Distributing the master does <strong>not</strong> work for videos ingested using <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Delivery</a> profiles. If you look at the Dynamic Delivery ingest profiles, you will see that <code class="notranslate">distribute</code> is set to <code class="notranslate">false</code>. If you duplicate the profile and attempt to change that in Studio, the value will revert to <code class="notranslate">false</code> automatically.</li>
+      <li>Distributing the master does <strong>not</strong> work for videos ingested using <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Delivery</a> profiles. If you look at the Dynamic Delivery ingest profiles, you will see that <code translate="No">distribute</code> is set to <code translate="No">false</code>. If you duplicate the profile and attempt to change that in Studio, the value will revert to <code translate="No">false</code> automatically.</li>
     </ul>
     </div>
     
-    <p>To distribute the master to the CDN, set <code class="notranslate">"distribute": true</code> in the <code class="notranslate">digital_master</code> object:</p>
+    <p>To distribute the master to the CDN, set <code translate="No">"distribute": true</code> in the <code translate="No">digital_master</code> object:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">"digital_master": {
+    <code class="language-json" translate="No">"digital_master": {
         <strong>"distribute": true,</strong>
         "rendition": "passthrough"
     }</code></pre>
     
-    <p>To prevent the master from being distributed, set <code class="notranslate">distribute</code> to false:</p>
+    <p>To prevent the master from being distributed, set <code translate="No">distribute</code> to false:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">"digital_master": {
+    <code class="language-json" translate="No">"digital_master": {
         <strong>"distribute": false,</strong>
         "rendition": "passthrough"
     }</code></pre>
@@ -103,10 +103,10 @@ grandparent: Ingest Profiles API
     <section class="bcls-section">
     <h2 id="defaultBehavior">Default behavior</h2>
     
-    <p>By default (if the profile does not include a <code class="notranslate">digital_master</code> field), the <span class="notranslate"><a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Ingest API</a></span> and <a href="https://studio.support.brightcove.com/media/uploading-videos-using-upload-module.html">Upload Module</a> will behave exactly as if the following had been included in the profile:</p>
+    <p>By default (if the profile does not include a <code translate="No">digital_master</code> field), the <span class="notranslate"><a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Ingest API</a></span> and <a href="https://studio.support.brightcove.com/media/uploading-videos-using-upload-module.html">Upload Module</a> will behave exactly as if the following had been included in the profile:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">"digital_master": {
+    <code class="language-json" translate="No">"digital_master": {
         "distribute": false,
         "rendition": "none"
     }</code></pre>
@@ -116,11 +116,11 @@ grandparent: Ingest Profiles API
     <p>If you have the following in your profile:</p>
     
     <pre class="line-numbers">
-    <code class="notranslate language-json">"digital_master": {
+    <code class="language-json" translate="No">"digital_master": {
         "distribute": false
     }</code></pre>
     
-    <p>... with no <code class="notranslate">rendition</code> field to specify what should be archived, the source video <strong>will be archived</strong> as the digital master.</p>
+    <p>... with no <code translate="No">rendition</code> field to specify what should be archived, the source video <strong>will be archived</strong> as the digital master.</p>
     </section>
     
     <section class="bcls-section">

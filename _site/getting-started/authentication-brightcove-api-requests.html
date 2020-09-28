@@ -1360,9 +1360,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
     <p>If you want or need to create client credentials using the OAuth API, below are steps that will guide you through getting your client credentials. You will first need to get your BC_TOKEN, which is used to authenticate you for the client credentials request.</p>
 
-    <h3>Get your <code class="notranslate">BC_TOKEN</code> and account number</h3>
+    <h3>Get your <code translate="No">BC_TOKEN</code> and account number</h3>
 
-    <p>You will need to login to Studio to get your <code class="notranslate">BC_TOKEN</code>.</p>
+    <p>You will need to login to Studio to get your <code translate="No">BC_TOKEN</code>.</p>
 
     <ol class="bcls-tasklist">
       <li>Login to Studio as you normally do.</li>
@@ -1384,12 +1384,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
         <p>...and press return.</p>
       </li>
-      <li>You should see a prompt appear that contains your <code class="notranslate">BC_TOKEN</code>:
+      <li>You should see a prompt appear that contains your <code translate="No">BC_TOKEN</code>:
         <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="/assets/images/getting-started/prompt-with-token-safari.png" />
           <figcaption class="bcls-caption--image">BC_TOKEN</figcaption>
         </figure>
       </li>
-      <li>If you have your BC_TOKEN, go on to the <a href="#getCredentials">Get client credentials</a> section; if for some reason you did not get your BC_TOKEN using the previous steps, just go to the Console, type <code class="notranslate">document.cookies</code>, and press return.</li>
+      <li>If you have your BC_TOKEN, go on to the <a href="#getCredentials">Get client credentials</a> section; if for some reason you did not get your BC_TOKEN using the previous steps, just go to the Console, type <code translate="No">document.cookies</code>, and press return.</li>
       <li>All cookies for the page will be returned in a semi-colon-separated list. Find the BC_TOKEN cookie in the list, and copy the value:
         <figure class="bcls-figure"><img class="bcls-image" alt="Get BC_TOKEN from Console" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/guides/get-access-token-console.png" />
           <figcaption class="bcls-caption--image">Get BC_TOKEN from Console</figcaption>
@@ -1397,7 +1397,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </li>
     </ol>
 
-    <h3 id="getCredentials">Get <code class="notranslate">client_credentials</code></h3>
+    <h3 id="getCredentials">Get <code translate="No">client_credentials</code></h3>
 
     <p>Now we are ready to make the call to the OAuth service to retrieve client credentials. We have to specify a client application name that we are requesting credentials for - the name is arbitrary, intended to help you keep track of what the credentials are for - and here we will just use "ingest-profiles-api-client". We also have to specify the scope of the operations we want access to in an array, and here we will use. The operations available are shown in <a href="/oauth/guides/api-operations-client-credentials-requests.html">API Operations for Client Credentials Requests</a>. In the steps below, you will specify the operations required for the Ingest Profiles API.</p>
 
@@ -1461,7 +1461,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         "issued_user": your_video_cloud_account_id
       }</code></pre>
       </li>
-      <li>Copy and save the <code class="notranslate">client_id</code> and <code class="notranslate">client_secret</code>, as you will need these anytime you need to get an <code class="notranslate">access_token</code>.</li>
+      <li>Copy and save the <code translate="No">client_id</code> and <code translate="No">client_secret</code>, as you will need these anytime you need to get an <code translate="No">access_token</code>.</li>
     </ol>
   </section>
 
@@ -1470,7 +1470,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
     <p>Access tokens, unlike client credentials, are short-lived - currently they expire in 5 minutes. You will need to get a new one for each API request. You could, of course, build logic into an app to check the most recent access token to see if it has timed out, but requests to the Ingest Profiles API are likely to be few and far between, so there's no good reason to do that.</p>
 
-    <p>In fact, the API may be one that you will use infrequently enough that it may not be worth building an app around it at all. An alternative would be to use <a href="/assets/downloads/api-tester.sh.zip">this shell script</a> that Brightcove Learning Services built. It allows you to enter your client id and secret, the API request and method, and any request data. It then gets an <code class="notranslate">access_token</code>, makes the API request, and outputs the response. (Note that the shell script uses cURL, which is installed natively on Mac MacOS and other Unix/Linux systems, or <a href="https://general.support.brightcove.com/developer/concepts-set-curl.html">can be installed on Windows</a>.</p>
+    <p>In fact, the API may be one that you will use infrequently enough that it may not be worth building an app around it at all. An alternative would be to use <a href="/assets/downloads/api-tester.sh.zip">this shell script</a> that Brightcove Learning Services built. It allows you to enter your client id and secret, the API request and method, and any request data. It then gets an <code translate="No">access_token</code>, makes the API request, and outputs the response. (Note that the shell script uses cURL, which is installed natively on Mac MacOS and other Unix/Linux systems, or <a href="https://general.support.brightcove.com/developer/concepts-set-curl.html">can be installed on Windows</a>.</p>
 
     <p>To retrieve access tokens you make a POST request to:</p>
 
@@ -1480,11 +1480,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>You must pass the following headers with this call:</p>
 
     <ul>
-      <li><code class="notranslate">Content-Type: application/x-www-form-urlencoded</code></li>
-      <li><code class="notranslate">Authorization: Basic {client_id}:{client_secret}</code></li>
+      <li><code translate="No">Content-Type: application/x-www-form-urlencoded</code></li>
+      <li><code translate="No">Authorization: Basic {client_id}:{client_secret}</code></li>
     </ul>
 
-    <p>The entire <code class="notranslate">{client_id}:{client_secret}</code> string must be Base64-encoded (curl will automatically Base64-encode the string if you pass it as <code class="notranslate">--user</code> credentials; in other languages, you'll need to handle the Base64-encoding yourself).</p>
+    <p>The entire <code translate="No">{client_id}:{client_secret}</code> string must be Base64-encoded (curl will automatically Base64-encode the string if you pass it as <code translate="No">--user</code> credentials; in other languages, you'll need to handle the Base64-encoding yourself).</p>
 
     <p>You must also send the following key/value pair as the request body or as URL parameter:</p>
 
@@ -1500,12 +1500,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           "expires_in": 300
       }</code></pre>
 
-    <p>The <code class="notranslate">access_token</code> value is what you must pass in an <code class="notranslate">Authorization</code> header with your API call in this form:</p>
+    <p>The <code translate="No">access_token</code> value is what you must pass in an <code translate="No">Authorization</code> header with your API call in this form:</p>
 
     <pre class="line-numbers">
       <code class="language-bash notranslate">Authorization: Bearer {access_token}</code></pre>
 
-    <p>The <code class="notranslate">expired_in</code> value is the number of seconds that the access token is valid for.</p>
+    <p>The <code translate="No">expired_in</code> value is the number of seconds that the access token is valid for.</p>
 
     <p>For more information and sample code, see <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a></p>
   </section>

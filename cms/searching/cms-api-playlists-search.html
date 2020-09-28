@@ -11,21 +11,21 @@ grandparent: CMS API
     <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
     
-    <p>Playlists for an account can be searched by providing a <code class="notranslate">q</code> parameter to the above call similarly to the provided Video Search functionality. Be aware, however, that <a href="#fields">a much smaller number of fields can be searched</a>, and that only the playlist properties are searched, not properties of the videos contained in the playlist.</p>
+    <p>Playlists for an account can be searched by providing a <code translate="No">q</code> parameter to the above call similarly to the provided Video Search functionality. Be aware, however, that <a href="#fields">a much smaller number of fields can be searched</a>, and that only the playlist properties are searched, not properties of the videos contained in the playlist.</p>
     
-    <p>Any unqualified/default terms will search for any text match in the name, reference_id, or id field of a Playlist, for example a search for <code class="notranslate">?q=news+2016</code> would match any of the following if they exist:</p>
+    <p>Any unqualified/default terms will search for any text match in the name, reference_id, or id field of a Playlist, for example a search for <code translate="No">?q=news+2016</code> would match any of the following if they exist:</p>
     
     <ul>
-      <li>A Playlist with a name of <code class="notranslate">Exciting 2016 News</code></li>
+      <li>A Playlist with a name of <code translate="No">Exciting 2016 News</code></li>
       <li>A Playlist with an id of 2016</li>
-      <li>A Playlist with a <code class="notranslate">reference_id</code> of <code class="notranslate">news 2016</code></li>
+      <li>A Playlist with a <code translate="No">reference_id</code> of <code translate="No">news 2016</code></li>
     </ul>
     
-    <aside class="bcls-aside bcls-aside--information"><code class="notranslate">+</code> is used as an encoded space in the examples (not a literal "+")</aside>
+    <aside class="bcls-aside bcls-aside--information"><code translate="No">+</code> is used as an encoded space in the examples (not a literal "+")</aside>
     
     <aside class="bcls-aside bcls-aside--information">Requests to the <span translate="No">CMS API</span> require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</aside>
     
-    <p>As implied above multiple terms provided are <code class="notranslate">OR</code>'ed together, and strings containing one or more of the provided terms will be returned. Provided values are <a href="#stemming">stemmed</a>, so variations on the words will be matched. Prefix matching is <strong>not</strong> currently supported. So for instance a search for <code class="notranslate">p*</code> will not return results starting with "p" nor will a search for <code class="notranslate">play*</code> return results containing "playlist".</p>
+    <p>As implied above multiple terms provided are <code translate="No">OR</code>'ed together, and strings containing one or more of the provided terms will be returned. Provided values are <a href="#stemming">stemmed</a>, so variations on the words will be matched. Prefix matching is <strong>not</strong> currently supported. So for instance a search for <code translate="No">p*</code> will not return results starting with "p" nor will a search for <code translate="No">play*</code> return results containing "playlist".</p>
     </section>
     
     <section class="bcls-section">
@@ -39,7 +39,7 @@ grandparent: CMS API
     <section class="bcls-section">
     <h2 id="fields">Fields</h2>
     
-    <p>Specific fields can be queried by using the <code class="notranslate">{field:}{value}</code> syntax such as <code class="notranslate">?q=news+2016+type:EXPLICIT</code>. Fields provided this way must match exactly. Like other terms these will be <code class="notranslate">OR</code>'ed.</p>
+    <p>Specific fields can be queried by using the <code translate="No">{field:}{value}</code> syntax such as <code translate="No">?q=news+2016+type:EXPLICIT</code>. Fields provided this way must match exactly. Like other terms these will be <code translate="No">OR</code>'ed.</p>
     
     <p>The following fields are currently supported:</p>
     
@@ -56,21 +56,21 @@ grandparent: CMS API
     <section class="bcls-section">
     <h2 id="required_terms">Required terms</h2>
     
-    <p>You can require terms by prefixing them with a URI-encoded <code class="notranslate">+</code> sign (%2B) - example: <code class="notranslate">q=name:%2Bnews+%2B2016</code> (which would return only playlists with names including both "news" and "2016").</p>
+    <p>You can require terms by prefixing them with a URI-encoded <code translate="No">+</code> sign (%2B) - example: <code translate="No">q=name:%2Bnews+%2B2016</code> (which would return only playlists with names including both "news" and "2016").</p>
     
-    <aside class="bcls-aside bcls-aside--warning">You cannot combine optional and required terms - if you search on <code class="notranslate">q=name:news+%2B2016</code>, the <code class="notranslate">%2B</code> in front of "2016" will be ignored, and all playlists with names containing "news" OR "2016" will be returned.</aside>
+    <aside class="bcls-aside bcls-aside--warning">You cannot combine optional and required terms - if you search on <code translate="No">q=name:news+%2B2016</code>, the <code translate="No">%2B</code> in front of "2016" will be ignored, and all playlists with names containing "news" OR "2016" will be returned.</aside>
     </section>
     
     <section id="excluded_terms" class="bcls-section">
     <h2>Excluded terms</h2>
     
-    <p>Prefix terms with a URI-encoded <code class="notranslate">-</code> sign to exclude playlists with that term. For example: <code class="notranslate">q=name:%2Bnews+%2D2016</code> will return videos that have names containing "news" but <strong>not</strong> containing "2016".</p>
+    <p>Prefix terms with a URI-encoded <code translate="No">-</code> sign to exclude playlists with that term. For example: <code translate="No">q=name:%2Bnews+%2D2016</code> will return videos that have names containing "news" but <strong>not</strong> containing "2016".</p>
     </section>
     
     <section class="bcls-section">
     <h2 id="stemming">Stemming</h2>
     
-    <p><em>Stemming</em> refers to storing and searching for the roots of words. What this means is that the terms "play", "playing", "plays", "played"... will all be stored as "play" and when a search is done for any of those terms the search will accordingly be translated to search for "play". Stem only applies to the root of the word, and not a string that begins or is part of the word. Therefore, a search on <code class="notranslate">name:play</code> will returned videos with names containing "play", "played", "playing", and "playable", but will not return videos with names that contain "display" or "playlist".</p>
+    <p><em>Stemming</em> refers to storing and searching for the roots of words. What this means is that the terms "play", "playing", "plays", "played"... will all be stored as "play" and when a search is done for any of those terms the search will accordingly be translated to search for "play". Stem only applies to the root of the word, and not a string that begins or is part of the word. Therefore, a search on <code translate="No">name:play</code> will returned videos with names containing "play", "played", "playing", and "playable", but will not return videos with names that contain "display" or "playlist".</p>
     </section>
 
     <section class="bcls-section">
