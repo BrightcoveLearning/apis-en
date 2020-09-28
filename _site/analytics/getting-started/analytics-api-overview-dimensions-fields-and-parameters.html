@@ -1389,7 +1389,7 @@ fieldset legend {
 <p>A typical use case for getting a report on multiple dimensions: you want a breakdown of video views between desktop and mobile devices, and also want to know how many of the mobile device views were on iOS versus Android devices, and how many of the desktop views were on Macs versus Windows machines. Currently there is no standard report in the Studio Analytics Module that provides this information, but you can obtain it via this <span translate="No">Analytics API</span> call:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-  <code class="language-http notranslate">https://analytics.api.brightcove.com/v1/data?accounts=57838016001&amp;dimensions=video,device_type,device_os&amp;from=2014-01-01&amp;to=2014-04-01&amp;fields=video_view</code></pre>
+  <code class="language-http" translate="No">https://analytics.api.brightcove.com/v1/data?accounts=57838016001&amp;dimensions=video,device_type,device_os&amp;from=2014-01-01&amp;to=2014-04-01&amp;fields=video_view</code></pre>
 
 <p>(In this case we are requesting video views for the period from January 1 to April 1 in 2014.)</p>
 
@@ -1893,7 +1893,7 @@ fieldset legend {
 <p>The Video Cloud account(s) that you want a report for are specified using the <code translate="No">accounts</code> parameter. For example:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-  <code class="language-http notranslate">https://analytics.api.brightcove.com/v1/data?accounts={account1_id,account2_id}</code></pre>
+  <code class="language-http" translate="No">https://analytics.api.brightcove.com/v1/data?accounts={account1_id,account2_id}</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -1902,21 +1902,21 @@ fieldset legend {
 <p>The general syntax for filters is:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http notranslate">where=dimension1==value1;dimension2==value2</code></pre>
+<code class="language-http" translate="No">where=dimension1==value1;dimension2==value2</code></pre>
 
 <p>For example:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http notranslate">https://analytics.api.brightcove.com/v1?accounts=<span class="bcls-input">account_id(s)</span>&amp;dimensions=device_type&amp;where=video==<span class="bcls-input">video_id</span>;device_type==tablet</code></pre>
+<code class="language-http" translate="No">https://analytics.api.brightcove.com/v1?accounts=<span class="bcls-input">account_id(s)</span>&amp;dimensions=device_type&amp;where=video==<span class="bcls-input">video_id</span>;device_type==tablet</code></pre>
 
-<p>Commas are treated as logical ORs, and semicolons as logical ANDs. For example, <code class="language-http notranslate">where=video==1234,5678;player==9876</code> is interpreted as "where video = 1234 <strong>OR</strong> 5678 <strong>AND</strong> player = 9876"</p>
+<p>Commas are treated as logical ORs, and semicolons as logical ANDs. For example, <code class="language-http" translate="No">where=video==1234,5678;player==9876</code> is interpreted as "where video = 1234 <strong>OR</strong> 5678 <strong>AND</strong> player = 9876"</p>
 
 <h3>Spaces and special characters</h3>
 
 <p>String values should be URI encoded. You can also escape special characters using a "":</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http notranslate">where=search_terms==boston,%20ma</code></pre>
+<code class="language-http" translate="No">where=search_terms==boston,%20ma</code></pre>
 
 <p>You can use any dimension as a filter, <strong>but <em>only</em> if that dimension is also included in the <code translate="No">dimensions</code></strong> you are requesting.</p>
 
@@ -1932,7 +1932,7 @@ fieldset legend {
 
 <h3 id="Filtering_by_video_properties">Filtering by video properties</h3>
 
-<p>Using the special <code class="language-http notranslate">where=video.q=={property}:{value}</code> filter, you can limit your report to a specific set of videos based on a variety of properties, including:</p>
+<p>Using the special <code class="language-http" translate="No">where=video.q=={property}:{value}</code> filter, you can limit your report to a specific set of videos based on a variety of properties, including:</p>
 
 <ul>
 	<li>tags</li>
@@ -1961,22 +1961,22 @@ fieldset legend {
 <h5>Single tag</h5>
 
 <pre class="line-numbers">
-<code class="language-http notranslate">where=video.q==tags:foo</code></pre>
+<code class="language-http" translate="No">where=video.q==tags:foo</code></pre>
 
 <h5>Multiple tags:</h5>
 
 <pre class="line-numbers">
-<code class="language-http notranslate">where=video.q==tags:foo,bar</code></pre>
+<code class="language-http" translate="No">where=video.q==tags:foo,bar</code></pre>
 
 <h5>Custom fields</h5>
 
 <pre class="line-numbers">
-<code class="language-http notranslate">where=video.q==custom_fields:foo</code></pre>
+<code class="language-http" translate="No">where=video.q==custom_fields:foo</code></pre>
 
 <h5>Tags and custom fields</h5>
 
 <pre class="line-numbers">
-<code class="language-http notranslate">where=video.q==tags:foo,bar+custom_fields:fish</code></pre>
+<code class="language-http" translate="No">where=video.q==tags:foo,bar+custom_fields:fish</code></pre>
 
 <p>For a complete explanation of this query syntax, see <a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">Using the CMS API: Search for Videos</a>.</p>
 
@@ -2009,8 +2009,8 @@ fieldset legend {
 <ul>
 	<li>Text values:
 	<ul>
-		<!-- <li><code class="language-http notranslate">from=alltime</code></li> -->
-		<li><code class="language-http notranslate">to=now</code> (available and the default value for all requests)</li>
+		<!-- <li><code class="language-http" translate="No">from=alltime</code></li> -->
+		<li><code class="language-http" translate="No">to=now</code> (available and the default value for all requests)</li>
 	</ul>
 	</li>
 	<li>Epoch time values in milliseconds, such as <code translate="No">1377047323000</code></li>
@@ -2022,10 +2022,10 @@ fieldset legend {
 	</li>
 	<li>Relative dates: you can express either of the <code translate="No">to</code> and <code translate="No">from</code> values relative to the other one in d (days) or h (hours). For example:
 	<ul>
-		<li><code class="language-http notranslate">from=2015-01-01&amp;to=31d</code></li>
-		<li><code class="language-http notranslate">from=-48h&amp;to=now</code></li>
-		<li><code class="language-http notranslate">from=-2d&amp;to=now</code> (will give the same results as the previous example)</li>
-		<li><code class="language-http notranslate">from=-365d&amp;to=2014-12-31</code></li>
+		<li><code class="language-http" translate="No">from=2015-01-01&amp;to=31d</code></li>
+		<li><code class="language-http" translate="No">from=-48h&amp;to=now</code></li>
+		<li><code class="language-http" translate="No">from=-2d&amp;to=now</code> (will give the same results as the previous example)</li>
+		<li><code class="language-http" translate="No">from=-365d&amp;to=2014-12-31</code></li>
 	</ul>
 
 	<p>Note that negative numbers (-2d) are interpreted as "before" (the other value) and positive numbers (48h) are treated as "from" (the other value)</p>
@@ -2035,12 +2035,12 @@ fieldset legend {
 <p>To generate a report on some dimension like "video" for a single day, set the to and from values to that date:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http notranslate">...&amp;dimensions=video&amp;from=2013-11-01&amp;to=2013-11-01</code></pre>
+<code class="language-http" translate="No">...&amp;dimensions=video&amp;from=2013-11-01&amp;to=2013-11-01</code></pre>
 
 <aside class="bcls-aside bcls-aside--tip">Notes:
 <ul>
-	<!-- <li>If you are trying to return all analytics data, use <code class="language-http notranslate">from=alltime</code> rather than setting <code translate="No">from</code> equal to a date</li> -->
-	<li>You can get the available date range for any report by using the endpoint <code class="language-http notranslate">/data/status</code> - see the <a href="/analytics/references/reference.html#api-Report-Get_Available_Date_Range">API Reference</a> for details</li>
+	<!-- <li>If you are trying to return all analytics data, use <code class="language-http" translate="No">from=alltime</code> rather than setting <code translate="No">from</code> equal to a date</li> -->
+	<li>You can get the available date range for any report by using the endpoint <code class="language-http" translate="No">/data/status</code> - see the <a href="/analytics/references/reference.html#api-Report-Get_Available_Date_Range">API Reference</a> for details</li>
 </ul>
 </aside>
 </section>
@@ -2048,7 +2048,7 @@ fieldset legend {
 <section class="bcls-section">
 <h2 id="limit">Limit and offset</h2>
 
-<p>The <code translate="No">limit</code> is the number of items to return (default: 10). To return all items, use <code class="language-http notranslate">limit=all</code>. <code translate="No">offset</code> is the number of items to skip (default: 0). You can use <code translate="No">limit</code> and <code translate="No">offset</code> together to create an app that pages through the results.</p>
+<p>The <code translate="No">limit</code> is the number of items to return (default: 10). To return all items, use <code class="language-http" translate="No">limit=all</code>. <code translate="No">offset</code> is the number of items to skip (default: 0). You can use <code translate="No">limit</code> and <code translate="No">offset</code> together to create an app that pages through the results.</p>
 </section>
 
 <section class="bcls-section">
@@ -2056,7 +2056,7 @@ fieldset legend {
 
 <p>The <code translate="No">reconciled</code> parameter is a boolean. If it is set to <code translate="No">true</code>, the results will be limited to reconciled data. If <code translate="No">false</code>, results will be limited to realtime (hourly unreconciled) data.</p>
 
-<aside class="bcls-aside bcls-aside--warning">Realtime data is only available for the previous 32 days. If you set <code class="language-http notranslate">reconciled=false</code> and the <code translate="No">from</code> date earlier than 32 days ago, the API will return no data, because there is no unreconciled data at that point.</aside>
+<aside class="bcls-aside bcls-aside--warning">Realtime data is only available for the previous 32 days. If you set <code class="language-http" translate="No">reconciled=false</code> and the <code translate="No">from</code> date earlier than 32 days ago, the API will return no data, because there is no unreconciled data at that point.</aside>
 </section>
 
 <section class="bcls-section">
@@ -2078,7 +2078,7 @@ fieldset legend {
 
 <p>Use the <code translate="No">fields</code> parameter to specify the fields you want to return. By default, <code translate="No">video_view</code> is returned and the field corresponding to the dimension you are reporting on (e.g. <code translate="No">destination_domain</code>) are returned. See <a href="#metrics">dimensions and fields</a> for more details.</p>
 
-<p>Use the <code translate="No">sort</code> parameter to specify which metric field is used to sort the returned items; for example: <code class="language-http notranslate">sort=video_view</code>. You can reverse the sort order by negating the sort field: <code translate="No"> <span>sort= <span style="color:#CC0000;font-weight: bold;background-color:#FFFF00;">-</span>video_view</span> </code></p>
+<p>Use the <code translate="No">sort</code> parameter to specify which metric field is used to sort the returned items; for example: <code class="language-http" translate="No">sort=video_view</code>. You can reverse the sort order by negating the sort field: <code translate="No"> <span>sort= <span style="color:#CC0000;font-weight: bold;background-color:#FFFF00;">-</span>video_view</span> </code></p>
 
 <aside class="bcls-aside bcls-aside--warning">The fields available to return or sort on depend on the <a href="#metrics">metrics</a> returned for the dimension(s) you are reporting on. These parameters are strictly validated, and your request will return an error if the <code translate="No">fields</code> or <code translate="No">sort</code> parameter points to a field not valid for the request.
 
@@ -2108,7 +2108,7 @@ fieldset legend {
 <p>You can add calculated fields to your API requests using the syntax:</p>
 
 <pre class="line-numbers">
-<code class="language-http notranslate">fields=calulated_field_name:expression</code></pre>
+<code class="language-http" translate="No">fields=calulated_field_name:expression</code></pre>
 
 <p>You can use calculated fields to create your own custom fields out of existing metrics, or to rename an existing field.</p>
 
@@ -2128,13 +2128,13 @@ fieldset legend {
 <h3>Examples</h3>
 
 <pre class="line-numbers">
-<code class="language-http notranslate">fields=avg_seconds_viewed:video_seconds_viewed/video_view,video.name</code></pre>
+<code class="language-http" translate="No">fields=avg_seconds_viewed:video_seconds_viewed/video_view,video.name</code></pre>
 
 <pre class="line-numbers">
-<code class="language-http notranslate">fields=avg_incomplete_ads:(ad_mode_begin-ad_mode_complete)/video_view,video.name</code></pre>
+<code class="language-http" translate="No">fields=avg_incomplete_ads:(ad_mode_begin-ad_mode_complete)/video_view,video.name</code></pre>
 
 <pre class="line-numbers">
-<code class="language-http notranslate">fields=Video%20Views:video_view,video.name</code></pre>
+<code class="language-http" translate="No">fields=Video%20Views:video_view,video.name</code></pre>
 
 <h3>Sample request</h3>
 <textarea name="calculatedFieldSample" id="calculatedFieldSample" cols="30" rows="4" class="bcls-code">https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=video&amp;fields=avg_seconds_viewed:video_seconds_viewed/video_view,video_seconds_viewed,video.name&amp;sort=-video_view&amp;limit=4</textarea>
