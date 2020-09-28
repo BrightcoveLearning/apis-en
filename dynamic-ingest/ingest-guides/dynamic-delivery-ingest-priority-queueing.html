@@ -24,13 +24,13 @@ grandparent: Dynamic Ingest API
     
     <p>With normal priority queueing, Dynamic Delivery Ingestion has a limit of 100 active jobs per account. When that limit is exceeded, the ingestion system will queue up additional requests for processing later. The size of the queue has a separate limit, and when that is reached it will reject the ingestion request back to the customer (with a 429 error code). When jobs finish up, capacity is freed up and jobs that are queued will be picked up and processed one at a time, in the order they were received.</p>
     
-    <p>The video status in the CMS API does not reflect that the job was queued - the status will be <code>pending </code> whether the job is processing or queued.</p>
+    <p>The video status in the CMS API does not reflect that the job was queued - the status will be <code translate="No">pending </code> whether the job is processing or queued.</p>
     </section>
     
     <section class="bcls-section">
     <h2 id="How_Priority_Queueing_affects_ingestion">How Priority Queueing affects ingestion</h2>
     
-    <p>Priority queueing allows the user to add a <code>priority </code> flag to an ingest request. The allowable values for <code>priority </code> are <code>low </code> and <code>normal </code>. Any other value will cause the request to be rejected with a 422 error code. When the user doesn't specify any priority, the default value of <code>normal </code> is used. Here is a brief description of how Priority Queueing changes how jobs are processed from the queue:</p>
+    <p>Priority queueing allows the user to add a <code translate="No">priority </code> flag to an ingest request. The allowable values for <code translate="No">priority </code> are <code translate="No">low </code> and <code translate="No">normal </code>. Any other value will cause the request to be rejected with a 422 error code. When the user doesn't specify any priority, the default value of <code translate="No">normal </code> is used. Here is a brief description of how Priority Queueing changes how jobs are processed from the queue:</p>
     
     <ol>
       <li>If there are no queued jobs and there is capacity to run a job, then the job is run immediately. This applies to both low and normal priority jobs.</li>
@@ -98,7 +98,7 @@ grandparent: Dynamic Ingest API
     </code>
     </pre>
     
-    <p>Note that since <code>normal </code> is the default value, the previous request would be processed in exactly the same way as the following one:</p>
+    <p>Note that since <code translate="No">normal </code> is the default value, the previous request would be processed in exactly the same way as the following one:</p>
     
     <pre class="line-numbers">
     <code class="language-json">{
@@ -117,9 +117,9 @@ grandparent: Dynamic Ingest API
     <section class="bcls-section">
     <h2 id="Using_the_priority_queue">Using the priority queue</h2>
     
-    <p>From the last example in the previous section, it should be clear that if you do <strong>not</strong> use the <code>priority </code> field in your ingest jobs, they will continue to be processed exactly as they have been.</p>
+    <p>From the last example in the previous section, it should be clear that if you do <strong>not</strong> use the <code translate="No">priority </code> field in your ingest jobs, they will continue to be processed exactly as they have been.</p>
     
-    <p>The addition of the <code>priority </code> field will benefit you mainly if:</p>
+    <p>The addition of the <code translate="No">priority </code> field will benefit you mainly if:</p>
     
     <ol>
       <li>You ingest a fairly large number of videos</li>

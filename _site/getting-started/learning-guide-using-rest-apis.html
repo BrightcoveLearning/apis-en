@@ -1319,7 +1319,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
  <h1>Learning Guide: Using the REST APIs</h1>
  <article class="bcls-article">
-  <summary>In this topic, you will first get a high level overview of using the REST APIs in web apps via <code>XMLHttpRequest()</code> and a proxy. Then later in the document a deeper dive will discuss example code. The first example uses the Analytics API to retrieve and display in the Brightcove player controlbar the number of views the video currently in the player has had. The second, and slightly more complex, example uses the Analytics API in conjunction with the Brightcove Player catalog to retrieve the most popular videos from an account and show them in a playlist. The code discussion in this document will center on retrieving the desired data from the correct REST API.</summary>
+  <summary>In this topic, you will first get a high level overview of using the REST APIs in web apps via <code translate="No">XMLHttpRequest()</code> and a proxy. Then later in the document a deeper dive will discuss example code. The first example uses the <span translate="No">Analytics API</span> to retrieve and display in the Brightcove player controlbar the number of views the video currently in the player has had. The second, and slightly more complex, example uses the <span translate="No">Analytics API</span> in conjunction with the Brightcove Player catalog to retrieve the most popular videos from an account and show them in a playlist. The code discussion in this document will center on retrieving the desired data from the correct REST API.</summary>
   <section class="bcls-section">
     <h2 id="High_level_view">High level view</h2>
     <p>To use the REST APIs you need to have a few pieces in place. Briefly, they are:</p>
@@ -1397,7 +1397,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <ul>
       <li>Line 1: Standard code to wait until the player is ready to interact with.</li>
       <li>Lines 2-4: Create/set values for variables needed later in the code.</li>
-      <li>Lines 7-12: Wait for the <code class="notranslate">loadstart</code> event so the <code class="notranslate">mediainfo</code> object is populated. Assign variables to hold values needed for the Analytics API endpoint.</li>
+      <li>Lines 7-12: Wait for the <code class="notranslate">loadstart</code> event so the <code class="notranslate">mediainfo</code> object is populated. Assign variables to hold values needed for the <span translate="No">Analytics API</span> endpoint.</li>
       <li>Line 13: Set the HTTP method for the call.</li>
     </ul>
     <pre class="line-numbers">
@@ -1434,7 +1434,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>The following screenshot from the console shows actual displayed data from the <code class="notranslate">console.log</code> statements:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="Processing of data in callback function" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/console-data-process-callback-function.png" /></figure>
     <pre class="line-numbers">
-	<code class="notranslate language-javascript">// +++ Make the request to the Analytics API +++
+	<code class="notranslate language-javascript">// +++ Make the request to the <span translate="No">Analytics API</span> +++
 	// Extract views from data returned by Analytics API
 	makeRequest(options, <span class="bcls-highlight">function(viewsRaw) {
 	var viewsCount;
@@ -1577,13 +1577,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>As you see, there are a number of pieces involved when using the REST APIs. This can present challenges when an app is not functioning correctly. Where do you start debugging?</p>
     <p>A couple of simple suggestions are made in this section, and are a great place to start your debugging adventure. The following two sections give you a way to see the most basic information you need, what is being passed in to make the call, and what is returned.</p>
     <h3>Checking the call options</h3>
-    <p>The client side code discussed in this document is basically all about providing the correct options to be used with the proxy, and in turn the actual API. So knowing the options are correct is essential to the correct functioning of your code. A simple way to do this is log to the console the <code>options</code> object just before they get passed into the <code>makeRequest</code> function where they are used:</p>
+    <p>The client side code discussed in this document is basically all about providing the correct options to be used with the proxy, and in turn the actual API. So knowing the options are correct is essential to the correct functioning of your code. A simple way to do this is log to the console the <code translate="No">options</code> object just before they get passed into the <code translate="No">makeRequest</code> function where they are used:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="debugging code log options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-code-log-options.png" /></figure>
     <p>What the options object contains will vary upon what you are trying to do, but some basics will always be there, those being:</p>
     <ul>
       <li>The account ID. This can be either a separate property, or part of the API endPoint URL.</li>
       <li>The URL to the proxy, which will be dependent upon where you store your proxy.</li>
-      <li>The HTTP method type, for example <code>GET</code>, <code>POST</code> or <code>PATCH</code>.</li>
+      <li>The HTTP method type, for example <code translate="No">GET</code>, <code translate="No">POST</code> or <code translate="No">PATCH</code>.</li>
       <li>The API endpoint URL used by the proxy to make the actual request from the API. For example:
         <pre class="line-numbers">
 	<code class="language-html">https://players.api.brightcove.com/v2/accounts/57838016001/players
@@ -1596,12 +1596,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>Here is a bit more complex logged options object used when updating players:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="debugging options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-options.png" /></figure>
     <h3>Viewing returned data</h3>
-    <p>What is returned will vary upon what data you have requested, and if an error is returned. But no matter what is returned, you will most likely want to see what data is returned. A simple way to do this is log to the console the raw <code>response</code> data just after the call to the <code>makeRequest</code> function:</p>
+    <p>What is returned will vary upon what data you have requested, and if an error is returned. But no matter what is returned, you will most likely want to see what data is returned. A simple way to do this is log to the console the raw <code translate="No">response</code> data just after the call to the <code translate="No">makeRequest</code> function:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="debugging code log options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-code-log-response.png" /></figure>
     <p>What will be returned has nearly infinite possibilities, but following are a few examples. The first shows the beginning of a response when asking for all the players in an account:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on players request" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-response-multiple-players.png" /></figure>
-    <aside class="bcls-aside bcls-aside--tip">This is a good example of when viewing the response can be exceedingly helpful for it shows the player information is stored in an array named <code>items</code>.</aside>
-    <p>Here is the response after updating players, using the <code>PATCH</code> HTTP method:</p>
+    <aside class="bcls-aside bcls-aside--tip">This is a good example of when viewing the response can be exceedingly helpful for it shows the player information is stored in an array named <code translate="No">items</code>.</aside>
+    <p>Here is the response after updating players, using the <code translate="No">PATCH</code> HTTP method:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on player patch" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-response-on-player-patch.png" /></figure>
     <p>Here is a more nicely formatted view of the data in the first response:</p>
     <pre class="line-numbers">
@@ -1628,12 +1628,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         </li>
       </ul>
     </dd>
-    <dt>I see a response, but when I try to <code>JSON.parse()</code> it, I get an exception.</dt>
+    <dt>I see a response, but when I try to <code translate="No">JSON.parse()</code> it, I get an exception.</dt>
     <dd>Some possibilities here:
       <ul>
         <li>See the previous item - trying to parse an empty sting will throw a JSON exception</li>
         <li>
-          <p>Look at the response and make sure it is a JSON string (beginning with a <code>{</code> or a <code>[</code>). There are a few cases where a request might not return JSON - an Analytics API call, for example, if you set the <code>format</code> parameter to <code>csv</code> or <code>xlxs</code>. Again, if you are making those kinds of requests, you will need to adjust your code to handle non-JSON responses.</p>
+          <p>Look at the response and make sure it is a JSON string (beginning with a <code translate="No">{</code> or a <code translate="No">[</code>). There are a few cases where a request might not return JSON - an <span translate="No">Analytics API</span> call, for example, if you set the <code translate="No">format</code> parameter to <code translate="No">csv</code> or <code translate="No">xlxs</code>. Again, if you are making those kinds of requests, you will need to adjust your code to handle non-JSON responses.</p>
         </li>
         <li>In most cases, errors returned by the APIs are also in JSON format, but there are a few exceptions where the error is returned as plain text or HTML.</li>
       </ul>
@@ -1826,8 +1826,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="Example_2">Example 2</h2>
     <p>This second example is more complex than the one detailed earlier. This example displays the 10 most popular videos from an account in a playlist. The main steps of the code are:</p>
     <ol>
-      <li>Request from the Analytics API the 10 videos with the most views in an account. This step involves an asynchronous call using a callback function.</li>
-      <li>From the returned Analytics API data, extract only the video IDs and place them in an array. A helper function is written to do the extraction of IDs from the returned data.</li>
+      <li>Request from the <span translate="No">Analytics API</span> the 10 videos with the most views in an account. This step involves an asynchronous call using a callback function.</li>
+      <li>From the returned <span translate="No">Analytics API</span> data, extract only the video IDs and place them in an array. A helper function is written to do the extraction of IDs from the returned data.</li>
       <li>Request the complete video objects for each of the videos in the list of IDs in the array. This step involves looping over the array and requesting the video objects using <code class="notranslate">player.catalog.getVideo()</code>. Of course, this involves multiple asynchronous calls using the <code class="notranslate">catalog</code>. A helper function is written to retrieve the video objects based on IDs and place the objects into an array.</li>
       <li>Place the array of video objects into the playlist for a playlist-enabled player.</li>
     </ol>
@@ -1838,7 +1838,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </li>
       <li>Line 3: Create a variable to hold the JSON parsed returned data.</li>
       <li>Line 5: Parse the returned data to convert if from a string to an object.</li>
-      <li>Line 7: Use the helper function to extract video IDs from returned data. Unfortunately, the Analytics API does not return the full video objects, so IDs are needed to access the full objects.</li>
+      <li>Line 7: Use the helper function to extract video IDs from returned data. Unfortunately, the <span translate="No">Analytics API</span> does not return the full video objects, so IDs are needed to access the full objects.</li>
       <li>Lines 9-12: Call the <code class="notranslate">getVideoData</code> helper function that uses a callback function to populate the <code class="notranslate">videoObjects</code> array based on IDs passed.</li>
       <li>Line 11: Populate the playlist with the array of video objects.</li>
     </ul>
@@ -1875,7 +1875,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 12 Jun 2020
+  Page last updated on 28 Sep 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">

@@ -1338,7 +1338,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <!-- <section class="bcls-section" id="crf">
                         <h2>crf</h2>
                         <p>The Constant Rate Factor (CRF) is the default quality setting for the h.264 encoder. You can set the values between 0 and 51, where lower values would result in better quality (at the expense of higher file sizes). The most commonly used values are between 18 and 28.</p>
-                        <p>Unless you have a deep knowledge of video encoding, we recommend that you <em>not</em> specify <code>crf</code> in your profiles. Use settings like <a href="#quality"><code>quality</code></a> instead.</p>
+                        <p>Unless you have a deep knowledge of video encoding, we recommend that you <em>not</em> specify <code translate="No">crf</code> in your profiles. Use settings like <a href="#quality"><code translate="No">quality</code></a> instead.</p>
                         <p>For a detailed explanation of CRF, see <a href="http://slhck.info/articles/crf">http://slhck.info/articles/crf</a>.</p>
                     </section> -->
     
@@ -1349,7 +1349,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <p>Only use this setting if you understand its implications, as it can decrease video quality.</p>
     
-    <p>Also see the <a href="#max_video_bitrate"><code>max_video_bitrate</code></a> section below.</p>
+    <p>Also see the <a href="#max_video_bitrate"><code translate="No">max_video_bitrate</code></a> section below.</p>
     </section>
     
     <section class="bcls-section">
@@ -1371,23 +1371,23 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <p>A maximum average bitrate for a movie. Overrides both the quality and video_bitrate settings to ensure that a bitrate doesn't exceed the provided number.</p>
     
-    <p>The <code>max_video_bitrate</code> setting works in conjunction with the quality setting to allow for encoding to a specific quality level (in variable bitrate mode) but having a "safety" limit in place. Brightcove will start by trying to encode to the quality setting specified, but while encoding, if we detect that the final average bitrate will be higher than <code>max_video_bitrate</code>, we'll stop encoding, and go back and do a second pass that encodes to the <code>max_video_bitrate</code> (in average bitrate mode), ensuring that the average bitrate of the video does not end up too high.</p>
+    <p>The <code translate="No">max_video_bitrate</code> setting works in conjunction with the quality setting to allow for encoding to a specific quality level (in variable bitrate mode) but having a "safety" limit in place. Brightcove will start by trying to encode to the quality setting specified, but while encoding, if we detect that the final average bitrate will be higher than <code translate="No">max_video_bitrate</code>, we'll stop encoding, and go back and do a second pass that encodes to the <code translate="No">max_video_bitrate</code> (in average bitrate mode), ensuring that the average bitrate of the video does not end up too high.</p>
     
     <p>Using max_video_bitrate in conjunction with video_bitrate does not really make sense, so we just encode to the lesser of the two values specified.</p>
     
-    <p>The <code><a href="#decoder_bitrate_cap">decoder_bitrate_cap</a></code> setting, however, sets a maximum peak bitrate for the encoding, so that there will not be any "spikes" going higher than this bitrate, allowing for streaming the video without needing to stop and rebuffer. Note, however, that calculating those peaks is not straightforward, because it is limiting the fill rate for the video buffer, as opposed to limiting the bitrate of a single frame or a single time period. That is why the <code>decoder_buffer_size</code> is generally used together with this. The video encoder will still be able to pre-fill the buffer when needed (such as in a time when there is low action followed by very high action), so the bitrate of a single frame or even short period of time may be significantly higher than the value specified for <code>decoder_bitrate_cap</code>. Yet, if the video is transferred over a connection with a bandwidth at least equal to <code>decoder_bitrate_cap</code>, then it will never have to stop and rebuffer.</p>
+    <p>The <code translate="No"><a href="#decoder_bitrate_cap">decoder_bitrate_cap</a></code> setting, however, sets a maximum peak bitrate for the encoding, so that there will not be any "spikes" going higher than this bitrate, allowing for streaming the video without needing to stop and rebuffer. Note, however, that calculating those peaks is not straightforward, because it is limiting the fill rate for the video buffer, as opposed to limiting the bitrate of a single frame or a single time period. That is why the <code translate="No">decoder_buffer_size</code> is generally used together with this. The video encoder will still be able to pre-fill the buffer when needed (such as in a time when there is low action followed by very high action), so the bitrate of a single frame or even short period of time may be significantly higher than the value specified for <code translate="No">decoder_bitrate_cap</code>. Yet, if the video is transferred over a connection with a bandwidth at least equal to <code translate="No">decoder_bitrate_cap</code>, then it will never have to stop and rebuffer.</p>
     
-    <p>Note that <code>max_video_bitrate</code> does not limit peak values, and is not recommended for streaming situations.</p>
+    <p>Note that <code translate="No">max_video_bitrate</code> does not limit peak values, and is not recommended for streaming situations.</p>
     
-    <p><code>max_video_bitrate</code> is especially useful when encoding for mobile devices using the quality setting, which autoselects a bitrate. Mobile devices sometimes have fixed bitrate limits; for example, the iPhone 3GS has a bitrate limit of 1500 kbps.</p>
+    <p><code translate="No">max_video_bitrate</code> is especially useful when encoding for mobile devices using the quality setting, which autoselects a bitrate. Mobile devices sometimes have fixed bitrate limits; for example, the iPhone 3GS has a bitrate limit of 1500 kbps.</p>
     
-    <p><code>max_video_bitrate</code> can also help to avoid bitrate spikes that can occur at transition points between, say, a talking-head segment and a high-action or screencast segment. Such spikes can cause a video to stall because the data fed to the decoder temporarily exceeds its processing capacity.</p>
+    <p><code translate="No">max_video_bitrate</code> can also help to avoid bitrate spikes that can occur at transition points between, say, a talking-head segment and a high-action or screencast segment. Such spikes can cause a video to stall because the data fed to the decoder temporarily exceeds its processing capacity.</p>
     </section>
     
     <section class="bcls-section">
     <h2 id="quality">quality</h2>
     
-    <p>By setting the <code>quality</code> for your renditions, you indicate the desired quality of the output, and the Video Cloud transcoding system will automatically select a bitrate that achieves that quality. The available settings are:</p>
+    <p>By setting the <code translate="No">quality</code> for your renditions, you indicate the desired quality of the output, and the Video Cloud transcoding system will automatically select a bitrate that achieves that quality. The available settings are:</p>
     
     <ol class="integer">
       <li>Highly compressed. Mediocre visual quality, but small files</li>
@@ -1401,7 +1401,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <section class="bcls-section">
     <h2 id="speed">speed</h2>
     
-    <p><code>speed</code> determines target transcoding speed. Slower transcoding allows for more advanced file compression, while faster transcoding is possible by skipping some advanced compression features. Valid values are 1-5. If quick availability of the video is not critical, you may achieve slightly better video quality by selecting a slower transcoding speed.</p>
+    <p><code translate="No">speed</code> determines target transcoding speed. Slower transcoding allows for more advanced file compression, while faster transcoding is possible by skipping some advanced compression features. Valid values are 1-5. If quick availability of the video is not critical, you may achieve slightly better video quality by selecting a slower transcoding speed.</p>
     </section>
     
     <section class="bcls-section">
@@ -1414,7 +1414,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="Platform_specific_issues">Platform specific issues</h2>
     
     <ul>
-      <li>The Edge browser uses Microsoft's "Media Foundation" (MF) codecs built into Windows for playback. There is a limitation in the "AAC Decoder" from MF that limits the maximum sampling rate of AAC to 48khz. If the player loads a rendition with an audio sampling rate greater than 48khz, the browser may return a <code>MEDIA_ERR_SRC_NOT_SUPPORTED</code> error.</li>
+      <li>The Edge browser uses Microsoft's "Media Foundation" (MF) codecs built into Windows for playback. There is a limitation in the "AAC Decoder" from MF that limits the maximum sampling rate of AAC to 48khz. If the player loads a rendition with an audio sampling rate greater than 48khz, the browser may return a <code translate="No">MEDIA_ERR_SRC_NOT_SUPPORTED</code> error.</li>
     </ul>
     </section>
     </article>

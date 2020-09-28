@@ -33,10 +33,10 @@ layout: staging
 
   <section class="bcls-section">
     <h2 id="Using_a_token_in_the_catalog_parameters">Using a token in the catalog parameters</h2>
-    <p>This section details the code needed to configure the player to use PAS. To do this, pass a string token as part of a <a href="https://support.brightcove.com/player-catalog#Catalog_parameters_object">catalog parameters</a> object, using the property name <code>bcovAuthToken</code>.</p>
+    <p>This section details the code needed to configure the player to use PAS. To do this, pass a string token as part of a <a href="https://support.brightcove.com/player-catalog#Catalog_parameters_object">catalog parameters</a> object, using the property name <code translate="No">bcovAuthToken</code>.</p>
     <p>This approach will work for both DRM as well as HLSe. The player will detect the type of source being loaded from the Playback API and provide the correct implementation for that source.</p>
     <aside class="bcls-aside bcls-aside--information language-editable">Note: This implementation requires Player version <strong>6.33.0</strong> or greater. If using DRM, you will need version <strong>5.5.0</strong> or later of the <a href="https://support.brightcove.com/configuring-brightcove-player-drm#Changelog">DRM plugin</a>.</aside>
-    <p>This sample implementation code uses the <a href="https://support.brightcove.com/player-catalog#get_method">catalog.get()</a> method to request the video while supplying the token (which would need to replace the <code>&lt;BCOV_AUTH_TOKEN&gt;</code> placeholder). Be sure NOT to include the video ID in the <code>&lt;video-js&gt;</code> tag.</p>
+    <p>This sample implementation code uses the <a href="https://support.brightcove.com/player-catalog#get_method">catalog.get()</a> method to request the video while supplying the token (which would need to replace the <code translate="No">&lt;BCOV_AUTH_TOKEN&gt;</code> placeholder). Be sure NOT to include the video ID in the <code translate="No">&lt;video-js&gt;</code> tag.</p>
     <pre class="line-numbers">
 <code class="language-html">&lt;video-js id=&quot;myPlayerID&quot;
   data-account=&quot;1507807800001&quot;
@@ -67,7 +67,7 @@ layout: staging
 
   <section class="bcls-section">
     <h2 id="SSAI_configuration">SSAI configuration</h2>
-    <p>If you are going to use PAS with SSAI, there is one small configuration addition that needs to be done. An addition parameter needs to be added to the catalog parameters object, named <code>adConfigId</code>. </p>
+    <p>If you are going to use PAS with SSAI, there is one small configuration addition that needs to be done. An addition parameter needs to be added to the catalog parameters object, named <code translate="No">adConfigId</code>. </p>
     <pre class="line-numbers">
 <code class="language-html">&lt;video-js id=&quot;myPlayerID&quot;
   data-account=&quot;1507807800001&quot;
@@ -99,20 +99,20 @@ layout: staging
 
   <section class="bcls-section">
     <h2 id="Using_a_custom_implementation">Using a custom implementation</h2>
-    <p>You may be using a custom implementation where you don't have the <code>bcovAuthToken</code> to set the value with the the <a href="https://support.brightcove.com/player-catalog#get_method">catalog.get()</a> method request. If you are using your own or a third-party player, you can use one of the following approaches to pass your token into the license request:</p>
+    <p>You may be using a custom implementation where you don't have the <code translate="No">bcovAuthToken</code> to set the value with the the <a href="https://support.brightcove.com/player-catalog#get_method">catalog.get()</a> method request. If you are using your own or a third-party player, you can use one of the following approaches to pass your token into the license request:</p>
     <ul>
       <li>
-        HTTP header: <code>BCOV-Auth</code> (Not supported for HLSe)
+        HTTP header: <code translate="No">BCOV-Auth</code> (Not supported for HLSe)
       </li>
       <li>
-        Cookie: <code>bcov-auth</code> (Not supported for HLSe)
+        Cookie: <code translate="No">bcov-auth</code> (Not supported for HLSe)
       </li>
       <li>
-        Query parameter: <code>bcov-auth</code> (Only supported for HLSe) Must be appended to the master manifest url, instead of the license url.
+        Query parameter: <code translate="No">bcov-auth</code> (Only supported for HLSe) Must be appended to the master manifest url, instead of the license url.
       </li>
     </ul>
     <p>
-      Here is an example showing how to set the <code>source.emeHeaders['BCOV-Auth']</code> attribute on the video object to the token. This inserts the <code>emeHeader</code> on each source AFTER the catalog request.
+      Here is an example showing how to set the <code translate="No">source.emeHeaders['BCOV-Auth']</code> attribute on the video object to the token. This inserts the <code translate="No">emeHeader</code> on each source AFTER the catalog request.
     </p>
     <pre class="line-numbers">
 <code class="language-html">&lt;video-js id=&quot;myPlayerID&quot;

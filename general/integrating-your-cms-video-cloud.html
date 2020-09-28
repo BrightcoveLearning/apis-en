@@ -52,15 +52,15 @@ parent: General Information
     
     <h3>Creating client credentials</h3>
     
-    <p>Creating client credentials is a one-time operation that can be performed through <a href="/general/managing-api-authentication-credentials.html"> <span class="”notranslate”">Video Cloud</span> Studio</a> or the <a href="/oauth/getting-started/overview-oauth-api-v4.html#getCredentials"> <span class="”notranslate”">OAuth API</span> </a>. However you do it, a <code>client_id</code> and <code>client_secret</code> are returned, which you must save to request access tokens.</p>
+    <p>Creating client credentials is a one-time operation that can be performed through <a href="/general/managing-api-authentication-credentials.html"> <span class="”notranslate”">Video Cloud</span> Studio</a> or the <a href="/oauth/getting-started/overview-oauth-api-v4.html#getCredentials"> <span class="”notranslate”">OAuth API</span> </a>. However you do it, a <code translate="No">client_id</code> and <code translate="No">client_secret</code> are returned, which you must save to request access tokens.</p>
     
-    <aside class="bcls-aside bcls-aside--warning">The <code>client_secret</code> is shown only when the client credential is created - it can never be retrieved again. If you lose a client secret, you must create a new client credential.</aside>
+    <aside class="bcls-aside bcls-aside--warning">The <code translate="No">client_secret</code> is shown only when the client credential is created - it can never be retrieved again. If you lose a client secret, you must create a new client credential.</aside>
     
     <h3>Creating an access token</h3>
     
-    <p>Temporary access tokens are created using the <a href="/oauth/guides/getting-access-tokens.html"> <span class="”notranslate”">OAuth API</span> </a>. The <code>client_id</code> and <code>client_secret</code> must be BASE64-encoded and passed as a <code>Basic</code> Authorization string.</p>
+    <p>Temporary access tokens are created using the <a href="/oauth/guides/getting-access-tokens.html"> <span class="”notranslate”">OAuth API</span> </a>. The <code translate="No">client_id</code> and <code translate="No">client_secret</code> must be BASE64-encoded and passed as a <code translate="No">Basic</code> Authorization string.</p>
     
-    <p>The <code>access_token</code> returned is in turned passed in an Authorization header with the API call:</p>
+    <p>The <code translate="No">access_token</code> returned is in turned passed in an Authorization header with the API call:</p>
     
     <pre class="line-numbers">
     <code class="language-bash">&gt;Authorization: Bearer <strong><em>your_access_token</em></strong>
@@ -84,7 +84,7 @@ parent: General Information
     </code>
     </pre>
     
-    <p>The request body will include basic video properties in a <span class="”notranslate”">JSON</span> object - minimally, the video <code>name</code>, but you can also include additional metadata such as a <code>description</code> and <code>tags</code>:</p>
+    <p>The request body will include basic video properties in a <span class="”notranslate”">JSON</span> object - minimally, the video <code translate="No">name</code>, but you can also include additional metadata such as a <code translate="No">description</code> and <code translate="No">tags</code>:</p>
     
     <pre class="line-numbers">
     <code class="language-json">{
@@ -96,11 +96,11 @@ parent: General Information
     </code>
     </pre>
     
-    <aside class="bcls-aside bcls-aside--information">A <code>reference_id</code> can be added to any video. Reference ids must be unique within the account. If your videos have ids in your CMS system, it's good practice to use that id as the reference id in the <span class="”notranslate”">Video Cloud</span> system.</aside>
+    <aside class="bcls-aside bcls-aside--information">A <code translate="No">reference_id</code> can be added to any video. Reference ids must be unique within the account. If your videos have ids in your CMS system, it's good practice to use that id as the reference id in the <span class="”notranslate”">Video Cloud</span> system.</aside>
     
     <h3>Ingesting the video</h3>
     
-    <p>When you create the video object, the <span class="”notranslate”">CMS API</span> will return a <span class="”notranslate”">JSON</span> object containing the video properties. You will extract the video <code>id</code> from the <span class="”notranslate”">JSON</span>, and use it to make a call to the <span class="”notranslate”">Dynamic Ingest API</span> to request ingestion and transcoding of the video:</p>
+    <p>When you create the video object, the <span class="”notranslate”">CMS API</span> will return a <span class="”notranslate”">JSON</span> object containing the video properties. You will extract the video <code translate="No">id</code> from the <span class="”notranslate”">JSON</span>, and use it to make a call to the <span class="”notranslate”">Dynamic Ingest API</span> to request ingestion and transcoding of the video:</p>
     
     <pre class="line-numbers">
     <code class="language-http">https://ingest.api.brightcove.com/v1/accounts/<strong><em>ACCOUNT_ID</em></strong>/videos/<strong><em>VIDEO_ID</em></strong>/ingest-requests
@@ -120,30 +120,30 @@ parent: General Information
     </code>
     </pre>
     
-    <p>The <code>profile</code> here is the Ingest Profile that specifies what renditions should be created in the transcoding process. In most cases, one of the following standard profiles should be adequate:</p>
+    <p>The <code translate="No">profile</code> here is the Ingest Profile that specifies what renditions should be created in the transcoding process. In most cases, one of the following standard profiles should be adequate:</p>
     
     <h4>Dynamic Delivery profiles</h4>
     
     <ul>
-      <li><code>multi-platform-extended-static</code></li>
-      <li><code>multi-platform-standard-static</code></li>
+      <li><code translate="No">multi-platform-extended-static</code></li>
+      <li><code translate="No">multi-platform-standard-static</code></li>
     </ul>
     
     <h4>Legacy ingest profiles</h4>
     
     <ul>
-      <li><code>videocloud-default-v1 (the default)</code></li>
-      <li><code>screencast-1280</code></li>
-      <li><code>smart-player-transition</code></li>
-      <li><code>single-bitrate-high</code></li>
-      <li><code>audio-only</code></li>
-      <li><code>single-bitrate-standard</code></li>
-      <li><code>high-resolution</code></li>
+      <li><code translate="No">videocloud-default-v1 (the default)</code></li>
+      <li><code translate="No">screencast-1280</code></li>
+      <li><code translate="No">smart-player-transition</code></li>
+      <li><code translate="No">single-bitrate-high</code></li>
+      <li><code translate="No">audio-only</code></li>
+      <li><code translate="No">single-bitrate-standard</code></li>
+      <li><code translate="No">high-resolution</code></li>
     </ul>
     
     <p>However, you can create additional custom ingest profiles, if needed, using the <a href="/ingest-profiles/getting-started/overview-ingest-profiles-api-dynamic-delivery-context-aware-encoding.html"> <span class="”notranslate”">Ingest Profiles API</span> </a> or using <a href="https://studio.support.brightcove.com/admin/managing-ingest-profiles.html"> <span class="”notranslate”">Video Cloud</span> Studio</a>.</p>
     
-    <aside class="bcls-aside bcls-aside--warning">If you retrieve profiles using the <a href="/ingest-profiles/"> <span class="”notranslate”">Ingest Profiles API</span> </a> the results for <strong>legacy ingest accounts</strong> will include Dynamic Delivery profiles, but using these will result in errors. You will need to filter these profiles out on the client side. You can recognize Dynamic Delivery profiles by the existence of a <code>dynamic_origin</code> property:
+    <aside class="bcls-aside bcls-aside--warning">If you retrieve profiles using the <a href="/ingest-profiles/"> <span class="”notranslate”">Ingest Profiles API</span> </a> the results for <strong>legacy ingest accounts</strong> will include Dynamic Delivery profiles, but using these will result in errors. You will need to filter these profiles out on the client side. You can recognize Dynamic Delivery profiles by the existence of a <code translate="No">dynamic_origin</code> property:
     
     <pre class="line-numbers">
     <code class="language-json">{
@@ -197,7 +197,7 @@ parent: General Information
     
     <h4>Adding poster and thumbnail images</h4>
     
-    <p>The <code>capture-images</code> option in the code above instructs <span class="”notranslate”">Video Cloud</span> to capture poster and thumbnail images for the video at the mid-point during the transcoding process. Alternately, you can set <code>capture-images</code> to <code>false</code> and ingest images instead, either at the same time that you ingest the video or later:</p>
+    <p>The <code translate="No">capture-images</code> option in the code above instructs <span class="”notranslate”">Video Cloud</span> to capture poster and thumbnail images for the video at the mid-point during the transcoding process. Alternately, you can set <code translate="No">capture-images</code> to <code translate="No">false</code> and ingest images instead, either at the same time that you ingest the video or later:</p>
     
     <pre class="line-numbers">
     <code class="language-json">{
@@ -274,19 +274,19 @@ parent: General Information
     <p>You can refine the results of the request by adding one or more of the following parameters to the request:</p>
     
     <dl>
-      <dt><code>limit</code></dt>
+      <dt><code translate="No">limit</code></dt>
       <dd>this determines the number of video objects to return, and can be set to any number up 100 - the default is 20</dd>
-      <dt><code>offset</code></dt>
-      <dd>this determines the number of items to skip, and so is used together with <code>limit</code> to page through the video catalog - the default is 0</dd>
-      <dt><code>sort</code></dt>
-      <dd>this determines the video metadata field to sort the result by - by default, results are sorted by <code>updated_at</code> (descending, to show the most recently updated videos first)</dd>
+      <dt><code translate="No">offset</code></dt>
+      <dd>this determines the number of items to skip, and so is used together with <code translate="No">limit</code> to page through the video catalog - the default is 0</dd>
+      <dt><code translate="No">sort</code></dt>
+      <dd>this determines the video metadata field to sort the result by - by default, results are sorted by <code translate="No">updated_at</code> (descending, to show the most recently updated videos first)</dd>
     </dl>
     
     <p>See <a href="/cms/getting-started/overview-cms-api.html#parameters"> <span class="”notranslate”">CMS API</span> Overview - Parameters</a> for detailed information on these parameters.</p>
     
     <h3>Searching for videos</h3>
     
-    <p>You can also search for videos by a wide range of criteria using the <code>q</code> parameter. You can search by specific fields such as name, description, and tags, as well as dates and the status of the videos:</p>
+    <p>You can also search for videos by a wide range of criteria using the <code translate="No">q</code> parameter. You can search by specific fields such as name, description, and tags, as well as dates and the status of the videos:</p>
     
     <pre class="line-numbers">
     <code class="language-http">https://cms.api.brightcove.com/v1/accounts/account_id/videos?q=tags:sea,mammal
@@ -317,18 +317,18 @@ parent: General Information
     <p>Playlist information is also managed using the <span class="”notranslate”">CMS API</span> in much the same way as video information. Note that <span class="”notranslate”">Video Cloud</span> supports eight types of playlists in two categories:</p>
     
     <dl>
-      <dt>Manual (or <code>EXPLICIT</code>) playlists</dt>
+      <dt>Manual (or <code translate="No">EXPLICIT</code>) playlists</dt>
       <dd>contain a specified set of videos - up to 100 videos may be included</dd>
       <dt>Smart playlists</dt>
       <dd>built dynamically at runtime based on search criteria - there are seven varieties of smart playlists corresponding to the way the videos are ordered within the list:
       <ul>
-        <li><code>ACTIVATEDOLDESTTONEWEST</code></li>
-        <li><code>ACTIVATEDNEWESTTOOLDEST</code></li>
-        <li><code>ALPHABETICAL</code></li>
-        <li><code>PLAYSTOTAL</code></li>
-        <li><code>PLAYSTRAILINGWEEK</code></li>
-        <li><code>STARTDATEOLDESTTONEWEST</code></li>
-        <li><code>STARTDATENEWESTTO_OLDEST</code></li>
+        <li><code translate="No">ACTIVATEDOLDESTTONEWEST</code></li>
+        <li><code translate="No">ACTIVATEDNEWESTTOOLDEST</code></li>
+        <li><code translate="No">ALPHABETICAL</code></li>
+        <li><code translate="No">PLAYSTOTAL</code></li>
+        <li><code translate="No">PLAYSTRAILINGWEEK</code></li>
+        <li><code translate="No">STARTDATEOLDESTTONEWEST</code></li>
+        <li><code translate="No">STARTDATENEWESTTO_OLDEST</code></li>
       </ul>
     
       <aside class="bcls-aside bcls-aside--warning">Note that you can <strong>not</strong> change a manual playlist to a smart playlist (or vice-versa) after the playlist has been created.</aside>
@@ -337,28 +337,28 @@ parent: General Information
       </dd>
     </dl>
     
-    <p>As with videos, you can retrieve all playlists, using <code>limit</code> and <code>offset</code> to page through results if the account has a large number of playlists:</p>
+    <p>As with videos, you can retrieve all playlists, using <code translate="No">limit</code> and <code translate="No">offset</code> to page through results if the account has a large number of playlists:</p>
     
     <pre class="line-numbers">
     <code class="language-http">https://cms.api.brightcove.com/v1/accounts/account_id/<strong><em>playlists</em></strong>
     </code>
     </pre>
     
-    <p>The returned array of playlist objects will include metadata for the playlist, including the <code>type</code> corresponding to the one of the types described above. If the type is <code>EXPLICIT</code>, there will also be a <code>video_ids</code> array containing the ids of the included videos. If the type is one of the smart playlist types, there will be a <code>search</code> property containing the search string that retrieves the videos, something like this:</p>
+    <p>The returned array of playlist objects will include metadata for the playlist, including the <code translate="No">type</code> corresponding to the one of the types described above. If the type is <code translate="No">EXPLICIT</code>, there will also be a <code translate="No">video_ids</code> array containing the ids of the included videos. If the type is one of the smart playlist types, there will be a <code translate="No">search</code> property containing the search string that retrieves the videos, something like this:</p>
     
     <pre>
     <code class="language-http">q=tags:fish,birds
     </code>
     </pre>
     
-    <p>You can also retrieve a single playlist by its <code>id</code>:</p>
+    <p>You can also retrieve a single playlist by its <code translate="No">id</code>:</p>
     
     <pre class="line-numbers">
     <code class="language-http">https://cms.api.brightcove.com/v1/accounts/account_id/playlists/<strong><em>playlist_id</em></strong>
     </code>
     </pre>
     
-    <p>If you need to retrieve the full video objects for a playlist (to display information about the videos on a page), you simply add <code>/videos</code> to that URL:</p>
+    <p>If you need to retrieve the full video objects for a playlist (to display information about the videos on a page), you simply add <code translate="No">/videos</code> to that URL:</p>
     
     <pre class="line-numbers">
     <code class="language-http">https://cms.api.brightcove.com/v1/accounts/account_id/playlists/<strong><em>playlist_id/videos</em></strong>
@@ -371,7 +371,7 @@ parent: General Information
     <section class="bcls-section" id="creatingPlayers">
     <h2>Creating Players</h2>
     
-    <p>Brightcove players can be created via the <a href="/player-management/getting-started/overview-player-management-api.html"> <span class="”notranslate”">Player Management API</span> </a>. The API allows you to create players, update their properties, and get the embed code in the form of a URL, an <code>iframe</code> tag, or a block of HTML to embed in the page.</p>
+    <p>Brightcove players can be created via the <a href="/player-management/getting-started/overview-player-management-api.html"> <span class="”notranslate”">Player Management API</span> </a>. The API allows you to create players, update their properties, and get the embed code in the form of a URL, an <code translate="No">iframe</code> tag, or a block of HTML to embed in the page.</p>
     
     <p class="BCL-aside">You can up to 200 players per account, but it is generally less confusing to users to have as few players as you absolutely need. You should have separate players for playing single videos or playlists, but otherwise you only need different players when they will be styled differently or have different functionality added through plugins.</p>
     
@@ -382,7 +382,7 @@ parent: General Information
     </code>
     </pre>
     
-    <p>In the body of the request, include the <a href="/player-management/guides/player-configuration-guide.html">player configuration</a> - the only thing required is a <code>name</code>:</p>
+    <p>In the body of the request, include the <a href="/player-management/guides/player-configuration-guide.html">player configuration</a> - the only thing required is a <code translate="No">name</code>:</p>
     
     <pre class="line-numbers">
     <code class="language-json">{
@@ -405,7 +405,7 @@ parent: General Information
     </code>
     </pre>
     
-    <p>To get the full player configuration, you make a request to the <code>/players</code> endpoint, but add the player ID that is returned in the response above:</p>
+    <p>To get the full player configuration, you make a request to the <code translate="No">/players</code> endpoint, but add the player ID that is returned in the response above:</p>
     
     <pre class="line-numbers">
     <code class="language-http">https://players.api.brightcove.com/v2/accounts/account_id/players/de055fa4-4f09-45af-8531-419c6794ad04
@@ -414,7 +414,7 @@ parent: General Information
     
     <p>You can make a <span class="”notranslate”">PATCH</span> request to same endpoint to update the player configuration.</p>
     
-    <p>You'll notice in the response above, the <code>preview_embed_code</code> and <code>preview_url</code>. To allow testing of new players or player updates, newly created or updated players are set in preview mode to allow you to see it before pushing changes out to existing players. To push changes into production, you need to <strong>publish</strong> the player with this request:</p>
+    <p>You'll notice in the response above, the <code translate="No">preview_embed_code</code> and <code translate="No">preview_url</code>. To allow testing of new players or player updates, newly created or updated players are set in preview mode to allow you to see it before pushing changes out to existing players. To push changes into production, you need to <strong>publish</strong> the player with this request:</p>
     
     <pre class="line-numbers">
     <code class="language-http">https://players.api.brightcove.com/v2/accounts/account_id/players/de055fa4-4f09-45af-8531-419c6794ad04/<strong><em>publish</em></strong>
@@ -446,7 +446,7 @@ parent: General Information
     </code>
     </pre>
     
-    <p>To the URL for the player, you need to append the parameter <code>videoId={}video_id</code>, so that the full embed code will look like this:</p>
+    <p>To the URL for the player, you need to append the parameter <code translate="No">videoId={}video_id</code>, so that the full embed code will look like this:</p>
     
     <pre class="line-numbers">
     <code class="language-html">&lt;iframe
@@ -455,9 +455,9 @@ parent: General Information
     </code>
     </pre>
     
-    <p>If this is a playlist player, you use the parameter <code>playlistId={playlist_id}</code> instead. The modification of the in-page embed code is similar.</p>
+    <p>If this is a playlist player, you use the parameter <code translate="No">playlistId={playlist_id}</code> instead. The modification of the in-page embed code is similar.</p>
     
-    <p>Unless the player dimensions are fixed in the player configuration, you will also need to size the player by adding width and height in a <code>style</code> attribute:</p>
+    <p>Unless the player dimensions are fixed in the player configuration, you will also need to size the player by adding width and height in a <code translate="No">style</code> attribute:</p>
     
     <pre class="line-numbers">
     <code class="language-html">&lt;iframe
@@ -471,7 +471,7 @@ parent: General Information
     <section class="bcls-section" id="analytics">
     <h2>Getting Analytics Reports</h2>
     
-    <p>The <a href="/analytics/getting-started/overview-analytics-api-v1.html"> <span class="”notranslate”">Analytics API</span> </a> allows you to generate  analytics reports by many different <code>dimensions</code>. See the <a href="/analytics/dimension-guides/index.html">Dimension Guides</a> for more information.</p>
+    <p>The <a href="/analytics/getting-started/overview-analytics-api-v1.html"> <span class="”notranslate”">Analytics API</span> </a> allows you to generate  analytics reports by many different <code translate="No">dimensions</code>. See the <a href="/analytics/dimension-guides/index.html">Dimension Guides</a> for more information.</p>
       
     <p>You can specify the date range for the report, the metrics to return, and you can get the data in <span class="”notranslate”">JSON</span>, <span class="”notranslate”">csv</span>, or <span class="”notranslate”">xlxs</span> format</p>
     
