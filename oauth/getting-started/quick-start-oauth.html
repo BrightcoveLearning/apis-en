@@ -12,8 +12,8 @@ grandparent: OAuth API
     <h2 id="Requirements">Requirements</h2>
     
     <ul>
-      <li class="language-editable">API calls in this tutorial use cURL, which is built in on MacOS and all linux/unix systems. If you are running Windows, see <a href="https://general.support.brightcove.com/developer/concepts-set-curl.html">Set Up cURL</a></li>
-      <li class="language-editable">You will need Terminal or some other command-line console for your system</li>
+      <li >API calls in this tutorial use cURL, which is built in on MacOS and all linux/unix systems. If you are running Windows, see <a href="https://general.support.brightcove.com/developer/concepts-set-curl.html">Set Up cURL</a></li>
+      <li >You will need Terminal or some other command-line console for your system</li>
     </ul>
     </section>
     
@@ -23,8 +23,8 @@ grandparent: OAuth API
     <p>There are 2 parts to using the Brightcove OAuth API to get access to other Brightcove APIs</p>
     
     <ul>
-      <li class="language-editable">Get client credentials (a <code translate="No">client_id</code> and <code translate="No">client_secret</code>) that are valid for the account(s) and API operation(s) you need - this is a one-time operation, provided you save your client_id and client_secret in some secure place for future use</li>
-      <li class="language-editable">Get an <code translate="No">access_token</code> that provides authorization to make an API call - the access_token is valid for 5 minutes, so in most cases you will get one for each API call you make</li>
+      <li >Get client credentials (a <code translate="No">client_id</code> and <code translate="No">client_secret</code>) that are valid for the account(s) and API operation(s) you need - this is a one-time operation, provided you save your client_id and client_secret in some secure place for future use</li>
+      <li >Get an <code translate="No">access_token</code> that provides authorization to make an API call - the access_token is valid for 5 minutes, so in most cases you will get one for each API call you make</li>
     </ul>
     
     <p class="bcls-aside bcls-aside--information language-editable">There is also a UI in Studio that you can use to <a href="/general/managing-api-authentication-credentials.html">obtain and manage client-credentials</a>. It is recommended that you use the UI whenever possible. For new APIs, the credentials may not be available via the UI for some time, in which case you can get credentials directly from the OAuth API, as you will learn how to do in the steps that follow.</p>
@@ -38,15 +38,15 @@ grandparent: OAuth API
     <h3>Steps</h3>
     
     <ol class="bcls-tasklist">
-      <li class="language-editable">Make sure you have cURL available as explained in <a href="#requirements">Requirements</a>; you can test by going to a command line and typing <code translate="No">curl</code> and pressing return - if cURL is installed, you should see a message like this:
+      <li >Make sure you have cURL available as explained in <a href="#requirements">Requirements</a>; you can test by going to a command line and typing <code translate="No">curl</code> and pressing return - if cURL is installed, you should see a message like this:
     
       <pre class="line-numbers">
         <code class="language-bash" translate="No">curl: try 'curl --help' or 'curl --manual' for more information</code></pre>
       </li>
-      <li class="language-editable">Now you need two pieces of information that you can obtain from Studio. Login to Studio by going to <a target="_blank" rel="noopener noreferrer" href="https://signin.brightcove.com/">Studio</a>.
+      <li >Now you need two pieces of information that you can obtain from Studio. Login to Studio by going to <a target="_blank" rel="noopener noreferrer" href="https://signin.brightcove.com/">Studio</a>.
       <ul>
-        <li class="language-editable">account id</li>
-        <li class="language-editable">BC_TOKEN</li>
+        <li >account id</li>
+        <li >BC_TOKEN</li>
       </ul>
     
       <p class="BCL-aside language-editable">Note: The <code translate="No">BC_TOKEN</code> value is a cookie set when you open Studio. It has no relation to the API Management tokens you deal with in Studio.</p>
@@ -56,12 +56,12 @@ grandparent: OAuth API
     <h4>Get your account id and BC_TOKEN</h4>
     
     <ol class="bcls-tasklist">
-      <li class="language-editable">First you will need your account id from the Account Information.</li>
-      <li class="language-editable">Click the settings icon <img alt="Account Settings" src="https://img.brightcove.com/node14056-gear-icon.png" /> in the Studio header.</li>
-      <li class="language-editable">Select Account Information from the dropdown.</li>
-      <li class="language-editable">Copy your account id from the Account Information page and save it - you will need it in a later step.</li>
-      <li class="language-editable">Now open the browser developer console - in most browsers you can do this by pressing OPTION-CMD-i (Mac) or ALT-CTRL-i (Windows), or you should be able to find a menu item also.</li>
-      <li class="language-editable">In the console, paste the following JavaScript and press return to display your BC_TOKEN in a modal dialog:<br />
+      <li >First you will need your account id from the Account Information.</li>
+      <li >Click the settings icon <img alt="Account Settings" src="https://img.brightcove.com/node14056-gear-icon.png" /> in the Studio header.</li>
+      <li >Select Account Information from the dropdown.</li>
+      <li >Copy your account id from the Account Information page and save it - you will need it in a later step.</li>
+      <li >Now open the browser developer console - in most browsers you can do this by pressing OPTION-CMD-i (Mac) or ALT-CTRL-i (Windows), or you should be able to find a menu item also.</li>
+      <li >In the console, paste the following JavaScript and press return to display your BC_TOKEN in a modal dialog:<br />
 <textarea class="bcls-code notranslate" style="height:13em;">var cookiesArray = document.cookie.split(";"), cookiesObj = {}, i, tmpArray = [];
 for (i = 0; i &lt; cookiesArray.length; i++) {
     tmpArray = cookiesArray[i].split("=");
@@ -71,8 +71,8 @@ for (i = 0; i &lt; cookiesArray.length; i++) {
 }
 window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);
       </textarea></li>
-      <li class="language-editable">Copy the BC_TOKEN to the clipboard.</li>
-      <li class="language-editable">Enter your account id and BC_TOKEN here:
+      <li >Copy the BC_TOKEN to the clipboard.</li>
+      <li >Enter your account id and BC_TOKEN here:
       <p>Account id: <input id="account_id" type="text" placeholder="876457237" /></p>
     
       <p>BC_TOKEN:<br />
@@ -85,8 +85,8 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);
     <h4>Make the credentials request</h4>
     
     <ol class="bcls-tasklist">
-      <li class="language-editable">To get your client credentials, copy and paste the following cURL command at your command line and press return:<textarea id="getCredentialsCall" class="bcls-code" style="height:7en;">Your cURL command will appear here after you enter you account id and BC_TOKEN</textarea></li>
-      <li class="language-editable">The response should look like this (formatting added):
+      <li >To get your client credentials, copy and paste the following cURL command at your command line and press return:<textarea id="getCredentialsCall" class="bcls-code" style="height:7en;">Your cURL command will appear here after you enter you account id and BC_TOKEN</textarea></li>
+      <li >The response should look like this (formatting added):
       <pre class="line-numbers">
         <code class="language-json" translate="No">{"redirect_url":null,"maximum_scope":[{"identity":
         {"type":"video-cloud-account","account-id":57838016001},
@@ -100,7 +100,7 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);
     
       <p class="bcls-aside bcls-aside--warning language-editable">This is <strong>not</strong> a valid client secret - you should <strong>never</strong> expose a client secret publicly.</p>
       </li>
-      <li class="language-editable">Enter the values for the <code translate="No">client_id</code> and <code translate="No">client_secret</code> below, as you will need these anytime you need to get an <code translate="No">access_token</code>.
+      <li >Enter the values for the <code translate="No">client_id</code> and <code translate="No">client_secret</code> below, as you will need these anytime you need to get an <code translate="No">access_token</code>.
       <fieldset class="bcls-fieldset"><legend>Client Credentials</legend>
       <p>client_id: <input id="client_id" type="text" /></p>
     
@@ -125,12 +125,12 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);
     <h3>Steps</h3>
     
     <ol class="bcls-tasklist">
-      <li class="language-editable">To get your access_token, copy and paste the following cURL command to your command line and press enter:<textarea id="getTokenCall" class="bcls-code">Your cURL command will appear here after you enter you client_id and client_secret</textarea></li>
-      <li class="language-editable">The output should look like this:
+      <li >To get your access_token, copy and paste the following cURL command to your command line and press enter:<textarea id="getTokenCall" class="bcls-code">Your cURL command will appear here after you enter you client_id and client_secret</textarea></li>
+      <li >The output should look like this:
       <pre class="line-numbers">
         <code class="language-json" translate="No">{<strong>"access_token":"ACkkpftcuhyzqdf4ftxm304za3anhziG0Ni5-S_dplxMNYNrSrBZRgJL3sf_U38ZZVDdgkmWtrb0_GRZj-VzWOAFWgpEYwgwIWLjcGsTI-9QMUMNv2eFj33clsWFHnGLzgtdcILXpR-wPM0LzKKzRahodwofPfuExYCej18Wpt1x7DxOJDySEjCGOWiTuZVKp1QjG0_nqD9T3TpK3Cchv0suVRTGkYrs15qYSKdxh2-e5XbUiKKptNl8ryvMriavPN66fOh17c09Q0525OPqejkU6uERPTw-sTLU_QjJbRV6psxoSVYKRAetsBikH9XRJbZCSt2JP88O"</strong>,"token_type":"Bearer",<strong>"expires_in":300</strong>}</code></pre>
       </li>
-      <li class="language-editable">This token can be used to authenticate calls to Player Management API for 5 minutes (then you need to get a new token). The token is passed in the Authorization header with the HTTP request:
+      <li >This token can be used to authenticate calls to Player Management API for 5 minutes (then you need to get a new token). The token is passed in the Authorization header with the HTTP request:
       <pre class="line-numbers">
         <code class="language-http" translate="No">Authorization: Bearer <em>access_token value</em></code></pre>
       </li>
