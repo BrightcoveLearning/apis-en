@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
+  <meta name="description" content="In this topic, you will learn how to search for playlists in your Video Cloud account. The CMS API provides a programmatic way to search for playlists in your Video Cloud library. Here we will look at the search syntax.">
   
-  <title></title>
+  <title>CMS API: Playlists Search</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -115,9 +115,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb arr-right">
       
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
       
       
-      <li class="breadcrumb-item active" aria-current="page"></li>
+      
+      <li class="breadcrumb-item"><a href="/cms/searching/">Searching</a></li>
+      
+      <li class="breadcrumb-item active" aria-current="page">CMS API: Playlists Search</li>
     </ol>
   </nav>
 </header>
@@ -1303,71 +1307,71 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
-<h1></h1>
+<h1>CMS API: Playlists Search</h1>
 <article class="bcls-article">
-  <summary></summary>
+  <summary>In this topic, you will learn how to search for playlists in your Video Cloud account. The <span translate="No">CMS API</span> provides a programmatic way to search for playlists in your Video Cloud library. Here we will look at the search syntax.</summary>
     <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    
+
     <p>Playlists for an account can be searched by providing a <code translate="No">q</code> parameter to the above call similarly to the provided Video Search functionality. Be aware, however, that <a href="#fields">a much smaller number of fields can be searched</a>, and that only the playlist properties are searched, not properties of the videos contained in the playlist.</p>
-    
+
     <p>Any unqualified/default terms will search for any text match in the name, reference_id, or id field of a Playlist, for example a search for <code translate="No">?q=news+2016</code> would match any of the following if they exist:</p>
-    
+
     <ul>
       <li>A Playlist with a name of <code translate="No">Exciting 2016 News</code></li>
       <li>A Playlist with an id of 2016</li>
       <li>A Playlist with a <code translate="No">reference_id</code> of <code translate="No">news 2016</code></li>
     </ul>
-    
+
     <aside class="bcls-aside bcls-aside--information"><code translate="No">+</code> is used as an encoded space in the examples (not a literal "+")</aside>
-    
+
     <aside class="bcls-aside bcls-aside--information">Requests to the <span translate="No">CMS API</span> require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</aside>
-    
+
     <p>As implied above multiple terms provided are <code translate="No">OR</code>'ed together, and strings containing one or more of the provided terms will be returned. Provided values are <a href="#stemming">stemmed</a>, so variations on the words will be matched. Prefix matching is <strong>not</strong> currently supported. So for instance a search for <code translate="No">p*</code> will not return results starting with "p" nor will a search for <code translate="No">play*</code> return results containing "playlist".</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="Ignored_words">Ignored words</h2>
-    
+
     <p>Certain words are ignored in search strings because they are so common that they are likely to return many results unrelated to what you are actually searching for. Below is a list of words that are ignored by search:</p>
-    
+
     <p>"a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with"</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="fields">Fields</h2>
-    
+
     <p>Specific fields can be queried by using the <code translate="No">{field:}{value}</code> syntax such as <code translate="No">?q=news+2016+type:EXPLICIT</code>. Fields provided this way must match exactly. Like other terms these will be <code translate="No">OR</code>'ed.</p>
-    
+
     <p>The following fields are currently supported:</p>
-    
+
     <ul>
       <li>type</li>
       <li>name</li>
       <li>description</li>
       <li>reference_id</li>
     </ul>
-    
+
     <aside class="bcls-aside bcls-aside--information">For an explanation of the fields, see the <a href="/cms/references/cms-api-playlist-fields-reference.html">Playlist Fields Reference</a>.</aside>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="required_terms">Required terms</h2>
-    
+
     <p>You can require terms by prefixing them with a URI-encoded <code translate="No">+</code> sign (%2B) - example: <code translate="No">q=name:%2Bnews+%2B2016</code> (which would return only playlists with names including both "news" and "2016").</p>
-    
+
     <aside class="bcls-aside bcls-aside--warning">You cannot combine optional and required terms - if you search on <code translate="No">q=name:news+%2B2016</code>, the <code translate="No">%2B</code> in front of "2016" will be ignored, and all playlists with names containing "news" OR "2016" will be returned.</aside>
     </section>
-    
+
     <section id="excluded_terms" class="bcls-section">
     <h2>Excluded terms</h2>
-    
+
     <p>Prefix terms with a URI-encoded <code translate="No">-</code> sign to exclude playlists with that term. For example: <code translate="No">q=name:%2Bnews+%2D2016</code> will return videos that have names containing "news" but <strong>not</strong> containing "2016".</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="stemming">Stemming</h2>
-    
+
     <p><em>Stemming</em> refers to storing and searching for the roots of words. What this means is that the terms "play", "playing", "plays", "played"... will all be stored as "play" and when a search is done for any of those terms the search will accordingly be translated to search for "play". Stem only applies to the root of the word, and not a string that begins or is part of the word. Therefore, a search on <code translate="No">name:play</code> will returned videos with names containing "play", "played", "playing", and "playable", but will not return videos with names that contain "display" or "playlist".</p>
     </section>
 
@@ -1380,22 +1384,22 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
     <pre><code class="language-http" translate="No">q=name:%28Really%20Short%20Videos%29%20type:EXPLICIT</code></pre>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="Full_examples">Full examples</h2>
-    
+
     <h3>Search by type</h3>
-    
+
     <pre class="line-numbers">
     <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/playlists?q=type:ACTIVATED_NEWEST_TO_OLDEST</code></pre>
-    
+
     <h3>Search by name with exclusions</h3>
-    
+
     <pre class="line-numbers">
     <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/playlists?q=%2Bname=morningnews+%2Ddecription=weekend</code></pre>
     </section>
     </article>
-    
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
