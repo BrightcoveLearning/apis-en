@@ -58,8 +58,8 @@ grandparent: Playback API
     <p >Existing search queries perform `term smooshing` whereas in Elasticsearch we drop malformed terms, consider this search with an empty <code translate="No">tags:</code> term: <code translate="No">q=tags: state:ACTIVE</code></p>
     
     <ul>
-      <li ><strong>Existing</strong>: <code translate="No">tags:state:ACTIVE</code> — search for videos with a tag of <code translate="No">state:ACTIVE</code></li>
-      <li ><strong>Elasticsearch</strong>: <code translate="No">state:ACTIVE</code> — drop the empty term</li>
+      <li><strong>Existing</strong>: <code translate="No">tags:state:ACTIVE</code> — search for videos with a tag of <code translate="No">state:ACTIVE</code></li>
+      <li><strong>Elasticsearch</strong>: <code translate="No">state:ACTIVE</code> — drop the empty term</li>
     </ul>
     
     <p >There are a number of subtle edge cases related to handling dangling punctuation and queries that are generally malformed, we attempt to produce what we think the query was intended to be, but in these cases we’re unfortunately guessing what a user might have intended (when really we should have returned an error allowing them to refine their search)</p>
@@ -69,8 +69,8 @@ grandparent: Playback API
     <p >There are two mechanisms for restricting a search to videos that are currently playable: the query can include a flag, or the query itself can require some aspect of playability.</p>
     
     <ul>
-      <li >Existing: this is queried based on the value of a field that is updated</li>
-      <li >Elasticsearch: this is queried based on computed date ranges</li>
+      <li>Existing: this is queried based on the value of a field that is updated</li>
+      <li>Elasticsearch: this is queried based on computed date ranges</li>
     </ul>
     
     <p >Elasticsearch should generally be more accurate and produce better results (there is a lag associated with the existing mechanism, and the flag maintenance mechanism is not entirely reliable).</p>
@@ -107,8 +107,8 @@ grandparent: Playback API
     <p >There are two problems with this:</p>
     
     <ul>
-      <li ><strong>Relevance</strong>: The order is incorrect. “Don’t look into the light” (Video#2) should appear before “Using a lighter to make a campfire” (Video#1)</li>
-      <li ><strong>Accuracy</strong>: “Using a lighter to make a campfire” shouldn’t even appear in the result set as the word “light” doesn’t appear in the video title at all.</li>
+      <li><strong>Relevance</strong>: The order is incorrect. “Don’t look into the light” (Video#2) should appear before “Using a lighter to make a campfire” (Video#1)</li>
+      <li><strong>Accuracy</strong>: “Using a lighter to make a campfire” shouldn’t even appear in the result set as the word “light” doesn’t appear in the video title at all.</li>
     </ul>
     
     <p >With Elasticsearch, this will return only video one:</p>
@@ -119,8 +119,8 @@ grandparent: Playback API
     <p >This is an improvement because:</p>
     
     <ul>
-      <li >Relevance: The order is correct.</li>
-      <li >Accuracy: Only Video one is returned as it’s the only video with the word “light” in the title.</li>
+      <li>Relevance: The order is correct.</li>
+      <li>Accuracy: Only Video one is returned as it’s the only video with the word “light” in the title.</li>
     </ul>
     
     <h3>Example 2</h3>
@@ -153,8 +153,8 @@ grandparent: Playback API
     <p >Again, there are two problems with this:</p>
     
     <ul>
-      <li >Relevance: The order is incorrect. "Parking Ban Announced" should be the first video returned as it has the word “Ban” in it.</li>
-      <li >Accuracy: "Bank Holiday" and "Bandit Captured" should not be returned at all as “Ban” is not part of the word “Bank” or “Bandit”.</li>
+      <li>Relevance: The order is incorrect. "Parking Ban Announced" should be the first video returned as it has the word “Ban” in it.</li>
+      <li>Accuracy: "Bank Holiday" and "Bandit Captured" should not be returned at all as “Ban” is not part of the word “Bank” or “Bandit”.</li>
     </ul>
     
     <p >With Elasticsearch, the results look like:</p>
@@ -167,8 +167,8 @@ grandparent: Playback API
     <p >This is an improvement because:</p>
     
     <ul>
-      <li >Relevance: The order is correct.</li>
-      <li >Accuracy: Only Videos with the stems of the word “Ban” (“Ban”, “Banning” and “Banned”) are returned.</li>
+      <li>Relevance: The order is correct.</li>
+      <li>Accuracy: Only Videos with the stems of the word “Ban” (“Ban”, “Banning” and “Banned”) are returned.</li>
     </ul>
     </section>
     </article>

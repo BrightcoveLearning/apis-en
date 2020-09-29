@@ -14,10 +14,10 @@ grandparent: Player Management API
     <p>In this step-by-step document you will perform the following tasks:</p>
     
     <ul>
-      <li >Create a player</li>
-      <li >Update the player to autoplay the video</li>
-      <li >Customize a player by adding a plugin</li>
-      <li >Display the configuration for a player</li>
+      <li>Create a player</li>
+      <li>Update the player to autoplay the video</li>
+      <li>Customize a player by adding a plugin</li>
+      <li>Display the configuration for a player</li>
     </ul>
     
     <aside class="bcls-aside bcls-aside--information language-editable">For details on the API used in this document you can view the <a href="/player-management/getting-started/overview-player-management-api.html">Player Management API Overview</a> document and the <a href="/player-management/references/reference.html">Player Management API</a> reference.</aside>
@@ -35,17 +35,17 @@ grandparent: Player Management API
     <p>A few preliminary steps need to be taken before you can start using the API. These are:</p>
     
     <ul>
-      <li >Login to Studio. If you have multiple accounts, use the drop-down to select the one in which you'd like to create your new players. For the credential system to work properly, you need to have admin rights on this account. If you are unsure if a user has admin rights, go to the Users Settings page to see Users listed along with their role.</li>
-      <li >In Studio, be sure you have selected <strong>HOME</strong> from the lists of modules. In the top-left corner of the page you, just below the account name, will be able to copy your <strong>Account ID</strong>.
+      <li>Login to Studio. If you have multiple accounts, use the drop-down to select the one in which you'd like to create your new players. For the credential system to work properly, you need to have admin rights on this account. If you are unsure if a user has admin rights, go to the Users Settings page to see Users listed along with their role.</li>
+      <li>In Studio, be sure you have selected <strong>HOME</strong> from the lists of modules. In the top-left corner of the page you, just below the account name, will be able to copy your <strong>Account ID</strong>.
       <figure class="bcls-figure"><img class="bcls-image" alt="Account ID to copy" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/getting-started/quick-start/acct-id.png" /></figure>
       </li>
-      <li >At the command line, enter the following to assign the Account ID value to an environment variable:
+      <li>At the command line, enter the following to assign the Account ID value to an environment variable:
       <pre class="line-numbers">
         <code class="language-bash" translate="No">export ACCOUNT_ID=<em>YourAccountID</em>
         </code>
         </pre>
       </li>
-      <li >Authentication will be handled by supplying your account email address as part of the curl statement, and then the API will prompt you for a password. Since the email address will be used frequently, also assign that value to an environment variable:
+      <li>Authentication will be handled by supplying your account email address as part of the curl statement, and then the API will prompt you for a password. Since the email address will be used frequently, also assign that value to an environment variable:
       <pre class="line-numbers">
         <code class="language-bash" translate="No">export EMAIL=<em>YourEmailAddress</em>
         </code>
@@ -68,7 +68,7 @@ grandparent: Player Management API
     <aside class="bcls-aside bcls-aside--information language-editable">Note: If you are not comfortable using curl statements and the command line, many REST-client apps exist. Information on using a REST-client Chrome browser plugin called Postman is detailed in the <a href="/general/use-postman-api-requests.html">Using Postman for HTTP Requests</a> document.</aside>
     
     <ol class="bcls-tasklist">
-      <li >The first curl statement creates the player and assigns a name and description. After you paste this statement at the command line and press <em>Enter</em>, you will be prompted for your password.
+      <li>The first curl statement creates the player and assigns a name and description. After you paste this statement at the command line and press <em>Enter</em>, you will be prompted for your password.
     
       <pre class="line-numbers">
         <code class="language-bash" translate="No">curl \
@@ -100,11 +100,11 @@ grandparent: Player Management API
     
       <aside class="bcls-aside bcls-aside--information language-editable">At this time the <code translate="No">preview_url </code> and <code translate="No">preview_embed_code </code> will not be discussed. Later in this document the differences between preview and published players will be covered.</aside>
       </li>
-      <li >View your player by using one (or all) of the following values (at this point, there is no video in the player, but you can publish a video using your newly created player using Studio):
+      <li>View your player by using one (or all) of the following values (at this point, there is no video in the player, but you can publish a video using your newly created player using Studio):
       <ul>
-        <li >Copy the <code translate="No">url </code> into a browser to see your player.</li>
-        <li >Copy the <code translate="No">embed_code </code> into an HTML page to view your player in an iframe. For this to function properly, the page containing the iframe must be served from an actual HTTP server.</li>
-        <li >The <code translate="No">embed_in_page </code> feature's use is detailed in the <a href="https://player.support.brightcove.com/publish/available-options-advanced-page-embed-code.html">Available Options for the Advanced (in-page) Embed Code</a> document.</li>
+        <li>Copy the <code translate="No">url </code> into a browser to see your player.</li>
+        <li>Copy the <code translate="No">embed_code </code> into an HTML page to view your player in an iframe. For this to function properly, the page containing the iframe must be served from an actual HTTP server.</li>
+        <li>The <code translate="No">embed_in_page </code> feature's use is detailed in the <a href="https://player.support.brightcove.com/publish/available-options-advanced-page-embed-code.html">Available Options for the Advanced (in-page) Embed Code</a> document.</li>
       </ul>
     
       <aside class="bcls-aside bcls-aside--tip">You can use multiple players on the same HTML page.</aside>
@@ -186,14 +186,14 @@ grandparent: Player Management API
     <p>You have now performed the basics for creating a player. Next, you will learn how to do a simple update of the player. In this case, you will set the player to autoplay the video in the player, if allowed by the browser.</p>
     
     <ol class="bcls-tasklist">
-      <li >In the returned JSON from player creation an <code translate="No">id </code> value was displayed. Copy this into a <code translate="No">PLAYER_ID </code> environment variable.
+      <li>In the returned JSON from player creation an <code translate="No">id </code> value was displayed. Copy this into a <code translate="No">PLAYER_ID </code> environment variable.
     
       <pre class="line-numbers">
         <code class="language-bash" translate="No">export PLAYER_ID=<em>YourPlayerID</em>
         </code>
         </pre>
       </li>
-      <li >To update the player you will use the HTTP <code translate="No">PATCH </code> method. You will send data to update your player. You will set the <code translate="No">autoplay</code> option to <code translate="No">true</code>. Copy and paste the following curl statement and execute it.
+      <li>To update the player you will use the HTTP <code translate="No">PATCH </code> method. You will send data to update your player. You will set the <code translate="No">autoplay</code> option to <code translate="No">true</code>. Copy and paste the following curl statement and execute it.
       <pre class="line-numbers">
         <code class="language-bash" translate="No">curl \
           --header "Content-Type: application/json" \
@@ -205,7 +205,7 @@ grandparent: Player Management API
         https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code>
         </pre>
       <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="53-74"></code></p></li> --></li>
-      <li >Check to be sure the server returns data which includes the <code translate="No">id </code>, <code translate="No">preview_url </code> and <code translate="No">preview_embed_code </code> values in the following JSON format:
+      <li>Check to be sure the server returns data which includes the <code translate="No">id </code>, <code translate="No">preview_url </code> and <code translate="No">preview_embed_code </code> values in the following JSON format:
       <pre class="line-numbers">
         <code class="language-json" translate="No">{
           "id": "S1qN4xeG7",
@@ -218,8 +218,8 @@ grandparent: Player Management API
     
       <aside class="bcls-aside bcls-aside--information">After an update you have a preview version of the player. The change is NOT reflected in the published version of the player you were working with prior to the update.</aside>
       </li>
-      <li >Use either the <code translate="No">preview_url </code> or <code translate="No">preview_embed_code </code> values to see the changes in your player's configuration. You will see autoplay is now true.</li>
-      <li >Now you'll publish the player to push it to the correct location for users to view. Enter the following command:
+      <li>Use either the <code translate="No">preview_url </code> or <code translate="No">preview_embed_code </code> values to see the changes in your player's configuration. You will see autoplay is now true.</li>
+      <li>Now you'll publish the player to push it to the correct location for users to view. Enter the following command:
       <pre class="line-numbers">
         <code class="language-bash" translate="No">curl \
         --header "Content-Type: application/json" \
@@ -233,14 +233,14 @@ grandparent: Player Management API
       <p>Once the player is published you will have players that differ from the preview versions. The published versions differ from the preview versions in these ways:</p>
     
       <ul>
-        <li >The JavaScript and CSS are minified, concatenated and inlined into the player directly.</li>
-        <li >A low resolution version of the poster image is generated and inlined into the page to improve perceived load times on networks with a high request-setup time (i.e. cellular data networks).</li>
-        <li >The previous version of the player is saved so it can be recovered if problems are discovered after the update goes live.</li>
+        <li>The JavaScript and CSS are minified, concatenated and inlined into the player directly.</li>
+        <li>A low resolution version of the poster image is generated and inlined into the page to improve perceived load times on networks with a high request-setup time (i.e. cellular data networks).</li>
+        <li>The previous version of the player is saved so it can be recovered if problems are discovered after the update goes live.</li>
       </ul>
     
       <aside class="bcls-aside bcls-aside--information">Note: On player creation (step 1 above) the player is also automatically published. That is why on player creation the JSON response included both published and preview information.</aside>
       </li>
-      <li >Check to be sure the JSON response from publishing the player appears as follows:
+      <li>Check to be sure the JSON response from publishing the player appears as follows:
       <pre class="line-numbers">
         <code class="language-json" translate="No">{
         "id": "S1qN4xeG7",
@@ -251,7 +251,7 @@ grandparent: Player Management API
         </code>
         </pre>
       <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="165-170"></code></p></li> --></li>
-      <li >Use one of the player implementations to be sure your published player is functioning correctly.</li>
+      <li>Use one of the player implementations to be sure your published player is functioning correctly.</li>
     </ol>
     </section>
     
@@ -296,13 +296,13 @@ grandparent: Player Management API
     <p>Just as you used a curl statement to assign the video source and poster image, you will use a curl statement to tell the player the following:</p>
     
     <ul>
-      <li >Location of the JavaScript file that contains the code for the plugin</li>
-      <li >Location of the stylesheet</li>
-      <li >The plugin name to be used with the player</li>
+      <li>Location of the JavaScript file that contains the code for the plugin</li>
+      <li>Location of the stylesheet</li>
+      <li>The plugin name to be used with the player</li>
     </ul>
     
     <ol class="bcls-tasklist">
-      <li >Use the following curl statement to make the plugin functional.
+      <li>Use the following curl statement to make the plugin functional.
       <aside class="bcls-aside bcls-aside--information">Note: Even if you are not supplying any options, you still must enter the plugin's name, as shown here.</aside>
     
       <pre class="line-numbers">
@@ -324,7 +324,7 @@ grandparent: Player Management API
         https: //players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code>
         </pre>
       <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="99-114"></code></p></li> --></li>
-      <li >Use the following curl statement to publish the updated player. This is the same publish code that you used in the previous section to publish a player.
+      <li>Use the following curl statement to publish the updated player. This is the same publish code that you used in the previous section to publish a player.
       <pre class="line-numbers">
         <code class="language-bash" translate="No">curl \
           --header "Content-Type: application/json" \
@@ -333,7 +333,7 @@ grandparent: Player Management API
           https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</code>
         </pre>
       <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="26-30"></code></p></li> --></li>
-      <li >Copy the returned URL and browse it. You will see that the plugin is functioning and the plugin text is displayed.
+      <li>Copy the returned URL and browse it. You will see that the plugin is functioning and the plugin text is displayed.
       <aside class="bcls-aside bcls-aside--information">There may be a slight delay before you see the plugin functioning correctly as it can take a small amount of time for the player to be published. If you don't see the plugin, periodically refresh your page.</aside>
     
       <figure class="bcls-figure"><img class="bcls-image" alt="Plugin Text" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/getting-started/quick-start/show-plugin-text.png" />
@@ -353,7 +353,7 @@ grandparent: Player Management API
     <p>To debug and confirm work you have done it is often helpful to view a player's configuration.</p>
     
     <ol class="bcls-tasklist">
-      <li >To do this, use a <code translate="No">GET </code> method with the <code translate="No">configuration </code> URL.
+      <li>To do this, use a <code translate="No">GET </code> method with the <code translate="No">configuration </code> URL.
     
       <pre class="line-numbers">
         <code class="language-bash" translate="No">curl \
@@ -364,7 +364,7 @@ grandparent: Player Management API
         </code>
         </pre>
       <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="117-121"></code></p></li> --></li>
-      <li >Check to be sure the JSON configuration response is similar to the following:
+      <li>Check to be sure the JSON configuration response is similar to the following:
       <pre class="line-numbers">
         <code class="language-json" translate="No">{
           "media": {
