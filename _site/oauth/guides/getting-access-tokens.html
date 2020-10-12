@@ -1317,63 +1317,63 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <summary>In this topic, you will learn how to get access tokens and show you strategies for implementing this logic in your apps.</summary>
   <section class="bcls-section">
   <h2 id="gettingToken">Getting a token</h2>
-  
+
   <p>If you just want to generate an access token for testing an API request, you can use this <a href="/oauth/code-samples/oauth-api-sample-get-access-token.html">sample app</a>.</p>
-  
+
   <p>Tokens are obtained from the Brightcove OAuth API. Before you can get access tokens, you first need to obtain client credentials (a client id and a client secret) that are specific to the API and operations that you want access to. To get your client credentials, see <a href="/general/managing-api-authentication-credentials.html">Managing API Credentials</a>.</p>
-  
+
   <p>Once you have your credentials, you obtain an access token by making a <code translate="No">POST</code> request to:</p>
-  
+
   <pre class="line-numbers">
   <code class="language-http" translate="No">https://oauth.brightcove.com/v4/access_token</code></pre>
-  
+
   <p>You must pass the following headers with this call:</p>
-  
+
   <ul>
     <li><code class="language-http" translate="No">Content-Type: application/x-www-form-urlencoded</code></li>
     <li><code class="language-http" translate="No">Authorization: Basic {client_id}:{client_secret}</code></li>
   </ul>
-  
+
   <p>The entire <code class="language-http" translate="No">{client_id}:{client_secret}</code> string must be Base64-encoded (curl will automatically Base64-encode the string if you pass it as <code translate="No">--user</code> credentials; in other languages, you'll need to handle the Base64-encoding yourself).</p>
-  
+
   <p>You must also send the following key/value pair as the request body or as URL parameter:</p>
-  
+
   <pre class="line-numbers">
   <code class="language-http" translate="No">grant_type=client_credentials</code></pre>
-  
+
   <aside class="bcls-aside bcls-aside--information">Note that since the <code translate="No">Content-Type</code> must be <code translate="No">application/x-www-form-urlencoded</code>, the key/value pair will be sent to the API as a URL param even if you put it in the request body.</aside>
-  
+
   <p>The response will look like this (pretty-printed here for readability):</p>
-  
+
   <pre class="line-numbers">
   <code class="language-json" translate="No">{
       "access_token": "ANB7xKhiUZmwltVd3f1odcHHM9VAwg02kwmLwtZwHv3SxGCOWLUf5W4G7X22PRjmR9StvFUqzpVZ1suOfyfOigdi-rnohxyEaSSuZceeLw_9OBW7fXldOG05HEgkeK3N-DBZZZyilodmjA1JWZHbgI3IU7Rmz5IPGyi-sDxHN3KlOr1BDZlLZpXPdFPwEyb6idq-z8AL-blKTSMtNI3_fz3oNBisfrHGUv5tXHoQT4B7FYcvdrap16gTOO7_wNt1zmgLJiUHvyxZgsgBchm_AhohVL-AYgcfCbCR0v7d2hgI4ag35pnZNeujDiBLfnCFcVMlqQGq8UEVZrmU9a8y4pVAGih_EImmghqmSrkxLPYZ800-vIWX-lw",
       "token_type": "Bearer",
       "expires_in": 300
   }</code></pre>
-  
+
   <p>The <code translate="No">access_token</code> value is what you must pass in an <code translate="No">Authorization</code> header with your API call in this form:</p>
-  
+
   <pre class="line-numbers">
   <code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
-  
+
   <p>The <code translate="No">expires_in</code> value is the number of seconds that the access token is valid for.</p>
   </section>
-  
+
   <section class="bcls-section">
   <h2 id="implementation">Implementation Strategies</h2>
-  
+
   <p>If your app will only be making sporadic calls to the Brightcove APIs, you might as well ignore the <code translate="No">expires_in</code> parameter and just fetch a new access token for every call. In that case, the processing sequence will look like this:</p>
-  
+
   <figure class="bcls-figure"><img class="bcls-image" alt="Get New Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-token/get-token-new-token.png" />
   <figcaption class="bcls-caption--image">Get New Token</figcaption>
   </figure>
-  
+
   <p>On the other hand, if you know that your app will frequently make many API calls in quick succession (for, say, generating long reports), then it will be more efficient to fetch access tokens only when you need them. There are two basic ways of doing this:</p>
-  
+
   <ol>
     <li>Go ahead and try the API call and if you get an <code translate="No">UNAUTHORIZED</code> error in response, go fetch a new token and make the API call again. In this case, the processing sequence will look like this:
-  
+
     <figure class="bcls-figure"><img class="bcls-image" alt="Get Token with Check for Call Fail" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-token/get-token-check-call-fail.png" />
     <figcaption class="bcls-caption--image">Get Token with Check for Call Fail</figcaption>
     </figure>
@@ -1385,32 +1385,32 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </li>
   </ol>
   </section>
-  
+
   <section class="bcls-section">
   <h2 id="Postman_and_Insomnia">Postman and Insomnia</h2>
-  
+
   <p>Several useful testing tools for REST APIs can be set up to work with the Brightcove OAuth system to get access tokens. We have guides that include steps for doing this for two of most popular cross-platform tools:</p>
-  
+
   <ul>
     <li><a href="/general/use-postman-api-requests.html">Use Postman for API Requests</a></li>
     <li><a href="/general/use-insomnia-api-requests.html">Use Insomnia for API Requests</a></li>
   </ul>
   </section>
-  
+
   <section class="bcls-section">
   <h2 id="codeSamples">Code Samples</h2>
-  
+
   <p>Here are some code samples to help you get started.</p>
-  
+
   <h3>Shell script example</h3>
-  
+
   <p>The first example is a shell script that implements the first implementation logic above: it takes inputs from the user, always gets a new token, and then makes the API call. The script will work on any of the Brightcove APIs, and you may find it useful for testing API calls as you build your app.</p>
-  
+
   <aside class="bcls-aside bcls-aside--information">
   <p>Note: this script uses cURL, and also the jq command line app. See <a href="https://general.support.brightcove.com/developer/concepts-set-curl.html">Set up cURL and jq</a> for setup instructions. The Python json.tool is also used to pretty-print the response, but that should already be installed on your system.</p>
-  
+
   <p>To run the script, save the code as <strong>api-tester.sh</strong> on your system, open a command line in the same folder, and enter <code translate="No">bash api-tester.sh</code> - you will be prompted for the following inputs:</p>
-  
+
   <ul>
     <li>client id (required)</li>
     <li>client secret (required)</li>
@@ -1419,9 +1419,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li>data for the request body (optional)</li>
   </ul>
   </aside>
-  
+
   <h4 id="shell">Shell script code</h4>
-  
+
   <pre class="line-numbers">
   <code class="language-bash" translate="No">bold=`tput bold`
   normal=`tput sgr0`
@@ -1476,13 +1476,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   echo $RESPONSE | python -m json.tool
   echo
   </code></pre>
-  
+
   <h3 id="ruby">Ruby example</h3>
-  
+
   <p>The next example is a Ruby script that also employs the first implementation logic: always get a token and then make the API call. This example makes a call to the Analytics API, but can be adapted to work with any of the APIs.</p>
-  
+
   <h4>Ruby code</h4>
-  
+
   <pre class="line-numbers">
   <code class="language-ruby" translate="No">#!/usr/bin/env ruby
   # view id --&gt; content,
@@ -1497,15 +1497,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   data = RestClient.get 'https://data.brightcove.com/analytics-api/videocloud/account/1234567890001/report?dimensions=video&amp;from=2014-01-01&amp;to=2014-03-30', { 'Authorization' =&gt; "Bearer #{token}", 'Accept' =&gt; 'application/json' }
   puts "This is the result from the query: \n" + data
   </code></pre>
-  
+
   <h3 id="python">Python example</h3>
-  
+
   <p>This sample is a Python script that implements the 3rd implementation logic above. It attempts to make an <span translate="No">Analytics API</span> call, but if the call fails on an UNAUTHORIZED error, it fetches a new access token and retries the call.</p>
-  
+
   <p>This script also reads the client credentials from an external file - the credentials data file is shown below the Python code.</p>
-  
+
   <h4>Python code</h4>
-  
+
   <pre class="line-numbers">
   <code class="language-python" translate="No">import httplib, urllib, base64, json, sys
   # This is a python script to test the CMS API.
@@ -1513,7 +1513,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   # with your brightcove account ID, and a client ID and client secret for
   # an Oauth credential that has <span translate="No">CMS API</span> - Videos Read permission.
   # You can find instructions on how to generate Oauth credentials
-  # http://docs.brightcove.com/en/video-cloud/cms-api/getting-started/quick-start-cms.html
+  # https://apis.support.brightcove.com/cms/getting-started/practice-area-cms-api.html
   # This script demonstrates how to refresh the access token
   # in handling 401 - Unauthorized errors from the CMS API
   # Because the Oauth tokens have a 300 second time to live,
@@ -1539,13 +1539,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   print "\tThere should be a local file in this directory called brightcove_oauth.txt "
   print "\tWhich has contents like this:"
   print """
-  
+
       {
           "account_id": "1234567890001",
       "client_id": "30ff0909-0909-33d3-ae88-c9887777a7b7",
       "client_secret": "mzKKjZZyeW5YgsdfBD37c5730g397agU35-Dsgeox6-73giehbeihgleh659dhgjhdegessDge0s0ynegg987t0996nQ"
       }
-  
+
       """
       sys.exit("System error: " + str(e) );
   # get the oauth 2.0 token
@@ -1630,22 +1630,22 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   if __name__ == "__main__":
     demo();
   </code></pre>
-  
+
   <h5>Credentials file for Python sample</h5>
-  
+
   <pre class="line-numbers">
   <code class="language-json" translate="No">{
       "account" : "1234567890001",
       "client_id": "30ff0909-0909-33d3-ae88-c9887777a7b7",
       "client_secret": "XXXXXXXX_XXXXXXXX_XXXXXXXX_XXXXXXX_XXXXXXX_XXXXXXXXXXXXXXXXX_XXXXXXXXXXX"
   }</code></pre>
-  
+
   <h3 id="php">PHP example</h3>
-  
+
   <p>This is a simple proxy that takes client credentials and an API call, gets an access token, makes the API request, and returns the results to the client.</p>
-  
+
   <h4>PHP code</h4>
-  
+
   <pre class="line-numbers">
   <code class="language-php" translate="No">&lt;?php
   /**
@@ -1736,23 +1736,23 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   echo $response;
   ?&gt;
   </code></pre>
-  
+
   <h3 id="powershell">Powershell Sample</h3>
-  
+
   <pre class="line-numbers">
   <code class="language-bash" translate="No">$ParentPath = "C:\Temp"
   $ParentCsv = "$ParentPath\Videos.csv"
-  
-  
-  
+
+
+
   Clear-Host
-  
-  
-  
+
+
+
   &lt;#
       .SYNOPSIS
           Retrieves the TokenType and AccessToken from Brightcove.
-  
+
       .DESCRIPTION
           Uses the Brightcove API to retrieve TokenType and AccessToken for use in later
           API requests. The AccessToken expires after 300 seconds (5 minutes) and a new
@@ -1761,79 +1761,79 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   function Get-BrightcoveAuthorization
   {
       # /oauth/getting-started/overview-oauth-api-v4.html
-  
+
       $Uri = "https://oauth.brightcove.com/v4/access_token"
-  
+
       $ClientId = "" # &lt;--------------------------------------------------------------------Retrieve from Brightcove and paste here
       $ClientSecret = "" # &lt;----------------------------------------------------------------Retrieve from Brightcove and paste here
       $Authorization = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($ClientId + ":" + $ClientSecret))
-  
+
       $Headers = @{
         "Authorization" = "Basic " + $Authorization;
         "Content-Type" = "application/x-www-form-urlencoded";
       }
-  
+
       Invoke-RestMethod -Method "Post" -Uri $Uri -Body "grant_type=client_credentials" -Headers $Headers
   }
-  
-  
-  
+
+
+
   &lt;#
       .SYNOPSIS
           Retrieves a count of videos available for a Brightcove Video Cloud account.
-  
+
       .DESCRIPTION
           Uses the Brightcove API to retrieve the count of videos.
-  
+
       .PARAMETER TokenType
           Required. The token type as retrieved from Brightcove's authorization API.
-  
+
       .PARAMETER AccessToken
           Required. The access toke as retrieved from Brightcove's authorization API.
   #&gt;
   function Get-BrightcoveVideoCount
   {
       # https://support.brightcove.com/getting-counts-videos-and-playlists
-  
+
       param(
           [parameter(Mandatory=$true)]
           [string]
           $TokenType,
-  
+
           [parameter(Mandatory=$true)]
           [string]
           $AccessToken
       )
-  
+
       $Uri = "https://cms.api.brightcove.com/v1/accounts/1044238710001/counts/videos"
-  
+
       $Headers = @{
         "Authorization" = "$TokenType $AccessToken";
       }
-  
+
       (Invoke-RestMethod -Method "Get" -Uri $Uri -Headers $Headers).count
   }
-  
-  
-  
+
+
+
   &lt;#
       .SYNOPSIS
           Retrieves a list of videos available for a Brightcove Video Cloud account.
-  
+
       .DESCRIPTION
           Uses the Brightcove API to retrieve the information for a list of videos, paged
           up to a specified Limit and starting ad a specified Offset.
-  
+
       .PARAMETER TokenType
           Required. The token type as retrieved from Brightcove's authorization API.
-  
+
       .PARAMETER AccessToken
           Required. The access toke as retrieved from Brightcove's authorization API.
-  
+
       .PARAMETER Limit
           Optional. Number of videos to return - must be an integer between 1 and 100.
           Default: 20
-  
+
       .PARAMETER Offset
           Optional. Number of videos to skip (for paging results). Must be a positive integer.
           Default: 0
@@ -1843,32 +1843,32 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       # https://support.brightcove.com/overview-cms-api
       # https://support.brightcove.com/using-cms-api-retrieve-video-data#bc-ipnav-1
       # https://support.brightcove.com/cmsplayback-api-videos-search
-  
+
       param(
           [parameter(Mandatory=$true)]
           [string]
           $TokenType,
-  
+
           [parameter(Mandatory=$true)]
           [string]
           $AccessToken,
-  
+
           [ValidateRange(1, 100)]
           [int]
           $Limit = 20,
-  
+
           [ValidateRange(0, [int]::MaxValue)]
           [int]
           $Offset = 0
       )
-  
+
       $Uri = "https://cms.api.brightcove.com/v1/accounts/1044238710001/videos"
-  
+
       if ($Limit)
       {
           $Uri += "?limit=$Limit"
       }
-  
+
       if ($Offset -and $Offset -ne 0)
       {
           if ($Limit)
@@ -1880,30 +1880,30 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
               $Uri += "?offset=$Offset"
           }
       }
-  
+
       $Headers = @{
         "Authorization" = "$TokenType $AccessToken";
       }
-  
+
       Invoke-RestMethod -Method "Get" -Uri $Uri -Headers $Headers
   }
-  
-  
-  
+
+
+
   &lt;#
       .SYNOPSIS
           Retrieves a list of sources available for a Brightcove video.
-  
+
       .DESCRIPTION
           Uses the Brightcove API to retrieve the list of video file sources for a
           specific video.
-  
+
       .PARAMETER TokenType
           Required. The token type as retrieved from Brightcove's authorization API.
-  
+
       .PARAMETER AccessToken
           Required. The access toke as retrieved from Brightcove's authorization API.
-  
+
       .PARAMETER VideoId
           Required. ID of the video to get information for. This can be obtained using
           the Get-BrightcoveVideos function or Brightcove's website.
@@ -1911,46 +1911,46 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   function Get-BrightcoveVideoSources
   {
       # https://support.brightcove.com/using-cms-api-retrieve-video-data#bc-ipnav-3
-  
+
       param(
           [parameter(Mandatory=$true)]
           [string]
           $TokenType,
-  
+
           [parameter(Mandatory=$true)]
           [string]
           $AccessToken,
-  
+
           [parameter(Mandatory=$true)]
           [string]
           $VideoId
       )
-  
+
       $Uri = "https://cms.api.brightcove.com/v1/accounts/1044238710001/videos/$VideoId/sources"
-  
+
       $Headers = @{
         "Authorization" = "$TokenType $AccessToken";
       }
-  
+
       Invoke-RestMethod -Method "Get" -Uri $Uri -Headers $Headers
   }
-  
-  
-  
+
+
+
   &lt;#
       .SYNOPSIS
           Retrieves a list of images associated with a Brightcove video.
-  
+
       .DESCRIPTION
           Uses the Brightcove API to retrieve the information of the thumbnail and poster
           for a specific video.
-  
+
       .PARAMETER TokenType
           Required. The token type as retrieved from Brightcove's authorization API.
-  
+
       .PARAMETER AccessToken
           Required. The access toke as retrieved from Brightcove's authorization API.
-  
+
       .PARAMETER VideoId
           Required. ID of the video to get information for. This can be obtained using
           the Get-BrightcoveVideos function or Brightcove's website.
@@ -1958,47 +1958,47 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   function Get-BrightcoveVideoImages
   {
       # https://support.brightcove.com/using-cms-api-retrieve-video-data#bc-ipnav-4
-  
+
       param(
           [parameter(Mandatory=$true)]
           [string]
           $TokenType,
-  
+
           [parameter(Mandatory=$true)]
           [string]
           $AccessToken,
-  
+
           [parameter(Mandatory=$true)]
           [string]
           $VideoId
       )
-  
+
       $Uri = "https://cms.api.brightcove.com/v1/accounts/1044238710001/videos/$VideoId/images"
-  
+
       $Headers = @{
         "Authorization" = "$TokenType $AccessToken";
       }
-  
+
       Invoke-RestMethod -Method "Get" -Uri $Uri -Headers $Headers
   }
-  
-  
-  
+
+
+
   &lt;#
       .SYNOPSIS
           Downloads a file from the web.
-  
+
       .DESCRIPTION
           Uses the BITS to retrieve a file from a given URI.
-  
+
       .PARAMETER Path
           Required. The folder path to save the file to. The filename will be determined
           by the URI.
-  
+
       .PARAMETER Uri
           Required. The URI for the location of the file on the web. This will be used to
           determine the filename of the file.
-  
+
       .PARAMETER DisplayName
           Optional. This is what will be displayed at the top of the progress bar.
   #&gt;
@@ -2008,34 +2008,34 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           [parameter(Mandatory=$true)]
           [string]
           $Path,
-  
+
           [parameter(Mandatory=$true)]
           [string]
           $Uri,
-  
+
           [string]
           $DisplayName
       )
-  
+
       $FileName = (($Uri -split "/")[-1] -split "\?")[0]
-  
+
       if ([string]::IsNullOrWhiteSpace($DisplayName))
       {
           $DisplayName = "Downloading file..."
       }
-  
+
       Start-BitsTransfer -Source $Uri -Destination "$Path\$FileName" -DisplayName $DisplayName -Description $FileName
   }
-  
-  
-  
+
+
+
   &lt;#
       .SYNOPSIS
           Replaces invalid characters from a filename.
-  
+
       .DESCRIPTION
           Replaces the invalid characters in a filename with an underscore (_).
-  
+
       .PARAMETER Name
           Required. Filename to have the invalid characters removed from.
   #&gt;
@@ -2044,53 +2044,53 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           [Parameter(Mandatory=$true)]
           [String]$Name
       )
-  
+
       $InvalidFileNameChars = [IO.Path]::GetInvalidFileNameChars() -join ''
       $Replace = "[{0}]" -f [RegEx]::Escape($InvalidFileNameChars)
-  
+
       return ($Name -replace $Replace, "_")
   }
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
   # Get AccessToken for API
   "Getting AccessToken for API..."
   $BrightcoveAuthorization = Get-BrightcoveAuthorization
-  
+
   $AccessToken = $BrightcoveAuthorization.access_token
   $AccessTokenExpiresIn = $BrightcoveAuthorization.expires_in #seconds (300)
   $TokenType = $BrightcoveAuthorization.token_type
-  
+
   $AccessTokenExpiry = (Get-Date) + (New-TimeSpan -Seconds $AccessTokenExpiresIn)
-  
-  
-  
+
+
+
   # Get count of available videos
   "Getting count of available videos..."
   $BrightcoveVideoCount = Get-BrightcoveVideoCount -AccessToken $AccessToken -TokenType $TokenType
-  
-  
-  
+
+
+
   # Get list of all videos 20 at a time
   "Getting list of all videos..."
   $BrightcoveVideos = @()
   for ($i = 0; $i -lt $BrightcoveVideoCount; $i += 20) {
       $BrightcoveVideos += Get-BrightcoveVideos -AccessToken $AccessToken -TokenType $TokenType -Offset $i
   }
-  
-  
-  
+
+
+
   # Parse videos and download information, video, and thumbnail files
   "Parsing videos and downloading information, video, and thumbnail files..."
   foreach ($BrightcoveVideo in $BrightcoveVideos)
   {
       $Thumbnail = ""
       $Poster = ""
-  
+
       $Video = [pscustomobject][ordered]@{
           Id = $BrightcoveVideo.id
           Complete = $BrightcoveVideo.complete
@@ -2103,72 +2103,72 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           Tags = $BrightcoveVideo.tags -join ","
           UpdatedAt = $BrightcoveVideo.updated_at
       }
-  
+
       $VideoName = $Video.Name
       $PathFriendlyVideoName = Replace-InvalidFileNameChars -Name $VideoName
-  
+
       $Path = "$ParentPath\$PathFriendlyVideoName"
-  
+
       # Get new AccessToken if expired
       if ((Get-Date) -gt $AccessTokenExpiry)
       {
           $BrightcoveAuthorization = Get-BrightcoveAuthorization
-  
+
           $AccessToken = $BrightcoveAuthorization.access_token
           $AccessTokenExpiresIn = $BrightcoveAuthorization.expires_in #seconds (300)
           $TokenType = $BrightcoveAuthorization.token_type
-  
+
           $AccessTokenExpiry = (Get-Date) + (New-TimeSpan -Seconds $AccessTokenExpiresIn)
       }
-  
+
       # Get list of rendition sources for video and select last MP4, sorted by width
       $BrightcoveVideoSources = Get-BrightcoveVideoSources -AccessToken $AccessToken -TokenType $TokenType -VideoId $Video.Id
       $Source = $BrightcoveVideoSources | where -Property "container" -EQ -Value "MP4" | sort -Property width | select -Last 1
       $SourceUri = $Source.src
-  
+
       # Get list of images for video
       $BrightcoveVideoImages = Get-BrightcoveVideoImages -AccessToken $AccessToken -TokenType $TokenType -VideoId $Video.Id
       $Thumbnail = $BrightcoveVideoImages.thumbnail
       $ThumbnailUri = $Thumbnail.src
       $Poster = $BrightcoveVideoImages.poster
       $PosterUri = $Poster.src
-  
+
       # Create video download folder
       if (-not (Test-Path $Path))
       {
           New-Item -Path $Path -ItemType Directory |
               Out-Null
       }
-  
+
       # Append video information to parent CSV
       $Video |
           Export-Csv -Path $ParentCsv -NoTypeInformation -Append
-  
+
       # Write video inforamtion to video CSV
       $Video |
           Export-Csv -Path "$Path\$PathFriendlyVideoName.csv" -NoTypeInformation
-  
+
       # Download video thumbnail
       if (-not [string]::IsNullOrWhiteSpace($ThumbnailUri))
       {
           Start-BrightcoveDownload -Path $Path -Uri $ThumbnailUri -DisplayName "Downloading thumbnail for $VideoName"
       }
-  
+
       # Download video poster
       if (-not [string]::IsNullOrWhiteSpace($PosterUri))
       {
           Start-BrightcoveDownload -Path $Path -Uri $PosterUri -DisplayName "Downloading poster for $VideoName"
       }
-  
+
       # Download video file
       if (-not [string]::IsNullOrWhiteSpace($PosterUri))
       {
           Start-BrightcoveDownload -Path $Path -Uri $SourceUri -DisplayName "Downloading video for $VideoName"
       }
   }
-  
-  
-  
+
+
+
   "\n"
   "Finished downloading files. Look for the list of videos in a CSV file at the root of "
   "the parent path. Each video is downloaded to its own separate folder along with its "
@@ -2177,7 +2177,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </code></pre>
   </section>
   </article>
-  
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
