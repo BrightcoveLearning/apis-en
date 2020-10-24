@@ -1317,27 +1317,27 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <summary>This quick start will walk you through adding a video to Video Cloud using the <span translate="No">Dynamic Ingest API</span> via CURL.</summary>
     <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    
+
     <p>You can do several things with the Dynamic Ingest API, but its main function is to add videos to Video Cloud. This quick start provides a simple tutorial to walk you through ingesting your first video using the API.</p>
-    
+
     <p>This tutorial uses the popular command line tool called CURL for making HTTP requests. If you are not familiar with CURL, see <a href="https://general.support.brightcove.com/developer/concepts-set-curl.html">Set up CURL</a>. Note that CURL installed by default and Mac and Linux systems. On Windows, you will need to install it - instructions are in the Set Up CURL guide.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="steps">Steps</h2>
-    
+
     <h3>Get client credentials</h3>
-    
+
     <p>This is a one-off step to create client credentials for the API requests. If you already have the necessary client credentials, you can skip this step.</p>
-    
+
     <ol class="bcls-tasklist">
       <li>
-      <p>To the <a href="https://support.brightcove.com/managing-api-authentication-credentials">Managing API Credentials</a> section of Studio.</p>
+      <p>To the <a href="/general/managing-api-authentication-credentials.html">Managing API Credentials</a> section of Studio.</p>
       </li>
       <li>Click <strong>Register New Application</strong></li>
       <li>
       <p>Select the appropriate account(s) and select <em>at least</em> these permissions:</p>
-    
+
       <ul>
         <li>Dynamic Ingest Create</li>
         <li>Ingestion Profiles Configuration Read</li>
@@ -1348,23 +1348,23 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <p>Copy and save the <strong>client id</strong> and <strong>client secret</strong> that are created (there is no way to get the client secret again once you close the dialog!).</p>
       </li>
     </ol>
-    
+
     <h3>Get OAuth token</h3>
-    
+
     <p>The <code translate="No">client_id</code> and <code translate="No">client_secret</code> are used as username and password to get a token (basic authentication), which is used to authenticate subsequent requests.</p>
-    
+
     <ol class="bcls-tasklist">
       <li>Copy the code below into a text editor, and replace <code translate="No">CLIENT_ID</code> and <code translate="No">CLIENT_SECRET</code> with your own client credentials:
-    
+
       <pre class="line-numbers">
     <code class="language-bash" translate="No">curl --request POST \
     --url https://oauth.brightcove.com/v4/access_token \
     --user <span class="bcls-input">CLIENT_ID</span>:<span class="bcls-input">CLIENT_SECRET</span> \
     --header 'content-type: application/x-www-form-urlencoded' \
     --data grant_type=client_credentials</code></pre>
-    
+
       <p>Your code will now look something like this:</p>
-    
+
       <pre class="line-numbers">
     <code class="language-bash" translate="No">curl --request POST \
     --url https://oauth.brightcove.com/v4/access_token \
@@ -1383,14 +1383,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </li>
       <li>Note that the <code translate="No">access_token</code> expires in 5 minutes, but you can rerun the code to get a new one whenever you need it. You will know you need a new one if the API requests in the following steps return an <code translate="No">UNAUTHORIZED</code> error.</li>
     </ol>
-    
+
     <h3>Create video</h3>
-    
+
     <p>A call to the <span translate="No">CMS API</span> creates the video object in Video Cloud. The body of the request stipulates metadata like <code translate="No">name</code> and <code translate="No">description</code>. The only required field is the <code translate="No">name</code>.</p>
-    
+
     <ol class="bcls-tasklist">
       <li>Copy the following code into a text editor and replace <code translate="No">ACCOUNT_ID</code> with your own Video Cloud account id, and <code translate="No">ACCESS_TOKEN</code> with the token from the response to the request in the previous steps.
-    
+
       <pre class="line-numbers">
     <code class="language-bash" translate="No">curl --request POST \
     --url https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos/ \
@@ -1404,18 +1404,18 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <span class="bcls-highlight">"id": "123456789001"</span>,
       …
     }</code></pre>
-    
+
       <p>You will use this <code translate="No">id</code> in the Ingest request below to let Video Cloud know which video to associate your video source file with.</p>
       </li>
     </ol>
-    
+
     <h3>Ingest request</h3>
-    
+
     <p>A call to the Dynamic Ingest gives the location of the file to ingest.</p>
-    
+
     <ol class="bcls-tasklist">
       <li>Copy the following code into a text editor and replace <code translate="No">ACCOUNT_ID</code> with your own Video Cloud account id, <code translate="No">VIDEO_ID</code> with the <code translate="No">id</code> value returned when you created the video, and <code translate="No">ACCESS_TOKEN</code> with the token from the response to the request in the previous steps.
-    
+
       <pre class="line-numbers">
     <code class="language-bash" translate="No">curl --request POST \
       --url https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos/<span class="bcls-input">VIDEO_ID</span>/ingest-requests \
@@ -1427,9 +1427,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         },
         "callbacks": ["https://solutions.brightcove.com/bcls/di-api/di-callback-app.php"]
       }'</code></pre>
-    
+
       <p>Note that the video and callback app here are provided by Brightcove Learning Services for testing purposes. You can replace these with paths to your own video and/or callback app. If you do not need to receive notifications concerning the ingest job, you can omit the <code translate="No">callbacks</code> field.</p>
-    
+
       <p>If you do use our callback app, you can <a href="http://solutions.brightcove.com/bcls/di-api/di-log.txt">view the notifications</a>. This app is used for callbacks by several other apps, so use the job id to search for ones associated with your job.</p>
       </li>
       <li>You should receive a response that looks like this:
@@ -1438,18 +1438,18 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </li>
       <li>You should save the job id, as it is useful in identifying notifications associated with this job, or if you need to contact Support</li>
     </ol>
-    
+
     <p>If you completed the steps above successfully, have ingested a video into your account using the Dynamic Ingest API. If you had trouble or questions, feel free to contact <a href="mailto:training@brightcove.com">Brightcove Learning Services</a> for help.</p>
-    
+
     <p>If you will be working extensively with our APIs, you may be interested in trying other testing tools besides CURL:</p>
-    
+
     <ul>
       <li><a href="/general/use-insomnia-api-requests.html">Insomnia</a></li>
       <li><a href="/general/use-postman-api-requests.html">Postman</a></li>
     </ul>
     </section>
     </article>
-    
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
