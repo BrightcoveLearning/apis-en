@@ -10,26 +10,26 @@ grandparent: Dynamic Ingest API
   <summary>{{ page.description }}</summary>
     <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    
+
     <p>Brightcove's <span translate="No">Dynamic Ingest API</span> is based on functionality where video source files are downloaded from the customer's storage location and specified renditions of the source files are created. (There is also an option to <a href="/dynamic-ingest/getting-started/source-file-upload-api-dynamic-ingest.html">upload your source files</a> to a temporary location where Dynamic Ingest can access them.) The platform is cloud-centric, globally-distributed and based on modern practices to deliver best in class consistency and speed.</p>
-    
+
     <p>Also see the <a href="/dynamic-ingest/references/reference.html">API Reference</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="workflowoverview">Workflow overview</h2>
-    
+
     <p>A number of systems/technologies are used in the overall transcoding and storage of media. They are:</p>
-    
+
     <ul>
       <li><strong>CMS API</strong>: Creates a video object for use in the DI API</li>
       <li><strong>Zencoder</strong>: Transcodes the video creating multiple renditions</li>
       <li><strong>Amazon S3</strong>: Moves the master and renditions to storage, based on profile settings</li>
       <li><strong>Catalog</strong>: Stores requisite information associated with the video</li>
     </ul>
-    
+
     <p>After initial transcoding, you have the following actions you can perform on the media:</p>
-    
+
     <ul><!-- the following item on hold indefinitely --><!-- <li><strong>Delete</strong>: Delete, when needed, the master or all items</li> -->
       <li><strong>Retranscode</strong>: Create new renditions when master is present (error if master is not present)</li>
       <li><strong>Replace</strong>: Point to a new master, or replace an existing master</li>
@@ -42,12 +42,12 @@ grandparent: Dynamic Ingest API
       </li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="operations">Operations</h2>
-    
+
     <p>When you use the DI API you will perform different operations, such as reading an ingest profile and writing ingest information to your account. The following is a complete list of operations required for DI tasks:</p>
-    
+
     <ul>
       <li>
       <ul>
@@ -63,65 +63,65 @@ grandparent: Dynamic Ingest API
       </ul>
       </li>
     </ul>
-    
+
     <p>To obtain client credentials, use the Studio <a href="/general/managing-api-authentication-credentials.html">admin tools</a> or see one of the following documents:</p>
-    
+
     <ul>
       <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using CURL</a></li>
       <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="best_practices">Best practices</h2>
-    
+
     <p>See <a href="/dynamic-ingest/general/dynamic-ingest-api-best-practices.html">Dynamic ingest API: Best Practices</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="sourceLocations">Valid source locations</h2>
-    
+
     <h3>Pull-based ingestion</h3>
-    
+
     <p>Dynamic Ingest can pull source video files from: HTTP/HTTPS, S3, and FTP - with or without authentication</p>
-    
+
     <p>Examples:</p>
-    
+
     <ul>
       <li>http://example.com/path/to/input.avi</li>
       <li>https://dl.dropboxusercontent.com/u/3641457/Bird_Titmouse.mp4</li>
       <li>s3://my-bucket/video.mp4</li>
       <li>ftp://server/file.mp4</li>
     </ul>
-    
+
     <h4>Notes on S3</h4>
-    
+
     <p>If your videos are in a protected S3 bucket, see <a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html">Using Dynamic Ingest with S3</a> for details on how to set up permissions for Dynamic Ingest to access your files.</p>
-    
+
     <h4>Notes on FTP</h4>
-    
+
     <p>If your videos are in a protected FTP server, use the standard method for passing the username and password on the URL, like this:</p>
-    
+
     <pre>
     <code class="language-http" translate="No">ftp://<span class="bcls-highlight">username:password@</span>server/file.mp4</code></pre>
-    
+
     <aside class="bcls-aside bcls-aside--information">Notes:
     <ul>
       <li>Hostnames (for file locations or callback URLs) must not contain underscore characters or certain other punctuation or special characters per IETF specifications. See <a href="https://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_hostnames">this Wikipedia article</a> for more information. Errors will be returned if hostnames do not conform to the IETF standard.</li>
       <li>Dynamic Ingest <strong>cannot</strong> ingest files hosted on Google Drive, because Google Drive does not generate direct links to video files.</li>
     </ul>
     </aside>
-    
+
     <h3>Source file upload</h3>
-    
+
     <p>You can also upload your files to a secure, temporary location from which Dynamic Ingest can pull them. For details, see <a href="/dynamic-ingest/getting-started/source-file-upload-api-dynamic-ingest.html">Source File Upload</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="special_characters">Special characters</h2>
-    
+
     <p><strong>If you are providing a URL for Video Cloud to fetch your videos, and you are sending credentials as part of the URL</strong>, you need to <a href="https://en.wikipedia.org/wiki/Percent-escape">percent-encode</a> certain reserved special characters:</p>
-    
+
     <table class="bcls-table">
       <caption class="bcls-caption--table">Special Characters</caption>
       <thead class="bcls-table__head">
@@ -249,54 +249,54 @@ grandparent: Dynamic Ingest API
         </tr>
       </tbody>
     </table>
-    
+
     <p>For example:</p>
-    
+
     <pre>
     <code class="language-http" translate="No">
         /* unencoded */
         ftp://user@example.com:pass!word@example.com/path/to/input.mp3
-    
+
         /* encoded */
         ftp://<span class="bcls-highlight">user%40example.com:pass%21word</span>@example.com/path/to/input.mp3
       </code></pre>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="Source_file_names">Source file names</h2>
-    
+
     <p>All input urls must properly url encoded according to <a href="https://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986</a> when being sent to Brightcove. This means that any <a href="https://tools.ietf.org/html/rfc3986#section-2.2">reserved characters</a> found in the path of the url are percent encoded (spaces being encoded to <code translate="No">%20</code>), and any reserved characters found in the query of the url are percent encoded (spaces being encoded to <code translate="No">+</code> or <code translate="No">%20</code>, and <code translate="No">+</code> being encoded to <code translate="No">%2B</code>).</p>
-    
+
     <p>A <strong>pre-signed</strong> S3 (<strong>v2</strong> contains <em>Signature</em>, <em>Expires</em> and <em>AWSAccessKeyId</em>, and <strong>v4</strong> contains <em>X-Amz-Algorithm</em>, <em>X-Amz-Credential</em>, <em>X-Amz-Date</em>, <em>X-Amz-Expires</em>, <em>X-Amz-SignedHeaders</em>, and <em>X-Amz-Signature</em>) or <strong>GCS</strong> (contains <em>Signature</em>, <em>Expires</em>, and <em>GoogleAccessId</em>) url should already be properly encoded and <strong>can be used as is</strong>.</p>
-    
+
     <aside class="bcls-aside bcls-aside--tip">Note that double-byte unicode characters <strong>are</strong> allowed in file names.</aside>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="sampleAssets">Sample assets</h2>
-    
+
     <p>Brightcove Learning Services provides some sample assets you can use to experiment with in getting started with Dynamic Ingest. These assets include short videos, images, and WebVTT captions in multiple languages:</p>
-    
+
     <ul>
       <li><a href="//solutions.brightcove.com/bcls/assets/videos/">Videos</a></li>
       <li><a href="//solutions.brightcove.com/bcls/assets/images/">Images</a></li>
       <li><a href="//solutions.brightcove.com/bcls/assets/vtt">WebVTT Captions</a></li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="ingestProfile">Ingest Profile</h2>
-    
+
     <p>Special ingest profiles are required to create Dynamic Delivery videos. You will find a couple of <a href="/ingest-profiles/references/standard-ingest-profiles-dynamic-delivery-and-context-aware-encoding.html">standard ingest profiles</a> in your account when Dynamic Delivery is enabled, and these are recommended.</p>
-    
+
     <p>You can also add a custom Dynamic Delivery profile to your ingest profiles in the Admin section of Studio - see <a href="https://studio.support.brightcove.com/admin/creating-ingest-profiles-context-aware-encoding.html">Creating Ingest Profiles for Dynamic Delivery</a> for details.</p>
-    
+
     <aside class="bcls-aside bcls-aside--information">Note that Dynamic Delivery supports and creates several HLS renditions to maximize the reach of your videos to devices.</aside>
-    
+
     <h3>Sample Dynamic Delivery profile</h3>
-    
+
     <p>Below is a sample Dynamic Delivery profile that you can use to get started. All you need to do is replace <code translate="No">YOUR_ACCOUNT_ID </code> with your account id, and then you can copy and paste the profile to the ingest profile editor.</p>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
       "name": "DynamicDeliveryIngestProfile",
@@ -333,24 +333,24 @@ grandparent: Dynamic Ingest API
       }
     }</code>
     </pre>
-    
+
     <p>For details on standard dynamic delivery profiles and renditions see <a href="/ingest-profiles/references/standard-ingest-profiles-dynamic-delivery-and-context-aware-encoding.html">Standard Ingest Profiles for Dynamic Delivery</a></p>
     </section>
-    
+
     <section class="bcls-section" id="ingestingVideos">
     <h2>Ingesting videos</h2>
-    
+
     <p>There are two API requests required for ingesting videos:</p>
-    
+
     <ol>
       <li>Call the <span translate="No">CMS API</span> to create a video object in the Video Cloud system and get its id</li>
       <li>Call the <span translate="No">Dynamic Ingest API</span> to provide the URL for the video source file and specify other files and settings for the ingest as needed</li>
     </ol>
-    
+
     <p>A sample set of basic requests would look like the following:</p>
-    
+
     <h3>CMS API request</h3>
-    
+
     <dl>
       <dt>HTTP method</dt>
       <dd>POST</dd>
@@ -366,13 +366,13 @@ grandparent: Dynamic Ingest API
     </pre>
       </dd>
     </dl>
-    
+
     <aside class="bcls-aside bcls-aside--information">For more information on the <span translate="No">CMS API</span> call to create the video in the Video Cloud system, see the <a href="/cms/getting-started/overview-cms-api.html#settingvalues">CMS API Overview</a>. Note that the video <code translate="No">name </code> is required, and that the name and any other strings included for video metadata (such as the <code translate="No">description </code>) <strong>must be URI-encoded</strong>.</aside>
-    
+
     <p>The response data will include the video <code translate="No">id </code>, which is used in the next request.</p>
-    
+
     <h3>Ingest API request</h3>
-    
+
     <dl>
       <dt>HTTP method</dt>
       <dd>POST</dd>
@@ -393,38 +393,38 @@ grandparent: Dynamic Ingest API
     </pre>
       </dd>
     </dl>
-    
+
     <h3>Notes</h3>
-    
+
     <ul>
       <li>If you do not include the <code translate="No">profile </code> field, that account default profile will be used. We recommend using the account default, unless you need to use different profiles for different kinds of videos. Be sure to set the account default to the profile you (most often) want to use.</li>
       <li>The <code translate="No">callbacks </code> field is optional, but we highly recommend that you use it as the best way to track the progress of ingest jobs. See <a href="#notifications">below</a> for more on notifications.</li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="viewingRenditions">Viewing Renditions</h2>
-    
+
     <p>You can view the renditions for your video by going to the <a href="https://studio.support.brightcove.com/media/editing-video-properties-using-media-module.html#videofiles">Media Module in Studio</a>.</p>
-    
+
     <p>To view the full properties of the renditions, you can use the <a href="#retrieveRenditions">CMS API request detailed below</a>.</p>
-    
+
     <p>To retrieve URLs for playback, you can use the <a href="#retrieveRenditions2">Playback API request detailed below</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="replaceVideo">Replace a video</h2>
-    
+
     <p>To replace a video with a new version or a new set of renditions, the <span translate="No">Dynamic Ingest API</span> call is exactly the same as it would be for <a href="/dynamic-ingest-legacy/code-samples/dynamic-ingest-api-sample-ingesting-videos-legacy-ingest.html">ingesting new videos</a> - the only difference is that you do not need to make a prior call to the <span translate="No">CMS API</span> to create the video object in the Video Cloud system and get an id for it. If the source video file at the specified URL is the same one originally ingested, you will simply get a new set of renditions. If the source file is new, you will be replacing the existing video. All videos will remain playable with existing renditions until retranscoding is complete.</p>
-    
+
     <p>See the <a href="/dynamic-ingest-legacy/code-samples/dynamic-ingest-api-sample-re-transcoding-videos-legacy-ingest.html">working sample here</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="retranscode">Retranscode a video</h2>
-    
+
     <p>If you chose to <a href="/ingest-profiles/guides/archiving-masters.html">archive a master</a> when you ingested the video through the <span translate="No">Dynamic Ingest API</span> or the Studio Upload Module, then you can also retranscode the video from the master. Again the URL for the ingest request will be the same, but the request body will have the following:</p>
-    
+
     <pre class="line-numbers">
     <code class="language-javascript" translate="No">// request
     POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
@@ -435,24 +435,24 @@ grandparent: Dynamic Ingest API
     }
     </code>
     </pre>
-    
+
     <aside class="bcls-aside bcls-aside--information">
     <p>Note: Videos that were initially transcoded using a Dynamic Delivery or Context Aware ingest profile can only be retranscoded using one of those ingest profile types. Videos transcoded using a Legacy ingest profile can be retranscoded with any type of profile.</p>
     </aside>
-    
+
     <aside class="bcls-aside bcls-aside--information">
     <p>By default, the master is archived, so the sample profile shown above will result in archived masters.</p>
     </aside>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="ingest-images">Image ingest</h2>
-    
+
     <p>Instead of having poster and thumbnail images captured during transcoding, you can include your own images with the ingest request or add them in a separate request later.</p>
     <!-- <aside class="bcls-aside bcls-aside--information">If you add images in a separate request, your request body <strong>must</strong> include the <code translate="No">"profile": "YOUR_DYNAMIC_DELIVERY_PROFILE"</code> field, as shown in the example below.</aside> -->
-    
+
     <h3>Sample request body</h3>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
       "profile": "multi-platform-extended-static",
@@ -471,11 +471,11 @@ grandparent: Dynamic Ingest API
       ]
     }</code>
     </pre>
-    
+
     <h3>Notifications for image asset ingestion</h3>
-    
+
     <p>Below are samples of the notifications you get specifically for image ingests.</p>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
         <span class="bcls-highlight">"entity": "thumbnail",</span>
@@ -500,20 +500,20 @@ grandparent: Dynamic Ingest API
     </code>
     </pre>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="ingest_captions">Captions ingest</h2>
-    
+
     <p>Captions in WebVTT format can be added to your video with the initial ingest request or in a later request.</p>
-    
+
     <aside class="bcls-aside bcls-aside--information">Notes:
     <ul>
       <li>The <code translate="No">srclang </code> value should be a language code should be a code from <a href="//www.iana.org/assignments/language-subtag-registry/language-subtag-registry">the language subtag registry</a>.</li>
     </ul>
     </aside>
-    
+
     <h3>Sample request body</h3>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
       "text_tracks": [
@@ -537,9 +537,9 @@ grandparent: Dynamic Ingest API
       ]
     }</code>
     </pre>
-    
+
     <p>Sidecar text tracks will show up in CMS or Playback responses, as they do for non-Dynamic Delivery videos:</p>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">"text_tracks": [
         {
@@ -560,19 +560,19 @@ grandparent: Dynamic Ingest API
       ]
     }</code>
     </pre>
-    
+
     <p>Text tracks will also show up in HLS and DASH manifests:</p>
-    
+
     <h4>HLS</h4>
-    
+
     <pre class="line-numbers">
     <code class="language-bash" translate="No">#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subtitles-0",NAME="Captions",DEFAULT=NO,AUTOSELECT=YES,LANGUAGE="es",URI="https://manifest.prod.boltdns.net/manifest/v1/hls/v5/clear/57838016001/1bd49b7b-df40-414f-bb05-8840624663e1/de8144f4-b7d7-46ca-848f-dd2f7fa453d7/rendition.m3u8?fastly_token=NTg0ZjA5MWZfMzU1N2VhY2Y2MDA3NzkzYWM0ZjU2ZWQwNWE2NTYzMmI4MzMzMmJkZWM5Y2JmNzQ1MjRjM2QxYjI0NTYzODA5Zg%3D%3D"
     #EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subtitles-0",NAME="Captions",DEFAULT=NO,AUTOSELECT=YES,LANGUAGE="en",URI="https://manifest.prod.boltdns.net/manifest/v1/hls/v5/clear/57838016001/1bd49b7b-df40-414f-bb05-8840624663e1/6399fcf2-cd27-4d97-ad30-e443f13563bd/rendition.m3u8?fastly_token=NTg0ZjA5MWZfYWMxYjllNDlkYzVlOTJkZWQ3ODk2YjE3MGI5NDlhYTlkOGQ1YzI5ZmI4ZjRlOWMzMzU5YmM1YzZkNTA4MTFmNQ%3D%3D"
     </code>
     </pre>
-    
+
     <h4>DASH</h4>
-    
+
     <pre class="line-numbers">
     <code class="language-xml" translate="No">&lt;AdaptationSet mimeType="text/vtt" lang="en"&gt;
       &lt;Representation bandwidth="256" id="2f4bb3fb-1a7d-4f4c-bf44-00ef0e611131"&gt;
@@ -586,11 +586,11 @@ grandparent: Dynamic Ingest API
     &lt;/AdaptationSet&gt;
     </code>
     </pre>
-    
+
     <h3>Notifications for text track assets</h3>
-    
+
     <p>Below are samples of the notifications specific to text track ingestion.</p>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
       <span class="bcls-highlight">"entity": "en-captions-EN",</span>
@@ -614,36 +614,36 @@ grandparent: Dynamic Ingest API
     }
     </code>
     </pre>
-    
+
     <h3>Sample player with text tracks (English and Spanish)</h3>
-    
+
     <figure class="bcls-figure">
     <div style="display: block; position: relative; max-width: 640px;">
     <div style="padding-top: 56.25%;"><iframe src="//players.brightcove.net/57838016001/SJrVA2mkl_default/index.html?videoId=5209530177001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" style="width: 100%; height: 100%; position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;"></iframe></div>
     </div>
-    
+
     <figcaption class="bcls-caption--image">Dynamic Delivery Video Player</figcaption>
     </figure>
-    
+
     <h3>Sidecar captions in an iOS app</h3>
-    
+
     <figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Delivery Sidecar Captions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/getting-started/api-overview-dynamic-delivery/ios-captions-display.png" />
     <figcaption class="bcls-caption--image">Dynamic Delivery Sidecar Captions</figcaption>
     </figure>
     </section>
-    
+
     <section id="retrieveRenditions" class="bcls-section">
     <h2>Retrieve dynamic renditions</h2>
-    
+
     <p>To retrieve information about the dynamic renditions for a video, submit a GET request to:</p>
-    
+
     <pre class="line-numbers">
     <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/assets/dynamic_renditions
     </code>
     </pre>
-    
+
     <h3>Sample response</h3>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">[
       {
@@ -765,19 +765,19 @@ grandparent: Dynamic Ingest API
     ]</code>
     </pre>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="retrieveRenditions2">Retrieve URLs for playback</h2>
-    
+
     <p>To retrieve information about the dynamic renditions for a video, submit a GET request to:</p>
-    
+
     <pre class="line-numbers">
     <code class="language-http" translate="No">https://edge.api.brightcove.com/playback/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>
     </code>
     </pre>
-    
+
     <h3>Sample response</h3>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
       "description": null,
@@ -853,68 +853,68 @@ grandparent: Dynamic Ingest API
     </code>
     </pre>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="drm">DRM</h2>
-    
+
     <p>DRM is supported, but works differently than for ordinary video ingest. You do <strong>not</strong> need to specify packaging in the ingest profile. Instead, packaging is automatic based on DRM settings for your account. <a href="https://supportportal.brightcove.com/s/login/?language=en_US">Contact Brightcove Support</a> to set defaults for DRM packaging of your videos.</p>
-    
+
     <p>For more details, see <a href="/dynamic-ingest/ingest-guides/ingesting-content-drm.html#DRM_for_dynamic_delivery">Ingesting content with DRM</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="watermark">Watermarked renditions</h2>
-    
+
     <p><a href="/ingest-profiles/references/ingest-profiles-api-fields-reference-dynamic-delivery-and-context-aware-encoding.html#watermarkFields">Watermarked renditions</a> are supported. If you require wish to add watermarks to some or all of your videos, please Contact Brightcove Support.</p>
-    
+
     <p>Note that watermarked renditions can be added for static Dynamic Delivery profiles, but <strong>not</strong> for Context Aware Encoding (CAE) profiles.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="notifications">Ingest status</h2>
-    
+
     <p>You can receive information on your Dynamic Delivery ingest processing by subscribing to callbacks and/or querying a Status API to get the status of the job.</p>
-    
+
     <h3>Callbacks</h3>
-    
+
     <p>In your ingest request, you can specify a one or more callback URLs to receive notifications of the results of the ingest process. The URLs you specify should be for apps than can accept POST requests. Notifications will be sent in JSON format.</p>
-    
+
     <p>Details of receiving and interpreting notifications can be found in <a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.html">Notifications</a></p>
-    
+
     <h3>Status API</h3>
-    
+
     <p>You can also get the current status of ingest jobs using the Status API. Status messages are available only for ingest jobs submitted within the past 7 days.</p>
-    
+
     <h4>Endpoints</h4>
-    
+
     <h5>All status messages for a video</h5>
-    
+
     <pre>
     <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/:account_id/videos/:video_id/ingest_jobs
     </code>
     </pre>
-    
+
     <h5>Example</h5>
-    
+
     <pre>
     <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/57838016001/videos/5128433746001/ingest_jobs
     </code>
     </pre>
-    
+
     <h5>Status message for a particular job</h5>
-    
+
     <pre>
     <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/:account_id/videos/:video_id/ingest_jobs/:job_id
     </code>
     </pre>
-    
+
     <h5>Example</h5>
     <textarea class="bcls-code">https://cms.api.brightcove.com/v1/accounts/57838016001/videos/5128433746001/ingest_jobs/7a196557-56ba-4218-ada5-e107ed554555</textarea>
-    
+
     <h4>Responses</h4>
-    
+
     <p>Below is a sample response for a job that is currently processing.</p>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
     "id": "7a196557-56ba-4218-ada5-e107ed554555",
@@ -928,16 +928,16 @@ grandparent: Dynamic Ingest API
     }
     </code>
     </pre>
-    
+
     <p>The most important items here are:</p>
-    
+
     <ul>
       <li><code translate="No">state </code>: the status of the job ( <code translate="No">processing </code> | <code translate="No">publishing </code> | <code translate="No">finished </code> | <code translate="No">failed </code> - when this job is complete and the video ready to play, the <code translate="No">state </code> will be <code translate="No">finished </code>)</li>
       <li><code translate="No">error_code </code> and <code translate="No">error_message </code>: for a successful job, these will be <code translate="No">null </code>; for failed jobs, you will get an error code and an explanatory message</li>
     </ul>
-    
+
     <p>Here is an example of a status message for a failed job for comparison:</p>
-    
+
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
     "id": "bc9dfb58-d502-43d5-97e4-41f3dcd44265",
@@ -952,49 +952,48 @@ grandparent: Dynamic Ingest API
     </code>
     </pre>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="context_aware_profiles">Context Aware Encoding</h2>
-    
+
     <p>Context Aware Encoding (CAE) is a technology developed by Brightcove to analyze the source video during transcoding and generate an optimum set of renditions and bitrates based on the complexity of the video and a set of bounding parameters provided (minimum number of renditions, max bitrate, etc.).</p>
-    
+
     <p>To learn how to use CAE profiles, see <a href="/dynamic-ingest/ingest-guides/context-aware-encoding.html">Context Aware Encoding</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="Multiple_audio_tracks">Multiple audio tracks</h2>
-    
+
     <p>Accounts set up for Dynamic Delivery can be enabled to allow multiple audio tracks for videos.</p>
-    
+
     <p>The ability to associate multiple audio tracks with a single title can be useful in a couple of key scenarios:</p>
-    
+
     <ul>
       <li>Playing back the same video in different languages for a broader reach globally </li>
       <li>Providing audio with descriptions for the visually challenged</li>
     </ul>
-    
+
     <p>For details of using this feature, see <a href="/dynamic-ingest/ingest-guides/implementing-multiple-audio-tracks-using-apis.html#Managing_audio_tracks">Multiple Audio Tracks</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="sample_code">Sample Code</h2>
-    
+
     <p>Learning services provides several sample apps which provide a web interface and send <span translate="No">Dynamic Ingest API</span> requests via a PHP proxy. <a href="https://support.brightcove.com/platform-api-code-samples?group=dynamic_ingest_api">View the sample apps</a>.</p>
-    
+
     <p>In addition, the following GitHub repositories contain sample code in Java, Python, and C# - note that this sample code is <strong>not supported</strong> by Brightcove:</p>
-    
+
     <ul>
       <li><a href="https://github.com/BrightcoveLearning/dynamic-ingest-code-samples">Java and Python samples</a></li>
-      <li><a href="https://github.com/houseofmackee/Brightcove/tree/master/CSharp">C# samples</a></li>
+      <li><a href="https://github.com/houseofmackee/BrightcoveCS/tree/master/BrightcoveDI">C# samples</a></li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="limitations">Limitations</h2>
-    
+
     <ul>
       <li>For segmented video types (HLS and DASH) some players do not handle the case where the audio and video stream lengths differ by more than a segment's duration. If you encounter this, try using a shorter segment length.</li>
     </ul>
     </section>
     </article>
-    
