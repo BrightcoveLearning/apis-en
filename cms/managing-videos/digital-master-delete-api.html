@@ -10,37 +10,37 @@ grandparent: CMS API
   <summary>{{ page.description }}</summary>
     <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    
+
     <p>The <a href="/cms/references/reference.html#operation/DeleteDigitalMaster">CMS API</a> has a feature to delete the digital master (source file for a video) in the Video Cloud catalog. This will permit you to perform one-time cleanup tasks to decrease the size of your managed content.</p>
-    
+
     <p>To understand how masters are archived, and how you can prevent them from being archived at all - if that is what you want to do - see <a href="/ingest-profiles/guides/archiving-masters.html">Archiving Masters</a>.</p>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="Requirements">Requirements</h2>
-    
+
     <ul>
       <li>Deletion of digital masters can be performed using the <span translate="No">CMS API</span> <strong>only</strong> - this option will not be available in Studio.</li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="Implications_of_deleting_masters">Implications of deleting masters</h2>
-    
+
     <p>Before you proceed, be sure you understand the following implications of deleting digital masters:</p>
-    
+
     <ul>
       <li>You will no longer be able to re-transcode a video after its master is deleted. If you need new renditions, you will have to replace the video through <a href="https://studio.support.brightcove.com/media/replacing-video-source-file.html">Studio</a> or the <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html#replaceVideo">Dynamic Ingest API</a>.</li>
       <li>Managing videos via Batch Provisioning (deprecated) will no longer work. Use the <a href="/cms/index.html">CMS</a> and <a href="/dynamic-ingest/index.html">Dynamic Ingest</a> APIs instead.</li>
       <li>Deleting a digital master is a <strong>permanent</strong> operation. We <strong>cannot</strong> restore deleted digital masters.</li>
     </ul>
     </section>
-    
+
     <section class="bcls-section">
     <h2 id="Before_deleting_master">Steps: deleting a digital master</h2>
-    
+
     <p>Follow the following steps to delete a digital master.</p>
-    
+
     <ol class="bcls-tasklist">
       <li>Be sure <strong>you have your own copy of the master</strong> in case you ever need it.</li>
       <li>If you need to retranscode any videos, do so before deleting the master. After the master is deleted <strong>you will no longer be able to retranscode the video.</strong></li>
@@ -50,9 +50,9 @@ grandparent: CMS API
           "video-cloud/asset/delete",
           "video-cloud/video/read"
       ]</code></pre>
-    
+
       <p>These permissions are <strong>not</strong> available in the Studio UI, so you will need to use the <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth API</a> to obtain them. Below is a cURL command that will do the job if you replace the highlighted items with your own information:</p>
-    
+
       <pre class="line-numbers">
       <code class="language-bash" translate="No">curl --request POST \
         --url https://oauth.brightcove.com/v4/client_credentials \
@@ -74,9 +74,9 @@ grandparent: CMS API
         ],
         "name": "Delete-Masters"
       }'</code></pre>
-    
+
       <p>To obtain your BC_TOKEN, open any Studio page (you need to be an administrator on the account), open the JavaScript console in your browser, paste in the Javascript code below and press return (enter):</p>
-    
+
       <pre class="line-numbers">
       <code class="language-javascript" translate="No">var cookiesArray = document.cookie.split(";"), cookiesObj = {}, i, tmpArray = [];
       for (i = 0; i &lt; cookiesArray.length; i++) {
@@ -87,6 +87,7 @@ grandparent: CMS API
       }
       window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
       </li>
+      <li>Use the client credentials to <a href="/oauth/guides/getting-access-tokens.html">generate an access token</a></li>
       <li>Delete digital masters using these endpoints.
       <table class="bcls-table">
         <caption class="bcls-caption--table">Delete Master</caption>
@@ -110,6 +111,13 @@ grandparent: CMS API
             </td>
           </tr>
           <tr>
+            <th>Header</th>
+            <td >
+            <pre>
+      <code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">Authorization: Bearer {access_token}</span></code></pre>
+            </td>
+          </tr>
+          <tr>
             <th>Response</th>
             <td >204 NO_CONTENT (204 is a standard response for delete operations, indicating that the operation was successful, or that the asset had already been deleted.)</td>
           </tr>
@@ -119,4 +127,3 @@ grandparent: CMS API
     </ol>
     </section>
     </article>
-    
