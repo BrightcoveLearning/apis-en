@@ -1333,14 +1333,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   If you update in one place, you MUST update it in all!
  -->
 
- <style>
-   td code {
-     white-space: nowrap;
-   }
- </style>
+<style>
+  td code {
+    white-space: nowrap;
+  }
+</style>
 
- <h1>Static URL Delivery</h1>
- <article class="bcls-article">
+<h1>Static URL Delivery</h1>
+<article class="bcls-article">
   <summary>In this topic, you will learn how to use static URLs from the Brightcove Playback API v2.</summary>
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
@@ -1350,32 +1350,32 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>This is important for customers who have existing architecture that does not allow a Playback API call before needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one call.</p>
 
     <p>Also see the <a href="/playback/references/reference_v2.html#tag/Static-URLs">Playback API v2 reference</a>.</p>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Requirements">Requirements</h2>
-      <p>
-        The following requirements are needed for static URLs:
-      </p>
-      <ul>
-        <li>Brightcove Playback API v2</li>
-        <li>Your assets are ingested for Dynamic Delivery</li>
-      </ul>
-      <!-- <h3>Account setup</h3>
+    <p>
+      The following requirements are needed for static URLs:
+    </p>
+    <ul>
+      <li>Brightcove Playback API v2</li>
+      <li>Your assets are ingested for Dynamic Delivery</li>
+    </ul>
+    <!-- <h3>Account setup</h3>
       <p>
         To sign the <span translate="No">JSON Web Token</span> (JWT), your Brightcove account needs to be enabled for Playback Authorization Service. Contact your account manager to have this done.
       </p> -->
-      <h3>Analytics registration </h3>
-      <p>With static URLs, you are integrating with the Playback API without using the Brightcove Player. While the Brightcove Player automatically sends analytics data to Brightcove, you will use the Data Collection API to do this.</p>
-      <p>
-        If you are not familiar with the Data Collection API, review the <a href="https://apis.support.brightcove.com/data-collection/overview-data-collection-api-v2.html">Overview: Data Collection API</a> document.
-      </p>
-      <p>
-        For details about sending information to the Data Collector, see the <a href="https://apis.support.brightcove.com/data-collection/data-collection-api-sample.html">Data Collection API Sample</a>.
-      </p>
-    </section>
+    <h3>Analytics registration </h3>
+    <p>With static URLs, you are integrating with the Playback API without using the Brightcove Player. While the Brightcove Player automatically sends analytics data to Brightcove, you will use the Data Collection API to do this.</p>
+    <p>
+      If you are not familiar with the Data Collection API, review the <a href="https://apis.support.brightcove.com/data-collection/overview-data-collection-api-v2.html">Overview: Data Collection API</a> document.
+    </p>
+    <p>
+      For details about sending information to the Data Collector, see the <a href="https://apis.support.brightcove.com/data-collection/data-collection-api-sample.html">Data Collection API Sample</a>.
+    </p>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Video_Cloud">Video Cloud</h2>
     <p>
       Today, every playback through VideoCloud requires 2 API calls to start video playback. With the use of static URLs, you can reduce the number of API calls to just one.
@@ -1386,9 +1386,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <img class="bcls-image--no-border" width="800" src="/assets/images/playback/guides/current-playback-calls.png" alt="Video Cloud playback">
       <figcaption class="bcls-caption--image">Video Cloud playback</figcaption>
     </figure>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Static_URLs">Static URLs</h2>
     <p>
       With Brightcove's Playback API v2, static URLs are now available.
@@ -1443,9 +1443,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         <tr>
           <td>BYO CDN</td>
           <td>Brightcove’s CDN will continue to deliver the manifest and sub-manifests.
-    <br/><br/>
-    Customer's CDN will deliver only the video segments.
-    </td>
+            <br /><br />
+            Customer's CDN will deliver only the video segments.
+          </td>
         </tr>
         <tr>
           <td>Closed Captions</td>
@@ -1454,9 +1454,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
       </tbody>
     </table>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Implementing_Static_URLs">Implementing Static URLs</h2>
 
     <p>Static URLs include the following:</p>
@@ -1490,162 +1490,174 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       Static URL examples for each Delivery Type:
     </p>
     <table class="bcls-table">
-          <thead class="bcls-table__head">
-            <tr>
-              <th>Delivery Type</th>
-              <th>URL</th>
-            </tr>
-          </thead>
-          <tbody class="bcls-table__body">
-            <tr>
-              <td>HLS Master Manifest</td>
-              <td><pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/master.m3u8?bcov_auth={jwt}</code></pre></td>
-            </tr>
-            <tr>
-              <td>DASH Manifest</td>
-              <td><pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/manifest.mpd?bcov_auth={jwt}</code></pre></td>
-            </tr>
-            <tr>
-              <td>HLS VMAP<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
-              <td><pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/hls.vmap?bcov_auth={jwt}</code></pre></td>
-            </tr>
-            <tr>
-              <td>DASH VMAP<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
-              <td><pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/dash.vmap?bcov_auth={jwt}</code></pre></td>
-            </tr>
-            <tr>
-              <td>Highest Bitrate MP4</td>
-              <td><pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/high.mp4?bcov_auth={jwt}</code></pre></td>
-            </tr>
-            <tr>
-              <td>Lowest Bitrate MP4</td>
-              <td><pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/low.mp4?bcov_auth={jwt}</code></pre></td>
-            </tr>
-          </tbody>
-        </table>
-        <h4>Notes</h4>
-        <ul>
-          <li id="note1-1"><sup><strong>[1-1]</strong></sup> HLS and DASH VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you create the JWT - see the following section.</li>
-        </ul>
-        <table class="bcls-table">
-          <caption class="bcls-caption--table">Query Params</caption>
-          <thead class="bcls-table__head">
-              <tr>
-                  <th>Query Param</th>
-                  <th>Value</th>
-              </tr>
-          </thead>
-          <tbody class="bcls-table__body">
-              <tr>
-                  <td><code translate="No">bcov_auth</code></td>
-                  <td>JWT see <a href="#Creating_a_JSON_Web_Token">below</a></td>
-              </tr>
-              <tr>
-                  <td><code translate="No">config_id</code></td>
-                  <td>ID of delivery rule action to apply, see <a href="/delivery-rules/implementing-delivery-rules.html">Implementing Delivery Rules</a> for details. If the <code translate="No">drules</code> claim is set on the JWT, this query parameter will be ignored.</td>
-              </tr>
-          </tbody>
-      </table>
-    </section>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Delivery Type</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>HLS Master Manifest</td>
+          <td>
+            <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/master.m3u8?bcov_auth={jwt}</code></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>DASH Manifest</td>
+          <td>
+            <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/manifest.mpd?bcov_auth={jwt}</code></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>HLS VMAP<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+          <td>
+            <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/hls.vmap?bcov_auth={jwt}</code></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>DASH VMAP<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+          <td>
+            <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/dash.vmap?bcov_auth={jwt}</code></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>Highest Bitrate MP4</td>
+          <td>
+            <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/high.mp4?bcov_auth={jwt}</code></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>Lowest Bitrate MP4</td>
+          <td>
+            <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/low.mp4?bcov_auth={jwt}</code></pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h4>Notes</h4>
+    <ul>
+      <li id="note1-1"><sup><strong>[1-1]</strong></sup> HLS and DASH VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you create the JWT - see the following section.</li>
+    </ul>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Query Params</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Query Param</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">bcov_auth</code></td>
+          <td>JWT see <a href="#Creating_a_JSON_Web_Token">below</a></td>
+        </tr>
+        <tr>
+          <td><code translate="No">config_id</code></td>
+          <td>ID of delivery rule action to apply, see <a href="/delivery-rules/implementing-delivery-rules.html">Implementing Delivery Rules</a> for details. If the <code translate="No">drules</code> claim is set on the JWT, this query parameter will be ignored.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Creating_a_JSON_Web_Token">Creating a <span translate="No">JSON Web Token</span></h2>
-      <p>To create a token to use when communicating with Brightcove's Playback API, see the <a href="https://general.support.brightcove.com/developer/create-jwt.html">Creating a <span translate="No">JSON Web Token</span> (JWT)</a> document.</p>
+    <p>To create a token to use when communicating with Brightcove's Playback API, see the <a href="https://general.support.brightcove.com/developer/create-jwt.html">Creating a <span translate="No">JSON Web Token</span> (JWT)</a> document.</p>
 
-      <h3>Claims for Static URL Delivery</h3>
-      <p>
-        The following claims can be used with Brightcove's Static URL Delivery.
-      </p>
-      <aside class="bcls-aside bcls-aside--tip">Notice that none of the claims are required for Static URL Delivery.</aside>
+    <h3>Claims for Static URL Delivery</h3>
+    <p>
+      The following claims can be used with Brightcove's Static URL Delivery.
+    </p>
+    <aside class="bcls-aside bcls-aside--tip">Notice that none of the claims are required for Static URL Delivery.</aside>
 
-      <table class="bcls-table">
-            <thead class="bcls-table__head">
-              <tr>
-                <th>Field</th>
-                <th>Type</th>
-                <th>Required</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class="bcls-table__body">
-              <tr>
-                <td><code translate="No">accid</code></td>
-                <td>String</td>
-                <td></td>
-                <td>The account id that owns the content being played</td>
-              </tr>
-              <tr>
-                <td><code translate="No">drules</code></td>
-                <td>String[]</td>
-                <td></td>
-                <td>List of delivery rule action IDs to apply, see <a href="/delivery-rules/implementing-delivery-rules.html">Implementing Delivery Rules</a> for details. If the config_id query parameter is also set it will be ignored, as this claim overrides it.</td>
-              </tr>
-              <tr>
-                <td><code translate="No">exp</code></td>
-                <td>Integer</td>
-                <td></td>
-                <td>Time this token will no longer be valid, in seconds since the Epoch. Must be no more than 30 days from <code translate="No">iat</code></td>
-              </tr>
-              <tr>
-                <td><code translate="No">iat</code></td>
-                <td>Integer</td>
-                <td></td>
-                <td>Time this token was issued, in seconds since the Epoch</td>
-              </tr>
-              <tr>
-                <td><code translate="No">conid</code></td>
-                <td>String</td>
-                <td></td>
-                <td>If present, this token will only authorize license fetching for a specific Video Cloud video id.
-                  <br /><br />
-                  Must be a valid video id.
-                </td>
-              </tr>
-              <tr>
-                <td><code translate="No">pro</code></td>
-                <td>String</td>
-                <td></td>
-                <td>Specifies a protection type in the case where multiple are available for a single video.
-                  <br /><br />
-                  Values:
-                  <ul>
-                    <li>
-                      "" (default for clear content)
-                    </li>
-                    <li>
-                      "aes128"
-                    </li>
-                    <li>
-                      "widevine"
-                    </li>
-                    <li>
-                      "playready"
-                    </li>
-                    <li>
-                      "fairplay"
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-              <tr>
-                <td><code translate="No">vod</code></td>
-                <td>Object</td>
-                <td></td>
-                <td>Contains specific configuration options for Video-On-Demand.</td>
-              </tr>
-              <tr>
-                <td><code translate="No">ssai</code></td>
-                <td>String</td>
-                <td></td>
-                <td>Your Server-Side Ad Insertion (SSAI) configuration id. This claim is <strong>required</strong> to retrieve either an HLS or a DASH VMAP.</td>
-              </tr>
-            </tbody>
-          </table>
-    <br/>
-      <p>
-        Here is an example of the <span translate="No">JSON Web Token</span> (JWT) claims that you might use:
-      </p>
-      <pre class="line-numbers"><code class="language-json" translate="No">{
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Required</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">accid</code></td>
+          <td>String</td>
+          <td></td>
+          <td>The account id that owns the content being played</td>
+        </tr>
+        <tr>
+          <td><code translate="No">drules</code></td>
+          <td>String[]</td>
+          <td></td>
+          <td>List of delivery rule action IDs to apply, see <a href="/delivery-rules/implementing-delivery-rules.html">Implementing Delivery Rules</a> for details. If the config_id query parameter is also set it will be ignored, as this claim overrides it.</td>
+        </tr>
+        <tr>
+          <td><code translate="No">exp</code></td>
+          <td>Integer</td>
+          <td></td>
+          <td>Time this token will no longer be valid, in seconds since the Epoch. Must be no more than 30 days from <code translate="No">iat</code></td>
+        </tr>
+        <tr>
+          <td><code translate="No">iat</code></td>
+          <td>Integer</td>
+          <td></td>
+          <td>Time this token was issued, in seconds since the Epoch</td>
+        </tr>
+        <tr>
+          <td><code translate="No">conid</code></td>
+          <td>String</td>
+          <td></td>
+          <td>If present, this token will only authorize license fetching for a specific Video Cloud video id.
+            <br /><br />
+            Must be a valid video id.
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">pro</code></td>
+          <td>String</td>
+          <td></td>
+          <td>Specifies a protection type in the case where multiple are available for a single video.
+            <br /><br />
+            Values:
+            <ul>
+              <li>
+                "" (default for clear content)
+              </li>
+              <li>
+                "aes128"
+              </li>
+              <li>
+                "widevine"
+              </li>
+              <li>
+                "playready"
+              </li>
+              <li>
+                "fairplay"
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">vod</code></td>
+          <td>Object</td>
+          <td></td>
+          <td>Contains specific configuration options for Video-On-Demand.</td>
+        </tr>
+        <tr>
+          <td><code translate="No">ssai</code></td>
+          <td>String</td>
+          <td></td>
+          <td>Your Server-Side Ad Insertion (SSAI) configuration id. This claim is <strong>required</strong> to retrieve either an HLS or a DASH VMAP.</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <p>
+      Here is an example of the <span translate="No">JSON Web Token</span> (JWT) claims that you might use:
+    </p>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
   // account id: JWT is only valid for this accounts
   "accid":"4590388311111",
   // drules: list of delivery rule IDs to be applied
@@ -1664,71 +1676,67 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     "ssai":"efcc566-b44b-5a77-a0e2-d33333333333"
   }
 }</code></pre>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Using_Content_protection_DRM">Using Content protection (DRM)</h2>
-      <p>You can include the <code translate="No">pro</code> claim, as defined above, to specify a protection type.</p>
+    <p>You can include the <code translate="No">pro</code> claim, as defined above, to specify a protection type.</p>
 
-      <p>
-        For license requests, the JWT does not need any payload, but it has to be signed using the same RSA key as the manifest request JWT.
-      </p>
-      <h3>License request</h3>
-      <p>
-        You can use the following endpoint to get the DRM license:
-      </p>
-      <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/licenses/{scheme}?bcov_auth={JWT}</code></pre>
-      <p>
-        Valid values for <code translate="No">scheme</code>:
-      </p>
-      <ul>
-        <li>
-          "widevine"
-        </li>
-        <li>
-          "fairplay"
-        </li>
-      </ul>
-      <h3>FairPlay app cert</h3>
-      <p>
-        For FairPlay app certificates, the endpoint is:
-      </p>
-      <pre><code class="language-http" translate="No">/accounts/{account_id}/fairplay_app_cert</code></pre>
-      <h3>PlayReady endpoint</h3>
-      <p>For PlayReady, the endpoint for the licence request is:</p>
-      <pre><code class="language-http" translate="No">/accounts/{account_id}/videos/{video_id}/licenses/cenc/playready?bcov_auth={JWT}</code></pre>
-    </section>
+    <p>
+      For license requests, the JWT does not need any payload, but it has to be signed using the same RSA key as the manifest request JWT.
+    </p>
+    <h3>License request</h3>
+    <p>
+      You can use the following endpoint to get the DRM license:
+    </p>
+    <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/licenses/{scheme}?bcov_auth={JWT}</code></pre>
+    <p>
+      Valid values for <code translate="No">scheme</code>:
+    </p>
+    <ul>
+      <li>
+        "widevine"
+      </li>
+      <li>
+        "fairplay"
+      </li>
+    </ul>
+    <h3>FairPlay app cert</h3>
+    <p>
+      For FairPlay app certificates, the endpoint is:
+    </p>
+    <pre><code class="language-http" translate="No">/accounts/{account_id}/fairplay_app_cert</code></pre>
+    <h3>PlayReady endpoint</h3>
+    <p>For PlayReady, the endpoint for the licence request is:</p>
+    <pre><code class="language-http" translate="No">/accounts/{account_id}/videos/{video_id}/licenses/cenc/playready?bcov_auth={JWT}</code></pre>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Notes">Notes</h2>
-      <p>The following notes apply to Static URL Delivery.</p>
-      <ul>
-        <li>
+    <p>The following notes apply to Static URL Delivery.</p>
+    <ul>
+      <li>
         In-Manifest captions are supported. Out-of-band sidecar captions will be supported in a future release.
-        </li>
-        <li>
-          The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest and sub-manifests.
-        </li>
-        <li>
-          Brightcove does support using a JWT that does not expire. To do this, do not include the <code translate="No">exp</code> claim when creating your token.
-        </li>
-      </ul>
-    </section>
+      </li>
+      <li>
+        The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest and sub-manifests.
+      </li>
+      <li>
+        Brightcove does support using a JWT that does not expire. To do this, do not include the <code translate="No">exp</code> claim when creating your token.
+      </li>
+    </ul>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Limitations">Limitations</h2>
-      <p>The following limitations apply to Static URL Delivery.</p>
-      <ul>
-        <li>
-          Live streams will be supported in a later release.
-        </li>
-        <!-- <li>
-          Delivery Rules will be supported in a later release.
-        </li> -->
-      </ul>
-    </section>
-  </article>
-
+    <p>The following limitations apply to Static URL Delivery.</p>
+    <ul>
+      <li>
+        Live streams will be supported in a later release.
+      </li>
+    </ul>
+  </section>
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
