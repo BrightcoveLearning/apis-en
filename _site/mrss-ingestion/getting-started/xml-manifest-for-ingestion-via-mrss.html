@@ -1327,6 +1327,169 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </ul>
     </aside>
   </section>
+  <section class="bcls-section">
+    <h2 id="Handling_of_metadata">Handling of metadata</h2>
+    <p>If you include <code translate="No">metadata</code> for videos when you ingest them, it is mapped to Video Cloud video fields in one of two ways:</p>
+    <ol>
+      <li>By default, each <code translate="No">metadata</code> key/value pair is added as a <strong>tag</strong> in the form: <code translate="No">meta::key::value</code>. For example, <code translate="No">&lt;ooyala:metadata name="category"&gt;cooking&lt;/ooyala:metadata&gt;</code> would produce the tag <code translate="No">meta::category::cooking</code></li>
+    </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="XML_Manifest_Elements">XML Manifest Elements</h2>
+    <p>You can use the following elements in the XML manifest file.</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">XML Elements</caption>
+      <thead class="bcls-table__head">
+          <tr>
+              <th>XML Tag</th>
+              <th>Description</th>
+              <th>Required/Optional</th>
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+          <tr>
+              <td><code translate="No">&lt;channel&gt;</code></td>
+              <td>Contains one or more <code translate="No">&lt;item&gt;</code> elements.</td>
+              <td>required</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;item&gt;</code></td>
+              <td>Represents a single video to ingest. You can specify multiple videos (<code translate="No">&lt;item&gt;</code> tags) in an XML manifest file. Contains the remaining tags in this table.</td>
+              <td>required</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;media:content&gt;</code></td>
+              <td>
+                Specifies a video to ingest as the <strong>filename</strong> of a video that you uploaded to your server.
+                <aside class="bcls-aside bcls-aside--information language-editable">Notes: 
+                  <ul style="margin-left: 1rem;padding: 0;">
+                    <li>The remote URL file extension must be <strong>m3u8</strong> or <strong>mpd</strong>; otherwise we will default it to progressive <strong>.mp4</strong>.</li>
+                    <li>For a remote asset, use <code translate="No">&lt;ooyala:remoteasset&gt;</code> instead.</li>
+                  </ul>
+                  </aside>
+              </td>
+              <td>required (except for remote assets)</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;media:title&gt;</code></td>
+              <td>Name or title of the video.</td>
+              <td>optional</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;media:thumbnail&gt;</code></td>
+              <td>
+                Specifies a thumbnail (preview image). One of the following:
+                <ul style="padding: 0;margin-left: 1rem;">
+                  <li>Filename of a thumbnail you uploaded to your server.</li>
+                  <li>URL where the thumbnail is located. The URL can include <code translate="No">http://</code> or <code translate="No">https://</code>.</li>
+                </ul>
+              </td>
+              <td>optional</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;media:subTitle&gt;</code></td>
+              <td>
+                Specifies a closed caption file (supported for DFXP, WebVTT, and SRT files). See <a href="https://studio.support.brightcove.com/media/overview-adding-captions-video.html">Ingesting Closed Caption Files</a>. Attributes:
+                <ul style="padding: 0;margin-left: 1rem;">
+                  <li><code translate="No">href</code> (<strong>required</strong>) - One of the following:
+                    <ul style="padding: 0;margin-left: 1rem;">
+                      <li>Filename of the closed caption file you uploaded. Example: <samp translate="No">caption-1.dfxp</samp></li>
+                      <li>URL where the closed caption file is located. The URL can include <code translate="No">http://</code> or <code translate="No">https://</code>.</li>
+                    </ul>
+                  </li>
+                  <li><code translate="No">lang</code> (<strong>required</strong>) - language of the closed caption file. Two-letter code. See <a href="https://studio.support.brightcove.com/media/adding-captions-videos-using-media-module.html#texttrack">Supported Closed Captions</a>.</li>
+                  <li><code translate="No">frameRate</code> (<strong>optional</strong>) - Frame rate of the closed caption file. Units are in Frames Per Second (FPS). Default is 30. Older closed caption files might be 24.</li>
+                </ul>
+              </td>
+              <td>optional</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;media:description&gt;</code></td>
+              <td>Description of the video.</td>
+              <td>optional</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;<link>&gt;</code></td>
+              <td>Permanent URL where you embed the video. Maps to the created asset's <code translate="No">hosted_at</code> property</td>
+              <td>optional</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;dcterms:valid&gt;</code></td>
+              <td>
+                Flight times representing the start and end times when the asset can be played. Example:
+<pre class="line-numbers"><code class="language-xml">&lt;dcterms:valid&gt;
+  start=2011-06-28T15:15:00-07:00;
+  end=2022-12-01T16:00:00-07:00;scheme=W3C-DTF
+  &lt;/dcterms:valid&gt;</code></pre>
+              </td>
+              <td>optional</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;ooyala:labels&gt;</code></td>
+              <td>One or more values, separated by commas. Example: <code translate="No">/sports,/sports/jogging</code>. These values will be used to fill in <a href="https://studio.support.brightcove.com/media/editing-video-properties-using-media-module.html">Video Cloud Tags</a>.</td>
+              <td>optional</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;ooyala:embedcode&gt;</code></td>
+              <td>Video Cloud video ID.</td>
+              <td>optional (required if you are updating a video rather than adding a new one)</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;ooyala:metadata&gt;</code></td>
+              <td>Custom metadata for the video. You can have an element for each type of metadata. <code translate="No">metadata</code> items will be migrated to tags in the form <code translate="No">meta:;:{key}:;:{value}</code> Example: <code translate="No">&lt;ooyala:metadata name="category"&gt;cooking&lt;/ooyala:metadata&gt;</code> will create the tag: <code translate="No">meta:;:category:;;cooking</code>.</td>
+              <td>optional</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;ooyala:remoteasset&gt;</code></td>
+              <td>
+                Specifies a remote asset to ingest. A remote asset is a video that is hosted somewhere other than Video Cloud. Specify the following attributes:
+                <ul style="padding: 0;margin-left: 1rem;">
+                  <li><code translate="No">durationInMs</code>: media duration (in milliseconds)</li>
+                  <li><code translate="No">url</code>: URL where the remote asset is located. The URL can include <code translate="No">http://</code> or <code translate="No">https://</code>.</li>
+                </ul>
+                <p>This setting maps to the value of the hosted_at property for a remote asset. Example: <code translate="No">&lt;ooyala:remoteasset durationInMs='5000' url="http://your_website/your_remote_assets.mp4" /&gt;</code></p>
+                <aside class="bcls-aside bcls-aside--information language-editable">Note: After a remote asset has been created, its propagation to the various CDNs might be delayed 60 seconds or more. If you request a remote asset too soon after its creation, the results will be cached by the CDNs, which might take several minutes to clear.</aside>
+              </td>
+              <td>required (for remote assets only)</td>
+          </tr>
+          <tr>
+              <td><code translate="No">&lt;ooyala:profileguid&gt;</code></td>
+              <td>Specifies a Video Cloud ingest profile to use for processing the video. If you do not want to use the account default profile, you must specify the one you want to use instead. See <a href="https://studio.support.brightcove.com/admin/managing-ingest-profiles.html">Managing Ingest Profiles</a>.</td>
+              <td>optional</td>
+          </tr>
+      </tbody>
+  </table>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Sample_manifest">Sample manifest</h2>
+    <p>Below is a full sample manifest.</p>
+<pre class="line-numbers"><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+  &lt;rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:fh="http://purl.org/syndication/history/1.0"
+    xmlns:ooyala="http://www.ooyala.com/mrss/"&gt;
+    &lt;channel&gt;
+      &lt;item&gt;
+        &lt;media:content url="test.mp4" &gt;&lt;/media:content&gt;
+        &lt;media:subTitle href="my_caption.dfxp"&gt;&lt;/media:subTitle&gt;
+        &lt;media:thumbnail url="my_thumbnail.jpg" filesize="35712"&gt;&lt;/media:thumbnail&gt;
+        &lt;media:title&gt;Test XML&lt;/media:title&gt;
+        &lt;media:description&gt;This is an example&lt;/media:description&gt;
+        &lt;ooyala:labels&gt;/test,/example,/xml&lt;/ooyala:labels&gt;
+        &lt;dcterms:valid&gt;start=2016-01-01T15:15:00-07:00;
+          end=2022-01-01T16:00:00-07:00&lt;/dcterms:valid&gt;
+        &lt;ooyala:profileguid&gt;57d5a5a10f654fe79ef954dc8d29a108&lt;/ooyala:profileguid&gt;
+      &lt;/item&gt;
+    &lt;/channel&gt;
+  &lt;/rss&gt;</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Step_by_step">Step-by-step</h2>
+    <h3>Creating an XML Manifest File</h3>
+    <ol class="bcls-tasklist">
+      <li></li>
+    </ol>
+  </section>
 </article>
 
 <!-- complete bootstrap layout -->
@@ -1344,7 +1507,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 14 Nov 2020
+  Page last updated on 15 Nov 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">

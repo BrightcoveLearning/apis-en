@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="You can continue to ingest videos and assets to Video Cloud using MRSS feed described in this article. Note: This is a Beta ingestion service.">
   
-  <title>Ingesting from a Remotely Hosted MRSS Feed</title>
+  <title>Ingesting via an MRSS Feed</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -122,7 +122,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       <li class="breadcrumb-item"><a href="/mrss-ingestion/getting-started/">MRSS ingestion</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Ingesting from a Remotely Hosted MRSS Feed</li>
+      <li class="breadcrumb-item active" aria-current="page">Ingesting via an MRSS Feed</li>
     </ol>
   </nav>
 </header>
@@ -1313,7 +1313,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Ingesting from a Remotely Hosted MRSS Feed</h1>
+<h1>Ingesting via an MRSS Feed</h1>
 <article class="bcls-article">
   <summary>You can continue to ingest videos and assets to Video Cloud using MRSS feed described in this article. Note: This is a Beta ingestion service.</summary>
   <section class="bcls-section">
@@ -1340,10 +1340,22 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="Using_mrss">Using MRSS</h2>
     <p>To use MRSS, you host metadata and/or videos and other files (thumbnails, closed captions) on a web server, and create an <a href="/mrss-ingestion/getting-started/xml-manifest-for-ingestion-via-mrss.html">XML manifest file</a> that references that content.</p>
     <h3>Using MRSS to Pull Metadata Only</h3>
-    <p>Create an XML manifest file as described in <a href="/mrss-ingestion/getting-started/xml-manifest-for-ingestion-via-mrss.html">XML manifest file</a>. You must use the <code translate="No">ooyala:remoteasset</code> tag for metadata-only ingestion.</p>
-    <p>Host the XML manifest file on one of the MRSS locations you provided. <strong><em>Make sure that the filename and path matches exactly one of the paths you provided to Brightcove</em></strong>.</p>
+    <ol class="bcls-tasklist">
+        <li>Create an XML manifest file as described in <a href="/mrss-ingestion/getting-started/xml-manifest-for-ingestion-via-mrss.html">XML manifest file</a>. You must use the <code translate="No">ooyala:remoteasset</code> tag for metadata-only ingestion.</li>
+        <li>Host the XML manifest file on one of the MRSS locations you provided. <strong><em>Make sure that the filename and path matches exactly one of the paths you provided to Brightcove</em></strong>.</li>
+    </ol>
     <h3>Using MRSS to Pull Videos, Thumbnails, and Closed Caption Files</h3>
-    <p></p>
+    <ol class="bcls-tasklist-restart">
+      <li>Host one or more files (videos, thumbnails, and closed caption files) on a web server. The URLs must be publicly accessible.</li>
+      <li>
+        Create an <a href="/mrss-ingestion/getting-started/xml-manifest-for-ingestion-via-mrss.html">XML manifest file</a>. Make sure that the entries in the file reference the files on your server. In particular, the value of the <code translate="No">&lt;media:content&gt;</code> element's <code translate="No">href</code> attribute <strong><em>must</em></strong> be an HTTP URL to the file on your server, as in the following example:
+        <pre><code class="language-xml" translate="No">&lt;media:content url="http://mysite.com/upload/lacrosse_70.mov" /&gt;</code></pre>
+      </li>
+      <li>
+        Host the XML manifest file on one of the MRSS locations you provided. <strong><em>Make sure that the filename and path matches exactly one of the paths you provided to Brightcove</em></strong>.
+        <aside class="bcls-aside bcls-aside--information language-editable">Note: Unfortunately, the concept of "client logging" does not apply to MRSS feed-based processing. The best way to verify that your feed is processing successfully is to check for the appearance of your assets, either with <a href="https://studio.support.brightcove.com/media/getting-started-media-module.html">Video Cloud Studio</a> or the Video Cloud <a href="/cms/getting-started/overview-cms-api.html">CMS API</a>.</aside>
+      </li>
+    </ol>
   </section>
 </article>
 
@@ -1362,7 +1374,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 14 Nov 2020
+  Page last updated on 15 Nov 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
