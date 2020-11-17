@@ -1487,7 +1487,62 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="Step_by_step">Step-by-step</h2>
     <h3>Creating an XML Manifest File</h3>
     <ol class="bcls-tasklist">
-      <li></li>
+      <li>Upload your videos and other content (thumbnails, closed caption files, etc). The URLs need to be publicly available.</li>
+      <li>Open a text editor, preferably one that validates XML. (The Brightcove Learning Services team uses <a href="https://code.visualstudio.com">Visual Studio Code</a> but there are several other good options available).</li>
+      <li>
+        Add the required XML headers. For example:
+<pre class="line-numbers"><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+  &lt;rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"
+       xmlns:dcterms="http://purl.org/dc/terms/"
+       xmlns:fh="http://purl.org/syndication/history/1.0"    
+       xmlns:ooyala="http://www.ooyala.com/mrss/"&gt;</code></pre>
+      </li>
+      <li>
+        Create a <code translate="No">&lt;channel&gt;</code> container.
+      </li>
+      <li>
+        Create an <code translate="No">&lt;item&gt;</code> entry for each video, containing the desired elements from the table above.
+        <p>In the following example, the XML specifies metadata for two videos. For the first video, the file and thumbnails are located on an upload server and are pulled from that server. For the second video, the file and thumbnail were already uploaded to an Ooyala server. The second video also has flight times.</p>
+<pre class="line-numbers"><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+  &lt;rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:fh="http://purl.org/syndication/history/1.0"
+    xmlns:ooyala="http://brightcove.com/mrss"&gt;
+  
+  &lt;channel&gt;
+    &lt;item&gt;
+      &lt;media:content url="http://mysite.com/upload/lacrosse_70.mov" /&gt;
+      &lt;media:thumbnail url="http://mysite.com/upload/lacrosse_70_previewimage.jpg" /&gt;
+      &lt;media:title&gt;Sports that Really Exist: Lacrosse&lt;/media:title&gt;
+      &lt;media:description&gt;My description of my video&lt;/media:description&gt;
+      &lt;ooyala:labels&gt;/sports/lacrosse,/hobbies/lacrosse&lt;/ooyala:labels&gt;
+      &lt;link&gt;http://mysite.com/videos/sports/real_sports.html&lt;/link&gt;
+      &lt;ooyala:metadata name="video_ID"&gt;70&lt;/ooyala:metadata&gt;
+    &lt;ooyala:metadata name="season_number"&gt;1&lt;/ooyala:metadata&gt;
+    &lt;/item&gt;
+
+    &lt;item&gt;
+      &lt;media:content url="curling_71.mov" /&gt;
+      &lt;media:thumbnail url="curling_71_previewimage.jpg" /&gt;
+      &lt;media:title&gt;Sports that Really Exist: Curling&lt;/media:title&gt;
+      &lt;media:description&gt;My description of my video&lt;/media:description&gt;
+      &lt;ooyala:labels&gt;/sports/curling,/hobbies/curling&lt;/ooyala:labels&gt;
+      &lt;link&gt;http://mysite.com/videos/sports/real_sports.html&lt;/link&gt;
+      &lt;ooyala:metadata name="video_ID"&gt;71&lt;/ooyala:metadata&gt;
+      &lt;ooyala:metadata name="season_number"&gt;1&lt;/ooyala:metadata&gt;
+      &lt;!-- set flight times --&gt;
+      &lt;dcterms:valid&gt;start=2011-06-28T15:15:00-07:00;
+          end=2022-12-01T16:00:00-07:00;scheme=W3C-DTF
+      &lt;/dcterms:valid&gt;
+    &lt;/item&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;</code></pre>
+      </li>
+      <li>Save the file as XML. Be sure to specify a unique name. If you specify two files with the same name and upload one while the other is processing, the second one might be ignored</li>
+      <li>
+        With your upload method of choice, upload the XML manifest file as you uploaded the video(s).
+        <aside class="bcls-aside bcls-aside--information language-editable">Remember that the URL for XML manifest must match exactly what you provided to your account manager.</aside>
+      </li>
     </ol>
   </section>
 </article>
@@ -1507,7 +1562,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 15 Nov 2020
+  Page last updated on 16 Nov 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
