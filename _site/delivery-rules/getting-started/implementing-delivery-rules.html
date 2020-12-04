@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In this topic, you will learn how Brightcove's Delivery Rules enable you to customize how your media is delivered to meet your business objectives.">
+  <meta name="description" content="In this topic, you will learn how to implement Brightcove's Delivery Rules, which enable you to customize how your media is delivered to meet your business objectives.">
   
-  <title>Overview: Delivery Rules</title>
+  <title>Implementing Delivery Rules</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -130,9 +130,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/delivery-rules/">Delivery Rules API</a></li>
+      <li class="breadcrumb-item"><a href="/delivery-rules/getting-started/">Getting started</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Overview: Delivery Rules</li>
+      <li class="breadcrumb-item active" aria-current="page">Implementing Delivery Rules</li>
     </ol>
   </nav>
 </header>
@@ -575,6 +575,50 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                 
                   
                     <li><a href="/data-collection/references/reference.html">Data Collection API Reference</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/delivery-rules/index.html">Delivery Rules API <strong>+</strong></a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/delivery-rules/getting-started/index.html">Getting Started <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/delivery-rules/getting-started/overview-delivery-rules.html">Overview: Delivery Rules</a></li>
+                        
+                        <li><a href="/delivery-rules/getting-started/implementing-delivery-rules.html">Implementing Delivery Rules</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/delivery-rules/index.html">Guides <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="https://player.support.brightcove.com/playback/using-delivery-rules-with-bcp.html">Using Delivery Rules with Brightcove Player</a></li>
+                        
+                        <li><a href="https://sdks.support.brightcove.com/features/using-delivery-rules-with-sdks.html">Using Delivery Rules with the Native SDKs</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/delivery-rules/references/index.html">References <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/delivery-rules/references/reference.html">Delivery Rules API Reference</a></li>
+                        
+                      </ul>
+                    </li>
                   
                 
               </ul>
@@ -1323,26 +1367,34 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Overview: Delivery Rules</h1>
+<h1>Implementing Delivery Rules</h1>
 <article class="bcls-article">
-  <summary>In this topic, you will learn how Brightcove's Delivery Rules enable you to customize how your media is delivered to meet your business objectives.</summary>
+  <summary>In this topic, you will learn how to implement Brightcove's Delivery Rules, which enable you to customize how your media is delivered to meet your business objectives.</summary>
 
 <section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
+<h2 id="Overview">Overview</h2>
 
-<p>Brightcove's Delivery Rules is a feature of Dynamic Delivery that allows you to leverage the just-in-time manifest generation capability on a more granular basis. With Delivery Rules, you can create custom rules to control how your content is delivered to the viewer. This allows you to deliver content more efficiently and effectively.</p>
+<p>Publishers often need to modify the content characteristics of their media manifests for both technical and business reasons. To meet these needs, Brightcove has created a framework where rules can be applied that will modify the contents of the manifest returned from Dynamic Delivery.</p>
 
-<p>Delivery Rules give you the ability to create conditional logic based on device type, user location or a signal from your application. When these conditions are triggered, you control the behavior such as the types of renditions returned and which CDN to use.</p>
-<p>For details about implementing Delivery Rules, see the following:</p>
+<p>Delivery Rules are made up of conditions and actions.</p>
 <ul>
   <li>
-    <a href="/delivery-rules/implementing-delivery-rules.html">Implementing Delivery Rules</a>
+    <strong>Conditions</strong> - "If" conditions that trigger a certain action
+  </li>
+  <li>
+    <strong>Actions</strong> - "Then" parameters that define how the manifest is modified
+  </li>
+</ul>
+<p>For more details about Delivery Rules, see the following:</p>
+<ul>
+  <li>
+    <a href="/delivery-rules/overview-delivery-rules.html">Overview: Delivery Rules</a>
   </li>
   <li>
     <a href="https://player.support.brightcove.com/playback/using-delivery-rules-with-bcp.html">Using Delivery Rules with Brightcove Player</a>
   </li>
   <li>
-    <a href=" https://sdks.support.brightcove.com/features/using-delivery-rules-with-sdks.html">Using Delivery Rules with the Native SDKs</a>
+    <a href="https://sdks.support.brightcove.com/features/using-delivery-rules-with-sdks.html">Using Delivery Rules with the Native SDKs</a>
   </li>
   <li>
     <a href="/dynamic-ingest/getting-started/overview-dynamic-delivery.html">Overview of Dynamic Delivery</a>
@@ -1351,33 +1403,617 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 </section>
 
 <section class="bcls-section">
-<h2 id="Examples">Examples</h2>
+<h2 id="Account_setup">Account setup</h2>
 
-<p>As you can imagine, the combinations of conditional logic can be endless. Here are some examples for what Delivery Rules can do:</p>
+<p>Contact your account manager to learn about pricing and enable this feature for your account.</p>
+</section>
 
-<h3>Multiple Subscription Tiers</h3>
+<section class="bcls-section">
+<h2 id="Applying_rules">Applying rules</h2>
+
+<p>The following flow diagram shows how delivery rules are applied.</p>
+<figure class="bcls-figure">
+  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/delivery-rules/rules-diagram.png" alt="Delivery rules applied">
+  <figcaption class="bcls-caption--image">Delivery rules applied</figcaption>
+</figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="Conditions">Conditions</h2>
+
+<p>The "if" conditions, supported in the first phase include the following:</p>
+
+<ul>
+  <li>
+    <p>
+      <strong>Explicit Request</strong> - A configuration ID is the id of an action that you have created. You will use this id to pass to the Playback API at runtime. This id is mapped to configuration values that allow underlying services to make decisions leveraged by the Playback API to return the appropriate response data.
+    </p>
+  </li>
+  <li>
+    <strong>Device Group</strong> - Device type as detected by user-agent parsing. The groups currently supported include:
+    <ul>
+      <li>
+        android
+      </li>
+      <li>
+        appletv
+      </li>
+      <li>
+        ipad
+      </li>
+      <li>
+        iphone
+      </li>
+      <li>
+        desktop-chrome
+      </li>
+      <li>
+        desktop-firefox
+      </li>
+      <li>
+        desktop-safari
+      </li>
+      <li>
+        fetchtv
+      </li>
+      <li>
+        ios-other
+      </li>
+      <li>
+        roku-7/8
+      </li>
+      <li>
+        smartphone-generic
+      </li>
+      <li>
+        tablet-android
+      </li>
+      <li>
+        tablet-kindle
+      </li>
+      <li>
+        unknown
+      </li>
+    </ul>
+    &nbsp;
+  </li>
+  <li>
+    <strong>Geography</strong> - Physical location of the requesting device:
+    <ul>
+      <li>
+        Continent
+      </li>
+      <li>
+        Country
+      </li>
+    </ul>
+  </li>
+</ul>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Actions">Actions</h2>
+
+<p>The actions, or "then" parameters, supported in the first phase include the following:</p>
+
+<ul>
+  <li>
+    <p>
+        <strong>Media Delivery CDN</strong> - From the CDNs configured for use within a given Dynamic Delivery account, the CDN to use for delivery of media segments.
+    </p>
+  </li>
+  <li>
+    <strong>Rendition Characteristics</strong> - Filters based on characteristics of the underlying media renditions. These include:
+    <ul>
+      <li>
+        Minimum video bitrate
+      </li>
+      <li>
+        Maximum video bitrate
+      </li>
+      <li>
+        Minimum video resolution
+      </li>
+      <li>
+        Maximum video resolution
+      </li>
+      <li>
+        Maximum number of audio renditions
+      </li>
+      <li>
+        Maximum number of video renditions
+      </li>
+      <li>
+        First video bitrate
+      </li>
+      <li>
+        Discontinuities
+      </li>
+    </ul>
+  </li>
+</ul>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Scope">Scope</h2>
+
+<p>Actions can be applied at two levels:</p>
+<ul>
+  <li>
+    <strong>Account</strong> - Actions that apply to all requests made to a specific customer's account
+  </li>
+  <li>
+    <strong>Specific Request</strong> - Actions that are invoked on a specific request
+  </li>
+</ul>
+
 <p>
-  A common model for subscription video-on-demand (SVOD) services is to offer two subscription tiers: standard definition (SD) and high definition (HD).
-</p>
-<p>
-  Based on a signal from your application, you can tell Dynamic Delivery to return only SD renditions for standard users and HD renditions for premium users.
+  Actions will be applied in the order listed above. Later actions will override earlier ones.
 </p>
 
-<h3>Geography Optimized CDNs</h3>
+</section>
+
+<section class="bcls-section">
+<h2 id="Defining_rules">Defining rules</h2>
+
+<p>Use the Delivery Rules API to customize media delivery.</p>
+
+<h3 id="Delivery_Rules_API">Delivery Rules API</h3>
 <p>
-  While most CDNs are optimized for worldwide distribution, there are some areas that are better served by a region-specific CDN. An in-region or in-country CDN can be used for optimal delivery.
-</p>
-<p>
-  With Delivery Rules, you can create a rule so that when a viewer is located in a specific area, a region-specific CDN will be used. For all other users, a global CDN will be used.
+  The <a href="https://apis.support.brightcove.com/delivery-rules/references/reference.html">Delivery Rules API</a> allows you to define conditions and actions to control your media delivery.
 </p>
 
-<h3>Device Optimized Renditions</h3>
+<h3>Base URL</h3>
 <p>
-  Since consumers view media from a variety of screen sizes, it is less than ideal to deliver the same set of renditions to each device.
+  The base URL for the API is:
 </p>
+<pre><code class="language-http" translate="No">https://delivery-rules.api.brightcove.com</code></pre>
+
+<h3>Account path</h3>
 <p>
-  With Delivery Rules, you can create a rule that detects if the viewer's device is a phone, and exclude 1080p renditions. You could have another rule that detects if  a viewer is on an OTT device, and exclude renditions below 360p.
+  In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
 </p>
+<pre><code class="language-http" translate="No">https://delivery-rules.api.brightcove.com/accounts/{accountID}</code></pre>
+
+<h3>Authorization</h3>
+<p>
+  An access token for requests is required and must be present in the Authorization header::
+</p>
+<pre><code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
+<p>
+  The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="https://apis.support.brightcove.com/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
+</p>
+
+<h3>Permissions</h3>
+<p>
+  Requests to the Playback Rights API must be made from <a href="/oauth/getting-started/overview-oauth-api-v4.html">client credentials</a> with the following permissions:
+</p>
+<ul>
+  <li>
+    <code translate="No">video-cloud/delivery-rules/read</code>
+  </li>
+  <li>
+    <code translate="No">video-cloud/delivery-rules/all</code>
+  </li>
+</ul>
+
+<h3>Manage rules</h3>
+<p>
+  The Delivery Rules API supports the following requests. For API details, see the <a href="https://apis.support.brightcove.com/delivery-rules/references/reference.html">Delivery Rules API Reference</a>.
+</p>
+
+<h4>Get Delivery Rules</h4>
+<p>
+  Use the following GET request to fetch the latest version of Delivery Rules for an account.
+</p>
+<pre><code class="language-http" translate="No">GET /accounts/{accountID}</code></pre>
+
+<h5>API Response</h5>
+<p>
+  Here is the response body. Notice that Delivery Rules contain a set of conditions and a set of actions.
+</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  &quot;conditions&quot;: [
+    {
+      &quot;name&quot;: &quot;string&quot;,
+      &quot;if&quot;: {
+        &quot;device_group&quot;: [
+          &quot;ipad&quot;
+        ],
+        &quot;request_country&quot;: [
+          &quot;string&quot;
+        ],
+        &quot;request_continent&quot;: [
+          &quot;AF&quot;
+        ]
+      },
+      &quot;then&quot;: [
+        &quot;string&quot;
+      ]
+    }
+  ],
+  &quot;actions&quot;: [
+    {
+      &quot;id&quot;: &quot;string&quot;,
+      &quot;properties&quot;: {
+        &quot;min_video_bitrate&quot;: 0,
+        &quot;max_video_bitrate&quot;: 0,
+        &quot;first_video_bitrate&quot;: 0,
+        &quot;min_video_resolution&quot;: &quot;string&quot;,
+        &quot;max_video_resolution&quot;: &quot;string&quot;,
+        &quot;max_video_renditions&quot;: 0,
+        &quot;max_audio_renditions&quot;: 0,
+        &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
+        &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
+      &quot;video_codecs&quot;: [
+        &quot;string&quot;
+      ],
+      &quot;audio_codecs&quot;: [
+        &quot;string&quot;
+      ]
+    }
+    }
+  ]
+}</code></pre>
+<br />
+
+<h4>Get Conditions</h4>
+<p>
+  Use the following GET request to fetch the conditions for an account.
+</p>
+<pre><code class="language-http" translate="No">GET /accounts/{accountID}/conditions</code></pre>
+<h5>API response</h5>
+<p>
+  Here is the response body.
+</p>
+<pre class="line-numbers"><code class="language-json" translate="No">[
+  {
+    &quot;name&quot;: &quot;string&quot;,
+    &quot;if&quot;: {
+      &quot;device_group&quot;: [
+        &quot;ipad&quot;
+      ],
+      &quot;request_country&quot;: [
+        &quot;string&quot;
+      ],
+      &quot;request_continent&quot;: [
+        &quot;AF&quot;
+      ]
+    },
+    &quot;then&quot;: [
+      &quot;string&quot;
+    ]
+  }
+]</code></pre>
+<br />
+
+<h4>Update Conditions</h4>
+<p>
+  Use the following PUT request to update the conditions for an account.
+</p>
+<pre class="line-numbers"><code class="language-http" translate="No">PUT /accounts/{accountID}/conditions
+  Content-Type: application/json
+  Authorization: Bearer {access_token}
+  Body: {conditions object}
+</code></pre>
+<!-- <p>
+  For a list of valid fields, see the <a href="#Request_body_for_conditions">Request body for conditions</a> section.
+</p> -->
+<h4 id="Request_body_for_conditions">Request body for conditions</h4>
+<p>
+  Here is the request body for conditions.
+</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  &quot;name&quot;: &quot;string&quot;,
+  &quot;if&quot;: {
+    &quot;device_group&quot;: [
+      &quot;ipad&quot;
+    ],
+    &quot;request_country&quot;: [
+      &quot;string&quot;
+    ],
+    &quot;request_continent&quot;: [
+      &quot;AF&quot;
+    ]
+  },
+  &quot;then&quot;: [
+    &quot;string&quot;
+  ]
+}</code></pre>
+<br />
+<p>
+  Here are the field details for conditions:
+</p>
+<table class="bcls-table">
+  <thead class="bcls-table__head">
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+    <tr>
+      <td><code translate="No">name</code></td>
+      <td>String</td>
+      <td>Unique identifier for the condition</td>
+    </tr>
+    <tr>
+      <td><code translate="No">device_group</code></td>
+      <td>String</td>
+      <td>Array of device types as detected by user-agent parsing</td>
+    </tr>
+    <tr>
+      <td><code translate="No">request_country</code></td>
+      <td>String</td>
+      <td>Array of two letter country codes</td>
+    </tr>
+    <tr>
+      <td><code translate="No">request_continent</code></td>
+      <td>String</td>
+      <td>Array of two letter continent codes</td>
+    </tr>
+    <tr>
+      <td><code translate="No">then</code></td>
+      <td>String</td>
+      <td>Unique identifier for the associated action</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Create an action</h4>
+<p>
+  Use the following POST request to create actions for an account.
+</p>
+<pre class="line-numbers"><code class="language-http" translate="No">POST /accounts/{accountID}/actions
+  Content-Type: application/json
+  Authorization: Bearer {access_token}
+  Body: {actions object}
+</code></pre>
+<!-- <p>
+  For a list of valid fields, see the <a href="#Request_body_for_actions">Request body for actions</a> section.
+</p> -->
+<h4 id="Request_body_for_actions">Request body for actions</h4>
+<p>
+  Here is the request body for actions.
+</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+    &quot;properties&quot;: {
+      &quot;min_video_bitrate&quot;: 0,
+      &quot;max_video_bitrate&quot;: 0,
+      &quot;first_video_bitrate&quot;: 0,
+      &quot;min_video_resolution&quot;: &quot;string&quot;,
+      &quot;max_video_resolution&quot;: &quot;string&quot;,
+      &quot;max_video_renditions&quot;: 0,
+      &quot;max_audio_renditions&quot;: 0,
+      &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
+      &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
+      &quot;video_codecs&quot;: [
+        &quot;string&quot;
+      ],
+      &quot;audio_codecs&quot;: [
+        &quot;string&quot;
+      ]
+  }
+}</code></pre>
+
+<h4 id="Response_body_for_actions">API response for actions</h4>
+<p>
+  Here is the request body for actions.
+</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+    &quot;id&quot;: &quot;string&quot;,
+    &quot;properties&quot;: {
+      &quot;min_video_bitrate&quot;: 0,
+      &quot;max_video_bitrate&quot;: 0,
+      &quot;first_video_bitrate&quot;: 0,
+      &quot;min_video_resolution&quot;: &quot;string&quot;,
+      &quot;max_video_resolution&quot;: &quot;string&quot;,
+      &quot;max_video_renditions&quot;: 0,
+      &quot;max_audio_renditions&quot;: 0,
+      &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
+      &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
+      &quot;video_codecs&quot;: [
+       &quot;string&quot;
+      ],
+      &quot;audio_codecs&quot;: [
+       &quot;string&quot;
+      ]
+  }
+}</code></pre>
+
+<p>
+  Here are the field details for actions:
+</p>
+<table class="bcls-table">
+  <thead class="bcls-table__head">
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+    <tr>
+      <td><code translate="No">id</code></td>
+      <td>String</td>
+       <td>A system generated unique identifier for the action. This is the <code translate="No">actionID</code> used in the update and delete methods.</td>
+    </tr>
+    <tr>
+      <td><code translate="No">properties</code></td>
+      <td>Object</td>
+      <td>An object of defined properties for a specific action</td>
+    </tr>
+    <tr>
+      <td><code translate="No">min_video_bitrate</code>, <br/>
+      <code translate="No">max_video_bitrate</code></td>
+      <td>Integer</td>
+      <td>Set the minimum or maximum allowed video bitrate</td>
+    </tr>
+    <tr>
+      <td><code translate="No">first_video_bitrate</code></td>
+      <td>Integer</td>
+      <td>Set the bitrate for the first video</td>
+    </tr>
+    <tr>
+      <td><code translate="No">min_video_resolution</code>, <br/><code translate="No">max_video_resolution</code></td>
+      <td>String</td>
+      <td>Set the minimum or maximum allowed video resolution</td>
+    </tr>
+    <tr>
+      <td><code translate="No">max_video_renditions</code></td>
+      <td>Integer</td>
+      <td>Set the maximum number of video renditions</td>
+    </tr>
+    <tr>
+      <td><code translate="No">max_audio_renditions</code></td>
+      <td>Integer</td>
+      <td>Set the maximum number of audio renditions</td>
+    </tr>
+    <tr>
+      <td><code translate="No">preferred_cdn_provider</code></td>
+      <td>String</td>
+      <td>Set the preferred CDN provider</td>
+    </tr>
+    <tr>
+      <td><code translate="No">preferred_cdn_domain</code></td>
+      <td>String</td>
+      <td>Set the preferred CDN domain</td>
+    </tr>
+    <tr>
+      <td><code translate="No">video_codecs</code></td>
+      <td>String</td>
+      <td>Array of video codecs</td>
+    </tr>
+    <tr>
+      <td><code translate="No">audio_codecs</code></td>
+      <td>String</td>
+      <td>Array of audio codecs</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Get Actions</h4>
+<p>
+  Use the following GET request to fetch the actions for an account.
+</p>
+<pre><code class="language-http" translate="No">GET /accounts/{accountID}/actions</code></pre>
+<h5>API Response</h5>
+<p>
+  See the <a href="#Response_body_for_actions">API response for actions</a>.
+</p>
+
+<h4>Get an Action</h4>
+<p>
+  Use the following GET request to fetch a specific action for an account.
+</p>
+<pre><code class="language-http" translate="No">GET /accounts/{accountID}/actions/{actionID}</code></pre>
+<h5>API Response</h5>
+<p>
+  See the <a href="#Response_body_for_actions">API response for actions</a>.
+</p>
+
+<h4>Update an Action</h4>
+<p>
+  Use the following PUT request to update an action for an account.
+</p>
+<pre class="line-numbers"><code class="language-http" translate="No">PUT /accounts/{accountID}/actions/{actionID}
+  Content-Type: application/json
+  Authorization: Bearer {access_token}
+  Body: {actions object}
+</code></pre>
+<h5>API Request</h5>
+<p>
+  See the <a href="#Request_body_for_actions">request body for actions</a>.
+</p>
+<h5>API Response</h5>
+<p>
+  See the <a href="#Response_body_for_actions">API response for actions</a>.
+</p>
+
+<h4>Delete an Action</h4>
+<p>
+  Use the following DELETE request to remove an action for an account.
+</p>
+<pre class="line-numbers"><code class="language-http" translate="No">DELETE /accounts/{accountID}/actions/{actionID}</code></pre>
+
+
+<!-- <p>
+  Here is an example of all of the fields you can include in the request body:
+</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  &quot;geo&quot;: {
+  &quot;allowed_countries&quot;: [
+    &quot;MX&quot;,
+    &quot;US&quot;
+  ],
+  &quot;blocked_countries&quot;: [
+    &quot;JP&quot;,
+    &quot;CN&quot;
+  ],
+  &quot;allowed_zip_codes&quot;: [
+    &quot;US-90210&quot;
+  ],
+  &quot;blocked_zip_codes&quot;: [
+    &quot;US-72810&quot;
+  ],
+  &quot;allowed_dmas&quot;: [
+    501
+  ],
+  &quot;blocked_dmas&quot;: [
+    803
+  ]
+},
+&quot;allowed_domains&quot;: [
+  &quot;www.google.com&quot;,
+  &quot;www.brightcove.com&quot;
+],
+&quot;blocked_domains&quot;: [
+  &quot;www.ooyala.com&quot;
+],
+&quot;start_time&quot;: 1572905011,
+&quot;end_time&quot;: 1672905011,
+&quot;allowed_ips&quot;: [
+  &quot;192.168.1.1&quot;
+],
+&quot;blocked_ips&quot;: [
+  &quot;192.168.1.1&quot;
+],
+&quot;allowed_days&quot;: [
+  &quot;mon&quot;,
+  &quot;tue&quot;
+],
+&quot;allowed_hours&quot;: [
+  &quot;5-6&quot;
+],
+&quot;allow_insecure&quot;: true,
+&quot;disabled&quot;: false,
+&quot;name&quot;: &quot;Optional playback right name&quot;
+}
+</code></pre> -->
+
+
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+
+<p>There are a few known limitations when using Delivery Rules:</p>
+<ul>
+  <!-- <li>
+    <strong>CDN Providers</strong> - A customer may only have one CDN configuration from a given provider. For instance, it will be possible to switch between Akamai and Cloudfront, but not between two separate Akamai configurations.
+  </li> -->
+  <li>
+    <strong>Media Content</strong> - Delivery Rules will not work with Smooth or pMP4 videos.
+  </li>
+  <li>
+    <strong>Audio Only</strong> - Delivery Rules with Server-Side Ads (SSAI) enabled require both video and audio content. This is an SSAI restriction.
+  </li>
+</ul>
+
 </section>
 
 </article>
@@ -1396,7 +2032,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 11 Sep 2020
+  Page last updated on 04 Dec 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
