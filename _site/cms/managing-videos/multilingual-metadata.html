@@ -1385,7 +1385,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </section>
     <section class="bcls-section">
         <h2 id="create_variant">Creating a variant</h2>
-          <p>Using the <span translate="No">CMS API</span> (<a href="/cms/references/reference.html#operation/createVideoVariant">Create a Video Variant</a>) you can add and manage an array of <code translate="No">variants</code> to provide an alternative <code translate="No">name</code>, <code translate="No">description</code>, <code translate="No">long_description</code>, and map of custom field/values specific to a language. for example:</p>
+          <p>Using the <span translate="No">CMS API</span> (<a href="/cms/references/reference.html#operation/createVideoVariant">Create a Video Variant</a>) you can add and manage an array of <code translate="No">variants</code> to provide an alternative <code translate="No">name</code>, <code translate="No">description</code>, <code translate="No">long_description</code>, and map of custom field/values specific to a language.</p>
+          <p>To create a variant, send a <code translate="No">POST</code> request to the endpoint:</p>
+<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}/</span>videos/<span class="bcls-input">{video_id}</span>/variants/</code></pre>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "language": "ja-JA",
   "name": "バーゼル：ライン川",
@@ -1410,7 +1412,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </section>
     <section class="bcls-section">
       <h2 id="Getting_variants">Getting variants</h2>
-      <p>You can get all the variants for a video using the request</p>
+      <h3>Get all variants</h3>
+      <p>You can get all the variants for a video by sending a <code translate="No">GET</code> request to the endpoint:</p>
       <pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/variants</code></pre>
       <details>
         <summary><h2>Sample response</h2></summary>
@@ -1440,8 +1443,59 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       "language": "Japanese"
     }
   }
-]</code></pre>
+  ]</code></pre>
+        </details>
+        <h3>Get a particular variant</h3>
+        <p>To get a particular variant, send a <code translate="No">GET</code> request to the endpoint:</p>
+<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/variants/<span class="bcls-input">{language<}/span></code></pre>
+        <p>Here <code translate="No">language</code> is the language code used in the variant, such as <samp translate="No">de-DE</samp>.</p>
+        <details>
+          <summary><h2>Sample response</h2></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "language": "de-DE",
+  "name": "Basel: Der Rhein",
+  "description": "Panoramablick auf den Rhein im Zentrum von Basel, Schweiz.",
+  "long_description": "Panoramablick auf den Rhein im Zentrum von Basel, Schweiz.",
+  "custom_fields": {
+  }
+}</code></pre>
+        </details>
+    </section>
+    <section class="bcls-section">
+      <h2 id="Update_variant">Updating a variant</h2>
+      <p>You can update a variant by sending a <code translate="No">PATCH</code> request to the endpoint:</p>
+  <pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/variants/<span class="bcls-input">{language<}/span></code></pre>
+      <p>Here <code translate="No">language</code> is the language code used in the variant, such as <samp translate="No">de-DE</samp>.</p>
+      <p>You only need to include the fields that are changing. The request body fields are the same as for creating a variant, except that <strong>you may <em>not</em> include the <code translate="No">language</code> field</strong>. (If you do include the <code translate="No">language field</code> a <code translate="No">VALIDATION_ERROR</code> will be returned.)</p>
+      <details>
+        <summary><h2>Sample request body</h2></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "name": "Basilea: el Rin",
+  "description": "Vista panorámica del Rin en el centro de Basilea, Suiza.",
+  "long_description": "Vista panorámica del Rin en el centro de Basilea, Suiza.",
+  "custom_fields": {
+    "language": "Spanish"
+ }
+}</code></pre>
       </details>
+      <details>
+        <summary><h2>Sample response</h2></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "language": "es-ES",
+  "name": "Basilea: el Rin",
+  "description": "Vista panorámica del Rin en el centro de Basilea, Suiza.",
+  "long_description": "Vista panorámica del Rin en el centro de Basilea, Suiza.",
+  "custom_fields": {
+    "language": "Spanish"
+  }
+}</code></pre>
+      </details>
+    </section>
+    <section class="bcls-section">
+      <h2 id="Delete_variant">Delete a variant</h2>
+      <p>To delete a variant, send a <code translate="No">DELETE</code> request to the endpoint:</p>
+<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/variants/<span class="bcls-input">{language<}/span></code></pre>
+      <p>Do not include a request body. A successful deletion, will return a <code translate="No">204 No Content</code> response.</p>
     </section>
     <section class="bcls-section">
         <h2 id="Images_and_text_tracks">Images and text tracks</h2>
@@ -1468,7 +1522,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 28 Sep 2020
+  Page last updated on 13 Dec 2020
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
