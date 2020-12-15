@@ -155,7 +155,7 @@ func main() {
 
 <details>
 <<summary>
-  h3 id="Example_using_node_js">Example using node.js</h3>
+  <h3 id="Example_using_node_js">Example using node.js</h3>
 </summary>
 <p>
   Example using node.js to generate the key pair:
@@ -275,7 +275,7 @@ console.log(&quot;Public key saved in &quot; + dir + &quot;/public_key.txt&quot;
 </code></pre>
 <details>
 <summary>
-  <h5 id="Using_Curl">Using Curl</h5>
+  <p id="Using_Curl">Using Curl</p>
 </summary>
   <pre class="line-numbers"><code class="language-curl">curl -X POST \
   -H &quot;Content-Type: application/json&quot; \
@@ -361,21 +361,19 @@ https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/keys
           <td>Time this token was issued, in seconds since the Epoch</td>
         </tr>
         <tr>
-          <td><code translate="No">ua</code></td>
-          <td>String</td>
-          <td></td>
-          <td>If present, this token will only be valid for requests from this User-Agent.
-            <br /><br />
-            This field is not validated.
-          </td>
-        </tr>
-        <tr>
           <td><code translate="No">conid</code></td>
           <td>String</td>
           <td></td>
           <td>If present, this token will only authorize license fetching for a specific Video Cloud video id.
             <br /><br />
             Must be a valid video id.
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">crt </code></td>
+          <td>String</td>
+          <td></td>
+          <td>Customer Rights Token used for DRM rights management (DRM Only).
           </td>
         </tr>
         <tr>
@@ -403,6 +401,15 @@ https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/keys
               </li>
             </ul>
               Required for session tracking.
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">ua</code></td>
+          <td>String</td>
+          <td></td>
+          <td>If present, this token will only be valid for requests from this User-Agent.
+            <br /><br />
+            This field is not validated.
           </td>
         </tr>
       </tbody>
@@ -451,6 +458,14 @@ https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/keys
               <td>Time this token was issued, in seconds since the Epoch</td>
             </tr>
             <tr>
+              <td><code translate="No">nbf</code></td>
+              <td>Integer</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>Time this token will begin being valid, in seconds since the Epoch</td>
+            </tr>
+            <tr>
               <td><code translate="No">pkid</code></td>
               <td>String</td>
               <td></td>
@@ -462,14 +477,6 @@ https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/keys
                 <br /><br />
                 If no <code translate="No">pkid</code> is specified, we retrieve all the keys for the account and try to validate against all of them.
               </td>
-            </tr>
-            <tr>
-              <td><code translate="No">nbf</code></td>
-              <td>Integer</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>Time this token will begin being valid, in seconds since the Epoch</td>
             </tr>
             <tr>
               <td><code translate="No">prid</code></td>
@@ -498,28 +505,17 @@ https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/keys
               <td></td>
               <td>If present, this token will only authorize license fetching for a set of video ids.</td>
             </tr>
-            <tr>
-              <td><code translate="No">uid</code></td>
+             <tr>
+              <td><code translate="No">cbeh</code></td>
               <td>String</td>
               <td></td>
               <td></td>
               <td>Yes</td>
-              <td>The user id of the end viewer. This field is used to correlate multiple sessions to enforce concurrent stream limits.
+              <td>Set the value to <code translate="No">BLOCK_NEW</code> to enable concurrent stream limits to block any new request when the maximum number of streams is reached.
                 <br /><br />
-            Device registration: Required
-              </td>
-            </tr>
-            <tr>
-              <td><code translate="No">sid</code></td>
-              <td>String</td>
-              <td></td>
-              <td></td>
-              <td>Yes</td>
-              <td>Specifying the Session ID of the current stream allows you to control how a session is defined. By default, a session is defined as User-Agent (browser) + IP address + video id.
+                The default blocks the oldest stream when the maximum number of streams is reached.
                 <br /><br />
-                  For example, you can loosen the definition of session to IP address + video id.
-                  <br /><br />
-            Concurrent stream limits: Optional
+          Concurrent stream limits: Optional
               </td>
             </tr>
             <tr>
@@ -531,19 +527,6 @@ https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/keys
               <td>Concurrency expiration of session - Defaults to 2 times the content duration or 15 minutes whichever is longer.
                 <br /><br />
                 This defines how long the session is valid, after which time the end viewer has to start a new session to continue playback. Example: <code translate="No">2h</code> or <code translate="No">42m</code>
-                <br /><br />
-          Concurrent stream limits: Optional
-              </td>
-            </tr>
-            <tr>
-              <td><code translate="No">cbeh</code></td>
-              <td>String</td>
-              <td></td>
-              <td></td>
-              <td>Yes</td>
-              <td>Set the value to <code translate="No">BLOCK_NEW</code> to enable concurrent stream limits to block any new request when the maximum number of streams is reached.
-                <br /><br />
-                The default blocks the oldest stream when the maximum number of streams is reached.
                 <br /><br />
           Concurrent stream limits: Optional
               </td>
@@ -572,6 +555,30 @@ https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/keys
                 Example: if value is set to <code translate="No">3</code>, the user can play on devices A, B, & C (all would be allowed). Trying to play on device D would be denied.
                 <br /><br />
                 If value is changed to <code translate="No">1</code>, the user can still play on all 3 devices A, B, & C, unless the devices are manually revoked by managing devices with the <a href="/playback-rights/references/reference.html#operation/GetDevices">Devices API</a>.
+                <br /><br />
+            Device registration: Required
+              </td>
+            </tr>
+            <tr>
+              <td><code translate="No">sid</code></td>
+              <td>String</td>
+              <td></td>
+              <td></td>
+              <td>Yes</td>
+              <td>Specifying the Session ID of the current stream allows you to control how a session is defined. By default, a session is defined as User-Agent (browser) + IP address + video id.
+                <br /><br />
+                  For example, you can loosen the definition of session to IP address + video id.
+                  <br /><br />
+            Concurrent stream limits: Optional
+              </td>
+            </tr>
+            <tr>
+              <td><code translate="No">uid</code></td>
+              <td>String</td>
+              <td></td>
+              <td></td>
+              <td>Yes</td>
+              <td>The user id of the end viewer. This field is used to correlate multiple sessions to enforce concurrent stream limits.
                 <br /><br />
             Device registration: Required
               </td>
