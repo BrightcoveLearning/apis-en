@@ -176,6 +176,12 @@ grandparent: Playback API
           <td>none</td>
           <td>The date-time a video was last modified;<sup class="once-red"><strong><a href="#note1-2">[1-2]</a></strong></sup> example: "2015-01-13T17:45:21.977Z"</td>
         </tr>
+        <tr>
+          <td><code translate="No"><a href="#variant">variants</a></code></td>
+          <td>Array</td>
+          <td>[]</td>
+          <td>An array of objects containing multilingual metadata for the videos</td>
+        </tr>
       </tbody>
     </table>
     
@@ -552,7 +558,7 @@ grandparent: Playback API
     </section>
     
     <section class="bcls-section">
-    <h2 id="key_systems_Object">key_systems Object</h2>
+    <h2 id="key_systems_Object"><code translate="No">key_systems</code> Object</h2>
     
     <p>The key_systems object contains a list of objects, one for each DRM key name. If this object is defined, then its source is content protected.</p>
     
@@ -609,6 +615,63 @@ grandparent: Playback API
         "license_url": "https://..."
       }
     },</code></pre>
+    </section>
+    <section class="bcls-section">
+      <h2 id="variant"><code translate="No">variant</code> object</h2>
+      <p>each <code translate="No">variant</code> contains a version of video metadata for a particular language.</p>
+      <table class="bcls-table">
+        <caption>Table 5: variant Object</caption>
+        <thead class="bcls-table__head">
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+          <tr>
+            <td><code translate="No">language</code></td>
+            <td>String</td>
+            <td>none</td>
+            <td>The language for the variant in the form language-COUNTRY, such as <samp translate="no">ja-JA</samp></td>
+          </tr>
+          <tr>
+            <td><code translate="No">name</code></td>
+            <td>String</td>
+            <td>none</td>
+            <td>The translated title</td>
+          </tr>
+          <tr>
+            <td><code translate="No">description</code></td>
+            <td>string</td>
+            <td>none</td>
+            <td>The translated description</td>
+          </tr>
+            <td><code translate="No">long_description</code></td>
+            <td>string</td>
+            <td>none</td>
+            <td>The translated long_description</td>
+          </tr>
+          <tr>
+            <td><code translate="No">custom_fields</code></td>
+            <td>object</td>
+            <td>{}</td>
+            <td>A map of key-value pairs for custom fields</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Example</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "language": "ja-JA",
+  "name": "バーゼル：ライン川",
+  "description": "スイス、バーゼルの中心部にあるライン川のパノラマビュー。",
+  "long_description": "スイス、バーゼルの中心部にあるライン川のパノラマビュー。",
+  "custom_fields": {
+    "language": "Japanese"
+  }
+}</code></pre>
+  
     </section>
     </article>
     
