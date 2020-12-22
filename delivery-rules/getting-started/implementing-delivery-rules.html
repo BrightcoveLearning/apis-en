@@ -199,6 +199,10 @@ grandparent: Delivery Rules API
 <p>
   The <a href="https://apis.support.brightcove.com/delivery-rules/references/reference.html">Delivery Rules API</a> allows you to define conditions and actions to control your media delivery.
 </p>
+<p>The <a href="#API_Response">response</a> from the Delivery Rules API contains a <code translate="No">conditions</code> array. This array allows you to create multiple <code translate="No">if</code> / <code translate="No">then</code> conditions where each <code>then</code> points to one or more <a href="#Response_body_for_actions">action ids</a>.</p>
+<p>Even though there are no methods to add or delete <code translate="No">conditions</code>, you can do this by updating the <code translate="No">conditions</code> array.</p>
+
+<!-- <aside class="bcls-aside bcls-aside--tip">Since each account has one conditions block, you will update the block to add or remove conditions.</aside> -->
 
 <h3>Base URL</h3>
 <p>
@@ -245,14 +249,14 @@ grandparent: Delivery Rules API
 </p>
 <pre><code class="language-http" translate="No">GET /accounts/{accountID}</code></pre>
 
-<h5>API Response</h5>
+<h5 id="API_Response">API Response</h5>
 <p>
   Here is the response body. Notice that Delivery Rules contain a set of conditions and a set of actions.
 </p>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   &quot;conditions&quot;: [
     {
-      &quot;name&quot;: &quot;string&quot;,
+      &quot;name&quot;: &quot;MyCondition1&quot;,
       &quot;if&quot;: {
         &quot;device_group&quot;: [
           &quot;ipad&quot;
@@ -265,13 +269,13 @@ grandparent: Delivery Rules API
         ]
       },
       &quot;then&quot;: [
-        &quot;string&quot;
+        &quot;MyAction1&quot;
       ]
     }
   ],
   &quot;actions&quot;: [
     {
-      &quot;id&quot;: &quot;string&quot;,
+      &quot;id&quot;: &quot;MyAction1&quot;,
       &quot;properties&quot;: {
         &quot;min_video_bitrate&quot;: 0,
         &quot;max_video_bitrate&quot;: 0,
@@ -305,7 +309,7 @@ grandparent: Delivery Rules API
 </p>
 <pre class="line-numbers"><code class="language-json" translate="No">[
   {
-    &quot;name&quot;: &quot;string&quot;,
+    &quot;name&quot;: &quot;MyCondition1&quot;,
     &quot;if&quot;: {
       &quot;device_group&quot;: [
         &quot;ipad&quot;
@@ -318,7 +322,7 @@ grandparent: Delivery Rules API
       ]
     },
     &quot;then&quot;: [
-      &quot;string&quot;
+      &quot;MyAction1&quot;
     ]
   }
 ]</code></pre>
@@ -341,7 +345,7 @@ grandparent: Delivery Rules API
   Here is the request body for conditions.
 </p>
 <pre class="line-numbers"><code class="language-json" translate="No">{
-  &quot;name&quot;: &quot;string&quot;,
+  &quot;name&quot;: &quot;MyCondition1&quot;,
   &quot;if&quot;: {
     &quot;device_group&quot;: [
       &quot;ipad&quot;
@@ -354,7 +358,7 @@ grandparent: Delivery Rules API
     ]
   },
   &quot;then&quot;: [
-    &quot;string&quot;
+    &quot;MyAction1&quot;
   ]
 }</code></pre>
 <br />
@@ -439,7 +443,7 @@ grandparent: Delivery Rules API
   Here is the request body for actions.
 </p>
 <pre class="line-numbers"><code class="language-json" translate="No">{
-    &quot;id&quot;: &quot;string&quot;,
+    &quot;id&quot;: &quot;MyAction1&quot;,
     &quot;properties&quot;: {
       &quot;min_video_bitrate&quot;: 0,
       &quot;max_video_bitrate&quot;: 0,
