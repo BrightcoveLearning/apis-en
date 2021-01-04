@@ -63,7 +63,7 @@ grandparent: Playback API
       Today, every playback through VideoCloud requires 2 API calls to start video playback. With the use of static URLs, you can reduce the number of API calls to just one.
     </p>
 
-    <p>The following diagram shows the API calls for video playback, without static URLs.</p>
+    <p>The following diagram shows the API calls for video playback WITHOUT static URLs.</p>
     <figure class="bcls-figure">
       <img class="bcls-image--no-border" width="800" src="/assets/images/playback/guides/current-playback-calls.png" alt="Video Cloud playback">
       <figcaption class="bcls-caption--image">Video Cloud playback</figcaption>
@@ -89,7 +89,7 @@ grandparent: Playback API
       </thead>
       <tbody class="bcls-table__body">
         <tr>
-          <td>Static URL support for VOD</td>
+          <td>Video-On-Demand (VOD)</td>
           <td>Supported video formats via Dynamic Delivery only:
             <ul>
               <li>
@@ -111,6 +111,10 @@ grandparent: Playback API
           </td>
         </tr>
         <tr>
+          <td>VOD assets</td>
+          <td>Thumbnails and poster images</td>
+        </tr>
+        <tr>
           <td>Authorization</td>
           <td>JSON Web Token (JWT)</td>
         </tr>
@@ -128,16 +132,27 @@ grandparent: Playback API
         </tr>
         <tr>
           <td>BYO CDN</td>
-          <td>Brightcove’s CDN will continue to deliver the manifest and sub-manifests.
-            <br /><br />
-            Customer's CDN will deliver only the video segments.
+          <td>
+            Brightcove’s CDN will continue to deliver the manifest and sub-manifests.
+            <p>Customer's CDN will deliver only the video segments.</p>
           </td>
         </tr>
         <tr>
           <td>Closed Captions</td>
           <td>Only in-manifest captions are currently supported.</td>
         </tr>
-
+        <tr>
+          <td>Live streams</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Playback Rights Service (EPA)</td>
+          <td>Contact your account manager for details.</td>
+        </tr>
+        <tr>
+          <td>Delivery Rules</td>
+          <td>VOD only</td>
+        </tr>
       </tbody>
     </table>
   </section>
@@ -154,14 +169,14 @@ grandparent: Playback API
         Video ID (or reference)
       </li>
       <li>
-        Delivery Type (HLS,Dash)
+        Delivery Type (HLS, Dash)
       </li>
       <li>
         Configuration options (SSAI, DRM, CDN, etc.)
       </li>
     </ul>
     <p>
-      These URLs are secured using a customer generated and signed <span translate="No">JSON Web Token</span> (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a <span translate="No">JSON Web Token</span></a> section.
+      Static URLs are secured using a customer-generated and signed <span translate="No">JSON Web Token</span> (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a <span translate="No">JSON Web Token</span></a> section.
     </p>
     <!-- <p>
       For manifests & VMAPs, the response will be returned directly. For MP4s it will 302 to the right CDN URL. DRM is not necessary to include here. This is controlled by flags on the account & video themselves. You  can use a claim in the JWT, if necessary, to switch between DRM types on the fly.
@@ -273,7 +288,7 @@ grandparent: Playback API
 
   <section class="bcls-section">
     <h2 id="Notes">Notes</h2>
-    <p>The following notes apply to Static URL Delivery.</p>
+    <p>The following notes apply to Static URL Delivery:</p>
     <ul>
       <li>
         In-Manifest captions are supported. Out-of-band sidecar captions will be supported in a future release.
@@ -282,7 +297,7 @@ grandparent: Playback API
         The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest and sub-manifests.
       </li>
       <li>
-        Brightcove does support using a JWT that does not expire. To do this, do not include the <code translate="No">exp</code> claim when creating your token.
+        Brightcove supports using a JWT that does not expire. To do this, exclude the <code translate="No">exp</code> claim when creating your token.
       </li>
     </ul>
   </section>
