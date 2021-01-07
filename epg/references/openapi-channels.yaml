@@ -3,9 +3,9 @@ x-bc-implicit-head: true
 x-bc-implicit-options: true
 x-bc-upstream: 'http://backend_server'
 info:
-  title: EPG API Reference
+  title: Channel API Reference
   description: |-
-    Reference for the Brightcove Channels API, used to retrieve a list of Cloud Playout channels created in Studio - see [Using Cloud Playout to Stream VOD Videos](https://studio.support.brightcove.com/general/cloud-playout-stream-vod.html) for details on how to create a channel.
+    Reference for the Brightcove Channels API, used to retrieve a list of Cloud Playout channels created in Studio - see [Using Cloud Playout to Stream VOD Videos](https://studio.support.brightcove.com/cloud-playout/index.html) for details on how to create a channel.
 
     For additional information on the API, see the **[Overview: EPG API](/epg/getting-started/overview-epg-api.html)**.
 
@@ -27,7 +27,7 @@ paths:
         - Channels
       summary: Get a list of Cloud Playout channels for the account
       description: |-
-        'RGet a list of Cloud Playout channels for the account'
+        'Get a list of Cloud Playout channels for the account'
       operationId: GetChannels
       security:
         - BC_OAuth2:
@@ -90,7 +90,85 @@ components:
     GetChannelsResponse:
       title: Channels Response
       description: The list of channels
-      type: array
+      type: object
+      properties:
+        items:
+          type: array
+          description: Array of channel objects
+          items:
+            $ref: '#/components/schemas/Channel'
+    Channel:
+      title: Channel
+      description: Object containing channel properties
+      type: object
+      properties:
+        public_id:
+          type: string
+          description: The channel id
+          example: '852a98d41fce46be9e0ab203bab2e2a2'
+        name:
+          type: string
+          description: The channel name
+          example: 'Channel-3'
+        description:
+          type: string
+          description: The channel description
+          example: 'A sample channel'
+        account_id:
+          type: string
+          description: The Video Cloud account id
+          example: '1752604059001'
+        state:
+          type: string
+          description: |-
+            The current state of the channel. 
+            - DRAFT - Channel has been created but not activated
+            - CREATING - Channel is in the process of being activated
+            - SCHEDULED - Channel is active and ready to stream
+            - STARTING - Channel starting process to begin streaming
+            - RUNNING - Channel is actively streaming
+            - STOPPING - Channel streaming is stopping
+            - IDLE - Channel successfully ran and has been stopped
+            - DELETING - Channel is being deleted
+            - ERROR - An error occurred while creating or streaming the channel
+          example: 'RUNNING'
+          enum:
+            - DRAFT
+            - CREATING
+            - SCHEDULED
+            - STARTING
+            - RUNNING
+            - STOPPING
+            - IDLE
+            - DELETING
+            - ERROR
+        status:
+          type: string
+          description: |-
+            The current status of the channel. 
+            - null - Channel has been created but not activated
+            - Channel started - Channel is playing
+            - Channel stopped - Channel has been stopped
+          example: 'Channel started'
+          enum:
+            - null
+            - Channel started
+            - Channel stopped
+            - Scheduled for start
+        start_time:
+          type: string
+          description: UTC date-time stamp for when the channel started playing, or is scheduled to start
+          example: '2021-01-02 15:01:33 UTC'
+        stop_time:
+          type: string
+          description: >-
+            UTC date-time stamp for when the channel stopped playing, or is scheduled to stop; will be null if the channel has not been stopped and has no scheduled stop date-time
+          example: '2021-01-06 05:00:44 UTC'
+        input_groups:
+          type: string
+          description: >-
+            UTC date-time stamp for when the channel stopped playing, or is scheduled to stop; will be null if the channel has not been stopped and has no scheduled stop date-time
+          example: '2021-01-06 05:00:44 UTC'
   securitySchemes:
     BC_OAuth2:
       type: oauth2
