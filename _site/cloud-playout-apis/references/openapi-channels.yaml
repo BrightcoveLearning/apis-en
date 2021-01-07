@@ -62,7 +62,7 @@ paths:
         '200':
           description: '200'
           content:
-            text/xml:
+            application/json:
               schema:
                 $ref: '#/components/schemas/GetChannelsResponse'
         '400':
@@ -167,7 +167,114 @@ components:
         input_groups:
           type: string
           description: >-
-            UTC date-time stamp for when the channel stopped playing, or is scheduled to stop; will be null if the channel has not been stopped and has no scheduled stop date-time
+            Colon-separated values indicating the kind of inputs
+          example: 'slate:rtmp:playlist'
+        output_groups:
+          type: string
+          description: >-
+            Colon-separated values indicating the kind of outputs
+          example: 's3:rtp'
+        loop_playlist:
+          type: boolean
+          description: >-
+            Whether the channel loops or plays once
+          example: 'true'
+        playlist_id:
+          type: string
+          description: >-
+            ID for the playlist generated for the channel
+          example: '1688165757958954323'
+        channel_class:
+          type: string
+          description: >-
+            Type of channel - for internal Brightcove use only
+          example: 'single-pipeline'
+        ssai_enabled:
+          type: boolean
+          description: >-
+            Whether the channel is enabled for server-side ad insertion
+          example: 'true'
+        aws_region:
+          type: string
+          description: >-
+            AWS region to host the output
+            - us-east-1 (Virginia)
+            - us-east-2 (Ohio)
+            - us-west-1 (Oregon)
+            - ap-south-1 (Mumbai)
+            - ap-northeast-2 (Seoul)
+            - ap-southeast-1 (Singapore)
+            - ap-southeast-2 (Sydney)
+            - ap-northeast-1 (Tokyo)
+            - eu-central-1 (Frankfurt)
+            - eu-west-1 (Ireland)
+            - eu-west-2 (London)
+            - eu-west-3 (Paris)
+            - eu-north-1 (Stockholm)
+            - sa-east-1 (São Paulo)
+          enum:
+            - us-east-1
+            - us-east-2
+            - us-west-1
+            - ap-south-1
+            - ap-northeast-2
+            - ap-southeast-1
+            - ap-southeast-2
+            - ap-northeast-1
+            - eu-central-1
+            - eu-west-1
+            - eu-west-2
+            - eu-west-3
+            - eu-north-1
+            - sa-east-1
+          example: 'us-east-1'
+        message:
+          type: string
+          description: For internal Brightcove use
+        created_at:
+          type: string
+          description: UTC date-time stamp for when the channel was created
+          example: '2021-01-02 15:01:33 UTC'
+        updated_at:
+          type: string
+          description: >-
+            UTC date-time stamp for when the channel was last modified
+          example: '2021-01-06 05:00:44 UTC'
+        image_url:
+          type: string
+          description: >-
+            URL for the channel image
+          example: 'https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png'
+        output_destinations:
+          type: array
+          description: Array of output destinations
+          items:
+            type: string
+            description: An output destination
+            enum:
+            - Brightcove Live
+            - RTMP
+            - S3
+          example: "output_destinations"\: [
+            "Brightcove Live"
+          ]
+        channel_created_at:
+          type: string
+          description: UTC date-time stamp for when the channel was created
+          example: '2021-01-02 15:01:33 UTC'
+        channel_updated_at:
+          type: string
+          description: >-
+            UTC date-time stamp for when the channel was last modified
+          example: '2021-01-06 05:00:44 UTC'
+        channel_created_by:
+          type: string
+          description: email address of the user who created the channel
+          example: '2021-01-02 15:01:33 UTC'
+        channel_updated_by:
+          type: string
+          description: >-
+            UTC date-time stamp for when the channel was last modified
           example: '2021-01-06 05:00:44 UTC'
   securitySchemes:
     BC_OAuth2:

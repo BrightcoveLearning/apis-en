@@ -3,25 +3,15 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In this topic, you will learn how to implement Brightcove's Delivery Rules, which enable you to customize how your media is delivered to meet your business objectives.">
+  <meta name="description" content="The Channel API is used to get information about Cloud Playout channels.">
   
-  <title>Implementing Delivery Rules</title>
+  <title>Overview: Channel API</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">  
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-ultra.eot" type="font/eot">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-ultra.woff" type="font/woff">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-super.eot" type="font/eot">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-super.woff" type="font/woff">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-black.eot" type="font/eot">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-black.woff" type="font/woff">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-bold.eot" type="font/eot">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-bold.woff" type="font/woff">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-medium.eot" type="font/eot">
-  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-medium.woff" type="font/woff">
-  <link data-react-helmet="true" rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/prism.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/styles.css">
@@ -138,9 +128,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/delivery-rules/getting-started/">Getting started</a></li>
+      <li class="breadcrumb-item"><a href="/cloud-playout-apis/getting-started/">Getting Started</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Implementing Delivery Rules</li>
+      <li class="breadcrumb-item active" aria-current="page">Overview: Channel API</li>
     </ol>
   </nav>
 </header>
@@ -1375,662 +1365,148 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Implementing Delivery Rules</h1>
+<h1>Overview: Channel API</h1>
 <article class="bcls-article">
-  <summary>In this topic, you will learn how to implement Brightcove's Delivery Rules, which enable you to customize how your media is delivered to meet your business objectives.</summary>
+  <summary>The Channel API is used to get information about Cloud Playout channels.</summary>
+  <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+    <p>The Channel API allows you to retrieve information about your Cloud Playout channels. Most of this information is also available in Studio. Cloud Playout channels are created in Studio - see <a href="https://studio.support.brightcove.com/cloud-playout/index.html">Using Cloud Playout to Stream VOD Videos</a> for details.</p>
+    <aside class="bcls-aside bcls-aside--information language-editable">This feature is currently in Limited Availability. Contact your Brightcove Account Manager for more information.</aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="authentication">Authentication</h2>
+    <p>The Channel API uses the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth system</a> to authenticate requests through an access token that is passed in an authorization header with the request:</p>
+    <pre><code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">{access token}</span></code></pre>
+    <p>Access tokens are retrieved using the OAuth API - see <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a> for details. You will also need client credentials to authenticate the requests for access tokens. These can be created in the Admin section of Studio - see <a href="/general/managing-api-authentication-credentials.html">Managing API Credentials</a>. The permissions your credentials will need for the EPG API are:</p>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/epg/api-permissions.png" alt="EPG API Permissions">
+      <figcaption class="bcls-caption--image">EPG API Permissions</figcaption>
+    </figure>
+  </section>
+  <section class="bcls-section">
+    <h2 id="api_url">API URLs</h2>
+    <h3>Get all <a href="https://studio.support.brightcove.com/cloud-playout/index.html">Cloud Playout</a> channels</h3>
+    <p>The following endpoint can be used to get a list of all Cloud Playout channels for an account:</p>
+    <pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/cp_channels</code></pre>
+    <p>The <code translate="No">account_id</code> is the Video Cloud account id.</p>
+    <h3>Get an EPG</h3>
+    <p>The URL for the EPG API request is:</p>
+    <pre><code class="language-http" translate="No">https://sm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/channels/<span class="bcls-input">{channel_id}</span>/epg</code></pre>
+    <p>The <code translate="No">account_id</code> is the Video Cloud account id, and the <code translate="No">channel_id</code> is the id for the channel created in Studio.</p>
+    <p>The Channel's ID can be found in the responce to the request to get all Cloud Playout channels, or in the browser URL when you are in the Channel view of the Cloud Playout section of Studio:</p>
+    <pre><code class="language-http" translate="No">https://studio.brightcove.com/products/videocloud/cloudplayout/channel/<span class="bcls-highlight">2c73c2112f794e6eb80be1284a495674</span></code></pre>
 
-<section class="bcls-section">
-<h2 id="Overview">Overview</h2>
+  </section>
+  <section class="bcls-section">
+    <h2 id="request_parameters">Request parameters</h2>
+    <p>The following optional query parameters can be added to the EPG request:</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">EPG API Query Params</caption>
+      <thead class="bcls-table__head">
+          <tr>
+              <th>Parameter</th>
+              <th>Default Value</th>
+              <th>Description</th>
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+          <tr>
+              <td><code translate="No">start</code></td>
+              <td><samp translate="No">(14 days prior to now)</samp></td>
+              <td>The date-time from which the EPG responses can be queried and returned in ISO 8601 Date format</td>
+          </tr>
+          <tr>
+              <td><code translate="No">end</code></td>
+              <td><samp translate="No">(now - the current date-time)</samp></td>
+              <td>The date-time until which the EPG responses can be queried and returned in ISO 8601 Date format</td>
+          </tr>
+          <tr>
+              <td><code translate="No">limit</code></td>
+              <td><samp translate="No">(all programs)</samp></td>
+              <td>An integer value that controls the number of programmes returned in one request</td>
+          </tr>
+          <tr>
+              <td><code translate="No">include_ads</code></td>
+              <td><samp translate="No">false</samp></td>
+              <td>Set this to true to include ads in the response</td>
+          </tr>
+      </tbody>
+    </table>
+    <h3>Notes</h3>
+    <ol>
+      <li>The <code translate="No">start</code>/<code translate="No">end</code> window cannot exceed 14 days. Start can be 14 days behind from current date-time to query historic EPG. You can also future EPG data for up to 14 days from the current date-time.</li>
+      <li>If the difference between the end time and start time is greater than 14 days, then the API generates only 14 days from the time time requested to end time or 14 days, whichever is earlier.</li>
 
-<p>Publishers often need to modify the content characteristics of their media manifests for both technical and business reasons. To meet these needs, Brightcove has created a framework where rules can be applied that will modify the contents of the manifest returned from Dynamic Delivery.</p>
-
-<p>Delivery Rules are made up of conditions and actions.</p>
-<ul>
-  <li>
-    <strong>Conditions</strong> - "If" conditions that trigger a certain action
-  </li>
-  <li>
-    <strong>Actions</strong> - "Then" parameters that define how the manifest is modified
-  </li>
-</ul>
-<p>For more details about Delivery Rules, see the following:</p>
-<ul>
-  <li>
-    <a href="/delivery-rules/getting-started/overview-delivery-rules.html">Overview: Delivery Rules</a>
-  </li>
-  <li>
-    <a href="https://player.support.brightcove.com/playback/using-delivery-rules-with-bcp.html">Using Delivery Rules with Brightcove Player</a>
-  </li>
-  <li>
-    <a href="https://sdks.support.brightcove.com/features/using-delivery-rules-with-sdks.html">Using Delivery Rules with the Native SDKs</a>
-  </li>
-</ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="Account_setup">Account setup</h2>
-
-<p>Contact your account manager to learn about pricing and enable this feature for your account.</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="Applying_rules">Applying rules</h2>
-
-<p>The following flow diagram shows how delivery rules are applied.</p>
-<figure class="bcls-figure">
-  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/delivery-rules/rules-diagram.png" alt="Delivery rules applied">
-  <figcaption class="bcls-caption--image">Delivery rules applied</figcaption>
-</figure>
-</section>
-
-<section class="bcls-section">
-<h2 id="Conditions">Conditions</h2>
-
-<p>The "if" conditions, supported in the first phase include the following:</p>
-
-<ul>
-  <li>
-    <p>
-      <strong>Explicit Request</strong> - A configuration ID is the id of an action that you have created. You will use this id to pass to the Playback API at runtime. This id is mapped to configuration values that allow underlying services to make decisions leveraged by the Playback API to return the appropriate response data.
-    </p>
-  </li>
-  <li>
-    <strong>Device Group</strong> - Device type as detected by user-agent parsing. The groups currently supported include:
-    <ul>
+      <li>Both <code translate="No">start</code> and <code translate="No">end</code> can accept date-time values with and without timezone offsets - if no timezone offset is included, UTC is assumed.</li>
       <li>
-        android
+        Both <code translate="No">start</code> and <code translate="No">end</code> must be URI-encoded:
+        <table class="bcls-table">
+          <caption class="bcls-caption--table">URI Encoding</caption>
+          <thead class="bcls-table__head">
+              <tr>
+                  <th>ISO 8601 Sample</th>
+                  <th>URI-Encoded</th>
+              </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+              <tr>
+                  <td><code translate="No">2020-07-24 15:30:00</code></td>
+                  <td><code translate="No">2020-07-24<span class="bcls-highlight">%20</span>15<span class="bcls-highlight">%3A</span>30<span class="bcls-highlight">%3A</span>00</code></td>
+              </tr>
+              <tr>
+                  <td><code translate="No">2020-07-24 15:30:00 +0530</code></td>
+                  <td><code translate="No">2020-07-24<span class="bcls-highlight">%20</span>15<span class="bcls-highlight">%3A</span>30<span class="bcls-highlight">%3A</span>00<span class="bcls-highlight">%20%2B</span>0530</code></td>
+              </tr>
+          </tbody>
+      </table>
       </li>
+    </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Sample_response">Sample response</h2>
+    <p>Below is a sample response from the API:</p>
+<pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+  &lt;tv source-info-name="Cloudplayout Schedules" source-info-url="http://www.cloudplayout.qa.brightcove.com"&gt;
+      &lt;channel id="8732bb664063401691ef95d1a813b954"&gt;
+          &lt;display-name&gt;onetwo&lt;/display-name&gt;
+          &lt;icon src="https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"/&gt;
+      &lt;/channel&gt;
+      &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024628" stop="20200730024638"&gt;
+          &lt;title&gt;ccsample10s_d10&lt;/title&gt;
+          &lt;length unit="seconds"&gt;10.077&lt;/length&gt;
+          &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/5739d822-eb06-43e3-add8-3c5af6b27821/main/1280x720/5s38ms/match/image.jpg"/&gt;
+          &lt;category&gt;video&lt;/category&gt;
+          &lt;keyword&gt;6176109299001:1&lt;/keyword&gt;
+      &lt;/programme&gt;
+      &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024723" stop="20200730024733"&gt;
+          &lt;title&gt;frozen2&lt;/title&gt;
+          &lt;length unit="seconds"&gt;10.069&lt;/length&gt;
+          &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/84bb134d-1aba-4d73-a0e9-7ed3d5bb962f/main/1280x720/5s34ms/match/image.jpg"/&gt;
+          &lt;category&gt;video&lt;/category&gt;
+          &lt;keyword&gt;6162613467001:2&lt;/keyword&gt;
+      &lt;/programme&gt;
+  &lt;/tv&gt;</code></pre>
+    <h3>Notes</h3>
+    <ol>
+      <li>The start and end timestamps are in UTC time.</li>
+      <li>The <code translate="No">category</code> and <code translate="No">keyword</code> entries are for internal purposes.</li>
+    </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="limitations">limitations</h2>
+    <ol>
+      <li>The EPG is generated on best effort / close to accurate.</li>
+      <li>When the EPG is initially constructed from the playlist, there may be a start time error as the Cloud Playout takes some time to initiate the switching.</li>
       <li>
-        appletv
+        EPG may not be consistent for every retrieval when the playlist is modified, because it is constructed dynamically based on the current information it holds. Some actions that will alter the EPG include reordering the playlist or adding/deleting assets in the playlist.
       </li>
-      <li>
-        ipad
-      </li>
-      <li>
-        iphone
-      </li>
-      <li>
-        desktop-chrome
-      </li>
-      <li>
-        desktop-firefox
-      </li>
-      <li>
-        desktop-safari
-      </li>
-      <li>
-        fetchtv
-      </li>
-      <li>
-        ios-other
-      </li>
-      <li>
-        roku-7/8
-      </li>
-      <li>
-        smartphone-generic
-      </li>
-      <li>
-        tablet-android
-      </li>
-      <li>
-        tablet-kindle
-      </li>
-      <li>
-        unknown
-      </li>
-    </ul>
-    &nbsp;
-  </li>
-  <li>
-    <strong>Geography</strong> - Physical location of the requesting device:
-    <ul>
-      <li>
-        Continent
-      </li>
-      <li>
-        Country
-      </li>
-    </ul>
-  </li>
-</ul>
-
-</section>
-
-<section class="bcls-section">
-<h2 id="Actions">Actions</h2>
-
-<p>The actions, or "then" parameters, supported in the first phase include the following:</p>
-
-<ul>
-  <li>
-    <p>
-        <strong>Media Delivery CDN</strong> - From the CDNs configured for use within a given Dynamic Delivery account, the CDN to use for delivery of media segments.
-    </p>
-  </li>
-  <li>
-    <strong>Rendition Characteristics</strong> - Filters based on characteristics of the underlying media renditions. These include:
-    <ul>
-      <li>
-        Minimum video bitrate
-      </li>
-      <li>
-        Maximum video bitrate
-      </li>
-      <li>
-        Minimum video resolution
-      </li>
-      <li>
-        Maximum video resolution
-      </li>
-      <li>
-        Maximum number of audio renditions
-      </li>
-      <li>
-        Maximum number of video renditions
-      </li>
-      <li>
-        First video bitrate
-      </li>
-      <li>
-        Discontinuities
-      </li>
-    </ul>
-  </li>
-</ul>
-
-</section>
-
-<section class="bcls-section">
-<h2 id="Scope">Scope</h2>
-
-<p>Actions can be applied at two levels:</p>
-<ul>
-  <li>
-    <strong>Account</strong> - Actions that apply to all requests made to a specific customer's account
-  </li>
-  <li>
-    <strong>Specific Request</strong> - Actions that are invoked on a specific request
-  </li>
-</ul>
-
-<p>
-  Actions will be applied in the order listed above. Later actions will override earlier ones.
-</p>
-
-</section>
-
-<section class="bcls-section">
-<h2 id="Defining_rules">Defining rules</h2>
-
-<p>Use the Delivery Rules API to customize media delivery.</p>
-
-<h3 id="Delivery_Rules_API">Delivery Rules API</h3>
-<p>
-  The <a href="https://apis.support.brightcove.com/delivery-rules/references/reference.html">Delivery Rules API</a> allows you to define conditions and actions to control your media delivery.
-</p>
-<p>The <a href="#API_Response">response</a> from the Delivery Rules API contains a <code translate="No">conditions</code> array. This array allows you to create multiple <code translate="No">if</code> / <code translate="No">then</code> conditions where each <code>then</code> points to one or more <a href="#Response_body_for_actions">action ids</a>.</p>
-<p>Even though there are no methods to add or delete <code translate="No">conditions</code>, you can do this by updating the <code translate="No">conditions</code> array.</p>
-
-<!-- <aside class="bcls-aside bcls-aside--tip">Since each account has one conditions block, you will update the block to add or remove conditions.</aside> -->
-
-<h3>Base URL</h3>
-<p>
-  The base URL for the API is:
-</p>
-<pre><code class="language-http" translate="No">https://delivery-rules.api.brightcove.com</code></pre>
-
-<h3>Account path</h3>
-<p>
-  In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
-</p>
-<pre><code class="language-http" translate="No">https://delivery-rules.api.brightcove.com/accounts/{accountID}</code></pre>
-
-<h3>Authorization</h3>
-<p>
-  An access token for requests is required and must be present in the Authorization header::
-</p>
-<pre><code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
-<p>
-  The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="https://apis.support.brightcove.com/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
-</p>
-
-<h3>Permissions</h3>
-<p>
-  Requests to the Playback Rights API must be made from <a href="/oauth/getting-started/overview-oauth-api-v4.html">client credentials</a> with the following permissions:
-</p>
-<ul>
-  <li>
-    <code translate="No">video-cloud/delivery-rules/read</code>
-  </li>
-  <li>
-    <code translate="No">video-cloud/delivery-rules/all</code>
-  </li>
-</ul>
-
-<h3>Manage rules</h3>
-<p>
-  The Delivery Rules API supports the following requests. For API details, see the <a href="https://apis.support.brightcove.com/delivery-rules/references/reference.html">Delivery Rules API Reference</a>.
-</p>
-
-<h4>Get Delivery Rules</h4>
-<p>
-  Use the following GET request to fetch the latest version of Delivery Rules for an account.
-</p>
-<pre><code class="language-http" translate="No">GET /accounts/{accountID}</code></pre>
-
-<h5 id="API_Response">API Response</h5>
-<p>
-  Here is the response body. Notice that Delivery Rules contain a set of conditions and a set of actions.
-</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  &quot;conditions&quot;: [
-    {
-      &quot;name&quot;: &quot;MyCondition1&quot;,
-      &quot;if&quot;: {
-        &quot;device_group&quot;: [
-          &quot;ipad&quot;
-        ],
-        &quot;request_country&quot;: [
-          &quot;string&quot;
-        ],
-        &quot;request_continent&quot;: [
-          &quot;AF&quot;
-        ]
-      },
-      &quot;then&quot;: [
-        &quot;MyAction1&quot;
-      ]
-    }
-  ],
-  &quot;actions&quot;: [
-    {
-      &quot;id&quot;: &quot;MyAction1&quot;,
-      &quot;properties&quot;: {
-        &quot;min_video_bitrate&quot;: 0,
-        &quot;max_video_bitrate&quot;: 0,
-        &quot;first_video_bitrate&quot;: 0,
-        &quot;min_video_resolution&quot;: &quot;string&quot;,
-        &quot;max_video_resolution&quot;: &quot;string&quot;,
-        &quot;max_video_renditions&quot;: 0,
-        &quot;max_audio_renditions&quot;: 0,
-        &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
-        &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
-      &quot;video_codecs&quot;: [
-        &quot;string&quot;
-      ],
-      &quot;audio_codecs&quot;: [
-        &quot;string&quot;
-      ]
-    }
-    }
-  ]
-}</code></pre>
-<br />
-
-<h4>Get Conditions</h4>
-<p>
-  Use the following GET request to fetch the conditions for an account.
-</p>
-<pre><code class="language-http" translate="No">GET /accounts/{accountID}/conditions</code></pre>
-<h5>API response</h5>
-<p>
-  Here is the response body.
-</p>
-<pre class="line-numbers"><code class="language-json" translate="No">[
-  {
-    &quot;name&quot;: &quot;MyCondition1&quot;,
-    &quot;if&quot;: {
-      &quot;device_group&quot;: [
-        &quot;ipad&quot;
-      ],
-      &quot;request_country&quot;: [
-        &quot;string&quot;
-      ],
-      &quot;request_continent&quot;: [
-        &quot;AF&quot;
-      ]
-    },
-    &quot;then&quot;: [
-      &quot;MyAction1&quot;
-    ]
-  }
-]</code></pre>
-<br />
-
-<h4>Update Conditions</h4>
-<p>
-  Use the following PUT request to update the conditions for an account.
-</p>
-<pre class="line-numbers"><code class="language-http" translate="No">PUT /accounts/{accountID}/conditions
-  Content-Type: application/json
-  Authorization: Bearer {access_token}
-  Body: {conditions object}
-</code></pre>
-<!-- <p>
-  For a list of valid fields, see the <a href="#Request_body_for_conditions">Request body for conditions</a> section.
-</p> -->
-<h4 id="Request_body_for_conditions">Request body for conditions</h4>
-<p>
-  Here is the request body for conditions. Notice that this is an array of condition objects.
-</p>
-<pre class="line-numbers"><code class="language-json" translate="No">[
-  {
-    &quot;name&quot;: &quot;MyCondition1&quot;,
-    &quot;if&quot;: {
-      &quot;device_group&quot;: [
-        &quot;ipad&quot;
-      ],
-      &quot;request_country&quot;: [
-        &quot;string&quot;
-      ],
-      &quot;request_continent&quot;: [
-        &quot;AF&quot;
-      ]
-    },
-    &quot;then&quot;: [
-      &quot;MyAction1&quot;
-    ]
-  }
-]</code></pre>
-<br />
-<p>
-  Here are the field details for conditions:
-</p>
-<table class="bcls-table">
-  <thead class="bcls-table__head">
-    <tr>
-      <th>Field</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody class="bcls-table__body">
-    <tr>
-      <td><code translate="No">name</code></td>
-      <td>String</td>
-      <td>Unique identifier for the condition</td>
-    </tr>
-    <tr>
-      <td><code translate="No">device_group</code></td>
-      <td>String</td>
-      <td>Array of device types as detected by user-agent parsing</td>
-    </tr>
-    <tr>
-      <td><code translate="No">request_country</code></td>
-      <td>String</td>
-      <td>Array of two letter country codes</td>
-    </tr>
-    <tr>
-      <td><code translate="No">request_continent</code></td>
-      <td>String</td>
-      <td>Array of two letter continent codes</td>
-    </tr>
-    <tr>
-      <td><code translate="No">then</code></td>
-      <td>String</td>
-      <td>Unique identifier for the associated action</td>
-    </tr>
-  </tbody>
-</table>
-
-<h4>Create an action</h4>
-<p>
-  Use the following POST request to create actions for an account.
-</p>
-<pre class="line-numbers"><code class="language-http" translate="No">POST /accounts/{accountID}/actions
-  Content-Type: application/json
-  Authorization: Bearer {access_token}
-  Body: {actions object}
-</code></pre>
-<!-- <p>
-  For a list of valid fields, see the <a href="#Request_body_for_actions">Request body for actions</a> section.
-</p> -->
-<h4 id="Request_body_for_actions">Request body for actions</h4>
-<p>
-  Here is the request body for actions.
-</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-    &quot;properties&quot;: {
-      &quot;min_video_bitrate&quot;: 0,
-      &quot;max_video_bitrate&quot;: 0,
-      &quot;first_video_bitrate&quot;: 0,
-      &quot;min_video_resolution&quot;: &quot;string&quot;,
-      &quot;max_video_resolution&quot;: &quot;string&quot;,
-      &quot;max_video_renditions&quot;: 0,
-      &quot;max_audio_renditions&quot;: 0,
-      &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
-      &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
-      &quot;video_codecs&quot;: [
-        &quot;string&quot;
-      ],
-      &quot;audio_codecs&quot;: [
-        &quot;string&quot;
-      ]
-  }
-}</code></pre>
-
-<h4 id="Response_body_for_actions">API response for actions</h4>
-<p>
-  Here is the request body for actions.
-</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-    &quot;id&quot;: &quot;MyAction1&quot;,
-    &quot;properties&quot;: {
-      &quot;min_video_bitrate&quot;: 0,
-      &quot;max_video_bitrate&quot;: 0,
-      &quot;first_video_bitrate&quot;: 0,
-      &quot;min_video_resolution&quot;: &quot;string&quot;,
-      &quot;max_video_resolution&quot;: &quot;string&quot;,
-      &quot;max_video_renditions&quot;: 0,
-      &quot;max_audio_renditions&quot;: 0,
-      &quot;preferred_cdn_provider&quot;: &quot;string&quot;,
-      &quot;preferred_cdn_domain&quot;: &quot;string&quot;,
-      &quot;video_codecs&quot;: [
-       &quot;string&quot;
-      ],
-      &quot;audio_codecs&quot;: [
-       &quot;string&quot;
-      ]
-  }
-}</code></pre>
-
-<p>
-  Here are the field details for actions:
-</p>
-<table class="bcls-table">
-  <thead class="bcls-table__head">
-    <tr>
-      <th>Field</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody class="bcls-table__body">
-    <tr>
-      <td><code translate="No">id</code></td>
-      <td>String</td>
-       <td>A system generated unique identifier for the action. This is the <code translate="No">actionID</code> used in the update and delete methods.</td>
-    </tr>
-    <tr>
-      <td><code translate="No">properties</code></td>
-      <td>Object</td>
-      <td>An object of defined properties for a specific action</td>
-    </tr>
-    <tr>
-      <td><code translate="No">min_video_bitrate</code>, <br/>
-      <code translate="No">max_video_bitrate</code></td>
-      <td>Integer</td>
-      <td>Set the minimum or maximum allowed video bitrate (kbps)</td>
-    </tr>
-    <tr>
-      <td><code translate="No">first_video_bitrate</code></td>
-      <td>Integer</td>
-      <td>Set the bitrate for the first video (kbps)</td>
-    </tr>
-    <tr>
-      <td><code translate="No">min_video_resolution</code>, <br/><code translate="No">max_video_resolution</code></td>
-      <td>String</td>
-      <td>Set the minimum or maximum allowed video resolution (WxH)</td>
-    </tr>
-    <tr>
-      <td><code translate="No">max_video_renditions</code></td>
-      <td>Integer</td>
-      <td>Set the maximum number of video renditions</td>
-    </tr>
-    <tr>
-      <td><code translate="No">max_audio_renditions</code></td>
-      <td>Integer</td>
-      <td>Set the maximum number of audio renditions</td>
-    </tr>
-    <tr>
-      <td><code translate="No">preferred_cdn_provider</code></td>
-      <td>String</td>
-      <td>Set the preferred CDN provider</td>
-    </tr>
-    <tr>
-      <td><code translate="No">preferred_cdn_domain</code></td>
-      <td>String</td>
-      <td>Set the preferred CDN domain</td>
-    </tr>
-    <tr>
-      <td><code translate="No">video_codecs</code></td>
-      <td>String</td>
-      <td>Array of video codecs</td>
-    </tr>
-    <tr>
-      <td><code translate="No">audio_codecs</code></td>
-      <td>String</td>
-      <td>Array of audio codecs</td>
-    </tr>
-  </tbody>
-</table>
-
-<h4>Get Actions</h4>
-<p>
-  Use the following GET request to fetch the actions for an account.
-</p>
-<pre><code class="language-http" translate="No">GET /accounts/{accountID}/actions</code></pre>
-<h5>API Response</h5>
-<p>
-  See the <a href="#Response_body_for_actions">API response for actions</a>.
-</p>
-
-<h4>Get an Action</h4>
-<p>
-  Use the following GET request to fetch a specific action for an account.
-</p>
-<pre><code class="language-http" translate="No">GET /accounts/{accountID}/actions/{actionID}</code></pre>
-<h5>API Response</h5>
-<p>
-  See the <a href="#Response_body_for_actions">API response for actions</a>.
-</p>
-
-<h4>Update an Action</h4>
-<p>
-  Use the following PUT request to update an action for an account.
-</p>
-<pre class="line-numbers"><code class="language-http" translate="No">PUT /accounts/{accountID}/actions/{actionID}
-  Content-Type: application/json
-  Authorization: Bearer {access_token}
-  Body: {actions object}
-</code></pre>
-<h5>API Request</h5>
-<p>
-  See the <a href="#Request_body_for_actions">request body for actions</a>.
-</p>
-<h5>API Response</h5>
-<p>
-  See the <a href="#Response_body_for_actions">API response for actions</a>.
-</p>
-
-<h4>Delete an Action</h4>
-<p>
-  Use the following DELETE request to remove an action for an account.
-</p>
-<pre class="line-numbers"><code class="language-http" translate="No">DELETE /accounts/{accountID}/actions/{actionID}</code></pre>
-
-
-<!-- <p>
-  Here is an example of all of the fields you can include in the request body:
-</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  &quot;geo&quot;: {
-  &quot;allowed_countries&quot;: [
-    &quot;MX&quot;,
-    &quot;US&quot;
-  ],
-  &quot;blocked_countries&quot;: [
-    &quot;JP&quot;,
-    &quot;CN&quot;
-  ],
-  &quot;allowed_zip_codes&quot;: [
-    &quot;US-90210&quot;
-  ],
-  &quot;blocked_zip_codes&quot;: [
-    &quot;US-72810&quot;
-  ],
-  &quot;allowed_dmas&quot;: [
-    501
-  ],
-  &quot;blocked_dmas&quot;: [
-    803
-  ]
-},
-&quot;allowed_domains&quot;: [
-  &quot;www.google.com&quot;,
-  &quot;www.brightcove.com&quot;
-],
-&quot;blocked_domains&quot;: [
-  &quot;www.ooyala.com&quot;
-],
-&quot;start_time&quot;: 1572905011,
-&quot;end_time&quot;: 1672905011,
-&quot;allowed_ips&quot;: [
-  &quot;192.168.1.1&quot;
-],
-&quot;blocked_ips&quot;: [
-  &quot;192.168.1.1&quot;
-],
-&quot;allowed_days&quot;: [
-  &quot;mon&quot;,
-  &quot;tue&quot;
-],
-&quot;allowed_hours&quot;: [
-  &quot;5-6&quot;
-],
-&quot;allow_insecure&quot;: true,
-&quot;disabled&quot;: false,
-&quot;name&quot;: &quot;Optional playback right name&quot;
-}
-</code></pre> -->
-
-
-
-</section>
-
-<section class="bcls-section">
-<h2 id="Limitations">Limitations</h2>
-
-<p>There are a few known limitations when using Delivery Rules:</p>
-<ul>
-  <!-- <li>
-    <strong>CDN Providers</strong> - A customer may only have one CDN configuration from a given provider. For instance, it will be possible to switch between Akamai and Cloudfront, but not between two separate Akamai configurations.
-  </li> -->
-  <li>
-    <strong>Media Content</strong> - Delivery Rules will not work with Smooth or pMP4 videos.
-  </li>
-  <li>
-    <strong>Media Content</strong> - Delivery Rules will not work with live videos.
-  </li>
-  <li>
-    <strong>Audio Only</strong> - Delivery Rules with Server-Side Ads (SSAI) enabled require both video and audio content. This is an SSAI restriction.
-  </li>
-</ul>
-
-</section>
-
+      <li>If any malfunction happens in the switching and the switch time is not accurate,there could be transit inaccuracy for the future EPG. Some examples of actions that could cause this would be a playlist switch or deleting the current active asset in playlist.</li>
+      <li>Consumers of the EPG should be requesting it as close to realtime as possible to get the most accurate version.</li>
+    </ol>
+  </section>
 </article>
+
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
