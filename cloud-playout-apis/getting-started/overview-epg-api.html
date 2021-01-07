@@ -106,35 +106,101 @@ description: This topic provides and overview of the EPG API and the Channels AP
     </ol>
   </section>
   <section class="bcls-section">
-    
-    <h2 id="Sample_response">Sample EPG response</h2>
-    <p>Below is a sample response from the API:</p>
-<pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-  &lt;tv source-info-name="Cloudplayout Schedules" source-info-url="http://www.cloudplayout.qa.brightcove.com"&gt;
-      &lt;channel id="8732bb664063401691ef95d1a813b954"&gt;
-          &lt;display-name&gt;onetwo&lt;/display-name&gt;
-          &lt;icon src="https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"/&gt;
-      &lt;/channel&gt;
-      &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024628" stop="20200730024638"&gt;
-          &lt;title&gt;ccsample10s_d10&lt;/title&gt;
-          &lt;length unit="seconds"&gt;10.077&lt;/length&gt;
-          &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/5739d822-eb06-43e3-add8-3c5af6b27821/main/1280x720/5s38ms/match/image.jpg"/&gt;
-          &lt;category&gt;video&lt;/category&gt;
-          &lt;keyword&gt;6176109299001:1&lt;/keyword&gt;
-      &lt;/programme&gt;
-      &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024723" stop="20200730024733"&gt;
-          &lt;title&gt;frozen2&lt;/title&gt;
-          &lt;length unit="seconds"&gt;10.069&lt;/length&gt;
-          &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/84bb134d-1aba-4d73-a0e9-7ed3d5bb962f/main/1280x720/5s34ms/match/image.jpg"/&gt;
-          &lt;category&gt;video&lt;/category&gt;
-          &lt;keyword&gt;6162613467001:2&lt;/keyword&gt;
-      &lt;/programme&gt;
-  &lt;/tv&gt;</code></pre>
-    <h3>Notes</h3>
-    <ol>
-      <li>The start and end timestamps are in UTC time.</li>
-      <li>The <code translate="No">category</code> and <code translate="No">keyword</code> entries are for internal purposes.</li>
-    </ol>
+    <details>
+      <summary><h2 id="Sample_response">Sample EPG API response</h2></summary>
+      <p>Below is a sample response from the API:</p>
+  <pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+    &lt;tv source-info-name="Cloudplayout Schedules" source-info-url="http://www.cloudplayout.qa.brightcove.com"&gt;
+        &lt;channel id="8732bb664063401691ef95d1a813b954"&gt;
+            &lt;display-name&gt;onetwo&lt;/display-name&gt;
+            &lt;icon src="https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"/&gt;
+        &lt;/channel&gt;
+        &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024628" stop="20200730024638"&gt;
+            &lt;title&gt;ccsample10s_d10&lt;/title&gt;
+            &lt;length unit="seconds"&gt;10.077&lt;/length&gt;
+            &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/5739d822-eb06-43e3-add8-3c5af6b27821/main/1280x720/5s38ms/match/image.jpg"/&gt;
+            &lt;category&gt;video&lt;/category&gt;
+            &lt;keyword&gt;6176109299001:1&lt;/keyword&gt;
+        &lt;/programme&gt;
+        &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024723" stop="20200730024733"&gt;
+            &lt;title&gt;frozen2&lt;/title&gt;
+            &lt;length unit="seconds"&gt;10.069&lt;/length&gt;
+            &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/84bb134d-1aba-4d73-a0e9-7ed3d5bb962f/main/1280x720/5s34ms/match/image.jpg"/&gt;
+            &lt;category&gt;video&lt;/category&gt;
+            &lt;keyword&gt;6162613467001:2&lt;/keyword&gt;
+        &lt;/programme&gt;
+    &lt;/tv&gt;</code></pre>
+      <h3>Notes</h3>
+      <ol>
+        <li>The start and end timestamps are in UTC time.</li>
+        <li>The <code translate="No">category</code> and <code translate="No">keyword</code> entries are for internal purposes.</li>
+      </ol>
+    </details>
+  </section>
+  <section class="bcls-section">
+    <details>
+      <summary><h2 id="sample_response_channel">Sample Channels API response</h2></summary>
+      <pre class="line-numbers"><code class="language-json" translate="No">{
+        "items": [
+          {
+            "public_id": "f8eb5f9ccfb84f81b4fb506a663c5545",
+            "name": "Channel-4",
+            "description": "Test Channel",
+            "account_id": "1752604059001",
+            "state": "RUNNING",
+            "status": "Channel started",
+            "start_time": "2021-01-03 15:31:12 UTC",
+            "stop_time": null,
+            "input_groups": "slate:rtmp:playlist",
+            "output_groups": "rtmp",
+            "loop_playlist": true,
+            "playlist_id": "1687789969630819284",
+            "channel_class": "single-pipeline",
+            "ssai_enabled": false,
+            "aws_region": "us-east-1",
+            "message": "",
+            "created_at": "2021-01-02 15:39:05 UTC",
+            "updated_at": "2021-01-03 15:31:12 UTC",
+            "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+            "output_destinations": [
+              "Brightcove Live"
+            ],
+            "channel_created_at": "2021-01-02 15:39:05 UTC",
+            "channel_updated_at": "2021-01-02 15:39:05 UTC",
+            "channel_created_by": "rcrooks@brightcove.com",
+            "channel_updated_by": "rcrooks@brightcove.com"
+          },
+          {
+            "public_id": "42ecb67a9a964662a4071b4fffff0012",
+            "name": "Test-6",
+            "description": "Test Channel",
+            "account_id": "1752604059001",
+            "state": "SCHEDULED",
+            "status": "Scheduled for start",
+            "start_time": "2021-01-09 05:00:00 UTC",
+            "stop_time": "2021-01-09 23:00:00 UTC",
+            "input_groups": "slate:rtmp:playlist",
+            "output_groups": "rtmp",
+            "loop_playlist": true,
+            "playlist_id": "1688070644726417934",
+            "channel_class": "single-pipeline",
+            "ssai_enabled": false,
+            "aws_region": "us-east-1",
+            "message": "",
+            "created_at": "2021-01-05 18:00:18 UTC",
+            "updated_at": "2021-01-06 19:08:41 UTC",
+            "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+            "output_destinations": [
+              "Brightcove Live"
+            ],
+            "channel_created_at": "2021-01-05 18:00:18 UTC",
+            "channel_updated_at": "2021-01-06 19:06:46 UTC",
+            "channel_created_by": "rcrooks@brightcove.com",
+            "channel_updated_by": "rcrooks@brightcove.com"
+          }
+        ]
+      }</code></pre>
+    </details>
   </section>
   <section class="bcls-section">
     <h2 id="limitations">limitations</h2>

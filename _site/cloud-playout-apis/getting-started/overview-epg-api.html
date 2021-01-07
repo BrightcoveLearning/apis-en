@@ -366,6 +366,37 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
             
           
             
+              <h5 class="submenu-header"><a href="/cloud-playout-apis/index.html">Cloud Playout APIs <strong>+</strong></a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href=" /cloud-playout-apis/getting-started/index.html">Getting Started <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cloud-playout-apis/getting-started/overview-epg-api.html">Overview: Cloud Playout APIs</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cloud-playout-apis/references/index.html">References <strong>+</strong></a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cloud-playout-apis/references/reference-epg.html">EPG API Reference</a></li>
+                        
+                        <li><a href="/cloud-playout-apis/references/reference-channels.html">Channels API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
               <h5 class="submenu-header"><a href="/cms/index.html">CMS API <strong>+</strong></a></h5>
               <ul class="sidenav-submenu" style="display:none;">
                 
@@ -1380,13 +1411,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <summary>This topic provides and overview of the EPG API and the Channels API, which are used with Cloud Playout.</summary>
   <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
-    <p>There are two APIs related to </p>
-    <p>The EPG API allows you to retrieve an electronic programming guide for a Cloud Playout channel. Cloud Playout channels are created in Studio - see <a href="https://studio.support.brightcove.com/cloud-playout/index.html">Using Cloud Playout to Stream VOD Videos</a> for details.</p>
+    <p>There are two APIs related to <a href="https://studio.support.brightcove.com/cloud-playout/index.html">Cloud Playout</a>:</p>
+    <ul>
+      <li>The EPG API allows you to retrieve an electronic programming guide for a Cloud Playout channel.</li>
+      <li>The Channels API allows you to retrieve information about your Cloud Playout channels.</li>
     <aside class="bcls-aside bcls-aside--information language-editable">This feature is currently in Limited Availability. Contact your Brightcove Account Manager for more information.</aside>
   </section>
   <section class="bcls-section">
     <h2 id="authentication">Authentication</h2>
-    <p>The EPG API uses the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth system</a> to authenticate requests through an access token that is passed in an authorization header with the request:</p>
+    <p>The Cloud Playout APIs use the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth system</a> to authenticate requests through an access token that is passed in an authorization header with the request:</p>
     <pre><code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">{access token}</span></code></pre>
     <p>Access tokens are retrieved using the OAuth API - see <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a> for details. You will also need client credentials to authenticate the requests for access tokens. These can be created in the Admin section of Studio - see <a href="/general/managing-api-authentication-credentials.html">Managing API Credentials</a>. The permissions your credentials will need for the EPG API are:</p>
     <figure class="bcls-figure">
@@ -1396,7 +1429,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </section>
   <section class="bcls-section">
     <h2 id="api_url">API URLs</h2>
-    <h3>Get all <a href="https://studio.support.brightcove.com/cloud-playout/index.html">Cloud Playout</a> channels</h3>
+    <h3>Get all Cloud Playout channels</h3>
     <p>The following endpoint can be used to get a list of all Cloud Playout channels for an account:</p>
     <pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/cp_channels</code></pre>
     <p>The <code translate="No">account_id</code> is the Video Cloud account id.</p>
@@ -1404,12 +1437,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>The URL for the EPG API request is:</p>
     <pre><code class="language-http" translate="No">https://sm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/channels/<span class="bcls-input">{channel_id}</span>/epg</code></pre>
     <p>The <code translate="No">account_id</code> is the Video Cloud account id, and the <code translate="No">channel_id</code> is the id for the channel created in Studio.</p>
-    <p>The Channel's ID can be found in the responce to the request to get all Cloud Playout channels, or in the browser URL when you are in the Channel view of the Cloud Playout section of Studio:</p>
+    <p>The Channel's ID can be found in the response to the request to get all Cloud Playout channels, or in the browser URL when you are in the Channel view of the Cloud Playout section of Studio:</p>
     <pre><code class="language-http" translate="No">https://studio.brightcove.com/products/videocloud/cloudplayout/channel/<span class="bcls-highlight">2c73c2112f794e6eb80be1284a495674</span></code></pre>
 
   </section>
   <section class="bcls-section">
-    <h2 id="request_parameters">Request parameters</h2>
+    <h2 id="request_parameters">EPG request parameters</h2>
     <p>The following optional query parameters can be added to the EPG request:</p>
     <table class="bcls-table">
       <caption class="bcls-caption--table">EPG API Query Params</caption>
@@ -1474,34 +1507,101 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </ol>
   </section>
   <section class="bcls-section">
-    <h2 id="Sample_response">Sample response</h2>
-    <p>Below is a sample response from the API:</p>
-<pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-  &lt;tv source-info-name="Cloudplayout Schedules" source-info-url="http://www.cloudplayout.qa.brightcove.com"&gt;
-      &lt;channel id="8732bb664063401691ef95d1a813b954"&gt;
-          &lt;display-name&gt;onetwo&lt;/display-name&gt;
-          &lt;icon src="https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"/&gt;
-      &lt;/channel&gt;
-      &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024628" stop="20200730024638"&gt;
-          &lt;title&gt;ccsample10s_d10&lt;/title&gt;
-          &lt;length unit="seconds"&gt;10.077&lt;/length&gt;
-          &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/5739d822-eb06-43e3-add8-3c5af6b27821/main/1280x720/5s38ms/match/image.jpg"/&gt;
-          &lt;category&gt;video&lt;/category&gt;
-          &lt;keyword&gt;6176109299001:1&lt;/keyword&gt;
-      &lt;/programme&gt;
-      &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024723" stop="20200730024733"&gt;
-          &lt;title&gt;frozen2&lt;/title&gt;
-          &lt;length unit="seconds"&gt;10.069&lt;/length&gt;
-          &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/84bb134d-1aba-4d73-a0e9-7ed3d5bb962f/main/1280x720/5s34ms/match/image.jpg"/&gt;
-          &lt;category&gt;video&lt;/category&gt;
-          &lt;keyword&gt;6162613467001:2&lt;/keyword&gt;
-      &lt;/programme&gt;
-  &lt;/tv&gt;</code></pre>
-    <h3>Notes</h3>
-    <ol>
-      <li>The start and end timestamps are in UTC time.</li>
-      <li>The <code translate="No">category</code> and <code translate="No">keyword</code> entries are for internal purposes.</li>
-    </ol>
+    <details>
+      <summary><h2 id="Sample_response">Sample EPG API response</h2></summary>
+      <p>Below is a sample response from the API:</p>
+  <pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+    &lt;tv source-info-name="Cloudplayout Schedules" source-info-url="http://www.cloudplayout.qa.brightcove.com"&gt;
+        &lt;channel id="8732bb664063401691ef95d1a813b954"&gt;
+            &lt;display-name&gt;onetwo&lt;/display-name&gt;
+            &lt;icon src="https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"/&gt;
+        &lt;/channel&gt;
+        &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024628" stop="20200730024638"&gt;
+            &lt;title&gt;ccsample10s_d10&lt;/title&gt;
+            &lt;length unit="seconds"&gt;10.077&lt;/length&gt;
+            &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/5739d822-eb06-43e3-add8-3c5af6b27821/main/1280x720/5s38ms/match/image.jpg"/&gt;
+            &lt;category&gt;video&lt;/category&gt;
+            &lt;keyword&gt;6176109299001:1&lt;/keyword&gt;
+        &lt;/programme&gt;
+        &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024723" stop="20200730024733"&gt;
+            &lt;title&gt;frozen2&lt;/title&gt;
+            &lt;length unit="seconds"&gt;10.069&lt;/length&gt;
+            &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/84bb134d-1aba-4d73-a0e9-7ed3d5bb962f/main/1280x720/5s34ms/match/image.jpg"/&gt;
+            &lt;category&gt;video&lt;/category&gt;
+            &lt;keyword&gt;6162613467001:2&lt;/keyword&gt;
+        &lt;/programme&gt;
+    &lt;/tv&gt;</code></pre>
+      <h3>Notes</h3>
+      <ol>
+        <li>The start and end timestamps are in UTC time.</li>
+        <li>The <code translate="No">category</code> and <code translate="No">keyword</code> entries are for internal purposes.</li>
+      </ol>
+    </details>
+  </section>
+  <section class="bcls-section">
+    <details>
+      <summary><h2 id="sample_response_channel">Sample Channels API response</h2></summary>
+      <pre class="line-numbers"><code class="language-json" translate="No">{
+        "items": [
+          {
+            "public_id": "f8eb5f9ccfb84f81b4fb506a663c5545",
+            "name": "Channel-4",
+            "description": "Test Channel",
+            "account_id": "1752604059001",
+            "state": "RUNNING",
+            "status": "Channel started",
+            "start_time": "2021-01-03 15:31:12 UTC",
+            "stop_time": null,
+            "input_groups": "slate:rtmp:playlist",
+            "output_groups": "rtmp",
+            "loop_playlist": true,
+            "playlist_id": "1687789969630819284",
+            "channel_class": "single-pipeline",
+            "ssai_enabled": false,
+            "aws_region": "us-east-1",
+            "message": "",
+            "created_at": "2021-01-02 15:39:05 UTC",
+            "updated_at": "2021-01-03 15:31:12 UTC",
+            "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+            "output_destinations": [
+              "Brightcove Live"
+            ],
+            "channel_created_at": "2021-01-02 15:39:05 UTC",
+            "channel_updated_at": "2021-01-02 15:39:05 UTC",
+            "channel_created_by": "rcrooks@brightcove.com",
+            "channel_updated_by": "rcrooks@brightcove.com"
+          },
+          {
+            "public_id": "42ecb67a9a964662a4071b4fffff0012",
+            "name": "Test-6",
+            "description": "Test Channel",
+            "account_id": "1752604059001",
+            "state": "SCHEDULED",
+            "status": "Scheduled for start",
+            "start_time": "2021-01-09 05:00:00 UTC",
+            "stop_time": "2021-01-09 23:00:00 UTC",
+            "input_groups": "slate:rtmp:playlist",
+            "output_groups": "rtmp",
+            "loop_playlist": true,
+            "playlist_id": "1688070644726417934",
+            "channel_class": "single-pipeline",
+            "ssai_enabled": false,
+            "aws_region": "us-east-1",
+            "message": "",
+            "created_at": "2021-01-05 18:00:18 UTC",
+            "updated_at": "2021-01-06 19:08:41 UTC",
+            "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+            "output_destinations": [
+              "Brightcove Live"
+            ],
+            "channel_created_at": "2021-01-05 18:00:18 UTC",
+            "channel_updated_at": "2021-01-06 19:06:46 UTC",
+            "channel_created_by": "rcrooks@brightcove.com",
+            "channel_updated_by": "rcrooks@brightcove.com"
+          }
+        ]
+      }</code></pre>
+    </details>
   </section>
   <section class="bcls-section">
     <h2 id="limitations">limitations</h2>
