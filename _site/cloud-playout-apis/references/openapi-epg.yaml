@@ -134,29 +134,68 @@ components:
   schemas:
     GetEPGResponse:
       title: EPG Response
-      description: The EPG XML
-      type: string
-      example: '<?xml version="1.0" encoding="utf-8"?>
+      description: |-
+        The EPG XML adhering to the [XML TV standard](https://repository.data2type.de/XMLTV/v_1.47/html/index.html).
+
+        Example:
+
+        ```
+        <?xml version="1.0" encoding="utf-8"?>
         <tv source-info-name="Cloudplayout Schedules" source-info-url="http://www.cloudplayout.qa.brightcove.com">
-            <channel id="8732bb664063401691ef95d1a813b954">
-                <display-name>onetwo</display-name>
+            <channel id="9fb8032ff2fe4f55b388d8969c22ca58">
+                <display-name>MyCloudChannel</display-name>
                 <icon src="https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"/>
             </channel>
-            <programme channel="8732bb664063401691ef95d1a813b954" start="20200730024628" stop="20200730024638">
-                <title>ccsample10s_d10</title>
-                <length unit="seconds">10.077</length>
-                <icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/5739d822-eb06-43e3-add8-3c5af6b27821/main/1280x720/5s38ms/match/image.jpg"/>
+            <programme channel="9fb8032ff2fe4f55b388d8969c22ca58" start="20201120132000" stop="20201120132228">
+                <title>Frozen</title>
+                <desc>FrozenMultiLanguage</desc>
+                <length units="seconds">147.605</length>
+                <icon src="https://cf-images.us-east-1.qa.boltdns.net/v1/jit/6063799219001/43d57501-b98a-4708-bdd1-a09081f7a585/main/1280x720/1m13s802ms/match/image.jpg" width="1280" height="720"/>
                 <category>video</category>
-                <keyword>6176109299001:1</keyword>
+                <keyword>eyJ2aWRlb19pZCI6IjcwNzAwNDQxMDk2MjAyIiwib3JkZXIiOjEsInRhZ3MiOiJjaGlsZHJlbixjb21lZHkiLCJjdXN0b21fbWV0YWRhdGEiOnsicmVnaW9uIjoiYWZyaWNhIiwic29uZ3MiOjV9fQ==</keyword>
             </programme>
-            <programme channel="8732bb664063401691ef95d1a813b954" start="20200730024723" stop="20200730024733">
-                <title>frozen2</title>
-                <length unit="seconds">10.069</length>
-                <icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/84bb134d-1aba-4d73-a0e9-7ed3d5bb962f/main/1280x720/5s34ms/match/image.jpg"/>
+            <programme channel="9fb8032ff2fe4f55b388d8969c22ca58" start="20201120132228" stop="20201120133228">
+                <title>LiveDemo</title>
+                <desc>Live Demo</desc>
+                <length units="seconds">600.0</length>
+                <icon src="https://img.brightcove.com/cloudplayout/live-icon.jpg" width="1280" height="720"/>
+                <category>live</category>
+                <keyword>eyJ2aWRlb19pZCI6IjcwNzAxNDg0MjA3MjAyIiwib3JkZXIiOjIsInRhZ3MiOiJjcC1saXZlLXBsYWNlaG9sZGVyLGR1cmF0aW9uLTAwOjEwOjAwIiwiY3VzdG9tX21ldGFkYXRhIjp7InJlZ2lvbiI6Im5vcnRoIGFtZXJpY2EifX0=</keyword>
+            </programme>
+            <programme channel="9fb8032ff2fe4f55b388d8969c22ca58" start="20201120133228" stop="20201120133327">
+                <title>ChildrenComedy</title>
+                <desc>ChildrenComedy</desc>
+                <length units="seconds">59.164</length>
+                <icon src="https://cf-images.us-east-1.qa.boltdns.net/v1/jit/6063799219001/9430773f-76f5-476e-964d-a13b40cab90a/main/1280x720/29s582ms/match/image.jpg" width="1280" height="720"/>
                 <category>video</category>
-                <keyword>6162613467001:2</keyword>
+                <keyword>eyJ2aWRlb19pZCI6IjcwNzAxMjE2NDgyMjAyIiwib3JkZXIiOjMsInRhZ3MiOiJyb21hbmNlIiwiY3VzdG9tX21ldGFkYXRhIjp7InJlZ2lvbiI6ImFzaWEiLCJzb25ncyI6NX19</keyword>
             </programme>
-        </tv>'
+            <programme>
+                .........
+            </programme>
+        </tv>
+        ```
+
+        The `keyword` in each program item contains base64-encoded json value containing the following metadata:
+        - `video_id` is the identifier for the video as in Video Cloud
+        - `order` is the order of the asset in the Cloud Playout program list
+        - `tags` is a comma-separated list of tags, if any
+        - custom metadata is the set on name/value custom fields set for the video
+
+        Example:
+
+        ```
+        {
+          "video_id":"70701216482202",
+          "order":1,
+          "tags":"children,comedy",
+          "custom_metadata":{
+            "region":"africa",
+            "songs":5
+          }
+        }
+        ```
+      type: string
   securitySchemes:
     BC_OAuth2:
       type: oauth2
