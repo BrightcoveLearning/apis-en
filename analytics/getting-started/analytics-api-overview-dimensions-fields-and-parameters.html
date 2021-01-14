@@ -676,6 +676,41 @@ fieldset legend {
 <pre class="line-numbers">
 <code class="language-http" translate="No">where=video.q==tags:foo,bar+custom_fields:fish</code></pre>
 
+<p>Note that the <code translate="No">video.q</code> search functionality includes <code translate="No">AND</code>, <code translate="No">OR</code> and <code translate="No">NOT</code> logic as follows:</p>
+
+<ul>
+  <li>A <strong>+</strong> (plus) sign before the search term means results <strong>must</strong> include this term.</li>
+  <li>A <strong>-</strong> (minus) sign before the search term means results <strong>must not</strong> include this term.</li>
+  <li>If there is neither a plus or minus sign, results may or may not include this term.</li>
+</ul>
+
+<p>The following examples illustrate the use of this logic.</p>
+<table class="bcls-table">
+  <caption class="bcls-caption--table">Search Examples</caption>
+  <thead class="bcls-table__head">
+      <tr>
+          <th><code translate="No">where</code> Filter</th>
+          <th>Results</th>
+      </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+      <tr>
+          <td><code translate="No">where=video.q==tags:red%20tags:blue%tags:green</code></td>
+          <td>videos with the tags <code translate="No">red</code> OR <code translate="No">blue</code> OR <code translate="No">green</code> will be returned</td>
+      </tr>
+      <tr>
+          <td><code translate="No">where=video.q==+tags:red%20tags:blue%tags:green</code></td>
+          <td>returned videos MUST have the tag <code translate="No">red</code> AND may have the tags <code translate="No">blue</code> OR <code translate="No">green</code></td>
+      </tr>
+      <tr>
+          <td><code translate="No">where=video.q==+tags:red%20tags:blue%-tags:green</code></td>
+          <td>returned videos MUST have the tag <code translate="No">red</code> AND may have the tag <code translate="No">blue</code>, but must NOT have the tag <code translate="No">green</code></td>
+      </tr>
+  </tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--information language-editable">Note: <code translate="No">%20</code> in the examples above is a URI-encoded space. Depending on the client you use to make the request, you may also need to encode the <code translate="No">+</code> sign as <code translate="No">%2B</code>.</aside>
+
 <p>For a complete explanation of this query syntax, see <a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">Using the CMS API: Search for Videos</a>.</p>
 
 <aside class="bcls-aside bcls-aside--information">The data fetched using this filter is cached for 24 hours, and so will not reflect changes made in the past day</aside>
