@@ -125,7 +125,7 @@ var BCLS = (function(window, document) {
       otherRenditions = [],
       totalSize = 0;
     // separate renditions by type
-    for (i = 0; i < iMax; i += 1) {
+    for (i = 0; i < iMax; i ++) {
       if (renditions[i].hasOwnProperty('size')) {
         totalSize += renditions[i].size;
       }
