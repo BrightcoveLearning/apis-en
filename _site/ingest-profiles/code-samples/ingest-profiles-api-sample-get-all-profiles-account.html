@@ -1245,21 +1245,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
     <aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
 
-    <p>Getting all the ingest profiles for an account is straightforward - it is just a simple call to the API. What is less straightforward is what you do with them. If you are going to display the profiles to users in some kind of app to select when they are ingesting videos, there are some potential issues you need to be aware of and deal with. These issues revolve around that fact that Brightcove is in the process of migrating all accounts from <a href="/ingest-profiles/getting-started/overview-ingest-profiles-api-dynamic-delivery-context-aware-encoding.html">the legacy ingest system</a> to the new <a href="/ingest-profiles/getting-started/overview-ingest-profiles-api-dynamic-delivery-context-aware-encoding.html">Dynamic Delivery</a>. You can read all about the advantages of the Dynamic Delivery system in <a href="/dynamic-ingest/getting-started/overview-dynamic-delivery.html">this overview</a>; what is important here are the implications for older accounts.</p>
-
-    <ul>
-      <li>For accounts created before November, 2017, the account was originally set up for <a href="/ingest-profiles/getting-started/overview-ingest-profiles-api-dynamic-delivery-context-aware-encoding.html">the legacy ingest system</a></li>
-      <li>If the account <em>has not</em> yet been converted to Dynamic Delivery, Dynamic Delivery profiles are still set up for the account and the Ingest Profiles API will return them. If users attempt to use these profiles when using the Dynamic Ingest API, an error will be returned.</li>
-      <li>If the account <em>has</em> been converted to Dynamic Delivery, but legacy ingest was not disabled, legacy ingest profiles will still be returned; these should generally not be used, and <strong>cannot</strong> be used for operations on videos that have been converted to Dynamic Delivery.</li>
-      <li>If you get back legacy ingest profiles, in addition the current ones, you will get back a number of <em>obsolete</em> profiles that were kept in the system because some customers were still using them. These should <strong>never</strong> be used.</li>
-      <li>The legacy profiles also may include up to 3 profiles for live streaming, which generally should not be used for ingesting VOD content.</li>
-      <li>Finally, for accounts that are configured for Dynamic Delivery only, there are two kinds of Dynamic Delivery profiles that may be returned:
+    <p>Getting all the ingest profiles for an account is straightforward - it is just a simple call to the API. What is less straightforward is what you do with them. If you are going to display the profiles to users in some kind of app to select when they are ingesting videos, there are some potential issues you need to be aware of and deal with:</p>
+      <p>There are two kinds of Dynamic Delivery profiles that may be returned:
         <ul>
           <li>"static" profiles - the ordinary kind with a fixed set of renditions</li>
           <li>"dynamic" profiles that use <a href="/general/overview-context-aware-encoding.html">Context Aware Encoding (CAE)</a> to automatically determine the optimum set of renditions to create within constraints set in the profile.</li>
         </ul>
-      </li>
-    </ul>
+      </p>
+			<p>If your organization has a preference for which kind of profile is used, or there are cases where one may be preferable to the other, you probably want to group and clearly distinguish the two types.</p>
 
     <p>The purpose of this sample is to show you both how to retrieve the account profiles and filter the results for the different types, and for custom profiles that have been created in the account.</p>
   </section>
