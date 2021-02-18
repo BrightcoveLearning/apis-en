@@ -1,434 +1,525 @@
 ---
-title: "Additional APIs for Playback Authorization Service"
-description: "In this topic, you will learn about additional APIs available for content protection when using Brightcove's Playback Authorization Service."
+title: 'Additional  APIs  for  Playback  Authorization  Service'
+description: "In  this  topic,  you  will  learn  about  additional  APIs  available  for  content  protection  when  using  Brightcove's  Playback  Authorization  Service."
 parent: Guides
-grandparent: Playback Authorization
+grandparent: Playback  Authorization
 layout: staging
 ---
 
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
-  
-  <br/>
-  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Authorization Service.</aside>
-  
-<section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
 
-<p>Brightcove's Playback Authorization Service (PAS) offers an extra level of security when using Dynamic Delivery with DRM-protected or HTTP Live Streaming Encryption (HLSe) content. </p>
-<p>If you are not familiar with this feature, see the <a href="/playback-authorization/getting-started/overview-playback-authorization-service.html">Overview: DRM with Playback Authorization Service</a> document.</p>
+  <br />
+  <aside class="bcls-aside  bcls-aside--tip">
+    This feature is available for a specific set of customers with access to the
+    Limited Availability phase of the Playback Authorization Service.
+  </aside>
 
-<p>There are additional APIs available to you for managing your content using PAS. They allow you to do the following:</p>
-<ul>
-  <li>
-    <a href="#Blacklist_tokens">Blacklist tokens</a>
-  </li>
-  <li>
-    <a href="#Audit_an_account">Audit an account</a>
-  </li>
-</ul>
-<aside class="bcls-aside bcls-aside--information">These APIs are only supported when managing DRM using Playback Authorization Service.</aside>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
 
-</section>
-
-<section class="bcls-section">
-<h2 id="Blacklist_tokens">Blacklist tokens</h2>
-
-<p>A token that has been blacklisted will not be considered valid for license requests, even if it would otherwise have been approved. Customers may blacklist up to 100 tokens. If 100 tokens are already blacklisted, a customer must delete one or more tokens to make room for any additional entries.</p>
-
-<h3>Blacklist API</h3>
-<p>
-  The Blacklist API is used to manage your tokens which are blacklisted and considered not valid for license requests.
-</p>
-
-<h3>Base URL</h3>
-<p>
-  The base URL for the Blacklist API is:
-</p>
-<pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com</code></pre>
-
-<h3>Account path</h3>
-<p>
-  In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
-</p>
-<pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/blacklist
-</code></pre>
-
-<h3>Authorization</h3>
-<p>
-  An access token for requests is required and must be present in the Authorization header::
-</p>
-<pre ><code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
-<p>
-  The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
-</p>
-
-<h3>Permissions</h3>
-<p>
-  Requests to the Blacklist API must be made from <a href="/oauth/index.html">client credentials</a> with the following permissions:
-</p>
-<ul>
-  <li>
-    <code translate="No">video-cloud/playback-auth/blacklist</code>
-  </li>
-</ul>
-
-<h3>Manage blacklisted tokens</h3>
-<p>
-  Updates to the blacklist may take up to a minute to propagate through the system. The Blacklist API supports the following requests:
-</p>
-
-<h4>Add a token to the blacklist:</h4>
-<pre><code class="language-http" translate="No">PUT (no req body)/v1/accounts/{accountID}/blacklist/tokens/{token}
-</code></pre>
-<p>
-  The entire encoded JWT string is included in the path.
-</p>
-
-<h4>Show current blacklist:</h4>
-<pre><code class="language-http" translate="No">GET /v1/accounts/{accountId}/blacklist
-</code></pre>
-<br />
-
-<h4>Check if a token is on the blacklist:</h4>
-<pre><code class="language-http" translate="No">GET /v1/accounts/{accountID}/blacklist/tokens/{token}
-</code></pre>
-<p>
-  The entire encoded JWT string is included in the path.
-</p>
-<p>
-  Responses:
-</p>
-<ul>
-  <li>
-    204 - the token is blacklisted
-  </li>
-  <li>
-    404 - the token is not blacklisted
-  </li>
-</ul>
-
-<h4>Remove a token from the blacklist:</h4>
-<pre><code class="language-http" translate="No">DELETE /v1/accounts/{accountID}/blacklist/tokens/{token}
-</code></pre>
-<p>
-  The entire encoded JWT string is included in the path.
-</p>
-
-</section>
-
-<section class="bcls-section">
-<h2 id="Audit_an_account">Audit an account</h2>
-
-<p>The Audit API allows you to generate a daily access report for your account's Playback Authorization Service usage. This report includes details along with the authorization response for each session.</p>
-
-<h3>Audit API</h3>
-<p>
-  Here are the details for the Audit API:
-</p>
-
-
-<h3>Base URL</h3>
-<p>
-  The base URL for the Audit API is:
-</p>
-<pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com
-</code></pre>
-
-<h3>Account path</h3>
-<p>
-  In all cases, requests will be made for a specific Video Cloud account. So, you will always add the term accounts followed by your account id to the base URL:
-</p>
-<pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com/v1/audit/accounts/{accountID}
-</code></pre>
-
-<h3>Authorization</h3>
-<p>
-  An access token for requests is required and must be present in the Authorization header::
-</p>
-<pre><code class="language-http" translate="No">Authorization: Bearer {access_token}
-</code></pre>
-<p>
-  The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
-</p>
-
-<h3>Permissions</h3>
-<p>
-  Requests to the Audit API must be made from <a href="/oauth/index.html">client credentials</a> with the following permissions:
-</p>
-<ul>
-  <li>
-    <code translate="No">video-cloud/playback-auth/audit</code>
-  </li>
-</ul>
-
-<h3>Generate reports</h3>
-<p>
-  Use the Audit API to generate a daily access report with session details by following these steps:
-</p>
-<aside class="bcls-aside bcls-aside--information">
-  <p>
-    Notes:
-  </p>
-  <ul>
-    <li>
-      <p>
-        All Authorization access logs for Brightcove are in the UTC timezone. Remember to take timezones into account when requests do not show up in your report.
-      </p>
-    </li>
-    <li>
-      <p>
-        Brightcove recommends running Audit API query reports 6 hours after midnight for processing from all regions to complete for all authorization data from the previous day.
-Audit API calls for a given account and a given day are cached on API side. If you run a report before the suggested midnight+6 hours, you may find that your report is incorrect or incomplete.
-      </p>
-    </li>
-  </ul>
-</aside>
-
-<ol class="bcls-tasklist__restart">
-  <li>
     <p>
-      Request a daily usage report
+      Brightcove's Playback Authorization Service (PAS) offers an extra level of
+      security when using Dynamic Delivery with DRM-protected or HTTP Live
+      Streaming Encryption (HLSe) content.
+    </p>
+    <p>
+      If you are not familiar with this feature, see the
+      <a
+        href="/playback-authorization/getting-started/overview-playback-authorization-service.html"
+        >Overview: DRM with Playback Authorization Service</a
+      >
+      document.
     </p>
 
-    <h4>Parameters</h4>
-    <table class="bcls-table">
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Field</th>
-			    <th>Type</th>
-			    <th>Description</th>
-	    	</tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td><code translate="No">accountID</code></td>
-			    <td>String</td>
-			    <td>Your Video Cloud account Id</td>
-		    </tr>
-        <tr>
-          <td><code translate="No">date</code></td>
-			    <td>String</td>
-			    <td>
-            Validations:
-            <ul>
-              <li>
-                Format YYYY-MM-DD
-              </li>
-              <li>
-                Date cannot be today (UTC time)
-              </li>
-              <li>
-                Date cannot be < 1 30 days in the past
-              </li>
-              <li>
-                Brightcove does not hold on to the authorization service usage reports after 30 days to follow GDPR compliance
-              </li>
-            </ul>
-          </td>
-		    </tr>
-      </tbody>
-    </table>
+    <p>
+      There are additional APIs available to you for managing your content using
+      PAS. They allow you to do the following:
+    </p>
+    <ul>
+      <li>
+        <a href="#Blacklist_tokens">Blacklist tokens</a>
+      </li>
+      <li>
+        <a href="#Audit_an_account">Audit an account</a>
+      </li>
+    </ul>
+    <aside class="bcls-aside  bcls-aside--information">
+      These APIs are only supported when managing DRM using Playback
+      Authorization Service.
+    </aside>
+  </section>
 
-    <h4>Request</h4>
-    <table class="bcls-table">
-      <tbody class="bcls-table__body">
-        <tr>
-          <th>Method</th>
-    			<td>POST</td>
-    		</tr>
-        <tr>
-          <th>URL</th>
-    			<td>https://playback-auth.api.brightcove.com/v1/audit/accounts/<span class="bcls-input">{accountID}</span>/query/<span class="bcls-input">{date}</span></td>
-    		</tr>
-        <tr>
-          <th rowspan="2">Headers</th>
-    			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
-    		</tr>
-        <tr>
-          <td>Content-Type: application/json</td>
-    		</tr>
-      </tbody>
-    </table>
+  <section class="bcls-section">
+    <h2 id="Blacklist_tokens">Blacklist tokens</h2>
 
-    <h4>Response</h4>
-    <p>Sample response (200 OK):</p>
+    <p>
+      A token that has been blacklisted will not be considered valid for license
+      requests, even if it would otherwise have been approved. Customers may
+      blacklist up to 100 tokens. If 100 tokens are already blacklisted, a
+      customer must delete one or more tokens to make room for any additional
+      entries.
+    </p>
 
-<pre class="line-numbers">
-<code class="language-json" translate="No">{
-	&quot;executionID&quot;: &quot;abcdef-asfdag-dvsbcd&quot;
+    <h3>Blacklist API</h3>
+    <p>
+      The Blacklist API is used to manage your tokens which are blacklisted and
+      considered not valid for license requests.
+    </p>
+
+    <h3>Base URL</h3>
+    <p>
+      The base URL for the Blacklist API is:
+    </p>
+    <pre><code  class="language-http"  translate="No">https://playback-auth.api.brightcove.com</code></pre>
+
+    <h3>Account path</h3>
+    <p>
+      In all cases, requests will be made for a specific Video Cloud Account.
+      So, you will always add the term accounts followed by your account id to
+      the base URL:
+    </p>
+    <pre><code  class="language-http"  translate="No">https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/blacklist
+</code></pre>
+
+    <h3>Authorization</h3>
+    <p>
+      An access token for requests is required and must be present in the
+      Authorization header::
+    </p>
+    <pre><code  class="language-http"  translate="No">Authorization:  Bearer  {access_token}</code></pre>
+    <p>
+      The access token is a temporary OAuth2 access token that must be obtained
+      from the Brightcove OAuth service. For details on how to obtain client
+      credentials and use them to retrieve access tokens, see the
+      <a href="/oauth/getting-started/overview-oauth-api-v4.html"
+        >Brightcove OAuth Overview</a
+      >.
+    </p>
+
+    <h3>Permissions</h3>
+    <p>
+      Requests to the Blacklist API must be made from
+      <a href="/oauth/index.html">client credentials</a> with the following
+      permissions:
+    </p>
+    <ul>
+      <li>
+        <code translate="No">video-cloud/playback-auth/blacklist</code>
+      </li>
+    </ul>
+
+    <h3>Manage blacklisted tokens</h3>
+    <p>
+      Updates to the blacklist may take up to a minute to propagate through the
+      system. The Blacklist API supports the following requests:
+    </p>
+
+    <h4>Add a token to the blacklist:</h4>
+    <pre><code  class="language-http"  translate="No">PUT  (no  req  body)/v1/accounts/{accountID}/blacklist/tokens/{token}
+</code></pre>
+    <p>
+      The entire encoded JWT string is included in the path.
+    </p>
+
+    <h4>Show current blacklist:</h4>
+    <pre><code  class="language-http"  translate="No">GET  /v1/accounts/{accountId}/blacklist
+</code></pre>
+    <br />
+
+    <h4>Check if a token is on the blacklist:</h4>
+    <pre><code  class="language-http"  translate="No">GET  /v1/accounts/{accountID}/blacklist/tokens/{token}
+</code></pre>
+    <p>
+      The entire encoded JWT string is included in the path.
+    </p>
+    <p>
+      Responses:
+    </p>
+    <ul>
+      <li>
+        204 - the token is blacklisted
+      </li>
+      <li>
+        404 - the token is not blacklisted
+      </li>
+    </ul>
+
+    <h4>Remove a token from the blacklist:</h4>
+    <pre><code  class="language-http"  translate="No">DELETE  /v1/accounts/{accountID}/blacklist/tokens/{token}
+</code></pre>
+    <p>
+      The entire encoded JWT string is included in the path.
+    </p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Audit_an_account">Audit an account</h2>
+
+    <p>
+      The Audit API allows you to generate a daily access report for your
+      account's Playback Authorization Service usage. This report includes
+      details along with the authorization response for each session.
+    </p>
+
+    <h3>Audit API</h3>
+    <p>
+      Here are the details for the Audit API:
+    </p>
+
+    <h3>Base URL</h3>
+    <p>
+      The base URL for the Audit API is:
+    </p>
+    <pre><code  class="language-http"  translate="No">https://playback-auth.api.brightcove.com
+</code></pre>
+
+    <h3>Account path</h3>
+    <p>
+      In all cases, requests will be made for a specific Video Cloud account.
+      So, you will always add the term accounts followed by your account id to
+      the base URL:
+    </p>
+    <pre><code  class="language-http"  translate="No">https://playback-auth.api.brightcove.com/v1/audit/accounts/{accountID}
+</code></pre>
+
+    <h3>Authorization</h3>
+    <p>
+      An access token for requests is required and must be present in the
+      Authorization header::
+    </p>
+    <pre><code  class="language-http"  translate="No">Authorization:  Bearer  {access_token}
+</code></pre>
+    <p>
+      The access token is a temporary OAuth2 access token that must be obtained
+      from the Brightcove OAuth service. For details on how to obtain client
+      credentials and use them to retrieve access tokens, see the
+      <a href="/oauth/getting-started/overview-oauth-api-v4.html"
+        >Brightcove OAuth Overview</a
+      >.
+    </p>
+
+    <h3>Permissions</h3>
+    <p>
+      Requests to the Audit API must be made from
+      <a href="/oauth/index.html">client credentials</a> with the following
+      permissions:
+    </p>
+    <ul>
+      <li>
+        <code translate="No">video-cloud/playback-auth/audit</code>
+      </li>
+    </ul>
+
+    <h3>Generate reports</h3>
+    <p>
+      Use the Audit API to generate a daily access report with session details
+      by following these steps:
+    </p>
+    <aside class="bcls-aside  bcls-aside--information">
+      <p>
+        Notes:
+      </p>
+      <ul>
+        <li>
+          <p>
+            All Authorization access logs for Brightcove are in the UTC
+            timezone. Remember to take timezones into account when requests do
+            not show up in your report.
+          </p>
+        </li>
+        <li>
+          <p>
+            Brightcove recommends running Audit API query reports 6 hours after
+            midnight for processing from all regions to complete for all
+            authorization data from the previous day. Audit API calls for a
+            given account and a given day are cached on API side. If you run a
+            report before the suggested midnight+6 hours, you may find that your
+            report is incorrect or incomplete.
+          </p>
+        </li>
+      </ul>
+    </aside>
+
+    <ol class="bcls-tasklist__restart">
+      <li>
+        <p>
+          Request a daily usage report
+        </p>
+
+        <h4>Parameters</h4>
+        <table class="bcls-table">
+          <thead class="bcls-table__head">
+            <tr>
+              <th>Field</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+            <tr>
+              <td><code translate="No">accountID</code></td>
+              <td>String</td>
+              <td>Your Video Cloud account Id</td>
+            </tr>
+            <tr>
+              <td><code translate="No">date</code></td>
+              <td>String</td>
+              <td>
+                Validations:
+                <ul>
+                  <li>
+                    Format YYYY-MM-DD
+                  </li>
+                  <li>
+                    Date cannot be today (UTC time)
+                  </li>
+                  <li>
+                    Date cannot be greater than 30 days in the past
+                  </li>
+                  <li>
+                    Brightcove does not hold on to the authorization service
+                    usage reports after 30 days to follow GDPR compliance
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>Request</h4>
+        <table class="bcls-table">
+          <tbody class="bcls-table__body">
+            <tr>
+              <th>Method</th>
+              <td>POST</td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td>
+                https://playback-auth.api.brightcove.com/v1/audit/accounts/<span
+                  class="bcls-input"
+                  >{accountID}</span
+                >/query/<span class="bcls-input">{date}</span>
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="2">Headers</th>
+              <td>
+                Authorization: Bearer
+                <span class="bcls-input">your access token</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>Response</h4>
+        <p>Sample response (200 OK):</p>
+
+        <pre class="line-numbers">
+<code  class="language-json"  translate="No">{
+	&quot;executionID&quot;:  &quot;abcdef-asfdag-dvsbcd&quot;
 }</code></pre>
 
-    <p>
-      Details:
-    </p>
-    <table class="bcls-table">
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Field</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td><code translate="No">executionID</code></td>
-          <td>String</td>
-          <td>A unique ID associated with a usage report for a specified <code translate="No">accountID</code> and <code translate="No">date</code>. This id is passed to the other endpoints below.</td>
-        </tr>
-      </tbody>
-    </table>
+        <p>
+          Details:
+        </p>
+        <table class="bcls-table">
+          <thead class="bcls-table__head">
+            <tr>
+              <th>Field</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+            <tr>
+              <td><code translate="No">executionID</code></td>
+              <td>String</td>
+              <td>
+                A unique ID associated with a usage report for a specified
+                <code translate="No">accountID</code> and
+                <code translate="No">date</code>. This id is passed to the other
+                endpoints below.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>
+          Check the status of your report
+        </p>
 
-  </li>
-  <li>
-    <p>
-      Check the status of your report
-    </p>
+        <h4>Request</h4>
+        <table class="bcls-table">
+          <tbody class="bcls-table__body">
+            <tr>
+              <th>Method</th>
+              <td>GET</td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td>
+                https://playback-auth.api.brightcove.com/v1/audit/accounts/<span
+                  class="bcls-input"
+                  >{accountID}</span
+                >/execution/<span class="bcls-input">{executionID}</span>/status
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="2">Headers</th>
+              <td>
+                Authorization: Bearer
+                <span class="bcls-input">your access token</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+          </tbody>
+        </table>
 
-    <h4>Request</h4>
-    <table class="bcls-table">
-      <tbody class="bcls-table__body">
-        <tr>
-          <th>Method</th>
-    			<td>GET</td>
-    		</tr>
-        <tr>
-          <th>URL</th>
-    			<td>https://playback-auth.api.brightcove.com/v1/audit/accounts/<span class="bcls-input">{accountID}</span>/execution/<span class="bcls-input">{executionID}</span>/status</td>
-    		</tr>
-        <tr>
-          <th rowspan="2">Headers</th>
-    			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
-    		</tr>
-        <tr>
-          <td>Content-Type: application/json</td>
-    		</tr>
-      </tbody>
-    </table>
+        <h4>Response</h4>
+        <p>Sample response (200 OK):</p>
 
-    <h4>Response</h4>
-    <p>Sample response (200 OK):</p>
-
-<pre class="line-numbers">
-<code class="language-json" translate="No">{
-	&quot;status&quot;: &quot;completed&quot;
+        <pre class="line-numbers">
+<code  class="language-json"  translate="No">{
+	&quot;status&quot;:  &quot;completed&quot;
 }
 </code></pre>
 
-    <p>
-      Details:
-    </p>
-    <table class="bcls-table">
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Field</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td><code translate="No">status</code></td>
-          <td>String</td>
-          <td>Values: "completed", "processing", "failed"</td>
-        </tr>
-      </tbody>
-    </table>
+        <p>
+          Details:
+        </p>
+        <table class="bcls-table">
+          <thead class="bcls-table__head">
+            <tr>
+              <th>Field</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+            <tr>
+              <td><code translate="No">status</code></td>
+              <td>String</td>
+              <td>Values: "completed", "processing", "failed"</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>
+          Fetch your report
+        </p>
+        <h4>Request</h4>
+        <table class="bcls-table">
+          <tbody class="bcls-table__body">
+            <tr>
+              <th>Method</th>
+              <td>GET</td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td>
+                https://playback-auth.api.brightcove.com/v1/audit/accounts/<span
+                  class="bcls-input"
+                  >{accountID}</span
+                >/execution/<span class="bcls-input">{executionID}</span>/report
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="2">Headers</th>
+              <td>
+                Authorization: Bearer
+                <span class="bcls-input">your access token</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+          </tbody>
+        </table>
 
-  </li>
-  <li>
-    <p>
-      Fetch your report
-    </p>
-    <h4>Request</h4>
-    <table class="bcls-table">
-      <tbody class="bcls-table__body">
-        <tr>
-          <th>Method</th>
-    			<td>GET</td>
-    		</tr>
-        <tr>
-          <th>URL</th>
-    			<td>https://playback-auth.api.brightcove.com/v1/audit/accounts/<span class="bcls-input">{accountID}</span>/execution/<span class="bcls-input">{executionID}</span>/report</td>
-    		</tr>
-        <tr>
-          <th rowspan="2">Headers</th>
-    			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
-    		</tr>
-        <tr>
-          <td>Content-Type: application/json</td>
-    		</tr>
-      </tbody>
-    </table>
+        <h4>Response</h4>
+        <p>Sample response (200 OK):</p>
 
-    <h4>Response</h4>
-    <p>Sample response (200 OK):</p>
-
-<pre class="line-numbers">
-<code class="language-json" translate="No">{
-  &quot;signedURL&quot;: &quot;http://signed-url&quot;,
-  &quot;expirationTime&quot;: 1569219842
+        <pre class="line-numbers">
+<code  class="language-json"  translate="No">{
+    &quot;signedURL&quot;:  &quot;http://signed-url&quot;,
+    &quot;expirationTime&quot;:  1569219842
 }
 </code></pre>
 
+        <p>
+          Details:
+        </p>
+        <table class="bcls-table">
+          <thead class="bcls-table__head">
+            <tr>
+              <th>Field</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+            <tr>
+              <td><code translate="No">SignedURL</code></td>
+              <td>String</td>
+              <td>
+                The results are returned as an S3 URL that you can download
+              </td>
+            </tr>
+            <tr>
+              <td><code translate="No">expirationTime</code></td>
+              <td>Epoch Timestamp</td>
+              <td>Signed S3 URLs are valid for 15 minutes</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Limitations">Limitations</h2>
+
     <p>
-      Details:
+      The following limitations apply with the initial release of this feature:
     </p>
-    <table class="bcls-table">
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Field</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td><code translate="No">SignedURL</code></td>
-          <td>String</td>
-          <td>The results are returned as an S3 URL that you can download</td>
-        </tr>
-        <tr>
-          <td><code translate="No">expirationTime</code></td>
-          <td>Epoch Timestamp</td>
-          <td>Signed S3 URLs are valid for 15 minutes</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-</ol>
+    <ul>
+      <li>
+        There is a limit of 100 blacklisted tokens. After that, an error will be
+        thrown.
+      </li>
+    </ul>
+  </section>
 
-</section>
+  <section class="bcls-section">
+    <h2 id="Related_topics">Related topics</h2>
 
-<section class="bcls-section">
-<h2 id="Limitations">Limitations</h2>
-
-<p>The following limitations apply with the initial release of this feature:</p>
-<ul>
-  <li>
-    There is a limit of 100 blacklisted tokens. After that, an error will be thrown.
-  </li>
-</ul>
-
-</section>
-
-<section class="bcls-section">
-<h2 id="Related_topics">Related topics</h2>
-
-<ul>
-  <li>
-    <a href="/playback-authorization/getting-started/overview-playback-authorization-service.html">Overview: DRM with Playback Authorization Service</a>
-  </li>
-  <li>
-    <a href="/playback-authorization/guides/using-pas-with-bcp.html">Using Playback Authorization DRM with Brightcove Player</a>
-  </li>
-  <li>
-    <a href="/playback-authorization/guides/using-pas-with-sdks.html">Using Playback Authorization DRM with the Native SDKs</a>
-  </li>
-</ul>
-
-</section>
-
+    <ul>
+      <li>
+        <a
+          href="/playback-authorization/getting-started/overview-playback-authorization-service.html"
+          >Overview: DRM with Playback Authorization Service</a
+        >
+      </li>
+      <li>
+        <a href="/playback-authorization/guides/using-pas-with-bcp.html"
+          >Using Playback Authorization DRM with Brightcove Player</a
+        >
+      </li>
+      <li>
+        <a href="/playback-authorization/guides/using-pas-with-sdks.html"
+          >Using Playback Authorization DRM with the Native SDKs</a
+        >
+      </li>
+    </ul>
+  </section>
 </article>
-
