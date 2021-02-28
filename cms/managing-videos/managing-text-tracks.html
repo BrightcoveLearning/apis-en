@@ -1,0 +1,202 @@
+---
+title: Managing Text Tracks Using the CMS API
+description: 'In this topic, you will learn how to use the CMS API to update WebVTT text tracks of your videos.'
+parent: Managing Videos/Assets
+grandparent: CMS API
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+    <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>Whether the text tracks are ingested (Static or Dynamic) or remote, you can use a <code translate="no">PATCH</cod> request to update the metadata associated with the text tracks.</p>
+    <h3>Notes</h3>
+    <ul>
+      <li>The methods explained in this document are for updating WebVTT files added to your videos. You can ingest WebVTT files to Video Cloud using the <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Dynamic Ingest API</a> or <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">add remote WebVTT files</a> to your videos using the CMS API.</li>
+    </ul>
+    
+    </section>
+    
+    <section class="section">
+    <h2 id="authorization">Authorization</h2>
+    
+		<p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
+    
+    <p>The operations you will need to update video metadata are <code translate="No">video-cloud/video/update</code> or <code translate="No">video-cloud/video/all</code>.</p>
+    </section>
+    
+    <section class="section">
+    <h2 id="syntax">Syntax</h2>
+
+		<aside class="bcls-aside bcls-aside--warning language-editable">The <strong>entire array must be patched</strong>, not just the track or the field that is changing.</aside>
+
+		<p>We recommend making the following request first to get the complete array:</p>
+<pre><code class="language-http" translate="No">GET
+https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
+</code></pre>
+    <h3>Updating Text Tracks</h3>
+		<p>When updating Text Tracks, some fields in <a href="/cms/references/cms-api-video-fields-reference-stage.html#text_tracks">Text Tracks Fields</a> can be treated differently according to its type.</p>
+
+		<table class="bcls-table">
+			<caption class="bcls-caption--table">Text Track Fields</caption>
+			<thead class="bcls-table__head">
+					<tr>
+							<th>Field</th>
+							<th>Type</th>
+							<th>Remote Text Tracks</th>
+							<th>Static Ingested Text Tracks</th>
+							<th>Dynamic Ingested Text Tracks</th>
+					</tr>
+			</thead>
+			<tbody class="bcls-table__body">
+					<tr>
+							<td><code translate="no">id</code></td>
+							<td>String</td>
+							<td colspan="3">READ-ONLY value. Required to identify the TT that needs to be updated.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">account_id</code></td>
+							<td>String</td>
+							<td colspan="3">Updates on this field will be ignored.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">src</code></td>
+							<td>String</td>
+							<td>Required and limited to 255 characters.</td>
+							<td colspan="2">Updates on this field will be ignored.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">srclang</code></td>
+							<td>String</td>
+							<td colspan="3">Limited to 32 characters.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">label</code></td>
+							<td>String</td>
+							<td colspan="3">Limited to 255 characters.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">kind</code></td>
+							<td>Enum</td>
+							<td colspan="3">Valid values are <code>subtitles</code>, <code>captions</code>, <code>descriptions</code>, <code>chapters</code>, <code>metadata</code>. Case sensitive.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">mime_type</code></td>
+							<td>String</td>
+							<td colspan="2">Limited to 32 characters.</td>
+							<td>Updates on this field will be ignored.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">asset_id</code></td>
+							<td>String</td>
+							<td colspan="2">READ-ONLY value.</td>
+							<td>Field not applicable for this type. Updates on this field will be ignored.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">in_band_metadata_track_dispatch_type</code></td>
+							<td>String</td>
+							<td colspan="2">Field not applicable for this type. </td>
+							<td>Updates on this field will be ignored.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">sources</code></td>
+							<td>Array</td>
+							<td colspan="3">READ-ONLY value.</td>
+					</tr>
+					<tr>
+							<td><code translate="no">default</code></td>
+							<td>Boolean</td>
+							<td colspan="2"><code>true</code> or <code>false</code>. You cannot add multiple <code>default=true</code> to text tracks with different <code>srclang</code>.</td>
+							<td>Updates on this field will be ignored.</td>
+					</tr>
+			</tbody>
+	</table>
+    <h3>Request</h3>
+    <p>Applicable to Remote, Static and Dynamic Text Tracks.</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">PATCH
+https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}</code></pre>
+    
+    <h3>Request body examples</h3>
+    <details>
+			<summary>Remote text tracks</summary>
+			<p>The request body will be a JSON object containing an array of text tracks:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"text_tracks" : 
+	[ 
+		{ 
+			"id" : "1234-1234-1234"
+			"src" :     "http://learning-services-media.brightcove.com/captions/bc_smart_ja.   vtt",
+			"srclang" : "ja", 
+			"label" : "日本人", 
+			"kind" : "captions", 
+			"mime_type" : null, 
+			"default" : true 
+		}, 
+		{ 
+			"id" : "5678-5678-5678"
+			"src" : "http://learning-services-media.brightcove.com/captions/bc_smart_es.   vtt",  
+			"srclang" : "es", 
+			"label" : "español", 
+			"kind" : "descriptions",
+			"mime_type" : null,
+			"default" : false 
+		} 
+	] 
+}</code></pre>
+		</details>
+    <details>
+			<summary>Static text tracks</summary>
+			<p>The request body will be a JSON object containing an array of text tracks:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"text_tracks" : 
+	[ 
+		{ 
+			"id" : "1234-1234-1234"
+			"srclang" : "ja", 
+			"label" : "日本人", 
+			"kind" : "captions", 
+			"mime_type" : null, 
+			"default" : true 
+		}, 
+		{ 
+			"id" : "5678-5678-5678"  
+			"srclang" : "es", 
+			"label" : "español", 
+			"kind" : "descriptions",
+			"mime_type" : null,
+			"default" : false 
+		} 
+	] 
+}</code></pre>
+		</details>
+    <details>
+			<summary>Dynamic text tracks</summary>
+			<p>The request body will be a JSON object containing an array of text tracks:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"text_tracks" : 
+	[ 
+		{ 
+			"id" : "1234-1234-1234"
+			"srclang" : "ja", 
+			"label" : "日本人", 
+			"kind" : "captions", 
+			"mime_type" : null, 
+			"default" : true 
+		}, 
+		{ 
+			"id" : "5678-5678-5678"  
+			"srclang" : "es", 
+			"label" : "español", 
+			"kind" : "descriptions",
+			"mime_type" : null,
+			"default" : false 
+		} 
+	] 
+}</code></pre>
+		</details>
+  </section>
+</article>
+    
