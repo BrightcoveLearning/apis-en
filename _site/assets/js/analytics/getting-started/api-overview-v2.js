@@ -75,7 +75,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             param;
             for (param in aapi_model.urlparams) {
                 thisParam = aapi_model.urlparams[param];
-                str += "<tr><td><code translate="No">" + thisParam.name + "</code></td><td>" + thisParam.required + "</td><td>" + thisParam.description + "</td><td>" + thisParam.values + "</td><td>" + thisParam.default + "</td></tr>";
+                str += '<tr><td><code translate="No">' + thisParam.name + '</code></td><td>' + thisParam.required + '</td><td>' + thisParam.description + '</td><td>' + thisParam.values + '</td><td>' + thisParam.default + '</td></tr>';
             }
             paramTable.innerHTML = str;
     }
