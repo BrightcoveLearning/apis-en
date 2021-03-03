@@ -1299,7 +1299,7 @@ fieldset legend {
 <h3 id="logger">&nbsp;</h3>
 
 <h5>Sample API request:</h5>
-<textarea id="apiRequest" class="bcls-code">&nbsp;</textarea>
+<textarea id="apiRequest" class="bcls-code"></textarea>
 
 <h3>Response data</h3>
 
@@ -1320,7 +1320,7 @@ fieldset legend {
 
 <p>A typical use case for getting a report on multiple dimensions: you want a breakdown of video views between desktop and mobile devices, and also want to know how many of the mobile device views were on iOS versus Android devices, and how many of the desktop views were on Macs versus Windows machines. Currently there is no standard report in the Studio Analytics Module that provides this information, but you can obtain it via this <span translate="No">Analytics API</span> call:</p>
 
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+<pre>
   <code class="language-http" translate="No">https://analytics.api.brightcove.com/v1/data?accounts=57838016001&amp;dimensions=video,device_type,device_os&amp;from=2014-01-01&amp;to=2014-04-01&amp;fields=video_view</code></pre>
 
 <p>(In this case we are requesting video views for the period from January 1 to April 1 in 2014.)</p>
@@ -1338,7 +1338,7 @@ fieldset legend {
 
 <p>Here is a sample cURL command:</p>
 
-<pre class="line-numbers">
+<pre>
   <code class="language-bash" translate="No">curl -s --header "Authorization: Bearer <span class="bcls-input">$ACCESS_TOKEN</span>" \
   "https://analytics.api.brightcove.com/v1/data?accounts=$ACCOUNT_ID&amp;dimensions=video&amp;from=2017-04-04&amp;limit=100"</code></pre>
 
@@ -1824,7 +1824,7 @@ fieldset legend {
 
 <p>The Video Cloud account(s) that you want a report for are specified using the <code translate="No">accounts</code> parameter. For example:</p>
 
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+<pre>
   <code class="language-http" translate="No">https://analytics.api.brightcove.com/v1/data?accounts={account1_id,account2_id}</code></pre>
 </section>
 
@@ -1833,12 +1833,12 @@ fieldset legend {
 
 <p>The general syntax for filters is:</p>
 
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+<pre>
 <code class="language-http" translate="No">where=dimension1==value1;dimension2==value2</code></pre>
 
 <p>For example:</p>
 
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+<pre>
 <code class="language-http" translate="No">https://analytics.api.brightcove.com/v1?accounts=<span class="bcls-input">account_id(s)</span>&amp;dimensions=device_type&amp;where=video==<span class="bcls-input">video_id</span>;device_type==tablet</code></pre>
 
 <p>Commas are treated as logical ORs, and semicolons as logical ANDs. For example, <code class="language-http" translate="No">where=video==1234,5678;player==9876</code> is interpreted as "where video = 1234 <strong>OR</strong> 5678 <strong>AND</strong> player = 9876"</p>
@@ -1847,7 +1847,7 @@ fieldset legend {
 
 <p>String values should be URI encoded. You can also escape special characters using a "":</p>
 
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+<pre>
 <code class="language-http" translate="No">where=search_terms==boston,%20ma</code></pre>
 
 <p>You can use any dimension as a filter, <strong>but <em>only</em> if that dimension is also included in the <code translate="No">dimensions</code></strong> you are requesting.</p>
@@ -1892,22 +1892,22 @@ fieldset legend {
 
 <h5>Single tag</h5>
 
-<pre class="line-numbers">
+<pre>
 <code class="language-http" translate="No">where=video.q==tags:foo</code></pre>
 
 <h5>Multiple tags:</h5>
 
-<pre class="line-numbers">
+<pre>
 <code class="language-http" translate="No">where=video.q==tags:foo,bar</code></pre>
 
 <h5>Custom fields</h5>
 
-<pre class="line-numbers">
+<pre>
 <code class="language-http" translate="No">where=video.q==custom_fields:foo</code></pre>
 
 <h5>Tags and custom fields</h5>
 
-<pre class="line-numbers">
+<pre>
 <code class="language-http" translate="No">where=video.q==tags:foo,bar+custom_fields:fish</code></pre>
 
 <p>Note that the <code translate="No">video.q</code> search functionality includes <code translate="No">AND</code>, <code translate="No">OR</code> and <code translate="No">NOT</code> logic as follows:</p>
@@ -2001,7 +2001,7 @@ fieldset legend {
 
 <p>To generate a report on some dimension like "video" for a single day, set the to and from values to that date:</p>
 
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+<pre>
 <code class="language-http" translate="No">...&amp;dimensions=video&amp;from=2013-11-01&amp;to=2013-11-01</code></pre>
 
 <aside class="bcls-aside bcls-aside--tip">Notes:
@@ -2074,7 +2074,7 @@ fieldset legend {
 
 <p>You can add calculated fields to your API requests using the syntax:</p>
 
-<pre class="line-numbers">
+<pre>
 <code class="language-http" translate="No">fields=calulated_field_name:expression</code></pre>
 
 <p>You can use calculated fields to create your own custom fields out of existing metrics, or to rename an existing field.</p>
@@ -2094,13 +2094,13 @@ fieldset legend {
 
 <h3>Examples</h3>
 
-<pre class="line-numbers">
+<pre>
 <code class="language-http" translate="No">fields=avg_seconds_viewed:video_seconds_viewed/video_view,video.name</code></pre>
 
-<pre class="line-numbers">
+<pre>
 <code class="language-http" translate="No">fields=avg_incomplete_ads:(ad_mode_begin-ad_mode_complete)/video_view,video.name</code></pre>
 
-<pre class="line-numbers">
+<pre>
 <code class="language-http" translate="No">fields=Video%20Views:video_view,video.name</code></pre>
 
 <h3>Sample request</h3>
