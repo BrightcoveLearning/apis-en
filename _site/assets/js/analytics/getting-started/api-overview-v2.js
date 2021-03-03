@@ -85,8 +85,8 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     * @return {Boolean} true if variable is defined and has a value
     **/
     function isDefined(x) {
-        if ( x === "" || x === null || x === undefined) {
-           return false;
+        if ( x === '' || x === null || x === undefined) {
+          return false;
         }
         return true;
     }
