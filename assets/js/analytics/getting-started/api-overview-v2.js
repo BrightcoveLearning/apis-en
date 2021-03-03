@@ -271,7 +271,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             thisDimension = aapi_model.dimensions[d];
             bclslog('thisDimension', thisDimension);
             thisValues = thisDimension.filter_values;
-            str += "<tr><td><code translate="No">" + thisDimension.name + "</code></td><td><ul>";
+            str += '<tr><td><code translate="No">' + thisDimension.name + '</code></td><td><ul>';
             jMax = thisValues.length;
             for (j = 0; j < jMax; j++) {
                 str += "<li>" + thisValues[j] + "</li>";
