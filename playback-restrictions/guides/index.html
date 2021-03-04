@@ -1,0 +1,51 @@
+---
+title: 'Guides' 
+parent: Playback API
+icon: '<i data-feather="map"></i>'
+description: This section provides guides for working with the Playback API.
+---
+
+<style>
+  h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
+    font-size: 3rem;
+    color:rgb(9, 7, 140);
+    margin-right: .5rem;
+  }
+  .card-icon i {
+    color: rgb(9, 7, 140);
+  }
+  .card-wrapper {
+  justify-content: start;
+}
+.bcls-card h2 {
+  font-size: 1rem;
+}
+.bcls-card ul {
+  font-size: small;
+  margin-left: -3em;
+}
+</style>
+
+<article class="bcls-article">
+  <h1>{{ page.icon }} {{ page.title }}</h1>
+  <summary>{{ page.description }}</summary>
+  <section class="card-wrapper">
+    <section class="bcls-card">
+      <div class="card-content">
+        <h2 id="Topics_in_this_section">Topics in {{ page.title }}</h2>
+        <ul>
+        {% for item in site.data.navigation %}
+          {% if item.name == page.parent %}
+            {% for entry in item.docs %}
+              {% if entry.name == page.title %}
+                {% for doc in entry.docs %}
+                  <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  </section>
+</article>

@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In this topic, you will learn the how to retrieve the viewer's playback position from the Cross-Device Resume (XDR) API.">
+  <meta name="description" content="This section provides topics to help you get started with the Playback API.">
   
-  <title>Getting Playback Position from XDR API</title>
+  <title>Getting Started</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -138,9 +138,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/xdr/getting-started/">Getting started</a></li>
+      <li class="breadcrumb-item"><a href="/playback-restrictions/getting-started/">Playback API</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Getting Playback Position from XDR API</li>
+      <li class="breadcrumb-item active" aria-current="page">Getting Started</li>
     </ol>
   </nav>
 </header>
@@ -1239,164 +1239,100 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
+<style>
+  h1 i.fal, h1 i.fab, h1 i.fas, h1 i.far {
+    font-size: 3rem;
+    color:rgb(9, 7, 140);
+    margin-right: .5rem;
+  }
+  .card-icon i {
+    color: rgb(9, 7, 140);
+  }
+  .card-wrapper {
+  justify-content: start;
+}
+.bcls-card h2 {
+  font-size: 1rem;
+}
+.bcls-card ul {
+  font-size: small;
+  margin-left: -3em;
+}
+</style>
+
 <article class="bcls-article">
-  <h1>Getting Playback Position from XDR API</h1>
-  <summary>In this topic, you will learn the how to retrieve the viewer's playback position from the Cross-Device Resume (XDR) API.</summary>
-  <section class="bcls-section">
-    <h2 id="Overview">Overview</h2>
-    <p>
-      Cross-device resume lets viewers start watching a video on one device, and at a later time, continue watching the video where they left off on a different device.
-    </p>
-    <p>
-      Because the Cross-Device Resume (XDR) API cannot be called from your client-side apps, you will need to create a server-side proxy to make the call and return the playback position value.
-    </p>
-    <aside class="bcls-aside bcls-aside--information language-editable">Note that there is a delay between the submission of XDR data and the availability of that data via the API of up to 30 seconds.</aside>
+  <h1><i data-feather="book-open"></i> Getting Started</h1>
+  <summary>This section provides topics to help you get started with the Playback API.</summary>
+  <section class="card-wrapper">
+    <section class="bcls-card">
+      <div class="card-content">
+        <h2 id="Topics_in_this_section">Topics in Getting Started</h2>
+        <ul>
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+              
+                
+                  <li><a href="/playback/getting-started/overview-playback-api.html">Overview: Playback API</a></li>
+                
+                  <li><a href="/playback/getting-started/quick-start-playback-api.html">Quick Start: Playback API</a></li>
+                
+                  <li><a href="/cms/getting-started/best-practices-cms-and-playback-apis.html">Best Practices: CMS and Playback APIs</a></li>
+                
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </section>
   </section>
-
-  <section class="bcls-section">
-    <h2 id="Getting_playback_position">Getting playback position</h2>
-
-    <p>You can get the viewer playback position with the <a href="/xdr/references/reference.html">Cross-Device Resume (XDR) API</a>.</p>
-
-    <h3 id="Cross_Device_Resume_API">Cross-Device Resume (XDR) API</h3>
-    <p>
-      With the Cross-Device Resume API, you can get all the playhead positions for a specific viewer, or all the playheads for a specific viewer and video.
-    </p>
-
-    <h3>Base URL</h3>
-    <p>
-      The base URL for the API is:
-    </p>
-    <pre><code class="language-http" translate="No">https://data.brightcove.com/v1/xdr</code></pre>
-
-    <h3>Account path</h3>
-    <p>
-      In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
-    </p>
-    <pre><code class="language-http" translate="No">https://data.brightcove.com/v1/xdr/accounts/{account_id}</code></pre>
-
-    <h3>Authorization</h3>
-    <p>
-      An access token for requests is required and must be present in the Authorization header:
-    </p>
-    <pre><code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
-    <p>
-      The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
-    </p>
-
-    <h3>Permissions</h3>
-    <p>
-      Requests to the Cross-Device Resume API must be made from <a href="/oauth/index.html">client credentials</a> with the following permissions:
-    </p>
-    <ul>
-      <li>
-        <code translate="No">video-cloud/xdr/read</code>
-      </li>
-    </ul>
-    <p><strong>Note that these permissions are not yet available in the Studio Admin UI.</strong> Until they are, you can use this <a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">Brightcove Learning Services app</a> to create your client credentials. Just be sure to check the <code translate="No">video-cloud/xdr/read</code> box when you create the credentials (you can check as many other boxes as you like).</p>
-
-    <h3>API methods</h3>
-    <p>
-      The Cross-Device Resume API supports the following requests. For details, see the <a href="/xdr/references/reference.html">Cross-Device Resume (XDR) API Reference</a>.
-    </p>
-
-    <h4>Get viewer playheads</h4>
-    <p>
-      This request gets all of the playheads for a viewer.
-    </p>
-    <pre><code class="language-http" translate="No">GET /accounts/{accountID}/playheads/{viewer_id}</code></pre>
-    <h5>Response body</h5>
-    <p>
-      The response body contains an array of videos and playheads. It should look similar to this:
-    </p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  &quot;account_id&quot;: &quot;1752604059001&quot;,
-  &quot;viewer_id&quot;: &quot;viewer001&quot;,
-  &quot;items&quot;: [
-    {
-    &quot;timestamp&quot;: 1589548991563000,
-    &quot;video_id&quot;: &quot;6152436480001&quot;,
-    &quot;playhead_seconds&quot;: 17
-    },
-    {
-    &quot;timestamp&quot;: 1589548858719000,
-    &quot;video_id&quot;: &quot;6152440604001&quot;,
-    &quot;playhead_seconds&quot;: 3
-    }
-  ],
-  &quot;size&quot;: 2
-  }</code></pre>
-    <br />
-
-    <h4>Get viewer video playheads</h4>
-    <p>
-      This request gets all of the playheads for a viewer and a specific video.
-    </p>
-    <pre><code class="language-http" translate="No">GET /accounts/{account_id}/playheads/{viewer_id}/{video_id}</code></pre>
-    <br />
-    <aside class="bcls-aside bcls-aside--tip">
-      <p>
-        You can also include of list of video ids: (maximum = 100)
-      </p>
-      <pre><code class="language-http" translate="No">GET /accounts/{account_id}/playheads/{viewer_id}/{video_id},{video_id},...</code></pre>
-    </aside>
-    <h5>Response body</h5>
-    <p>
-      If you specify one video ID, the response body will contain one item object. When you specify more than one video ID, than the <code translate="No">items</code> array will contain multiple item objects. It should look similar to this:
-    </p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  &quot;account_id&quot;: &quot;1752604059001&quot;,
-  &quot;viewer_id&quot;: &quot;viewer001&quot;,
-  &quot;items&quot;: [
-    {
-    &quot;timestamp&quot;: 1589896539910000,
-    &quot;video_id&quot;: &quot;6156696074001&quot;,
-    &quot;playhead_seconds&quot;: 39
-    }
-  ],
-  &quot;size&quot;: 1
-  }</code></pre>
-    <br />
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Using_a_server_side_proxy">Using a server-side proxy</h2>
-    <p>A proxy is a server-side application that acts as in intermediary between your client-side application and the REST API. Here are some helpful links:</p>
-    <ul>
-      <li>
-        For concepts, see <a href="https://player.support.brightcove.com/getting-started/learning-guide-using-rest-apis.html">Learning Guide: Using the REST APIs</a>
-      </li>
-      <li>
-        For a web player sample that calls a server-side proxy to get the playhead from the XDR API, see the <a href="https://github.com/BrightcoveLearning/cross-device-resume/blob/master/index.html">Cross-Device Resume sample on github</a>.
-      </li>
-    </ul>
-
-  </section>
-
-  <!-- <section class="bcls-section">
-<h2 id="Limitations">Limitations</h2>
-
-<p>Here are the limitation associated with the cross-device resume.</p>
-
-<ul>
-	<li>The current version of this plugin does not support thumbnails on mobile devices.</li>
-</ul>
-</section> -->
-
-  <!-- <section class="bcls-section">
-<h2 id="Changelog">Changelog</h2>
-
-<p>See the <a href="https://player.support.brightcove.com/plugins/changelog/thumbnails-plugin-changelog.html">changelog here</a>.</p>
-</section> -->
 </article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
-      
-      <nav class="right-side-nav" id="right_side_nav">
-        <h6 class="toc">Page Contents</h6>
-        <ul id="in_page_nav" class="list-none"></ul>
-      </nav>
       
     </div>
   </div>
@@ -1404,7 +1340,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 04 Mar 2021
+  Page last updated on 03 Mar 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">

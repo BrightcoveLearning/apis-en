@@ -1,0 +1,194 @@
+---
+title: "Playback Restrictions Use Cases"
+description: "In this topic, you will learn how Brightcove's Playback Rights Management Service allows you to control playback rights and restrictions associated with videos ingested for Dynamic Delivery."
+parent: Getting Started
+grandparent: Playback Rights
+layout: staging
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+
+  <br/>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
+
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+
+    <p>Brightcove's Playback Rights Management Service provides a scalable and expressive way to manage video playback. This service includes the following features:</p>
+    <ul>
+      <li>
+        Limit playback by geography
+        <ul>
+          <li>
+            Country
+          </li>
+          <li>
+            Zipcode
+          </li>
+          <li>
+            Designated market area (DMA)
+          </li>
+        </ul>
+      </li>
+      <li>
+        Define Proxy restrictions
+      </li>
+      <li>
+        Define IP restrictions for each video
+      </li>
+      <li>
+        Define domain restrictions
+      </li>
+      <li>
+        Set recurring schedules
+      </li>
+      <li>
+        Limit viewing by device
+      </li>
+      <li>
+        Limit the number of videos a viewer can watch at one time
+      </li>
+    </ul>
+    <p>
+      This diagram shows the flow from the user's video and license request to playback.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="/assets/images/playback-rights/getting-started/overview.png" alt="Playback Rights Management Service">
+      <figcaption class="bcls-caption--image">Playback Rights Management Service</figcaption>
+    </figure>
+  </section>
+
+  <!-- <section class="bcls-section">
+<h2 id="Account_setup">Account setup</h2>
+
+<p>Make sure your account is set up for Dynamic Delivery. Then, contact your account manager to enable your account for Brightcove's Playback Authorization Service (PAS). This enforces that you send a PAS token on License requests.</p>
+
+</section> -->
+
+  <section class="bcls-section">
+    <h2 id="Specifications">Specifications</h2>
+
+    <p>Brightcove's Playback Rights Management Service provides the following functionality:</p>
+
+    <h3>Playback Rights</h3>
+    <p>
+      Playback Rights allow you to specify restrictions for video playback. These rights will be stored in the <a href="/playback-rights/references/reference.html">Playback Rights API</a> and each set is assigned a unique id (<code translate="No">playback_right_id</code>). A set of rights can be associated with zero or more videos.
+    </p>
+    <p>
+      When a video has a <code translate="No">playback_right_id</code>, the restrictions specified in the Playback Rights object are applied to ALL requests for that video.
+    </p>
+    <p>
+      Playback Rights include the following categories:
+    </p>
+
+    <h4>Geography</h4>
+    <p>
+      Geographic restrictions let you control where your content is viewed. You can specify restrictions based on the following:
+    </p>
+    <ul>
+      <li>
+        Country
+      </li>
+      <li>
+        Zipcode (US only)
+      </li>
+      <li>
+        Designated market area (DMA - a concept developed by Nielson)
+      </li>
+    </ul>
+    <p>
+      The geography check is run at the start of video playback as well as during playback. If the mid-stream geo check fails, the player will stop video playback.
+    </p>
+
+    <h4>Proxy restrictions</h4>
+    <p>
+      Proxy restrictions allow you to block playback to certain types of connections.
+    </p>
+
+    <h4>IP addresses and domains</h4>
+    <p>
+      Domain restrictions allow you to limit where a video can be viewed to specific domains. IP restrictions limit video playback to specific IP addresses (account or video level).
+    </p>
+
+    <h4>Schedules</h4>
+    <p>
+      With recurring schedules, you can restrict video playback for particular timeframes. For example, you can allow your content to be played on weekends only. Another example would be to allow playback between 8:00 am and 8:00 pm on Mondays, Tuesdays, and Fridays.
+    </p>
+
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="User_level_restrictions">User-level restrictions</h2>
+
+    <p>You have the ability to create a unique id, per account, for each viewer. For user-level restrictions, you will need to use a JWT token with each request. With this, you can set the following restrictions:</p>
+
+    <h3>Device limits</h3>
+    <p>
+      Device registration happens when a DRM license request is made. A unique id is assigned to each device. With each license request, the device limit is checked and enforced. To use this restriction, you need to generate a JWT with the current user id (uid).
+    </p>
+
+    <h3>Concurrent stream limits</h3>
+    <p>
+      Limiting concurrent streams per user discourages viewers from sharing their credentials with friends who don’t have accounts. With concurrent stream limits, you define the number of video streams that a specific user can watch at any given time.
+    </p>
+
+    <h3>Tags</h3>
+    <p>
+      Limit the content viewers can watch based on subscription entitlement. The JWT token that you generate will specify the tags that are allowable for viewing. The Playback Rights Service ensures that the user can only watch videos with the specified tags.
+    </p>
+    <p>
+      Let's say you have the following subscription levels:
+    </p>
+    <ul>
+      <li>
+        Silver - watch any video except first-run movies and live streams
+      </li>
+      <li>
+        Gold - watch any video except live streams
+      </li>
+      <li>
+        Platinum - watch any video or live stream
+      </li>
+    </ul>
+    <p>
+      First, associate tags with your videos to distinguish between standard, first-run and live. Then, specify the applicable tags in the JWT token that you generate for the user.
+    </p>
+
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Video_restrictions_and_playback_rights">Video restrictions and Playback Rights</h2>
+    <p>The following restrictions can be set on videos via the <a href="https://studio.support.brightcove.com/media/editing-video-properties-using-media-module.html#availability">Media Module</a> or the <a href="https://apis.support.brightcove.com/cms/managing-videos/">CMS API</a>:</p>
+    <ul>
+      <li>Geo-filtering (allow/disallow viewing in certain countries)</li>
+      <li>Scheduling (setting the start and/or end date-time for video availability)</li>
+    </ul>
+    <p>These settings are separate from the Playback Rights Management system, but a video must pass video-level restrictions before Playback Rights Management rules are applied.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Related_topics">Related topics</h2>
+
+    <ul>
+      <li>
+        <a href="/playback-rights/getting-started/implementing-epa.html">Implementing Playback Rights Management Service</a>
+      </li>
+      <li>
+        <a href="/playback-rights/guides/using-epa-with-bcp.html">Using Playback Rights with Brightcove Player</a>
+      </li>
+      <li>
+        <a href="/playback-rights/guides/using-epa-with-sdks.html">Using Playback Rights with the Native SDKs</a>
+      </li>
+      <li>
+        <a href="/playback-authorization/guides/stream-concurrency.html">Implementing Stream Concurrency</a>
+      </li>
+      <li>
+        <a href="https://general.support.brightcove.com/developer/create-jwt-stage.html">Creating a JSON Web Token (JWT)</a>
+      </li>
+    </ul>
+
+  </section>
+</article>
+
