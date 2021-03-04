@@ -1,6 +1,6 @@
 ---
 title: "Getting Playback Position from XDR API"
-description: "In this topic, you will learn the how to retrieve the user's playback position from the Cross-Device Resume (XDR) API."
+description: "In this topic, you will learn the how to retrieve the viewer's playback position from the Cross-Device Resume (XDR) API."
 parent: Getting started
 grandparent: Cross Device Resume API
 ---
@@ -11,7 +11,7 @@ grandparent: Cross Device Resume API
   <section class="bcls-section">
     <h2 id="Overview">Overview</h2>
     <p>
-      Cross-device resume lets you start watching a video on one device, and at a later time, continue watching the video where you left off on a different device.
+      Cross-device resume lets viewers start watching a video on one device, and at a later time, continue watching the video where they left off on a different device.
     </p>
     <p>
       Because the Cross-Device Resume (XDR) API cannot be called from your client-side apps, you will need to create a server-side proxy to make the call and return the playback position value.
@@ -39,7 +39,7 @@ grandparent: Cross Device Resume API
     <p>
       In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
     </p>
-    <pre><code class="language-http" translate="No">https://data.brightcove.com/v1/xdr/accounts/{accountID}</code></pre>
+    <pre><code class="language-http" translate="No">https://data.brightcove.com/v1/xdr/accounts/{account_id}</code></pre>
 
     <h3>Authorization</h3>
     <p>
@@ -70,14 +70,14 @@ grandparent: Cross Device Resume API
     <p>
       This request gets all of the playheads for a viewer.
     </p>
-    <pre><code class="language-http" translate="No">GET /accounts/{accountID}/playheads/{viewerID}</code></pre>
+    <pre><code class="language-http" translate="No">GET /accounts/{accountID}/playheads/{viewer_id}</code></pre>
     <h5>Response body</h5>
     <p>
       The response body contains an array of videos and playheads. It should look similar to this:
     </p>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   &quot;account_id&quot;: &quot;1752604059001&quot;,
-  &quot;viewer_id&quot;: &quot;user001&quot;,
+  &quot;viewer_id&quot;: &quot;viewer001&quot;,
   &quot;items&quot;: [
     {
     &quot;timestamp&quot;: 1589548991563000,
@@ -98,21 +98,21 @@ grandparent: Cross Device Resume API
     <p>
       This request gets all of the playheads for a viewer and a specific video.
     </p>
-    <pre><code class="language-http" translate="No">GET /accounts/{accountID}/playheads/{viewerID}/{videoID}</code></pre>
+    <pre><code class="language-http" translate="No">GET /accounts/{account_id}/playheads/{viewer_id}/{video_id}</code></pre>
     <br />
     <aside class="bcls-aside bcls-aside--tip">
       <p>
         You can also include of list of video ids: (maximum = 100)
       </p>
-      <pre><code class="language-http" translate="No">GET /accounts/{accountID}/playheads/{viewerID}/{videoID},{videoID},...</code></pre>
+      <pre><code class="language-http" translate="No">GET /accounts/{account_id}/playheads/{viewer_id}/{video_id},{video_id},...</code></pre>
     </aside>
     <h5>Response body</h5>
     <p>
-      If you specify one video id, the response body will contain one item object. When you specify more than one video id, than the <code translate="No">items</code> array will contain multiple item objects. It should look similar to this:
+      If you specify one video ID, the response body will contain one item object. When you specify more than one video ID, than the <code translate="No">items</code> array will contain multiple item objects. It should look similar to this:
     </p>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   &quot;account_id&quot;: &quot;1752604059001&quot;,
-  &quot;viewer_id&quot;: &quot;user001&quot;,
+  &quot;viewer_id&quot;: &quot;viewer001&quot;,
   &quot;items&quot;: [
     {
     &quot;timestamp&quot;: 1589896539910000,
