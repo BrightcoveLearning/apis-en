@@ -3,15 +3,25 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="The Channel API is used to get information about Cloud Playout channels.">
+  <meta name="description" content="This topic provides best practices for working with the Cloud Playout EPG API.">
   
-  <title>Overview: Channel API</title>
+  <title>EPG API: Best Practices</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">  
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-ultra.eot" type="font/eot">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-ultra.woff" type="font/woff">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-super.eot" type="font/eot">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-super.woff" type="font/woff">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-black.eot" type="font/eot">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-black.woff" type="font/woff">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-bold.eot" type="font/eot">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-bold.woff" type="font/woff">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-medium.eot" type="font/eot">
+  <link data-react-helmet="true" rel="preload" as="font" href="https://files.brightcove.com/fonts/balto/baltoweb-medium.woff" type="font/woff">
+  <link data-react-helmet="true" rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/prism.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/styles.css">
@@ -31,10 +41,8 @@
   gtag('config', 'UA-2728311-17');
 </script>
   <script src="/assets/js/sajari-head.js"></script>
-	<script src="https://unpkg.com/feather-icons"></script>
 </head>
-
-
+<script src="https://unpkg.com/feather-icons"></script>
 <body class="body">
 
 <header>
@@ -132,7 +140,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       <li class="breadcrumb-item"><a href="/cloud-playout-apis/getting-started/">Getting Started</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Overview: Channel API</li>
+      <li class="breadcrumb-item active" aria-current="page">EPG API: Best Practices</li>
     </ol>
   </nav>
 </header>
@@ -367,6 +375,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                       <ul class="sidenav-subsubmenu" style="display:none;">
                         
                         <li><a href="/cloud-playout-apis/getting-started/overview-epg-api.html">Overview: Cloud Playout APIs</a></li>
+                        
+                        <li><a href="/cloud-playout-apis/getting-started/epg-best-practices.html">EPG API: Best Practices</a></li>
                         
                       </ul>
                     </li>
@@ -1231,148 +1241,82 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Overview: Channel API</h1>
+<h1>EPG API: Best Practices</h1>
 <article class="bcls-article">
-  <summary>The Channel API is used to get information about Cloud Playout channels.</summary>
-  <section class="bcls-section">
-    <h2 id="introduction">Introduction</h2>
-    <p>The Channel API allows you to retrieve information about your Cloud Playout channels. Most of this information is also available in Studio. Cloud Playout channels are created in Studio - see <a href="https://studio.support.brightcove.com/cloud-playout/index.html">Using Cloud Playout to Stream VOD Videos</a> for details.</p>
-    <aside class="bcls-aside bcls-aside--information language-editable">This feature is currently in Limited Availability. Contact your Brightcove Account Manager for more information.</aside>
-  </section>
-  <section class="bcls-section">
-    <h2 id="authentication">Authentication</h2>
-    <p>The Channel API uses the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth system</a> to authenticate requests through an access token that is passed in an authorization header with the request:</p>
-    <pre><code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">{access token}</span></code></pre>
-    <p>Access tokens are retrieved using the OAuth API - see <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a> for details. You will also need client credentials to authenticate the requests for access tokens. These can be created in the Admin section of Studio - see <a href="/general/managing-api-authentication-credentials.html">Managing API Credentials</a>. The permissions your credentials will need for the EPG API are:</p>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/epg/api-permissions.png" alt="EPG API Permissions">
-      <figcaption class="bcls-caption--image">EPG API Permissions</figcaption>
-    </figure>
-  </section>
-  <section class="bcls-section">
-    <h2 id="api_url">API URLs</h2>
-    <h3>Get all <a href="https://studio.support.brightcove.com/cloud-playout/index.html">Cloud Playout</a> channels</h3>
-    <p>The following endpoint can be used to get a list of all Cloud Playout channels for an account:</p>
-    <pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/cp_channels</code></pre>
-    <p>The <code translate="No">account_id</code> is the Video Cloud account id.</p>
-    <h3>Get an EPG</h3>
-    <p>The URL for the EPG API request is:</p>
-    <pre><code class="language-http" translate="No">https://sm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/channels/<span class="bcls-input">{channel_id}</span>/epg</code></pre>
-    <p>The <code translate="No">account_id</code> is the Video Cloud account id, and the <code translate="No">channel_id</code> is the id for the channel created in Studio.</p>
-    <p>The Channel's ID can be found in the responce to the request to get all Cloud Playout channels, or in the browser URL when you are in the Channel view of the Cloud Playout section of Studio:</p>
-    <pre><code class="language-http" translate="No">https://studio.brightcove.com/products/videocloud/cloudplayout/channel/<span class="bcls-highlight">2c73c2112f794e6eb80be1284a495674</span></code></pre>
-
-  </section>
-  <section class="bcls-section">
-    <h2 id="request_parameters">Request parameters</h2>
-    <p>The following optional query parameters can be added to the EPG request:</p>
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">EPG API Query Params</caption>
-      <thead class="bcls-table__head">
-          <tr>
-              <th>Parameter</th>
-              <th>Default Value</th>
-              <th>Description</th>
-          </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-          <tr>
-              <td><code translate="No">start</code></td>
-              <td><samp translate="No">(14 days prior to now)</samp></td>
-              <td>The date-time from which the EPG responses can be queried and returned in ISO 8601 Date format</td>
-          </tr>
-          <tr>
-              <td><code translate="No">end</code></td>
-              <td><samp translate="No">(now - the current date-time)</samp></td>
-              <td>The date-time until which the EPG responses can be queried and returned in ISO 8601 Date format</td>
-          </tr>
-          <tr>
-              <td><code translate="No">limit</code></td>
-              <td><samp translate="No">(all programs)</samp></td>
-              <td>An integer value that controls the number of programmes returned in one request</td>
-          </tr>
-          <tr>
-              <td><code translate="No">include_ads</code></td>
-              <td><samp translate="No">false</samp></td>
-              <td>Set this to true to include ads in the response</td>
-          </tr>
-      </tbody>
-    </table>
-    <h3>Notes</h3>
-    <ol>
-      <li>The <code translate="No">start</code>/<code translate="No">end</code> window cannot exceed 14 days. Start can be 14 days behind from current date-time to query historic EPG. You can also future EPG data for up to 14 days from the current date-time.</li>
-      <li>If the difference between the end time and start time is greater than 14 days, then the API generates only 14 days from the time time requested to end time or 14 days, whichever is earlier.</li>
-
-      <li>Both <code translate="No">start</code> and <code translate="No">end</code> can accept date-time values with and without timezone offsets - if no timezone offset is included, UTC is assumed.</li>
-      <li>
-        Both <code translate="No">start</code> and <code translate="No">end</code> must be URI-encoded:
-        <table class="bcls-table">
-          <caption class="bcls-caption--table">URI Encoding</caption>
-          <thead class="bcls-table__head">
-              <tr>
-                  <th>ISO 8601 Sample</th>
-                  <th>URI-Encoded</th>
-              </tr>
-          </thead>
-          <tbody class="bcls-table__body">
-              <tr>
-                  <td><code translate="No">2020-07-24 15:30:00</code></td>
-                  <td><code translate="No">2020-07-24<span class="bcls-highlight">%20</span>15<span class="bcls-highlight">%3A</span>30<span class="bcls-highlight">%3A</span>00</code></td>
-              </tr>
-              <tr>
-                  <td><code translate="No">2020-07-24 15:30:00 +0530</code></td>
-                  <td><code translate="No">2020-07-24<span class="bcls-highlight">%20</span>15<span class="bcls-highlight">%3A</span>30<span class="bcls-highlight">%3A</span>00<span class="bcls-highlight">%20%2B</span>0530</code></td>
-              </tr>
-          </tbody>
-      </table>
-      </li>
-    </ol>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Sample_response">Sample response</h2>
-    <p>Below is a sample response from the API:</p>
-<pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-  &lt;tv source-info-name="Cloudplayout Schedules" source-info-url="http://www.cloudplayout.qa.brightcove.com"&gt;
-      &lt;channel id="8732bb664063401691ef95d1a813b954"&gt;
-          &lt;display-name&gt;onetwo&lt;/display-name&gt;
-          &lt;icon src="https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"/&gt;
-      &lt;/channel&gt;
-      &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024628" stop="20200730024638"&gt;
-          &lt;title&gt;ccsample10s_d10&lt;/title&gt;
-          &lt;length unit="seconds"&gt;10.077&lt;/length&gt;
-          &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/5739d822-eb06-43e3-add8-3c5af6b27821/main/1280x720/5s38ms/match/image.jpg"/&gt;
-          &lt;category&gt;video&lt;/category&gt;
-          &lt;keyword&gt;6176109299001:1&lt;/keyword&gt;
-      &lt;/programme&gt;
-      &lt;programme channel="8732bb664063401691ef95d1a813b954" start="20200730024723" stop="20200730024733"&gt;
-          &lt;title&gt;frozen2&lt;/title&gt;
-          &lt;length unit="seconds"&gt;10.069&lt;/length&gt;
-          &lt;icon src="https://cf-images.us-east-1.prod.boltdns.net/v1/jit/6063799219001/84bb134d-1aba-4d73-a0e9-7ed3d5bb962f/main/1280x720/5s34ms/match/image.jpg"/&gt;
-          &lt;category&gt;video&lt;/category&gt;
-          &lt;keyword&gt;6162613467001:2&lt;/keyword&gt;
-      &lt;/programme&gt;
-  &lt;/tv&gt;</code></pre>
-    <h3>Notes</h3>
-    <ol>
-      <li>The start and end timestamps are in UTC time.</li>
-      <li>The <code translate="No">category</code> and <code translate="No">keyword</code> entries are for internal purposes.</li>
-    </ol>
-  </section>
-  <section class="bcls-section">
-    <h2 id="limitations">limitations</h2>
-    <ol>
-      <li>The EPG is generated on best effort / close to accurate.</li>
-      <li>When the EPG is initially constructed from the playlist, there may be a start time error as the Cloud Playout takes some time to initiate the switching.</li>
-      <li>
-        EPG may not be consistent for every retrieval when the playlist is modified, because it is constructed dynamically based on the current information it holds. Some actions that will alter the EPG include reordering the playlist or adding/deleting assets in the playlist.
-      </li>
-      <li>If any malfunction happens in the switching and the switch time is not accurate,there could be transit inaccuracy for the future EPG. Some examples of actions that could cause this would be a playlist switch or deleting the current active asset in playlist.</li>
-      <li>Consumers of the EPG should be requesting it as close to realtime as possible to get the most accurate version.</li>
-    </ol>
-  </section>
+	<summary>This topic provides best practices for working with the Cloud Playout EPG API.</summary>
+	<section class="bcls-section">
+		<h2 id="Introduction">Introduction</h2>
+		<p>The EPG API returns an XML Electronic Programming Guide for a Cloud Playout channel, useful for displaying program information on your web page or in your app. This topic provides some explanation of the how the API works and recommendations for using it most effectively.</p>
+	</section>
+	<section class="bcls-section">
+		<h2 id="EPG_Query_Recommendation">EPG Query Recommendation</h2>
+		<ul>
+			<li>The EPG query by default (without any query parameters for <code translate="No">start</code>, <code translate="No">stop</code>, or <code translate="No"></code>limit</code> supplied) will return 100 EPG records (or all records if there are less than 100). The number returned can be changed by setting it in the <code translate="no">limit</code> parameter.</li>
+			<li>Records for up to 14 days will still be supplied by providing an explicit start time and end time, and also a higher limit value to the EPG Query.</li>
+			<li>Because processing time increases exponentially with the number of records to process, we recommend using a paginated way of querying EPG records (see <a href="#pagination">Pagination</a> below) for fetching bulk data.</li>
+		</ul>
+	</section>
+	<section class="bcls-section">
+		<h2 id="pagination">Paginated</h2>
+		<p>Here is how we recommend that your paginate your queries for a large number of records to get the best performance:</p>
+		<ol class="bcls-tasklist-restart">
+			<li>
+				Start with a request using no query parameters:
+<pre><code class="language-http" translate="No">https://sm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/channels/<span class="bcls-input">{channel_id}</span>/epg
+				</code></pre>
+				<ul>
+					<li>If the channel is not running, this will return 100 records from the channel start time or the current time, whichever is later.</li>
+					<li>If the channel is running, the 100 records will be a 50/50 mix of historical and future programs</li>
+				</ul>
+			</li>
+			<li>For additional pages of data, submit a request with the <code translate="no">start</code> parameter set equal to the <code translate="no">stop</code> attribute value in the <code translate="no">programme</code> tag of last record returned in the previous response - <strong>plus 1 second</strong>.</li>
+	</ol>
+	<h3>Example</h3>
+	<p>Let's say your first query returns a response like this:</p>
+<pre class="line-numbers"><code class="language-xml">&lt;tv&gt;
+	...
+	&lt;programme channel="channel_id" start="20210228000457" stop="<span class="bcls-highlight">20210228001457</span>"&gt;
+		&lt;title&gt;live&lt;/title&gt;
+		&lt;desc&gt;live&lt;/desc&gt;
+		&lt;length units="seconds"&gt;600.0&lt;/length&gt;
+		&lt;icon src="https://img.brightcove.com/cloudplayout/live-icon.jpg" width="" height=""/&gt;
+		&lt;category&gt;live&lt;/category&gt;
+		&lt;keyword&gt;eyJ2aWRlb19pZCI6IjcwNzAxMjE2NDgyMjAyIiwib3JkZXIiOjMsInRhZ3MiOiJyb21hbmNlIiwiY3VzdG9tX21ldGFkYXRhIjp7InJlZ2lvbiI6ImFzaWEiLCJzb25ncyI6NX19&lt;/keyword&gt;
+	&lt;/programme&gt;
+&lt;/tv&gt;</code></pre>
+		<p>The highlighted <code translate="no">stop</code> value in the last record is a timestamp in the form <code translate="no">YYYYMMDDhhmmss</code>, so in ISO 8601 format: <code translate="No">2021-02-28 00:14:57</code>.</p>
+		<p>Adding one second to this value, we get <code translate="No">2021-02-28 00:14:58</code>.</p>
+		<p>The query parameter for the next request will then be: <code translate="no">start=2021-02-28%2000%3A14%3A57 - remember that the start (and <code translate="no">end</code>) parameter must be URI-encoded.</code></p>
+		<p>To retrieve all records, continue sending requests with increasing <code translate="no">start</code> values until you get an HTTP 422 response with the message "Channel won't be in running state in the requested Time window".</p>
+	</section>
+	<section class="bcls-section">
+		<h2 id="Additional_notes">Additional notes on EPG response behavior</h2>
+		<p>The following notes on how the EPG API works are intended to help you create requests that will get the desired response.</p>
+		<ul>
+			<li>The EPG is dynamically constructed based on current state of the channel so if a channel is in any active states except <code translate="No">RUNNING</code>, then the EPG will produce future data from the scheduled channel start time.</li>
+			<li>If a channel is in <code translate="No">RUNNING</code> state, the EPG invoked without any query parameters will provide a mix (50% split - with a limit of 100, this would produce at-most 50 past records and 50 future records) of past & future schedules data.</li>
+			<li>When you stop or delete a channel, it will be in an <code translate="No">INACTIVE</code> state; the future EPG records will not be available since the channel has finished its run.
+				<ul>
+					<li>In such cases the EPG will return either an empty data set or a 422 error code.</li>
+					<li>In case historical data is needed for any of the inactive states, then EPG request must have a past start/end time in query parameters.</li>
+				</ul>
+			</li>
+			<li>If EPG request has both an <code translate="No">end</code> time and <code translate="No">limit</code>, <code translate="No">limit</code> will be given preference and that many records will be generated - in this case you might receive records behind the given end time.</li>
+			<li>The <code translate="No">start</code>/<code translate="No">end</code> window cannot exceed 14 days. <code translate="No">start</code> can be 14 days earlier than the current date-time to retrieve an historic EPG. You can also query future EPG data for up to 14 days after the current date-time.</li>
+			<!-- <li>If the difference between the <code translate="No">end</code> time and <code translate="No">start</code> time is greater than 14 days, then the API generates only 14 days of records from the time requested to the <code translate="No">end</code> time or 14 days, whichever is earlier.</li> -->
+			<li>Both <code translate="No">start</code> and <code translate="No">end</code> can accept date-time values with or without timezone offsets - if no timezone offset is included, UTC is assumed</li>
+			<li>Both <code translate="No">start</code> and <code translate="No">end</code> values must be URI-encoded.</li>
+		</ul>
+		<h3>Reasons why EPG API would return a 422 Error code</h3>
+		<ul>
+			<li>EPG Start Time cannot be greater 14 days from Channel Start or Current Time, whichever is greater</li>
+			<li>EPG Start Time cannot be older than 14 days before the current time</li>
+			<li>EPG Interval must be less than or equal to 14 days (start time and end time should be within 14 days limit)</li>
+			<li>The Channel will be in running state in the requested Time window (EPG requested with start time beyond scheduled channel stop time)</li>
+			Start Time needs to be provided or should be less than End Time (start time < end time)
+		</ul>
+	</section>
 </article>
-
-
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -1388,7 +1332,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 18 Feb 2021
+  Page last updated on 05 Mar 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
