@@ -1,0 +1,83 @@
+---
+title: 'EPG API: Best Practices'
+parent: Getting Started
+grandparent: Cloud Playout APIs
+icon: '<i data-feather="play"></i>'
+description: This topic provides best practices for working with the Cloud Playout EPG API.
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+	<summary>{{page.description}}</summary>
+	<section class="bcls-section">
+		<h2 id="Introduction">Introduction</h2>
+		<p>The EPG API returns an XML Electronic Programming Guide for a Cloud Playout channel, useful for displaying program information on your web page or in your app. This topic provides some explanation of the how the API works and recommendations for using it most effectively.</p>
+	</section>
+	<section class="bcls-section">
+		<h2 id="EPG_Query_Recommendation">EPG Query Recommendation</h2>
+		<ul>
+			<li>The EPG query by default (without any query parameters for <code translate="No">start</code>, <code translate="No">stop</code>, or <code translate="No"></code>limit</code> supplied) will return 100 EPG records (or all records if there are less than 100). The number returned can be changed by setting it in the <code translate="no">limit</code> parameter.</li>
+			<li>Records for up to 14 days will still be supplied by providing an explicit start time and end time, and also a higher limit value to the EPG Query.</li>
+			<li>Because processing time increases exponentially with the number of records to process, we recommend using a paginated way of querying EPG records (see <a href="#pagination">Pagination</a> below) for fetching bulk data.</li>
+		</ul>
+	</section>
+	<section class="bcls-section">
+		<h2 id="pagination">Paginated</h2>
+		<p>Here is how we recommend that your paginate your queries for a large number of records to get the best performance:</p>
+		<ol class="bcls-tasklist-restart">
+			<li>
+				Start with a request using no query parameters:
+<pre><code class="language-http" translate="No">https://sm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/channels/<span class="bcls-input">{channel_id}</span>/epg
+				</code></pre>
+				<ul>
+					<li>If the channel is not running, this will return 100 records from the channel start time or the current time, whichever is later.</li>
+					<li>If the channel is running, the 100 records will be a 50/50 mix of historical and future programs</li>
+				</ul>
+			</li>
+			<li>For additional pages of data, submit a request with the <code translate="no">start</code> parameter set equal to the <code translate="no">stop</code> attribute value in the <code translate="no">programme</code> tag of last record returned in the previous response - <strong>plus 1 second</strong>.</li>
+	</ol>
+	<h3>Example</h3>
+	<p>Let's say your first query returns a response like this:</p>
+<pre class="line-numbers"><code class="language-xml">&lt;tv&gt;
+	...
+	&lt;programme channel="channel_id" start="20210228000457" stop="<span class="bcls-highlight">20210228001457</span>"&gt;
+		&lt;title&gt;live&lt;/title&gt;
+		&lt;desc&gt;live&lt;/desc&gt;
+		&lt;length units="seconds"&gt;600.0&lt;/length&gt;
+		&lt;icon src="https://img.brightcove.com/cloudplayout/live-icon.jpg" width="" height=""/&gt;
+		&lt;category&gt;live&lt;/category&gt;
+		&lt;keyword&gt;eyJ2aWRlb19pZCI6IjcwNzAxMjE2NDgyMjAyIiwib3JkZXIiOjMsInRhZ3MiOiJyb21hbmNlIiwiY3VzdG9tX21ldGFkYXRhIjp7InJlZ2lvbiI6ImFzaWEiLCJzb25ncyI6NX19&lt;/keyword&gt;
+	&lt;/programme&gt;
+&lt;/tv&gt;</code></pre>
+		<p>The highlighted <code translate="no">stop</code> value in the last record is a timestamp in the form <code translate="no">YYYYMMDDhhmmss</code>, so in ISO 8601 format: <code translate="No">2021-02-28 00:14:57</code>.</p>
+		<p>Adding one second to this value, we get <code translate="No">2021-02-28 00:14:58</code>.</p>
+		<p>The query parameter for the next request will then be: <code translate="no">start=2021-02-28%2000%3A14%3A57 - remember that the start (and <code translate="no">end</code>) parameter must be URI-encoded.</code></p>
+		<p>To retrieve all records, continue sending requests with increasing <code translate="no">start</code> values until you get an HTTP 422 response with the message "Channel won't be in running state in the requested Time window".</p>
+	</section>
+	<section class="bcls-section">
+		<h2 id="Additional_notes">Additional notes on EPG response behavior</h2>
+		<p>The following notes on how the EPG API works are intended to help you create requests that will get the desired response.</p>
+		<ul>
+			<li>The EPG is dynamically constructed based on current state of the channel so if a channel is in any active states except <code translate="No">RUNNING</code>, then the EPG will produce future data from the scheduled channel start time.</li>
+			<li>If a channel is in <code translate="No">RUNNING</code> state, the EPG invoked without any query parameters will provide a mix (50% split - with a limit of 100, this would produce at-most 50 past records and 50 future records) of past & future schedules data.</li>
+			<li>When you stop or delete a channel, it will be in an <code translate="No">INACTIVE</code> state; the future EPG records will not be available since the channel has finished its run.
+				<ul>
+					<li>In such cases the EPG will return either an empty data set or a 422 error code.</li>
+					<li>In case historical data is needed for any of the inactive states, then EPG request must have a past start/end time in query parameters.</li>
+				</ul>
+			</li>
+			<li>If EPG request has both an <code translate="No">end</code> time and <code translate="No">limit</code>, <code translate="No">limit</code> will be given preference and that many records will be generated - in this case you might receive records behind the given end time.</li>
+			<li>The <code translate="No">start</code>/<code translate="No">end</code> window cannot exceed 14 days. <code translate="No">start</code> can be 14 days earlier than the current date-time to retrieve an historic EPG. You can also query future EPG data for up to 14 days after the current date-time.</li>
+			<!-- <li>If the difference between the <code translate="No">end</code> time and <code translate="No">start</code> time is greater than 14 days, then the API generates only 14 days of records from the time requested to the <code translate="No">end</code> time or 14 days, whichever is earlier.</li> -->
+			<li>Both <code translate="No">start</code> and <code translate="No">end</code> can accept date-time values with or without timezone offsets - if no timezone offset is included, UTC is assumed</li>
+			<li>Both <code translate="No">start</code> and <code translate="No">end</code> values must be URI-encoded.</li>
+		</ul>
+		<h3>Reasons why EPG API would return a 422 Error code</h3>
+		<ul>
+			<li>EPG Start Time cannot be greater 14 days from Channel Start or Current Time, whichever is greater</li>
+			<li>EPG Start Time cannot be older than 14 days before the current time</li>
+			<li>EPG Interval must be less than or equal to 14 days (start time and end time should be within 14 days limit)</li>
+			<li>The Channel will be in running state in the requested Time window (EPG requested with start time beyond scheduled channel stop time)</li>
+			Start Time needs to be provided or should be less than End Time (start time < end time)
+		</ul>
+	</section>
+</article>
