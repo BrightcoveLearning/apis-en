@@ -121,6 +121,14 @@ paths:
         '404':
           description: >-
             RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '422':
+          description: |-
+            The requested records cannot be returned - there are several causes that will be detailed in the message:
+
+            - EPG Start Time cannot be greater 14 days from Channel Start or Current Time, whichever is greater
+            - EPG Start Time cannot be older than 14 days before the current time
+            - EPG Interval must be less than or equal to 14 days (start time and end time should be within 14 days limit)
+            - The Channel will be in running state in the requested Time window (EPG requested with start time beyond scheduled channel stop time) Start Time needs to be provided or should be less than End Time (start time < end time)
         '500':
           description: |-
             UNKNOWN: Issue in Brightcove system; try again later.
