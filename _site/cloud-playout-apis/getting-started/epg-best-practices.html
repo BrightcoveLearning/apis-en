@@ -1240,6 +1240,30 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 		<p>The EPG API returns an XML Electronic Programming Guide for a Cloud Playout channel, useful for displaying program information on your web page or in your app. This topic provides some explanation of the how the API works and recommendations for using it most effectively.</p>
 	</section>
 	<section class="bcls-section">
+		<h2 id="channel_states">Channel states</h2>
+		<h3>Active States</h3>
+		<ul>
+			<li><code>DRAFT</code> (When channel’s scheduled start time/stop time in the future)</li>
+			<li><code>RE-SCHEDULING</code></li>
+			<li><code>SCHEDULED</code></li>
+			<li><code>STARTING</code></li>
+			<li><code>START_ERROR</code></li>
+			<li><code>CREATING</code></li>
+			<li><code>CREATE_ERROR</code></li>
+			<li><code>RUNNING</code></li>
+		</ul>
+		<h3>Inactive states</h3>
+		<ul>
+			<li><code>DRAFT</code> (Stopped channels will enter again in to DRAFT state)</li>
+			<li><code>IDLE</code></li>
+			<li><code>STOPPING</code></li>
+			<li><code>STOP_ERROR</code></li>
+			<li><code>START_ERROR</code></li>
+			<li><code>DELETING</code> (there will be no EPG records - this might cause the EPG API to return a 500 response code)</li>
+			<li><code>DELETE_ERROR</code> (there will be no EPG records - this might cause the EPG API to return a 500 response code)</li>
+		</ul>
+	</section>
+	<section class="bcls-section">
 		<h2 id="EPG_Query_Recommendation">EPG Query Recommendation</h2>
 		<ul>
 			<li>The EPG query by default (without any query parameters for <code translate="No">start</code>, <code translate="No">stop</code>, or <code translate="No"></code>limit</code> supplied) will return 100 EPG records (or all records if there are less than 100). The number returned can be changed by setting it in the <code translate="no">limit</code> parameter.</li>
@@ -1294,7 +1318,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 			</li>
 			<li>If EPG request has both an <code translate="No">end</code> time and <code translate="No">limit</code>, <code translate="No">limit</code> will be given preference and that many records will be generated - in this case you might receive records behind the given end time.</li>
 			<li>The <code translate="No">start</code>/<code translate="No">end</code> window cannot exceed 14 days. <code translate="No">start</code> can be 14 days earlier than the current date-time to retrieve an historic EPG. You can also query future EPG data for up to 14 days after the current date-time.</li>
-			<!-- <li>If the difference between the <code translate="No">end</code> time and <code translate="No">start</code> time is greater than 14 days, then the API generates only 14 days of records from the time requested to the <code translate="No">end</code> time or 14 days, whichever is earlier.</li> -->
+			<li>If the difference between the provided end time and start time is greater than 14 days, then the API generates schedules data for only 14 days from the time of the request to scheduled channel stop time or 14 days, whichever is earlier.</li>
 			<li>Both <code translate="No">start</code> and <code translate="No">end</code> can accept date-time values with or without timezone offsets - if no timezone offset is included, UTC is assumed</li>
 			<li>Both <code translate="No">start</code> and <code translate="No">end</code> values must be URI-encoded.</li>
 		</ul>
