@@ -48,7 +48,7 @@ layout: staging
   </section>
 
   <section class="bcls-section">
-    <h2 id="Using_asset_level_restrictions">Using asset-level restrictions</h2>
+    <h2 id="Asset_level_restrictions">Asset-level restrictions</h2>
     <p>Use Playback Restrictions at the asset level when you want to restrict streaming for the following:</p>
     <ul>
       <li>Region (Geo-restrictions)</li>
@@ -57,7 +57,7 @@ layout: staging
       <li>Proxy type</li>
     </ul>
 
-    <h3>Geo-restrictions</h3>
+    <h3>Region</h3>
     <p>Geo-restrictions limit where your stream content can be viewed around the world. Options include:</p>
     <ul>
       <li>IP addresses</li>
@@ -72,24 +72,62 @@ layout: staging
       <li>When the global rule is set to <strong>Block All</strong>, you can allow streaming to locations using an allow list.</li>
     </ul>
 
-    <h3>Scheduling</h3>
+    <h3>Time</h3>
     <p>Scheduling allows you to set an availability window to stream your content with two options:</p>
     <ul>
       <li>Specific dates</li>
       <li>Recurring for specific days and hours</li>
     </ul>
 
+    <h3>Domain</h3>
+    <p>Domain restrictions allow you to set domains where you want to allow or block streaming.</p>
+
+    <h3>Proxy</h3>
+    <p>Proxy restrictions prevent content streaming when a proxy is in place. There are five available proxy types:</p>
+    <ul>
+      <li>Anonymous</li>
+      <li>Public</li>
+      <li>Corporate</li>
+      <li>Transparent</li>
+      <li>Hosting</li>
+    </ul>
+
     <h3>Examples</h3>
     <p>Here are some possible use cases:</p>
+
+    <h4>Limit content by zip code</h4>
     <ul>
       <li>
-        <p>Limit content by zip code</p> 
+        <p>Goal</p> 
         <p>Shari (Web Producer at Sports League) wants to limit content access by zip code, so that viewers within the sporting event's zip code can not stream the event</p>
       </li>
       <li>
-        <p>Limit content by country/IP address</p>
-        <p>Dylan (CMO) wants to limit content access by country, so that viewers can stream from anywhere except Ukraine and Korea. Since the development team located in Korea, Dylan needs to allow streaming from specific IP address within Korea.</p>
+        <p>Solution</p> 
+        <p>Shari can define Playback Rights to blacklist zip codes per region in the US. Since the content is public (there is no middleware application handling permissions), the Playback Rights need to be set as insecure. When the Playback Rights are defined, Shari will assign these to each media asset.</p>
       </li>
+    </ul>
+
+    <h4>Limit content by country/IP address</h4>
+    <ul>
+      <li>
+        <p>Goal</p> 
+        <p>Dylan (CMO) wants to limit content access by country, so that viewers can stream from anywhere except Ukraine and Korea. Since the development team is located in Korea, Dylan needs to allow streaming from a specific IP address within Korea.</p>
+      </li>
+      <li>
+        <p>Solution</p> 
+        <p>Dylan can define a Playback Right to block the Ukraine and Korea, and add allow an IP address from Korea. Since Dylan’s content is public, every Playback Right needs to allow insecure access. When the Playback Rights are defined, Dylan will assign these to each media asset.</p>
+      </li>
+    </ul>
+
+    <h3>Notes</h3>
+    <ul>
+      <li>With Playback Rights, content does not need to be encrypted</li>
+      <li>By default, a valid token is needed to stream an asset with Playback Rights. But, you can set Playback Rights to not requre a token. </li>
+      <li>By default, all assets have a Playback Right that allows streaming to everyone, everywhere, any time</li>
+      <li>Each Video Cloud account has up to 100 Playback Rights</li>
+      <li>Playback Rights work with Video Cloud/CMS API restrictions (Country and Scheduling). CMS restrictions for an asset are validated before any Playback Rights</li>
+      <li>Playback Rights don’t work with Policy Key restrictions (Domain and Geo). When using Playback Rights with the web player or the Native SDKs, the Policy Key is removed. This means that restrictions set with the Policy Key will be ignored.</li>
+      <li>Playback Rights can’t be deleted; only enabled or disabled</li>
     </ul>
 
     <h3>Setting asset-level restrictions</h3>
