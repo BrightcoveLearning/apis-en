@@ -1256,8 +1256,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="How_are_Playback_Restrictions_applied">How are Playback Restrictions applied?</h2>
     <p>Playback Restrictions can be applied as follows:</p>
     <ul>
-      <li>Asset-level restrictions are defined in the Playback Rights API</li>
-      <li>Runtime restrictions are defined in a Jason Web Token (JWT)</li>
+      <li><a href="#Asset_level_restrictions">Asset-level restrictions</a></li>
+      <li><a href="#Runtime_restrictions">Runtime restrictions</a></li>
       <li>DRM or HLSe content protection uses license/key requests, which can protect every stream request</li>  
     </ul>
   </section>
@@ -1276,7 +1276,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
   <section class="bcls-section">
     <h2 id="Asset_level_restrictions">Asset-level restrictions</h2>
-    <p>Use Playback Restrictions at the asset level when you want to restrict streaming for the following:</p>
+    <p>Asset-level restrictions are defined in the <a href="/playback-restrictions/references/reference.html">Playback Rights API</a>.</p>
+    <p>You can use Playback Restrictions at the asset level when you want to restrict streaming for the following:</p>
     <ul>
       <li>Region (Geo-restrictions)</li>
       <li>Time (Scheduling)</li>
@@ -1409,7 +1410,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
   <section class="bcls-section">
     <h2 id="Runtime_restrictions">Runtime restrictions</h2>
-    <p>To restrict streaming at runtime, you will need a JSON Web token (JWT) with specific permissions (claims). This token is sent over every stream request.</p>
+    <p>Runtime restrictions are defined in a Jason Web Token (JWT) with specific permissions (claims). This token is sent over every stream request.</p>
     <p>To create the JWT, you can you use middleware (application/service). For details, see the <a href="https://general.support.brightcove.com/developer/create-jwt.html">Creating a JSON Web Token (JWT)</a> document.</p>
 
     <p>The following restrictions can be set at runtime:</p>
@@ -1422,7 +1423,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
      <h3>List of content</h3>
      <p>Using the <code translate="No">vids</code> claim, you can specify, at runtime, a list of assets to allow for streaming.</p>
 
-     <h3>For specific user-agent</h3>
+     <h3>Specific user-agent</h3>
      <p>To allow streaming from a specific user-agent, use the <code translate="No">ua</code> claim. To use this, your content needs to be encrypted, and you need to set an account flag which requires a JWT on licenses. Contact your account manager to enable this account flag.</p>
 
      <h3>Concurrency stream limit</h3>
@@ -1444,10 +1445,6 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           <li>For DRM content, the <code translate="No">dlimit</code> claim indicates how many devices a user can stream. Every device from each user requesting a stream is registered. Once the stream limit is reached, no more devices will be able to stream.</li>
           <li>For HLSe content, the <code translate="No">maxip</code> claim defines how many different IP addresses can stream at the same time.</li>
         </ul>
-
-
-
-
 
     <h3>Examples</h3>
     <p>Here are some possible use cases:</p>
@@ -1510,19 +1507,24 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
     <h3>Notes</h3>
     <ul>
-
-
-
-
-
-      <li>With Playback Rights, content does not need to be encrypted</li>
-      <li>By default, a valid token is needed to stream an asset with Playback Rights. But, you can set Playback Rights to not requre a token. </li>
-      <li>By default, all assets have a Playback Right that allows streaming to everyone, everywhere, any time</li>
-      <li>Each Video Cloud account has up to 100 Playback Rights</li>
-      <li>Playback Rights work with Video Cloud/CMS API restrictions (Country and Scheduling). CMS restrictions for an asset are validated before any Playback Rights</li>
-      <li>Playback Rights don’t work with Policy Key restrictions (Domain and Geo). When using Playback Rights with the web player or the Native SDKs, the Policy Key is removed. This means that restrictions set with the Policy Key will be ignored.</li>
-      <li>Playback Rights can’t be deleted; only enabled or disabled</li>
+      <li>To use the <code translate="No">ua</code>, <code translate="No">maxip</code> and <code translate="No">maxu</code> claims, you need the following:
+        <ul>
+          <li>Content needs to be encrypted</li>
+          <li>Your account needs to have JWTs required on License requests (PAS enabled). Contact your account manager for details.</li>
+        </ul>
+      </li>
+      <li>To use the <code translate="No">climit</code> and <code translate="No">dlimit</code> claims, you need the following:
+        <ul>
+          <li>Content needs to be encrypted with DRM</li>
+          <li>Your account needs to be enabled for CSL with the Check Rights flag enabled. Contact your account manager for details.</li>
+        </ul>
+      </li>
+      <li>Each token has an expiration, and it needs to be set when it is created. Your integrations are responsible for keeping the renewal process.</li>
+      <li>By default, mid-stream checks happen every 5 minutes.</li>
     </ul>
+
+
+
 
     <h3>Setting asset-level restrictions</h3>
     <p>Asset-level restrictions can be defined by using either:</p>
@@ -1716,7 +1718,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 08 Mar 2021
+  Page last updated on 09 Mar 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
