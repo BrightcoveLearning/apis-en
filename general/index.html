@@ -1,13 +1,9 @@
 ---
 title: General Information
 description: This section contains topics that apply generally to the Video Cloud platform APIs.
-icon: '<i data-feather="info" class="header-icon"></i>'
 parent: Home
 ---
 <style>
-  .card-icon i {
-    color: rgb(9, 7, 140);
-  }
   .card-wrapper {
   justify-content: start;
   }
@@ -15,31 +11,28 @@ parent: Home
     font-size: small;
   }
 </style>
-
 <article class="bcls-article">
-  <h1>{{ page.icon }} {{ page.title }}</h1>
+  <h1>{{ page.title }}</h1>
   <summary>{{ page.description }}</summary>
   <section class="card-wrapper">
     <section class="bcls-card">
       <div class="card-content">
         <h2 id="Topics_in_this_section">Topics in this section</h2>
         <ul>
-        {% for item in site.data.navigation %}
-        {% if item.name == page.title %}
-              {% for entry in item.docs %}
-                <li><a href="{{ entry.url }}">{{ entry.name }}</a>
-                {% if entry.docs %}
-                  <ul>
-                    {% for subentry in entry.docs %}
-                      <li><a href="{{ subentry.url }}">{{ subentry.name }}</a></li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-                </li>
+          {% for item in site.data.navigation %}
+          {% if item.name == page.title %}
+          {% for entry in item.docs %}
+          <li><a href="{{ entry.url }}">{{ entry.name }}</a> {% if entry.docs %}
+            <ul>
+              {% for subentry in entry.docs %}
+              <li><a href="{{ subentry.url }}">{{ subentry.name }}</a></li>
               {% endfor %}
-        {% endif %}
-      {% endfor %}
-  
+            </ul>
+            {% endif %} </li>
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+        </ul>
       </div>
     </section>
   </section>

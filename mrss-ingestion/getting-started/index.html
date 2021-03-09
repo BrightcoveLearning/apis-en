@@ -2,19 +2,14 @@
 title: 'Ingestion via MRSS: Getting Started'
 parent: Ingestion via MRSS
 description: This section provides detailed information about setting up ingestion via an MRSS feed.
-icon: '<img src="/assets/images/feather/rss.svg" class="section-icon">'
 layout: staging
 ---
-
 <style>
   .section-icon {
     font-size: 3rem;
     vertical-align: text-top;
     color: rgb(9, 7, 140);
     margin-right: .5rem;
-  }
-  .card-icon i {
-    color: rgb(9, 7, 140);
   }
   .card-wrapper {
   justify-content: start;
@@ -23,42 +18,36 @@ layout: staging
     font-size: small;
   }
 </style>
-
-<h1>{{ page.icon }} {{ page.title }}</h1>
+<h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
   <h2 id="Topics_in_this_section">Topics in this section</h2>
-    <!-- remove sections below when this goes live -->
-    <section class="bcls-card-small">
-      <div class="card-content">
-        <ul>
-          <li><a href="/mrss-ingestion/getting-started/ingesting_from_a_remotely_hosted_mrss_feed.html">Ingesting via an MRSS Feed</a></li>
-          <li><a href="/mrss-ingestion/getting-started/xml-manifest-for-ingestion-via-mrss.html">XML Manifest for Ingestion via MRSS</a></li>
-        </ul>
-      </div>
-    </section>
-    <!-- end removal -->
-  
+  <section class="bcls-card-small">
+    <div class="card-content">
+      <ul>
+        <li><a href="/mrss-ingestion/getting-started/ingesting_from_a_remotely_hosted_mrss_feed.html">Ingesting via an MRSS Feed</a></li>
+        <li><a href="/mrss-ingestion/getting-started/xml-manifest-for-ingestion-via-mrss.html">XML Manifest for Ingestion via MRSS</a></li>
+      </ul>
+    </div>
+  </section>
   <section class="card-wrapper">
     <section class="bcls-card">
       <div class="card-content">
         <ul>
-        {% for item in site.data.navigation %}
-        {% if item.name == page.title %}
-              {% for entry in item.docs %}
-                <li><a href="{{ entry.url }}">{{ entry.name }}</a>
-                {% if entry.docs %}
-                  <ul>
-                    {% for subentry in entry.docs %}
-                      <li><a href="{{ subentry.url }}">{{ subentry.name }}</a></li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-                </li>
+          {% for item in site.data.navigation %}
+          {% if item.name == page.title %}
+          {% for entry in item.docs %}
+          <li><a href="{{ entry.url }}">{{ entry.name }}</a> {% if entry.docs %}
+            <ul>
+              {% for subentry in entry.docs %}
+              <li><a href="{{ subentry.url }}">{{ subentry.name }}</a></li>
               {% endfor %}
-        {% endif %}
-      {% endfor %}
-  
+            </ul>
+            {% endif %} </li>
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+        </ul>
       </div>
     </section>
   </section>

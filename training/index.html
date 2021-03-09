@@ -1,13 +1,9 @@
 ---
 title: Training
 parent: Home
-icon: '<i data-feather="award"  class="header-icon"></i>'
 description: Get training on Brightcove products
 ---
 <style>
-  .card-icon i {
-    color: rgb(9, 7, 140);
-  }
   .card-wrapper {
   justify-content: start;
 }
@@ -19,26 +15,26 @@ description: Get training on Brightcove products
   margin-left: -3em;
 }
 </style>
-
 <article class="bcls-article">
-  <h1>{{ page.icon }} {{ page.title }}</h1>
+  <h1>{{ page.title }}</h1>
   <summary>{{ page.description }}</summary>
   <section class="card-wrapper">
     <section class="bcls-card">
       <div class="card-content">
         <h2 id="Topics_in_this_section">Topics in {{ page.title }}</h2>
         <ul>
-        {% for item in site.data.navigation %}
+          {% for item in site.data.navigation %}
           {% if item.name == page.parent %}
-            {% for entry in item.docs %}
-              {% if entry.name == page.title %}
-                {% for doc in entry.docs %}
-                  <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
-                {% endfor %}
-              {% endif %}
-            {% endfor %}
+          {% for entry in item.docs %}
+          {% if entry.name == page.title %}
+          {% for doc in entry.docs %}
+          <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+          {% endfor %}
           {% endif %}
-        {% endfor %}
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+        </ul>
       </div>
     </section>
   </section>
