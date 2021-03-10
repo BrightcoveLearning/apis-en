@@ -1,6 +1,6 @@
 ---
-title: "Overview: Playback Restrictions"
-description: "In this topic, you will learn about different strategies for managing video playback by using Brightcove's Playback Restrictions"
+title: "Overview: Brightcove Playback Restrictions"
+description: "In this topic, you will learn about different strategies for managing video playback by using Brightcove Playback Restrictions."
 parent: Getting Started
 grandparent: Playback Restrictions
 layout: staging
@@ -11,11 +11,11 @@ layout: staging
   <summary>{{ page.description }}</summary>
 
   <br/>
-  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Playback Rights Management Service.</aside>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of Brightcove Playback Restrictions.</aside>
 
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    <p>Brightcove’s Playback Restrictions allow you to define different scenarios for streaming your content. These include:</p>
+    <p>Brightcove Playback Restrictions allow you to define different scenarios for streaming your content. These include:</p>
     <ul>
       <li>Where your content is available</li>
       <li>How content is streamed</li>
@@ -130,16 +130,6 @@ layout: staging
   </section>
 
   <section class="bcls-section">
-    <h2 id="How_are_Playback_Restrictions_applied">How are Playback Restrictions applied?</h2>
-    <p>Playback Restrictions can be applied as follows:</p>
-    <ul>
-      <li><a href="#Asset_level_restrictions">Asset-level restrictions</a></li>
-      <li><a href="#Runtime_restrictions">Runtime restrictions</a></li>
-      <li><a href="#Key_license_protection">Key/license protection</a></li>  
-    </ul>
-  </section>
-
-  <section class="bcls-section">
     <h2 id="Which_products_support_Playback_Restrictions">Which products support Playback Restrictions?</h2>
     <p>The following Brightcove products support Playback Restrictions:</p>
     <ul>
@@ -148,6 +138,16 @@ layout: staging
       <li><strong>Campaign</strong></li>  
       <li><strong>Engage</strong></li>
       <li><strong>Gallery</strong></li>
+    </ul>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="How_are_Playback_Restrictions_applied">How are Playback Restrictions applied?</h2>
+    <p>Playback Restrictions can be applied as follows:</p>
+    <ul>
+      <li><a href="#Asset_level_restrictions">Asset-level restrictions</a></li>
+      <li><a href="#Runtime_restrictions">Runtime restrictions</a></li>
+      <li><a href="#Key_license_protection">Key/license protection</a></li>  
     </ul>
   </section>
 
@@ -190,39 +190,40 @@ layout: staging
     <h3>Proxy</h3>
     <p>Proxy restrictions prevent content streaming when a proxy is in place. There are five available proxy types:</p>
     <ul>
-      <li>Anonymous</li>
-      <li>Public</li>
-      <li>Corporate</li>
-      <li>Transparent</li>
+      <li>Anonymous -  IP address of the client is not available</li>
+      <li>Public - Multiple users proxied from a location allowing public internet access</li>
+      <li>Corporate - Identify if multiple users are proxied through a central location or locations, and can share a single network-apparent IP address</li>
+      <li>Transparent - IP address of the client is available via HTTP headers, though the value is not necessarily reliable</li>
       <li>Hosting</li>
     </ul>
 
-    <h3>Use cases</h3>
-    <p>Here are some possible use cases:</p>
+    <details>
+        <summary><h3 id="Use_cases1">Use cases</h3></summary>
+        <p>Here are some possible use cases:</p>
+        <h4>Limit content by zip code</h4>
+        <ul>
+          <li>
+            <p>Goal</p> 
+            <p>Shari (Web Producer at Sports League) wants to limit content access by zip code, so that viewers within the sporting event's zip code can not stream the event</p>
+          </li>
+          <li>
+            <p>Solution</p> 
+            <p>Shari can define Playback Rights to blacklist zip codes per region in the US. Since the content is public (there is no middleware application handling permissions), the Playback Rights need to be set as insecure. When the Playback Rights are defined, Shari will assign these to each media asset.</p>
+          </li>
+        </ul>
 
-    <h4>Limit content by zip code</h4>
-    <ul>
-      <li>
-        <p>Goal</p> 
-        <p>Shari (Web Producer at Sports League) wants to limit content access by zip code, so that viewers within the sporting event's zip code can not stream the event</p>
-      </li>
-      <li>
-        <p>Solution</p> 
-        <p>Shari can define Playback Rights to blacklist zip codes per region in the US. Since the content is public (there is no middleware application handling permissions), the Playback Rights need to be set as insecure. When the Playback Rights are defined, Shari will assign these to each media asset.</p>
-      </li>
-    </ul>
-
-    <h4>Limit content by country/IP address</h4>
-    <ul>
-      <li>
-        <p>Goal</p> 
-        <p>Dylan (CMO) wants to limit content access by country, so that viewers can stream from anywhere except Ukraine and Korea. Since the development team is located in Korea, Dylan needs to allow streaming from a specific IP address within Korea.</p>
-      </li>
-      <li>
-        <p>Solution</p> 
-        <p>Dylan can define a Playback Right to block the Ukraine and Korea, and add allow an IP address from Korea. Since Dylan’s content is public, every Playback Right needs to allow insecure access. When the Playback Rights are defined, Dylan will assign these to each media asset.</p>
-      </li>
-    </ul>
+        <h4>Limit content by country/IP address</h4>
+        <ul>
+          <li>
+            <p>Goal</p> 
+            <p>Dylan (CMO) wants to limit content access by country, so that viewers can stream from anywhere except Ukraine and Korea. Since the development team is located in Korea, Dylan needs to allow streaming from a specific IP address within Korea.</p>
+          </li>
+          <li>
+            <p>Solution</p> 
+            <p>Dylan can define a Playback Right to block the Ukraine and Korea, and add allow an IP address from Korea. Since Dylan’s content is public, every Playback Right needs to allow insecure access. When the Playback Rights are defined, Dylan will assign these to each media asset.</p>
+          </li>
+        </ul>   
+    </details>
 
     <h3>Notes</h3>
     <ul>
@@ -323,64 +324,65 @@ layout: staging
           <li>For HLSe content, the <code translate="No">maxip</code> claim defines how many different IP addresses can stream at the same time.</li>
         </ul>
 
-    <h3>Use cases</h3>
-    <p>Here are some possible use cases:</p>
+    <details>
+        <summary><h3 id="Use_cases1">Use cases</h3></summary>
+        <p>Here are some possible use cases:</p>
+        <h4>Allow paid access</h4>
+          <ul>
+            <li>
+              <p>Goal</p> 
+              <p>Liz (Event Planner) wants to only allow paid users access to an event's live and VOD content. She also wants to prevent link sharing.</p>
+            </li>
+            <li>
+              <p>Solution</p> 
+              <p>For this use case, every logged user who requests content from the platform needs to have a token with the following claims:</p>
+              <ul>
+                <li><code translate="No">uid</code> = <code translate="No">"{unique user-id}"</code></li>
+                <li><code translate="No">climit</code> = <code translate="No">1</code></li>
+                <li><code translate="No">cbeh</code> = <code translate="No">“BLOCK_NEW_USER”</code></li>
+              </ul>
+              <p>All content (live or VOD) needs to be encrypted with DRM.</p>
+              <p>With these permissions, every logged user can stream live or VOD content as long as they are on the same device and network. If the user shares its platform credentials within the timeframe that the token is valid, another user trying to stream any content won’t be able to do it. With the feature's mid-stream checks, Liz can ensure this behavior for the entire content stream.</p>
+            </li>
+          </ul>
 
-    <h4>Allow paid access</h4>
-    <ul>
-      <li>
-        <p>Goal</p> 
-        <p>Liz (Event Planner) wants to only allow paid users access to an event's live and VOD content. She also wants to prevent link sharing.</p>
-      </li>
-      <li>
-        <p>Solution</p> 
-        <p>For this use case, every logged user who requests content from the platform needs to have a token with the following claims:</p>
-        <ul>
-          <li><code translate="No">uid</code> = <code translate="No">"{unique user-id}"</code></li>
-          <li><code translate="No">climit</code> = <code translate="No">1</code></li>
-          <li><code translate="No">cbeh</code> = <code translate="No">“BLOCK_NEW_USER”</code></li>
-        </ul>
-        <p>All content (live or VOD) needs to be encrypted with DRM.</p>
-        <p>With these permissions, every logged user can stream live or VOD content as long as they are on the same device and network. If the user shares its platform credentials within the timeframe that the token is valid, another user trying to stream any content won’t be able to do it. With the feature's mid-stream checks, Liz can ensure this behavior for the entire content stream.</p>
-      </li>
-    </ul>
+          <h4>Block new streams</h4>
+          <ul>
+            <li>
+              <p>Goal</p> 
+              <p>Harry (OTT customer) wants to ensure that his platform users are able to view the content, but only one asset at a time.</p>
+            </li>
+            <li>
+              <p>Solution</p> 
+              <p>For Harry's use case, every logged user who requests content from his platform needs to have a valid token with the following claims</p>
+              <ul>
+                <li><code translate="No">uid</code> = <code translate="No">"{unique user-id}"</code></li>
+                <li><code translate="No">climit</code> = <code translate="No">1</code></li>
+                <li><code translate="No">cbeh</code> = <code translate="No">“BLOCK_NEW”</code></li>
+              </ul>
+              <p>All content (live or VOD) needs to be encrypted with DRM.</p>
+              <p>The behavior for this case is similar to Liz's use case. The main difference is that Harry’s users won’t be able to watch different assets at the same time while the token is valid. With the feature's mid-stream checks every 5 mins, Harry can ensure this behavior.</p>
+            </li>
+          </ul>
 
-    <h4>Block new streams</h4>
-    <ul>
-      <li>
-        <p>Goal</p> 
-        <p>Harry (OTT customer) wants to ensure that his platform users are able to view the content, but only one asset at a time.</p>
-      </li>
-      <li>
-        <p>Solution</p> 
-        <p>For Harry's use case, every logged user who requests content from his platform needs to have a valid token with the following claims</p>
-        <ul>
-          <li><code translate="No">uid</code> = <code translate="No">"{unique user-id}"</code></li>
-          <li><code translate="No">climit</code> = <code translate="No">1</code></li>
-          <li><code translate="No">cbeh</code> = <code translate="No">“BLOCK_NEW”</code></li>
-        </ul>
-        <p>All content (live or VOD) needs to be encrypted with DRM.</p>
-        <p>The behavior for this case is similar to Liz's use case. The main difference is that Harry’s users won’t be able to watch different assets at the same time while the token is valid. With the feature's mid-stream checks every 5 mins, Harry can ensure this behavior.</p>
-      </li>
-    </ul>
-
-    <h4>Limit concurrent streams</h4>
-    <ul>
-      <li>
-        <p>Goal</p> 
-        <p>Shari (Web Producer at Sports League) wants to limit the concurrent streams to 1, for specific content.</p>
-      </li>
-      <li>
-        <p>Solution</p> 
-        <p>For this case, every logged user needs to have a token with the following claims:</p>
-        <ul>
-          <li><code translate="No">uid</code> = <code translate="No">"{unique user-id}"</code></li>
-          <li><code translate="No">vids</code> = <code translate="No">[“{asset 1}”,”{asset 2}”,”{asset 3}” ]</code></li>
-          <li><code translate="No">climit</code> = <code translate="No">1</code></li>
-          <li><code translate="No">cbeh</code> = <code translate="No">“BLOCK_NEW”</code></li>
-        </ul>
-      </li>
-    </ul>
+          <h4>Limit concurrent streams</h4>
+          <ul>
+            <li>
+              <p>Goal</p> 
+              <p>Shari (Web Producer at Sports League) wants to limit the concurrent streams to 1, for specific content.</p>
+            </li>
+            <li>
+              <p>Solution</p> 
+              <p>For this case, every logged user needs to have a token with the following claims:</p>
+              <ul>
+                <li><code translate="No">uid</code> = <code translate="No">"{unique user-id}"</code></li>
+                <li><code translate="No">vids</code> = <code translate="No">[“{asset 1}”,”{asset 2}”,”{asset 3}” ]</code></li>
+                <li><code translate="No">climit</code> = <code translate="No">1</code></li>
+                <li><code translate="No">cbeh</code> = <code translate="No">“BLOCK_NEW”</code></li>
+              </ul>
+            </li>
+          </ul>
+    </details>
 
     <h3>Notes</h3>
     <ul>
