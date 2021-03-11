@@ -1425,7 +1425,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>Hosting</li>
     </ul>
 
-    <h3>Asset-level restrictions use cases</h3>
+    <h3>Asset-level use cases</h3>
     <details>
         <summary><h4 id="Use_cases1">Use cases</h4></summary>
         <p>Here are some possible use cases:</p>
@@ -1528,13 +1528,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
      <p>For details, see the <a href="/playback-restrictions/guides/stream-concurrency.html">Limiting Concurrent Streams per Viewer</a> document.</p>
 
       <h3>Device limit</h3>
-      <p>At runtime, it is possible to limit the number of streaming devices for a user. For this, the content needs to be encrypted DRM or HLSe. Set the claims as follows:</p>
-        <ul>
-          <li>For DRM content, the <code translate="No">dlimit</code> claim indicates how many devices a user can stream. Every device from each user requesting a stream is registered. Once the stream limit is reached, no more devices will be able to stream.</li>
-          <li>For HLSe content, the <code translate="No">maxip</code> claim defines how many different IP addresses can stream at the same time.</li>
-        </ul>
+      <p>At runtime, it is possible to limit the number of streaming devices for a user. For this, the content needs to be encrypted DRM or HLSe.</p>
+      <p>Device registration happens when a DRM license request is made, at which time a unique ID is assigned to each device. With each license request, the device limit is checked and enforced.</p>
+      <p>An example might be when the publisher must comply with the content owners’ requirements to limit the number of devices associated with a single viewer to 2 devices. After that limit is reached, if the viewer tries to stream the content on a third device, like a connected TV, playback will be denied. This feature enables content publishers to achieve monetization objectives and minimize unauthorized access.</p>
+        
+      <p>For details, see the <a href="/playback-restrictions/guides/device-limits.html">Implementing Device Limits</a> document.</p>
 
-      <h3>Runtime restrictions use cases</h3>
+      <h3>Runtime use cases</h3>
     <details>
         <summary><h4 id="Use_cases1">Use cases</h4></summary>
         <p>Here are some possible use cases:</p>

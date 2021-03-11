@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Brightcove's Playback Restrictions provide a scalable and expressive way to manage video playback.">
+  <meta name="description" content="In this topic, you will learn how to enable device limits for video playback using Brightcove Playback Restrictions.">
   
-  <title>Playback Restrictions</title>
+  <title>Implementing Device Limits</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -62,7 +62,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item active" aria-current="page">Playback Restrictions</li>
+      <li class="breadcrumb-item"><a href="/playback-restrictions/guides/">Guides</a></li>
+      
+      <li class="breadcrumb-item active" aria-current="page">Implementing Device Limits</li>
     </ol>
   </nav>
 </header>
@@ -1231,104 +1233,218 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<style>
-  .card-icon i {
-    color: rgb(9, 7, 140);
-  }
-
-  .card-wrapper {
-    justify-content: start;
-  }
-
-  .bcls-card ul li {
-    font-size: small;
-  }
-</style>
-
+<h1>Implementing Device Limits</h1>
 <article class="bcls-article">
-  <h1><i class="header-icon" data-feather="slash"></i> Playback Restrictions</h1>
-  <summary>Brightcove's Playback Restrictions provide a scalable and expressive way to manage video playback.</summary>
+  <summary>In this topic, you will learn how to enable device limits for video playback using Brightcove Playback Restrictions.</summary>
+  
+  <br/>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of Brightcove Playback Restrictions.</aside>
+  
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
 
-  <section class="card-wrapper">
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <p>With Brightcove Playback Restrictions, you can set device limits for video playback. Each user's device is registered with a unique id when a DRM license request is made. You control the number of devices per user.</p>
+    <p>
+      The device limit is checked and enforced with each license request. To use this restriction, you will pass a <a href="https://general.support.brightcove.com/developer/create-jwt.html">JSON Web Token (JWT)</a> with the current user id <code translate="No">uid</code> to the Playback API.
+    </p>
 
-    <!-- remove sections below when this goes live -->
-    <section class="bcls-card-small" onclick="window.location.href='/playback-authorization/getting-started/index.html'">
-      <div class="card-content">
-        <h2>Getting Started</h2>
-        <ul>
-          <li><a href="/playback-restrictions/getting-started/overview-playback-restrictions.html">Overview: Playback Restrictions</a></li>
-        </ul>
-      </div>
-    </section>
-    <section class="bcls-card-small" onclick="window.location.href='/playback-authorization/guides/index.html'">
-      <div class="card-content">
-        <h2>Guides</h2>
-        <ul>
-          <li><a href="/playback-restrictions/guides/stream-concurrency.html">Limiting Concurrent Streams per Viewer</a></li>
-          <li><a href="/playback-restrictions/guides/device-limits.html">Implementing Device Limits</a></li>
-        </ul>
-      </div>
-    </section>
-    <section class="bcls-card-small" onclick="window.location.href='/playback-authorization/getting-started/index.html'">
-      <div class="card-content">
-        <h2>References</h2>
-        <ul>
-          <!-- <li><a href="/playback-rights/references/epa-errors.html">Playback Rights Error Reference</a></li>
-          <li><a href="/playback-rights/references/reference.html">Audit API Reference</a></li>
-          <li><a href="/playback-rights/references/reference.html">Playback Rights API Reference</a></li>
-          <li><a href="/playback-rights/references/audit-api/reference.html">Audit API Reference</a></li>
-          <li><a href="/playback-rights/references/blacklist-api/reference.html">Blacklist API Reference</a></li>
-          <li><a href="/playback-rights/references/devices-api/reference.html">Devices API Reference</a></li>
-          <li><a href="/playback-rights/references/key-api/reference.html">Key API Reference</a></li> -->
-        </ul>
-      </div>
-    </section>
-    <!-- end removal -->
+    <p>If you are new to this feature, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html">Overview: Brightcove Playback Restrictions</a> document.</p>
 
   </section>
+
+  <section class="bcls-section">
+    <h2 id="Device_registration">Device registration</h2>
+    <p>
+      A device is registered with Brightcove when a valid playback request which includes a <a href="https://general.support.brightcove.com/developer/create-jwt.html">JSON Web Token (JWT)</a> with <code translate="No">uid</code> and <code translate="No">dlimit</code> claims is received. From that moment, this device will occupy one slot.
+    </p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="JWT_claims">JWT claims</h2>
+    <p>For device limits, you can use the following claims along with the generally required claims:</p>
+    <ul>
+      <li>
+        <p><code translate="No">uid</code>:</p>
+        <p>The user id of the end viewer. This field is required for device registration.</p>
+      </li>
+      <li>
+        <p><code translate="No">dlimit</code>:</p>
+        <p>For DRM content, the <code translate="No">dlimit</code> claim indicates how many devices a user can stream. Every device from each user requesting a stream is registered. Once the stream limit is reached, no more devices will be able to stream.</p>
+        <p>
+          The <code translate="No">dlimit</code> claim lets you control how many devices can be associated with the specified user <code translate="No">uid</code>. The value must be &gt; <code translate="No">0</code>.
+        </p>
+        <p>If the <code translate="No">dlimit</code> claim value is dropped in later requests, previously allowed devices will continue to operate.
+        </p>
+        <p>
+          <strong>Example</strong><br />
+          If the <code translate="No">dlimit</code> value is set to <code translate="No">3</code>, the user can play on devices A, B, & C (all would be allowed). Trying to play on device D would be denied.<br />
+          If the <code translate="No">dlimit</code> value is changed to <code translate="No">1</code>, the user can still play on all 3 devices A, B, & C, unless the devices are manually revoked by managing devices with the Devices API. To do this, see the <a href="#Manage_devices">Manage devices</a> section.
+        </p>
+      </li>
+      <li>
+        <p><code translate="No">maxip</code>:</p>
+        For HLSe content, the <code translate="No">maxip</code> claim defines how many different IP addresses can stream at the same time.
+      </li>
+    </ul>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Implementation">Implementation</h2>
+    <p>
+      To use device limits, follow these steps:
+    </p>
+    <ol class="bcls-tasklist">
+      <li>
+        <p>
+          Create a <a href="https://general.support.brightcove.com/developer/create-jwt.html">JSON Web Token (JWT)</a> with the generally required claims along with the <code translate="No">uid</code> and <code translate="No">dlimit</code> claims.
+        </p>
+        <p>
+          Each user's device is registered with a unique id when a DRM license request is made.
+        </p>
+      </li>
+      <li>
+        <p>
+          <a href="#Manage_devices">Manage user devices</a> with the Devices API. This API allows you to get the devices for a user, delete devices and update the name for a device.
+        </p>
+        <p>
+          When a device is registered, it is identified by id and nickname. The Devices API lets you edit the device nickname, making it easy to manage your list of devices.
+        </p>
+      </li>
+      <li>
+        <a href="/playback-rights/getting-started/implementing-epa.html#Configure_your_player">Configure your player</a> to use the <span translate="No">JSON Web Token</span> (JWT) created in the previous step.
+      </li>
+    </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Manage_devices">Manage devices</h2>
+
+    <p>You can manage user devices with the <a href="/playback-restrictions/references/devices-api/reference.html">Devices API</a>.</p>
+
+    <h3 id="Playback_Rights_API">Devices API</h3>
+    <p>
+      With the Devices API, you can get and delete user devices.
+    </p>
+
+    <h3>Base URL</h3>
+    <p>
+      The base URL for the API is:
+    </p>
+    <pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com/v1</code></pre>
+
+    <h3>Account path</h3>
+    <p>
+      In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
+    </p>
+    <pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com/v1/accounts/{accountID}</code></pre>
+
+    <h3>Authorization</h3>
+    <p>
+      An access token for requests is required and must be present in the Authorization header:
+    </p>
+    <pre><code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
+    <p>
+      The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
+    </p>
+
+    <h3>Permissions</h3>
+    <p>
+      Requests to the Devices API must be made from <a href="/oauth/index.html">client credentials</a> with the following permissions:
+    </p>
+    <ul>
+      <li>
+        <code translate="No">video-cloud/playback-auth/devices/read</code>
+      </li>
+      <li>
+        <code translate="No">video-cloud/playback-auth/devices/write</code>
+      </li>
+    </ul>
+
+    <h3>API methods</h3>
+    <p>
+      The Devices API supports the following requests. For details, see the <a href="/playback-restrictions/references/devices-api/reference.html">Devices API Reference</a>.
+    </p>
+
+    <h4>Get all user devices</h4>
+    <pre><code class="language-http" translate="No">GET /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
+    <h5>Response body</h5>
+    <p>
+      The response body contains an array of devices, and should look similar to this:
+    </p>
+    <pre class="line-numbers"><code class="language-json" translate="No">[
+    {
+        &quot;id&quot;: &quot;12e12345-11e1-1bd1-d123-1234567890&quot;,
+        &quot;created_at&quot;: 1612646018,
+        &quot;updated_at&quot;: 1612646018,
+        &quot;name&quot;: &quot;my device1&quot;,
+        &quot;user_agent&quot;: &quot;PlayReadyClient&quot;
+    },
+    {
+        &quot;id&quot;: &quot;WVCf123456789abcdefghijkl1234567890abcdefg&quot;,
+        &quot;created_at&quot;: 1612385697,
+        &quot;updated_at&quot;: 1612385697,
+        &quot;name&quot;: &quot;my device2&quot;,
+        &quot;user_agent&quot;: &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0&quot;
+    }
+]</code></pre>
+    <br />
+
+    <h4>Update device name</h4>
+    <p>
+      The <code translate="No">PATCH</code> request lets you set a descriptive name for the device.
+    </p>
+    <pre><code class="language-http" translate="No">PATCH  /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}
+  Content-Type: application/json
+  Body: {devices object}</code></pre>
+    <h5>Request body</h5>
+    <p>
+      The request body contains the device name.
+    </p>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+    &quot;name&quot;: &quot;my device1&quot;
+}</code></pre>
+
+    <p>
+      Here are the field details:
+    </p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">name</code></td>
+          <td>String</td>
+          <td>A descriptive nickname to help identify the device</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+
+    <h4>Delete all user devices</h4>
+    <pre><code class="language-http" translate="No">DELETE /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
+    <br />
+
+    <h4>Delete a specific user device</h4>
+    <pre><code class="language-http" translate="No">DELETE /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}</code></pre>
+    <br />
+  </section>
+
 </article>
+
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav" id="right_side_nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
       
     </div>
   </div>
