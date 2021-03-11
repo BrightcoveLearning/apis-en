@@ -1476,10 +1476,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>You can use Brightcove's APIs to define asset-level restrictions.</p>
      <ol class="bcls-tasklist-restart">
         <li>
-          <p>Use the <a href="/playback-restrictions/references/reference.html">Playback Rights API</a> to create a restriction.</p>
+          <p>Use the <a href="/playback-restrictions/references/reference.html">Playback Rights API</a> to create a restriction. Use the  <a href="/cms/index.html">CMS API</a> to associate the restriction, with your video assets.</p>
         </li>
         <li>
-          <p>Use the  <a href="/cms/index.html">CMS API</a> to associate the restriction, with your video assets.</p>
+          <p>For details, see the <a href="/playback-restrictions/getting-started/implementing-playback-rights.html">Implementing Playback Rights</a> document.</p>
         </li>
     </ol>
 
@@ -1514,7 +1514,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>You can either assign Playback Rights to an asset (see <a href="#Asset_level_restrictions">Asset-level restrictions</a>), or you can set them at runtime using the <code translate="No">prid</code> claim. Runtime restrictions override any asset-level Playback Right.</p>
 
     <h3>Tags</h3>
-     <p>At runtime, you can identify assets with specific tag values to be allowed for streaming. These tags are defined with the <code translate="No">tags</code> claim.</p>
+     <p>At runtime, you can identify assets with specific tag values to be allowed for streaming. These tags are defined with the <code translate="No">tags</code> claim. You can group videos with tags using the <strong>Media Module</strong> in Brightcove's Video Cloud Studio.</p>
+      <p>
+        The Playback Restrictions service will check the tags associated with each video. If at least one of the tags matches the list in the JWT token, then the video is viewable.
+      </p>
+      <p>
+        Tags in the JWT token will be listed as an array of tags.
+      </p>
+      <aside class="bcls-aside bcls-aside--information">You are limited to an array of 40 tags in the JWT token.</aside>
 
      <h3>List of content</h3>
      <p>Using the <code translate="No">vids</code> claim, you can specify, at runtime, a list of assets to allow for streaming.</p>
