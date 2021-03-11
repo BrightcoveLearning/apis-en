@@ -239,11 +239,11 @@ layout: staging
     <h3>Setting asset-level restrictions</h3>
     <p>Asset-level restrictions can be defined by using either:</p>
     <ul>
-      <li>Brightcove APIs</li>
-      <li>Video Cloud Studio</li>
+      <li><a href="#Brightcove_APIs">Brightcove APIs</a></li>
+      <li><a href="#Video_Cloud_Studio">Video Cloud Studio</a></li>
     </ul>
 
-    <h4>Brightcove APIs</h4>
+    <h4 id="Brightcove_APIs">Brightcove APIs</h4>
     <p>You can use Brightcove's APIs to define asset-level restrictions.</p>
      <ol class="bcls-tasklist-restart">
         <li>
@@ -254,7 +254,7 @@ layout: staging
         </li>
     </ol>
 
-    <h4>Video Cloud Studio</h4>
+    <h4 id="Video_Cloud_Studio">Video Cloud Studio</h4>
     <p>You can also use Video Cloud Studio to define asset-level restrictions.</p>
     <ol class="bcls-tasklist-restart">
         <li>
@@ -262,25 +262,14 @@ layout: staging
           <figure class="bcls-figure">
             <img
               class="bcls-image--no-border"
-              src="/assets/images/playback-restrictions/use-cases/admin.png"
+              src="/assets/images/playback-restrictions/overview/admin.png"
               alt="Video Cloud Studio Admin"
             />
             <figcaption class="bcls-caption--image">Video Cloud Studio Admin</figcaption>
           </figure>
         </li>
         <li>
-          <p>To create a new restriction, select <strong>New Playback Rights</strong>.</p>
-          <figure class="bcls-figure">
-            <img
-              class="bcls-image--no-border"
-              src="/assets/images/playback-restrictions/use-cases/new-right.png"
-              alt="New Playback Right"
-            />
-            <figcaption class="bcls-caption--image">New Playback Right</figcaption>
-          </figure>
-        </li>
-        <li>
-          <p>To edit a restriction, click on a Playback Right <strong>Name</strong> link.</p>
+          <p>For details, see the <a href="https://studio.support.brightcove.com/admin/managing-playback-rights.html">Managing Playback Rights</a> document.</p>
         </li>
     </ol>
    
@@ -288,12 +277,12 @@ layout: staging
 
   <section class="bcls-section">
     <h2 id="Runtime_restrictions">Runtime restrictions</h2>
-    <p>Runtime restrictions are defined in a Jason Web Token (JWT) with specific permissions (claims). This token is sent over every stream request.</p>
-    <p>To create the JWT, you can you use middleware (application/service). For details, see the <a href="https://general.support.brightcove.com/developer/create-jwt.html">Creating a JSON Web Token (JWT)</a> document.</p>
+    <p>To restrict streaming at runtime, you will need a JSON Web Token (JWT) with specific permissions (claims). This token is sent over every stream request.</p>
+    <p>This feature requires that you implement a middleware solution between your User Management System (UMS) and Brightcove's playback service.</p>
 
     <p>The following restrictions can be set at runtime:</p>
     <h3>Playback Rights</h3>
-    <p>You can assign Playback Rights to an asset (see <a href="#Asset_level_restrictions">Asset-level restrictions</a>), or you can set them at runtime using the <code translate="No">prid</code> claim. Runtime restrictions override any asset-level Playback Right.</p>
+    <p>You can either assign Playback Rights to an asset (see <a href="#Asset_level_restrictions">Asset-level restrictions</a>), or you can set them at runtime using the <code translate="No">prid</code> claim. Runtime restrictions override any asset-level Playback Right.</p>
 
     <h3>Tags</h3>
      <p>At runtime, you can identify assets with specific tag values to be allowed for streaming. These tags are defined with the <code translate="No">tags</code> claim.</p>
@@ -384,6 +373,17 @@ layout: staging
           </ul>
     </details>
 
+    <h3>Setting runtime restrictions</h3>
+    <p>To use runtime restrictions, do the following:</p>
+    <ol class="bcls-tasklist-restart">
+        <li>
+          This feature requires that you implement a middleware solution between your User Management System (UMS) and Brightcove's playback service.
+        </li>
+        <li>
+         To create the JSON Web Token (JWT) with specific permissions (claims), see the <a href="https://general.support.brightcove.com/developer/create-jwt.html">Creating a JSON Web Token (JWT)</a> document.
+        </li>
+    </ol>
+
     <h3>Notes</h3>
     <ul>
       <li>To use the <code translate="No">ua</code>, <code translate="No">maxip</code> and <code translate="No">maxu</code> claims, you need the following:
@@ -405,13 +405,23 @@ layout: staging
 
   <section class="bcls-section">
     <h2 id="Key_license_protection">Key/license protection</h2>
-    <p>DRM or HLSe content protection uses license/key requests, which can protect every stream request.</p>
+    <p>Key/license protection provides an extra level of security when delivering DRM-protected content with Dynamic Delivery. This is particularly useful for customers who want to control access to their content, and prevent unauthorized sharing of content.</p>
+    <p>DRM or HLSe content protection uses license/key requests, which can protect every stream request, with the use of a  Jason Web Token (JWT).</p>
 
+    <h3>Use case</h3>
     <p>You can use this feature when your content needs to be public but from a trusted request. For example, regional broadcasters with exclusive content encrypted with HLSe want to ensure that only requests from its platform are accessing the content. This means that viewers can only stream content from your platform. They will not be able to stream it outside of the platform, even with the stream URLs.</p>
 
     <h3>Enabling key/license protections</h3>
-    <p>To enable this feature, contact your account manager. They will enable the Playback Authorization Service flag.</p>
-    <p>With this feature enabled, every key or license request to decrypt the content needs a valid JWT token (JWT signed with your private key). </p>
+    <p>To enable your account for key/license protections, do the following:</p>
+    <ol class="bcls-tasklist-restart">
+        <li>
+          Contact your account manager to enable the Playback Authorization Service flag.
+        </li>
+        <li>
+          With this feature enabled, every key or license request to decrypt the content needs a valid Jason Web Token (JWT signed with your private key). 
+        </li>
+        <li>This feature requires that you implement a middleware solution between your User Management System (UMS) and Brightcove's playback service.</li>
+    </ol>
 
     <h3>Notes</h3>
     <ul>
