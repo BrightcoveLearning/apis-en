@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Brightcove's Playback Restrictions provide a scalable and expressive way to manage video playback.">
+  <meta name="description" content="In this topic, you will learn how to generate and register Jason Web Tokens (JWT) when using Brightcove Playback Restrictions.">
   
-  <title>Playback Restrictions</title>
+  <title>Implementing Runtime Restrictions</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -62,7 +62,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item active" aria-current="page">Playback Restrictions</li>
+      <li class="breadcrumb-item"><a href="/playback-restrictions/getting-started/">Getting Started</a></li>
+      
+      <li class="breadcrumb-item active" aria-current="page">Implementing Runtime Restrictions</li>
     </ol>
   </nav>
 </header>
@@ -1231,109 +1233,92 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<style>
-  .card-icon i {
-    color: rgb(9, 7, 140);
-  }
-
-  .card-wrapper {
-    justify-content: start;
-  }
-
-  .bcls-card ul li {
-    font-size: small;
-  }
-</style>
-
+<h1>Implementing Runtime Restrictions</h1>
 <article class="bcls-article">
-  <h1><i class="header-icon" data-feather="slash"></i> Playback Restrictions</h1>
-  <summary>Brightcove's Playback Restrictions provide a scalable and expressive way to manage video playback.</summary>
+  <summary>In this topic, you will learn how to generate and register Jason Web Tokens (JWT) when using Brightcove Playback Restrictions.</summary>
 
-  <section class="card-wrapper">
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  <br/>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of the Brightcove Playback Restrictions.</aside>
 
-    <!-- remove sections below when this goes live -->
-    <section class="bcls-card-small" onclick="window.location.href='/playback-authorization/getting-started/index.html'">
-      <div class="card-content">
-        <h2>Getting Started</h2>
-        <ul>
-          <li><a href="/playback-restrictions/getting-started/overview-playback-restrictions.html">Overview: Playback Restrictions</a></li>
-          <li><a href="/playback-restrictions/getting-started/implementing-playback-rights.html">Implementing Playback Rights</a></li>
-          <li><a href="/playback-restrictions/getting-started/implementing-runtime-restrictions.html">Implementing Runtime Restrictions</a></li> 
-        </ul>
-      </div>
-    </section>
-    <section class="bcls-card-small" onclick="window.location.href='/playback-authorization/guides/index.html'">
-      <div class="card-content">
-        <h2>Guides</h2>
-        <ul>
-          <li><a href="/playback-restrictions/guides/stream-concurrency.html">Limiting Concurrent Streams per Viewer</a></li>
-          <li><a href="/playback-restrictions/guides/device-limits.html">Implementing Device Limits</a></li>
-        </ul>
-      </div>
-    </section>
-    <section class="bcls-card-small" onclick="window.location.href='/playback-authorization/getting-started/index.html'">
-      <div class="card-content">
-        <h2>References</h2>
-        <h3>License Protection</h3>
-        <ul>
-          <li><a href="/playback-restrictions/references/key-api/reference.html">Key API Reference</a></li>
-          <li><a href="/playback-restrictions/references/blacklist-api/reference.html">Blacklist API Reference</a></li>
-          <li><a href="/playback-restrictions/references/audit-api/reference.html">Audit API Reference</a></li>
-        </ul>
-        <h3>Playback Rights</h3>
-        <ul>
-          <li><a href="/playback-restrictions/references/playback-rights/reference.html">Playback Rights API Reference</a></li>
-          <li><a href="/playback-restrictions/references/playback-rights-errors.html">Playback Rights Error Reference</a></li>
-          <li><a href="/playback-restrictions/references/devices-api/reference.html">Devices API Reference</a></li>
-        </ul>
-      </div>
-    </section>
-    <!-- end removal -->
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
 
-  </section>
+<p>Brightcove Playback Restrictions offers an extra level of security when using Dynamic Delivery with DRM-protected or HTTP Live Streaming Encryption (HLSe) content. </p>
+
+<p>This feature gives you control over your content playback by requiring a token to authorize playback. A valid Jason Web Tokens (JWT) is required to obtain a key needed to decrypt encrypted HLS, or a license needed to decrypt DRM-protected content.</p>
+
+<p>If you are not familiar with this feature, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html">Overview: Brightcove Playback Restrictions</a> document.</p>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Workflow">Workflow</h2>
+
+<p>To use Playback Authorization Service, follow these steps:</p>
+<ol class="bcls-tasklist">
+  <li>
+    <a href="#Create_a_JSON_Web_Token">Create a <span translate="No">JSON Web Token</span></a>
+  </li>
+  <li>
+    <a href="#Configure_the_player">Configure the player to use the token</a>
+  </li>
+</ol>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Create_a_JSON_Web_Token">Create a <span translate="No">JSON Web Token</span></h2>
+
+<p>To create a token to use when communicating with Brightcove's Playback API, see the <a href="https://general.support.brightcove.com/developer/create-jwt.html">Creating a <span translate="No">JSON Web Token</span> (JWT)</a> document.</p>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Configure_the_player">Configure the player</h2>
+
+<p>The token is passed with the playback request. If the token is invalid or expired, access to the content will be restricted. The player must be configured to use the token.</p>
+
+<h3>Web player</h3>
+<p>
+  For details about configuring the Brightcove web player, see the <a href="/playback-authorization/guides/using-pas-with-bcp.html">Using Playback Authorization Service with Brightcove Player</a> document.
+</p>
+<h3>Native Android player</h3>
+<p>
+  For details about configuring the native player for Android, see the <a href="/playback-authorization/guides/using-pas-with-sdks.html">Using Playback Authorization Service with the Native SDKs</a> document.
+</p>
+<h3>Native iOS player</h3>
+<p>
+  For details about configuring the native player for iOS, see the <a href="/playback-authorization/guides/using-pas-with-sdks.html">Using Playback Authorization Service with the Native SDKs</a> document.
+</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+
+<p>The following limitations apply to this feature:</p>
+<ul>
+  <li>
+    For HLSe (AES-128), the token will be appended to the master manifest request, and will propagate to the encryption key URL. Because these URLs are appended to the master manifest, customers should consider restricting the number of uses to minimize exposure of their content.
+  </li>
+  <li>
+    For HLSe (AES-128), players will make mutlitple requests when playing a video, typically one per rendition. The <a href="#Generate_JWT_token">maxu claim</a> needs to be set high enough to account for these requests. You should consider additional claims to minimize the exposure of your content. Switching renditions will request a new license.
+  </li>
+  <li>
+    Tracking of the <a href="#Generate_JWT_token">maxu and maxip claims</a> is eventually consistent. This means that if a token using these claims is reused many times in quick succession, it is possible to see that token accepted more times than those claims declare. The tracking becomes consistent within a few seconds and after that window the token will be blocked as expected.
+  </li>
+</ul>
+</section>
+
 </article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav" id="right_side_nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
       
     </div>
   </div>
