@@ -325,7 +325,7 @@ paths:
         - $ref: '#/components/parameters/bucket_duration'
         - $ref: '#/components/parameters/metrics'
         - $ref: '#/components/parameters/where'
-        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/live_from'
         - $ref: '#/components/parameters/to'
       responses:
         '200':
@@ -377,7 +377,7 @@ paths:
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/live_dimensions'
         - $ref: '#/components/parameters/metrics'
-        - $ref: '#/components/parameters/where'
+        - $ref: '#/components/parameters/live_where'
       responses:
         '200':
           description: '200'
@@ -578,15 +578,28 @@ components:
       description: |-
         One or more dimensions to report on for Live Analytics requests
         Dimensions:
-          - account
-          - country
-          - device_type
           - video
+          - video, country
+          - video, device_type
       required: true
       style: form
       explode: true
       schema:
-        $ref: '#/components/schemas/Dimensions'
+        $ref: '#/components/schemas/LiveDimensions'
+    live_where:
+      name: filters for live analytics
+      in: query
+      description: |-
+        One or more filters to limit responses for Live Analytics requests
+        Available filters:
+          - video
+          - country
+          - device_type
+      required: true
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/live_where'
     limit:
       name: limit
       in: query
@@ -658,11 +671,12 @@ components:
       name: where
       in: query
       description: >-
-        one or more 'dimension==value' pairs to filter the results; see [Where Filters](/analytics/getting-started/overview-analytics-api-v1.html#filterValues) for details; note that you can also limit the video set returned by [filtering on video properties](/analytics/getting-started/overview-analytics-api-v1.html#Filtering_by_video_properties)
+        one or more 'dimension==value' pairs to filter the results; for live, the only available filters are `country`, `device-type`, and `video`
+      required: true
       style: form
       explode: true
       schema:
-        $ref: '#/components/schemas/Where'
+        $ref: '#/components/schemas/live_where'
     from:
       name: from
       in: query
@@ -674,7 +688,20 @@ components:
         oneOf:
           - type: string
           - type: integer
-        default: '32 days from `to` value'
+        default: '32 days before `to` value'
+        example: 2018-01-01
+    live_from:
+      name: "from"
+      in: query
+      description: >-
+        'Start time for the period covered by the report — epoch time in milliseconds (`1535654206775`) or a date in the format `yyyy-mm-dd` (such as `2013-09-26`)'
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: string
+          - type: integer
+        default: '32 days before now'
         example: 2018-01-01
     to:
       name: to
@@ -1184,6 +1211,11 @@ components:
           type: integer
           description: number of times some portion of the video was viewed
           format: int32
+    LiveDimensions:
+      enum:
+        - video
+        - video,country
+        - video, device_type
     Account:
       title: account
       required:
@@ -1323,6 +1355,21 @@ components:
         - name: social_platform
           description: ''
         - name: source_type
+          description: ''
+        - name: video
+          description: ''
+    live_where:
+      title: Live where
+      enum:
+        - country
+        - device_type
+        - video
+      type: string
+      example: 'video==6049313942001,6049313942002'
+      x-enum-elements:
+        - name: country
+          description: ''
+        - name: device_type
           description: ''
         - name: video
           description: ''
