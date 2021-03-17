@@ -1,5 +1,5 @@
 ---
-title: 'Key/License Protection APIs for Playback Restrictions'
+title: 'Using the Key/License Protection APIs'
 description: "In this topic, you will learn about the APIs used to manage key/license protection when using Brightcove Playback Restrictions."
 parent: Guides
 grandparent: Playback Restrictions
@@ -41,9 +41,118 @@ layout: staging
       </li>
     </ul>
     <aside class="bcls-aside  bcls-aside--information">
-      These APIs are only supported when managing DRM using Playback
-      Authorization Service.
+      These APIs are only supported when managing DRM using Playback Restrictions.
     </aside>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Register_public_key">Register public key</h2>
+
+    <p>You will use the Key API to register your public key with Brightcove.</p>
+    <h3>Key API</h3>
+    <p>
+      The Key API is used to manage your public keys with Brightcove.
+    </p>
+
+    <h3>Base URL</h3>
+    <p>
+      The base URL for the API is:
+    </p>
+    <pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com</code></pre>
+
+    <h3>Account path</h3>
+    <p>
+      In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
+    </p>
+    <pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com/v1/accounts/{accountID}</code></pre>
+
+    <h3>Authorization</h3>
+    <p>
+      An access token for requests is required and must be present in the Authorization header::
+    </p>
+    <pre><code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
+    <p>
+      The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="https://apis.support.brightcove.com/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
+    </p>
+
+    <h3>Permissions</h3>
+    <p>
+      Requests to the Key API must be made from <a href="https://apis.support.brightcove.com/oauth/getting-started/overview-oauth-api-v4.html#Get_Client_Credentials">client credentials</a> with the following permissions:
+    </p>
+    <ul>
+      <li>
+        <code translate="No">video-cloud/playback-auth/key/read</code>
+      </li>
+      <li>
+        <code translate="No">video-cloud/playback-auth/key/write</code>
+      </li>
+    </ul>
+
+    <h3>Manage keys</h3>
+    <p>
+      The Key API supports the following requests:
+    </p>
+    <aside class="bcls-aside bcls-aside--information">
+      <p>
+        Notes:
+      </p>
+      <ul>
+        <li>
+          It is not possible to edit an existing key, but you can delete and create a new one.
+        </li>
+        <li>
+          A maximum of 3 keys may be registered at a time and keys may be deleted, to support key rotation. In practice it is best to have only 1 key.
+        </li>
+      </ul>
+    </aside>
+
+    <h3>Register a new key:</h3>
+    <p>
+      Put the value of your public key in the API request body. You can find the key in the <strong>public_key.txt</strong> file.
+    </p>
+    <h4>API Request</h4>
+    <pre class="line-numbers"><code class="language-http" translate="No">POST /v1/accounts/{accountID}/keys
+    Content-Type: application/json
+    Body: {"value": "MFkwEwYHKoZIzj0CAQYIKoZIzj...MyeQviqploA=="}
+</code></pre>
+<details>
+  <summary>
+    <p id="Using_Curl">Using Curl</p>
+  </summary>
+    <pre class="line-numbers"><code class="language-curl">curl -X POST \
+    -H &quot;Content-Type: application/json&quot; \
+    -H &quot;Authorization: Bearer {access_token}&quot; \
+    -d '{&quot;value&quot;: &quot;{your_public_key_value}&quot;}' \
+  https://playback-auth.api.brightcove.com/v1/accounts/{accountID}/keys
+  </code></pre>
+  </details>
+
+    <h4>API Response</h4>
+  <pre class="line-numbers"><code class="language-json" translate="No">{
+    &quot;id&quot;: &quot;{your_public_key_id}&quot;,
+    &quot;type&quot;: &quot;public&quot;,
+    &quot;algorithm&quot;: &quot;rsa&quot;,
+    &quot;value&quot;: &quot;{your_public_key_value}&quot;,
+    &quot;createdAt&quot;: &quot;2020-01-03T20:30:36.488Z&quot;
+  }</code></pre>
+  
+    <h3>List keys:</h3>
+    <p>
+      Get a list of public keys in your account.
+    </p>
+    <pre><code class="language-http" translate="No">GET /v1/accounts/{accountID}/keys</code></pre>
+
+    <h3>Get one key:</h3>
+    <p>
+      Get the details for a public key in your account.
+    </p>
+    <pre><code class="language-http" translate="No">GET /v1/accounts/{accountID}/keys/{key_Id}</code></pre>
+
+    <h3>Delete one key:</h3>
+    <p>
+      Delete a public key in your account.
+    </p>
+    <pre><code class="language-http" translate="No">DELETE /v1/accounts/{accountID}/keys/{key_Id}</code></pre>
   </section>
 
   <section class="bcls-section">
@@ -495,26 +604,4 @@ layout: staging
     </ul>
   </section>
 
-  <section class="bcls-section">
-    <h2 id="Related_topics">Related topics</h2>
-
-    <ul>
-      <li>
-        <a
-          href="/playback-authorization/getting-started/overview-playback-authorization-service.html"
-          >Overview: DRM with Playback Authorization Service</a
-        >
-      </li>
-      <li>
-        <a href="/playback-authorization/guides/using-pas-with-bcp.html"
-          >Using Playback Authorization DRM with Brightcove Player</a
-        >
-      </li>
-      <li>
-        <a href="/playback-authorization/guides/using-pas-with-sdks.html"
-          >Using Playback Authorization DRM with the Native SDKs</a
-        >
-      </li>
-    </ul>
-  </section>
 </article>
