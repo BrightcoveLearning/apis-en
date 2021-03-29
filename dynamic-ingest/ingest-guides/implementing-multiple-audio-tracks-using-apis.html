@@ -172,7 +172,7 @@ grandparent: Dynamic Ingest API
     <p>Next we will ingest the video and audio tracks (we could add other assets like images and text tracks, but we will keep it simple here). The one thing you may find a little confusing is that <code translate="No">audio_tracks</code> appears twice in the JSON for the request body:</p>
 
     <ul>
-      <li>An <code translate="No">audio_tracks</code> object within the <code translate="No">master</code> object contains metadata for the audio track included in the video file (if any - this is also referred to as the muxed in audio) - this will include metadata only, without a URL for the audio file, since the audio track is already included in the video file</li>
+      <li>An <code translate="No">audio_tracks</code> object within the <code translate="No">master</code> object contains metadata for the audio track included in the video file (if any - this is also referred to as the muxed in audio) - this will include metadata only, without a URL for the audio file, since the audio track is already included in the video file. Remember that the encoded audio track can be compressed as Stereo, 5.1, 7.1 as long as it complies with the rules for <a href="https://zencoder.support.brightcove.com/general-information/supported-video-and-audio-formats-codecs-and-containers.html#audio_concerns">Audio Formats</a> and, as indicated in the <a href="#Known_issues">Known Issues</a>, beyond setting a Default Audio, there is no other way to order audio tracks</li>
       <li>A top-level <code translate="No">audio_tracks</code> object describing the additional audio tracks you are ingesting - these will include a URL for audio file, as well as other metadata</li>
     </ul>
 
@@ -216,7 +216,7 @@ grandparent: Dynamic Ingest API
 
     <h3 id="Add_audio_tracks_to_an_existing_video">Add audio tracks to an existing video</h3>
 
-    <p>To add additional audio tracks to an existing video, the procedure is the same, except that you do not need to make the request to the <span translate="No">CMS API</span> to create the video, because it already exists. And in the request to the <span translate="No">Dynamic Ingest</span> API, you will not need to include the URL for the video file or the <code translate="No">audio_tracks</code> under <code translate="No">master</code> providing the metadata for the muxed in audio. You do, however, want to include the metadata for the muxed in audio track in the existing video. So the JSON for the ingest request will look like this:</p>
+    <p>To add additional audio tracks to an existing video, the procedure is the same, except that you do not need to make the request to the <span translate="No">CMS API</span> to create the video, because it already exists. And in the request to the <span translate="No">Dynamic Ingest</span> API, you will not need to include the URL for the video file or the <code translate="No">audio_tracks</code> under <code translate="No">master</code> providing the metadata for the muxed in audio. You do, however, want to include the metadata for the muxed in audio track in the existing video. It is also important to remember that the audio track has to be compressed following the rules in <a href="https://zencoder.support.brightcove.com/general-information/supported-video-and-audio-formats-codecs-and-containers.html#audio_concerns">Audio Formats</a>. So the JSON for the ingest request will look like this:</p>
 
     <pre class="line-numbers">
       <code class="language-json" translate="No">{
