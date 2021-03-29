@@ -1439,7 +1439,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="Which_products_support_Playback_Restrictions">Which products support Playback Restrictions?</h2>
     <p>The following Brightcove products support Playback Restrictions:</p>
     <ul>
-      <li><strong>Brightcove Beacon</strong> - Full Playback Restrictions support and Viewer Entitlements are coming (roll-out date TBD)</li>
+      <!-- <li><strong>Brightcove Beacon</strong> - Full Playback Restrictions support and Viewer Entitlements are coming (roll-out date TBD)</li> -->
       <li><strong>Virtual Events</strong></li>
       <li><strong>Campaign</strong></li>  
       <li><strong>Engage</strong></li>
@@ -1459,14 +1459,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
   <section class="bcls-section">
     <h2 id="Asset_level_restrictions">Asset-level restrictions</h2>
-    <p>Asset-level restrictions are defined in the <a href="/playback-restrictions/references/reference.html">Playback Rights API</a>.</p>
-    <p>You can use Playback Restrictions at the asset level when you want to restrict streaming for the following:</p>
+    <p>Asset-level restrictions are defined in Playback Rights.</p>
+    <p>You can use playback restrictions at the asset level when you want to restrict streaming for the following:</p>
     <ul>
       <li>Region (Geo-restrictions)</li>
       <li>Time (Scheduling)</li>
       <li>Domain</li>
       <li>Proxy type</li>
     </ul>
+    <aside class="bcls-aside bcls-aside--information">By default, all new, ingested assets will have a Playback Right that allows streaming to everyone, everywhere, at any time.</aside>
 
     <h3>Region</h3>
     <p>Geo-restrictions limit where your stream content can be viewed around the world. Options include:</p>
@@ -1479,8 +1480,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </ul>
     <p>TBD - Geo-restrictions have a global rule which defines the overall behavior as follows:</p>
     <ul>
-      <li>When the global rule is set to <strong>Allow All</strong>, you can block streaming to locations using a block list.</li>
-      <li>When the global rule is set to <strong>Block All</strong>, you can allow streaming to locations using an allow list.</li>
+      <li>When the global rule is set to <strong>Allow All</strong>, it will allow all playback and you can blacklist regions.</li>
+      <li>When the global rule is set to <strong>Block All</strong>, it will block all playback and you can whitelist regions.</li>
     </ul>
 
     <h3>Time</h3>
@@ -1554,7 +1555,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>You can use Brightcove's APIs to define asset-level restrictions.</p>
      <ol class="bcls-tasklist-restart">
         <li>
-          <p>Use the <a href="/playback-restrictions/references/reference.html">Playback Rights API</a> to create a restriction. Use the  <a href="/cms/index.html">CMS API</a> to associate the restriction, with your video assets.</p>
+          <p>First, use the <a href="/playback-restrictions/references/reference.html">Playback Rights API</a> to create a restriction. Then, use the  <a href="/cms/index.html">CMS API</a> to associate the restriction, with your video assets.</p>
         </li>
         <li>
           <p>For details, see the <a href="/playback-restrictions/getting-started/implementing-playback-rights.html">Implementing Playback Rights</a> document.</p>
@@ -1588,8 +1589,18 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>This feature requires that you implement a middleware solution between your User Management System (UMS) and Brightcove's playback service.</p>
 
     <p>The following restrictions can be set at runtime:</p>
+    <ul>
+      <li>Playback Rights</li>
+      <li>Tags</li>
+      <li>List of content</li>
+      <li>Specific user-agent</li>
+      <li>Concurrent stream limit</li>
+      <li>Device limit</li>
+    </ul>
+
     <h3>Playback Rights</h3>
-    <p>You can either assign Playback Rights to an asset (see <a href="#Asset_level_restrictions">Asset-level restrictions</a>), or you can set them at runtime using the <code translate="No">prid</code> claim. Runtime restrictions override any asset-level Playback Right.</p>
+    <p>You can either assign Playback Rights to an asset (see <a href="#Asset_level_restrictions">Asset-level restrictions</a>), or you can set them at runtime using the <code translate="No">prid</code> claim.</p>
+    <aside class="bcls-aside bcls-aside--information">Runtime restrictions override any asset-level Playback Right.</aside>
 
     <h3>Tags</h3>
      <p>At runtime, you can identify assets with specific tag values to be allowed for streaming. These tags are defined with the <code translate="No">tags</code> claim. You can group videos with tags using the <strong>Media Module</strong> in Brightcove's Video Cloud Studio.</p>
@@ -1606,11 +1617,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
      <h3>Specific user-agent</h3>
      <p>To allow streaming from a specific user-agent, use the <code translate="No">ua</code> claim. To use this, your content needs to be encrypted, and you need to set an account flag which requires a JWT on licenses. Contact your account manager to enable this account flag.</p>
+     <aside class="bcls-aside bcls-aside--information">License Keys Protection needs to be enabled when using Specific user-agent.</aside>
 
      <h3>Concurrent stream limit</h3>
      <p>Limiting concurrent streams per user discourages viewers from sharing their credentials with friends who don’t have accounts. With concurrent stream limits, you define the number of video streams that a specific user can watch at any given time.</p>
      <p>For this feature, the content needs to be encrypted DRM or HLSe.</p>
      <p>For details, see the <a href="/playback-restrictions/guides/stream-concurrency.html">Limiting Concurrent Streams per Viewer</a> document.</p>
+     <aside class="bcls-aside bcls-aside--information">License Keys Protection needs to be enabled when using Concurrent stream limit with HLSe.</aside>
 
       <h3>Device limit</h3>
       <p>At runtime, it is possible to limit the number of streaming devices for a user. For this, the content needs to be encrypted DRM or HLSe.</p>
@@ -1618,6 +1631,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <p>An example might be when the publisher must comply with the content owners’ requirements to limit the number of devices associated with a single viewer to 2 devices. After that limit is reached, if the viewer tries to stream the content on a third device, like a connected TV, playback will be denied. This feature enables content publishers to achieve monetization objectives and minimize unauthorized access.</p>
         
       <p>For details, see the <a href="/playback-restrictions/guides/device-limits.html">Implementing Device Limits</a> document.</p>
+      <aside class="bcls-aside bcls-aside--information">License Keys Protection needs to be enabled when using Device limit with HLSe.</aside>
 
       <h3>Runtime use cases</h3>
     <details>
@@ -1672,7 +1686,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
               <p>For this case, every logged user needs to have a token with the following claims:</p>
               <ul>
                 <li><code translate="No">uid</code> = <code translate="No">"{unique user-id}"</code></li>
-                <li><code translate="No">vids</code> = <code translate="No">[“{asset 1}”,”{asset 2}”,”{asset 3}” ]</code></li>
+                <li><code translate="No">vids</code> = <code translate="No">["asset 1","asset 2","asset 3"]</code></li>
                 <li><code translate="No">climit</code> = <code translate="No">1</code></li>
                 <li><code translate="No">cbeh</code> = <code translate="No">“BLOCK_NEW”</code></li>
               </ul>
@@ -1697,7 +1711,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>To use the <code translate="No">ua</code>, <code translate="No">maxip</code> and <code translate="No">maxu</code> claims, you need the following:
         <ul>
           <li>Content needs to be encrypted</li>
-          <li>Your account needs to have JWTs required on License requests (PAS enabled). Contact your account manager for details.</li>
+          <li>Your account needs to have JWTs required on License requests (License Keys Protection enabled). Contact your account manager for details.</li>
         </ul>
       </li>
       <li>To use the <code translate="No">climit</code> and <code translate="No">dlimit</code> claims, you need the following:
@@ -1712,15 +1726,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </section>
 
   <section class="bcls-section">
-    <h2 id="Key_license_protection">Key/license protection</h2>
-    <p>Key/license protection provides an extra level of security when delivering DRM-protected content with Dynamic Delivery. This is particularly useful for customers who want to control access to their content, and prevent unauthorized sharing of content.</p>
+    <h2 id="License_Keys_Protection">License Keys Protection</h2>
+    <p>License Keys Protection provides an extra level of security when delivering DRM-protected content with Dynamic Delivery. This is particularly useful for customers who want to control access to their content, and prevent unauthorized sharing of content.</p>
     <p>DRM or HLSe content protection uses license/key requests, which can protect every stream request, with the use of a  Jason Web Token (JWT).</p>
 
     <h3>Use case</h3>
     <p>You can use this feature when your content needs to be public but from a trusted request. For example, regional broadcasters with exclusive content encrypted with HLSe want to ensure that only requests from its platform are accessing the content. This means that viewers can only stream content from your platform. They will not be able to stream it outside of the platform, even with the stream URLs.</p>
 
-    <h3>Enabling key/license protections</h3>
-    <p>To enable your account for key/license protections, do the following:</p>
+    <h3>Enabling License Keys Protection</h3>
+    <p>To enable your account for License Keys Protection, do the following:</p>
     <ol class="bcls-tasklist-restart">
         <li>
           Contact your account manager to enable the Playback Authorization Service flag.
