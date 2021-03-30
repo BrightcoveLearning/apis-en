@@ -458,13 +458,27 @@ layout: staging
     <h3>Setting runtime restrictions</h3>
     <p>To use runtime restrictions, do the following:</p>
     <ol class="bcls-tasklist-restart">
-        <li>
-          This feature requires that you implement a middleware solution between your User Management System (UMS) and Brightcove's playback service.
-        </li>
-        <li>
-          <p>Create the JWT with specific permissions (claims) and configure your player.</p>
-          <p>For details, see the <a href="/playback-restrictions/getting-started/implementing-runtime-restrictions.html">Implementing Runtime Restrictions</a> document.</p>
-        </li>
+      <li>
+        <p>Implement middleware</p>
+        <p>This feature requires that you implement a middleware solution between your User Management System (UMS) and Brightcove's playback service.</p>
+      </li>
+      <li>
+        <p>Create a JWT</p>
+        <p>Create a valid JSON Web Token (JWT signed with your private key) with specific permissions (claims). For details, see the <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Creating a <span translate="No">JSON Web Token</span> (JWT)</a> document.</p>
+      </li>
+      <li>
+        <p>Configure the player</p>
+        <p>The token is passed with the playback request. If the token is invalid or expired, access to the content will be restricted. The player must be configured to use the token.</p>
+
+        <strong>Web player</strong>
+        <p>
+          For details about configuring the Brightcove web player, see the <a href="https://player.support.brightcove.com/playback/license-protection-with-bcp.html">Key/License Protection with Brightcove Player</a> document.
+        </p>
+        <strong>Native Android or iOS player</strong>
+        <p>
+          For details about configuring the native player for Android or iOS, see the <a href="https://sdks.support.brightcove.com/features/license-protection-with-sdks.html">Key/License Protection with the Native SDKs</a> document.
+        </p>
+      </li> 
     </ol>
 
     <h3>Notes</h3>
@@ -495,15 +509,32 @@ layout: staging
     <p>You can use this feature when your content needs to be public but from a trusted request. For example, regional broadcasters with exclusive content encrypted with HLSe want to ensure that only requests from its platform are accessing the content. This means that viewers can only stream content from your platform. They will not be able to stream it outside of the platform, even with the stream URLs.</p>
 
     <h3>Enabling License Keys Protection</h3>
-    <p>To enable your account for License Keys Protection, do the following:</p>
+    <p>To configure your account for License Keys Protection, contact your account manager to enable the License Keys Protection flag.</p>
+
+    <h3>Using License Keys Protection</h3>
+    <p>To use License Keys Protection, do the following:</p>
     <ol class="bcls-tasklist-restart">
         <li>
-          Contact your account manager to enable the Playback Authorization Service flag.
+          <p>Implement middleware</p>
+          <p>This feature requires that you implement a middleware solution between your User Management System (UMS) and Brightcove's playback service.</p>
         </li>
         <li>
-          With this feature enabled, every key or license request to decrypt the content needs a valid JSON Web Token (JWT signed with your private key). 
+          <p>Create a JWT</p>
+          <p>With this feature enabled, every key or license request to decrypt the content needs a valid JSON Web Token (JWT signed with your private key). For details, see the <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Creating a <span translate="No">JSON Web Token</span> (JWT)</a> document.</p>
         </li>
-        <li>This feature requires that you implement a middleware solution between your User Management System (UMS) and Brightcove's playback service.</li>
+        <li>
+          <p>Configure the player</p>
+          <p>The token is passed with the playback request. If the token is invalid or expired, access to the content will be restricted. The player must be configured to use the token.</p>
+
+          <strong>Web player</strong>
+          <p>
+            For details about configuring the Brightcove web player, see the <a href="https://player.support.brightcove.com/playback/license-protection-with-bcp.html">Key/License Protection with Brightcove Player</a> document.
+          </p>
+          <strong>Native Android or iOS player</strong>
+          <p>
+            For details about configuring the native player for Android or iOS, see the <a href="https://sdks.support.brightcove.com/features/license-protection-with-sdks.html">Key/License Protection with the Native SDKs</a> document.
+          </p>
+        </li>
     </ol>
 
     <h3>Notes</h3>
@@ -511,6 +542,20 @@ layout: staging
       <li>This feature can be used without using Playback Rights.</li>
       <li>The JWT token doesn’t require specific permissions (claims). It just needs to be signed with the customer’s private key.</li>
       <li>Your content needs to be encrypted HLSe or DRM.</li>
+    </ul>
+
+    <h3 id="Limitations">Limitations</h3>
+    <p>The following limitations apply to this feature:</p>
+    <ul>
+      <li>
+        For HLSe (AES-128), the token will be appended to the master manifest request, and will propagate to the encryption key URL. Because these URLs are appended to the master manifest, customers should consider restricting the number of uses to minimize exposure of their content.
+      </li>
+      <li>
+        For HLSe (AES-128), players will make multiple requests when playing a video, typically one per rendition. The <a href="https://general.support.brightcove.com/developer/create-json-web-token.html#Claims_for_Playback_Restrictions">maxu claim</a> needs to be set high enough to account for these requests. You should consider additional claims to minimize the exposure of your content. Switching renditions will request a new license.
+      </li>
+      <li>
+        Tracking of the <a href="https://general.support.brightcove.com/developer/create-json-web-token.html#Claims_for_Playback_Restrictions">maxu and maxip claims</a> is eventually consistent. This means that if a token using these claims is reused many times in quick succession, it is possible to see that token accepted more times than those claims declare. The tracking becomes consistent within a few seconds and after that window the token will be blocked as expected.
+      </li>
     </ul>
   </section>
 
