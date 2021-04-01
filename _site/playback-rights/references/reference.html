@@ -168,10 +168,31 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         overflow-y: scroll;
       }
     </style>
+    <h1></h1>
     <p class="search-block"><input id="search_field" placeholder="Search API Reference" class="search-element" style="margin-right:2px;" type="text"> <button id="search_back" class="search-element"><strong>&lt;</strong></button><button id="search_button" class="search-element">Search</button><button id="search_forward" class="search-element"><strong>&gt;</strong></button></p>
     <redoc spec-url="openapi.yaml"  hide-hostname="false" suppress-warnings="true" lazy-rendering  native-scrollbars disable-search></redoc>
     <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
     <script src="https://support.brightcove.com/site-assets/js/site/apidoc-search.js"></script>
+
+    <script>
+      var h1 = document.querySelector('h1'),
+          path = location.pathname,
+          new_location = 'https://apis.support.brightcove.com/playback-restrictions/references/playback-rights/reference.html',
+          message = '<h2>This page has moved to <a href="' + new_location + '">' + new_location + '</a>. Please update your bookmark! You will be redirected in 5 seconds.<h2>';
+    
+          console.log('new_location', new_location);
+    
+          h1.insertAdjacentHTML('afterend', message);
+          redirect();
+    
+          function redirect() {
+            var t = window.setTimeout(go_to_new_location, 5000);
+          }
+    
+          function go_to_new_location() {
+            window.location.href = new_location;
+          }
+    </script>
 
 <!-- complete bootstrap layout -->
     </div>
