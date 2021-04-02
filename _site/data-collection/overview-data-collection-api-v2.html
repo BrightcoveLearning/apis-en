@@ -1356,6 +1356,97 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 		<p>Any request that contains a <code translate="no">video_duration</code> parameter will be classified as <strong>VOD</strong>.</p>
 	</section>
 
+	<section class="bcls-section">
+		<h2 id="virtual_events">Virtual Events</h2>
+		<p>We collect data for Virtual Events through player events. For Virtual Events we focus on <code translate="no">user/application</code> fields.</p>
+		<h3>Examples</h3>
+		<pre><code class="language-http" translate="No">GET /v2/tracker?domain=videocloud&device_os=android&device_os_version=2.8&device_type=desktop&destination=https%3A%2F%2Fwww.destination.com%2Fdomain&source=http%3A%2F%2Fwww.google.com%2Faclk%3Fq%3Dsteak%2Bbeef&country=US&country_name=United+States&region=US-MA&region_name=MASSACHUSETTS&city=Boston&dma=123&player=players.brightcove.com%2Fdefault&player_name=rna_test_player&account=70701383503202&session=c478f07e4cfa6ecb98adec1f9656c896&video=70701475563202&video_name=virtual_event_1&event=video_impression&time=1616565801114&user=virtualeventTest1%40brightcove.com&application=virtualevent_VOD 
+			2GET /v2/tracker?domain=videocloud&device_os=android&device_os_version=2.8&device_type=desktop&destination=https%3A%2F%2Fwww.destination.com%2Fdomain&source=http%3A%2F%2Fwww.google.com%2Faclk%3Fq%3Dsteak%2Bbeef&country=US&country_name=United+States&region=US-MA&region_name=MASSACHUSETTS&city=Boston&dma=123&player=players.brightcove.com%2Fdefault&player_name=rna_test_player&account=70701383503202&session=c478f07e4cfa6ecb98adec1f9656c896&video=70701475563202&video_name=virtual_event_1&event=video_view&time=1616565801370&user=virtualeventTest1%40brightcove.com&application=virtualevent_VOD 
+			3GET /v2/tracker?domain=videocloud&device_os=android&device_os_version=2.8&device_type=desktop&destination=https%3A%2F%2Fwww.destination.com%2Fdomain&source=http%3A%2F%2Fwww.google.com%2Faclk%3Fq%3Dsteak%2Bbeef&country=US&country_name=United+States&region=US-MA&region_name=MASSACHUSETTS&city=Boston&dma=123&player=players.brightcove.com%2Fdefault&player_name=rna_test_player&account=70701383503202&session=c478f07e4cfa6ecb98adec1f9656c896&video=70701475563202&video_name=virtual_event_1&event=video_engagement&time=1616565801621&user=virtualeventTest1%40brightcove.com&application=virtualevent_VOD&range=0..10&video_duration=48</code></pre>
+			<h3>Parameters</h3>
+			<table class="bcls-table">
+				<caption class="bcls-caption--table">Virtual Event Parameters</caption>
+				<thead class="bcls-table__head">
+						<tr>
+								<th>Event</th>
+								<th>Required</th>
+								<th>Value</th>
+								<th>Comments</th>
+						</tr>
+				</thead>
+				<tbody class="bcls-table__body">
+						<tr>
+							<td><code translate="no">domain</code></td>
+							<td>yes</td>
+							<td>Always <code translate="no">videocloud</code></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><code translate="no">account</code></td>
+							<td>yes</td>
+							<td>Account ID</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><code translate="no">event</code></td>
+							<td>yes</td>
+							<td>
+								One of:
+								<ul>
+									<li><code translate="no">video_view</code></li>
+									<li><code translate="no">video_impression</code></li>
+									<li><code translate="no">video_engagement</code></li>
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><code translate="no">video</code></td>
+							<td>yes</td>
+							<td>Video ID</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><code translate="no">session</code></td>
+							<td>no, but strongly recommended</td>
+							<td>session identifier</td>
+							<td>Should be as close as is possible to a globally unique identifier (<strong>GUID</strong>)</td>
+						</tr>
+						<tr>
+							<td><code translate="no">user</code></td>
+							<td>yes</td>
+							<td>Event viewer (SSO ID or device id or unique string based on user-agent and IP)</td>
+							<td>Maps to viewer dimension/field</td>
+						</tr>
+						<tr>
+							<td><code translate="no">application</code></td>
+							<td>yes</td>
+							<td>virtual event experience id</td>
+							<td>if null default value is <code translate="no">account_id</code></td>
+						</tr>
+						<tr>
+							<td><code translate="no">range</code></td>
+							<td>only for video_engagement, optional but ideal</td>
+							<td>
+								Examples:
+								<ul>
+									<li><code translate="no">0..9</code></li>
+									<li><code translate="no">10..20</code></li>
+								</ul>
+							</td>
+							<td>range of seconds of viewed. Events describing ranges over 20 seconds are discarded by the Analytics system</td>
+						</tr>
+						<tr>
+							<td><code translate="no">video_duration</code></td>
+							<td>only for video_engagement, optional but ideal</td>
+							<td>video duration in seconds</td>
+							<td>Analytics does <strong>not</strong> get this inforamation from the video metadata</td>
+						</tr>
+				</tbody>
+		</table>
+		<p>See <a href="#all-event-parameters">Parameters for all events</a> for additional optional parameters.</p>
+	</section>
+
   <section class="bcls-section">
     <h2 id="minimal">Minimal data</h2>
 
@@ -2312,7 +2403,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 13 Mar 2021
+  Page last updated on 02 Apr 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
