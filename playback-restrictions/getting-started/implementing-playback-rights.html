@@ -333,9 +333,9 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
 ],
 &quot;allow_insecure&quot;: true,
 &quot;disabled&quot;: false,
+&quot;is_default&quot;: true,
 &quot;name&quot;: &quot;Optional playback right name&quot;
-}
-</code></pre>
+}</code></pre>
 
 <p>
   Here are the field details:
@@ -355,10 +355,9 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
       <td>Array of two letter country codes, which follow the ISO 3166-1 alpha-2 standard. For a list of values, see the <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">Officially assigned code elements</a>.</td>
     </tr>
     <tr>
-      <td><code translate="No">allowed_zip_codes</code>, <code translate="No">blocked_zip_codes</code></td>
+      <td><code translate="No">allowed_days</code></td>
       <td>String</td>
-      <td>Array of zip codes, which are prefixed with the two letter country and hyphen. e.g. <code translate="No">[&quot;US-90045&quot;]</code>. <br/>
-      The two letter country code must be upper case and follow the ISO 3166-1 alpha-2 standard, as shown in the <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">Officially assigned code elements</a>.</td>
+      <td>Array of 3-letter lowercase names for the days that the resource is allowed to be retrieved. One or more of: <code translate="No">mon, tue, wed, thu, fri, sat, sun</code></td>
     </tr>
     <tr>
       <td><code translate="No">allowed_dmas</code>, <code translate="No">blocked_dmas</code></td>
@@ -366,34 +365,23 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
       <td>Array of Nielsen Designated Market Area (DMA) numbers. For a list of values, see the <a href="https://help.ooyala.com/video-platform/reference/dma_codes.html">DMA Codes</a> document.</td>
     </tr>
     <tr>
-      <td><code translate="No">blocked_proxies: anonymous</code></td>
-      <td>Boolean</td>
-      <td>IP address of the client is not available. Includes services that change location to beat DRM, TOR points, temporary proxies, and other masking services.</code></td>
-    </tr>
-    <tr>
-      <td><code translate="No">blocked_proxies: public</code></td>
-      <td>Boolean</td>
-      <td>Multiple users proxied from a location allowing public internet access.</code></td>
-    </tr>
-    <tr>
-      <td><code translate="No">blocked_proxies: corporate</code></td>
-      <td>Boolean</td>
-      <td>Generally considered harmless, but location can be a concern. Identify if multiple users are proxied through a central location or locations, and can share a single network-apparent IP address.</code></td>
-    </tr>
-    <tr>
-      <td><code translate="No">blocked_proxies: transparent</code></td>
-      <td>Boolean</td>
-      <td>IP address of the client is available via HTTP headers, though the value is not necessarily reliable (e.g., it can be spoofed).</code></td>
-    </tr>
-    <tr>
       <td><code translate="No">allowed_domains</code>, <code translate="No">blocked_domains</code></td>
       <td>String</td>
       <td>Array of domain names</td>
     </tr>
     <tr>
-      <td><code translate="No">start_time</code>, <code translate="No">end_time</code></td>
+      <td><code translate="No">allowed_hours</code></td>
       <td>Integer</td>
-      <td>Epoch time</td>
+      <td>Array of hours from the 24-hour clock (starting at 0 and up to 47) during which the resource is allowed to be retrieved. 0 to 23 for current day, and 24 to 47 for next day end-date. If an allowed hours block starts in previous day and ends at the following day then a 24+ notation is required.
+      <br /><br />
+      Example: the value of <code translate="No">3-4</code> in this header means that the resource is available from 3:00 am UTC to 3:59 am UTC</td>
+    </tr>
+    <tr>
+      <td><code translate="No">allow_insecure</code></td>
+      <td>Boolean</td>
+      <td>Default: <code translate="No">false</code>
+        <br />
+         Setting this to <code translate="No">true</code> makes the JWT token optional.</td>
     </tr>
     <tr>
       <td><code translate="No">allowed_ips</code>, <code translate="No">blocked_ips</code></td>
@@ -402,25 +390,32 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
           Array of ipv4/ipv6 addresses or CIDR blocks.
       </td>
       </tr>
-      <tr>
-        <td><code translate="No">allowed_days</code></td>
-        <td>String</td>
-        <td>Array of 3-letter lowercase names for the days that the resource is allowed to be retrieved. One or more of: <code translate="No">mon, tue, wed, thu, fri, sat, sun</code></td>
-      </tr>
-      <tr>
-        <td><code translate="No">allowed_hours</code></td>
-        <td>Integer</td>
-        <td>Array of hours from the 24-hour clock (starting at 0 and up to 47) during which the resource is allowed to be retrieved. 0 to 23 for current day, and 24 to 47 for next day end-date. If an allowed hours block starts in previous day and ends at the following day then a 24+ notation is required.
-        <br /><br />
-        Example: the value of <code translate="No">3-4</code> in this header means that the resource is available from 3:00 am UTC to 3:59 am UTC</td>
-      </tr>
-      <tr>
-        <td><code translate="No">allow_insecure</code></td>
-        <td>Boolean</td>
-        <td>Default: <code translate="No">false</code>
-          <br />
-           Setting this to <code translate="No">true</code> makes the JWT token optional.</td>
-      </tr>
+    <tr>
+      <td><code translate="No">allowed_zip_codes</code>, <code translate="No">blocked_zip_codes</code></td>
+      <td>String</td>
+      <td>Array of zip codes, which are prefixed with the two letter country and hyphen. e.g. <code translate="No">[&quot;US-90045&quot;]</code>. <br/>
+      The two letter country code must be upper case and follow the ISO 3166-1 alpha-2 standard, as shown in the <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">Officially assigned code elements</a>.</td>
+    </tr>
+    <tr>
+      <td><code translate="No">blocked_proxies: anonymous</code></td>
+      <td>Boolean</td>
+      <td>IP address of the client is not available. Includes services that change location to beat DRM, TOR points, temporary proxies, and other masking services.</code></td>
+    </tr>
+    <tr>
+      <td><code translate="No">blocked_proxies: corporate</code></td>
+      <td>Boolean</td>
+      <td>Generally considered harmless, but location can be a concern. Identify if multiple users are proxied through a central location or locations, and can share a single network-apparent IP address.</code></td>
+    </tr>
+    <tr>
+      <td><code translate="No">blocked_proxies: public</code></td>
+      <td>Boolean</td>
+      <td>Multiple users proxied from a location allowing public internet access.</code></td>
+    </tr>
+    <tr>
+      <td><code translate="No">blocked_proxies: transparent</code></td>
+      <td>Boolean</td>
+      <td>IP address of the client is available via HTTP headers, though the value is not necessarily reliable (e.g., it can be spoofed).</code></td>
+    </tr>
       <tr>
         <td><code translate="No">disabled</code></td>
         <td>Boolean</td>
@@ -432,6 +427,11 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
         <td><code translate="No">name</code></td>
         <td>String</td>
         <td>Optional playback right name</td>
+      </tr>
+      <tr>
+        <td><code translate="No">start_time</code>, <code translate="No">end_time</code></td>
+        <td>Integer</td>
+        <td>Epoch time</td>
       </tr>
   </tbody>
 </table>
