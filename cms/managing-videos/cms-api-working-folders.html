@@ -179,6 +179,8 @@ grandparent: CMS API
       <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/:account_id/folders/<span class="bcls-inpout">folder_id</span>/videos</code></pre>
     
     <h3>Request parameters</h3>
+
+		<h4><code translate="no">limit</code> and <code translate="no">offset</code></h4>
     
     <p>By default, this request returns the 20 videos most recently added to the folder. You can change this, and page through results for a folder that contains many videos, by adding one or both of these parameters to the request:</p>
     
@@ -189,8 +191,24 @@ grandparent: CMS API
     
     <p>For example, this request will return videos 21-30 of the possible results (assuming the folder contains that many videos):</p>
     
-    <pre>
-      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/:account_id/folders/<span class="bcls-inpout">folder_id</span>/videos<span class="bcls-highlight">?limit=10&amp;offset=20</span></code></pre>
+    <pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/:account_id/folders/<span class="bcls-inpout">folder_id</span>/videos<span class="bcls-highlight">?limit=10&amp;offset=20</span></code></pre>
+
+		<h4><code translate="no">sort</code></h4>
+		<p>You can also sort the videos that are returned by using the <code translate="no">sort</code> parameter, setting it equal to any of these fields:</p>
+		<ul>
+			<li>name</li>
+			<li>reference_id</li>
+			<li>updated_at</li>
+			<li>created_at</li>
+			<li>published_at</li>
+			<li>schedule_starts_at</li>
+			<li>schedule_ends_at</li>
+			<li>state</li>
+			<li>plays_total</li>
+			<li>plays_trailing_week</li>
+		</ul>
+		<p>To sort in descending order, preface the field value with a minus sige (<code>-created_at</code>).</p>
+
+		<p>The default value for <code translate="no">sort</code> is <code translate="no">-updated_at</code>.</p>
     </section>
     </article>
-    
