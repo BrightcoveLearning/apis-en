@@ -1497,13 +1497,26 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>For example:</p>
 
     <pre>
-    <code class="language-http" translate="No">
-        /* unencoded */
-        ftp://user@example.com:pass!word@example.com/path/to/input.mp3
+<code class="language-http" translate="No">/* unencoded */
+ftp://user@example.com:pass!word@example.com/path/to/input.mp3
 
-        /* encoded */
-        ftp://<span class="bcls-highlight">user%40example.com:pass%21word</span>@example.com/path/to/input.mp3
-      </code></pre>
+/* encoded */
+ftp://<span class="bcls-highlight">user%40example.com:pass%21word</span>@example.com/path/to/input.mp3
+</code></pre>
+
+      <h3>Double URL Encoding</h3>
+      <p>Any time a URL will be decoded once before processing, you should URL encode the input URL twice before submitting the ingest job.</p>
+      <p>For example:</p>
+      <p>A <strong>master.url</strong> of </p>
+      <pre>
+<code class="language-http" translate="No">https://some.file.storage.com/path/to/video.mp4?Signature=some%2Bcool%2B%25sig</code></pre>
+        <p>will be converted to the following before processing:</p>
+        <pre>
+<code class="language-http" translate="No">https://some.file.storage.com/path/to/video.mp4?Signature=some+cool+%sig</code></pre>
+      <p>You should instead double encode it like this:</p>
+<pre>
+<code class="language-http" translate="No">https://some.file.storage.com/path/to/video.mp4?Signature=some%252Bcool%252B%2525sig</code></pre>
+<p>To encode a URL, see the <a href="https://general.support.brightcove.com/utilities/string-encoder.html">String Encoder</a> document. </p>
     </section>
 
     <section class="bcls-section">
