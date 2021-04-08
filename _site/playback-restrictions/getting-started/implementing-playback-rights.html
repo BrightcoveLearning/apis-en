@@ -1573,6 +1573,7 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
 ],
 &quot;allow_insecure&quot;: true,
 &quot;disabled&quot;: false,
+&quot;geo_global_rule&quot;: &quot;allow_all&quot;,
 &quot;is_default&quot;: true,
 &quot;name&quot;: &quot;Optional playback right name&quot;
 }</code></pre>
@@ -1621,22 +1622,27 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
       </td>
     </tr>
     <tr>
-      <td><code translate="No">blocked_proxies: anonymous</code></td>
+      <td><code translate="No">blocked_proxies</code></td>
+      <td>Object</td>
+      <td>Properties related to proxy rights</td>
+    </tr>
+    <tr>
+      <td>&emsp;<code translate="No">blocked_proxies.anonymous</code></td>
       <td>Boolean</td>
       <td>IP address of the client is not available. Includes services that change location to beat DRM, TOR points, temporary proxies, and other masking services.</code></td>
     </tr>
     <tr>
-      <td><code translate="No">blocked_proxies: corporate</code></td>
+      <td>&emsp;<code translate="No">blocked_proxies.corporate</code></td>
       <td>Boolean</td>
       <td>Generally considered harmless, but location can be a concern. Identify if multiple users are proxied through a central location or locations, and can share a single network-apparent IP address.</code></td>
     </tr>
     <tr>
-      <td><code translate="No">blocked_proxies: public</code></td>
+      <td>&emsp;<code translate="No">blocked_proxies.public</code></td>
       <td>Boolean</td>
       <td>Multiple users proxied from a location allowing public internet access.</code></td>
     </tr>
     <tr>
-      <td><code translate="No">blocked_proxies: transparent</code></td>
+      <td>&emsp;<code translate="No">blocked_proxies.transparent</code></td>
       <td>Boolean</td>
       <td>IP address of the client is available via HTTP headers, though the value is not necessarily reliable (e.g., it can be spoofed).</code></td>
     </tr>
@@ -1671,6 +1677,20 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
       <td>String</td>
       <td>Array of zip codes, which are prefixed with the two letter country and hyphen. e.g. <code translate="No">[&quot;US-90045&quot;]</code>. <br/>
       The two letter country code must be upper case and follow the ISO 3166-1 alpha-2 standard, as shown in the <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">Officially assigned code elements</a>.</td>
+    </tr>
+    <tr>
+      <td><code translate="No">geo_global_rule</code></td>
+      <td>String</td>
+      <td>Default: <code translate="No">""</code>
+        <br />
+        Values: 
+        <br>
+        &emsp;<code translate="No">"allow_all"</code> - Allows playback from anywhere except the blacklisted locations
+        <br>
+        &emsp;<code translate="No">"block_all"</code> - Blocks playback from anywhere in the world except the whitelisted locations
+        <br>
+        &emsp;<code translate="No">""</code> - No global geo rule
+      </td>
     </tr>
     <tr>
       <td><code translate="No">is_default</code></td>
@@ -1874,7 +1894,7 @@ https://edge-auth.api.brightcove.com/playback/v1/accounts/{your_account_id}/vide
 
 <hr>
 <div class="last-updated">
-  Page last updated on 05 Apr 2021
+  Page last updated on 08 Apr 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
