@@ -282,6 +282,11 @@ components:
         text_tracks:
           type: array
           items:
+            $ref: '#/components/schemas/IngestMediaAssetbody.transsciptions'
+          description: array of text_track maps
+        transcription:
+          type: array
+          items:
             $ref: '#/components/schemas/IngestMediaAssetbody.textTracks'
           description: array of text_track maps
         audio_tracks:
@@ -404,6 +409,43 @@ components:
       example: [
           {
             "url": "https://learning-services-media.brightcove.com.s3.amazonaws.com/captions/bc_smart.vtt",
+            "srclang": "en",
+            "kind": "captions",
+            "label": "EN",
+            "default": true
+          }
+        ]
+    IngestMediaAssetbody.transcriptions:
+      title: Ingest Media Asset Body.transscriptions
+      description: >-
+        array of text_tracks objects - see [Requesting Transcriptions](/dynamic-ingest/ingest-guides/requesting-transcriptions-for-a-video.html)
+      required:
+        - srclang
+      type: object
+      properties:
+        url:
+          type: string
+          description: URL for a WebVTT file
+        srclang:
+          type: string
+          description: ISO 639 2-letter (alpha-2) language code for the text tracks
+        kind:
+          type: string
+          description: how the transcription WebVTT file is meant to be used
+          default: captions
+          enum:
+            - captions
+            - subtitles
+            - chapters
+            - metadata
+        label:
+          type: string
+          description: user-readable title
+        default:
+          type: boolean
+          description: sets the default language for captions/subtitles
+      example: [
+          {
             "srclang": "en",
             "kind": "captions",
             "label": "EN",
