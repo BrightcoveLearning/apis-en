@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="This topic explains how to opt out of automatic player updates, as well as setting a player to a specific version. Note: This document uses curl statements to perform operations using the Player Management API. In the curl statements you will see values of $EMAIL, $ACCOUNT_ID and $PLAYER_ID. You must either create environment variables by those names and assign corresponding values, or supply the literal values for the variables.">
+  <meta name="description" content="This topic explains how to opt out of automatic player updates, as well as setting a player to a specific version. Note: This document uses curl statements to perform operations using the Player Management API. In the curl statements you will see values of $EMAIL, {account_id} and {player_id}. You must either create environment variables by those names and assign corresponding values, or supply the literal values for the variables.">
   
   <title>Opt Out of Automatic Player Updates</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -1251,7 +1251,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <h1>Opt Out of Automatic Player Updates</h1>
 <article class="bcls-article">
-  <summary><p>This topic explains how to opt out of automatic player updates, as well as setting a player to a specific version.</p> <p class="BCL-aside">Note: This document uses curl statements to perform operations using the Player Management API. In the curl statements you will see values of <strong>$EMAIL</strong>, <strong>$ACCOUNT_ID</strong> and <strong>$PLAYER_ID</strong>. You must either create environment variables by those names and assign corresponding values, or supply the literal values for the variables.</p></summary>
+  <summary><p>This topic explains how to opt out of automatic player updates, as well as setting a player to a specific version.</p> <p class="BCL-aside">Note: This document uses curl statements to perform operations using the Player Management API. In the curl statements you will see values of <strong>$EMAIL</strong>, <strong>{account_id}</strong> and <strong>{player_id}</strong>. You must either create environment variables by those names and assign corresponding values, or supply the literal values for the variables.</p></summary>
   <section id="intro" class="bcls-section">
     <h2>Automatic player updates</h2>
     
@@ -1275,7 +1275,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
             }
         }
     }' \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     <!-- <p><code data-gist-id="aca204104c1057ca1f2e" data-gist-hide-footer="true" data-gist-line="1-12"></code></p> -->
     
     <p>This adds the locked setting to your preview player. The PATCH initially affects only your preview player, so you need to publish your player. You could do this in Studio or using the following curl statement:</p>
@@ -1285,7 +1285,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     --header "Content-Type: application/json" \
     --user $EMAIL \
     --request POST \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/publish</code></pre>
     <!-- <p><code data-gist-id="aca204104c1057ca1f2e" data-gist-hide-footer="true" data-gist-line="31-35"></code></p> --></section>
     
     <section class="bcls-section" id="optIn">
@@ -1305,7 +1305,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         }
       }
         }' \
-        https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+        https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     <!-- <p><code data-gist-id="aca204104c1057ca1f2e" data-gist-hide-footer="true" data-gist-line="40-51"></code></p> -->
     
     <p>This will update your preview player to the current player template version if it is different from what you currently have. You should test with the preview player URL that is returned by this call to ensure that your player still functions as expected. Once satisfied you then publish the player to make the new player go live:</p>
@@ -1315,7 +1315,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     --header "Content-Type: application/json" \
     --user $EMAIL \
     --request POST \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/publish</code></pre>
     <!-- <p><code data-gist-id="aca204104c1057ca1f2e" data-gist-hide-footer="true" data-gist-line="31-35"></code></p> --></section>
     
     <section id="specificversion" class="bcls-section">
@@ -1335,7 +1335,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         }
       }
         }' \
-        https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+        https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     <!-- <p><code data-gist-id="aca204104c1057ca1f2e" data-gist-hide-footer="true" data-gist-line="56-67"></code></p> -->
     
     <p>Note that you can set the version and opt out of updates at the same time:</p>
@@ -1353,7 +1353,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         }
       }
         }' \
-        https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+        https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     
     <p>As with any PATCH update, you must publish the player once you are satisfied with changes:</p>
     
@@ -1362,7 +1362,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     --header "Content-Type: application/json"cp
     --user $EMAIL \
     --request POST \
-        https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</code></pre>
+        https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/publish</code></pre>
     </section>
     </article>
     

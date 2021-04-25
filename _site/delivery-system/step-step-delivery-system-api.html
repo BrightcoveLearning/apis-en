@@ -1275,9 +1275,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
             <p>To start these step by step instructions, it is assumed you have completed the <a href="/player-management/getting-started/step-step-player-management.html">Step-by-Step: Player Management</a>. By completing said activity you have defined the following environment variables in your command line system:</p>
 
             <ul>
-                <li>$ACCOUNT_ID</li>
+                <li>{account_id}</li>
                 <li>$EMAIL</li>
-                <li>$PLAYER_ID</li>
+                <li>{player_id}</li>
             </ul>
         </div>
     </section>
@@ -1294,7 +1294,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <code class="language-bash" translate="No">curl \
       --user $EMAIL \
       --request PUT \
-      https://repos.api.brightcove.com/v1/accounts/$ACCOUNT_ID/repos/firstRepo
+      https://repos.api.brightcove.com/v1/accounts/{account_id}/repos/firstRepo
     </code></pre>
             <!-- <code data-gist-id="8939637" data-gist-hide-footer="true" data-gist-line="1-5"></code><br /> -->
 
@@ -1351,7 +1351,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       --user $EMAIL \
       --form contents=@first-plugin.js \
       --request PUT \
-      https://repos.api.brightcove.com/v1/accounts/$ACCOUNT_ID/repos/firstRepo/files/first-plugin.js</code></pre>
+      https://repos.api.brightcove.com/v1/accounts/{account_id}/repos/firstRepo/files/first-plugin.js</code></pre>
         <!-- <p><code data-gist-id="8939637" data-gist-hide-footer="true" data-gist-line="113-117"></code></p> -->
 
         <p>After the copy, you should see a confirmation similar to the following:</p>
@@ -1366,7 +1366,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         <p>You can confirm the file was copied correctly by viewing its contents using the following cURL statement.</p>
 
         <pre class="line-numbers">
-    <code class="language-bash" translate="No">curl http://players.brightcove.net/$ACCOUNT_ID/firstRepo/first-plugin.js</code></pre>
+    <code class="language-bash" translate="No">curl http://players.brightcove.net/{account_id}/firstRepo/first-plugin.js</code></pre>
         <!-- <p><code data-gist-id="8939637" data-gist-hide-footer="true" data-gist-line="125"></code></p> -->
 
         <p>You can also view the file by browsing the <code translate="No">public_url</code> returned from the file copy.</p>
@@ -1389,7 +1389,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       --request PATCH \
       --data '{
         "scripts": [
-          "http://players.brightcove.net/$ACCOUNT_ID/firstRepo/first-plugin.js"
+          "http://players.brightcove.net/{account_id}/firstRepo/first-plugin.js"
         ],
         "stylesheets": [
           "http://solutions.brightcove.com/bcls/video-js/new-player/first-plugin.css"
@@ -1398,7 +1398,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           "name": "firstPlugin"
         }]
       }' \
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
             <!-- <code data-gist-id="8939637" data-gist-hide-footer="true" data-gist-line="50-65"></code><br /> -->
 
             <aside class="bcls-aside bcls-aside--tip">It is a best practice to also keep your CSS files in a repo. This was not done in this case for simplicity's sake. Also, you could have updated just the <code translate="No">scripts</code> section in the <code translate="No">data</code> portion of the curl statement since it is the only section being changed. For review, the <code translate="No">scripts</code>, <code translate="No">stylesheets</code> and <code translate="No">plugins</code> sections were updated.</aside>
@@ -1426,7 +1426,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       --user $EMAIL \
       --form contents=@first-plugin.js \
       --request PUT \
-      https://repos.api.brightcove.com/v1/accounts/$ACCOUNT_ID/repos/firstRepo/files/first-plugin.js</code></pre>
+      https://repos.api.brightcove.com/v1/accounts/{account_id}/repos/firstRepo/files/first-plugin.js</code></pre>
             <!-- <p><code data-gist-id="8939637" data-gist-hide-footer="true" data-gist-line="113-117"></code></p> -->
 
             <p>Browse the same <code translate="No">preview_url</code> from above again. Note: Because of browser caching you may need to close the browser tab, and browse again, or even clear the browser's cache to see the text updated.</p>

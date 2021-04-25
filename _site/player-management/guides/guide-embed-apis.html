@@ -1348,17 +1348,17 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>To create a player you have most likely used a few HTTP methods with the Player Configuration APIs, such as:</p>
     
     <ul>
-      <li>Create the player using a <code translate="No">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</em></li>
-      <li>Update the player using a <code translate="No">PATCH</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</em></li>
-      <li>Publish the updated player using a <code translate="No">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</em></li>
+      <li>Create the player using a <code translate="No">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/{account_id}/players</em></li>
+      <li>Update the player using a <code translate="No">PATCH</code> to <em>https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</em></li>
+      <li>Publish the updated player using a <code translate="No">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/publish</em></li>
     </ul>
     
     <p>A similar approach will be used for child players using the embed APIs. At a very high level you will:</p>
     
     <ul>
-      <li>Create a child player using a <code translate="No">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds</strong></em>. Note: Child players created with the embed APIs self publish on creation so there is no need to publish on child player creation, only on child player update.</li>
-      <li>Update the child player using a <code translate="No">PATCH</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds/$EMBED_ID/configuration</strong></em></li>
-      <li>Publish the child player using a <code translate="No">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds/$EMBED_ID/publish</strong></em></li>
+      <li>Create a child player using a <code translate="No">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/<strong>embeds</strong></em>. Note: Child players created with the embed APIs self publish on creation so there is no need to publish on child player creation, only on child player update.</li>
+      <li>Update the child player using a <code translate="No">PATCH</code> to <em>https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/<strong>embeds/$EMBED_ID/configuration</strong></em></li>
+      <li>Publish the child player using a <code translate="No">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/<strong>embeds/$EMBED_ID/publish</strong></em></li>
     </ul>
     
     <p>The following content describes the process in detail.</p>
@@ -1387,7 +1387,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     }
     }
       }' /
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/embeds</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/$PLAYER_ID/embeds</code></pre>
     <!-- <p><code data-gist-id="11401488" data-gist-hide-footer="true" data-gist-line="255-272"></code></p> -->
     
     <p>An example response to the child player creation is as follows:</p>
@@ -1429,7 +1429,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     }
     }
       }'
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/embeds/$EMBED_ID/configuration
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/$PLAYER_ID/embeds/$EMBED_ID/configuration
     </code></pre>
     <!-- <p><code data-gist-id="11401488" data-gist-hide-footer="true" data-gist-line="336-347"></code></p> -->
     
@@ -1452,7 +1452,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     --header "Content-Type: application/json"
     --user $EMAIL
     --request POST
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/embeds/$EMBED_ID/publish</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/$PLAYER_ID/embeds/$EMBED_ID/publish</code></pre>
     <!-- <p><code data-gist-id="11401488" data-gist-hide-footer="true" data-gist-line="281-285"></code></p> -->
     
     <p>The response provides the vital information needed to use the child player, very much like publishing a player does:</p>
@@ -1476,7 +1476,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       --header "Content-Type: application/json"
       --user $EMAIL
       --request GET
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/embeds</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players/$PLAYER_ID/embeds</code></pre>
     <!-- <p><code data-gist-id="11401488" data-gist-hide-footer="true" data-gist-line="297-310"></code></p> --></section>
     
     <p>A fairly large amount of JSON data is returned.</p>
@@ -1491,7 +1491,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     --header "Content-Type: application/json"
     --user $EMAIL
     --request DELETE
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/embeds/$EMBED_ID</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/$PLAYER_ID/embeds/$EMBED_ID</code></pre>
     <!-- <p><code data-gist-id="11401488" data-gist-hide-footer="true" data-gist-line="314-318"></code></p> -->
     
     <p>Of course, this will affect only the child player and not the parent player.</p>
