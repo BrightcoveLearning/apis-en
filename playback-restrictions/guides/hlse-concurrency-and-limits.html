@@ -17,48 +17,58 @@ layout: staging
     <h2 id="Introduction">Introduction</h2>
     <p>If you want to limit your content per user, but don’t need or want to integrate DRM, than using HLSe may be the solution for you.</p>
     <p>Standard encryption using AES-128 (HLSe) allows you to encrypt your content over the internet. It is not as secure as using DRM since it uses a publicly accessible decryption key.</p>
-    <p>Using Brightcove's License Key Protection, the service will authorize the request based on user or advanced information to allow or deny access to the encryption keys and improve the security of standard encryption.</p>
+    <p>Using <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Brightcove's License Key Protection</a>, the service will authorize the request based on user or advanced information to allow or deny access to the encryption keys and improve the security of standard encryption.</p>
 
     <p>License Key Protection focuses on protection for DRM license requests as well as AES-128 decryption;. JWT claims enable License Key Protection to support restrictions at the user-level. This means you can restrict playback to a user-agent, a maximum number of different IP addresses, or a maximum number of users for each token.</p>
+
+    <p>In this topic, your content is protected with a combination of AES-128 encryption (also known as HLSe) and License Keys Protection.</p>
 
     <p>If you are new to this feature, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html">Overview: Brightcove Playback Restrictions</a> document.</p>
 
   </section>
 
   <section class="bcls-section">
-    <h2 id="Device_registration">Device registration</h2>
+    <h2 id="Getting_started">Getting started</h2>
     <p>
-      A device is registered with Brightcove when a valid playback request which includes a <a href="https://general.support.brightcove.com/developer/create-jwt.html">JSON Web Token (JWT)</a> with <code translate="No">uid</code> and <code translate="No">dlimit</code> claims is received. From that moment, this device will occupy one slot.
+      To use HLSe with License Key Protection, follow these steps:
     </p>
+    <ol class="bcls-tasklist">
+      <li>Contact your account manager to enable your account for HLSe and Playback Restrictions.</li>
+      <li>
+        Once HLSe is enabled for your account, ingest or re-transcode the videos you want to protect.
+      </li>
+      <li>
+        <p>Create a <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Jason Web Token (JWT)</a> per user.</p>
+         For each user-session, you need to create a JWT. This should be generated based on the desired restrictions with different claims. Below is an example of how to create a JWT to block playback to an IP address per user (one device per user, preventing playback from other users as well).
+      </li>
+      <li>
+        <p>Configure your player to use License Key Protections.</p>
+         For details, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Overview: Brightcove Playback Restrictions</a> document.
+      </li>
+    </ol>
   </section>
 
   <section class="bcls-section">
-    <h2 id="JWT_claims">JWT claims</h2>
-    <p>For device limits, you can use the following claims along with the generally required claims:</p>
-    <ul>
+    <h2 id="Setting_device_limits">Setting device limits</h2>
+    <p>To restrict playback to one IP address per user, you will create a JWT as follows:</p>
+    <ol class="bcls-tasklist-restart">
+      <li>Contact your account manager to enable your account for HLSe and Playback Restrictions.</li>
       <li>
-        <p><code translate="No">uid</code>:</p>
-        <p>The user id of the end viewer. This field is required for device registration.</p>
+        Once HLSe is enabled for your account, ingest or re-transcode the videos you want to protect.
       </li>
       <li>
-        <p><code translate="No">dlimit</code>:</p>
-        <p>For DRM content, the <code translate="No">dlimit</code> claim indicates how many devices a user can stream. Every device from each user requesting a stream is registered. Once the stream limit is reached, no more devices will be able to stream.</p>
-        <p>
-          The <code translate="No">dlimit</code> claim lets you control how many devices can be associated with the specified user <code translate="No">uid</code>. The value must be &gt; <code translate="No">0</code>.
-        </p>
-        <p>If the <code translate="No">dlimit</code> claim value is dropped in later requests, previously allowed devices will continue to operate.
-        </p>
-        <p>
-          <strong>Example</strong><br />
-          If the <code translate="No">dlimit</code> value is set to <code translate="No">3</code>, the user can play on devices A, B, & C (all would be allowed). Trying to play on device D would be denied.<br />
-          If the <code translate="No">dlimit</code> value is changed to <code translate="No">1</code>, the user can still play on all 3 devices A, B, & C, unless the devices are manually revoked by managing devices with the Devices API. To do this, see the <a href="#Manage_devices">Manage devices</a> section.
-        </p>
+        <p>Create a <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Jason Web Token (JWT)</a> per user.</p>
+         For each user-session, you need to create a JWT. This should be generated based on the desired restrictions with different claims. Below is an example of how to create a JWT to block playback to an IP address per user (one device per user, preventing playback from other users as well).
       </li>
-      <!-- <li>
-        <p><code translate="No">maxip</code>:</p>
+      <li>
+        <p>Configure your player to use License Key Protections.</p>
+         For details, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Overview: Brightcove Playback Restrictions</a> document.
+      </li>
+    </ol>
+
+    <p><code translate="No">maxip</code>:</p>
         For HLSe content, the <code translate="No">maxip</code> claim defines how many different IP addresses can stream at the same time.
-      </li> -->
-    </ul>
+
   </section>
 
   <section class="bcls-section">
