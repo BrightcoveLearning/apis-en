@@ -1285,171 +1285,70 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
   <section class="bcls-section">
     <h2 id="Setting_device_limits">Setting device limits</h2>
-    <p>To restrict playback to one IP address per user, you will create a JWT as follows:</p>
-    <ol class="bcls-tasklist-restart">
-      <li>Contact your account manager to enable your account for HLSe and Playback Restrictions.</li>
-      <li>
-        Once HLSe is enabled for your account, ingest or re-transcode the videos you want to protect.
-      </li>
-      <li>
-        <p>Create a <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Jason Web Token (JWT)</a> per user.</p>
-         For each user-session, you need to create a JWT. This should be generated based on the desired restrictions with different claims. Below is an example of how to create a JWT to block playback to an IP address per user (one device per user, preventing playback from other users as well).
-      </li>
-      <li>
-        <p>Configure your player to use License Key Protections.</p>
-         For details, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Overview: Brightcove Playback Restrictions</a> document.
-      </li>
-    </ol>
-
-    <p><code translate="No">maxip</code>:</p>
-        For HLSe content, the <code translate="No">maxip</code> claim defines how many different IP addresses can stream at the same time.
-
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Implementation">Implementation</h2>
-    <p>
-      To use device limits, follow these steps:
-    </p>
-    <ol class="bcls-tasklist">
-      <li>
-        <p>
-          Create a <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">JSON Web Token (JWT)</a> with the generally required claims along with the <code translate="No">uid</code> and <code translate="No">dlimit</code> claims.
-        </p>
-        <p>
-          Each user's device is registered with a unique id when a DRM license request is made.
-        </p>
-      </li>
-      <li>
-        <p>
-          <a href="#Manage_devices">Manage user devices</a> with the Devices API. This API allows you to get the devices for a user, delete devices and update the name for a device.
-        </p>
-        <p>
-          When a device is registered, it is identified by id and nickname. The Devices API lets you edit the device nickname, making it easy to manage your list of devices.
-        </p>
-      </li>
-      <li>
-        <a href="/playback-restrictions/getting-started/implementing-playback-rights.html#Configure_your_player">Configure your player</a> to use the <span translate="No">JSON Web Token</span> (JWT) created in the previous step.
-      </li>
-    </ol>
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Manage_devices">Manage devices</h2>
-
-    <p>You can manage user devices with the <a href="/playback-restrictions/references/devices-api/reference.html">Devices API</a>.</p>
-
-    <h3 id="Playback_Rights_API">Devices API</h3>
-    <p>
-      With the Devices API, you can get and delete user devices.
-    </p>
-
-    <h3>Base URL</h3>
-    <p>
-      The base URL for the API is:
-    </p>
-    <pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com/v1</code></pre>
-
-    <h3>Account path</h3>
-    <p>
-      In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term accounts followed by your account id to the base URL:
-    </p>
-    <pre><code class="language-http" translate="No">https://playback-auth.api.brightcove.com/v1/accounts/{accountID}</code></pre>
-
-    <h3>Authorization</h3>
-    <p>
-      An access token for requests is required and must be present in the Authorization header:
-    </p>
-    <pre><code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
-    <p>
-      The access token is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
-    </p>
-
-    <h3>Permissions</h3>
-    <p>
-      Requests to the Devices API must be made from <a href="/oauth/index.html">client credentials</a> with the following permissions:
-    </p>
+    <p>With License Key Protection, you can limit playback to a set number of devices per user.</p>
+    <h3>Claims</h3>
     <ul>
       <li>
-        <code translate="No">video-cloud/playback-auth/devices/read</code>
-      </li>
-      <li>
-        <code translate="No">video-cloud/playback-auth/devices/write</code>
+        <p><code translate="No">maxip</code>:</p>
+        For HLSe content, the <code translate="No">maxip</code> claim defines how many different IP addresses can stream at the same time.
       </li>
     </ul>
-
-    <h3>API methods</h3>
-    <p>
-      The Devices API supports the following requests. For details, see the <a href="/playback-restrictions/references/devices-api/reference.html">Devices API Reference</a>.
-    </p>
-
-    <h4>Get all user devices</h4>
-    <pre><code class="language-http" translate="No">GET /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
-    <h5>Response body</h5>
-    <p>
-      The response body contains an array of devices, and should look similar to this:
-    </p>
-    <pre class="line-numbers"><code class="language-json" translate="No">[
-    {
-        &quot;id&quot;: &quot;12e12345-11e1-1bd1-d123-1234567890&quot;,
-        &quot;created_at&quot;: 1612646018,
-        &quot;updated_at&quot;: 1612646018,
-        &quot;name&quot;: &quot;my device1&quot;,
-        &quot;user_agent&quot;: &quot;PlayReadyClient&quot;
-    },
-    {
-        &quot;id&quot;: &quot;WVCf123456789abcdefghijkl1234567890abcdefg&quot;,
-        &quot;created_at&quot;: 1612385697,
-        &quot;updated_at&quot;: 1612385697,
-        &quot;name&quot;: &quot;my device2&quot;,
-        &quot;user_agent&quot;: &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0&quot;
-    }
-]</code></pre>
-    <br />
-
-    <h4>Update device name</h4>
-    <p>
-      The <code translate="No">PATCH</code> request lets you set a descriptive name for the device.
-    </p>
-    <pre><code class="language-http" translate="No">PATCH  /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}
-  Content-Type: application/json
-  Body: {devices object}</code></pre>
-    <h5>Request body</h5>
-    <p>
-      The request body contains the device name.
-    </p>
-    <pre class="line-numbers"><code class="language-json" translate="No">{
-    &quot;name&quot;: &quot;my device1&quot;
-}</code></pre>
-
-    <p>
-      Here are the field details:
-    </p>
-    <table class="bcls-table">
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Field</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td><code translate="No">name</code></td>
-          <td>String</td>
-          <td>A descriptive nickname to help identify the device</td>
-        </tr>
-      </tbody>
-    </table>
-    <br />
-
-    <h4>Delete all user devices</h4>
-    <pre><code class="language-http" translate="No">DELETE /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
-    <br />
-
-    <h4>Delete a specific user device</h4>
-    <pre><code class="language-http" translate="No">DELETE /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}</code></pre>
-    <br />
+    <h3>Example</h3>
+    <p>This example restricts playback to one IP address per user:</p>
+    <ol class="bcls-tasklist-restart">
+      <li>
+        <p>Generate a public-private key pair.</p>
+        For details, see the <a href="https://general.support.brightcove.com/developer/create-json-web-token.html#Generate_public_private_key_pair">Generate public-private key pair</a> section of the Creating a JSON Web Token (JWT) document.
+      </li>
+      <li>
+        <p>Register your public key.</p>
+        For details, see the <a href="/playback-restrictions/guides/authentication-apis.html">Using Authentication APIs</a> document.
+      </li>
+      <li>
+        <p>Create a JSON Web Token.</p>
+        <p>Here's an example using bash. Make sure to add the <code translate="No">"maxip":1</code> claim to restrict playback to one IP address(device) per user.</p>
+        <pre class="line-numbers">
+<code class="language-bash" translate="No">#! /usr/bin/env bash
+  # Static header fields.
+  HEADER='{
+    &quot;type&quot;: &quot;JWT&quot;,
+    &quot;alg&quot;: &quot;RS256&quot;
+  }'
+  
+  payload='{
+    &quot;pkid&quot;: &quot;<span class="bcls-input">your policy key</span>&quot;,
+    &quot;accid&quot;: &quot;<span class="bcls-input">your account id</span>&quot;,
+    <span class="bcls-highlight">&quot;maxip&quot;: 1</span>
+  }'
+  
+  # Use jq to set the dynamic `iat` and `exp`
+  # fields on the payload using the current time.
+  # `iat` is set to now, and `exp` is now + 1 second.
+  PAYLOAD=$(
+    echo &quot;${payload}&quot; | jq --arg time_str &quot;$(date +%s)&quot; \
+    '
+    ($time_str | tonumber) as $time_num
+    | .iat=$time_num
+    | .exp=($time_num + 60 * 60)
+    '
+  )
+  
+  function b64enc() { openssl enc -base64 -A | tr '+/' '-_' | tr -d '='; }
+  
+  function rs_sign() { openssl dgst -binary -sha256 -sign {your_private_key_path} ; }
+  
+  JWT_HDR_B64=&quot;$(echo -n &quot;$HEADER&quot; | b64enc)&quot;
+  JWT_PAY_B64=&quot;$(echo -n &quot;$PAYLOAD&quot; | b64enc)&quot;
+  UNSIGNED_JWT=&quot;$JWT_HDR_B64.$JWT_PAY_B64&quot;
+  SIGNATURE=$(echo -n &quot;$UNSIGNED_JWT&quot; | rs_sign | b64enc)
+  
+  echo &quot;$UNSIGNED_JWT.$SIGNATURE&quot;</code></pre>
+        
+      </li>
+      <li>
+        Configure your player as described in the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Using License Keys Protection</a> section of the Overview: Brightcove Playback Restrictions document.
+      </li>
+    </ol>
   </section>
 
 </article>
