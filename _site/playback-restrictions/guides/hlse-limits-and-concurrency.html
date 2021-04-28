@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In this topic, you will learn how to limit concurrent streams and enable device limits using HLSe and Brightcove Playback Restrictions.">
+  <meta name="description" content="In this topic, you will learn how to enable device limits and limit concurrent streams using HLSe and Brightcove Playback Restrictions.">
   
-  <title>Using HLSe with Stream Concurrency and Device Limits</title>
+  <title>Using HLSe with Device Limits and Stream Concurrency</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -64,7 +64,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       <li class="breadcrumb-item"><a href="/playback-restrictions/guides/">Guides</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Using HLSe with Stream Concurrency and Device Limits</li>
+      <li class="breadcrumb-item active" aria-current="page">Using HLSe with Device Limits and Stream Concurrency</li>
     </ol>
   </nav>
 </header>
@@ -1241,9 +1241,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Using HLSe with Stream Concurrency and Device Limits</h1>
+<h1>Using HLSe with Device Limits and Stream Concurrency</h1>
 <article class="bcls-article">
-  <summary>In this topic, you will learn how to limit concurrent streams and enable device limits using HLSe and Brightcove Playback Restrictions.</summary>
+  <summary>In this topic, you will learn how to enable device limits and limit concurrent streams using HLSe and Brightcove Playback Restrictions.</summary>
   
   <br/>
   <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of Brightcove Playback Restrictions.</aside>
@@ -1252,11 +1252,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="Introduction">Introduction</h2>
     <p>If you want to limit your content per user, but don’t need or want to integrate DRM, than using HLSe may be the solution for you.</p>
     <p>Standard encryption using AES-128 (HLSe) allows you to encrypt your content over the internet. It is not as secure as using DRM since it uses a publicly accessible decryption key.</p>
-    <p>Using <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Brightcove's License Key Protection</a>, the service will authorize the request based on user or advanced information to allow or deny access to the encryption keys and improve the security of standard encryption.</p>
+    <p>Using HLSe with <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Brightcove's License Key Protection</a>, allows you to authorize playback requests based on user or advanced information to allow or deny access to the encryption keys and improve the security of standard encryption.</p>
 
     <p>License Key Protection focuses on protection for DRM license requests as well as AES-128 decryption;. JWT claims enable License Key Protection to support restrictions at the user-level. This means you can restrict playback to a user-agent, a maximum number of different IP addresses, or a maximum number of users for each token.</p>
-
-    <p>In this topic, your content is protected with a combination of AES-128 encryption (also known as HLSe) and License Keys Protection.</p>
 
     <p>If you are new to this feature, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html">Overview: Brightcove Playback Restrictions</a> document.</p>
 
@@ -1265,20 +1263,33 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <section class="bcls-section">
     <h2 id="Getting_started">Getting started</h2>
     <p>
-      To use HLSe with License Key Protection, follow these steps:
+      Set up your account and prepare your content.
     </p>
     <ol class="bcls-tasklist">
       <li>Contact your account manager to enable your account for HLSe and Playback Restrictions.</li>
       <li>
         Once HLSe is enabled for your account, ingest or re-transcode the videos you want to protect.
       </li>
+    </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Workflow">Workflow</h2>
+    <p>
+      To set device limits or stream concurrency with HLSe, follow these steps:
+    </p>
+    <ol class="bcls-tasklist-restart">
       <li>
         <p>Create a <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Jason Web Token (JWT)</a> per user.</p>
-         For each user-session, you need to create a JWT. This should be generated based on the desired restrictions with different claims. Below is an example of how to create a JWT to block playback to an IP address per user (one device per user, preventing playback from other users as well).
+        <p>For each user-session, you need to create a JWT. This should be generated based on the desired restrictions with different claims.</p>
+        <ul>
+          <li><p>For device limits, see the <a href="#Setting_device_limits">Setting device limits</a> section.</p></li>
+          <li>For stream concurrency, see the <a href="#Setting_stream_concurrency">Setting stream concurrency</a> section.</li>
+        </ul>
       </li>
       <li>
         <p>Configure your player to use License Key Protections.</p>
-         For details, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Overview: Brightcove Playback Restrictions</a> document.
+        For details, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Using License Keys Protection</a> section of the Overview: Brightcove Playback Restrictions document.
       </li>
     </ol>
   </section>
@@ -1294,7 +1305,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </li>
     </ul>
     <h3>Example</h3>
-    <p>This example restricts playback to one IP address per user:</p>
+    <p>This example creates a JWT to restrict playback to one IP address per user (one device per user):</p>
     <ol class="bcls-tasklist-restart">
       <li>
         <p>Generate a public-private key pair.</p>
@@ -1345,10 +1356,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   echo &quot;$UNSIGNED_JWT.$SIGNATURE&quot;</code></pre>
         
       </li>
-      <li>
-        Configure your player as described in the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Using License Keys Protection</a> section of the Overview: Brightcove Playback Restrictions document.
-      </li>
     </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Setting_stream_concurrency">Setting stream concurrency</h2>
+    <p>Coming soon!</p>
+    
   </section>
 
 </article>
@@ -1369,7 +1383,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 27 Apr 2021
+  Page last updated on 28 Apr 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
