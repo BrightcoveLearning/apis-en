@@ -1,266 +1,254 @@
 ---
 title: Use Postman for API Requests
+description: 'In this topic, you will learn how to set up the popular Postman HTTP client to make requests to the Brightcove RESTful APIs. Although you can use curl statements on the command line to make requests, there are several apps that provide you UI and features to make this easier. This document will show you how to use one such tool, the Postman app.'
 parent: General Information
 ---
+<h1>{{ page.title }}</h1>
 <article class="bcls-article">
-  <h1>Use Postman for API Requests</h1>
-  <summary>In this topic, you will learn how to set up the popular Postman HTTP client to make requests to the Brightcove RESTful APIs. Some find curl statements and the command line, used for most of the examples in this section of the documentation, difficult and intimidating. For those, there are numerous tools to send HTTP requests to REST-based services, which include most of the Brightcove APIs. This document will show you how to use one such tool, the Postman app.</summary>
+  <summary>{{ page.description }}</summary>
   <section class="bcls-section">
     <h2 id="install">Install <span translate="No">Postman</span></h2>
-    <p>Get <span translate="No">Postman</span> from <a translate="No" href="//www.getpostman.com">www.getpostman.com</a>. <span translate="No">Postman</span> can be installed as a Chrome or Mac app. We recommend getting the desktop client, but the Chrome version will run on any platform and is identical in functionality and appearance.</p>
+    <p>Get <span translate="No">Postman</span> from <a translate="No" href="https://www.postman.com/downloads/">postman.com</a>. There is an online version you can use, but we recommend installing the desktop app.</p>
   </section>
   <section class="bcls-section">
     <h2 id="getCredentials">Get client credentials</h2>
-    <p>To work with the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use. Get you client credentials in Studio by following the directions in <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a>. In the steps below, we will be making Player Management API requests using <span translate="No">Postman</span>, so your credentials should have at least the following permissions:</p>
+    <p>To work with the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use. Get you client credentials in Studio by following the directions in <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a>. In the steps below, we will be making CMS API requests using <span translate="No">Postman</span>, so your credentials should have at least the following permissions:</p>
     <ul>
-      <li><code translate="No"><strong>Players</strong>: <strong>Read/Write</strong></code></li>
+      <li><code translate="No"><strong>Video</strong>: <strong>Read/Write</strong></code></li>
     </ul>
     <p>You can add as many additional permissions as you like to get credentials that will be usable for a wider range of API requests. Also note that you get credentials that will work for multiple accounts if you like.</p>
-    <p>You can use <a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">this online app</a> if you prefer. If you do, you need to specify at least <code translate="No">video-cloud/player/all</code> permissions.</p>
+    <p>You can use <a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">this online app</a> if you prefer. If you do, you need to specify at least <code translate="No">video-cloud/video/all</code> permissions.</p>
     <aside class="bcls-aside bcls-aside--information language-editable language-editable">In order to generate client credentials you must have Admin permissions for the Brightcove account, or get someone in your organization who has Admin permissions to generate the credentials for you.</aside>
   </section>
-  <section class="bcls-section">
-    <h2 id="usingPostman">Using <span translate="No">Postman</span></h2>
-    <p>Once you have your client credentials, you are ready to start using <span translate="No">Postman</span>. The steps below will walk you through making some <strong>Player Management API</strong> requests using <span translate="No">Postman</span>.</p>
-    <h3>Setting up <span translate="No">Postman</span> to get access tokens</h3>
-    <ol class="bcls-tasklist-restart">
-      <li>Launch the <span translate="No">Postman</span> app.</li>
-      <li>Create a new request:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Create New Request" src="/assets/images/general/postman/node17919-create-new-request.png" />
-          <figcaption class="bcls-caption--image">Create New Request</figcaption>
-        </figure>
-      </li>
-      <li>In the new request dialog, enter "Get Players" for the Request Name:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Request Name" src="/assets/images/general/postman/node17919-add-request-name.png" />
-          <figcaption class="bcls-caption--image">Request Name</figcaption>
-        </figure>
-      </li>
-      <li>Click Create Collection, and then enter "Player Management API" for the collection name:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Create Request Collection" src="/assets/images/general/postman/node17919-name-collection.png" />
-          <figcaption class="bcls-caption--image">Create Request Collection</figcaption>
-        </figure>
-      </li>
-      <li>Save the collection.</li>
-      <li>Find the Player Management API collection in the list on the left and click it to open your new request:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Player Management API Collection" src="/assets/images/general/postman/node17919-pmapi-collection.png" />
-          <figcaption class="bcls-caption--image">Player Management API Collection</figcaption>
-        </figure>
-      </li>
-      <li>Go to the <strong>Authorization</strong> tab, choose OAuth 2.0 as the type, and make sure that Add authorization data to Request Headers is selected:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Authorization Section" src="/assets/images/general/postman/node17919-add-auth-to-request-headers.png" />
-          <figcaption class="bcls-caption--image">Authorization Section</figcaption>
-        </figure>
-      </li>
-      <li>Click <strong>Get New Access Token</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Get New Access Token" src="/assets/images/general/postman/node17919-get-new-access-token.png" />
-          <figcaption class="bcls-caption--image">Get New Access Token</figcaption>
-        </figure>
-      </li>
-      <li>In the dialog, enter the following information:
-        <ul>
-          <li><strong>Token name</strong>: Player Management API</li>
-          <li><strong>Grant Type</strong>: Client Credentials</li>
-          <li><strong>Access Token URL</strong>: <code translate="No">https://oauth.brightcove.com/v4/access_token </code></li>
-          <li><strong>Client ID</strong>: (enter your client id)</li>
-          <li><strong>Client Secret</strong>: (enter your client secret)</li>
-          <li><strong>Scope</strong>: (leave blank)</li>
-          <li><strong>Client Authentication</strong>: Send client credentials in body</li>
-        </ul>
-        <figure class="bcls-figure"><img class="bcls-image" alt="Get Access Token Dialog" src="/assets/images/general/postman/node17919-get-access-token-dialog.png" />
-          <figcaption class="bcls-caption--image">Get Access Token Dialog</figcaption>
-        </figure>
-      </li>
-      <li>Click <strong>Request Token</strong></li>
-      <li>You should see a new access token appear:
-        <figure class="bcls-figure"><img class="bcls-image" alt="New Access Token" src="/assets/images/general/postman/node17919-new-access-token.png" />
-          <figcaption class="bcls-caption--image">New Access Token</figcaption>
-        </figure>
-        <aside class="bcls-aside bcls-aside--information language-editable">Note: you may get an error like the one shown below:
-          <figure class="bcls-figure"><img class="bcls-image" alt="SSL Error" src="/assets/images/general/postman/ssl-error.png" />
-            <figcaption class="bcls-caption--image">SSL Error</figcaption>
-            <p>If this happens, open the Postman preferences to the General settings and turn the "SSL certificate verification" to <code translate="No">Off</code>:</p>
-            <figure class="bcls-figure"><img class="bcls-image" alt="Postman SSL Settings" src="/assets/images/general/postman/ssl-settings.png" />
-              <figcaption class="bcls-caption--image">Postman SSL Settings</figcaption>
-            </figure>
-          </figure>
-        </aside>
-      </li>
-    </ol>
-    <aside class="bcls-aside bcls-aside--information language-editable">
-      <p>For each request you make, you will need to select an access token to use:</p>
-      <figure class="bcls-figure"><img class="bcls-image" alt="Select Access Token" src="/assets/images/general/postman/node17919-new-access-token.png" />
-        <figcaption class="bcls-caption--image">Select Access Token</figcaption>
-      </figure>
-      <p>Your token will expire after 5 minutes. When it does, your API requests will return an <strong>Unauthorized</strong> error. When that happens, just click <strong>Get New Access Token</strong> again. <span translate="No">Postman</span> will remember all the information you entered into the dialog before, so you won't have to enter it again. Don't forget you need to select the appropriate token from the Available Tokens list after you create a new one.</p>
-      <p>Since old tokens are of no value, you'll probably want to keep the list clean by deleting old tokens when you create new ones:</p>
-      <figure class="bcls-figure"><img class="bcls-image" alt="Manage Tokens" src="/assets/images/general/postman/node17919-manage-tokens.png" />
-        <figcaption class="bcls-caption--image">Manage Tokens</figcaption>
-      </figure>
-      <figure class="bcls-figure"><img class="bcls-image" alt="Delete Token" src="/assets/images/general/postman/node17919-delete-access-token .png" />
-        <figcaption class="bcls-caption--image">Delete Token</figcaption>
-      </figure>
-    </aside>
-  </section>
-  <section class="bcls-section">
-    <h2 id="getRequest">Send <code translate="No">GET</code> request</h2>
-    <p>Now we are ready to make API requests.</p>
-    <h3>Make a <code translate="No">GET</code> request</h3>
-    <ol class="bcls-tasklist-restart">
-      <li>Now enter the following URL into the <strong>Enter request URL</strong> field, substituting your account id for {account_id}:
-        <pre class="line-numbers">
-	<code class="language-http" translate="No">https://players.api.brightcove.com/v2/accounts/<span class="bcls-input">YOUR_ACCOUNT_ID</span>/players
-	</code>
-	</pre>
-        <figure class="bcls-figure"><img class="bcls-image" alt="Enter Request URL" src="/assets/images/general/postman/node17919-request_url.png" />
-          <figcaption class="bcls-caption--image">Enter Request URL</figcaption>
-        </figure>
-      </li>
-      <li>Leave the method as <code translate="No">GET</code>, and click <strong>Send</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Get Request" src="/assets/images/general/postman/node17919-click-send.png" />
-          <figcaption class="bcls-caption--image"><code translate="No">GET</code> Request</figcaption>
-        </figure>
-      </li>
-      <li>The response should look something like this:
-        <figure class="bcls-figure"><img class="bcls-image" alt="GET Response" src="/assets/images/general/postman/node17919-get-players-response.png" />
-          <figcaption class="bcls-caption--image">GET Response</figcaption>
-        </figure>
-        <aside class="bcls-aside bcls-aside--information language-editable">If you get an Unauthorized error, remember that you may need to get a new access token.</aside>
-      </li>
-    </ol>
-  </section>
-  <section class="bcls-section">
-    <h2 id="postRequest">Send <code translate="No">POST</code> request</h2>
-    <p>Now we will send a <code translate="No">POST</code> request with some data. In this case we will create a new player using the Player Management API.</p>
-    <h3>Make a <code translate="No">POST</code> request</h3>
-    <ol class="bcls-tasklist-restart">
-      <li>Duplicate your Get Players request:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Duplicate Request" src="/assets/images/general/postman/node17919-duplicate-request.png" />
-          <figcaption class="bcls-caption--image">Duplicate Request</figcaption>
-        </figure>
-      </li>
-      <li>Open your new request and rename it "Create Player"
-        <figure class="bcls-figure"><img class="bcls-image" alt="Rename Request" src="/assets/images/general/postman/node17919-edit-request-name.png" />
-          <figcaption class="bcls-caption--image">Rename Request</figcaption>
-        </figure>
-      </li>
-      <li>Use the same URL as you did for the <code translate="No">GET</code> request steps above, but now choose <strong><code translate="No">POST</code></strong> to be the selected HTTP method.
-        <figure class="bcls-figure"><img class="bcls-image" alt="Post Request" src="/assets/images/general/postman/node17919-select-request-type.png" />
-          <figcaption class="bcls-caption--image"><code translate="No">POST</code> Request</figcaption>
-        </figure>
-      </li>
-      <li>Click the <strong>Body</strong> tab just under the URL, then choose the <strong>raw</strong> radio button and <strong>JSON (application/json)</strong> from the type dropdown menu:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Request Body" src="/assets/images/general/postman/node17919-request-body-type.png" />
-          <figcaption class="bcls-caption--image">Request Body</figcaption>
-        </figure>
-      </li>
-      <li>You may note that a new Header gets automatically added to the request. Requests that send data need a header telling the API what kind of data is being sent. Click the <strong>Headers</strong> tab to see the <code translate="No">Content-Type: application/json</code> header:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Add Header" src="/assets/images/general/postman/node17919-content-type-header.png" />
-          <figcaption class="bcls-caption--image">Add Header</figcaption>
-        </figure>
-      </li>
-      <li>For the raw data, enter the following JSON code for the body (the screenshot following the JSON shows how the request should appear):
-        <pre class="line-numbers">
-	<code class="language-json" translate="No"><strong>{
-        "name": "<span translate="No">Postman</span> Test Player"
-        }</strong></code>
-	</pre>
-      </li>
-      <li>Click <strong>Send</strong>.
-        <aside class="bcls-aside bcls-aside--information language-editable">If you have recently submitted a request you may not be asked to authenticate again. If you get an Unauthorized error, request a new access token and click Send again.</aside>
-      </li>
-      <li>
-        <p>Your response will look similar to the following (You can click the <strong>Pretty</strong> button for more nicely formatted JSON):</p>
-        <figure class="bcls-figure"><img class="bcls-image" alt="POST Response" src="/assets/images/general/postman/node17919-create-player-response.png" />
-          <figcaption class="bcls-caption--image">POST Response</figcaption>
-        </figure>
-      </li>
-      <li>You can verify that your player was created by checking in the Players section of Studio.</li>
-    </ol>
-  </section>
-  <section class="bcls-section">
-    <h2 id="environmentVariables">Environment variables</h2>
-    <p>Although you can create client credentials for multiple accounts and any combination of API operations, you may wish to maintain greater security by limiting the scope of your credentials to a single account and API (or even specific API operations). If so, you can take advantage of <span translate="No">Postman</span>'s <strong>environment variables</strong> to simplify testing requests across multiple accounts and APIs. The key is to set up environments corresponding to each set of client credentials that you use.</p>
-    <p>Below are the steps for creating and using environment variables for the <code translate="No">client_id </code> and <code translate="No">client_secret </code>.</p>
-    <ol class="bcls-tasklist-restart">
-      <li>Click the gear menu in the top-right <span translate="No">Postman</span> and select <strong>Manage Environments.</strong>
-        <figure class="bcls-figure"><img class="bcls-image" alt="Environments Menu" src="/assets/images/general/postman/postman-environments-menu.png" />
-          <figcaption class="bcls-caption--image">Environments Menu</figcaption>
-        </figure>
-      </li>
-      <li>In the <strong>Manage Environments</strong> dialog, click <strong>Add</strong> to add an environment.</li>
-      <li>For the new environment, enter:
-        <ul>
-          <li>A name (Brightcove APIS, or whatever you like)</li>
-          <li>An environment variable called <code translate="No">account_id</code> with a value of your account id</li>
-          <li>An environment variable called <code translate="No">client_id </code> with a value of your client id</li>
-          <li>An environment variable called <code translate="No">client_secret </code> with a value of your client secret</li>
-        </ul>
-        <figure class="bcls-figure"><img class="bcls-image" alt="Add Environment Variables" src="/assets/images/general/postman/node17919-add-environment-variables.png" />
-          <figcaption class="bcls-caption--image">Add Environment Variables</figcaption>
-        </figure>
-      </li>
-      <li>Click <strong>Add</strong> to add the environment</li>
-      <li>Close the <strong>Manage Environments</strong> dialog to return to <span translate="No">Postman</span> and select your environment from the menu.
-        <figure class="bcls-figure"><img class="bcls-image" alt="Select an Enviroment" src="/assets/images/general/postman/node17919-select-envoronment.png" />
-          <figcaption class="bcls-caption--image">Select an Environment</figcaption>
-        </figure>
-      </li>
-      <li>Now you can start replacing hard-coded values in your requests with variables. To do so, just type <code translate="No">{% raw %}{{{% endraw %}</code> anywhere, and a dropdown list of variables will appear:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Use Environment Variables" src="/assets/images/general/postman/node17919-use-environment-variables.png" />
-          <figcaption class="bcls-caption--image">Use Environment Variables</figcaption>
-        </figure>
-      </li>
-    </ol>
-  </section>
-  <section class="bcls-section">
-    <h2 id="create_collection_from_api_reference">Create a collection from an API reference</h2>
-    <p>As of version 6.7.4, <span translate="No">Postman</span> supports the import of OpenAPI specs to create request collections. Since Brightcove's platform API References are based on the OpenAPI spec, you can use this feature the generate a full collection of requests for any of the Brightcove APIs.</p>
-    <p>In the steps below, we will use the <span translate="No">Dynamic Ingest API</span> as an example, but the procedure will work for any of the Brightcove platform APIs (<strong>not</strong> for Player API or the mobiles SDKs, because Postman only supports REST APIs).</p>
-    <h3>Steps</h3>
-    <ol class="bcls-tasklist-restart">
-      <li>In your browser, go to <a href="/dynamic-ingest/references/reference.html">Dynamic Ingest API Reference</a></li>
-      <li>Click on the <strong translate="No">Download</strong> button under the title to download the <span translate="No">OpenAPI specification</span> for the API:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Download OpenAPI Specification" src="/assets/images/general/postman/openapi-spec-download.png" />
-          <figcaption class="bcls-caption--image">Download OpenAPI Specification</figcaption>
-        </figure>
-      </li>
-      <li>Depending on which browser you are using, the specification (a YAML file) may download or open in a new browser tab. If it opens in the browser, either copy and paste the contents into a text file, or save the page source to your local drive. The file should be named <code translate="No">openapi.yaml</code>.</li>
-      <li>Now go to <span translate="No">Postman</span> and click the <span translate="No">Import</span> button at top of the window on the left side:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Postman Import Button" src="/assets/images/general/postman/postman-import-button.png" />
-          <figcaption class="bcls-caption--image">Postman Import Button</figcaption>
-        </figure>
-      </li>
-      <li>Drag and drop the <code translate="No">openapi.yaml</code> file from your file manager into the import modal that opens:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Postman Import Modal" src="/assets/images/general/postman/postman-import-modal.png" />
-          <figcaption class="bcls-caption--image">Postman Import Modal</figcaption>
-        </figure>
-      </li>
-      <li>After <span translate="No">Postman</span> processes the file, you will see a new Collection in the list titled <span translate="No">Dynamic Ingest API Reference</span>
-        <figure class="bcls-figure"><img class="bcls-image" alt="New Postman Collection" src="/assets/images/general/postman/postman-collection-from-import.png" />
-          <figcaption class="bcls-caption--image">New Postman Collection</figcaption>
-        </figure>
-      </li>
-      <li>Drilldown into the folders through <code translate="No">accounts/{account id}/video/{video id}</code> and you will see the requests:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Drilldown to Requests" src="/assets/images/general/postman/drilldown-to-requests.png" />
-          <figcaption class="bcls-caption--image">Drilldown to Requests</figcaption>
-        </figure>
-      </li>
-      <li>Select the <code translate="No">POST</code> request to open it. You will find both the <span translate="No">Params</span> and the <span translate="No">Body</span> pre-populated from the API reference, but you will need to replace placeholders that show the data type with actual data:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Prepopulated Params" src="/assets/images/general/postman/prepopulated-params.png" />
-          <figcaption class="bcls-caption--image">Prepopulated Params</figcaption>
-        </figure>
-        <figure class="bcls-figure"><img class="bcls-image" alt="Prepopulated Body" src="/assets/images/general/postman/prepopulated-body.png" />
-          <figcaption class="bcls-caption--image">Prepopulated Body</figcaption>
-        </figure>
-        <aside class="bcls-aside bcls-aside--information language-editable language-editable">Note: you will see a number of fields in the request body like the one below:
-          <pre class="line-numbers">
-	<code class="language-json" translate="No">"master": {
-			"value": "reference #/components/schemas/IngestMediaAssetbody.master not found in the api spec"
-	}</code></pre>
-          <p>In cases like this, the field is an object, and the details of the object were in another part of the OpenAPI specification that was indicated by reference. The Postman importer does not yet correctly follow such references (Brightcove has reported this bug to Postman). For fields like this, you will need to go back to the API Reference to find the properties of the object.</p>
-        </aside>
-      </li>
-      <li>Once you have replaced the placeholders with appropriate values, you can use the request just like ones you created yourself.</li>
-    </ol>
-  </section>
+	<section class="bcls-section">
+		<h2 id="get_openapi_spec">Get the OpenAPI spec</h2>
+		<p>Although not required, you can greatly simplify the setup of <span translate="No">Postman</span> is to import the OpenAPI specification for the API you want to use. You can do this for any of the Brightcove platform APIs, but for this tutorial, we'll use the CMS API.</p>
+		<p>To get the OpenAPI spec, just go to the <a href="/cms/references/reference.html">CMS API Reference</a> and click the <strong>Download</strong> button:</p>
+		<figure class="bcls-figure">
+			<img class="bcls-image" src="/assets/images/general/postman/download-cms-api-openapi-spec.png" alt="Download OpenAPI Spec">
+			<figcaption class="bcls-caption--image">Download OpenAPI Spec</figcaption>
+		</figure>
+		<p>The downloaded file will be called <strong translate="no">openapi.yaml</strong></p>
+	</section>
+	<section class="bcls-section">
+		<h2 id="Import_openapi_spec">Import the OpenAPI Spec</h2>
+		<p>The next step is to launch the Postman app, and then import the OpenAPI spec that you downloaded:</p>
+		<div style="position: relative; display: block; max-width: 960px;"><div style="padding-top: 56.25%;"><iframe src="https://players.brightcove.net/6225316964001/Qznf2bKtV_default/index.html?videoId=6251814348001" allowfullscreen="" allow="encrypted-media" style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;"></iframe></div></div>
+	</section>
+	<section class="bcls-section">
+		<h2 id="Set_up_collection">Set Up a Collection</h2>
+		<p>Now the API spec is imported, we can generate a collection of requests.</p>
+		<ol class="bcls-tasklist-restart">
+			<li>Click <strong>APIs</strong>.</li>
+			<li>If you have other APIs, select <strong>Brightcove CMS API Reference</strong></li>
+			<li>
+				Click <strong>Generate Collection</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/generate-collection.png" alt="Generate Collection">
+					<figcaption class="bcls-caption--image">Generate Collection</figcaption>
+				</figure>
+			</li>
+			<li>In the dialog that appears enter a name for the collection like "Brightcove CMS API".</li>
+			<li>Select <strong>Test the API</strong> under "How do you want to use this API?"</li>
+			<li>
+				Click <strong>Generate Collection</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/generate-collection-settings.png" alt="Collection Settings">
+					<figcaption class="bcls-caption--image">Collection Settings</figcaption>
+				</figure>
+			</li>
+			<li>
+				Open the <strong>Collections</strong> and click on your new CMS API collection:
+			</li>
+			<li>
+				Expand the collection and click on the <strong>videos</strong> folder and select the <strong>Get Videos</strong> request.
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/view-collection.png" alt="CMS API Collection">
+					<figcaption class="bcls-caption--image">CMS API Collection</figcaption>
+				</figure>
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/request-details.png" alt="Request Details">
+					<figcaption class="bcls-caption--image">Request Details</figcaption>
+				</figure>
+			</li>
+		</ol>
+		<p>Notice that Postman has set up most of the details for you from the API reference, including the request itself and the params that can be added to it. In addition, you can click the <strong>Documentation</strong> icon on the right to show the documenation for the request from the API reference:</p>
+		<figure class="bcls-figure">
+			<img class="bcls-image" src="/assets/images/general/postman/show-documentation.png" alt="Show Documentation">
+			<figcaption class="bcls-caption--image">Show Documentation</figcaption>
+		</figure>
+		<figure class="bcls-figure">
+			<img class="bcls-image" src="/assets/images/general/postman/request-documentation.png" alt="Request Documentation">
+			<figcaption class="bcls-caption--image">Request Documentation</figcaption>
+		</figure>
+			<p>You will still need to supply some information of your own, however, including the account id and authentication information. You can do this on a request by request basis, but the better way is to create an <strong>environment</strong> for the request, where you can store commonly used information as variables. We will do that in the next section.</p>
+	</section>
+	<section class="bcls-section">
+		<h2 id="create_enviroment">Create an environment</h2>
+		<p>The steps below will walk you through setting up an environment for the CMS API requests</p>
+		<ol class="bcls-tasklist-restart">
+			<li>
+				Click <strong>Environments</strong>, and then <strong>Create Environment</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/create-environment.png" alt="Create Environment">
+					<figcaption class="bcls-caption--image">Create Environment</figcaption>
+				</figure>
+			</li>
+			<li>Give the environment a name like "Brightcove APIs" (you will be able to use this environment for other Brightcove APIs as well, adding new variables to it as necessary).</li>
+			<li>
+				Click the text "Add a new variable", type in <code translate="no">account_id</code>, and then click in the <strong>INITIAL VALUE</strong> field and enter your Video Cloud account id:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/enter-variable.png" alt="Enter Variable">
+					<figcaption class="bcls-caption--image">Enter Variable</figcaption>
+				</figure>
+			</li>
+			<li>
+				Repeat the previous step to add additional variables:
+				<table class="bcls-table">
+					<caption class="bcls-caption--table">Environment Variables</caption>
+					<thead class="bcls-table__head">
+							<tr>
+									<th>Variable</th>
+									<th>Initial Value</th>
+							</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+							<tr>
+									<td><code translate="no">client_id</code></td>
+									<td>(your client id - see <a href="#getCredentials">Get Client Credentials</a> above)</td>
+							</tr>
+							<tr>
+									<td><code translate="no">client_secret</code></td>
+									<td>(your client secret - see <a href="#getCredentials">Get Client Credentials</a> above)</td>
+							</tr>
+							<tr>
+									<td><code translate="no">access_token_url</code></td>
+									<td><code translate="no">https://oauth.brightcove.com/v4/access_token</code></td>
+							</tr>
+					</tbody>
+			</table>
+			</li>
+			<li>
+				Click <strong>Save</strong> to save the environment:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/save-environment.png" alt="Save Environment">
+					<figcaption class="bcls-caption--image">Save Environment</figcaption>
+				</figure>
+			</li>
+			<li>
+				Go back to your Brightcove CMS API collection and select the environment you created from the environment selector:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/environment-selector.png" alt="Environment Selector">
+					<figcaption class="bcls-caption--image">Environment Selector</figcaption>
+				</figure>
+			</li>
+		</ol>
+		{% raw %}
+		<p>Environment variables can be referenced by enclosing them in double curly braces - example: {{client_id}}. Postman helps you with auto-completion when you type "{{...". You can try this by going back to the <strong>Get Videos</strong> request and start typing "{{a" in the <strong>Value</strong> field for the Path Variable <code translate="no">account_id</code>:</p>
+		{% endraw %}
+		<figure class="bcls-figure">
+			<img class="bcls-image" src="/assets/images/general/postman/autocomplete-variables.png" alt="Variable Autocompletion">
+			<figcaption class="bcls-caption--image">Variable Autocompletion</figcaption>
+		</figure>
+	</section>
+	<section class="bcls-section">
+		<h2 id="Enable_requests">Enable requests</h2>
+		<p>Now that you have the environment set up, you can use the variables to test requests. We will look at the Get Videos request first.</p>
+		{% raw %}
+		<ol class="bcls-tasklist-restart">
+			<li>If you did not already do so, enter {{account_id}} for the value of the <code translate="no">account_id</code> <strong>Path Variable</strong>.</li>
+			<li>
+				Click the <strong>Authorization</strong> tab for the request:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/auth-tab.png" alt="Auth Tab">
+					<figcaption class="bcls-caption--image">Auth Tab</figcaption>
+				</figure>
+			</li>
+			<li>
+				Under <strong>Configuration Options</strong>, change the <strong>Grant Type</strong> to <strong>Client-Credentials</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/auth-grant-type.png" alt="Auth Grant Type">
+					<figcaption class="bcls-caption--image">Auth Grant Type</figcaption>
+				</figure>
+			</li>
+			<li>
+				Enter the following variables from your environment in the appropriate fields:
+				<ul>
+					<li>Access Token URL: <code>{{access_token_url}}</code></li>
+					<li>Client ID: <code>{{client_id}}</code></li>
+					<li>Client Secret: <code>{{client_secret}}</code></li>
+				</ul>
+			</li>
+			<li>
+				Click <strong>Get New Access Token</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/" alt="Authorization Setup">
+					<figcaption class="bcls-caption--image">Authorization Setup</figcaption>
+				</figure>
+			</li>
+			<li>
+				When the authorization is complete, you can click <strong>Proceed</strong> or wait for the token to appear. Then click <strong>Use Token</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/manage-access-tokens.png" alt="Manage Access Tokens">
+					<figcaption class="bcls-caption--image">Manage Access Tokens</figcaption>
+				</figure>
+			</li>
+		</ol>
+		{% endraw %}
+		<p>Note that Brightcove access tokens expire after five minutes. Depending on what you are doing and how quickly, you may be able to use the same access token several times. When it expires, the CMS API will return an unauthorized error:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">[
+	{
+			"error_code": "UNAUTHORIZED",
+			"message": "Permission denied."
+	}
+]</code></pre>
+		<p>(The exact form of the message may vary for other APIs, but it will be similar.)</p>
+		<p>When this happens, simply return to the <strong>Authorization</strong> tab and request a new token. You should also delete any expired tokens to avoid confusion, as they are of no further value.</p>
+		<figure class="bcls-figure">
+			<img class="bcls-image" src="/assets/images/general/postman/delete-expired-tokens.png" alt="Delete Expired Tokens">
+			<figcaption class="bcls-caption--image">Delete Expired Tokens</figcaption>
+		</figure>
+	</section>
+	<section class="bcls-section">
+		<h2 id="Make_requests">Make requests</h2>
+		<p>You are now ready to make a Get Videos request.</p>
+		{{ raw }}
+		<ol class="bcls-tasklist-restart">
+			<li>Go back to the <strong>Params</strong> tab and uncheck all the Query Params (you can use them, of course, and change the values, but we will just use the default values for this first test).</li>
+			<li>Click <strong>Send</strong>.</li>
+			<li>
+				You should see JSON code appear in the response area below (an array of video metadata objects):
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/response-data.png" alt="Response Data">
+					<figcaption class="bcls-caption--image">Response Data</figcaption>
+				</figure>
+				<aside class="bcls-aside bcls-aside--information language-editable">Remember that if you get an unauthorized error, your access token has expired and you will need to get a new one.</aside>
+			</li>
+			<li>
+				Now we will try a write request (Create Video). Select that request in the collection:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/create-video-request.png" alt="Create Video Request">
+					<figcaption class="bcls-caption--image">Create Video Request</figcaption>
+				</figure>
+			</li>
+			<li>You will again need to enter <code translate="no">{{account_id}}</code> for the <strong>Account ID Path Variable</strong>. You will <strong>NOT</strong> need repeat the steps in the previous section to set up authorization, because Postman transfers these settings to other requests in the collection.)</li>
+			<li>
+				Next, go to the <strong>Body</strong> tab, where you will see a sample request body from the API reference:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/postman/sample-request-body.png" alt="Sample Request Body">
+					<figcaption class="bcls-caption--image">Sample Request Body</figcaption>
+				</figure>
+			</li>
+			<li>
+				This JSON is editable. The only required field for a Create Video request is the <code translate="no">name</code>, so change that value to "Test Video" and remove the rest of the JSON so that your request body is:
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"name": "Test video"
+}</code></pre>
+			</li>
+			<li>
+				Now click send (getting a new access token if you need one), and you should see the metadata object for the new video appear in the response area.
+			</li>
+		</ol>
+		{{ endraw }}
+	</section>
 </article>
