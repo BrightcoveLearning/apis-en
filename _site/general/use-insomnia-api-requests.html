@@ -1336,18 +1336,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <section class="bcls-section">
     <h2 id="Install_insomnia">Install <span translate="No">Insomnia</span></h2>
     <p>Get <span translate="No">Insomnia</span> from <a href="https://insomnia.rest"><span translate="No">https://insomnia.rest</span></a>. <span translate="No">Insomnia</span> can be installed on Mac, Linux, or Windows systems.</p>
-    <p><span translate="No">Insomnia</span> can be used to make requests to any of Brightcove's RESTful APIs. Most of the APIs use OAuth2 for authentication, and that is what we will demonstrate in this document. However, you can also use it for the APIs that do not use OAuth, by simply setting the appropriate header.</p>
+		</section>
+		<section class="bcls-section">
+			<h2 id="authentication">Authentication</h2>
+    <p><span translate="No">Insomnia</span> can be used to make requests to any of Brightcove's RESTful APIs. Most of the APIs use OAuth2 for authentication, and we will see how to set that up in <span translate="no">Insomnia</span> later in this document. However, you can also use it for the APIs that do not use OAuth, by simply setting the appropriate header.</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="Set Header in Insomnia" src="/assets/images/general/insomnia/18462-set-header.png" />
       <figcaption class="bcls-caption--image">Set Header in <span translate="No">Insomnia</span></figcaption>
     </figure>
-    <p>Here is what that header will look like for requests with different authentication methods:</p>
+    <p>Here is what that header will look like for requests with authentication methods other than Oauth2:</p>
     <dl>
-      <dt ><a href="/oauth/index.html"><span translate="No">OAuth API</span></a> (create credentials request <strong>only</strong>)</dt>
-      <dd >
-        <pre>
-  <code class="language-http" translate="No">Authorization: BC_TOKEN <span class="bcls-input">YOUR_BC_TOKEN</span></code></pre>
-        <p><a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html#gettingCredentials">How to get your <code translate="No">BC_TOKEN</code></a>.</p>
-      </dd>
       <dt ><a href="/playback/index.html"><span translate="No">Playback API</span></a></dt>
       <dd >
         <pre>
@@ -1367,215 +1364,219 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </section>
   <section class="bcls-section">
     <h2 id="getCredentials">Get client credentials</h2>
-    <p>To work with most of the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use. Get your client credentials in Studio by following the directions in <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a>. In the steps below, we will make <span translate="No">Player Management API</span> requests using <span translate="No">Insomnia</span>, so your credentials should have at least the following permissions:</p>
+    <p>To work with most of the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use. Get your client credentials in Studio by following the directions in <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a>. In the steps below, we will make <span translate="No">CMS API</span> requests using <span translate="No">Insomnia</span>, so your credentials should have at least the following permissions:</p>
     <ul>
-      <li><strong>Players</strong>: <strong>Read/Write</strong></li>
+      <li><strong>Videos</strong>: <strong>Read/Write</strong></li>
     </ul>
     <p>You can add as many additional permissions as you like to get credentials that will be usable for a wider range of API requests. Also note that you can get credentials that will work for multiple accounts if you like.</p>
     <aside class="bcls-aside bcls-aside--information">In order to generate client credentials, you must have Admin permissions for Studio, or get someone in your organization who has Admin permissions to generate the credentials for you.</aside>
   </section>
   <section class="bcls-section">
     <h2 id="usingInsomnia">Using <span translate="No">Insomnia</span></h2>
-    <p>Once you have your client credentials, you are ready to start using <span translate="No">Insomnia</span>. The steps below walk you through making some <strong>Player Management API</strong> requests using <span translate="No">Insomnia</span>.</p>
-    <h3>Setting up an <span translate="No">Insomnia</span> workspace</h3>
-    <p>In case you work with other APIs, you may want to create a workspace just for Brightcove requests.</p>
-    <ol class="bcls-tasklist">
+    <p>Once you have your client credentials, you are ready to start using <span translate="No">Insomnia</span>. <span translate="No">Insomnia</span> will do a lot of set-up work for you if you import the OpenAPI specification for the CMS API, which we make available to you .The steps below walk you through making some <strong>CMS API</strong> requests using <span translate="No">Insomnia</span>.</p>
+    <h3>Setting up an <span translate="No">Insomnia</span> collection for the CMS API</h3>
+		<h4>Get the OpenAPI specification for the CMS API</h4>
+		<ol class="bcls-tasklist-restart">
+			<li>Open the <a href="/cms/references/reference.html">CMS API Reference</a>.</li>
+			<li>
+				Click the <strong>Download</strong> button and save the <code translate="no">openapi.yaml</code> file in a place where you can find it again:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/download-cms-api-openapi-spec.png" alt="Download Open API Specification">
+					<figcaption class="bcls-caption--image">Download Open API Specification</figcaption>
+				</figure>
+			</li>
+		</ol>
+		<h4>Import the OpenAPI specification into Insomnia</h4>
+    <ol class="bcls-tasklist-restart">
       <li>Launch the <span translate="No">Insomnia</span> app.</li>
-      <li>Click the dropdown beside <span translate="No">Insomnia</span> and select <strong>New Workspace</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Create Workspace" src="/assets/images/general/insomnia/18462-new-workspace.png" />
-          <figcaption class="bcls-caption--image"><span translate="No">Insomnia</span> Authorization Section</figcaption>
+      <li>Click the dropdown beside <span translate="No">Insomnia</span> and select <strong>Import/Export</strong>:
+        <figure class="bcls-figure"><img class="bcls-image" alt="Import/Export" src="/assets/images/general/insomnia/import-export.png" />
+          <figcaption class="bcls-caption--image">Import/Export</figcaption>
         </figure>
       </li>
-      <li>Enter the name <strong>Brightcove</strong> and click <strong>Create</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Name Workspace" src="/assets/images/general/insomnia/18462-set-workspace-name.png" />
-          <figcaption class="bcls-caption--image">Authorization Type</figcaption>
-        </figure>
-      </li>
-      <li>Click the <strong>plus sign</strong> and select <strong>New Folder</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Create New Folder" src="/assets/images/general/insomnia/18462-new-folder.png" />
-          <figcaption class="bcls-caption--image">Create New Folder</figcaption>
-        </figure>
-      </li>
-      <li>Give your folder the name <strong><span translate="No">Player Management API</span></strong></li>
+			<li>
+				In the dialog that opens, click <strong>Import Data</strong> and select <strong>From File</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/import-data-from-file.png" alt="Import Data from File">
+					<figcaption class="bcls-caption--image">Import Data from File</figcaption>
+				</figure>
+			</li>
+			<li>
+				Select the <code translate="no">openapi.yaml</code> file you downloaded and then choose whether to import the data into the current workspace or create a new one. Either will work, but we recommend creating a new workspace for each API:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/create-new-workspace.png" alt="Create New Workspace">
+					<figcaption class="bcls-caption--image">Create New Workspace</figcaption>
+				</figure>
+			</li>
+			<li>
+				Next you will be asked whether to import the data as a Request Collection or a Design Document. Choose <strong>Request Collection</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/import-request-collection.png" alt="Import as Request Collection">
+					<figcaption class="bcls-caption--image">Import as Request Collection</figcaption>
+				</figure>
+			</li>
+			<li>You will see a dialog confirming that the data was imported.</li>
+			<li>
+				Click on <strong>Dashboard</strong> in the upper left corner to see your workspaces. If you created a new workspace, you will see it displayed with the appropriate name:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/cms-api-workspace.png" alt="CMS API Workspace">
+					<figcaption class="bcls-caption--image">CMS API Workspace</figcaption>
+				</figure>
+			</li>
+      <li>Click on the workspace to open it.</li>
+			<li>
+				You will see a list of folders that contain the various groups of requests for the CMS API, and also a new OpenAPI environment:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/cms-api-evironment-and-request-folders.png" alt="CMS API Requests and Environment">
+					<figcaption class="bcls-caption--image">CMS API Requests and Environment</figcaption>
+				</figure>
+			</li>
     </ol>
   </section>
+	<section class="bcls-section">
+		<h2 id="add_variables_to_environment">Add variables to the environment</h2>
+		<p>This is an optional step, but it will simplify setting up authentication for requests later.</p>
+		<ol class="bcls-tasklist-restart">
+			<li>
+				Click on the <strong>OpenAPI env</strong> dropdown menu and select <strong>Manage Environments</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/" alt="Manage Environments">
+					<figcaption class="bcls-caption--image">Manage Environments</figcaption>
+				</figure>
+			</li>
+			<li>
+				You will see the environment variables that <span translate="no">Insomnia</span> created from the OpenAPI spec in the form of JSON:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/environment-json.png" alt="Environment Variables">
+					<figcaption class="bcls-caption--image">Environment Variables</figcaption>
+				</figure>
+			</li>
+			<li>
+				Add these additional variables to the JSON (see <a href="#getCredentials">Get Client Credentials</a> above on the <code translate="no">client_id</code> and <code translate="no">client_secret</code>):
+				<ul>
+					<li><code translate="no">"account_id": "<span class="bcls-input">your_account_id</span>"</code></li>
+					<li><code translate="no">"client_id": "<span class="bcls-input">your_client_id</span>"</code></li>
+					<li><code translate="no">"client_secret": "<span class="bcls-input">your_client_secret</span>"</code></li>
+					<li><code translate="no">"access_token_url": "https://oauth.brightcove.com/v4/access_token"</code></li>
+				</ul>
+			</li>
+			<li>
+				When you are finished, the environment JSON should look similar to this:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/environment-vars-added.png" alt="Environment Variables Added">
+					<figcaption class="bcls-caption--image">Environment Variables Added</figcaption>
+				</figure>
+			</li>
+			<li>Click <strong>Done</strong> in the lower right-hand corner to exit the dialog.</li>
+		</ol>
+	</section>
   <section class="bcls-section">
-    <h2 id="getRequest">Send <code translate="No">GET</code> request</h2>
-    <p>Now we are ready to make some API requests.</p>
-    <h3>Make a <code translate="No">GET</code> request</h3>
-    <ol class="bcls-tasklist">
-      <li>Click the dropdown menu icon on your new folder, and select <strong>New Request</strong>:
+    <h2 id="Set_up_authentication">Set up authentication/h2>
+    <p>Now we are ready to set up authentication for API requests.</p>
+    <ol class="bcls-tasklist-restart">
+      <li>Click the <strong>Videos</strong> folder, and select the <strong>Get Videos</strong>:
         <figure class="bcls-figure"><img class="bcls-image" alt="New Request" src="/assets/images/general/insomnia/18462-new-request.png" />
           <figcaption class="bcls-caption--image">New Request</figcaption>
         </figure>
       </li>
-      <li>Give the request the name <strong>Get All Players</strong>, leave the HTTP method as <strong><code translate="No">GET</code></strong>, and click create.</li>
-      <li>Replace the generic request URL with:
-        <pre>
-  <code class="language-http" translate="No">https://players.api.brightcove.com/v2/accounts/<span class="bcls-input">account_id</span>/players</code></pre>
-        <p>Replace <span class="bcls-input">account_id</span> with your own account id:</p>
-        <figure class="bcls-figure"><img class="bcls-image" alt="New request" src="/assets/images/general/insomnia/18462-request-url.png" />
-          <figcaption class="bcls-caption--image">New Request</figcaption>
-        </figure>
+			<li>
+				Notice that the URL for the request already contains two variables. If you click on these, you can see (and modify) their values. <code translate="no">base_url</code> is automatically generated by <span class=”notranslate”>Insomnia</span> from the OpenAPI spec. If you click on <code translate="no">account_id</code>, you should find that the value matches what you entered as an environment variable in the previous section.</li>
+      <li>
+				Click the <strong>Auth</strong> tab and the <strong>Auth dropdown</strong> menu, and select <strong>OAuth 2.0</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/select-auth-type.png" alt="Select Auth Type">
+					<figcaption class="bcls-caption--image">Select Auth Type</figcaption>
+				</figure>
+			</li>
+      <li>
+				Click the <strong>Grant Type</strong> dropdown and select <strong>Client Credentials</strong>:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/" alt="Select Grant Type">
+					<figcaption class="bcls-caption--image">Select Grant Type</figcaption>
+				</figure>
       </li>
-      <li>Expand the <strong>Auth</strong> dropdown menu and select <strong>OAuth 2.0</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Auth Menu" src="/assets/images/general/insomnia/18462-auth-menu.png" />
-          <figcaption class="bcls-caption--image">Auth Menu</figcaption>
-        </figure>
+      <li>
+				In the <strong>Access Token URL</strong> field, start typing "access_token_url" - you will see the autocomplete menu, and select your <code translate="no">access_token_url</code> environment variable:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/access-token-url.png" alt="Autocomplete for Variables">
+					<figcaption class="bcls-caption--image">Autocomplete for Variables</figcaption>
+				</figure>
       </li>
-      <li>For the <strong>Grant Type</strong>, select <strong>Client Credentials</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Grant Type" src="/assets/images/general/insomnia/18462-grant-type.png" />
-          <figcaption class="bcls-caption--image">Grant Type</figcaption>
-        </figure>
-      </li>
-      <li>Enter values for the access token URL, client id, and client secret:
-        <table class="bcls-table">
-          <caption class="bcls-caption--table">
-          OAuth Entries
-          </caption>
-          <tbody class="bcls-table__body">
-            <tr>
-              <td >Access Token URL</td>
-              <td >https://oauth.brightcove.com/v4/access_token</td>
-            </tr>
-            <tr>
-              <td >Client ID</td>
-              <td ><span class="bcls-input">your client id</span></td>
-            </tr>
-            <tr>
-              <td >Client Secret</td>
-              <td ><span class="bcls-input">your client secret</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
+      <li>
+				Repeat the previous step to populate the <strong>Client ID</strong> and <strong>Client Secret</strong> fields with your <code translate="no">client_id</code> and <code translate="no">client_secret</code> variables:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/auth-variables.png" alt="Auth Variables">
+					<figcaption class="bcls-caption--image">Auth Variables</figcaption>
+				</figure>
+			</li>
+      <li>
+				Scroll down to see the <strong>Fetch Token</strong> button and click it. Make sure you see the Access Token field populated with a token:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/access-token.png" alt="Access Token">
+					<figcaption class="bcls-caption--image">Access Token</figcaption>
+				</figure>
+			</li>
       <li>Click <strong>Fetch Tokens</strong> to make sure this works. You should see a response like this:
         <figure class="bcls-figure"><img class="bcls-image" alt="Access Token" src="/assets/images/general/insomnia/18462-access-token.png" />
           <figcaption class="bcls-caption--image">Access Token</figcaption>
         </figure>
         <aside class="bcls-aside bcls-aside--information">One of the nice features of <span translate="No">Insomnia</span> is that once you set this up, you do <strong>not</strong> have to refresh the token manually - <span translate="No">Insomnia</span> will get new ones automatically as they are needed.</aside>
       </li>
-      <li>Click <strong>Send</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="GET Request" src="/assets/images/general/insomnia/18462-send-request.png" />
-          <figcaption class="bcls-caption--image"><code translate="No">GET</code> Request</figcaption>
-        </figure>
-      </li>
-      <li>The response should look something like this:
-        <figure class="bcls-figure"><img class="bcls-image" alt="GET Response" src="/assets/images/general/insomnia/18462-get-response.png" />
-          <figcaption class="bcls-caption--image"><code translate="No">GET</code> Response</figcaption>
-        </figure>
-      </li>
+			<li>
+				Go to the <strong>Header</strong> tab and delete the <strong>Authorization</strong> header (the authentication you just set up will take care of the head - this one will break it):
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/remove-authorization-header.png" alt="Remove Authorization Header">
+					<figcaption class="bcls-caption--image">Remove Authorization Header</figcaption>
+				</figure>
+			</li>
     </ol>
+		<aside class="bcls-aside bcls-aside--information language-editable">Notes:
+			<ul>
+				<li><span class=”notranslate”>Insomnia</span> does not replicate authentication settings to other requests, so you will need to repeat these steps for each request that you want to test.</li>
+				<li>One of the nice features of <span class=”notranslate”>Insomnia</span>, though, is that once you set up OAuth 2 authentication, it will automatically fetch new access tokens as needed. You do not have to manually fetch a new one when the existing one expires.</li>
+			</ul>
+		</aside>
   </section>
+	<section class="bcls-section">
+		<h2 id="Make_a_request">Make a request</h2>
+		<p>Now we are ready to make a <strong>Get Videos</strong> request.</p>
+		<ol class="bcls-tasklist-restart">
+			<li>Since this is a <code translate="no">GET</code> request, all you have to do is click <strong>Send</strong>.</li>
+			<li>
+				You should see the JSON response appear in the Response area:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/get-response.png" alt="API Response">
+					<figcaption class="bcls-caption--image">API Response</figcaption>
+				</figure>
+			</li>
+			<li>
+				Note that you can retrieve different sets of videos by using <strong>Query</strong> params. Click the <strong>Query</strong> tab for the request, and you will see that <span class=”notranslate”>Insomnia</span> has populated it based on the OpenAPI spec. Just check the param(s) you want to use and set the values:
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/general/insomnia/query-params.png" alt="Query Params">
+					<figcaption class="bcls-caption--image">Query Params</figcaption>
+				</figure>
+			</li>
+	</ol>
+	</section>
   <section class="bcls-section">
-    <h2 id="postRequest">Send <code translate="No">POST</code> request</h2>
-    <p>Now, we will send a <code translate="No">POST</code> request with some data. In this case, we will create a new video object using the Player Management API.</p>
-    <p>To do this, we will duplicate the <strong>Get All Players</strong> request and modify as we need to. Another nice feature of <span translate="No">Insomnia</span> is that when you duplicate a request, all the authentication information is duplicated along with it, so you won't have to set up getting access tokens again.</p>
-    <h3>Make a <code translate="No">POST</code> request</h3>
-    <ol class="bcls-tasklist">
-      <li>Click on the <strong>Player Management API</strong> folder to show the <strong>Get All Players</strong> request inside it.</li>
-      <li>Expand the dropdown menu for the <strong>Get All Players</strong> request and select <strong>Duplicate</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Duplicate Request" src="/assets/images/general/insomnia/18462-duplicate-request.png" />
-          <figcaption class="bcls-caption--image">Duplicate Request</figcaption>
-        </figure>
-      </li>
-      <li>Double-click on the name <strong>Get All Players (Copy)</strong> and change it to <strong>Create Player</strong></li>
-      <li>Use the same URL as you did for the GET request steps above, but now choose <strong><code translate="No">POST</code></strong> to be the selected HTTP method.
-        <figure class="bcls-figure"><img class="bcls-image" alt="Change Methdo" src="/assets/images/general/insomnia/18462-change-method.png" />
-          <figcaption class="bcls-caption--image">Change Method</figcaption>
-        </figure>
-      </li>
-      <li>Click the <strong>Body</strong> to expand the dropdown menu and select <strong>JSON</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Select Body Type" src="/assets/images/general/insomnia/18462-body-type.png" />
-          <figcaption class="bcls-caption--image">Select Body Type</figcaption>
-        </figure>
-        <aside class="bcls-aside bcls-aside--information">Note that <span translate="No">Insomnia</span> will automatically add a <code translate="No">Content-type: application/json</code> header when you do this.</aside>
-      </li>
-      <li>For the <strong>Body</strong> data, enter the following JSON code for the body (the screenshot following the JSON shows how the request should appear):
-        <pre class="line-numbers player-only">
-  <code class="language-json" translate="No">{
-  "name": "MySamplePlayer",
-      "configuration": {
-          "media": {
-          "sources": [{
-              "src":"http://solutions.brightcove.com/bcls/assets/videos/Tiger.mp4",
-              "type":"video/mp4"
-              }]
-          }
-      }
-  }
-  </code>
-  </pre>
-        <pre class="line-numbers video-cloud-only">
-  <code class="language-json" translate="No">{
-      "name": "MySamplePlayer",
-      "configuration": {}
-  }
-  </code>
-  </pre>
-        <figure class="bcls-figure player-only"><img class="bcls-image" alt="Request Body" src="/assets/images/general/insomnia/18462-request-body-player.png" />
-          <figcaption class="bcls-caption--image">Request Body</figcaption>
-        </figure>
-        <figure class="bcls-figure video-cloud-only"><img class="bcls-image" alt="Request Body" src="/assets/images/general/insomnia/18462-request-body-video-cloud.png" />
-          <figcaption class="bcls-caption--image">Request Body</figcaption>
-        </figure>
-      </li>
-      <li>Click <strong>Send</strong>.</li>
-      <li>
-        <p>Your response will look similar to the following (You can click the <strong>Pretty</strong> button for more nicely formatted JSON):</p>
-        <figure class="bcls-figure"><img class="bcls-image" alt="POST Response" src="/assets/images/general/insomnia/18462-request-response.png" />
-          <figcaption class="bcls-caption--image"><code translate="No">POST</code> Response</figcaption>
-        </figure>
-      </li>
-      <li>You can verify that your player was created by checking in the Players module in Studio.</li>
+    <h2 id="postRequest">Send a <code translate="No">POST</code> request</h2>
+    <p>Now, we will send a <code translate="No">POST</code> request with some data. In this case, we will create a new video object using the CMS API. Start by selecting the <strong>Create Video</strong> request in the <strong>Videos</strong> folder.</p>
+    <ol class="bcls-tasklist-restart">
+			<li>Repeat all the steps in the <a href="#Set_up_authentication">Set up authentication</a> section above to set up authentication for this new request.</li>
+			<li>
+				This request requires a request body, so click the JSON tab, and enter this JSON code to replace the <code translate="no">null</code>:
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"name": "Insomnia Test"
+}</code></pre>
+<figure class="bcls-figure">
+  <img class="bcls-image" src="/assets/images/general/insomnia/request-body.png" alt="Request Body">
+  <figcaption class="bcls-caption--image">Request Body</figcaption>
+</figure>
+			</li>
+			<li>Click <strong>Send</strong> and you should see the new video object returned in the response.</li>
     </ol>
   </section>
-  <section class="bcls-section">
-    <h2 id="environmentVariables">Environment variables</h2>
-    <p>You may find it helpful to use <span translate="No">Insomnia</span>'s <strong>Environments</strong> to save OAuth credentials for different APIs, or to save other information such as your account id and video or player ids.</p>
-    <p>Below are the steps for creating and using environment variables for the <code translate="No">client_id </code>, <code translate="No">client_secret</code> and <code translate="No">account_id</code>.</p>
-    <ol class="bcls-tasklist">
-      <li>Click <strong>No Environments</strong> in the top-left area of <span translate="No">Insomnia</span> to expand the dropdown menu and select <strong>Manage Environments.</strong>
-        <figure class="bcls-figure"><img class="bcls-image" alt="Environments Menu" src="/assets/images/general/insomnia/18462-open-manage-environments.png" />
-          <figcaption class="bcls-caption--image">Environments Menu</figcaption>
-        </figure>
-      </li>
-      <li>In the <strong>Manage Environments</strong> dialog, click the <strong>+</strong> sign beside <strong>Sub Environments</strong> to expand the dropdown menu, and select <strong>Environment</strong> to create a new environment:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Add Environment" src="/assets/images/general/insomnia/18462-new-environment.png" />
-          <figcaption class="bcls-caption--image">Add Environment</figcaption>
-        </figure>
-      </li>
-      <li>Double-click on the <strong>New Environment</strong> name to change it to <strong>Player Management API</strong> (or whatever you like).</li>
-      <li>Inside the curly braces for the environment JSON, add these key-value pairs:
-        <ul>
-          <li><code translate="No">"account_id"</code>: "<span class="bcls-input">your account id</span>"</li>
-          <li><code translate="No">"client_id"</code>: "<span class="bcls-input">your client id</span>"</li>
-          <li><code translate="No">"client_secret"</code>: "<span class="bcls-input">your client secret</span>"</li>
-        </ul>
-        <p>When you're finished, the JSON should look like this:</p>
-        <figure class="bcls-figure"><img class="bcls-image" alt="Add Environment JSON" src="/assets/images/general/insomnia/18462-environment-json.png" />
-          <figcaption class="bcls-caption--image">Add Environment JSON</figcaption>
-        </figure>
-        <p>(The client secret here is blurred out for security reasons.)</p>
-      </li>
-      <li>Click <strong>Done</strong> to add the environment</li>
-      <li>Click <strong>No Environment</strong> again to expand the dropdown, and select <strong>Use Player Management Environment</strong> (or whatever name you gave the new environment):
-        <figure class="bcls-figure"><img class="bcls-image" alt="Select Environment" src="/assets/images/general/insomnia/18462-select-environment.png" />
-          <figcaption class="bcls-caption--image">Select Environment</figcaption>
-        </figure>
-      </li>
-      <li>Now select the <strong>Get All Players</strong> request again to reopen it.</li>
-      <li>Click <strong>OAuth 2</strong> to reopen the authentication section.</li>
-      <li>Delete the client id value, and start typing <strong>client_id</strong> - you will see a dropdown menu appear showing relevant environment variables, where you should select <strong>client_id</strong>:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Environment Variables Dropdown" src="/assets/images/general/insomnia/18462-environment-vars.png" />
-          <figcaption class="bcls-caption--image">Environment Variables Dropdown</figcaption>
-        </figure>
-      </li>
-      <li>Now select the <strong>account id</strong> in the request URL, and replace it with the <strong>account_id</strong> variable.</li>
-      <li>Do the same thing to replace the <strong>Client Secret</strong> value with the <strong>client_secret</strong> variable.</li>
-      <li>Now click <strong>Send</strong> again to insure that the request still works.</li>
-    </ol>
-  </section>
+  
   <section class="bcls-section">
     <h2 id="Conclusion">Conclusion</h2>
     <p>You now know the basics of using <span translate="No">Insomnia</span> to make requests to the Brightcove APIs. Note that if you choose to upgrade your free <span translate="No">Insomnia</span> account to a team account, you can also sync all your requests and environments and share them with other team members.</p>
