@@ -7140,10 +7140,17 @@ components:
         sharing:
           $ref: '#/components/schemas/Sharing'
         state:
-          description: state determines whether the video is playable or not
+          description: |-
+            The state of the video:
+              - ACTIVE: the video is playable
+              - INACTIVE: the video is not playable
+              - PENDING: 
+              - DELETED: the video has been deleted (within the past 10 days; after that, the API won't return the video)
           enum:
             - ACTIVE
             - INACTIVE
+            - PENDING
+            - DELETED
           example: ACTIVE
           type: string
         tags:

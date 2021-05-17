@@ -1,0 +1,246 @@
+---
+title: 'Activate/Deactivate or Schedule Videos'
+description: 'This topic shows how to activate, deactivate, or schedule a video using the <span translate="No">CMS API</span>.'
+parent: Managing Videos/Assets
+grandparent: CMS API
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+    <section id="intro" class="bcls-section">
+    <h2>Introduction</h2>
+    
+    <p>There are several reasons why you might want to make a video unplayable until some time later. For example:</p>
+    <ul>
+      <li>It is still being reviewed</li>
+      <li>It is a trailer for film that has not been released yet</li>
+      <li>It is part of a marketing campaign that has not begun or is over</li>
+      <li>It is part of news story not yet published</li>
+    </ul>
+
+    <p>If you haven't yet put the video embed code in a public page or app, it cannot be viewed, of course, but there are ways a video can be accidentally published, the most obvious being that its tags or other properties fit a smart playlist that is published.</p>
+
+    <p>There are two ways to be sure that a Video Cloud video cannot be viewed:</p>
+    <ul>
+      <li>Deactivate it</li>
+      <li>Schedule it to be playable at some time in the future</li>
+    </ul>
+
+    <p>Both of these changes can be implemented through the Media module in Studio, but here we will cover how to implement them using the <span translate="No">CMS API</span>. Both of these actions are performed using a <a href="/cms/references/reference.html#operation/UpdateVideo">video update request</a>.</p>
+
+    <aside class="bcls-aside bcls-aside--warning language-editable">Note: the activation/deactivation and scheduling mechanisms are entirely independent, so you should use one or the other, depending on your use case, but not both. If a video is playable according to the <code translate="no">schedule</code>, but its <code translate="no">state</code> is <code translate="no">INACTIVE</code>, the video will not play.</aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="authentication">Authentication</h2>
+    <p>Requests to the <span translate="No">CMS API</span> require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
+    <p>You can create client credentials using the <a href="/getting-started/authentication-brightcove-api-requests.html">Studio admin pages</a> or the <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth API</a></p>
+
+    <p>You can also use the <a href="/oauth/guides/getting-access-tokens.html">OAuth API</a> directly to retrieve access tokens, or if you are using the <span class=”notranslate”>Postman</span> or <span class=”notranslate”>Insomnia</span> app or make your requests, see our tutorials on how to set these up to fetch access tokens:</p>
+    <ul>
+      <li><a href="/general/use-insomnia-api-requests.html">Use Insomnia to Make API Requests</a></li>
+      <li><a href="/general/use-postman-api-requests.html">Use Postman to Make API Requests</a></li>
+    </ul>
+  </section>
+    
+  <section class="bcls-section">
+    <h2 id="update_video">The update video request</h2>
+    
+    <p>To update a video, send a <code translate="no">PATCH</code> request to</p>
+
+<pre class="line-numbers"><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code></pre>
+    
+    <p>In general, the request body only needs to contain those fields you want to update, though you can include others as well with the current values. We will look at the request bodies for activation/deactivation and scheduling in the sections that follow.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Activate_deactivate_video">Activate/Deactivate a video</h2>
+    <p>A video is made active (viewable) or inactive (not viewable) by setting its <code translate="no">state</code>. By default, videos are <code translate="no">ACTIVE</code> once they are ingested (unless there are required fields that were omitted when the video was created, or uploaded using the Upload module).</p>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that the video will still be playable in the Studio Media module video preview (which is handy if you are deactivating the video while it is being reviewed).</aside>
+    <p>To deactivate a video then, you just need to send the following request body with the update video request:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "state": "INACTIVE"
+}</code></pre>
+    <p>You can verify that the video is now inactive by checking the <code translate="no">state</code> field in the API response</p>
+    <details>
+      <summary>Sample response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "id": "1698990613556232930",
+  "account_id": "57838016001",
+  "ad_keys": null,
+  "clip_source_video_id": null,
+  "complete": true,
+  "created_at": "2021-05-06T06:48:31.963Z",
+  "created_by": {
+    "type": "unknown"
+  },
+  "cue_points": [
+  ],
+  "custom_fields": {
+  },
+  "delivery_type": "dynamic_origin",
+  "description": "Updated at: 2021-05-07T22:37:46.492Z",
+  "digital_master_id": null,
+  "duration": 41259,
+  "economics": "AD_SUPPORTED",
+  "folder_id": null,
+  "geo": null,
+  "has_digital_master": true,
+  "images": {
+    "poster": {
+      "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/1494916a-e8a7-45ac-882f-6e0aa3489846/main/1280x720/20s629ms/match/image.jpg",
+      "sources": [
+        {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/1494916a-e8a7-45ac-882f-6e0aa3489846/main/1280x720/20s629ms/match/image.jpg",
+          "height": 720,
+          "width": 1280
+        }
+      ]
+    },
+    "thumbnail": {
+      "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/1494916a-e8a7-45ac-882f-6e0aa3489846/main/160x90/20s629ms/match/image.jpg",
+      "sources": [
+        {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/1494916a-e8a7-45ac-882f-6e0aa3489846/main/160x90/20s629ms/match/image.jpg",
+          "height": 90,
+          "width": 160
+        }
+      ]
+    }
+  },
+  "link": null,
+  "long_description": null,
+  "name": "Great Horned Owl",
+  "original_filename": "greathornedowl.mp4",
+  "projection": null,
+  "published_at": "2021-05-06T06:48:31.963Z",
+  "reference_id": "greathornedowl.mp4_1620283704192",
+  "schedule": null,
+  "sharing": null,
+  <span class="bcls-highlight">"state": "INACTIVE"</span>,
+  "tags": [
+    "bird",
+    "air",
+    "nature"
+  ],
+  "text_tracks": [
+  ],
+  "updated_at": "2021-05-16T22:54:09.168Z",
+  "updated_by": {
+    "type": "api_key",
+    "email": "rcrooks@brightcove.com"
+  },
+  "offline_enabled": false,
+  "playback_rights_id": "primary"
+}</code></pre>
+    </details>
+
+    <p>To make the video active again, simply send another update video request with the request body:</p>
+
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "state": "ACTIVE"
+}</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Schedule_video">Schedule a video</h2>
+    <p>The second way to make a video playable or unplayable is to use the <code translate="no">schedule</code> object in the video update request. The <code translate="no">schedule object has two properties:</code></p>
+    <ul>
+      <li><code translate="no">starts_at</code> the ISO-8601 date-time when the video becomes playable (required)</li>
+      <li><code translate="no">ends_at</code> the ISO-8601 date-time when the video is no longer playable (optional)</li>
+    </ul>
+
+    <p>Here's a sample request body that makes a video playable at 6:00 AM (UTC) on 16 May 2021 and makes it unplayable again exactly one year later:</p>
+
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "schedule": {
+		"starts_at": "2021-05-16T06:00:00.000Z",
+		"ends_at": "2022-05-16T06:00:00.000Z"
+	}
+}</code></pre>
+
+    <details>
+      <summary>Sample response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "id": "1698990613556232930",
+  "account_id": "57838016001",
+  "ad_keys": null,
+  "clip_source_video_id": null,
+  "complete": true,
+  "created_at": "2021-05-06T06:48:31.963Z",
+  "created_by": {
+    "type": "unknown"
+  },
+  "cue_points": [
+  ],
+  "custom_fields": {
+  },
+  "delivery_type": "dynamic_origin",
+  "description": "Updated at: 2021-05-07T22:37:46.492Z",
+  "digital_master_id": null,
+  "duration": 41259,
+  "economics": "AD_SUPPORTED",
+  "folder_id": null,
+  "geo": null,
+  "has_digital_master": true,
+  "images": {
+    "poster": {
+      "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/1494916a-e8a7-45ac-882f-6e0aa3489846/main/1280x720/20s629ms/match/image.jpg",
+      "sources": [
+        {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/1494916a-e8a7-45ac-882f-6e0aa3489846/main/1280x720/20s629ms/match/image.jpg",
+          "height": 720,
+          "width": 1280
+        }
+      ]
+    },
+    "thumbnail": {
+      "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/1494916a-e8a7-45ac-882f-6e0aa3489846/main/160x90/20s629ms/match/image.jpg",
+      "sources": [
+        {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/1494916a-e8a7-45ac-882f-6e0aa3489846/main/160x90/20s629ms/match/image.jpg",
+          "height": 90,
+          "width": 160
+        }
+      ]
+    }
+  },
+  "link": null,
+  "long_description": null,
+  "name": "Great Horned Owl",
+  "original_filename": "greathornedowl.mp4",
+  "projection": null,
+  "published_at": "2021-05-06T06:48:31.963Z",
+  "reference_id": "greathornedowl.mp4_1620283704192",
+  <span class="bcls-highlight">"schedule": {
+    "ends_at": "2022-05-16T06:00:00.000Z",
+    "starts_at": "2021-05-16T06:00:00.000Z"
+  }</span>,
+  "sharing": null,
+  "state": "ACTIVE",
+  "tags": [
+    "bird",
+    "air",
+    "nature"
+  ],
+  "text_tracks": [
+  ],
+  "updated_at": "2021-05-17T00:42:45.172Z",
+  "updated_by": {
+    "type": "api_key",
+    "email": "rcrooks@brightcove.com"
+  },
+  "offline_enabled": false,
+  "playback_rights_id": "primary"
+}</code></pre>
+    </details>
+  </section>
+  
+  <section class="bcls-section">
+    <h2 id="Related_topics">Related topics</h2>
+    <ul>
+      <li><a href="https://studio.support.brightcove.com/basics/video-cloud-basics-activating-and-deactivating-video.html">Video Cloud Basics: Activating and Deactivating a Video</a></li>
+      <li><a href="https://studio.support.brightcove.com/media/configuring-video-availability.html">Configuring Video Availability</a></li>
+    </ul>
+  </section>
+</article>
+  
