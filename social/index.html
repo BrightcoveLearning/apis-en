@@ -1,0 +1,29 @@
+---
+title: Social API
+parent: Home
+description: 'The Social API allows to get the social sharing status and history for you videos.'
+---
+  <section class="bcls-topic-list">
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary style="display: block;">{{ page.description }}</summary>
+    
+  <section class="card-wrapper">
+    {% for item in site.data.navigation %}
+      {% if item.name == page.title %}
+        {% for subsection in item.docs %}
+            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
+              <div class="card-content">
+                <h2>{{ subsection.name }}</h2>
+                <ul>
+                  {% for doc in subsection.docs %}
+                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </section>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </section>
+</article>
