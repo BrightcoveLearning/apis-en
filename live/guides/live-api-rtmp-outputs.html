@@ -1,0 +1,198 @@
+---
+title: 'Live API: RTMP Outputs'
+description: 'This topic explains how you can output RTMP using the Live API. RTMP outputs are useful when you will be streaming to a platform that does not support HLS live streams.'
+parent: Guides
+grandparent: Live API
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+
+<section class="bcls-section">
+<h2 id="general_information">General information</h2>
+
+<p>To use RTMP outputs, please be aware of the following</p>
+
+<ul>
+	<li>You must have purchased <strong>event hours</strong>, or any Digital Marketing package</li>
+	<li>RTMP output hours will be billed against event hours</li>
+	<li>They are limited to 5 outputs per live job</li>
+	<li>You can define a <code translate="No">label</code> where the label can choose one of the output renditions selected for the stream. If the <code translate="No">label</code> is not set then the output will default to the input source.</li>
+	<li>They can be used with standard jobs and recurring events (SEP).</li>
+	<li>They can be used for events or 24/7 streams.</li>
+	<li>They can be started and stopped independently from any live stream.</li>
+	<li>For SEP jobs that were created before the RTMP output feature was implemented, the feature will not work entirely: on the API it will show a failure even though the RTMP output is actually created. For best results, create a new SEP job to use the RTMP output feature.</li>
+	<li>When using a RTMP output with a standard job (non-SEP) the RTMP output stream will end when the job ends.</li>
+  <li>RTMP Outputs <strong>do</strong> support <code translate="No">rtmps</code> urls, and we recommend using them if the social media platform supports them. Also note that as of 1 May 2019, Facebook will only allow RTMPS.</li>
+  <li>The <strong>only format current supported for RTMP URLs</strong> is <code translate="No">rtmps://host:port/application/streamName</code>.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="notifications">Notifications</h2>
+
+<p>You can set up notifications for <code translate="No">rtmp_output_state_changed</code> events. Notifications will be sent for the following states:</p>
+
+b<table class="bcls-table">
+  <caption class="bcls-caption--table">RTMP Output States</caption>
+  <thead class="bcls-table__head">
+      <tr>
+          <th>RTMP Output States</th>
+          <th>(reported for <code translate="No">rtmp_output_state_changed</code> notifications as <code translate="No">state</code>)</th>
+      </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+		<tr>
+			<td><code translate="No">starting</code></td>
+			<td>The stream is starting.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">connected</code></td>
+			<td>The encoder has connected.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">Disconnected</code></td>
+			<td>The encoder has disconnected.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">error</code></td>
+			<td>The stream failed to connect.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">pending_deactivation</code></td>
+			<td>The entry point has been queued for cleanup from the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">deactivation_in_progress</code></td>
+			<td>The entry point is disconnecting from the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">cancelled</code></td>
+			<td>The entry point has been cancelled.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">finished</code></td>
+			<td>The entry point has completed successfully.</td>
+		</tr>
+  </tbody>
+</table>
+
+<p>Notifications for RTMP outputs must be set at the <strong><a href="/live-api/references/reference.html#operation/CreateALiveJob">job level</a></strong> when you create the live job.</p>
+
+<p>To see the different <code translate="No">state</code> values reported for RTMP outputs, see <a href="/live-api/guides/live-api-notifications.html">Live Notifications</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="creating_rtmp_outputs">Creating RTMP outputs</h2>
+
+<p>You will first need to create a live job as you normally do, and then make an additional request to create the RTMP endpoint(s).</p>
+
+<p>Note: it is possible under certain situations like activating/deactivating the job that this API call will return an error, if that happens please retry after a pause.</p>
+
+<h3>Endpoint</h3>
+
+<pre>
+	<code class="language-http" translate="No">https://api.bcovlive.io/v1/jobs/{jobId}/rtmpouts</code></pre>
+
+<h3>Method</h3>
+
+<p><code translate="No">POST</code></p>
+
+<h3>Request body</h3>
+
+<pre class="line-numbers">
+	<code class="language-json" translate="No">{
+		"url": "rtmps://host:port/application/streamName",
+		"output_label": "480p"
+	}</code></pre>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Request Body Fields</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field Name</th>
+			<th>Required</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code translate="No">url</code></td>
+			<td>yes</td>
+			<td>string</td>
+			<td>The URL for the RTMP output - example <code translate="No">rtmp://live-api-s.facebook.com:80/rtmp/my_stream</code></td>
+		</tr>
+		<tr>
+			<td><code translate="No">output_label</code></td>
+			<td>no</td>
+			<td>string</td>
+			<td>The label of the job output to use as the source for the RTMP output. Omit this parameter to simply use the RTMP input instead.</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+	<code class="language-json" translate="No">{
+		"host": "live-api-s.facebook.com",
+		"port": 80,
+		"application": "rtmp",
+		"streamName": "my_stream",
+		"rtmp_out_id": "asdfg-lkjh"
+	}</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="get_rtmp_outputs">Get RTMP outputs</h2>
+
+<h3>Endpoint</h3>
+
+<pre>
+	<code class="language-http" translate="No">https://api.bcovlive.io/v1/jobs/{jobId}/rtmpouts</code></pre>
+
+<h3>Method</h3>
+
+<p><code translate="No">GET</code></p>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+	<code class="language-json" translate="No">[
+		{
+			"rtmp_out_id": "asdfg-lkjh",
+			"stream_start": 1538746255247,
+			"connection_info": {
+				"host": "a.rtmp.youtube.com",
+				"port": 1935,
+				"application": "live2",
+				"streamName": "my_stream",
+				"sessionStatus": "Active"
+			}
+		}
+	]</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="stop_rtmp_output">Stop an RTMP output</h2>
+
+<h3>Endpoint</h3>
+
+<pre>
+	<code class="language-http" translate="No">https://api.bcovlive.io/v1/jobs/{jobId}/rtmpouts/{rtmp_out_id}/stop</code></pre>
+
+<h3>Method</h3>
+
+<p><code translate="No">PUT</code></p>
+
+<aside class="bcls-aside bcls-aside--information">Note that the job needs to be started at least once to get the <code translate="No">job_id</code>.</aside>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+	<code class="language-json" translate="No">{
+		"message": "RTMP out asdfg-lkjh deleted successfully"
+	}</code></pre>
+</section>
+</article>

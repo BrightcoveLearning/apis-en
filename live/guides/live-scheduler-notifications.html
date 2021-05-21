@@ -1,0 +1,155 @@
+---
+title: 'Live Scheduler Notifications'
+description: 'When creating workflows with the scheduler, you can optionally configure notifications.'
+parent: Guides
+grandparent: Live API
+layout: staging
+---
+
+<!-- Remember to change API reference links when going live -->
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+	<section class="bcls-section">
+		<h2 id="Introduction">Introduction</h2>
+		<p>After completing a task, the scheduler will send a notification to the configured endpoint using http method <code translate="no">POST</code> with details on what action was performed and it's success/failure.</p>
+		<p>You can also configure a pre-notification of an upcoming task. See the <a href="/live-api/references/reference-staging.html">Live API Reference</a> for details on specifying the notification url and settings, and note the differences for scheduling the start/stop times for an SEP job, and for scheduling clips:</p>
+		<dl>
+			<dt><a href="/live-api/guides/live-scheduler-stop-start.html">Start/Stop scheduler</a></dt>
+			<dd>
+				<ul>
+					<li>The notification URL is defined at the top level of the request body object</li>
+					<li>Notifications are scheduled in the <code translate="no">activation</code> and <code translate="no">deactivation</code> objects (time in seconds before the event to send the notification)</li>
+				</ul>
+				<p><strong>Example</strong></p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"job_id": "your Job ID",
+	"activation": {
+		"time_utc": 1612274100,
+		<span class="bcls-highlight">"notification": 600</span>
+	},
+	"deactivation": {
+		"time_utc": 1612281600,
+		<span class="bcls-highlight">"notification": 600</span>
+	},
+	"description": "My Tuesday broadcast",
+	<span class="bcls-highlight">"notification_url": "http://example.com/live/jobstartstop/callbacks"</span>
+}</code></pre>
+			</dd>
+			<dt><a href="/live-api/guides/live-scheduler-clips.html">Clips scheduler</a></dt>
+			<dd>
+				<ul>
+					<li>The notification URL is defined at the top level of the request body object</li>
+					<li>Notifications are scheduled in the <code translate="no">clip</code> object (time in seconds before the task starts to send the notification)</li>
+				</ul>
+				<p><strong>Example</strong></p>
+<pre><code class="language-json" translate="no">{
+	"job_id":  "your Job ID",
+	"description": "My Scheduled Clip",
+	<span class="bcls-highlight">"notification_url": "http://example.com/live/clip/callbacks"</span>,
+	"clip": {
+		"output": {
+			"label": "My Scheduled Clip",
+			"start_time": 1612878900,
+			"end_time": 1612879800,
+			"videocloud": {
+				"video": {
+					"name": "My Scheduled Clip"
+				}
+			}
+		},
+		"time_utc": 1612879800,
+		<span class="bcls-highlight">"notification": 600</span>
+	}
+}</code></pre>
+						</dd>
+		</dl>
+	</section>
+	<section class="bcls-section">
+		<h2 id="notification_body">Notification body</h2>
+		<p>When the server sends a notification to your
+			<code translate="no">notification_url</code>, the request will include a JSON body. The fields are detailed in the tables below.</p>
+			<table class="bcls-table">
+				<caption class="bcls-caption--table">Notification Body Fields</caption>
+				<thead class="bcls-table__head">
+					<tr>
+						<th>action</th>
+						<th>Action name. See
+							<a href="#Actions">Actions</a>
+						</th>
+					</tr>
+					<tbody class="bcls-table__body">
+						<tr>
+						<td>workflow</td>
+						<td>Updated workflow after action completion. Structure will depend on workflow type.</td>
+					</tr>
+					<tr>
+						<td>error</td>
+						<td>If error occurred completing action, this field will contain the error. value depends on action type.</td>
+					</tr>
+				</tbody>
+		</table>
+		<h3 id="actions">Actions</h3>
+		<p>The following table details the actions by workflow type.</p>
+		<table class="bcls-table">
+			<caption class="bcls-caption--table">Actions</caption>
+			<thead class="bcls-table__head">
+				<tr>
+					<th>Name</th>
+					<th>Workflow Type</th>
+					<th>Description</th>
+				</tr>
+				</thead>
+			<tbody class="bcls-table__body">
+				<tr>
+					<td><code translate="No">notify-activate</code></td>
+					<td><code translate="No">jobstartstop</code></td>
+					<td>Heads up notification that your Job will be activated soon.</td>
+				</tr>
+				<tr>
+					<td><code translate="No">activate</code></td>
+					<td><code translate="No">jobstartstop</code></td>
+					<td>Job activation complete. If
+						<code translate="no">"error"</code> is present, the activation has failed and the deactivation will be cancelled.
+					</td>
+				</tr>
+				<tr>
+					<td><code translate="No">notify-deactivate</code></td>
+					<td><code translate="No">jobstartstop</code></td>
+					<td>Heads up notification that your Job will be activated soon.</td>
+				</tr>
+				<tr>
+					<td><code translate="No">deactivate</code></td>
+					<td><code translate="No">jobstartstop</code></td>
+					<td>Job deactivation complete. If
+						<code translate="no">"error"</code> is present, the deactvation has failed.
+					</td>
+				</tr>
+				<tr>
+					<td><code translate="No">notify-clip</code></td>
+					<td><code translate="No">clip</code></td>
+					<td>Heads up notification that your Clip will be requested soon.</td>
+				</tr>
+				<tr>
+					<td><code translate="No">clip</code></td>
+					<td><code translate="No">clip</code></td>
+					<td>Clip request complete. If
+						<code translate="no">"error"</code> is present, the request has failed.
+					</td>
+				</tr>
+		</tbody>
+	</table>
+	</section>
+	<section class="bcls-section">
+		<h2 id="related_topics">Related topics</h2>
+		<ul>
+			<li><a href="/live-api/guides/live-scheduler.html">Overview: Live Scheduler</a></li>
+			<li><a href="/live-api/guides/live-scheduler-stop-start.html">Scheduling Activation/Deactivation of an SEP Stream</a></li>
+			<li><a href="/live-api/guides/live-scheduler-clips.html">Scheduling Clip Generation for a Live Stream</a></li>
+			<li><a href="/live-api/guides/live-api-static-entry-points.html">Static Entry Point (SEP) jobs</a></li>
+			<li><a href="/live-api/references/reference-staging.html">Live API Reference</a></li>
+			<li><a href="/live-module/scheduling-live-event.html">Auto Start/Stop of Live Events in the Control Room</a></li>
+		</ul>
+	</section>
+</article>

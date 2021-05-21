@@ -1,0 +1,200 @@
+---
+title: 'Live API: VOD from Live Event'
+parent: Guides
+grandparent: Live API
+---
+<article class="bcls-article">
+  <h1>Live API: VOD from Live Event</h1>
+  <summary>In this topic, you will learn how to create a video-on-demand (VOD) from a live streaming event after the event is complete.</summary>
+
+  <aside class="bcls-aside bcls-aside--information">Live to VOD can't be used with encrypted streams, and will return an error when creating a Live job event.</aside>
+
+
+
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>For shorter live streaming events, you may want to make a recording of the event available as a video-on-demand (VOD) in your <span translate="No">Video Cloud</span> account after the event has completed. You can easily do this by adding some configuration for the VOD when you <a href="/live-api/references/reference.html#api-Live_Jobs-Create_a_Live_Job">create your live job</a>.</p>
+
+<p>Fast Live to VOD allows for clips to be published quickly with segment accuracy while a backend process that's fully transparent to the customer will clean up the clip boundaries and re-publish.</p>
+
+<p>The result is a faster time to market with a clip that will automatically re-publish with the desired clip boundaries.</p>
+
+<p><strong>Important</strong>:</p>
+
+<ul>
+	<li>When the live streaming event is complete, stop your encoder, but <strong>do not <a href="/live-api/references/reference.html#api-Live_Jobs-Cancel_Live_Job">cancel</a> the job</strong>. Wait until the VOD clip has been created before cancelling the job, or it will not be created successfully.</li>
+	<li>Creation of the VOD will not begin until the <code translate="No">reconnect_time</code> for the live job has expired.</li>
+	<li>If the live event duration is greater than 24 hours, only the final 24 hours will be captured in the VOD.</li>
+</ul>
+
+<section class="bcls-subsection">
+<h3 id="fast_vod">Fast VOD option</h3>
+
+<p>The fast VOD option allows you to get the VOD version of the live event more quickly. Fast Live to VOD will publish (using a transmux) of live renditions which will be <strong>segment accurate</strong>.</p>
+
+<p>The the <code translate="No">output</code> fields for fast VOD are:</p>
+
+<ul>
+  <li><code translate="No">live_to_vod</code> set to <code translate="No">true</span>
+  </code></li>
+	<li><code translate="No">mode</code> (required for fast VOD) - for fast VOD, the value will be <code translate="No">instant</code></li>
+	<li><code translate="No">playlist_label</code> (optional) - Only applicable for instant mode VODs. Indicates which playlist to use to create a VOD output (from the live job). Only necessary if custom playlists were defined at live job creation.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Implementation">Implementations</h2>
+
+<h3>When you create the live job</h3>
+<p>The simplest way to implement live to VOD is to include the <code translate="No">"live_to_vod": true</code> field in the request body when you create the job, either in:</p>
+<ul>
+  <li>the top-level <code translate="No">videocloud</code> object (to create the VOD as a remote asset)</li>
+  <li>an output object that outputs to Video Cloud or to S3</li>
+</ul>
+<h4>Send to <span translate="No">Video Cloud</span></h4>
+
+<p>Note that there are two ways that <code translate="No">videocloud</code> objects are used when you create a new live job:</p>
+
+<ol class="bcls-tasklist-restart">
+	<li>Including <code translate="No">videocloud</code> in the <strong>job-level fields</strong> will create a video in the <span translate="No">Video Cloud</span> account which will take the live stream as a remote asset, and create the VOD in your Video Cloud library:
+
+	<pre class="line-numbers">
+<code class="language-json" translate="No">{
+    "live_stream": true,
+    "region": "us-west-2",
+    "reconnect_time": 2400,
+    "live_dvr_sliding_window_duration": 30,
+    <strong>
+      "videocloud": {
+        "video": {
+          "name": "test_live_stream"
+        },
+        <span class="bcls-highlight">"live_to_vod": true</span>
+        }
+    </strong></code></pre>
+	</li>
+	<li>
+	<p>Including the <code translate="No">videocloud</code> object in the properties of an <code translate="No">outputs</code> clip or full VOD object will create a <span translate="No">Video Cloud</span> video for the clip - the clip is ingested into <span translate="No">Video Cloud</span> and becomes part of the VOD library:</p>
+
+	<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "live_stream": true,
+  "region": "us-west-2",
+  "reconnect_time": 2400,
+  "live_dvr_sliding_window_duration": 30,
+	"videocloud": {
+		"video": {
+			"name": "test_live_stream"
+		}
+	},
+  "outputs": [
+    { "videocloud": {
+        "video": {
+            "name": "video name",
+        },
+        "ingest": {
+            "profile": "<span class="bcls-input">valid-ingest-profile-name</span>"
+        }
+    },
+    "credentials": "<span class="bcls-input">USER_VIDEOCLOUD_CREDENTIAL_LABEL</span>"
+    }
+  ]
+}</code></pre>
+    <p>Note: omit the ingest - profile field to use the default ingest profile for the account.</p>
+	</li>
+</ol>
+
+<p>You can also include the <code translate="no">videocloud</code> object within an output object (in this case you do not need to <code translate="No">live_to_vod</code> field):</p>
+
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "live_stream": true,
+  "region": "us-west-2",
+  "reconnect_time": 600,
+  "ad_insertion": false,
+  "outputs": [
+    { OTHER_JOB_OUTPUT_OBJECT },
+    { OTHER_JOB_OUTPUT_OBJECT_2 },
+    <span class="bcls-highlight">{ "videocloud": {
+        "video": {
+            "name": "video name",
+            "description": "video description",
+            "long_description": "long description",
+            "tags": [
+            "tag1", "tag2"
+            ],
+            "schedule":
+            { "starts_at": "2017-01-01T12:00:00-04:00", "ends_at": "2099-01-01T12:00:00-04:00" }
+            ,
+            "custom_fields": {
+                "someCustomField": "value"
+            },
+
+        },
+        "ingest": {
+            "profile": "<span class="bcls-input">valid-ingest-profile-name</span>"
+        }
+    },
+    "credentials": "<span class="bcls-input">USER_VIDEOCLOUD_CREDENTIAL_LABEL</span>"
+    } </span>
+  ]
+}</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">If you do not yet have credentials for your Video Cloud account set up, you can add a new credentials <a href="/live-api/references/reference.html#operation/CreateCredential">via the API</a>.</aside>
+
+<p>Note that for the video metadata, you can include any fields listed for the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">Create Video</a> operation of the CMS API.</p>
+
+<p>Ingest profiles define the renditions that will be created for the VOD. For <code translate="No">valid-ingest-profile-name</code>, you can substitute the name of any custom or standard ingest profile for your account. What standard profiles you have depends on whether or not your account is enabled for Dynamic Delivery. See the <a href="https://apis.support.brightcove.com/ingest-profiles/references/standard-ingest-profiles-dynamic-delivery-and-context-aware-encoding.html">Standard Ingest Profiles for Dynamic Delivery and Context Aware Encoding</a> or the <a href="https://apis.support.brightcove.com/ingest-profiles-legacy/references/standard-ingest-profiles-legacy-transcoding.html">Standard Ingest Profiles for Legacy Transcoding</a>.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note that the <code translate="No">profile</code> field is optional. If you do not specify a profile, the default profile for the account will be used.</aside>
+
+<h4>Send to S3</h4>
+
+<p>To have a VOD version of the event saved to your S3 bucket, include a version of the highlighted <strong>output</strong> below.</p>
+
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "live_stream": true,
+  "region": "us-west-2",
+  "reconnect_time": 600,
+  "ad_insertion": false,
+  "outputs": [
+    { OTHER_JOB_OUTPUT_OBJECT },
+    { OTHER_JOB_OUTPUT_OBJECT_2 },
+    <span class="bcls-highlight">{
+      "url":"s3://YOUR_BUCKET/path/filename.mp4",
+      "credentials": "<span class="bcls-input">YOUR_CREDENTIAL_LABEL</span>",
+      "notifications": [
+        {
+          "url": "http://httpbin.org/post?vodStateChange"
+        },
+        {
+          "url": "http://httpbin.org/post?vodFinished",
+          "event": "output_finished"
+        }
+      ]
+    }</span>
+  ]
+}</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">A credential label for a valid username+password for your S3 bucket should have been created when your Live account was set up, and the credential label sent to you. If you do not have it, please <a href="https://supportportal.brightcove.com/s/login/?language=en_US">Contact Brightcove Support</a>.</aside>
+<h3>Create the VOD as an open-ended video clip</h3>
+<p>An alternative way to get a VOD for a live event is to <a href="/live-api/guides/live-api-creating-vod-clips.html">Create a VOD Clip</a> with no end time. See the clipping document for full details.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+
+<ul>
+	<li>If you <a href="/live-api/references/reference.html#api-Live_Jobs-Stop_Live_Job">stop (cancel)</a> the live job before the VOD has been created, it will not be created. Instead, stop your encoder to initiate creation of the VOD, and wait for that to finish before stopping the job.</li>
+	<li>For <a href="/live-api/guides/live-api-static-entry-points.html">Static Entry Point</a> streams <strong>only</strong>, Live to VOD can not be set to archive the stream on completion.
+	<p style="font-weight:bold;">Alternatives:</p>
+
+	<ul>
+		<li>Use <a href="/live-api/guides/live-api-creating-vod-clips.html">clipping</a> to archive the full live event as a VOD. The window for clipping will be available for the standard duration after an event or until the next activation of the SEP (whichever is shorter).</li>
+	</ul>
+	</li>
+</ul>
+</section>
+</article>

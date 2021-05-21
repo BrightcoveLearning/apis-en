@@ -1,0 +1,282 @@
+---
+title: Live DRM via the Live API
+parent: Guides
+grandparent: Live API
+---
+<article class="bcls-article">
+  <h1>Live DRM via the Live API</h1>
+  <summary>This topic covers adding DRM for Live streams via the LIve API.</summary>
+
+  
+
+
+
+<section class="bcls-section">
+<h2 id="introduction">Introduction</h2>
+
+<p>DRM can be added to Live jobs by including the <code translate="No">DRM</code> object in the request body when you create the job. The <code translate="No">DRM</code> object has two properties:</p>
+
+<ul>
+	<li><code translate="No">modes</code> set to an array or one or more of the following: "all", "fairplay", "playready", "widevine", "widevine:dash", or "widevine:hls"</li>
+	<li><code translate="No">token_expires_in</code> set to a number between 43200 (default) and 31622400 (the number of seconds before the token expires)</li>
+</ul>
+
+<p>Setting <code translate="No">mode</code> to all will result in all available DRM types being applied to outputs. By default DRM is applied to outputs as follows:</p>
+
+<ul>
+	<li>FairPlay: applied to HLS outputs</li>
+	<li>Playready: applied to DASH outputs</li>
+	<li>Widevine: applied to HLS outputs</li>
+</ul>
+
+<p>Widevine can be applied to DASH&nbsp;outputs instead of HLS. To make Widevine with DASH the default requires an account-level override. Contact Support if you want this override applied to your account. In the next section you will see how you can specify <code translate="No">widevine:hls</code> or <code translate="No">widevine:dash</code> for particular jobs, regardless of the default for your account. <strong><em>Note that depending on how your account/job is configured, the API response (like the one shown below) will include either <code translate="No">widevine:hls</code> or <code translate="No">widevine:dash</code> outputs, but not both.</em></strong></p>
+
+<aside class="bcls-aside bcls-aside--information">Note that there are concurrency limits for PlayReady defined in your service agreement with Microsoft. See <a href="https://docs.microsoft.com/en-us/playready/features/concurrency-limiting">this Microsoft document</a> for information on managing concurrency. If the concurrency limit is exceeded for a video, it will fail to play for viewers beyond the maximum number.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="create_live_job_example">Create Live job examples</h2>
+
+<h3 id="all_modes">All DRM modes</h3>
+
+<p>Here is a sample request body to package outputs with all available DRM types:</p>
+
+<pre class="line-numbers">
+  <code class="language-json" translate="No">{
+    "live_stream": true,
+    "region": "us-west-2",
+    "reconnect_time": 300,
+    "ad_insertion": false,
+    "static": false,
+    <span class="bcls-highlight">"drm":{"modes":["all"]},</span>
+    "outputs": [{
+        "label": "hls720p",
+        "live_stream": true,
+        "height": 720,
+        "video_bitrate": 2000,
+        "segment_seconds": 6,
+        "_keyframe_interval": 60
+      },
+      {
+        "label": "hls480p",
+        "live_stream": true,
+        "height": 480,
+        "video_bitrate": 1000,
+        "segment_seconds": 6,
+        "_keyframe_interval": 60
+      }]
+  }</code></pre>
+
+<p>The response to the request will look like this:</p>
+
+<pre class="line-numbers">
+  <code class="language-json" translate="No">{
+    "id": "123e883dee784282b9d1e8994e6f1e1d",
+    "outputs": [
+        {
+            "id": "0-123e883dee784282b9d1e8994e6f1e1d",
+            "label": "hls720p"
+        },
+        {
+            "id": "1-123e883dee784282b9d1e8994e6f1e1d",
+            "label": "hls480p"
+        },
+        {
+            "id": "2-123e883dee784282b9d1e8994e6f1e1d",
+            "playlist_type": "defaultS3",
+            "type": "playlist",
+            <span class="bcls-highlight">
+              "drm": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+                  "modes": [
+                      {
+                          "type": "fairplay",
+                          "key_system": "com.apple.fps.1_0",
+                          "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+                          "certificate_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+            </span>
+                        "filename": "playlist_fp.m3u8",
+                        "dvr_filename": "playlist_fp_dvr.m3u8",
+                        "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_fp.m3u8",
+                        "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_fp_dvr.m3u8",
+                        "playback_added_cdns": []
+                    },
+                    {
+                        <span class="bcls-highlight">
+                          "type": "widevine",
+                          "key_system": "com.widevine.alpha",
+                          "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+                        </span>
+                        "filename": "playlist.mpd",
+                        "dvr_filename": "playlist_dvr.mpd",
+                        "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist.mpd",
+                        "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_dvr.mpd",
+                        "playback_added_cdns": []
+                    },
+                    {
+                        <span class="bcls-highlight">
+                          "type": "playready",
+                          "key_system": "com.microsoft.playready",
+                          "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+                        </span>
+                        "filename": "playlist.mpd",
+                        "dvr_filename": "playlist_dvr.mpd",
+                        "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist.mpd",
+                        "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_dvr.mpd",
+                        "playback_added_cdns": []
+                    }
+                ],
+                "token_expires_in": 43200,
+                "require_playback_token": false
+            }
+        }
+    ],
+    "stream_url": "rtmp://ec2-35-167-157-201.us-west-2.compute.amazonaws.com:1935/123e883dee784282b9d1e8994e6f1e1d",
+    "stream_name": "alive",
+    "static": false,
+    "event_length": 93600,
+    "encryption": {},
+    "drm_enabled": true,
+    <span class="bcls-highlight">
+      "drm": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+          "modes": [
+              {
+                  "type": "fairplay",
+                  "key_system": "com.apple.fps.1_0",
+                  "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+                  "certificate_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",</span>
+                "filename": "playlist_fp.m3u8",
+                "dvr_filename": "playlist_fp_dvr.m3u8",
+                "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_fp.m3u8",
+                "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_fp_dvr.m3u8",
+                "playback_added_cdns": []
+            },
+            {
+                <span class="bcls-highlight">
+                  "type": "widevine",
+                  "key_system": "com.widevine.alpha",
+                  "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+                </span>
+                "filename": "playlist.mpd",
+                "dvr_filename": "playlist_dvr.mpd",
+                "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist.mpd",
+                "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_dvr.mpd",
+                "playback_added_cdns": []
+            },
+            {
+                <span class="bcls-highlight">
+                  "type": "playready",
+                  "key_system": "com.microsoft.playready",
+                  "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
+                </span>
+                "filename": "playlist.mpd",
+                "dvr_filename": "playlist_dvr.mpd",
+                "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist.mpd",
+                "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_dvr.mpd",
+                "playback_added_cdns": []
+            }
+        ],
+        "token_expires_in": 43200,
+        "require_playback_token": false
+    }
+  }</code></pre>
+
+<h3 id="widevine_hls">Job with Widevine-HLS</h3>
+
+<p>To create Widevine-packaged DASH&nbsp;outputs (without getting an account override to make this the default), specify <code translate="No">widevine:dash</code>&nbsp;in the <code translate="No">modes</code> as shown in the example below. Similarly, if you have had your account default set to use Widevine with DASH, you can get Widevine-HLS outputs for a particular job by specifying <code translate="No">widevine:HLS</code> in the <code translate="No">modes</code>.</p>
+
+<h4>Sample request</h4>
+
+<pre class="line-numbers">
+  <code class="language-json" translate="No">{
+    "live_stream": true,
+    "region": "us-west-2",
+    "reconnect_time": 300,
+    "ad_insertion": false,
+    "static": false,
+    "drm":{"modes":["fairplay",<span class="bcls-highlight">"widevine:dash"</span>]},
+    "outputs": [{
+        "label": "hls720p",
+        "live_stream": true,
+        "height": 720,
+        "video_bitrate": 2000,
+        "segment_seconds": 6,
+        "_keyframe_interval": 60
+   },
+   {
+        "label": "hls480p",
+        "live_stream": true,
+        "height": 480,
+        "video_bitrate": 1000,
+        "segment_seconds": 6,
+        "_keyframe_interval": 60
+   }]
+  }
+  </code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="get_job_info">Get Job info</h2>
+
+<p>When you GET a list of live jobs or details of a job, DRM information will be included as shown in the sample below.</p>
+
+<pre class="line-numbers">
+  <code class="language-json" translate="No">{
+    "id": "6a0689a1ccb04fea8cf4d2cffccf5032",
+    "outputs": [
+        {
+            "id": "0-6a0689a1ccb04fea8cf4d2cffccf5032",
+            "label": "hls720p"
+        },
+        {
+            "id": "1-6a0689a1ccb04fea8cf4d2cffccf5032",
+            "label": "hls480p"
+        },
+        {
+            "id": "2-6a0689a1ccb04fea8cf4d2cffccf5032",
+            "playlist_type": "defaultS3",
+            "type": "playlist",
+            <span class="bcls-highlight">"drm"</span>: {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
+                <span class="bcls-highlight">"modes":</span> [
+                    {
+                        <span class="bcls-highlight">"type": "fairplay",</span>
+                        "key_system": "com.apple.fps.1_0",
+                        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
+                        "certificate_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
+                        "filename": "playlist_fp.m3u8",
+                        "dvr_filename": "playlist_fp_dvr.m3u8",
+                        "playback_url": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist_fp.m3u8",
+                        "playback_url_dvr": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist_fp_dvr.m3u8",
+                        "playback_added_cdns": []
+                    },
+                    {
+                        <span class="bcls-highlight">"type": "playready",</span>
+                        "key_system": "com.microsoft.playready",
+                        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
+                        "filename": "playlist.mpd",
+                        "dvr_filename": "playlist_dvr.mpd",
+                        "playback_url": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist.mpd",
+                        "playback_url_dvr": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist_dvr.mpd",
+                        "playback_added_cdns": []
+                    },
+                    {
+                        <span class="bcls-highlight">"type": "widevine",</span>
+                        "key_system": "com.widevine.alpha",
+                        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
+                        "filename": "playlist.mpd",
+                        "dvr_filename": "playlist_dvr.mpd",
+                        "playback_url": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist.mpd",
+                        "playback_url_dvr": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist_dvr.mpd",
+                        "playback_added_cdns": []
+                    }
+                ],
+                "token_expires_in": 43200,
+                "require_playback_token": false
+            }
+        }
+    ]
+  }</code></pre>
+</section>
+</article>
