@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="The Social Syndication API is used to generate MRSS feeds from a Video Cloud video library.">
+  <meta name="description" content="This topic provides an error reference for the SSAI API.">
   
-  <title>Social Syndication API</title>
+  <title>SSAI API Error Reference</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -70,7 +70,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item active" aria-current="page">Social Syndication API</li>
+      <li class="breadcrumb-item"><a href="/ssai/references/">References</a></li>
+      
+      <li class="breadcrumb-item active" aria-current="page">SSAI API Error Reference</li>
     </ol>
   </nav>
 </header>
@@ -1363,95 +1365,96 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Social Syndication API</h1>
+<h1>SSAI API Error Reference</h1>
 <article class="bcls-article">
+  <summary>This topic provides an error reference for the SSAI API.</summary>
 
-  <summary style="display: block;">The Social Syndication API is used to generate MRSS feeds from a Video Cloud video library.</summary>
-    
-  <section class="card-wrapper">
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-        
-            <section class="bcls-card-small" onclick="window.location.href='/social-syndication/getting-started/index.html'">
-              <div class="card-content">
-                <h2>Getting Started</h2>
-                <ul>
-                  
-                        <li><a href="/social-syndication/getting-started/public-syndication-api-overview.html">Overview: Syndication Configuration API</a></li>
-                  
-                        <li><a href="/social-syndication/getting-started/feed-syndication-api-overview.html">Overview: Syndication Feed API</a></li>
-                  
-                        <li><a href="/social-syndication/getting-started/sample-templates-universal-syndication.html">Templates for Universal Syndication</a></li>
-                  
-                        <li><a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">CMS and Playback APIs: Video Search v2</a></li>
-                  
-                </ul>
-              </div>
-            </section>
-        
-            <section class="bcls-card-small" onclick="window.location.href='/social-syndication/references/index.html'">
-              <div class="card-content">
-                <h2>References</h2>
-                <ul>
-                  
-                        <li><a href="/social-syndication/references/configuration-reference.html">Syndication Configuration API Reference</a></li>
-                  
-                        <li><a href="/social-syndication/references/feed-reference.html">Syndication Feed API Reference</a></li>
-                  
-                        <li><a href="/policy/references/policy-api-release-notes.html">Release Notes</a></li>
-                  
-                </ul>
-              </div>
-            </section>
-        
-      
-    
-      
-    
-      
-    
-  </section>
+<section class="bcls-section">
+<h2 id="errorMessages">General error messages</h2>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Status</th>
+			<th style="width: 20%;">Name</th>
+			<th>Message</th>
+			<th>Cause</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>400</td>
+			<td><code translate="No">BAD_REQUEST</code></td>
+			<td><code translate="No">Invalid JSON body on request</code></td>
+			<td>There's an error in JSON for the request body; could be a basic JSON issue, or an incorrect type for a field value</td>
+		</tr>
+		<tr>
+			<td>400</td>
+			<td><code translate="No">BAD_REQUEST</code></td>
+			<td><code translate="No">"error": "{<span class="bcls-highlight">fieldname</span>} field is required</code></td>
+			<td>Request body is missing the indicated required field</td>
+		</tr>
+		<tr>
+			<td>400</td>
+			<td><code translate="No">AD_CONFIG_NOT_FOUND</code></td>
+			<td><code translate="No">Ad config not found</code></td>
+			<td>Ad configuration specified in an SSAI request was not found</td>
+		</tr>
+		<tr>
+			<td>400</td>
+			<td><code translate="No">AD_CONFIG_INACTIVE</code></td>
+			<td><code translate="No">Ad config is inactive</code></td>
+			<td>Ad configuration specified in an SSAI request is inactive</td>
+		</tr>
+		<tr>
+			<td>401</td>
+			<td><code translate="No">UNAUTHORIZED</code></td>
+			<td><code translate="No">Permission denied.</code></td>
+			<td>Missing or invalid OAuth access token. If you did supply an access token, it may not have for the appropriate scope for this request</td>
+		</tr>
+		<tr>
+			<td>403</td>
+			<td><code translate="No">NOT_AVAILABLE</code></td>
+			<td><code translate="No">Resource is not available.</code></td>
+			<td>The resource you are requesting is temporarily unavailable - this may be a temporary condition while some kind of processing of the video is in progress, but if the message persists, contact Support.</td>
+		</tr>
+		<tr>
+			<td>404</td>
+			<td><code translate="No">NOT_FOUND</code></td>
+			<td><code translate="No">Resource does not exist.</code></td>
+			<td>You requested a resource that does not exist - you might be trying to update an ad configuration or get an ad trace on a session that no longer exists. This error will also be returned if you use and HTTP method not allowed on the endpoint.</td>
+		</tr>
+		<tr>
+			<td>500</td>
+			<td><code translate="No">UNKNOWN</code></td>
+			<td><code translate="No">an unknown internal error occurred</code></td>
+			<td>Issue in Brightcove system - try again later.</td>
+		</tr>
+		<tr>
+			<td>503</td>
+			<td><code translate="No">SERVICE_UNAVAILABLE</code></td>
+			<td><code translate="No">The API is temporarily unavailable</code></td>
+			<td>Backend issue - try again later.</td>
+		</tr>
+		<tr>
+			<td>504</td>
+			<td><code translate="No">TIMEOUT</code></td>
+			<td><code translate="No">something took too long</code></td>
+			<td>Server likely too busy - try again later.</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 </article>
 
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav" id="right_side_nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
       
     </div>
   </div>
@@ -1459,7 +1462,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 20 May 2021
+  Page last updated on 21 May 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
