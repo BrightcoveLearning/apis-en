@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In this topic, you will learn about the Analytics API social_platform dimension. The social_platform dimension provides analytics for social platforms such as Twitter, Facebook, and YouTube, if you distributed your videos to those platforms using the Video Cloud Radius module.">
+  <meta name="description" content="This topic explains how you can reduce latency for you Brightcove Live streams.">
   
-  <title>Dimension: <code translate="No">social_platform</code></title>
+  <title>Reducing Latency for Live Streams</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -70,9 +70,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/analytics/dimension-guides/">Dimension Guides</a></li>
+      <li class="breadcrumb-item"><a href="/live/guides/">Guides</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Dimension: <code translate="No">social_platform</code></li>
+      <li class="breadcrumb-item active" aria-current="page">Reducing Latency for Live Streams</li>
     </ol>
   </nav>
 </header>
@@ -1566,157 +1566,130 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Dimension: <code translate="No">social_platform</code></h1>
+<h1>Reducing Latency for Live Streams</h1>
 <article class="bcls-article">
-  <summary>In this topic, you will learn about the <span translate="No">Analytics API</span> <code translate="No">social_platform</code> dimension. The <code translate="No">social_platform</code> dimension provides analytics for social platforms such as Twitter, Facebook, and YouTube, if you distributed your videos to those platforms using the Video Cloud Radius module.</summary>
-    <section class="bcls-section">
-    <h2 id="urlParams">URL parameters</h2>
-    
-    <p>Analytics API reports support the following URL parameters.</p>
-    
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">URL Parameters</caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Parameter</th>
-          <th>Description</th>
-          <th>Required</th>
-          <th>Values</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body" id="paramTableBody">
-        <tr>
-          <td><code translate="No">account</code></td>
-          <td>The accounts you want to report on</td>
-          <td>yes</td>
-          <td>one or more account ids as a comma-delimited list</td>
-          <td>none</td>
-        </tr>
-        <tr>
-          <td><code translate="No">dimensions</code></td>
-          <td>The dimension(s) to report on</td>
-          <td>yes</td>
-          <td>one or more dimensions as a comma-delimited list (some combinations are not valid)</td>
-          <td>none</td>
-        </tr>
-        <tr>
-          <td><code translate="No">where</code></td>
-          <td>Used to specify filters for reports</td>
-          <td>no</td>
-          <td>{dimension}=={value} - one or more as a semi-colon-delimited list</td>
-          <td>none</td>
-        </tr>
-        <tr>
-          <td><code translate="No">limit</code></td>
-          <td>Number of items to return</td>
-          <td>no</td>
-          <td>positive integer</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td><code translate="No">offset</code></td>
-          <td>Number of items to skip</td>
-          <td>no</td>
-          <td>positive integer</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td><code translate="No">sort</code></td>
-          <td>Field to sort items on</td>
-          <td>no</td>
-          <td>a valid field for the request</td>
-          <td>video_view</td>
-        </tr>
-        <tr>
-          <td><code translate="No">fields</code></td>
-          <td>Fields to return</td>
-          <td>no</td>
-          <td>varies according to the dimension you are reporting on</td>
-          <td>video_view</td>
-        </tr>
-        <tr>
-          <td><code translate="No">format</code></td>
-          <td>Format to return results in</td>
-          <td>no</td>
-          <td>json | csv | xlxs</td>
-          <td>json</td>
-        </tr>
-        <tr>
-          <td><code translate="No">reconciled</code></td>
-          <td>If included, will limit results to either historical or realtime data</td>
-          <td>no</td>
-          <td>true | false</td>
-          <td>true</td>
-        </tr>
-        <tr>
-          <td><code translate="No">from</code></td>
-          <td>The beginning of the date range for the request</td>
-          <td>no</td>
-          <td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string alltime, or relative date (-1m); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
-          <td>30 days prior to now</td>
-        </tr>
-        <tr>
-          <td><code translate="No">to</code></td>
-          <td>The end of the date range for the request</td>
-          <td>no</td>
-          <td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
-          <td>now</td>
-        </tr>
-      </tbody>
-    </table>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="fieldValues">Fields available</h2>
-    
-    <p>The following fields can be returned for the dimension.</p>
-    
-    <ul id="fields">
-      <li><code translate="No">social_lifetime_seconds_viewed</code> - the alltime seconds viewed on the social platform</li>
-      <li><code translate="No">social_lifetime_views</code> - alltime video views on the social platform</li>
-      <li><code translate="No">social_platform</code> - the name of the social platform</li>
-      <li><code translate="No">social_seconds_viewed</code> - seconds of video viewed on the platform in the designated time period</li>
-      <li><code translate="No">social_views</code> - video views on the platform in the designated time period</li>
-    </ul>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="filterValues">Filter values</h2>
-    
-    <p>Used as a filter, a dimension allows you to narrow the results.</p>
-    
-    <p id="filters">Filter values: facebook, twitter, youtube</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="combinations">Combining dimensions</h2>
-    
-    <p>To see what dimensions this on can be combined with, and what fields are available for the combination, see <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Dimension and Fields</a>.</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="examples">Request Examples</h2>
-    
-    <h3>Dimension request</h3>
-    
-    <pre class="line-numbers language-http code-toolbar">
-    <code class="language-http" id="dimensionRequest"><span class="token header-name keyword"><span class="token header-name keyword">https:</span></span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=social_platform</code></pre>
-    <button class="bcls-button" id="sendDimensionRequest">Test This Request</button>
-    
-    <h3>Filter request</h3>
-    
-    <pre class="line-numbers language-http">
-    <code class="language-http" id="filterRequest"><span class="token header-name keyword">https:</span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=account&amp;where=social_platform==twitter</code></pre>
-    <button class="bcls-button" id="sendFilterRequest">Test This Request</button>
-    
-    <h3>Response</h3>
-    
-    <pre class="line-numbers language-json">
-    <code class="language-json" id="response">Response will appear here when you test a request</code></pre>
-    </section>
-    </article>
-    <script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-model-v2.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/guides/dimension-drupal-v2.js"></script>
+  <summary>This topic explains how you can reduce latency for you Brightcove Live streams.</summary>
+  <section class="bcls-section">
+
+
+<h2 id="Introduction">Introduction</h2>
+
+<p>Latency is the time lag between the when something is recorded in real life and when it is seen in a video player. There is, of course, some real time required to transmit a signal from the source through the internet to a viewers player. Latency is aggravated by the fact that online video is transmitted in discreet chunks, called segments.</p>
+
+<p>Latency can be reduced by shortening the length of the video segments, and the following sections will detail how you can do this. Be aware, however, that there is a tradeoff: to insure uninterrupted playback, the player downloads a few video segments ahead of the current playback position (this is called buffering), so that they are ready when needed. If you shorten the length of segments, the player will be pre-fetching less video data, and chances of playback pausing while the player buffers additional segments will be increased.</p>
+
+<h3>Additional limitations</h3>
+
+<p>The following limitations apply to Live streams using reduced latency:</p>
+
+<ul>
+	<li>SSAI is <strong>not</strong> supported</li>
+	<li>DRM is <strong>not</strong> supported</li>
+	<li>The DVR window must be less than <strong>5 minutes</strong></li>
+	<li>No more than <strong>4</strong> renditions</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Creating_Reduced_Latency_Live_Profile">Creating Reduced Latency Live Profile</h2>
+
+<p>To reduce latency, you will need to create a custom Live profile. Follow the steps below:</p>
+
+<ol class="bcls-tasklist-restart">
+	<li>Login to Studio</li>
+	<li>Go to <strong>Admin</strong> &gt; <strong>Ingest Profiles</strong>:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Go to Ingest Profiles" src="/assets/images/general/18954/go-to-ingest-profiles.png" />
+	<figcaption class="bcls-caption--image">Go to Ingest Profiles</figcaption>
+	</figure>
+	</li>
+	<li>Select one of the <strong>Live</strong> ingest profiles with no more than <strong>4</strong> renditions:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Select a Live Profile" src="/assets/images/general/18954/select_ingest_profile.png" />
+	<figcaption class="bcls-caption--image">Select a Live Profile</figcaption>
+	</figure>
+	</li>
+	<li>Click on the link to open the profile</li>
+	<li>Click on the <strong>Duplicate</strong> button to create a new profile based on this one</li>
+	<li>In the new profile, change the <code translate="No">name</code> to "Low Latency Profile" (or whatever you want to call it)</li>
+	<li>For each of the <code translate="No">renditions</code>, change the <code translate="No">segment_seconds</code> to <code translate="No">2</code> to reduce the length of the segments to 2 seconds</li>
+	<li>Your whole profile should look something like this:
+	<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "model_version": 1,
+  "name": "<span class="bcls-highlight">Low Latency Profile</span>",
+  "description": "Deliver high-quality renditions to maximize quality for desktop and OTT.",
+  "account_id": "57838016001",
+  "renditions": [
+    {
+      "media_type": "video",
+      "format": "ts",
+      <span class="bcls-highlight">"segment_seconds": 2,</span>
+      "label": "hls1080p",
+      "live_stream": true,
+      "video_codec": "h264",
+      "video_bitrate": 4000,
+      "keyframe_interval": 60,
+      "width": 1920,
+      "height": 1080,
+      "h264_profile": "high"
+    },
+    {
+      "media_type": "video",
+      "format": "ts",
+      <span class="bcls-highlight">"segment_seconds": 2,</span>
+      "label": "hls720p",
+      "live_stream": true,
+      "video_codec": "h264",
+      "video_bitrate": 2400,
+      "keyframe_interval": 60,
+      "width": 1280,
+      "height": 720,
+      "h264_profile": "high"
+    },
+    {
+      "media_type": "video",
+      "format": "ts",
+      <span class="bcls-highlight">"segment_seconds": 2,</span>
+      "label": "hls540p",
+      "live_stream": true,
+      "video_codec": "h264",
+      "video_bitrate": 1700,
+      "keyframe_interval": 60,
+      "width": 960,
+      "height": 540,
+      "h264_profile": "main"
+    },
+    {
+      "media_type": "video",
+      "format": "ts",
+      <span class="bcls-highlight">"segment_seconds": 2,</span>
+      "label": "hls360p",
+      "live_stream": true,
+      "video_codec": "h264",
+      "video_bitrate": 900,
+      "keyframe_interval": 60,
+      "width": 640,
+      "height": 360,
+      "h264_profile": "main"
+    }
+  ],
+  "packages": []
+}</code></pre>
+	</li>
+	<li>To use this profile, select when you create a new Live Event in the Live module:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Create Live Event" src="/assets/images/general/18954/create-live-event.png" />
+	<figcaption class="bcls-caption--image">Create Live Event</figcaption>
+	</figure>
+	</li>
+</ol>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_Live_API">Using the Live API</h2>
+
+<p>If you want reduced latency, and you use the Live API to create your live jobs, just create the job as you normally do, but include <strong>no more than 4 renditions</strong>, and set <code translate="No">segment_seconds</code> for each rendition to <code translate="No">2</code>. Also, make sure that observe the other limitations listed in the <a href="#Introduction">Introduction</a>.</p>
+</section>
+</article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -1732,7 +1705,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 29 Sep 2020
+  Page last updated on 22 May 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
