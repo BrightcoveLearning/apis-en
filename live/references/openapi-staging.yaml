@@ -171,7 +171,7 @@ paths:
       description: |-
         Live jobs created via the Live module in Studio (or by specifying `videocloud.video` when creating a job directly through the API) automatically create a special Video Cloud video that, when used in a Brightcove player, makes use of the `ad_config_id` property to select the specific source desired (i.e. SSAI source, DVR/no DVR, BYOCDN). Jobs which have SSAI enabled must always provide an `ad_config_id` in the player, even if the source desired is non-SSAI (this prevents an end user from omitting the `ad_config_id` and receiving a clear stream). **This applies only to live Video Cloud videos created via the Live module or Live API - manually created Video Cloud remote assets have no such restriction.**
 
-        The request returns a generated `ad_config_id`.
+        The request returns a generated `ad_config_id` that is the  live playback token. This token never expires, as it is not used for security or content protection, but simply to identify the correct source to play.
 
         This behavior is handled automatically when you publish a live video from the Live module publishing screen, but may be useful if you have a custom workflow.
       operationId: CreatePlaybackToken
