@@ -43,108 +43,111 @@ Find all the code associated with this sample in this <a href="https://github.co
 
 <p>In addition to the code found in CodePen (and associated GitHub repo), this sample requires a proxy to make the API request and return the response to the app. For this app we used PHP, and the code is shown below. You can use any server-side language to build the proxy.</p>
 
-<pre class="line-numbers">
-<code class="language-php">&lt;?php
-/**
- * live-proxy.php - proxy for Brightcove Live APIs
- * makes the request, and returns the response
- * Accessing:
- *    (note you should *always* access the proxy via HTTPS)
- *    Method: POST
- *
- * @post {string} url - the URL for the API request
- * @post {string} [requestType=GET] - HTTP method for the request
- * @post {string} [requestBody] - JSON data to be sent with write requests
- * @post {string} apiKey - Live API key
- *
- * @returns {string} $response - JSON response received from the API
- */
-
-
-// CORS enablement and other headers
-header("Access-Control-Allow-Origin: *");
-header("Content-type: application/json");
-header("X-Content-Type-Options: nosniff");
-header("X-XSS-Protection");
-
-
-$requestData = json_decode(file_get_contents('php://input'));
-
-// set up the API call
-// get api key
-$apikey = $requestData-&gt;apiKey;
-// get request type or default to GET
-if ($requestData-&gt;requestType) {
-    $method = $requestData-&gt;requestType;
-} else {
-    $method = "GET";
-}
-// more security checks
-$needle = '.io';
-$endapi = strpos($requestData-&gt;url, $needle) + 3;
-
-$nextChar = substr($requestData-&gt;url, $endapi, 1);
-
-if (strpos($requestData-&gt;url, 'api.bcovlive.io') == false) {
-    exit('{"ERROR":"Only requests to Brightcove Live APIs are accepted by this proxy"}');
-} else if ($nextChar !== '/' &amp;&amp; $nextChar !== '?') {
-    exit('{"ERROR": "There was a problem with your API request - please check the URL"}');
-}
-// get the URL and authorization info from the form data
-$request = $requestData-&gt;url;
-//send the http request
-if ($requestData-&gt;requestBody) {
-  $ch = curl_init($request);
-  curl_setopt_array($ch, array(
-    CURLOPT_CUSTOMREQUEST  =&gt; $method,
-    CURLOPT_RETURNTRANSFER =&gt; TRUE,
-    CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
-    CURLOPT_HTTPHEADER     =&gt; array(
-      'Content-type: application/json',
-      "X-API-KEY: {$apikey}",
-    ),
-    CURLOPT_POSTFIELDS =&gt; $requestData-&gt;requestBody
-  ));
-  $response = curl_exec($ch);
-  curl_close($ch);
-} else {
-  $ch = curl_init($request);
-  curl_setopt_array($ch, array(
-    CURLOPT_CUSTOMREQUEST  =&gt; $method,
-    CURLOPT_RETURNTRANSFER =&gt; TRUE,
-    CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
-    CURLOPT_HTTPHEADER     =&gt; array(
-      'Content-type: application/json',
-      "X-API-KEY: {$apikey}",
-    )
-  ));
-  $response = curl_exec($ch);
-  curl_close($ch);
-}
-
-// Check for errors
-if ($response === FALSE) {
-    $logEntry = "\nError:\n".
-    "\n".date("Y-m-d H:i:s")." UTC \n"
-    .$response;
-    $logFileLocation = "log.txt";
-    $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
-    fwrite($fileHandle, $logEntry);
-    fclose($fileHandle);
-    echo '{"ERROR": "There was a problem with your API call"}'+
-    die(curl_error($ch));
-}
-
-// Decode the response
-// $responseData = json_decode($response, TRUE);
-// return the response to the AJAX caller
-$responseDecoded = json_decode($response);
-// if (!isset($responseDecoded)) {
-// 	$response = '{null}';
-// }
-echo $response;
-?&gt;
-</code></pre>
+<details>
+	<summary>Proxy sample code</summary>
+	<pre class="line-numbers">
+	<code class="language-php">&lt;?php
+	/**
+	 * live-proxy.php - proxy for Brightcove Live APIs
+	 * makes the request, and returns the response
+	 * Accessing:
+	 *    (note you should *always* access the proxy via HTTPS)
+	 *    Method: POST
+	 *
+	 * @post {string} url - the URL for the API request
+	 * @post {string} [requestType=GET] - HTTP method for the request
+	 * @post {string} [requestBody] - JSON data to be sent with write requests
+	 * @post {string} apiKey - Live API key
+	 *
+	 * @returns {string} $response - JSON response received from the API
+	 */
+	
+	
+	// CORS enablement and other headers
+	header("Access-Control-Allow-Origin: *");
+	header("Content-type: application/json");
+	header("X-Content-Type-Options: nosniff");
+	header("X-XSS-Protection");
+	
+	
+	$requestData = json_decode(file_get_contents('php://input'));
+	
+	// set up the API call
+	// get api key
+	$apikey = $requestData-&gt;apiKey;
+	// get request type or default to GET
+	if ($requestData-&gt;requestType) {
+			$method = $requestData-&gt;requestType;
+	} else {
+			$method = "GET";
+	}
+	// more security checks
+	$needle = '.io';
+	$endapi = strpos($requestData-&gt;url, $needle) + 3;
+	
+	$nextChar = substr($requestData-&gt;url, $endapi, 1);
+	
+	if (strpos($requestData-&gt;url, 'api.bcovlive.io') == false) {
+			exit('{"ERROR":"Only requests to Brightcove Live APIs are accepted by this proxy"}');
+	} else if ($nextChar !== '/' &amp;&amp; $nextChar !== '?') {
+			exit('{"ERROR": "There was a problem with your API request - please check the URL"}');
+	}
+	// get the URL and authorization info from the form data
+	$request = $requestData-&gt;url;
+	//send the http request
+	if ($requestData-&gt;requestBody) {
+		$ch = curl_init($request);
+		curl_setopt_array($ch, array(
+			CURLOPT_CUSTOMREQUEST  =&gt; $method,
+			CURLOPT_RETURNTRANSFER =&gt; TRUE,
+			CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+			CURLOPT_HTTPHEADER     =&gt; array(
+				'Content-type: application/json',
+				"X-API-KEY: {$apikey}",
+			),
+			CURLOPT_POSTFIELDS =&gt; $requestData-&gt;requestBody
+		));
+		$response = curl_exec($ch);
+		curl_close($ch);
+	} else {
+		$ch = curl_init($request);
+		curl_setopt_array($ch, array(
+			CURLOPT_CUSTOMREQUEST  =&gt; $method,
+			CURLOPT_RETURNTRANSFER =&gt; TRUE,
+			CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+			CURLOPT_HTTPHEADER     =&gt; array(
+				'Content-type: application/json',
+				"X-API-KEY: {$apikey}",
+			)
+		));
+		$response = curl_exec($ch);
+		curl_close($ch);
+	}
+	
+	// Check for errors
+	if ($response === FALSE) {
+			$logEntry = "\nError:\n".
+			"\n".date("Y-m-d H:i:s")." UTC \n"
+			.$response;
+			$logFileLocation = "log.txt";
+			$fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+			fwrite($fileHandle, $logEntry);
+			fclose($fileHandle);
+			echo '{"ERROR": "There was a problem with your API call"}'+
+			die(curl_error($ch));
+	}
+	
+	// Decode the response
+	// $responseData = json_decode($response, TRUE);
+	// return the response to the AJAX caller
+	$responseDecoded = json_decode($response);
+	// if (!isset($responseDecoded)) {
+	// 	$response = '{null}';
+	// }
+	echo $response;
+	?&gt;
+	</code></pre>
+</details>
 </section>
 
 <script src="//learning-services-media.brightcove.com/doc-assets/node/18519-live-api-sample-create-live-job/create-job.js">

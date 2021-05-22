@@ -1,15 +1,12 @@
 ---
 title: 'Live API: Static Entry Points'
+description: 'This topic explains static entry points and how to implement them using the Live API.'
 parent: Guides
 grandparent: Live API
 ---
+<h1>{{ page.title }}</h1>
 <article class="bcls-article">
-  <h1>Live API: Static Entry Points</h1>
-  <summary>This topic explains static entry points and how to implement them using the Live API.</summary>
-
-
-
-
+ <summary>{{ page.description }}</summary>
 <section class="bcls-section">
 <h2 id="Introduction">Introduction</h2>
 
@@ -25,7 +22,7 @@ grandparent: Live API
 <section class="bcls-section">
 <h2 id="Creating_a_static_entry_point">Creating a static entry point</h2>
 
-<p>The standard <a href="/live-api/references/reference.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> operation will is used, but for the addition of Static Entry Points a property will need to be added to the job request:</p>
+<p>The standard <a href="/live/references/reference.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> operation will is used, but for the addition of Static Entry Points a property will need to be added to the job request:</p>
 
 <pre>
 <code class="language-json" translate="No">"static": true</code></pre>
@@ -103,7 +100,7 @@ grandparent: Live API
 <section class="bcls-section">
 <h2 id="Cancel_sep_job">Cancel an SEP job</h2>
 
-<p>To permanently stop a static entry point job, you can cancel the job just as you would any live job, by sending a <code translate="No">PUT</code> request the endpoint <code translate="No">/jobs/{job_id}/cancel</code>. See the <a href="/live-api/references/reference.html#operation/CancelLiveJob">API reference</a> for full details.</p>
+<p>To permanently stop a static entry point job, you can cancel the job just as you would any live job, by sending a <code translate="No">PUT</code> request the endpoint <code translate="No">/jobs/{job_id}/cancel</code>. See the <a href="/live/references/reference.html#operation/CancelLiveJob">API reference</a> for full details.</p>
 </section>
 
 <section class="bcls-section">
@@ -114,7 +111,7 @@ grandparent: Live API
 	<p style="font-weight:bold;">Alternatives:</p>
 
 	<ul>
-		<li>Use <a href="/live-api/guides/live-api-creating-vod-clips.html">clipping</a> to archive the full live event as a VOD. The window for clipping will be available for the standard duration after an event or until the next activation of the SEP (whichever is shorter).</li>
+		<li>Use <a href="/live/guides/live-api-creating-vod-clips.html">clipping</a> to archive the full live event as a VOD. The window for clipping will be available for the standard duration after an event or until the next activation of the SEP (whichever is shorter).</li>
 	</ul>
 	</li>
 	<li>Job settings cannot be modified. They are currently tied to the settings that initially created the SEP.</li>
@@ -135,7 +132,7 @@ grandparent: Live API
 
 	<p>Always deactivate a stream via the APIs when a job completes and set the reconnect time to an acceptable window of time to wait in the event of a disconnect (input hour costs are accrued during this wait period).</p>
 	</li>
-	<li>Each account will only be allocated 3 available SEP jobs <em>per region</em>. If you hit the limit, you will need to <a href="/live-api/references/reference.html#operation/CancelLiveJob">cancel</a> one of your SEP jobs before you can create a new one.
+	<li>Each account will only be allocated 3 available SEP jobs <em>per region</em>. If you hit the limit, you will need to <a href="/live/references/reference.html#operation/CancelLiveJob">cancel</a> one of your SEP jobs before you can create a new one.
 	<p>If you have reached the maximum number of SEP jobs and attempt to create another one, the following error will be returned:</p>
 
 	<pre class="line-numbers">
