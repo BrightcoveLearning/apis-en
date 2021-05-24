@@ -1,0 +1,165 @@
+---
+title: 'Live API: Static Entry Points'
+description: 'This topic explains static entry points and how to implement them using the Live API.'
+parent: Guides
+grandparent: Live API
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+ <summary>{{ page.description }}</summary>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>The Static Entry Points (SEP) feature allows for a long-running live job that can be activated and deactivated while keeping the entry point URLs and playback URLs static and re-usable. This feature allows for customers to configure their encoder in their facilities or the field and allows the customer to create their own scheduling logic for live channels or programs.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="dvr_and_sep">DVR and SEP</h2>
+
+<p>DVR capability is available for static entry points, but only while the SEP is <strong>activated</strong>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Creating_a_static_entry_point">Creating a static entry point</h2>
+
+<p>The standard <a href="/live-api/references/reference.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> operation will is used, but for the addition of Static Entry Points a property will need to be added to the job request:</p>
+
+<pre>
+<code class="language-json" translate="No">"static": true</code></pre>
+
+<p>The responding RTMP URL from this job will be static and can then be reused by activating/deactivating the job with the operations described in the sections below. Please read and understand the limitations listed at the end of this document.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="max_waiting_time">Maximum waiting time</h2>
+
+<p>After an SEP job is activated, it will automatically deactivate after some time if the encoder is not started. The rules are as follows:</p>
+
+<ul>
+	<li>If the <code translate="No">event_length</code> value is greater than 30 minutes, the job will automatically terminate in 30 minutes by default - if you wish to change the waiting time, you will need to contact Support. Automatic deactivation cannot be disabled.</li>
+	<li>If the <code translate="No">event_length&nbsp;</code>value is less than the <code translate="No">reconnect_time</code>, the job will terminate in the time set for <code translate="No">event_length</code>.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Activate_static_entry_point_stream">Activate SEP Live Stream</h2>
+
+<p>To activate a static entry point live stream, send the following request to the Live API:</p>
+
+<aside class="bcls-aside bcls-aside--information">To be able to ingest to a Static Entry Point, you must make the <code translate="No">activate</code> API request.</aside>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Active SEP Stream</caption>
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td><code translate="No">PUT</code></td>
+		</tr>
+		<tr>
+			<th>Endpoint</th>
+			<td>
+			<pre>
+<code class="language-http" translate="No">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">{jobID}</span>/<strong>activate</strong></code></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>No request body is required.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Deactivate_static_entry_point_stream">Deactivate SEP Live Stream</h2>
+
+<aside class="bcls-aside bcls-aside--warning">Always stop the encoder before deactivating the stream. Deactivation may not happen immediately, so this gives you exact control over when your viewers stop receiving content.</aside>
+
+<p>To deactivate a static entry point live stream, send the following request to the Live API:</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Active SEP Stream</caption>
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td><code translate="No">PUT</code></td>
+		</tr>
+		<tr>
+			<th>Endpoint</th>
+			<td>
+			<pre>
+<code class="language-http" translate="No">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">{jobID}</span>/<strong>deactivate</strong></code></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--information">When you deactivate a static entry point, the last few seconds of the stream remain playable.</aside>
+
+<p>No request body is required.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Cancel_sep_job">Cancel an SEP job</h2>
+
+<p>To permanently stop a static entry point job, you can cancel the job just as you would any live job, by sending a <code translate="No">PUT</code> request the endpoint <code translate="No">/jobs/{job_id}/cancel</code>. See the <a href="/live-api/references/reference.html#operation/CancelLiveJob">API reference</a> for full details.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+
+<ul>
+	<li>Live to VOD can not be set to archive the stream on completion.
+	<p style="font-weight:bold;">Alternatives:</p>
+
+	<ul>
+		<li>Use <a href="/live-api/guides/live-api-creating-vod-clips.html">clipping</a> to archive the full live event as a VOD. The window for clipping will be available for the standard duration after an event or until the next activation of the SEP (whichever is shorter).</li>
+	</ul>
+	</li>
+	<li>Job settings cannot be modified. They are currently tied to the settings that initially created the SEP.</li>
+	<li>Activating the stream can take up to 60 seconds for the entrypoint to be available.
+	<p style="font-weight:bold;">Best practice:</p>
+
+	<p>Implement notifications from the Live platform for job state changes to get real-time updates for when a SEP job is actually ready.</p>
+
+	<p style="font-weight:bold;">Alternatives:</p>
+
+	<ol>
+		<li>Activate the stream at minimum 60 seconds in advance of starting the encoder.</li>
+		<li>If the encoder has built-in retry (Wirecast, Elemental, etc.), the stream can be connected immediately (though there may be some errors) and the encoders will reconnect as soon as the entry point is available.</li>
+	</ol>
+	</li>
+	<li>Reconnect_time is still applicable for SEP jobs on encoder disconnects. If the reconnect time is reached, the SEP job will be placed back to a deactivated state.
+	<p style="font-weight:bold;">Best practice:</p>
+
+	<p>Always deactivate a stream via the APIs when a job completes and set the reconnect time to an acceptable window of time to wait in the event of a disconnect (input hour costs are accrued during this wait period).</p>
+	</li>
+	<li>Each account will only be allocated 3 available SEP jobs <em>per region</em>. If you hit the limit, you will need to <a href="/live-api/references/reference.html#operation/CancelLiveJob">cancel</a> one of your SEP jobs before you can create a new one.
+	<p>If you have reached the maximum number of SEP jobs and attempt to create another one, the following error will be returned:</p>
+
+	<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "error": "You've reached the number of static entry points jobs you can create for your account"
+}</code></pre>
+      </li>
+      <li>If you attempt to activate more than 5 SEP jobs at once, you will receive an error like the following:
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  “message”:“Allocating additional streaming capacity to the region. Please retry your request.: no_streaming_capacity_in_region”,
+  “statusCode”:500,
+  “name”:“ApiError”,
+  “isApiError”:true
+}</code></pre>
+        <p>You will need to wait until some jobs have finished activating before retrying the request.</p>
+      </li>
+    </ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Notes">Notes</h2>
+
+<dl>
+	<dt>Clipping SEP jobs after deactivation</dt>
+	<dd>Users can create clips up until the next activation of the stream, or for 7 days, whichever is shorter. When the stream is re-activated, previous recording sessions are removed from the server and can no longer be clipped.</dd>
+	<dt>What is the timing for the stream_start_time field when a SEP is used?</dt>
+	<dd>When a SEP is activated that would be considered the start time.</dd>
+</dl>
+</section>
+</article>

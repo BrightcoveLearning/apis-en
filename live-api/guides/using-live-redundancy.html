@@ -1,0 +1,489 @@
+---
+title: 'Using Live Redundancy'
+description: 'Redundant Groups allow you to combine 2 or more Live Jobs into a single stream with automatic failover for uninterrupted reliable playback. This guide will walk you through creating a Redundant Group, adding Jobs, and forcing a failover using the Live API.'
+parent: Guides
+grandparent: Live API
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    
+    <p>Brightcove Live's redundancy feature helps to insure reliable performance for your live events by creating a backup stream that Live will automatically failover to in the event that the first stream stops working.</p>
+    
+    <p>Note that all requests to the Live API require the following headers:</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">API Request Headers</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">X-API-KEY</code></td>
+          <td>{your API Key}</td>
+          <td>Your key should have been provided when you opened your Brightcove Live account</td>
+        </tr>
+        <tr>
+          <td><code translate="No">Content-Type</code></td>
+          <td>application/json</td>
+          <td>Technically, the <code translate="No">content-type</code> header is required only for write requests that include a request body, but should do no harm on read requests.</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Create_your_Live_jobs">Create your Live jobs</h2>
+    
+    <p>For the redundant setup, you will need to create 2 or more Brightcove Live Jobs. The only requirement of the Jobs is that they are created with the <strong>same</strong> <code translate="No">output</code> settings. The easiest way to achieve this is to create one job with the output specifications you want, and then use the <code translate="No">copy_outputs_from_job</code> parameter to create the additional jobs.</p>
+    
+    <p>There is no restriction on the regions these jobs can be created in, however, it is recommended they are located relatively nearby each other.</p>
+    
+    <p>After the Live Jobs have been created, hold onto the Job IDs for later. The request body you will use to add these jobs to a redundant group (see the sections below) will look like this:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json" translate="No">[
+      {
+        "job_id": "0b76bc73f92f46dc917bbe5061c0c633"
+      },
+      {
+        "job_id": "0ae5a4a71dc54b3181af0f98ee407c27"
+      }
+    ]</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Create_the_redundant_group">Create the redundant group</h2>
+    
+    <p>To create a Redundant Group, you will submit a <code translate="No">POST</code> request to:</p>
+    
+    <pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups</code></pre>
+    
+    <p>Here is a sample request body:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "ad_insertion": true,
+      "processing_regions": ["us-west-2"],
+      "storage_regions": ["us-west-2", "us-east-1"],
+      "label": "Test RG",
+      "live_dvr_sliding_window_duration": 1800
+    }</code></pre>
+    
+    <p>The table below contains a full list of fields for the request body. In several cases these are identical to fields used to create a live job. See the <a href="/live-api/references/reference.html">Live API Reference</a> for more details on the fields.</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Create Redundant Group Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Required?</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">ad_insertion</code></td>
+          <td>boolean</td>
+          <td>optional</td>
+          <td>Set to true if this stream should be SSAI enabled</td>
+        </tr>
+        <tr>
+          <td><code translate="No">add_cdns</code></td>
+          <td>array</td>
+          <td>optional</td>
+          <td>Array of additional CDN providers to be used for manifest generation. For each CDN provided, the manifest will be prepended accordingly</td>
+        </tr>
+        <tr>
+          <td><code translate="No">drm</code></td>
+          <td>object</td>
+          <td>optional</td>
+          <td>Not yet supported</td>
+        </tr>
+        <tr>
+          <td><code translate="No">encryption</code></td>
+          <td>object</td>
+          <td>optional</td>
+          <td>Not yet supported</td>
+        </tr>
+        <tr>
+          <td><code translate="No">label</code></td>
+          <td>string</td>
+          <td>required</td>
+          <td>A label to identify the group</td>
+        </tr>
+        <tr>
+          <td><code translate="No">live_dvr_sliding_window_duration</code></td>
+          <td>integer</td>
+          <td>optional</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code translate="No">notifications</code></td>
+          <td>array</td>
+          <td>optional</td>
+          <td>Array of notification destination objects or strings</td>
+        </tr>
+        <tr>
+          <td><code translate="No">processing_regions</code></td>
+          <td>array</td>
+          <td>required</td>
+          <td>Processing regions for the Redundant Group. This will determine which AWS regions will generate the manifests. Recommended this matches storage_regions and the regions the Live Jobs are created in.</td>
+        </tr>
+        <tr>
+          <td><code translate="No">storage_regions</code></td>
+          <td>array</td>
+          <td>required</td>
+          <td>Storage regions media chunks and playlists will be uploaded to in S3. Recommended this matches processing_regions and the regions the Live Jobs are created in.</td>
+        </tr>
+        <tr>
+          <td><code translate="No">videocloud</code></td>
+          <td>object</td>
+          <td>optional</td>
+          <td>Video Cloud customers have the option to create a video to use for the live stream.</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <p>The response will look something like this:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "id": "481ff4cf0bf74956bc2ec6e126588080",
+      "processing_regions": [
+          {
+              "region": "us-west-2",
+              "probability": 1
+          }
+      ],
+      "storage_regions": [
+          "us-west-2",
+          "us-east-1"
+      ],
+      "jobs": [],
+      "state": "standby",
+      "label": "Test RG",
+      "live_dvr_sliding_window_duration": 1800,
+      "status": {
+          "us-west-2": null
+      },
+      "ad_insertion": true,
+      "outputs": {
+          "playback_url": "https://playback-qa.a-live.io/r481ff4cf0bf74956bc2ec6e126588080/us-west-2/NA/playlist.m3u8",
+          "playback_url_dvr": "https://playback-qa.a-live.io/r481ff4cf0bf74956bc2ec6e126588080/us-west-2/NA/playlist_dvr.m3u8",
+          "ssai_playback_urls": {
+              "26f8470f61374e608e27af9c1b3f7ff0": {
+                  "playback_url": "https://playback-qa.a-live.io/r481ff4cf0bf74956bc2ec6e126588080/us-west-2/NA/26f8470f61374e608e27af9c1b3f7ff0/playlist_ssaiM.m3u8",
+                  "playback_url_dvr": "https://playback-qa.a-live.io/r481ff4cf0bf74956bc2ec6e126588080/us-west-2/NA/26f8470f61374e608e27af9c1b3f7ff0/playlist_dvr_ssaiM.m3u8",
+                  "description": "House Ads - 864b84f712ae40bca1510a8052b34312",
+                  "type": "ads"
+              }
+      }
+    }</code></pre>
+    </section>
+    <section class="bcls-section">
+      <h2 id="get_redundant_group">Get redundant groups</h2>
+      <p>You can get all redundant groups by submitting a <code translate="No">GET</code> request to:</p>
+      <pre><code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups</code></pre>
+      <p>You can filter the response by using the <code translate="No">state</code> param. The allowed values are:</p>
+      <ul>
+        <li><code translate="No">cancelled</code></li>
+        <li><code translate="No">cancelling</code></li>
+        <li><code translate="No">deleting</code></li>
+        <li><code translate="No">disconnected</code></li>
+        <li><code translate="No">failed</code></li>
+        <li><code translate="No">finished</code></li>
+        <li><code translate="No">finishing</code></li>
+        <li><code translate="No">processing</code></li>
+        <li><code translate="No">standby</code></li>
+        <li><code translate="No">waiting</code></li>
+      </ul>
+      <p>There is also a <code translate="No">page_size</code> parameter that can be set to an integer up to 1000. The default <code translate="No">page_size</code> is 10.</p>
+      <p>The response will look like this:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "redundant_groups": [
+    {
+      "id": "91c268a6ec5240d79a6004f4ccf0dc6f",
+      "account_id": "a95ac581551b4478b27910e5675db1f8",
+      "user_id": "c2691d4d039040be96c190a949d754a7",
+      "processing_regions": [
+        {
+          "region": "us-west-2",
+          "probability": 1
+        }
+      ],
+      "storage_regions": [
+        "us-west-2",
+        "us-east-1"
+      ],
+      "jobs": [],
+      "state": "standby",
+      "created_at": 1594316624287,
+      "updated_at": 1594316624287,
+      "label": "Test Redundant Group",
+      "live_dvr_sliding_window_duration": 86400,
+      "status": {
+        "us-west-2": null
+      },
+      "outputs": {
+        "playback_url": "https://bcovlive-a.akamaihd.net/r91c268a6ec5240d79a6004f4ccf0dc6f/us-west-2/NA/playlist.m3u8",
+        "playback_url_dvr": "https://bcovlive-a.akamaihd.net/r91c268a6ec5240d79a6004f4ccf0dc6f/us-west-2/NA/playlist_dvr.m3u8"
+      }
+    },
+    {
+      "id": "279ac36e4b4d48a3abbd3e1f98cd57aa",
+      "account_id": "a95ac581551b4478b27910e5675db1f8",
+      "user_id": "c2691d4d039040be96c190a949d754a7",
+      "processing_regions": [
+        {
+          "region": "us-west-2",
+          "probability": 1
+        }
+      ],
+      "storage_regions": [
+        "us-west-2",
+        "us-east-1"
+      ],
+      "jobs": [],
+      "state": "standby",
+      "created_at": 1594323207015,
+      "updated_at": 1594323207015,
+      "label": "Test Redundant Group2",
+      "live_dvr_sliding_window_duration": 86400,
+      "status": {
+        "us-west-2": null
+      },
+      "outputs": {
+        "playback_url": "https://bcovlive-a.akamaihd.net/r279ac36e4b4d48a3abbd3e1f98cd57aa/us-west-2/NA/playlist.m3u8",
+        "playback_url_dvr": "https://bcovlive-a.akamaihd.net/r279ac36e4b4d48a3abbd3e1f98cd57aa/us-west-2/NA/playlist_dvr.m3u8"
+      }
+    }
+  ]
+}</code></pre>
+    </section>
+    <section class="bcls-section">
+    <h2 id="Add_live_jobs_to_the_redundant_group">Add live jobs to the redundant group</h2>
+    
+    <p>After you have created a redundant group, you can add jobs to it by send a <code translate="No">POST</code> request to:</p>
+    
+    <pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups/{redundant_group_id}/jobs</code></pre>
+    
+    <p>The live job ids are specified in the request body like this:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json" translate="No">[
+      {
+        "job_id": "0b76bc73f92f46dc917bbe5061c0c633"
+      },
+      {
+        "job_id": "0ae5a4a71dc54b3181af0f98ee407c27"
+      }
+    ]</code></pre>
+    
+    <p>There are a couple of additional optional properties for the job objects - the following table shows all the fields:</p>
+    
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Add Live Jobs Request Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Required?</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">job_id</code></td>
+          <td>string</td>
+          <td>required</td>
+          <td>ID of Job to add to Group. If neither <code translate="No">playlist</code> or <code translate="No">streams</code> are specified, all <code translate="No">outputs</code> will be used.</td>
+        </tr>
+        <tr>
+          <td><code translate="No">playlist</code></td>
+          <td>string</td>
+          <td>optional</td>
+          <td>Label of playlist to use as the outputs for the stream. If <code translate="No">playlist</code> is defined, <code translate="No">streams</code> <strong>must</strong> be <em>undefined</em>.</td>
+        </tr>
+        <tr>
+          <td><code translate="No">streams</code></td>
+          <td>array</td>
+          <td>optional</td>
+          <td>List of stream labels to be used as outputs for the stream. If <code translate="No">streams</code> is defined, <code translate="No">playlist</code> <strong>must</strong> be <em>undefined</em>.</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <p>The success response for this request will just return the redundant group id.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Get_Redundant_Group_Status">Get redundant group status</h2>
+    
+    <p>You can get the status of a Redundant Group by submitting a <code translate="No">GET</code> request to:</p>
+    
+    <pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups/{redundant_group_id}</code></pre>
+    
+    <p>The response will look like the following:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "id": "481ff4cf0bf74956bc2ec6e126588080",
+      "processing_regions": [
+          {
+              "region": "us-west-2",
+              "probability": 1
+          }
+      ],
+      "storage_regions": [
+          "us-west-2",
+          "us-east-1"
+      ],
+      "jobs": [
+          {
+              "job_id": "0b76bc73f92f46dc917bbe5061c0c633",
+              "streams": [
+                  "hls720p",
+                  "hls540p",
+                  "hls360p"
+              ],
+              "state": "processing"
+          },
+          {
+              "job_id": "0ae5a4a71dc54b3181af0f98ee407c27",
+              "streams": [
+                  "hls720p",
+                  "hls540p",
+                  "hls360p"
+              ],
+              "state": "processing"
+          }
+      ],
+      "state": "processing",
+      "created_at": 1568057414849,
+      "updated_at": 1568059153017,
+      "label": "Test RG",
+      "live_dvr_sliding_window_duration": 1800,
+      "status": {
+          "us-west-2": {
+              "SwitchDrift": 0,
+              "Ended": false,
+              "OnAir": "0b76bc73f92f46dc917bbe5061c0c633",
+              "Mode": "auto",
+              "InManifest": true,
+              "MediaSequence": 10,
+              "Healthiness": 0,
+              "Duration": 4,
+              "DiscontinuitySequence": 1,
+              "SourceChunk": {
+                  "MediaSequence": 3639,
+                  "Duration": 4,
+                  "DiscontinuitySequence": 0,
+                  "ProgramDateTime": "2019-09-09T19:59:36Z",
+                  "LiveJobID": "0b76bc73f92f46dc917bbe5061c0c633"
+              },
+              "UpdatedAt": "2019-09-09T19:59:46Z",
+              "ProgramDateTime": "2019-09-09T19:59:36Z"
+          }
+      },
+      "ad_insertion": true,
+      "outputs": {
+          "playback_url": "https://playback-qa.a-live.io/r481ff4cf0bf74956bc2ec6e126588080/us-west-2/NA/playlist.m3u8",
+          "playback_url_dvr": "https://playback-qa.a-live.io/r481ff4cf0bf74956bc2ec6e126588080/us-west-2/NA/playlist_dvr.m3u8",
+          "ssai_playback_urls": {
+              "26f8470f61374e608e27af9c1b3f7ff0": {
+                  "playback_url": "https://playback-qa.a-live.io/r481ff4cf0bf74956bc2ec6e126588080/us-west-2/NA/26f8470f61374e608e27af9c1b3f7ff0/playlist_ssaiM.m3u8",
+                  "playback_url_dvr": "https://playback-qa.a-live.io/r481ff4cf0bf74956bc2ec6e126588080/us-west-2/NA/26f8470f61374e608e27af9c1b3f7ff0/playlist_dvr_ssaiM.m3u8",
+                  "description": "House Ads - 864b84f712ae40bca1510a8052b34312",
+                  "type": "ads"
+              }
+          }
+      }
+    }</code></pre>
+    
+    <p>Each processing region in the Redundant Group will have its own <code translate="No">status</code> object, keyed by region. You can see in this example that in the <code translate="No">us_west_2</code> processing region, the <code translate="No">on_air</code> job is <code translate="No">0b76bc73f92f46dc917bbe5061c0c633</code>.</p>
+    
+    <p>As a side note, the <code translate="No">probability</code> associated with the processing region will at this point always be <code translate="No">1</code>, but is included in the data model for future enhancements that will allow multiple processing regions with probabilities between 0 and 1, representing the approximate percentage of playback traffic that will use that region.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="add_cuepoints">Manually adding cuepoints</h2>
+    
+    <p>Manually adding cuepoints to a live stream with redundancy is very similar to adding cuepoints to an ordinary live stream. To do this for a redundant group, make a <code translate="No">POST</code> request to:</p>
+    
+    <pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups/{redundant_group_id}/cuepoint</code></pre>
+    
+    <p>Include a request body like the following:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "ad_server_data": {
+        "subject": "wildlife"
+      },
+      "duration": 30,
+      "timecode": "09:23:18:05"
+    }</code></pre>
+    
+    <p>If you omit the <code translate="No">timecode</code> field, the cuepoint will be inserted immediately.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Force_a_Job_failover">Force a job failover</h2>
+    
+    <p>Failover will be managed automatically by the Brightcove Live system, and should require no intervention on your part. If for some reason you want to force failover to another job, however, the simplest way to do it is to simply stop the encoder of the <code translate="No">on_air</code> job.</p>
+    
+    <p>You can also force failover using the API by making a <code translate="No">PUT</code> request to:</p>
+    
+    <pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups/{redundant_group_id}/switch</code></pre>
+    
+    <p>The request body looks like this:</p>
+    
+    <pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "mode": "manual",
+      "on_air": "0ae5a4a71dc54b3181af0f98ee407c27"
+    }</code></pre>
+    
+    <p>Here, <code translate="No">mode</code> will be either <code translate="No">manual</code> or <code translate="No">auto</code> (the default), and the <code translate="No">on_air</code> will have a value of one of the <strong>secondary</strong> job ids.</p>
+    
+    <p>Note: Once in <code translate="No">manual</code> mode, automatic job failover will <strong>not</strong> occur. You <strong>must</strong> set the mode back to <code translate="No">auto</code> for automatic failover to resume. You can change the On-Air Job without switching to manual by omitting mode from the body and adding the force query param <code translate="No">?force=true</code> to your request. This will force the service to switch Jobs, but it may switch back at any time if it detects issues.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Ending_a_redundant_stream">Ending a redundant stream</h2>
+    
+    <p>There are two ways you can end your redundant stream. By design, Redundant Groups are implicitly <a href="/live-api/guides/live-api-static-entry-points.html">SEP</a> streams. You can put a Redundant Group into <code translate="No">STANDBY</code> mode by removing all Jobs from the Redundant Group.</p>
+    
+    <p>To do this using a <code translate="No">DELETE</code> request to:</p>
+    
+    <pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups/{redundant_group_id}/jobs/{job_id}</code></pre>
+    
+    <p>for each job you want to remove. Note that in order to remove the job that is currently <code translate="No">on_air</code>, you will have to add the <code translate="No">?force-true</code> query parameter.</p>
+    
+    <p>The second way to end the stream is to delete the redundant group completely by sending a <code translate="No">DELETE</code> request to:</p>
+    
+    <pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups/{redundant_group_id}</code></pre>
+    </section>
+    <section class="bcls-section">
+      <h2 id="limitations">Limitations</h2>
+      <ul>
+        <li>Live redundancy <strong>cannot</strong> be used with DRM-protected live streams.</li>
+      </ul>
+    </section>
+        </article>
+    
+    

@@ -1,0 +1,2381 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="This topic shows you how to set up server-side ad insertion (SSAI) for your live stream jobs.">
+  
+  <title>Brightcove Live API: Server-Side Ad Insertion (SSAI)</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">  
+<link rel="preconnect" href="https://fonts.gstatic.com"> 
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/prism.css">
+  <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/styles.css">
+  <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/landing-page.css">
+  <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/tabs.css">
+  <link rel="stylesheet" href="/assets/css/local.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2728311-17"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-2728311-17');
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2728311-17"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-2728311-17');
+</script>
+  <script src="/assets/js/sajari-head.js"></script>
+</head>
+<script src="https://unpkg.com/feather-icons"></script>
+<body class="body">
+
+<header>
+  <div class="div-header">
+    <a href="/"><img class="product-logo" src="https://support.brightcove.com/site-assets/images/site/product-logos/SVG/COVE004_Brightcove_Video_Cloud_Logo_RGB_K.svg" alt="Brightcove"></a>
+<!-- GTranslate: https://gtranslate.io/ -->
+<select onchange="doGTranslate(this);"><option value="">Select Language</option><option value="en|en" translate="No">English</option><option value="en|zh-TW" translate="No">繁體中文</option><option value="en|fr" translate="No">Français</option><option value="en|de" translate="No">Deutsche</option><option value="en|ja" translate="No">日本語</option><option value="en|ko" translate="No">한국어</option><option value="en|es" translate="No">Español</option></select>
+
+<script>
+/* <![CDATA[ */
+function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw')plang='en';location.href=location.protocol+'//'+(lang == 'en' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '\\.'), '')+location.pathname+location.search;}
+/* ]]> */
+</script>
+
+
+
+    <span class="secondary-nav"><a href="https://supportportal.brightcove.com/s/login/?"><i data-feather="help-circle"></i> Contact Support</a> <span style="vertical-align: middle;margin-left:1em;margin-right:1em;">|</span> <a href="https://status.brightcove.com/"><i data-feather="cloud"></i> System Status</a></span>
+    <br>
+    
+  </div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb arr-right">
+      
+      <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
+      
+      
+      
+      <li class="breadcrumb-item"><a href="/live-api/ssai/">SSAI</a></li>
+      
+      <li class="breadcrumb-item active" aria-current="page">Brightcove Live API: Server-Side Ad Insertion (SSAI)</li>
+    </ol>
+  </nav>
+</header>
+<div class="container">
+    <div class="row">
+      <div class="col-sm-3 left-side-bar">
+				<select id="site_select" class="bcls-select" style="margin-left: 1rem;">
+					<option value="">Other Brightcove Docs</option>
+					
+						
+							<option value="https://support.brightcove.com">Documentation Home</option>
+						
+					
+						
+							<option value="">-- VIDEO CLOUD --</option>
+						
+					
+						
+							<option value="https://studio.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Video Cloud Studio</option>
+						
+					
+						
+							<option value="https://player.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Player Development</option>
+						
+					
+						
+							<option value="https://apis.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Video Cloud Platform APIs</option>
+						
+					
+						
+							<option value="https://sdks.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Video Cloud Device SDKs</option>
+						
+					
+						
+							<option value="https://integrations.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Integrations and CMS Connectors</option>
+						
+					
+						
+							<option value="https://general.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Video Cloud General Information</option>
+						
+					
+						
+							<option value="">-- VIDEO ESSENTIALS --</option>
+						
+					
+						
+							<option value="https://beacon.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Beacon</option>
+						
+					
+						
+							<option value="https://live.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Live</option>
+						
+					
+						
+							<option value="https://zencoder.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Zencoder</option>
+						
+					
+						
+							<option value="">-- VIDEO CLOUD ADD-ONS --</option>
+						
+					
+						
+							<option value="https://audience.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Audience</option>
+						
+					
+						
+							<option value="https://campaign.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Campaign</option>
+						
+					
+						
+							<option value="https://engage.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Engage</option>
+						
+					
+						
+							<option value="https://gallery.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Gallery</option>
+						
+					
+						
+							<option value="https://ssai.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove SSAI</option>
+						
+					
+						
+							<option value="https://social.support.brightcove.com">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Social</option>
+						
+					
+				</select>
+        <nav class="sidenav" id="side_nav">
+          
+            
+            <h5><a href="/index.html">Home</a></h5>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/getting-started/getting-started-brightcove-apis.html">Overview: Platform APIs</a></li>
+                  
+                
+                  
+                    <li><a href="/getting-started/authentication-brightcove-api-requests.html">Authentication for API Requests</a></li>
+                  
+                
+                  
+                    <li><a href="/getting-started/concepts-testing-tools-brightcove-apis.html">Testing Tools for Brightcove APIs</a></li>
+                  
+                
+                  
+                    <li><a href="/getting-started/learning-guide-using-rest-apis.html">Learning Guide: Using the REST APIs</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/general/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;General Information</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/general/all-api-references.html">All API References</a></li>
+                  
+                
+                  
+                    <li><a href="/general/overview-context-aware-encoding.html">Overview of Context Aware Encoding</a></li>
+                  
+                
+                  
+                    <li><a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a></li>
+                  
+                
+                  
+                    <li><a href="/general/integrating-your-cms-video-cloud.html">Integrating Your CMS with Video Cloud</a></li>
+                  
+                
+                  
+                    <li><a href="/general/platform-api-code-samples.html">Platform API Code Samples</a></li>
+                  
+                
+                  
+                    <li><a href="/general/video-cloud-api-training-videos.html">Platform API Training Videos</a></li>
+                  
+                
+                  
+                    <li><a href="/general/concepts-api-tester.html">Online API Tester</a></li>
+                  
+                
+                  
+                    <li><a href="/general/use-insomnia-api-requests.html">Use Insomnia for API Requests</a></li>
+                  
+                
+                  
+                    <li><a href="/general/use-postman-api-requests.html">Use Postman for API Requests</a></li>
+                  
+                
+                  
+                    <li><a href="/general/audio-content.html">Audio Content</a></li>
+                  
+                
+                  
+                    <li><a href="/general/known-issues.html">Platform APIs Known Issues</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/analytics/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Analytics API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/analytics/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/analytics/getting-started/overview-analytics-api-v1.html">Overview: Analytics API</a></li>
+                        
+                        <li><a href="/analytics/getting-started/analytics-api-explorer.html">Analytics API Explorer</a></li>
+                        
+                        <li><a href="/analytics/getting-started/overview-video-data-endpoint.html">Overview: Video Data Endpoint</a></li>
+                        
+                        <li><a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Overview: Dimensions, Fields, and Parameters</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/analytics/general/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;General Information</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/analytics/general/faq-analytics-api.html">FAQ: Analytics API</a></li>
+                        
+                        <li><a href="/analytics/general/analytics-api-glossary.html">Analytics API Glossary</a></li>
+                        
+                        <li><a href="/analytics/general/analytics-api-unique-users.html">Unique Users</a></li>
+                        
+                        <li><a href="/analytics/general/live-metrics.html">Live Metrics</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/analytics/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/analytics/references/reference.html">Analytics API Reference</a></li>
+                        
+                        <li><a href="/analytics/references/analytics-api-release-notes.html">Release Notes</a></li>
+                        
+                        <li><a href="/analytics/references/known-issues.html">Known Issues</a></li>
+                        
+                        <li><a href="/analytics/references/analytics-api-error-reference.html">Error Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/analytics/dimension-guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Dimension Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-account.html">Dimension: <code translate="No">account</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-browsertype.html">Dimension: <code translate="No">browser_type</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-date.html">Dimension: <code translate="No">date</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-datehour.html">Dimension: <code translate="No">date_hour</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-destinationdomain.html">Dimension: <code translate="No">destination_domain</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-destinationpath.html">Dimension: <code translate="No">destination_path</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-devicemanufacturer.html">Dimension: <code translate="No">device_manufacturer</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-devicetype.html">Dimension: <code translate="No">device_type</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-deviceos.html">Dimension: <code translate="No">device_os</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-city.html">Dimension: <code translate="No">city</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-country.html">Dimension: <code translate="No">country</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-region.html">Dimension: <code translate="No">region</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-livestream.html">Dimension: <code translate="No">live_stream</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-referrerdomain.html">Dimension: <code translate="No">referrer_domain</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-sourcetype.html">Dimension: <code translate="No">source_type</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-searchterms.html">Dimension: <code translate="No">search_terms</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-socialplatform.html">Dimension: <code translate="No">social_platform</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-player.html">Dimension: <code translate="No">player</code></a></li>
+                        
+                        <li><a href="/analytics/dimension-guides/dimension-video.html">Dimension: <code translate="No">video</code></a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/analytics/code-samples/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Code Samples</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-concurrent-viewers-live-events.html">Concurrent Viewers for Live Events</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-daily-analytics-report-generator.html">Daily Analytics Report Generator</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-destinations-report.html">Destinations Report</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-geographical-analytics-report.html">Geographical Analytics Report</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-unique-users-day.html">Unique Users by Day</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-video-engagement-graph.html">Video Engagement Graph</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-video-report-player-and-day.html">Video Report by Player and Day</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-video-report-reference-id.html">Video Report by Reference ID</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analytics-api-sample-video-report-tags.html">Video Report by Tags</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analyticscms-apis-sample-analytics-playlists.html">Analytics by Playlists</a></li>
+                        
+                        <li><a href="/analytics/code-samples/analyticscms-apis-sample-recently-added-videos.html">Recently Added Videos</a></li>
+                        
+                        <li><a href="/analytics/code-samples/code-sample-video-analytics-report-country-and-day.html">Video Analytics Report by Country and Day</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/audience/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Audience API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href=" /audience/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/audience/getting-started/overview-audience-api.html">Overview: Audience API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/audience/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/audience/references/reference.html">Audience API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/cloud-playout-apis/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Cloud Playout APIs</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href=" /cloud-playout-apis/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cloud-playout-apis/getting-started/overview-epg-api.html">Overview: Cloud Playout APIs</a></li>
+                        
+                        <li><a href="/cloud-playout-apis/getting-started/epg-best-practices.html">EPG API: Best Practices</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cloud-playout-apis/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cloud-playout-apis/references/reference-epg.html">EPG API Reference</a></li>
+                        
+                        <li><a href="/cloud-playout-apis/references/reference-channels.html">Channels API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/cms/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;CMS API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/getting-started/overview-cms-api.html">Overview: CMS API</a></li>
+                        
+                        <li><a href="/cms/getting-started/practice-area-cms-api.html">Practice Area: CMS API</a></li>
+                        
+                        <li><a href="/cms/getting-started/best-practices-cms-and-playback-apis.html">Best Practices: CMS and Playback APIs</a></li>
+                        
+                        <li><a href="/cms/getting-started/cms-api-notifications.html">CMS API Notifications</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/references/reference.html">CMS API Reference</a></li>
+                        
+                        <li><a href="/cms/references/catalog-apis-cms-api-and-playback-api-release-notes.html">CMS/Playback APIs Release Notes</a></li>
+                        
+                        <li><a href="/cms/references/known-issues.html">Known Issues</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-video-fields-reference.html">CMS API Video Fields Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-playlist-fields-reference.html">CMS API Playlist Fields Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-custom-fields-reference.html">CMS API Custom Fields Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-folder-fields-reference.html">CMS API Folder Fields Reference</a></li>
+                        
+                        <li><a href="/cms/references/cms-api-error-message-reference.html">CMS API Error Message Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/searching/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Searching</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">CMS API: Video Search v2</a></li>
+                        
+                        <li><a href="/cms/searching/cms-api-playlists-search.html">CMS API: Playlists Search</a></li>
+                        
+                        <li><a href="/cms/searching/using-cms-api-page-search-results.html">Page Search Results</a></li>
+                        
+                        <li><a href="/cms/searching/cmsplayback-api-videos-search.html">CMS and Playback APIs: Video Search v1</a></li>
+                        
+                        <li><a href="/playback/guides/catalog-search-architecture.html">Catalog Search Architecture</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/managing-videos/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Managing Videos/Assets</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/managing-videos/activate-deactivate-videos.html">Activate/Deactivate or Schedule Videos</a></li>
+                        
+                        <li><a href="/cms/managing-videos/using-cms-api-add-geo-filtering.html">Add Geo-Filtering</a></li>
+                        
+                        <li><a href="/cms/managing-videos/digital-master-delete-api.html">Digital Master Delete API</a></li>
+                        
+                        <li><a href="/cms/managing-videos/deleting-videos.html">Deleting Videos</a></li>
+                        
+                        <li><a href="/cms/managing-videos/getting-counts-videos-and-playlists.html">Getting Counts of Videos and Playlists</a></li>
+                        
+                        <li><a href="/cms/managing-videos/managing-playlists-using-cms-api.html">Managing Playlists Using the CMS API</a></li>
+                        
+                        <li><a href="/cms/managing-videos/using-cms-api-managing-clips.html">Managing Clips</a></li>
+                        
+                        <li><a href="/cms/managing-videos/media-sharing-cms-api.html">Media Sharing</a></li>
+                        
+                        <li><a href="/cms/managing-videos/multilingual-metadata.html">Multilingual Metadata</a></li>
+                        
+                        <li><a href="/cms/managing-videos/using-cms-api-retrieve-video-data.html">Retrieve Video Data</a></li>
+                        
+                        <li><a href="/cms/managing-videos/setting-360-degree-video-properties-cms-api.html">Set 360-Degree Video Properties</a></li>
+                        
+                        <li><a href="/cms/managing-videos/using-cms-api-remote-assets.html">Remote Assets</a></li>
+                        
+                        <li><a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">Add WebVTT Captions (Text Tracks)</a></li>
+                        
+                        <li><a href="/cms/managing-videos/managing-text-tracks.html">Managing Text Tracks Using the CMS API</a></li>
+                        
+                        <li><a href="/cms/managing-videos/generate-video-sitemaps.html">Generate Video Sitemaps</a></li>
+                        
+                        <li><a href="/cms/managing-videos/identifying-low-performing-content.html">Identifying Low Performing Content</a></li>
+                        
+                        <li><a href="/cms/managing-videos/cms-api-working-folders.html">Working with Folders</a></li>
+                        
+                        <li><a href="/cms/managing-videos/working-with-labels.html">Working with Labels</a></li>
+                        
+                        <li><a href="/cms/managing-videos/linking-zencoder-and-video-cloud-video-demand.html">Linking Zencoder and Video Cloud</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/cms/code-samples/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Code Samples</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-add-multiple-affiliate-accounts-media-sharing.html">Add Multiple Affiliate Accounts</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-share-multiple-videos.html">Share Multiple Videos</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-media-sharing-report.html">Media Sharing Report</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-shared-media-report.html">Shared Media Report</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-update-videos.html">Update Videos</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-add-custom-field-multiple-videos.html">Add Custom Field to Multiple Videos</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-update-geo-properties.html">Update Geo Properties</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-add-cue-points.html">Add Cue Points</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-report-generator.html">Video Report Generator</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-videos-delivery-type.html">Videos by Delivery Type</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-download-links.html">Download Links</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-sitemap-generator.html">Video Sitemap Generator</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-mrss-generator.html">MRSS Generator</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-mrss-feed-playlist.html">MRSS Feed from Playlist</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-generate-rss-podcast-feed-itunes.html">RSS Podcast Feed for iTunes</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-renditions-inspector.html">Video Renditions Inspector</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-report-audio-only-content.html">Report on Audio-Only Content</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-schema-builder.html">Video Schema Builder</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-python-code-get-request.html">Python Code for a GET Request</a></li>
+                        
+                        <li><a href="/cms/code-samples/cms-api-sample-video-search-app.html">Video Search App</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/xdr/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Cross-Device Resume (XDR) API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/xdr/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/xdr/getting-started/xdr-overview.html">Overview: Cross-Device Resume</a></li>
+                        
+                        <li><a href="/xdr/getting-started/get-playback-position.html">Getting Playback Position from XDR API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/xdr/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="https://player.support.brightcove.com/playback/xdr-with-bcplayer.html">Cross-Device Resume with Brightcove Player</a></li>
+                        
+                        <li><a href="https://sdks.support.brightcove.com/features/cross-device-resume-sdks.html">Cross-Device Resume with the Native SDKs</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/xdr/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/xdr/getting-started/xdr-overview.html">Cross Device Resume API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/data-collection/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Data Collection API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/data-collection/overview-data-collection-api-v2.html">Overview: Data Collection API</a></li>
+                  
+                
+                  
+                    <li><a href="/data-collection/data-collection-api-sample.html">Data Collection API Sample</a></li>
+                  
+                
+                  
+                    <li><a href="/data-collection/references/reference.html">Data Collection API Reference</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/delivery-rules/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Delivery Rules API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/delivery-rules/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/delivery-rules/getting-started/overview-delivery-rules.html">Overview: Delivery Rules</a></li>
+                        
+                        <li><a href="/delivery-rules/getting-started/implementing-delivery-rules.html">Implementing Delivery Rules</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/delivery-rules/guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="https://player.support.brightcove.com/playback/using-delivery-rules-with-bcp.html">Using Delivery Rules with Brightcove Player</a></li>
+                        
+                        <li><a href="https://sdks.support.brightcove.com/features/using-delivery-rules-with-sdks.html">Using Delivery Rules with the Native SDKs</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/delivery-rules/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/delivery-rules/references/reference.html">Delivery Rules API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/delivery-system/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Delivery System API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/delivery-system/overview-delivery-system-api.html">Overview: Delivery System API</a></li>
+                  
+                
+                  
+                    <li><a href="/delivery-system/step-step-delivery-system-api.html">Step-by-Step: Delivery System API</a></li>
+                  
+                
+                  
+                    <li><a href="/delivery-system/delivery-system-api-git-overview.html">Git Overview</a></li>
+                  
+                
+                  
+                    <li><a href="/delivery-system/references/reference.html">Delivery System API Reference</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/dynamic-ingest/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Dynamic Ingest API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/dynamic-ingest/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Overview: Dynamic Ingest API</a></li>
+                        
+                        <li><a href="/dynamic-ingest/getting-started/quick-start-dynamic-ingest-api.html">Quick Start: Dynamic Ingest API</a></li>
+                        
+                        <li><a href="/dynamic-ingest/getting-started/source-file-upload-api-dynamic-ingest.html">Source File Upload API for Dynamic Ingest</a></li>
+                        
+                        <li><a href="/dynamic-ingest/getting-started/overview-dynamic-delivery.html">Overview of Dynamic Delivery</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/dynamic-ingest/general/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;General Information</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/dynamic-ingest/general/dynamic-ingest-api-best-practices.html">Dynamic Ingest API: Best Practices</a></li>
+                        
+                        <li><a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.html">Notifications for Dynamic Ingest</a></li>
+                        
+                        <li><a href="/dynamic-ingest/general/get-status-dynamic-ingest-requests-dynamic-delivery.html">Get Status of Dynamic Ingest Requests</a></li>
+                        
+                        <li><a href="/dynamic-ingest/general/fallback-retry-strategy.html">Fallback/Retry Strategy</a></li>
+                        
+                        <li><a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html">Using Dynamic Ingest with S3</a></li>
+                        
+                        <li><a href="/dynamic-ingest/general/ugc-strategies.html">UGC Strategies</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/dynamic-ingest/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/dynamic-ingest/references/reference.html">Dynamic Ingest API Reference</a></li>
+                        
+                        <li><a href="/dynamic-ingest/references/dynamic-ingest-api-release-notes.html">Dynamic Ingest API Release Notes</a></li>
+                        
+                        <li><a href="/dynamic-ingest/references/known-issues.html">Known Issues</a></li>
+                        
+                        <li><a href="/dynamic-ingest/references/dynamic-ingest-ingest-fields.html">Ingest Fields Reference</a></li>
+                        
+                        <li><a href="/dynamic-ingest/references/dynamic-ingest-error-message-reference.html">Dynamic Ingest Error Message Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/dynamic-ingest/ingest-guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Ingest Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/dynamic-ingest/ingest-guides/context-aware-encoding.html">Using Context Aware Encoding</a></li>
+                        
+                        <li><a href="/dynamic-ingest/ingest-guides/dynamic-delivery-ingest-priority-queueing.html">Dynamic Delivery Ingest Priority Queueing</a></li>
+                        
+                        <li><a href="/ingest-profiles/guides/archiving-masters.html">Archiving Masters</a></li>
+                        
+                        <li><a href="/dynamic-ingest/ingest-guides/implementing-multiple-audio-tracks-using-apis.html">Implementing Multiple Audio Tracks</a></li>
+                        
+                        <li><a href="/dynamic-ingest/ingest-guides/images-and-dynamic-ingest-api.html">Images and the Dynamic Ingest API</a></li>
+                        
+                        <li><a href="/dynamic-ingest/ingest-guides/dynamic-ingest-media-sharing.html">Dynamic Ingest with Media Sharing</a></li>
+                        
+                        <li><a href="/dynamic-ingest/ingest-guides/ingesting-content-drm.html">Ingesting content with DRM</a></li>
+                        
+                        <li><a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Ingesting WebVTT Files</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/dynamic-ingest/code-samples/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Code Samples</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/dynamic-ingest/code-samples/dynamic-ingest-api-tester-dynamic-delivery.html">Dynamic Ingest API Tester</a></li>
+                        
+                        <li><a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-ingesting-videos-dynamic-delivery.html">Ingesting Videos</a></li>
+                        
+                        <li><a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-re-transcoding-videos-dynamic-delivery.html">Re-transcoding Videos</a></li>
+                        
+                        <li><a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-replacing-videos-dynamic-delivery.html">Replacing Videos</a></li>
+                        
+                        <li><a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-add-scheduled-videos-dynamic-delivery.html">Add Scheduled Videos</a></li>
+                        
+                        <li><a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-adding-text-tracks.html">Adding Text Tracks</a></li>
+                        
+                        <li><a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-ingesting-low-priority-videos-dynamic-delivery.html">Ingesting Low Priority Videos</a></li>
+                        
+                        <li><a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-python-code.html">Python Code</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/ingest-profiles/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Ingest Profiles API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/ingest-profiles/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/ingest-profiles/getting-started/overview-ingest-profiles-api-dynamic-delivery-context-aware-encoding.html">Overview: Ingest Profiles API</a></li>
+                        
+                        <li><a href="/ingest-profiles/getting-started/practice-area-ingest-profiles-api-dynamic-delivery.html">Practice Area: Ingest Profiles API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/ingest-profiles/guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/ingest-profiles/guides/archiving-masters.html">Archiving Masters</a></li>
+                        
+                        <li><a href="/ingest-profiles/guides/hevc-video.html">HEVC Video</a></li>
+                        
+                        <li><a href="/ingest-profiles/guides/cae-fast-publish.html">CAE Fast Publish</a></li>
+                        
+                        <li><a href="/general/audio-content.html">Audio Content</a></li>
+                        
+                        <li><a href="/ingest-profiles/guides/mp4s-dynamic-delivery.html">MP4s in Dynamic Delivery</a></li>
+                        
+                        <li><a href="https://studio.support.brightcove.com/admin/ingest-profiles-best-practices.html">Best Practices</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/ingest-profiles/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/ingest-profiles/references/reference.html">Ingest Profiles API Reference</a></li>
+                        
+                        <li><a href="/ingest-profiles/references/ingest-profiles-api-fields-reference-dynamic-delivery-and-context-aware-encoding.html">Ingest Profiles Fields Reference</a></li>
+                        
+                        <li><a href="/ingest-profiles/references/standard-ingest-profiles-dynamic-delivery-and-context-aware-encoding.html">Standard Ingest Profiles</a></li>
+                        
+                        <li><a href="/ingest-profiles/references/standard-live-ingest-profiles.html">Standard Live Ingest Profiles</a></li>
+                        
+                        <li><a href="/ingest-profiles/references/fields-custom-live-ingest-profiles.html">Fields for Custom Live Ingest Profiles</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/ingest-profiles/code-samples/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Code Samples</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/ingest-profiles/code-samples/ingest-profiles-api-sample-create-custom-dynamic-delivery-profile.html">Create Custom Dynamic Delivery Profile</a></li>
+                        
+                        <li><a href="/ingest-profiles/code-samples/ingest-profiles-api-sample-create-custom-context-aware-encoding-profile.html">Create Custom CAE Profile</a></li>
+                        
+                        <li><a href="/ingest-profiles/code-samples/ingest-profiles-api-sample-add-profile-multiple-accounts.html">Add Profile to Multiple Accounts</a></li>
+                        
+                        <li><a href="/ingest-profiles/code-samples/ingest-profiles-api-sample-get-all-profiles-account.html">Get All Profiles for an Account</a></li>
+                        
+                        <li><a href="/ingest-profiles/code-samples/ingest-profiles-api-sample-set-default-profile-dynamic-delivery.html">Set Default Profile</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/ipx/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;In-Page Experience API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href=" /ipx/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/ipx/getting-started/overview-page-experience-api.html">Overview: In-Page Experience API</a></li>
+                        
+                        <li><a href="/ipx/getting-started/quick-start-page-experience-platform-rest-api.html">Quick Start: In-Page Experience Platform (REST) API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/ipx/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/ipx/references/reference.html">In-Page Experience API Reference</a></li>
+                        
+                        <li><a href="/ipx/references/page-experience-api-error-reference.html">In-Page Experience API Error Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/live/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Live API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/live/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/live/getting-started/overview-brightcove-live-api.html">Overview: Live API</a></li>
+                        
+                        <li><a href="/live/getting-started/quick-start-create-live-stream-using-brightcove-live-api.html">Creating a Live Stream using the API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/live/code-samples/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Code Samples</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/live-api/code-samples/live-api-sample-create-live-job.html">Create a Live Job</a></li>
+                        
+                        <li><a href="/live-api/code-samples/quick-start-create-live-job-mpeg2-ts-input.html">Create a Live Job for MPEG2-TS Input</a></li>
+                        
+                        <li><a href="/live-api/code-samples/quick-start-using-rtmp-outputs-live-events.html">Using RTMP Outputs for Live Events</a></li>
+                        
+                        <li><a href="/live-api/code-samples/simulated-live.html">Simulated Live Event</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/live/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/live-api/references/live-api-error-messages.html">Error Messages</a></li>
+                        
+                        <li><a href="/live-api/references/live-api-release-notes.html">Release Notes</a></li>
+                        
+                        <li><a href="/live-api/references/reference.html">Live API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/live/ssai/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;SSAI</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/live-api/ssai/live-api-cue-points-and-ad-beacons-ssai.html">Cue Points and Ad Beacons with SSAI</a></li>
+                        
+                        <li><a href="/live-api/ssai/live-api-server-side-ad-insertion-ssai.html">Server-Side Ad Insertion (SSAI)</a></li>
+                        
+                        <li><a href="/live-api/ssai/overview-player-enhancements-live-ssai.html">Overview: Player Enhancements for Live SSAI</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/live/guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/live-api/guides/brightcove-live-best-practices.html">Brightcove Live Best Practices</a></li>
+                        
+                        <li><a href="/live-api/guides/brightcove-live-program-ad-metadata-api.html">Brightcove Live Program Ad Metadata API</a></li>
+                        
+                        <li><a href="/live-api/guides/live-api-creating-frame-accurate-clip.html">Creating a Frame-Accurate Clip</a></li>
+                        
+                        <li><a href="/live-api/guides/live-api-creating-vod-clips.html">Creating VOD Clips</a></li>
+                        
+                        <li><a href="/live-api/guides/getting-list-live-or-vod-jobs.html">Getting a List of Live or VOD Jobs</a></li>
+                        
+                        <li><a href="/live-api/guides/live-api-insert-id3-timed-metadata.html">Insert ID3 timed metadata</a></li>
+                        
+                        <li><a href="/live-api/guides/live-drm-live-api.html">Live DRM via the Live API</a></li>
+                        
+                        <li><a href="/live-api/guides/managing-credentials-live-api.html">Managing Credentials for the Live API</a></li>
+                        
+                        <li><a href="/live-api/guides/live-api-notifications.html">Notifications</a></li>
+                        
+                        <li><a href="/live-api/guides/live-playback-restrictions.html">Playback Restrictions with Live Streams</a></li>
+                        
+                        <li><a href="/live-api/guides/reducing-latency-live-streams.html">Reducing Latency for Live Streams</a></li>
+                        
+                        <li><a href="/live-api/guides/live-api-rtmp-outputs.html">RTMP Outputs</a></li>
+                        
+                        <li><a href="/live-api/guides/live-api-static-entry-points.html">Static Entry Points</a></li>
+                        
+                        <li><a href="/live-api/guides/signed-urls-and-token-auth-live-stream.html">Signed URLs and Token Auth with a Live Stream</a></li>
+                        
+                        <li><a href="/live-api/guides/using-live-redundancy.html">Using Live Redundancy</a></li>
+                        
+                        <li><a href="/live-api/guides/live-api-vod-live-event.html">VOD from Live Event</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/oauth/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;OAuth API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/oauth/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/oauth/getting-started/overview-oauth-api-v4.html">Overview: OAuth API</a></li>
+                        
+                        <li><a href="/oauth/getting-started/quick-start-oauth.html">Quick Start: OAuth API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/oauth/guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Create Client Credentials: cURL</a></li>
+                        
+                        <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Create Client Credentials: Postman</a></li>
+                        
+                        <li><a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a></li>
+                        
+                        <li><a href="/oauth/guides/api-operations-client-credentials-requests.html">API Operations for Client Credentials Requests</a></li>
+                        
+                        <li><a href="/oauth/guides/get-your-bc-token.html">Getting your BC_TOKEN</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/oauth/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/oauth/references/reference.html">OAuth API Reference</a></li>
+                        
+                        <li><a href="/oauth/references/oauth-api-error-message-reference.html">OAuth API Error Message Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/oauth/code-samples/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Code Samples</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">Create Client Credentials</a></li>
+                        
+                        <li><a href="/oauth/code-samples/oauth-api-sample-get-access-token.html">Get an Access Token</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/playback/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Playback API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/playback/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/playback/getting-started/overview-playback-api.html">Overview: Playback API</a></li>
+                        
+                        <li><a href="/playback/getting-started/quick-start-playback-api.html">Quick Start: Playback API</a></li>
+                        
+                        <li><a href="/cms/getting-started/best-practices-cms-and-playback-apis.html">Best Practices: CMS and Playback APIs</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/playback/guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/cms/searching/cmsplayback-api-videos-search.html">CMS and Playback APIs: Video Search</a></li>
+                        
+                        <li><a href="/cms/getting-started/best-practices-cms-and-playback-apis.html">Catalog Search Architecture</a></li>
+                        
+                        <li><a href="/playback/guides/static-url-delivery.html">Static URL Delivery</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/playback/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/playback/references/reference_v2.html">Playback API Reference</a></li>
+                        
+                        <li><a href="/playback/references/playback-api-video-fields-reference.html">Video Fields Reference</a></li>
+                        
+                        <li><a href="/playback/references/playback-api-playlist-fields-reference.html">Playlist Fields Reference</a></li>
+                        
+                        <li><a href="/playback/references/playback-api-error-reference.html">Error Reference</a></li>
+                        
+                        <li><a href="/cms/references/catalog-apis-cms-api-and-playback-api-release-notes.html">CMS/Playback APIs Release Notes</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/playback/code-samples/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Code Samples</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/playback/code-samples/thumbnail-grid.html">Video Thumbnail Grid</a></li>
+                        
+                        <li><a href="/playback/code-samples/playback-api-sample-mrss-generator.html">MRSS Generator</a></li>
+                        
+                        <li><a href="/playback/code-samples/playback-api-sample-jsonmrss-feed-playlist.html">JSON/MRSS Feed from a Playlist</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/player-management/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Player Management API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/player-management/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/player-management/getting-started/overview-player-management-api.html">Overview: Player Management API</a></li>
+                        
+                        <li><a href="/player-management/getting-started/step-step-player-management.html">Step-by-Step: Player Management</a></li>
+                        
+                        <li><a href="/player-management/getting-started/training-demand-quick-start-player-management.html">Training on Demand: Quick Start to Player Management</a></li>
+                        
+                        <li><a href="/player-management/getting-started/oauth-guide.html">OAuth Guide</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/player-management/guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/player-management/guides/player-configuration-guide.html">Player Configuration Guide</a></li>
+                        
+                        <li><a href="/player-management/guides/plugin-registry.html">Plugin Registry</a></li>
+                        
+                        <li><a href="/player-management/guides/pre-release-player.html">Pre-release Player</a></li>
+                        
+                        <li><a href="/player-management/guides/player-repositories.html">Player Repositories</a></li>
+                        
+                        <li><a href="/player-management/guides/guide-embed-apis.html">Embed APIs</a></li>
+                        
+                        <li><a href="/player-management/guides/opting-out-automatic-player-updates.html">Opt Out of Automatic Player Updates</a></li>
+                        
+                        <li><a href="/player-management/guides/embedding-brightcove-players-cms.html">Embedding Brightcove Players in a CMS</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/player-management/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/player-management/references/reference.html">Player Management API Reference</a></li>
+                        
+                        <li><a href="/player-management/references/player-management-api-release-notes.html">Release Notes</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/player-management/code-samples/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Code Samples</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/player-management/code-samples/setup-player-management-samples.html">Setup for Player Management Samples</a></li>
+                        
+                        <li><a href="/player-management/code-samples/bulk-updating-brightcove-default-player.html">Bulk Updating Default Player</a></li>
+                        
+                        <li><a href="/player-management/code-samples/player-management-api-sample-create-player.html">Create a Player</a></li>
+                        
+                        <li><a href="/player-management/code-samples/player-management-api-sample-display-players.html">Display Players</a></li>
+                        
+                        <li><a href="/player-management/code-samples/player-management-api-sample-delete-players.html">Delete Players</a></li>
+                        
+                        <li><a href="/player-management/code-samples/player-management-api-sample-using-lastviewed-data.html">Using last_viewed Data</a></li>
+                        
+                        <li><a href="/player-management/code-samples/player-management-api-sample-programmatically-update-players.html">Programmatically Update Players</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/playback-restrictions/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Playback Restrictions</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/playback-restrictions/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/playback-restrictions/getting-started/overview-playback-restrictions.html">Overview: Brightcove Playback Restrictions</a></li>
+                        
+                        <li><a href="/playback-restrictions/getting-started/implementing-playback-rights.html">Implementing Playback Rights</a></li>
+                        
+                        <li><a href="https://studio.support.brightcove.com/admin/managing-playback-rights.html">Video Cloud Studio: Playback Rights</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/playback-restrictions/guides/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Guides</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Creating a JSON Web Token (JWT)</a></li>
+                        
+                        <li><a href="/playback-restrictions/guides/authentication-apis.html">Using Authentication APIs</a></li>
+                        
+                        <li><a href="/playback-restrictions/guides/stream-concurrency.html">Limiting Concurrent Streams per Viewer</a></li>
+                        
+                        <li><a href="/playback-restrictions/guides/device-limits.html">Implementing Device Limits</a></li>
+                        
+                        <li><a href="https://player.support.brightcove.com/playback/playback-restrictions-with-bcp.html">Playback Restrictions with Brightcove Player</a></li>
+                        
+                        <li><a href="https://sdks.support.brightcove.com/features/playback-restrictions-with-sdks.html">Playback Restrictions with the Native SDKs</a></li>
+                        
+                        <li><a href="https://live.support.brightcove.com/live/guides/live-playback-restrictions.html">Playback Restrictions with Live Streams</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/playback-restrictions/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Authentication</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/playback-restrictions/references/key-api/reference.html">Key API Reference</a></li>
+                        
+                        <li><a href="/playback-restrictions/references/blacklist-api/reference.html">Blacklist API Reference</a></li>
+                        
+                        <li><a href="/playback-restrictions/references/audit-api/reference.html">Audit API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/playback-restrictions/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Playback Rights</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/playback-restrictions/references/playback-rights/reference.html">Playback Rights API Reference</a></li>
+                        
+                        <li><a href="/cms/references/reference.html">CMS API Reference</a></li>
+                        
+                        <li><a href="/playback-restrictions/references/playback-rights-errors.html">Playback Rights Error Reference</a></li>
+                        
+                        <li><a href="/playback-restrictions/references/devices-api/reference.html">Devices API Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/policy/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Policy API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/policy/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/policy/getting-started/overview-policy-api.html">Overview: Policy API</a></li>
+                        
+                        <li><a href="/policy/getting-started/quick-start-policy-api.html">Code Sample: Generate a Policy Key</a></li>
+                        
+                        <li><a href="/policy/getting-started/policy-keys.html">Policy Key from Player</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/policy/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/policy/references/reference.html">Policy API Reference</a></li>
+                        
+                        <li><a href="/policy/references/policy-api-release-notes.html">Release Notes</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/social/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Social API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/social/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/social/getting-started/overview-social-api.html">Overview: Social API</a></li>
+                        
+                        <li><a href="/social/getting-started/quick-start-social-api.html">Quick Start: Social API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/social/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/social/references/reference.html">Social API Reference</a></li>
+                        
+                        <li><a href="/social/references/social-api-error-reference.html">Social API: Error Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/social-syndication/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Social Syndication API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/social-syndication/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/social-syndication/getting-started/public-syndication-api-overview.html">Overview: Syndication Configuration API</a></li>
+                        
+                        <li><a href="/social-syndication/getting-started/feed-syndication-api-overview.html">Overview: Syndication Feed API</a></li>
+                        
+                        <li><a href="/social-syndication/getting-started/sample-templates-universal-syndication.html">Templates for Universal Syndication</a></li>
+                        
+                        <li><a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">CMS and Playback APIs: Video Search v2</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/social-syndication/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/social-syndication/references/configuration-reference.html">Syndication Configuration API Reference</a></li>
+                        
+                        <li><a href="/social-syndication/references/feed-reference.html">Syndication Feed API Reference</a></li>
+                        
+                        <li><a href="/policy/references/policy-api-release-notes.html">Release Notes</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/ssai/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;SSAI API</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/ssai/getting-started/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Getting Started</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/ssai/getting-started/video-cloud-ssai-ad-config-api.html">Video Cloud SSAI API</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+                  
+                    <li class="submenu-header">
+                      <a href="/ssai/references/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;References</a>
+                      <ul class="sidenav-subsubmenu" style="display:none;">
+                        
+                        <li><a href="/ssai/references/reference.html">SSAI API Reference</a></li>
+                        
+                        <li><a href="/ssai/references/ssai-api-error-reference.html">SSAI API Error Reference</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/training/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Training</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/training/online-training-courses.html">Online Training Courses</a></li>
+                  
+                
+                  
+                    <li><a href="/training/register-training.html">Register for Instructor-led Training</a></li>
+                  
+                
+                  
+                    <li><a href="/training/brightcove-university.html">Brightcove University Training Courses</a></li>
+                  
+                
+              </ul>
+            
+          
+            
+              <h5 class="submenu-header"><a href="/support/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Support</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/support/viewing-brightcove-system-status-page.html">Viewing the Brightcove System Status Page</a></li>
+                  
+                
+                  
+                    <li><a href="/support/contact-sales.html">Contact Sales</a></li>
+                  
+                
+                  
+                    <li><a href="/support/opening-case-with-brightcove-support.html">Opening a Support Case</a></li>
+                  
+                
+                  
+                    <li><a href="/support/reset-support-portal-password.html">Reset Your Support Portal Password</a></li>
+                  
+                
+              </ul>
+            
+          
+      </nav>
+    </div>
+    <div class="col-lg-7" style="background-color: white;color: #333333;margin-top: -1em;margin-bottom: -1em;padding-bottom:1em;">
+  <!-- bootstrap layout -->
+
+<p id="bc_veggie_burger_wrapper" style="display: none;"><img id="bc_veggie_burger" src="/assets/images/feather/menu.svg" alt="Navigation Menu"></p>
+
+<!-- search bar -->
+<div id="nav-search-box" style="margin-top: 1rem;"></div>
+<!-- in-page navigation for narrow screens -->
+<details class="centered-inpage-nav" id="centered_inpage_nav">
+  <summary><h6 class="toc">Page Contents</h6></summary>
+  <nav id="centered_toc"></nav>
+  <ul id="centered_in_page_toc" class="list-none"></ul>
+</details>
+<!-- open in new tab/window -->
+<a id="open_new_tab" href="#" target="_blank" style="display: none;"><img src="/assets/images/feather/external-link.svg" alt="open in new tab" style="margin-top:4em;width: 1.5em;"></a>
+
+
+
+
+
+
+<h1>Brightcove Live API: Server-Side Ad Insertion (SSAI)</h1>
+<article class="bcls-article">
+  <summary>This topic shows you how to set up server-side ad insertion (SSAI) for your live stream jobs.</summary>
+
+  
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p><span translate="No">SSAI</span> allows you display ads during a live streaming event at specified times. The main features include:</p>
+
+<ul>
+	<li>Insert ads using cue points sent from your encoder or create an instant cue point using the <span translate="No">Live API</span></li>
+	<li>Ingest "slate" assets to fill any unused ad time</li>
+	<li>Avoid ad blockers with ads that are stitched into the live stream on the server side</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information">
+  <ul>
+    <li>Before you can use <span translate="No">SSAI</span>, it must be enabled for your account. Contact your account manager for details.</li>
+ </ul>
+
+
+</aside>
+
+<p>To create a Live stream with server-side ads, follow these steps:</p>
+
+<ol class="bcls-tasklist-restart">
+	<li><a href="#General_information">Review the general information about the Live API</a></li>
+	<li><a href="#Create_an_ad_configuration">Create a live ad configuration</a>. You can also do this in <a href="https://studio.support.brightcove.com/admin/configuring-server-side-ad-settings.html#bc-ipnav-1">Video Cloud Studio</a>. See the sections below for details about managing your ad configurations using the Live API.</li>
+	<li><a href="#Managing_slates">Create slate assets</a>. If you prefer a UI, you can <a href="/live-module/implementing-server-side-ads-live-module.html#fill_slate">manage slates in Studio</a>.</li>
+	<li>Optional: <a href="/live-api/ssai/live-api-cue-points-and-ad-beacons-ssai.html">Insert cue points and ad beacons</a>.</li>
+	<li>Now, you are ready to <a href="/live-api/getting-started/quick-start-create-live-stream-using-brightcove-live-api.html">create a live stream using the Live API</a>. If you prefer to use Studio, you can <a href="/live-module/implementing-server-side-ads-live-module.html">implement server-side ads in the Live module</a></li>
+</ol>
+
+<p>See the rest of this document for details about custom headers, ad config variables, using DFP and ad macros.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="General_information">General information</h2>
+
+<p>The following information pertains to all Live API with SSAI requests.</p>
+
+<h3>Base URL</h3>
+
+<p>The base URL for the Live API with SSAI is:</p>
+
+<pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai</code></pre>
+
+<h3>Authentication</h3>
+
+<p>Authentication for requests requires a header with an API key:</p>
+
+<pre class="line-numbers">
+    <code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span>
+    </code></pre>
+
+<p>Contact your account manager to get an API key associated with your account.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Create_an_ad_configuration">Create an ad configuration</h2>
+
+<p>To create a new ad configuration, send a <code translate="No">POST</code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">POST</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications</code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample request body</h3>
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "application_ad_configuration": {
+        "ad_configuration_description": "Human readable description of the configuration",
+        "ad_configuration_expected_response_type": "<span class="bcls-input">Dfp, Vast or SmartXML</span>",
+        "ad_configuration_headers": {
+        "X-Custom-Header-Rand": "{{random.int32}}",
+        "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+        },
+        "ad_configuration_headers_for_impressions": false,
+        "ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
+        "ad_configuration_transforms": [
+          {
+          "xpath": "/",
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+          }
+        ],
+        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+      },
+      "application_description": "Human readable description of the ad application",
+      "account_id": "<span class="bcls-input">User's Account ID [Optional]</span>"
+    }</code></pre>
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">account_id </code> field is the Live Account ID. When omitted, the Account ID of the requesting user is used.</aside>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "application": {
+        "account_id": "User Account ID",
+        "application_description": "Human readable description of the ad application",
+        "application_ad_configuration": {
+          "ad_configuration_description": "Human readable description of the configuration",
+          "ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
+          "ad_configuration_headers": {
+            "X-Custom-Header-Rand": "{{random.int32}}",
+            "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+          },
+          "ad_configuration_headers_for_impressions": false,
+          "ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
+          "ad_configuration_transforms": [
+            {
+              "xpath": "/",
+              "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+            }
+          ],
+          "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+        },
+        "application_id": <span class="bcls-highlight">"Application ID"</span>
+      },
+      "inserted": true
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Update_an_ad_configuration">Update an ad configuration</h2>
+
+<p>Updating an ad configuration is very similar to creating one. Make a <code translate="No">PUT</code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">PUT</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcls-input">Application_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample request body</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "application_ad_configuration": {
+        "ad_configuration_description": "Some Updated Description Value",
+        "ad_configuration_expected_response_type": "<span class="bcls-input">Dfp or Vast or SmartXML</span>,
+        "ad_configuration_headers": {
+          "X-Custom-Header-Rand": "{{random.int32}}",
+          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+        },
+        "ad_configuration_headers_for_impressions": false,
+        "ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
+        "ad_configuration_transforms": [
+          {
+          "xpath": "/",
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+          }
+        ],
+        "ad_configuration_url_format": "https://updated-ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+      },
+      "application_description": "Human readable description of the ad application",
+      "account_id": "<span class="bcls-input">User's Account ID [Optional]</span>"
+    }</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">account_id </code> field is the Live Account ID. When omitted, the Account ID of the requesting user is used.</aside>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "account_id": "User Account ID",
+      "application_description": "Human readable description of the ad application",
+      "application_ad_configuration": {
+        "ad_configuration_description": "Some Updated Description Value",
+        "ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
+        "ad_configuration_headers": {
+        "X-Custom-Header-Rand": "{{random.int32}}",
+        "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+        },
+        "ad_configuration_headers_for_impressions": false,
+        "ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
+        "ad_configuration_transforms": [
+          {
+          "xpath": "/",
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+          }
+        ],
+        "ad_configuration_url_format": "https://updated-ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+      },
+      "application_id": <span class="bcls-highlight">"Application ID"</span>
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Get_all_ad_configurations">Get all ad configurations</h2>
+
+<p>To retrieve all the ad configurations for an account, submit a <code translate="No">GET </code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">GET</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications/account/<span class="bcls-input">Account_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">Account_ID</code> here is the Live Account ID.</aside>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">[
+      {
+        "application_id": "Application_ID_1",
+        "application_description": "DFP Single Midroll",
+        "application_ad_configuration": {
+        "ad_configuration_description": "DFP Test Config Single Midroll",
+        "ad_configuration_strategy": "MultipleAdResponse",
+        "ad_configuration_transforms": [],
+        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler",
+        "ad_configuration_expected_response_type": "Dfp"
+        },
+        "account_id": "Account_ID"
+      },
+      {
+        "application_id": "Application_ID_2",
+        "application_description": "Test DFP Single Midroll"
+        "application_ad_configuration": {
+        "ad_configuration_description": "DFP Test Config Single Midroll",
+        "ad_configuration_strategy": "MultipleAdResponse",
+        "ad_configuration_transforms": [
+        {
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;",
+          "xpath": "/"
+        }
+        ],
+        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}",
+        "ad_configuration_expected_response_type": "Dfp"
+        },
+        "account_id": "Account_ID"
+      }
+    ]</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Get_an_ad_configuration">Get an ad configuration</h2>
+
+<p>You can also retrieve a specific ad configuration by its <code translate="No">application_id </code> by sending a <code translate="No">GET</code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">GET</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcls-input">Application_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "application_id": "Application_ID",
+      "application_description": "Test DFP Single Midroll",
+      "application_ad_configuration": {
+        "ad_configuration_description": "DFP Test Config Single Midroll",
+        "ad_configuration_strategy": "MultipleAdResponse",
+        "ad_configuration_transforms": [
+          {
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;",
+          "xpath": "/"
+          }
+        ],
+        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}",
+        "ad_configuration_expected_response_type": "Dfp"
+      },
+      "account_id": "Account_ID"
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Delete_an_ad_configuration">Delete an ad configuration</h2>
+
+<p>To delete an ad configuration, send a <code translate="No">DELETE</code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">DELETE</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcls-input">APPLICATION_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+    "application_id": "Application_ID",
+    "deleted": true
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Managing_slates">Managing slates</h2>
+
+<p>Slates are your own assets used to fill unused ad time. You can use slates to provide a "be right back" message or any content that you like.</p>
+
+<p>Below are details for the API requests to add and manage slate assets.</p>
+
+<h3>Add slate asset</h3>
+
+<p>To ingest a new slate media source asset, submit a <code translate="No">POST</code> request:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">POST</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/slates</code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>Sample request body</h4>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "source_url": "https://somesourceasset.com/slate-to-ingest.mp4",
+      "account_id": "<span class="bcls-input">Account_ID [Optional]</span>",
+      "source_description": "<span class="bcls-input">User identifiable description for the slate  [Optional]</span>"
+    }
+    </code>
+    </pre>
+
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">account_id </code> here is the Live Account ID. When omitted, Account ID of the requesting user is used.</aside>
+
+<h4>Sample response</h4>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "media_source_asset_id": "New_UUID",
+      "account_id": "Account_ID",
+      "media_source_asset_default": false,
+      "media_source_asset_type": "slate",
+      "media_source_asset_url": "https://somesourceasset.com/slate-to-ingest.mp4",
+      "media_source_asset_status": "transcoding"
+      "media_source_asset_description": "User identifiable description for the slate"
+    }</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">Note: that setting <code translate="No">media_source_asset_default</code> is <strong>not</strong> supported at this time.</aside>
+
+<h3>Delete slate asset</h3>
+
+<p>To delete a slate media source asset, send a <code translate="No">DELETE</code> request:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">DELETE</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/slates/slate/<span class="bcls-input">Slate_MSA_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>Sample response</h4>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "media_source_asset_id": "MSA_UUID",
+      "media_source_asset_type": "slate",
+      "media_source_asset_url": "http://someS3urlpath/media.mp4",
+      "media_source_asset_default": false,
+      "media_source_asset_status": "ready",
+      "account_id": "ACCOUNT_ID"
+    }</code></pre>
+
+<h3>Get slate assets</h3>
+
+<p>You can retrieve an array of all the slate media source assets for an account by sending a <code translate="No">GET</code> request:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">GET</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/slates/account/<span class="bcls-input">Account_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">Account_ID </code> here is the Live Account ID.</aside>
+
+<h4>Sample response</h4>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">[
+      {
+      "media_source_asset_id": "MSA_UUID_1",
+      "media_source_asset_type": "slate",
+      "media_source_asset_default": false,
+      "media_source_asset_url": "http://someS3urlpath.com/media.mp4",
+      "account_id": "ACCOUNT_ID",
+      "media_source_asset_status": "ready"
+      },
+      {
+      "media_source_asset_id": "MSA_UUID_2",
+      "media_source_asset_type": "slate",
+      "media_source_asset_default": true,
+      "media_source_asset_url": "http://someS3urlpath.com/media.mp4",
+      "account_id": "ACCOUNT_ID",
+      "media_source_asset_status": "ready"
+      }
+    ]</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Notes_about_DFP">Notes about DFP</h2>
+
+<p>If you are obtaining ads from DFP, here are some things to keep in mind to help prevent issues.</p>
+
+<h3>Ad tag</h3>
+
+<p>When you are creating an ad tag for Live, be sure you are following the proper guidelines and including <code translate="No">/live </code>. See the DFP document <a href="https://support.google.com/dfp_premium/answer/1068325?hl=en">Create a master video tag manually</a> for full details.</p>
+
+<h3>Concurrency</h3>
+
+<p>If you are expecting a high amount of concurrency we recommended that you talk to your DFP account team.</p>
+
+<h3>Single/multiple ad responses</h3>
+
+<p>The <code translate="No">singleadresponse </code> and <code translate="No">multiadresponse </code> parameters are not currently used by <span translate="No">SSAI</span>.</p>
+
+<p>Live <span translate="No">SSAI</span> only makes a single ad server call and expects the response to contain all the ads for the break with the exception that it will follow any necessary ad wrappers with a limit of 5 redirects per ad. The following ad response formats are accepted and will be parsed as follows:</p>
+
+<ul>
+	<li>VAST - Single response or a pod of ads in a single response</li>
+	<li>DFP Ad Rules - Aggregates all available ads in the response including pre-, mid-, post-roll defined ads</li>
+	<li>Smart XML - Aggregates all available ads in the response including pre-, mid-, post-roll defined ads</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Custom_headers_for_ad_requests">Custom headers for ad requests</h2>
+
+<p>The <span translate="No">SSAI</span> platform can pass custom headers with the Ad calls and all beacons used by the backend platform. Some ad servers such as VideoPlaza require custom headers.</p>
+
+<p>Custom headers are specified as a set of key-value pairs in an <code translate="No">ad_configuration_headers</code> object, which is part of the <code translate="No">application_ad_configuration </code> (see the <a href="#Create_an_ad_configuration">Create an ad configuration</a> section).</p>
+
+<h3>Notes</h3>
+
+<ul>
+	<li>Standard headers are handled by default such as:
+	<ul>
+		<li><code translate="No">X-Forwarded-For </code></li>
+		<li><code translate="No">X-Device-User-Agent </code></li>
+	</ul>
+	</li>
+	<li>Header values can use the <a href="#Ad_configuration_variables">ad configuration variables</a></li>
+	<li>Header values can also be static strings</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--warning">Headers will be passed to all downstream requests including ad wrappers or impressions/quartiles so you should use them with caution.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Targeting_ads_using_ad_macros">Targeting ads using ad macros</h2>
+
+<p>When you <a href="#Create_an_ad_configuration">create an ad configuration</a>, your ad tag will typically look something like this:</p>
+
+<pre>
+      <code class="language-http" translate="No">https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;
+      num={{random.int32}}&amp;ses={{session.session_id}}&amp;IDFA={{deviceid}}&amp;
+      sitesection={{sitesection}}&amp;breakid={{breakid}}&amp;breaktheme={{breaktheme}}</code></pre>
+
+<p>The items inside the double curly braces are variables, also called ad macros, which Brightcove Live will replace with values, if they exist, when it sends the ad request.</p>
+
+<aside class="bcls-aside bcls-aside--information">
+  <p>Notes:</p>
+  <ul>
+    <li>The variables that will be useful depend on the ad server.</li>
+    <li>Brightcove URI encodes any value being inserted into the ad server URL.</li>
+    <li>If there are several values for one key, the encoded variables won't be readable by the ad server. This is because of the URI encoding.</li>
+  </ul>
+</aside>
+
+<p>Ad macro values can be supplied in following ways:</p>
+
+<ul>
+	<li><a href="#Using_header_information">Using header information</a></li>
+	<li><a href="#Appending_the_URL">Appending the URL</a></li>
+	<li><a href="#Adding_URLs_dynamically">Adding URLs dynamically</a></li>
+	<li><a href="#Using_manual_cue_points">Using manual cue points</a></li>
+</ul>
+
+<h3 id="Using_header_information">Using header information</h3>
+
+<p>Header information, detailed in the <a href="#Ad_configuration_variables">Ad configuration variables</a> section above, is available for any request. Simply specify the variables you want with the appropriate key names in your ad configuration.</p>
+
+<h3 id="Appending_the_URL">Appending the URL</h3>
+
+<p>Additional session values can be appended to the URL for the live stream, like this:</p>
+
+<pre>
+      <code class="language-http" translate="No">http://playback.bcovlive.io/e058d9f2737e18/us-west-2/NA/
+      playlist.m3u8<span class="bcls-highlight">?deviceid=123456&amp;sitesection=services</span>"</code></pre>
+
+<h3 id="Adding_URLs_dynamically">Adding URLs dynamically</h3>
+
+<p>You can add URLs dynamically, using Javascript and the Brightcove Player API:</p>
+
+<pre class="line-numbers">
+      <code class="language-html" translate="No">&lt;!DOCTYPE html&gt;
+      &lt;body&gt;
+        &lt;video
+        id="myPlayerID"
+        data-video-id="5975635167001"
+        data-account="3737230870001"
+        data-player="tIG7lVKBm"
+        data-embed="default"
+        data-application-id
+        class="video-js"
+        controls
+        width="640"
+        height="360"&gt;&lt;/video&gt;
+        &lt;script src="//players.brightcove.net/3737230870001/tIG7lVKBm_default/index.min.js"&gt;&lt;/script&gt;
+
+        &lt;script type="text/javascript"&gt;
+        var player = videojs("myPlayerID");
+
+        player.one("loadstart", function(){
+          var sourceUrl = player.currentSource();
+          console.log(sourceUrl);
+          var liveUrlWithParams = sourceUrl.src + "?player_width={width}&amp;player_height={height}&amp;deviceid={deviceid}";
+
+          player.src([{
+            "type": "application/vnd.apple.mpegurl",
+            "src": liveUrlWithParams
+          }]);
+        });
+      &lt;/script&gt;
+
+      &lt;/body&gt;</code></pre>
+
+<p>Note that the key names in this example correspond to the variable names in the ad tag shown above.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Ad_configuration_variables">Ad configuration variables</h2>
+
+<p>Ad configuration variables, also known as beacons, can be used in requests to manage ad configurations. For details, see the <a href="/live-api/ssai/live-api-cue-points-and-ad-beacons-ssai.html#Beacons">Live API: Cue Points and Ad Beacons with SSAI</a> document.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_manual_cue_points">Using manual cue points</h2>
+
+<p>Values for specific ad breaks can be sent with the manual cue point insertion request. For details, see the <a href="/live-api/ssai/live-api-cue-points-and-ad-beacons-ssai.html#Manual_cue_point_insertion">Live API: Cue Points and Ad Beacons</a> document.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Known_issues">Known issues</h2>
+
+<ul>
+	<li>SSAI requires that the live streaming video have an audio track.</li>
+	<li>If the VAST returned has the same ad ID, then the server will not request the ad content, even though the ad URL uses dynamic variables to make it a unique URL. This does <strong>not</strong> apply if you are using DFP for ads.</li>
+	<li>With DFP, while you can use the same ad ID, there still needs to be a different creative ID - in other words, you can't do a simple swap of the MediaFile.</li>
+	<li>
+	<p>If an ad break has a duration less than the MAX duration of the ad URL (min_ad_duration=0&amp;max_ad_duration=30000), if ad is returned longer than the ad break, the ad will not be played.</p>
+	</li>
+	<li>
+	<p>VPAID or clickable ads are not supported for <span translate="No">Brightcove Live SSAI</span>.</p>
+	</li>
+	<li>
+	<p>When an ad break has remaining time shorter than the segment seconds of the stream and a slate is displayed, the slate is displayed for its segment duration and the actual ad break will be longer than expected.</p>
+   <li>
+     <p>The above can cause that one of the following ad breaks, will be shrunk by the latency duration, to try to get the session back to the live edge.</p></li>
+	</li>
+	<li>The first time the ad is seen by our system, it will not play until it is transcoded and ready to deliver.</li>
+	<li>VMAP for Live SSAI is not currently supported.</li>
+</ul>
+</section>
+
+
+</article>
+<!-- complete bootstrap layout -->
+    </div>
+    <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav" id="right_side_nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
+      
+    </div>
+  </div>
+</div>
+
+<hr>
+<div class="last-updated">
+  Page last updated on 24 May 2021
+</div>
+
+<footer class="bcls-footer" role="contentinfo">
+  <div class="row">
+    <div class="region region-footer-top-center col-md-12">
+      <nav role="navigation" aria-labelledby="block-brightcovesupport-menu" id="block-brightcovesupport" class="footer-menu">
+
+        <h2>Brightcove Support</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://status.brightcove.com">System Status</a>
+          </li>
+          <li>
+            <a href="https://supportportal.brightcove.com/s/login/?">Contact Support</a>
+          </li>
+          <li>
+            <a href="https://support.brightcove.com/">Documentation</a>
+          </li>
+        </ul>
+
+      </nav>
+      <nav role="navigation" aria-labelledby="block-training-menu" id="block-training" class="footer-menu">
+
+        <h2>Training</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://studio.support.brightcove.com/training/online-training-courses.html">Online Courses</a>
+          </li>
+          <li>
+            <a href="https://studio.support.brightcove.com/training/register-training.html">Register for a course</a>
+          </li>
+          <li>
+            <a href="https://university.brightcove.com/">Brightcove University</a>
+          </li>
+        </ul>
+
+      </nav>
+      <nav role="navigation" aria-labelledby="block-brightcove-menu" class="footer-menu">
+
+        <h2>Brightcove</h2>
+
+        <ul class="menu">
+          <li>
+            <a href="https://www.brightcove.com">Brightcove.com</a>
+          </li>
+          <li>
+            <a href="https://supportportal.brightcove.com/s/login/?">Contact Us</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="row">
+    <div class="region region-footer-bottom-center col-md-12">
+      <div class="bcls-copyright footer-menu">
+        <table>
+          <tr>
+            <td>
+              <div id="bc_copyright" class="field field--name-field-copyright-year field--type-string field--label-hidden field--item" style="float: left;"> Brightcove Inc. All rights reserved.</div>
+            </td>
+            <td><a href="https://www.brightcove.com/en/legal/privacy">Privacy</a> | <a href="https://www.brightcove.com/en/terms-and-conditions">Terms &amp; Conditions</a></td>
+            <td>
+              <div class="gf-links-cols footer-menu">
+                <div class="gf-social"><a href="https://www.linkedin.com/company/16439" title="LinkedIn" newtab="newtab" class="gf-social-linkedin" style="margin-right: 1rem;"><i data-feather="linkedin" style="color:#8E9093;height: 1.25rem;"></i></a><a href="https://twitter.com/brightcove" title="Twitter" newtab="newtab" class="gf-social-twitter" style="margin-right: 1rem;"><i data-feather="twitter" style="color:#8E9093;height: 1.25rem;"></i></a><a href="https://www.facebook.com/Brightcove" title="Facebook" newtab="newtab" class="gf-social-facebook"><i data-feather="facebook" style="color:#8E9093;height: 1.25rem;"></i></a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+      
+  var searchBox = sajari.init({
+    mode: "search-box",
+    project: "1588255093746585379", // Set this to your project.
+    collection: "brightcove-documenation", // Set this to your collection.
+    instantPipeline: "autocomplete", // Pipeline used as you type
+    inputPlaceholder: "Search", // Input element placeholder
+    maxSuggestions: 5, // Maximum number of suggestions to show
+    attachSearchBox: document.getElementById("nav-search-box") // DOM element to attach to
+  });
+  
+    searchBox("sub", "pipeline.search-sent", function (_, query) {
+      window.location = "/search.html?q=" + encodeURIComponent(query.q);
+    });
+  
+
+</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://support.brightcove.com/site-assets/js/site/https-fix.js"></script>
+  <script src="https://support.brightcove.com/site-assets/js/site/setDate.js"></script>
+  
+  <script src="https://support.brightcove.com/site-assets/js/site/prism.js"></script>
+  
+  <script src="https://support.brightcove.com/site-assets/js/site/site.js"></script>
+  <script src="https://support.brightcove.com/site-assets/js/site/tabs.js"></script>
+  <script src="https://support.brightcove.com/site-assets/js/site/toc.js"></script>
+  <script src="/assets/js/sites_nav.js"></script>
+  <script src="https://support.brightcove.com/site-assets/js/site/bcls-utils.js"></script>
+  <script src="https://support.brightcove.com/site-assets/js/site/local-link-fix.js"></script>
+  <script src="/assets/js/feedback.js"></script>
+  
+  <script src="/assets/js/sajari-search-foot.js"></script>
+  
+	<script>
+		feather.replace()
+	</script>
+  <!-- <script src="/assets/js/sajari-index.js"></script> -->
+  <style>
+    a.sj-paginator__page-number.sj-paginator__page-number--current.css-so0ov7 {
+      background-color: lightblue;
+    }
+    div.sj-tabs__tab {
+      margin-top: 3rem;
+      margin-left: .3rem;
+      border-top-left-radius: .4rem;
+      border-top-right-radius: .4rem;
+      background-color:#e8e8e8;
+    }
+
+    div.sj-tabs__tab.sj-tabs__tab--selected {
+      border-bottom-color: crimson;
+      background-color: #f8f8f8;
+    }
+
+    p.sj-results__result__description.css-p9jvyt {
+      font-size: 1rem;
+    }
+
+    .sj-result__text.css-31l7gp h3 {
+      color: navy;
+      font-size: 1.4rem;
+    }
+    </style>
+
+</body>
+
+</html>
