@@ -18,7 +18,7 @@ layout: staging
   <h2 id="Content_context">Content context</h2>
   <p>The type of content being streamed needs to be considered as it has an impact on the required settings for maintaining the quality of the input. Note that there are trade-offs and using the highest possible settings may cause issues such as skipped frames.</p>
   <p>Based on the information below, we recommend that you test different setting combinations for quality and performance before your live event.</p>
-	<p>The key input parameters are outlined in the following table</p>
+	<p>The key input parameters are outlined in the following table:</p>
 	<table class="bcls-table">
     <caption class="bcls-caption--table">Key Input Parameters for Live Streaming</caption>
     <thead class="bcls-table__head">
@@ -38,14 +38,76 @@ layout: staging
         </tr>
         <tr>
             <td>Input bitrate to top profile ratio</td>
-            <td>The input bitrate shouldn’t be unnecessarily higher than the rate of the top profile - e.g. if your top rate is 1080p 30fps @ 2Mbps there is likely no point in sending a 10Mbps input. Note that this is affected by the profile.
-              <p>In some cases it may be possible to make the top output a “copy_video”</p>
+            <td>
+              The input bitrate should be higher than the rate of the top profile, but too much higher may result in dropped frames or other issues - e.g. if your top rate is 1080p 30fps, the input should ideally be around 4mbps. Note that this is affected by the profile.
+              <p>If you require a high bitrate top output it is worth testing the <code>copy_video</code> setting which will simply copy your input encode to the output.</p>
             </td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>Profiles</td>
+          <td>
+            The different profiles (baseline, main, high) compress the data in ascending amounts (baseline: lowest, high: highest). Greater compression improves the rate of transmission, but also requires greater CPU resources to decode the data. Unless the encoder is highly constrained in available resources baseline profile should be avoided. On the other hand, using high profile at high bitrates is more likely to cause skipped frames due to the increased decode CPU resources required.
+            <p>Also see <a href="#gop_structure">GOP structure</a> below.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>Frame rate</td>
+          <td>
+            This should match the source.
+            <p>Higher rates will require proportionally higher input bitrates e.g. with action sport content a 60fps input stream carries substantially more data than a 30fps stream.</p>
+            <p>High rates such as 60fps are more likely to have skip frame issues on complex content at high bitrates.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>Keyframe rate</td>
+          <td>
+            The most efficient setting for this is the segment duration x frame rate - for example, if you have 6 second segments and 30fps making the keyframe rate 180 (6x30) would result in the lowest decoder load.
+            <p>However, to account for any fluctuations this is set to 2 x the frame rate - for example, 60 for a framerate of 30 fps.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>GOP structure</td>
+          <td>See <a href="#gop_structure">GOP structure</a> below.</td>
+        </tr>
+    </tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+  <h2 id="Key_issues">Key issues with streaming</h2>
+  <p>There are several issues that are generally encountered that relate to problems with the streaming experience from the encoder to Brightcove:</p>
+  <ol>
+    <li>
+      Network instability affecting the input:
+      <ol>
+        <li>While the internet is generally quite reliable it is not infallible and issues do occur. Issues are more likely to be noticed on higher bitrates.</li>
+        <li>If it takes longer to upload the video than real time then this can result in input drift (the time that the video is received is substantially later than when it was sent)</li>
+      </ol>
+    </li>
+    <li>
+      Transcoder overload resulting in skip frames: while we do everything to make sure our transcoders have enough overhead sometimes sudden spikes in either content complexity, network hiccups/ catchups or other interruptions to our transcoders can cause skip frames. The more complex the input is then the more likely it is that skipped frames will be encountered. There is also a known issue where changes from a still image for an extended duration e.g. longer than 5 minutes and a sudden change to action content can cause an overload.
+    </li>
+    <li>Encoder sending variable frame durations: the frame rate should be constant and it should be such that it allows for a keyframe interval that is constant. For example, for a frame rate such as 29.97 aka 30000/1001 or 23.976 aka 24000/1001 it is not possible to set a keyframe at a regular interval and as such should be avoided.</li>
+    <li>Encoder sending keyframes that are not a consistent duration apart, the keyframe rate should be a minimum of 2x the frame rate in seconds. For example, for a frame rate of 30fps the keyframe interval should be 60 frames which is 2 seconds and should be a maximum interval of once per segment - for example, if you have a 6 second segment then the maximum interval would be 180 frames at 30 fps</li>
+  </ol>
+</section>
+
+<section class="bcls-section">
+  <h2 id="Content_types">Content types</h2>
+  <p>Generally, more complex content will require using the higher of these settings and as such is more susceptible to skipped frames. The table below shows some examples in order of complexity. Note that these are examples only, and as just about every encoder setup is different. Testing and verification should be performed.</p>
+  <table class="bcls-table">
+    <caption class="bcls-caption--table">Content Type Examples</caption>
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Content Type</th>
+            <th>Example Settings</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
         </tr>
     </tbody>
 </table>
