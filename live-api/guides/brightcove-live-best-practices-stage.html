@@ -187,21 +187,49 @@ layout: staging
   <h2 id="gop_structure">GOP structure</h2>
   <p>The Group of Pictures (GOP) structure of the video is dependent first on the profile that is used as:</p>
   <ol>
-    <li>Baseline profile only supports I and P frames and CAVLC entropy encoding</li>
-    <li>Main and High support I, B and P frames and CABAC entropy encoding</li>
+    <li><strong>Baseline</strong> profile only supports I and P frames and CAVLC entropy encoding</li>
+    <li><strong>Main</strong> and <strong>High</strong> support I, B and P frames and CABAC entropy encoding</li>
   </ol>
-  
+  <p>Main and High profiles generally result in better compression at better quality but also require additional computation to encode and decode, as such may be more susceptible to skipped frames. In addition, as these profiles use B (bi-directional) frames, they induce some delay in the encoding process.</p>
+  <p>Baseline profile requires less CPU to encode and decode, but as it offers less compression, it requires a higher bitrate to maintain quality and as such is more susceptible to network issues.</p>
+  <h3>Notes on frame types and their likely impact on performance:</h3>
+  <ol>
+    <li><strong>I frames</strong>: uses the most bandwidth. Best added for complete scene changes or at the segment boundaries - i.e. the more the content changes the more of these you need (shorter GOP length)</li>
+    <li><strong>P frames</strong>: are the base unit between I frames</li>
+    <li><strong>B frames</strong>: use both prior and future frames, the more you add the better the compression will be but the higher the CPU and latency</li>
+  </ol>
+  <p>The use of <strong>I frames</strong> should ideally be limited to start of segments (critical if using passthrough) or scene changes. All or high numbers of I frames should be avoided as this can cause excess load leading to skipped frames.</p>
+  <h3>Additional notes:</h3>
+  <ul>
+    <li>Use options for preventing dense placement of key frames (example: <code>min_keyin</code> = 3+).</li>
+    <li>Use options ensuring a regular cadence of insertion of Key frames. For example, instead of specifying GOP length in seconds, specify it in exact fractions or frames.</li>
+  </ul>
 </section>
 
 <section class="bcls-section">
-<h2 id="Input_bandwidth">Input bandwidth</h2>
+  <h2 id="bitrate">Bitrate</h2>
+  <ul>
+    <li>Minimum input bandwidth: 2.5 mbps</li>
+    <li>Maximum input bandwidth: 10 mbps</li>
+  </ul>
+  
+  <ul>
+    <li>Make the stream "almost CBR"" - with <code>max_bitrate</code> = 1.1 * target_bitrate.</li>
+    <li>Use strict HRD-compliant rate control mode, if available.</li>
+  </ul>
+</section>
 
-<p>Providing a high-quality, stable input stream is the only way to ensure the best user experience for viewers. A good input stream provides the best video quality at the highest consistently available bandwidth from a location.</p>
-
-<ul>
-	<li>Minimum input bandwidth: 2.5 MBPS</li>
-	<li>Maximum input bandwidth: 10 MBPS</li>
-</ul>
+<section class="bcls-section">
+  <h2 id="Protocol">Protocol</h2>
+  <p>It is important to note that the internet is not a guaranteed delivery network, and that while an internet connection may be considered "good", it may not be good enough for reliable live video streaming at high quality. A small disruption in the path between the customer encoder and the Brightcove transcoding platform such as a small amount of congestion at an ISP, an unplanned failover between routers, or similar issues can cause a disruption in the video output. In high stakes live broadcast it is normal practice to have multiple dedicated networks consisting of either dedicated fibre, booked satellite bandwidth, or committed bandwidth on a managed network. This comes with a substantial cost, and in most cases it is possible to achieve a good enough outcome over the internet. If, however, it is critical to maintain fault-free transport please consider AWS Direct Connect or an ISP that can provide some level of dedicated bandwidth.</p>
+  <p>The options we recommend are (in order):</p>
+  <ol>
+    <li><strong>SRT</strong> - provides a good combination of speed of transport (UDP) with some control and error resilience. Not available on all encoders, though there are tools that can translate from local RTP such as srt-transmit.</li>
+    <li><strong>RTMP</strong> - being TCP based, it provides a good level of error resilience, downsides are that this comes with a substantial overhead. Note that not all features such as multiple audio tracks are available with RTMP.</li>
+    <li><strong>RTP-FEC</strong> - provides fast UDP based transport with some error resilience</li>
+    <li><strong>RTP</strong> - provides fast transport and advanced features with no error resilience</li>
+  </ol>
+  <aside class="bcls-aside bcls-aside--information language-editable">Note:  if you use RTMP, please consider disabling slices if possible as they may result in parts of a frame arriving out of order.</aside>
 </section>
 
 <section class="bcls-section">
@@ -243,7 +271,7 @@ layout: staging
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><code translate="No">ad_audio_loudness_level </code></td>
+			<td><code translate="No">ad_audio_loudness_level</code></td>
 			<td><code translate="No">-23 </code> (EBU R.128 standard)</td>
 		</tr>
 	</tbody>
