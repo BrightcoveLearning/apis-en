@@ -39,7 +39,7 @@ layout: staging
         <tr>
             <td>Input bitrate to top profile ratio</td>
             <td>
-              The input bitrate should be higher than the rate of the top profile, but too much higher may result in dropped frames or other issues - e.g. if your top rate is 1080p 30fps, the input should ideally be around 4mbps. Note that this is affected by the profile.
+              The input bitrate should be higher than the rate of the top profile, but too much higher may result in dropped frames or other issues - e.g. if your top rate is 1080p 30fps, the input should ideally be around 4 MBPS. Note that this is affected by the profile.
               <p>If you require a high bitrate top output it is worth testing the <code>copy_video</code> setting which will simply copy your input encode to the output.</p>
             </td>
         </tr>
@@ -105,12 +105,92 @@ layout: staging
     </thead>
     <tbody class="bcls-table__body">
         <tr>
-            <td></td>
-            <td></td>
+            <td>Webcam</td>
+            <td>
+              <ul>
+                <li>Resolution: 360p</li>
+                <li>Bitrate: 1 MBPS</li>
+                <li>Profile: Baseline</li>
+              </ul>
+            </td>
         </tr>
+        <tr>
+            <td>Web conference</td>
+            <td>
+              <ul>
+                <li>Resolution: 480p</li>
+                <li>Bitrate: 2.5 MBPS</li>
+                <li>Profile: Main</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Animation</td>
+            <td>
+              <ul>
+                <li>Resolution: 720p</li>
+                <li>Bitrate: 2.5 MBPS</li>
+                <li>Profile: Main</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Talking Head / News</td>
+            <td>
+              <ul>
+                <li>Resolution: 720p</li>
+                <li>Bitrate: 4 MBPS</li>
+                <li>Profile: Main</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Live Concert</td>
+            <td>
+              <ul>
+                <li>Resolution: 1080p (or source)</li>
+                <li>Bitrate: 5 MBPS</li>
+                <li>Profile: High</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Live Sport</td>
+            <td>
+              <ul>
+                <li>Resolution: 1080p (or source)</li>
+                <li>Bitrate: 6 MBPS</li>
+                <li>Profile: High</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Live Sport High FPS</td>
+            <td>
+              <ul>
+                <li>Resolution: 1080p (or source)</li>
+                <li>Bitrate: 10 MBPS</li>
+                <li>Profile: High</li>
+              </ul>
+            </td>
         </tr>
     </tbody>
 </table>
+</section>
+
+<section class="bcls-section">
+  <h2 id="verification">Verification and testing</h2>
+  <p>Ideally customers should start with the lowest possible settings on their most complex (most changing content) and test with their content by increasing the various settings until the output is acceptable. This is because generally the higher the settings the more likely issues are to be encountered in either the network or transcoding.</p>
+</section>
+
+<section class="bcls-section">
+  <h2 id="gop_structure">GOP structure</h2>
+  <p>The Group of Pictures (GOP) structure of the video is dependent first on the profile that is used as:</p>
+  <ol>
+    <li>Baseline profile only supports I and P frames and CAVLC entropy encoding</li>
+    <li>Main and High support I, B and P frames and CABAC entropy encoding</li>
+  </ol>
+  
 </section>
 
 <section class="bcls-section">
@@ -119,8 +199,8 @@ layout: staging
 <p>Providing a high-quality, stable input stream is the only way to ensure the best user experience for viewers. A good input stream provides the best video quality at the highest consistently available bandwidth from a location.</p>
 
 <ul>
-	<li>Minimum input bandwidth: 2.5 mbps</li>
-	<li>Maximum input bandwidth: 10 mbps</li>
+	<li>Minimum input bandwidth: 2.5 MBPS</li>
+	<li>Maximum input bandwidth: 10 MBPS</li>
 </ul>
 </section>
 
@@ -206,7 +286,7 @@ layout: staging
 		</tr>
 		<tr>
 			<td>Bitrate</td>
-			<td>Must be at least as high as the highest output bitrate - maximum: 10mbps.
+			<td>Must be at least as high as the highest output bitrate - maximum: 10MBPS.
 			<p>In almost all cases, Brightcove Support has found that using Constant Bitrate for the input stream greatly reduces the chance of problems.</p>
 			</td>
 		</tr>
