@@ -15,6 +15,9 @@ tags:
   - name: Live Jobs
     description: |-
       Operations for creating live jobs, listing live jobs, getting job details, and canceling live jobs. There are also operations for activating and deactivating SEP jobs, scheduling activation and deactivation of SEP jobs, and for inserting cuepoints or ID3 timed metadata.
+  - name: Schedule SEP Job Start Stop
+    description: |-
+      Operations for scheduling the activation and deactivation of an SEP job.
   - name: Redundant Groups
     description: >-
       Operations for creating redundant groups of live jobs for failover in case one stream fails
@@ -24,6 +27,9 @@ tags:
   - name: Live Job Clip
     description: >-
       Operations for creating and managing VOD clips, including scheduling clips for SEP jobs
+  - name: Schedule Clip
+    description: >-
+      Operations for scheduling the creation of a VOD clip for SEP jobs only.
   - name: SSAI
     description: Operations for managing server-side ad insertion with live streams.
   - name: Credentials
@@ -960,6 +966,161 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
+  /scheduler/jobstartstop:
+    post:
+      tags:
+        - Schedule SEP Job Start Stop
+      summary: Create a JobStartStop workflow to schedule activation/deactivation of an SEP job
+      description: >-
+        Create a JobStartStop workflow to schedule activation/deactivation of an SEP job.
+      operationId: CreateAJobStartStop
+      parameters:
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+      requestBody:
+        description: Create a JobStartStop workflow to set the `activation` and `deactivation` times for an SEP job.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateJobStartStopRequestBody'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStartStop'
+        '400':
+          description: >-
+            BAD_REQUEST: Invalid input value - see Live API Error Messages for
+            more details
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more
+            details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you
+            requested - see Live API Error Messages for more details
+        '500':
+          description: 'INTERNAL_SERVER_ERROR: see Live API Error Messages for more details'
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/scheduler/jobstartstop/{workflow_id}':
+    get:
+      tags:
+        - Schedule SEP Job Start Stop
+      summary: Get JobStartStop Details
+      description: Get JobStartStop Details
+      operationId: GetJobStartStop
+      parameters:
+        - $ref: '#/components/parameters/WorkflowId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStartStop'
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
+        '500':
+          description: >-
+             INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    put:
+      tags:
+        - Schedule SEP Job Start Stop
+      summary: Update JobStartStop Details
+      description: >-
+        Update Activation and/or Deactivation time. Can only update if
+        state is "pending".
+      operationId: UpdateJobStartStop
+      parameters:
+        - $ref: '#/components/parameters/WorkflowId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+      requestBody:
+        description: Update a JobStartStop workflow
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateJobStartStopRequestBody'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStartStop'
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
+        '500':
+          description: >-
+             INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Schedule SEP Job Start Stop
+      summary: Cancel JobStartStop
+      description: Cancel JobStartStop
+      operationId: CancelJobStartStop
+      parameters:
+        - $ref: '#/components/parameters/WorkflowId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStartStop'
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
+        '500':
+          description: >-
+             INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
   /vods:
     post:
       tags:
@@ -1177,6 +1338,201 @@ paths:
             requested - see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more details
         '500':
           description: 'INTERNAL_SERVER_ERROR: see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more details'
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/scheduler/clip':
+    post:
+      tags:
+        - Schedule Clip
+      summary: Create a Scheduled Clip workflow
+      description: 'Create a Scheduled Clip workflow'
+      operationId: CreateAScheduledClip
+      parameters:
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+      requestBody:
+        description: Create a Clip
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClipRequestBody'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clip'
+        '400':
+          description: >-
+            BAD_REQUEST: Invalid input value - see Live API Error Messages for
+            more details
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more
+            details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you
+            requested - see Live API Error Messages for more details
+        '500':
+          description: 'INTERNAL_SERVER_ERROR: see Live API Error Messages for more details'
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    get:
+      tags:
+        - Schedule Clip
+      summary: List Scheduled Clip workflows
+      description: >-
+        'List Clip workflows'
+      operationId: ListClip
+      parameters:
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+        - $ref: '#/components/parameters/start_token'
+        - $ref: '#/components/parameters/page_size'
+        - $ref: '#/components/parameters/job_id'
+        - $ref: '#/components/parameters/scheduler_state'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListClipResponse'
+        '400':
+          description: >-
+            BAD_REQUEST: Invalid input value - see Live API Error Messages for more details
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
+        '500':
+          description: 'INTERNAL_SERVER_ERROR: see Live API Error Messages for more details'
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/sceduler/Clip/{workflow_id}':
+    get:
+      tags:
+        - Schedule Clip
+      summary: Get Clip Schedule Details
+      description: Get Clip Schedule Details
+      operationId: GetScheduledClip
+      parameters:
+        - $ref: '#/components/parameters/WorkflowId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clip'
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
+        '500':
+          description: >-
+            INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    put:
+      tags:
+        - Schedule Clip
+      summary: Update Clip Schedule Details
+      description: >-
+        Update Clip time. Can only update if
+        state is "pending".
+      operationId: UpdateScheduledClip
+      parameters:
+        - $ref: '#/components/parameters/WorkflowId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+      requestBody:
+        description: Update a Clip workflow
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateClipRequestBody'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clip'
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
+        '500':
+          description: >-
+            INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Schedule Clip
+      summary: Cancel Scheduled Clip
+      description: Cancel Clip
+      operationId: CancelScheduledClip
+      parameters:
+        - $ref: '#/components/parameters/WorkflowId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clip'
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see Live API Error Messages for more details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
+        '500':
+          description: >-
+            INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
       deprecated: false
       security: []
       x-operation-settings:
