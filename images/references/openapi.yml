@@ -10,6 +10,15 @@ servers:
     variables: {}
 components:
   parameters:
+    AccountId:
+      description: Account ID.
+      explode: false
+      in: path
+      name: account_id
+      required: true
+      schema:
+        type: string
+      style: simple
     ImageURL:
       name: imageURL
       in: path
@@ -28,39 +37,42 @@ components:
     #     type: string
     Resize:
       name: resize
+      explode: true
       in: query
-      description: resize width and heigth in the format 200x200
+      description: resize width and height in the format 200x200
       required: false
-      style: simple
+      style: form
       schema:
         type: string
     Crop:
       name: crop
+      explode: true
       in: query
-      description: crop width and heigth in the format 200x200
+      description: crop width and height in the format 200x200
       required: false
-      style: simple
+      style: form
       schema:
         type: string
     Rotate:
       name: rotate
+      explode: true
       in: query
       description: rotate image the specified degrees
       required: false
-      style: simple
+      style: form
       schema:
         type: string
 paths:
   /image/v1/{account_id}/default/url/{imageURL}:
     parameters:
-      - $ref: "https://openapi.brightcove.com/openapi.yaml#/components/parameters/AccountId"
+      - $ref: "#/components/parameters/AccountId"
       # - $ref: "#/components/parameters/Token"
       - $ref: "#/components/parameters/ImageURL"
       - $ref: "#/components/parameters/Resize"
       - $ref: "#/components/parameters/Crop"
       - $ref: "#/components/parameters/Rotate"
     get:
-      summary: Get a specific Image with the speficied transformations
+      summary: Get a specific Image with the specified transformations
       operationId: TransformCustomImage
       tags:
         - Custom Image transformations
