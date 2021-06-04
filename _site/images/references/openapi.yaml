@@ -6,11 +6,11 @@ info:
   description: |-
     The Images API allows you to resize, crop, and rotate an image.
 
-    **Base URL: https://image.playback.us-east-1.qa.deploys.brightcove.com**
+    **Base URL: https://image.playback.us-east-1.prod.deploys.brightcove.com**
   version: 1.0.0
   x-bc-access: public
 servers:
-  - url: "https://images.brightcovecdn.net"
+  - url: "https://image.playback.us-east-1.prod.deploys.brightcove.com"
     variables: {}
   - url: "https://image.playback.us-east-1.qa.deploys.brightcove.com"
     variables: {}
@@ -28,7 +28,8 @@ components:
     ImageURL:
       name: imageURL
       in: path
-      description: image URL
+      description: >
+        image URL - must be `encodeURIComponent` encoded. You can use this [string encoder](https://general.support.brightcove.com/utilities/string-encoder.html)
       required: true
       style: simple
       schema:
@@ -87,7 +88,7 @@ paths:
           description: Expected response to a valid request
           content:
             image: 
-              '{Returns the image file}'
+              example: '{Returns the image file}'
         "404":
           description: Image not found
           content:
