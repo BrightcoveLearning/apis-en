@@ -6172,7 +6172,7 @@ components:
         job_id:
           description: >-
             Live Job ID to schedule activation and deactivation for.
-            Job must be a static Job.
+            Job must be a static Job. If `redundant_group` is `true`, the value must be a redundant group id.
           type: string
         activation:
           $ref: '#/components/schemas/CreateJobStartStopRequestBody.TaskInfo'
@@ -6187,6 +6187,9 @@ components:
             URL to send notifications for activation and deactivation.
             Required if a pre-notification is configured for activation or deactivation.
           type: string
+        redundant_group:
+          description: >-
+            Whether this scheduler is for activation/deactivation of a redundant group. If `true`, the `job_id` must be a redundant group id.
       required:
         - job_id
         - activation
