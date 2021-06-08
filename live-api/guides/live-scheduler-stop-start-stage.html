@@ -1,6 +1,6 @@
 ---
 title: 'Scheduling Activation/Deactivation of an SEP Stream'
-description: 'With the <code translate="No">JobStartStop</code> endpoint, you can schedule the activation and deactivation of an existing live <a href="/live-api/guides/live-api-static-entry-points.html">SEP</a>. At the specified time, our system will make the necessary API calls to activate and de-active a Job on your behalf.'
+description: 'With the <code translate="No">JobStartStop</code> endpoint, you can schedule the activation and deactivation of an existing live <a href="/live-api/guides/live-api-static-entry-points.html">SEP</a> or a set of SEP jobs that are part of a <a href="/live-api/guides/using-live-redundancy.html">Redundant Group</a>. At the specified time, our system will make the necessary API calls to activate and de-active a Job on your behalf.'
 parent: Guides
 grandparent: Live API
 ---
@@ -37,9 +37,9 @@ grandparent: Live API
 		<h3>Headers</h3>
 		<pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
 		X-API-KEY: <span class="bcls-input">{your API Key}</span></code></pre>
-		<h3>Request body</h3>
+		<h3>Request body: single SEP job</h3>
 		<pre class="line-numbers"><code class="language-json" translate="No">{
-			"job_id": "your Job ID",
+			"job_id": "your_Job_ID",
 			"activation": {
 				"time_utc": 1617386100
 			},
@@ -47,6 +47,36 @@ grandparent: Live API
 				"time_utc": 1617393600
 			},
 			"description": "My Wednesday broadcast"
+		}</code></pre>
+			<details>
+				<summary><h3>Sample response</h3></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"account_id": "1752604059001",
+	"activation": {
+		"state": "pending",
+		"time_utc": 1617386100
+	},
+	"deactivation": {
+		"state": "pending",
+		"time_utc": 1617393600
+	},
+	"description": "My Wednesday broadcast",
+	"job_id": "15981d93877e490185e6ebc9af2c79a3",
+	"type": "jobstartstop",
+	"workflow_id": "d44cf29f4f184757ac0995beb8a0097e"
+}</code></pre>
+			</details>
+		<h3>Request body: redundant group of SEP job</h3>
+		<pre class="line-numbers"><code class="language-json" translate="No">{
+			"job_id": "your_Redundant_Group_ID",
+			"activation": {
+				"time_utc": 1617386100
+			},
+			"deactivation": {
+				"time_utc": 1617393600
+			},
+			"description": "My Wednesday broadcast",
+      "redundant_group": true
 		}</code></pre>
 			<details>
 				<summary><h3>Sample response</h3></summary>
