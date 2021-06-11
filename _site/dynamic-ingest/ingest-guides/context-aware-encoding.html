@@ -2186,12 +2186,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           <td>Use when 1080p quality is critical. For example, customers delivering HD content to large screens</td>
         </tr>
         <tr>
-          <td><span translate="No">multi-platform-extended-dynamic</span></td>
+          <td><span translate="No">low-bandwidth-dynamic</span></td>
           <td>Shifts encode ladder towards lower bitrate renditions. Capped at 720p</td>
           <td>For use-cases and regions where scarce bandwidth is a core concern</td>
         </tr>
       </tbody>
     </table>
+
+    <p>Note that there are also versions of these that include MP4 renditions, and that there are additional profiles for HEVC (H.265) video, with or without H.264 renditions.</p>
     
     <h3>Using Presets to Encode Content</h3>
     
@@ -2261,58 +2263,58 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <h3>Sample CAE Profile</h3>
     
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-     "id": "1234567890",
-     "version": 1,
-     "name": "custom-cae-profile",
-     "description": "My custom CAE profile",
-     "account_id": 40000000001,
-     "brightcove_standard" : false,
-     "digital_master": {
-       "rendition": "passthrough",
-       "distribute": false
-     },
-     "dynamic_origin": {
-       "renditions": [
-         "default/audio64",
-         "default/audio96",
-         "default/audio128",
-         "default/audio192"
-       ],
-       "dynamic_profile_options": {
-         "min_renditions": 3,
-         "max_renditions": 6,
-         "max_resolution": {
-           "width": 1920,
-           "height": 1080
-         },
-         "max_bitrate": 4200,
-         "max_first_rendition_bitrate": 400,
-         "max_frame_rate": 30,
-         "keyframe_rate": 1,
-         "select_baseline_profile_configuration": true,
-         "min_ssim": 0.95,
-         "video_configurations": [
-             {"width": 1280, "height": 720},
-             {"width": 960,  "height": 540},
-             {"width": 640,  "height": 360}
-         ]
-       },
-       "images": [
-         {
-           "label": "poster",
-           "height": 720,
-           "width": 1280
-         },
-         {
-           "label": "thumbnail",
-           "height": 90,
-           "width": 160
-         }
-       ]
-     }
-    }</code></pre>
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "id": "1234567890",
+  "version": 1,
+  "name": "custom-cae-profile",
+  "description": "My custom CAE profile",
+  "account_id": 40000000001,
+  "brightcove_standard" : false,
+  "digital_master": {
+    "rendition": "passthrough",
+    "distribute": false
+  },
+  "dynamic_origin": {
+    "renditions": [
+      "default/audio64",
+      "default/audio96",
+      "default/audio128",
+      "default/audio192"
+    ],
+    "dynamic_profile_options": {
+      "min_renditions": 3,
+      "max_renditions": 6,
+      "max_resolution": {
+        "width": 1920,
+        "height": 1080
+      },
+      "max_bitrate": 4200,
+      "max_first_rendition_bitrate": 400,
+      "max_frame_rate": 30,
+      "keyframe_rate": 1,
+      "select_baseline_profile_configuration": true,
+      "min_ssim": 0.95,
+      "video_configurations": [
+          {"width": 1280, "height": 720},
+          {"width": 960,  "height": 540},
+          {"width": 640,  "height": 360}
+      ]
+    },
+    "images": [
+      {
+        "label": "poster",
+        "height": 720,
+        "width": 1280
+      },
+      {
+        "label": "thumbnail",
+        "height": 90,
+        "width": 160
+      }
+    ]
+  }
+}</code></pre>
     
     <p>For additional detail, please see the docs for the <a href="/ingest-profiles/">Ingest Profiles API</a> and <a href="/dynamic-ingest/index.html">Dynamic Ingest API</a>.</p>
     </section>
