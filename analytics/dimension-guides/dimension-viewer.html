@@ -115,20 +115,9 @@ layout: staging
 
     <ul id="fields">
       <li><code translate="No">viewer</code> - Event viewer(SSO ID or device id or unique string based on user-agent and IP)</li>
-      <li><code translate="No">application</code> - the value returned will be the  <code translate="No">account_id</code></li>
-      <li><code translate="No">video</code> - the video id</li>
-      <li><code translate="No">country</code> - the two-letter code for the country</li>
-      <li><code translate="No">region</code> - standard region abbreviation - what counts as a "region" varies by country</li>
-      <li><code translate="No">city</code> - the city name</li>
-      <li><code translate="No">device_type</code> - the type of device</li>
-      <li><code translate="No">video_engagement_1</code> - the number of views at the 1 percent point of the viewer</li>
-      <li><code translate="No">video_engagement_100</code> - the total number of views at the 100 percent point of viewer duration</li>
-      <li><code translate="No">video_engagement_25</code> - the total number of views at the 25 percent point of viewer duration</li>
-      <li><code translate="No">video_engagement_50</code> - the total number of views at the 50 percent point of viewer duration</li>
-      <li><code translate="No">video_engagement_75</code> - the total number of views at the 75 percent point of viewer duration&lt;</li>
-      <li><code translate="No">video_percent_viewed</code> - the sum of percentage of the viewer viewed for all viewer views. For example if there were two views in the period, and the percentage viewed in one view was 78%, and 59% in the other, the <code translate="No">viewer_percent_viewed</code> returned would be <samp translate="No">137</samp>.</li>
-      <li><code translate="No">video_seconds_viewed</code> - total seconds viewed for each viewer view</li>
+      <!-- <li><code translate="No">application</code> - the value returned will be the  <code translate="No">account_id</code></li> -->
       <li><code translate="No">video_view</code> - the number of times viewer playback began</li>
+      <li><code translate="No">time</code> - the number of times viewer playback began</li>
     </ul>
     </section>
 
@@ -142,7 +131,7 @@ layout: staging
 
     <section class="bcls-section">
     <h2 id="combinations">Combining dimensions</h2>
-      <p>The <code translate="No">viewer</code> dimension can be combined with several others, which add addition fields that can be retrieved. The details are in the table below.</p>
+      <p>The <code translate="No">viewer</code> dimension can be combined with several others, which add addition fields that can be retrieved. The details are in the table below. (<strong>Bold</strong> items are included in the response by default if the dimension is included.)</p>
       <table class="bcls-table">
         <caption class="bcls-caption--table">Supported Dimension Combinations</caption>
         <thead class="bcls-table__head">
@@ -155,56 +144,47 @@ layout: staging
             <tr>
                 <td><code translate="No">video</code></td>
                 <td>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
+                  <strong><code translate="No">video</code></strong><br>
+                  <code translate="No">video_engagement_1</code><br>
+                  <code translate="No">video_engagement_25</code><br>
+                  <code translate="No">video_engagement_50</code><br>
+                  <code translate="No">video_engagement_75</code><br>
+                  <code translate="No">video_engagement_100</code><br>
+                  <code translate="No">video_percent_viewed</code><br>
+                  <code translate="No">video_seconds_viewed</code><br>
+                  <code translate="No">video.tags</code><br>
+                  <code translate="No">video.reference_id</code><br>
+                  <code translate="No">video.name</code><br>
+                  <code translate="No">video.description</code><br>
+                  <code translate="No">video.long_description</code><br>
+                  <code translate="No">video.duration</code>
                 </td>
             </tr>
             <tr>
                 <td><code translate="No">country</code></td>
                 <td>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
+                  <strong><code translate="No">country</code></strong><br>
+                  <code translate="No">country_name</code>
                 </td>
             </tr>
             <tr>
                 <td><code translate="No">region</code></td>
                 <td>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
+                  <strong><code translate="No">region</code></strong><br>
+                  <code translate="No">region_name</code>
                 </td>
             </tr>
             <tr>
                 <td><code translate="No">city</code></td>
                 <td>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
+                  <strong><code translate="No">city</code></strong><br>
+                  <code translate="No">dma</code>
                 </td>
             </tr>
             <tr>
                 <td><code translate="No">device_type</code></td>
                 <td>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
-                  <code translate="No"></code><br>
+                  <strong><code translate="No">device_type</code></strong>
                 </td>
             </tr>
         </tbody>
@@ -218,16 +198,266 @@ layout: staging
     <h3>Dimension request</h3>
 
     <pre class="line-numbers language-http code-toolbar">
-    <code class="language-http" id="dimensionRequest"><span class="token header-name keyword"><span class="token header-name keyword">https:</span></span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=viewer</code></pre>
-    <button class="bcls-button" id="sendDimensionRequest">Test This Request</button>
-
-    <h3>Filter request</h3>
+    <code class="language-http" id="dimensionRequest">https://analytics.api.brightcove.com/v1/data?accounts=3365624256001&dimensions=viewer&limit=10&fields=viewer,time,video_view,engagement_score</code></pre>
+    <!-- <button class="bcls-button" id="sendDimensionRequest">Test This Request</button> -->
+    <details>
+      <summary>Sample Response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "item_count": 8,
+  "items": [
+    {
+      "engagement_score": null,
+      "viewer": "6798840584846290049",
+      "time": 1623870475157,
+      "video_view": 0
+    },
+    {
+      "engagement_score": 100,
+      "viewer": "-1094565064376617663",
+      "time": 1623870472882,
+      "video_view": 1
+    },
+    {
+      "engagement_score": 100,
+      "viewer": "8997125557862445199",
+      "time": 1623870433989,
+      "video_view": 1
+    },
+    {
+      "engagement_score": 39.13,
+      "viewer": "-8839675754655082792",
+      "time": 1623872904633,
+      "video_view": 1
+    },
+    {
+      "engagement_score": 143.48,
+      "viewer": "-6771654281667224776",
+      "time": 1623869869930,
+      "video_view": 2
+    }
+  ],
+  "summary": {
+    "engagement_score": 110.51,
+    "time": 1623875119506,
+    "video_view": 12
+  }
+}</code></pre>
+    </details>
+    <h3>Multi-dimension request sample</h3>
 
     <pre class="line-numbers language-http">
-    <code class="language-http" id="filterRequest"><span class="token header-name keyword">https:</span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=viewer&amp;where=viewer==4093643993001,1754276206001</code></pre>
+    <code class="language-http" id="filterRequest">https://analytics.api.brightcove.com/v1/data?accounts=3365624256001&dimensions=viewer,country,region,city,video,device_type&limit=10&fields=viewer,time,video_view,engagement_score,video_percent_viewed,video_seconds_viewed,video_engagement_1,video_engagement_25,video_engagement_50,video_engagement_75,video_engagement_100,video.tags,video.reference_id,video.name,video.description,video.duration,video.long_description,dma,country_name,region_name</code></pre>
     <button class="bcls-button" id="sendFilterRequest">Test This Request</button>
 
-    <h3>Response</h3>
+    <details>
+      <summary>Sample Response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "item_count": 8,
+  "items": [
+    {
+      "country": "MX",
+      "viewer": "6798840584846290049",
+      "video.name": "Bison",
+      "video_seconds_viewed": 23,
+      "video_engagement_75": 1,
+      "city": "Zapopan",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 1,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 100,
+      "country_name": "Mexico",
+      "region_name": null,
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 1,
+      "engagement_score": null,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "0",
+      "time": 1623870475157,
+      "video_view": 0,
+      "region": "MX-JAL"
+    },
+    {
+      "country": "US",
+      "viewer": "-8839675754655082792",
+      "video.name": "Bison",
+      "video_seconds_viewed": 9,
+      "video_engagement_75": 0,
+      "city": "Safety Harbor",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 0,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 39.13,
+      "country_name": "United States",
+      "region_name": "Florida",
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 0,
+      "engagement_score": 39.13,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "539",
+      "time": 1623872904633,
+      "video_view": 1,
+      "region": "US-FL"
+    },
+    {
+      "country": "US",
+      "viewer": "-1094565064376617663",
+      "video.name": "Bison",
+      "video_seconds_viewed": 23,
+      "video_engagement_75": 1,
+      "city": "Boulder",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 1,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 100,
+      "country_name": "United States",
+      "region_name": "Colorado",
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 1,
+      "engagement_score": 100,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "751",
+      "time": 1623870472882,
+      "video_view": 1,
+      "region": "US-CO"
+    },
+    {
+      "country": "US",
+      "viewer": "8997125557862445199",
+      "video.name": "Bison",
+      "video_seconds_viewed": 23,
+      "video_engagement_75": 1,
+      "city": "Boulder",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 1,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 100,
+      "country_name": "United States",
+      "region_name": "Colorado",
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 1,
+      "engagement_score": 100,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "751",
+      "time": 1623870433989,
+      "video_view": 1,
+      "region": "US-CO"
+    },
+    {
+      "country": "US",
+      "viewer": "-4530870087560842176",
+      "video.name": "Bison",
+      "video_seconds_viewed": 46,
+      "video_engagement_75": 2,
+      "city": "Newton Center",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 2,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 200,
+      "country_name": "United States",
+      "region_name": "Massachusetts",
+      "video_engagement_25": 2,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 2,
+      "engagement_score": 100,
+      "video_engagement_1": 2,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "506",
+      "time": 1623875061754,
+      "video_view": 2,
+      "region": "US-MA"
+    },
+    {
+      "country": "MX",
+      "viewer": "-6771654281667224776",
+      "video.name": "Bison",
+      "video_seconds_viewed": 66,
+      "video_engagement_75": 1,
+      "city": "Zapopan",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 1,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 286.96,
+      "country_name": "Mexico",
+      "region_name": null,
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 1,
+      "engagement_score": 143.48,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "0",
+      "time": 1623869869930,
+      "video_view": 2,
+      "region": "MX-JAL"
+    }
+  ],
+  "summary": {
+    "video_seconds_viewed": 305,
+    "video_engagement_75": 10,
+    "video_engagement_25": 11,
+    "video_engagement_50": 10,
+    "video_engagement_100": 10,
+    "engagement_score": 110.51,
+    "video_engagement_1": 11,
+    "video_percent_viewed": 1326.09,
+    "country_name": null,
+    "region_name": null,
+    "time": 1623875119506,
+    "video_view": 12,
+    "account": "3365624256001"
+  }
+}</code></pre>
+    </details>
 
     <pre class="line-numbers language-json">
     <code class="language-json" id="response">Response will appear here when you test a request</code></pre>
