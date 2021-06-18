@@ -169,8 +169,14 @@ grandparent: Playback Restrictions
 
   <section class="bcls-section">
     <h2 id="PlayReady">PlayReady</h2>
+    <p>PlayReady does not support mid-stream license checks.</p>
+    <h3>Current Brightcove Player</h3>
+    <p>If you are using Brightcove Player v6.48.x or newer, than the player sets the preferred order for Edge browsers to use Widevine instead of PlayReady. So, PlayReady should not be an issue.</p>
+    <p>You can find the fix for EPA DRM source selection in Chromium Edge browsers in the <a href="https://player.support.brightcove.com/release-notes/brightcove-player-release-notes.html">Brightcove Player Release Notes</a>.</p>
+    <h3>Older versions</h3>
+    <p>Older versions of Brightcove Player use the Chromium Edge browser default of PlayReady first. In this case, you have to perform the mid-stream license checks manually.</p>
     <p>
-      When using PlayReady, you should expect the same general behavior as defined in the previous section. However, you need to implement a manual license renewal in your players as described in <a href="https://docs.microsoft.com/en-us/playready/features/concurrency-limiting">Microsoft's Concurrency Limiting</a> document.
+      To implement a manual license renewal in your players, see <a href="https://docs.microsoft.com/en-us/playready/features/concurrency-limiting">Microsoft's Concurrency Limiting</a> document.
     </p>
   </section>
 
@@ -194,7 +200,7 @@ grandparent: Playback Restrictions
             Concurrency limit in non-Brightcove players, except when protected by Widevine
           </li>
           <li>
-            Concurrency limit for PlayReady in all devices
+            Concurrency limit for PlayReady in all devices, except when using Brightcove Player v6.48.x or newer
           </li>
         </ul>
       </li>
