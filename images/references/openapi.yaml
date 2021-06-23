@@ -4,7 +4,9 @@ x-bc-implicit-options: true
 info:
   title: Brightcove Image API
   description: |-
-    The Images API allows you to resize, crop, and rotate an image.
+    The Images API allows you to resize, crop, and/or rotate an image.
+
+    **Supported image formats: png, jpg, gif** 
 
     **Base URL: https://images.brightcovecdn.com**
   version: 1.0.0
@@ -48,7 +50,7 @@ components:
       name: resize
       explode: true
       in: query
-      description: resize width and height in the format 200x200
+      description: resize width and height in the format 200x200; can be used in combination with `rotate`; if used in combination with `crop`, `resize` will be executed, but not `crop`
       required: false
       style: form
       schema:
@@ -57,7 +59,7 @@ components:
       name: crop
       explode: true
       in: query
-      description: crop width and height in the format 200x200
+      description: crop width and height in the format 200x200; the origin point for the crop is the center of the image; can be used in combination with `rotate`; if used in combination with `resize`, `resize` will be executed, but not `crop`
       required: false
       style: form
       schema:
@@ -66,7 +68,7 @@ components:
       name: rotate
       explode: true
       in: query
-      description: rotate image the specified degrees
+      description: rotate image the specified degrees; can be used in combination with either `resize` or `crop` (if used with both `resize` and `crop`, `resize` and `rotate` will be executed, but not `crop`)
       required: false
       style: form
       schema:
@@ -92,7 +94,7 @@ paths:
             image/*: 
               example: '(Returns the image file)'
         "404":
-          description: Image not found
+          description: Image not found or unsupported image type
           content:
             application/json:
               example:
