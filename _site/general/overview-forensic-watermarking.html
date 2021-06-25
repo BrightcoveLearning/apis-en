@@ -2199,10 +2199,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
     <h3>Dynamic Ingest API</h3>
     <p>Once an account is enabled for forensic watermarking, you can add forensic watermarking to a video by adding the <code translate="No">forensic_watermarking</code> field to your ingest request, and setting it to <code translate="No">true</code>. This can be done for the original ingestion, replacing, or retranscoding the video.</p>
-    <h4>Sample request</h4>
+    <h4>Sample request body</h4>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "master": {
-          "url": "http://solutions.brightcove.com/video/Walking_Dead_609_AVOD.mp4",
+          "url": "http://solutions.brightcove.com/video/Walking_Dead_609.mp4",
           "audio_tracks": [
               {
                   "language": "en",
@@ -2217,6 +2217,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 </code></pre>
 
     <h3>CMS API</h3>
+    <p>By default, forensic watermarked renditions will be delivered if forensic watermarking was requested during ingestion. You can disable this using a video update request to the CMS API and setting <code translate="No">forensic_watermarking</code> to <code translate="No">INACTIVE</code>. To enable delivery of forensic watermarked renditions again, send another update request setting <code translate="No">forensic_watermarking</code> to <code translate="No">ACTIVE</code>.</p>
+    <h4>Sample request body</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "forensic_watermarking": "INACTIVE"
+}</code></pre>
 
     <h3>Playback API</h3>
 
@@ -2248,7 +2253,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 23 Jun 2021
+  Page last updated on 25 Jun 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
