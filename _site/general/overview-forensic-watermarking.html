@@ -2230,6 +2230,65 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <section class="bcls-section">
     <h2 id="APIs">APIs</h2>
     <p>Here are the APIs and fields related to Forensic Watermarking:</p>
+    <h3><a href="/dynamic-ingest/index.html">Dynamic Ingest API</a></h3>
+    <p>Once an account is enabled for forensic watermarking, you can add forensic watermarking to a video by adding the <code translate="No">forensic_watermarking</code> field to your ingest request, and setting it to <code translate="No">true</code>. This can be done for the original ingestion, replacing, or retranscoding the video.</p>
+    <h4>Sample request body</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "master": {
+          "url": "http://solutions.brightcove.com/video/Walking_Dead_609.mp4",
+          "audio_tracks": [
+              {
+                  "language": "en",
+                  "variant": "main"
+              }
+          ]
+      },
+    "profile": "multi-platform-standard-static-with-mp4",
+    <span class="bc-highlight">"forensic_watermarking": true,</span>
+    "capture-images": true
+}</code></pre>
+    <p>There is also a <code translate="No">forensic_watermarking_stub_mode</code> flag which, when set to <code translate="No">true</code> produces visible forensic watermarks:</p>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/general/forensic-watermarking/visible-watermarks.png" alt="Visible Forensic Watermarks">
+      <figcaption class="bcls-caption--image">Visible Forensic Watermarks</figcaption>
+    </figure>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that <code translate="No">forensic_watermarking_stub_mode</code> can only be set using the Dynamic Ingest API. You cannot set it using the Upload module.</aside>
+    <p><code translate="No">forensic_watermarking</code> must also be set to <code translate="no">true</code> to enable visible watermarks.</p>
+    <p>Use visible watermarks on a video to test integrations. Once that you have verified that the forensic watermarks are present, you will want to remove them to have only invisible forensic watermarks. To do this, you will need to submit another Dynamic Ingest request to retranscode the video, this time setting <code translate="No">forensic_watermarking_stub_mode</code> to <code translate="No">false</code>.</p>
+    <h4>Sample request body for visible forensic watermarks</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "master": {
+          "url": "http://solutions.brightcove.com/video/Walking_Dead_609.mp4",
+          "audio_tracks": [
+              {
+                  "language": "en",
+                  "variant": "main"
+              }
+          ]
+      },
+    "profile": "multi-platform-standard-static-with-mp4",
+    <span class="bc-highlight">"forensic_watermarking": true,</span>
+    <span class="bc-highlight">"forensic_watermarking_stub_mode": true,</span>
+    "capture-images": true
+}</code></pre>
+    <h4>Sample request body to remove visible forensic watermarks</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+    "profile": "multi-platform-standard-static-with-mp4",
+    <span class="bc-highlight">"forensic_watermarking": true,</span>
+    <span class="bc-highlight">"forensic_watermarking_stub_mode": false,</span>
+    "capture-images": true
+}</code></pre>
+    
+    <h3><a href="/cms/index.html">CMS API</a></h3>
+    <p>By default, forensic watermarked renditions will be delivered if forensic watermarking was requested during ingestion. You can disable this using a video update request to the CMS API and setting <code translate="No">forensic_watermarking</code> to <code translate="No">INACTIVE</code>. To enable delivery of forensic watermarked renditions again, send another update request setting <code translate="No">forensic_watermarking</code> to <code translate="No">ACTIVE</code>.</p>
+    <p>For accounts not enable for forensic watermarking, <code translate="No">forensic_watermarking</code> will be <code translate="No">null</code> and not included in API responses</p>
+    <h4>Sample request body</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "forensic_watermarking": "INACTIVE"
+}</code></pre>
+
+    <h3>Playback API</h3>
+    <p>The Playback API GET video responses will also contain the <code translate="No">forensic_watermarking</code> (if the account is enabled for forensic watermarking). If the value is <code translate="No">ACTIVE</code>, renditions with forensic watermarks will be delivered as sources to the player. Otherwise, non-watermarked renditions will be delivered.</p>
     <h3><a href="https://zencoder.support.brightcove.com/index.html">Zencoder</a></h3>
       <p>To generate outputs with forensic watermarking in Zencoder, you need to specify 2 outputs per video, an output <strong translate="no">A</strong> and <strong translate="no">B</strong>.</p>
       <h4>Sample request (outputs only)</h4>
@@ -2325,65 +2384,6 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       }
   ]
 }</code></pre>
-    <h3><a href="/dynamic-ingest/index.html">Dynamic Ingest API</a></h3>
-    <p>Once an account is enabled for forensic watermarking, you can add forensic watermarking to a video by adding the <code translate="No">forensic_watermarking</code> field to your ingest request, and setting it to <code translate="No">true</code>. This can be done for the original ingestion, replacing, or retranscoding the video.</p>
-    <h4>Sample request body</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "master": {
-          "url": "http://solutions.brightcove.com/video/Walking_Dead_609.mp4",
-          "audio_tracks": [
-              {
-                  "language": "en",
-                  "variant": "main"
-              }
-          ]
-      },
-    "profile": "multi-platform-standard-static-with-mp4",
-    <span class="bc-highlight">"forensic_watermarking": true,</span>
-    "capture-images": true
-}</code></pre>
-    <p>There is also a <code translate="No">forensic_watermarking_stub_mode</code> flag which, when set to <code translate="No">true</code> produces visible forensic watermarks:</p>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/general/forensic-watermarking/visible-watermarks.png" alt="Visible Forensic Watermarks">
-      <figcaption class="bcls-caption--image">Visible Forensic Watermarks</figcaption>
-    </figure>
-    <aside class="bcls-aside bcls-aside--information language-editable">Note that <code translate="No">forensic_watermarking_stub_mode</code> can only be set using the Dynamic Ingest API. You cannot set it using the Upload module.</aside>
-    <p><code translate="No">forensic_watermarking</code> must also be set to <code translate="no">true</code> to enable visible watermarks.</p>
-    <p>Use visible watermarks on a video to test integrations. Once that you have verified that the forensic watermarks are present, you will want to remove them to have only invisible forensic watermarks. To do this, you will need to submit another Dynamic Ingest request to retranscode the video, this time setting <code translate="No">forensic_watermarking_stub_mode</code> to <code translate="No">false</code>.</p>
-    <h4>Sample request body for visible forensic watermarks</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "master": {
-          "url": "http://solutions.brightcove.com/video/Walking_Dead_609.mp4",
-          "audio_tracks": [
-              {
-                  "language": "en",
-                  "variant": "main"
-              }
-          ]
-      },
-    "profile": "multi-platform-standard-static-with-mp4",
-    <span class="bc-highlight">"forensic_watermarking": true,</span>
-    <span class="bc-highlight">"forensic_watermarking_stub_mode": true,</span>
-    "capture-images": true
-}</code></pre>
-    <h4>Sample request body to remove visible forensic watermarks</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-    "profile": "multi-platform-standard-static-with-mp4",
-    <span class="bc-highlight">"forensic_watermarking": true,</span>
-    <span class="bc-highlight">"forensic_watermarking_stub_mode": false,</span>
-    "capture-images": true
-}</code></pre>
-    
-    <h3><a href="/cms/index.html">CMS API</a></h3>
-    <p>By default, forensic watermarked renditions will be delivered if forensic watermarking was requested during ingestion. You can disable this using a video update request to the CMS API and setting <code translate="No">forensic_watermarking</code> to <code translate="No">INACTIVE</code>. To enable delivery of forensic watermarked renditions again, send another update request setting <code translate="No">forensic_watermarking</code> to <code translate="No">ACTIVE</code>.</p>
-    <p>For accounts not enable for forensic watermarking, <code translate="No">forensic_watermarking</code> will be <code translate="No">null</code> and not included in API responses</p>
-    <h4>Sample request body</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "forensic_watermarking": "INACTIVE"
-}</code></pre>
-
-    <h3>Playback API</h3>
-    <p>The Playback API GET video responses will also contain the <code translate="No">forensic_watermarking</code> (if the account is enabled for forensic watermarking). If the value is <code translate="No">ACTIVE</code>, renditions with forensic watermarks will be delivered as sources to the player. Otherwise, non-watermarked renditions will be delivered.</p>
   </section>
   <section class="bcls-section">
     <h2 id="Limitations">Limitations</h2>
