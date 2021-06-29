@@ -27,8 +27,163 @@ layout: staging
         </ol>
       </li>
       <li>Get your License Key from <a href="https://dtv.nagra.com/nexguard-forensic-watermarking">NAGRA</a>.</li>
-      <li>Generate a public-private key pair which will be used by the Forensic Watermarking JWT and decrypted by the CDN. For details about creating the public key, see the <a href="https://general.support.brightcove.com/developer/create-json-web-token.html#Generate_public_private_key_pair">Creating a JSON Web Token (JWT)</a> document</li>
+      <li>Generate a public-private key pair which will be used by the Forensic Watermarking JWT and decrypted by the CDN. (see below)</li>
+      <li>Use the script provided by NAGRA to generate a JSON web token (JWT) for forensic watermarking. Be sure to save this token, as you will need it when you <a href="#Configure_your_player">configure your players</a>.</li>
     </ol>
+    <p>
+      There are many ways to generate the public-private key pair. Here are some examples:
+    </p>
+    <h3>
+      Example bash script:
+    </h3>
+    <aside class="bcls-aside bcls-aside--information">Note that the script below uses the <strong>jq</strong> package for parsing JSON. If you do not have jq installed see the <a href="https://github.com/stedolan/jq/wiki/Installation">installation instructions</a>.</aside>
+    <p>
+      Example script to generate the key pair:
+    </p>
+<pre class="line-numbers"><code class="language-bash" translate="No">#!/bin/bash
+set -euo pipefail
+
+NAME=${1:-}
+test -z "${NAME:-}" &amp;&amp; NAME="brightcove-forensic-watermarking-key-$(date +%s)"
+mkdir "$NAME"
+
+PRIVATE_PEM="./$NAME/private.pem"
+PUBLIC_PEM="./$NAME/public.pem"
+PUBLIC_TXT="./$NAME/public_key.txt"
+
+ssh-keygen -t rsa -b 2048 -m PEM -f "$PRIVATE_PEM" -q -N ""
+openssl rsa -in "$PRIVATE_PEM" -pubout -outform PEM -out "$PUBLIC_PEM" 2&gt;/dev/null
+openssl rsa -in "$PRIVATE_PEM" -pubout -outform DER | base64 &gt; "$PUBLIC_TXT"
+
+rm "$PRIVATE_PEM".pub
+
+echo "Public key to saved in $PUBLIC_TXT"
+</code></pre>
+    <p>
+      Run the script:
+    </p>
+    <pre><code class="language-bash" translate="No">$ bash keygen.sh
+</code></pre>
+
+    <details id="Example_using_Go">
+      <summary>Example using <span translate="No">Go</span></summary>
+      <p>
+        Example using the <span translate="No">Go</span> programming language to generate the key pair:
+      </p>
+      <aside class="bcls-aside bcls-aside--tip">If you are new to <span translate="No">Go</span>, see the <a href="https://golang.org/">The <span translate="No">Go</span> Programming Language</a> homepage.</aside>
+<pre class="line-numbers"><code class="language-bash" translate="No">package main
+  
+  import (
+    "crypto/rand"
+    "crypto/rsa"
+    "crypto/x509"
+    "encoding/base64"
+    "encoding/pem"
+    "flag"
+    "fmt"
+    "io/ioutil"
+    "os"
+    "path"
+    "strconv"
+    "time"
+  )
+  
+  func main() {
+    var out string
+  
+    flag.StringVar(&amp;out, "output-dir", "", "Output directory to write files into")
+    flag.Parse()
+  
+    if out == "" {
+      out = "rsa-key_" + strconv.FormatInt(time.Now().Unix(), 10)
+    }
+  
+    if err := os.MkdirAll(out, os.ModePerm); err != nil {
+      panic(err.Error())
+    }
+  
+    priv, err := rsa.GenerateKey(rand.Reader, 2048)
+    if err != nil {
+      panic(err.Error())
+    }
+  
+    privBytes := x509.MarshalPKCS1PrivateKey(priv)
+  
+    pubBytes, err := x509.MarshalPKIXPublicKey(priv.Public())
+    if err != nil {
+      panic(err.Error())
+    }
+  
+    privOut, err := os.OpenFile(path.Join(out, "private.pem"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+    if err != nil {
+      panic(err.Error())
+    }
+  
+    if err := pem.Encode(privOut, &amp;pem.Block{Type: "RSA PRIVATE KEY", Bytes: privBytes}); err != nil {
+      panic(err.Error())
+    }
+  
+    pubOut, err := os.OpenFile(path.Join(out, "public.pem"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+    if err != nil {
+      panic(err.Error())
+    }
+  
+    if err := pem.Encode(pubOut, &amp;pem.Block{Type: "PUBLIC KEY", Bytes: pubBytes}); err != nil {
+      panic(err.Error())
+    }
+  
+    var pubEnc = base64.StdEncoding.EncodeToString(pubBytes)
+  
+    var pubEncOut = path.Join(out, "public_key.txt")
+    if err := ioutil.WriteFile(pubEncOut, []byte(pubEnc+"\n"), 0600); err != nil {
+      panic(err.Error())
+    }
+  
+    fmt.Println("Public key saved in " + pubEncOut)
+  }
+  </code></pre>
+    </details>
+    <br>
+
+    <details id="Example_using_node_js">
+      <summary>Example using node.js</summary>
+      <p>
+        Example using node.js to generate the key pair:
+      </p>
+      <aside class="bcls-aside bcls-aside--tip">This script example requires node version 11 or later.</aside>
+  <pre class="line-numbers"><code class="language-javascript" translate="No">var crypto = require("crypto");
+  var fs = require("fs");
+  
+  var now = Math.floor(new Date() / 1000);
+  var dir = "rsa-key_" + now;
+  fs.mkdirSync(dir);
+  
+  crypto.generateKeyPair(
+    "rsa",
+    {modulusLength: 2048},
+    (err, publicKey, privateKey) =&gt; {
+      fs.writeFile(
+        dir + "/public.pem",
+        publicKey.export({ type: "spki", format: "pem" }),
+        err =&gt; {}
+      );
+      fs.writeFile(
+        dir + "/public_key.txt",
+        publicKey.export({ type: "spki", format: "der" }).toString("base64") +
+          "\n",
+        err =&gt; {}
+      );
+      fs.writeFile(
+        dir + "/private.pem",
+        privateKey.export({ type: "pkcs1", format: "pem" }),
+        err =&gt; {}
+      );
+    }
+  );
+  
+  console.log("Public key saved in " + dir + "/public_key.txt");</code></pre>
+    </details>
+
   </section>
   <section class="bcls-section">
     <h2 id="Implementation">Implementation</h2>
@@ -62,10 +217,10 @@ layout: staging
         </ol>
       </li>
       <li>Provide Brightcove with your NAGRA License Key. This License Key will be used during transcoding to generate the watermark.</li>
-      <li>In the <strong>Media</strong> module, you can enable/disable your videos for watermarking.</li>
-      <li>
+      <!-- <li>In the <strong>Media</strong> module, you can enable/disable your videos for watermarking.</li> -->
+      <li id="Configure_your_player">
         <p>Configure your player.</p>
-        <p>This is where you will pass the NAGRA watermark token and the User ID to the player. You can use either the Brightcove web player or the Native SDK players:</p>
+        <p>This is where you will pass the NAGRA watermark token and the Viewer ID to the player. You can use either the Brightcove web player or the Native SDK players:</p>
         <ul>
           <li><a href="https://player.support.brightcove.com/playback/forensic-watermarking-with-bcp.html">Forensic Watermarking with Brightcove Player</a></li>
           <li><a href="https://sdks.support.brightcove.com/features/forensic-watermarking-with-sdks.html">Forensic Watermarking with the Native SDKs</a></li>
@@ -79,6 +234,8 @@ layout: staging
   <section class="bcls-section">
     <h2 id="Analytics_reports">Analytics reports</h2>
     <p>Analytics reports on viewers for forensic watermarked videos are available via the <a href="/analytics/index.html">Analytics API</a> only. Reports can be returned in JSON, CSV, or XLXS format</p>
+    <p>In the Analytics data:</p>
+    <pre><code translate="no">1 Transaction = 1 unique Viewer per video in 24 hours</code></pre>
     <aside class="bcls-aside bcls-aside--information language-editable">Note that some of the examples provided below assume that you have added the tag <code translate="No">watermarked</code> to your videos with forensic watermarking. If not, you will need to filter your requests using a <code translate="No">where=video=={video_id}</code> filter (as in the first example).</aside>
     <h3>Example 1: viewers for a video by date</h3>
     <p>For this example, we will query the <code translate="No">video</code>, <code translate="No">viewer</code> and <code translate="No">date</code> dimensions and get the report back in CSV format.</p>
@@ -162,15 +319,17 @@ layout: staging
 }</code></pre>
     
     <h3><a href="/cms/index.html">CMS API</a></h3>
-    <p>By default, forensic watermarked renditions will be delivered if forensic watermarking was requested during ingestion. You can disable this using a video update request to the CMS API and setting <code translate="No">forensic_watermarking</code> to <code translate="No">INACTIVE</code>. To enable delivery of forensic watermarked renditions again, send another update request setting <code translate="No">forensic_watermarking</code> to <code translate="No">ACTIVE</code>.</p>
+    <p>By default, forensic watermarked renditions will be delivered if forensic watermarking was requested during ingestion. The presence of forensic watermarks will be indicated by the read-only field <code translate="No">forensic_watermarking</code>. If the field has a value of <code translate="No">ACTIVE</code>, forensic watermarks were successfully added. If the field has a value of <code translate="No">UNAVAILABLE</code> or <code translate="No">null</code>, forensic watermarks were not successfully added.</p>
+      
+      <!-- <p>You can disable this using a video update request to the CMS API and setting <code translate="No">forensic_watermarking</code> to <code translate="No">INACTIVE</code>. To enable delivery of forensic watermarked renditions again, send another update request setting <code translate="No">forensic_watermarking</code> to <code translate="No">ACTIVE</code>.</p>
     <p>For accounts not enable for forensic watermarking, <code translate="No">forensic_watermarking</code> will be <code translate="No">null</code> and not included in API responses</p>
     <h4>Sample request body</h4>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "forensic_watermarking": "INACTIVE"
-}</code></pre>
+}</code></pre> -->
 
     <h3>Playback API</h3>
-    <p>The Playback API GET video responses will also contain the <code translate="No">forensic_watermarking</code> (if the account is enabled for forensic watermarking). If the value is <code translate="No">ACTIVE</code>, renditions with forensic watermarks will be delivered as sources to the player. Otherwise, non-watermarked renditions will be delivered.</p>
+    <p>The Playback API GET video responses will also contain a <code translate="No">forensic_watermarking</code> (if the account is enabled for forensic watermarking). If the value is <code translate="No">ACTIVE</code>, renditions with forensic watermarks will be delivered as sources to the player. Otherwise, non-watermarked renditions will be delivered.</p>
     <h3><a href="https://zencoder.support.brightcove.com/index.html">Zencoder</a></h3>
       <p>To generate outputs with forensic watermarking in Zencoder, you need to specify 2 outputs per video, an output <strong translate="no">A</strong> and <strong translate="no">B</strong>.</p>
       <h4>Sample request (outputs only)</h4>
@@ -273,6 +432,8 @@ layout: staging
       <li>Only VOD is supported at this time. Forensic watermarking for Live streams is not supported.</li>
       <li>Videos must be at least five minutes long to have forensic watermarking applied.</li>
       <li>This feature requires a NAGRA License Key.</li>
+      <li>Players will require a forensic watermarking JWT that you will create using a script provided by NAGRA.</li>
+      <li><a href="/delivery-rules/index.html">Delivery rules</a> cannot be used with players used to deliver videos with forensic watermarking.</li>
       <li>You must use Brightcove's CDN. BYO CDN is not supported.</li>
       <!-- <li>You are responsible for generating and managing the tokens used to identify each viewer.</li> -->
       <li>Brightcove will not handle detection analysis. For this, contact NAGRA.</li>
