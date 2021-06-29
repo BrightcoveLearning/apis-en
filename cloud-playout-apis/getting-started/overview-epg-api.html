@@ -1,8 +1,8 @@
 ---
-title: 'Overview: Cloud Playout APIs'
+title: 'Overview: EPG API'
 parent: Getting Started
 grandparent: Cloud Playout APIs
-description: This topic provides and overview of the EPG API and the Channels API, which are used with Cloud Playout.
+description: This topic provides and overview of the EPG API, which is used with Cloud Playout.
 ---
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
@@ -12,10 +12,9 @@ description: This topic provides and overview of the EPG API and the Channels AP
     <p>There are two APIs related to <a href="https://studio.support.brightcove.com/cloud-playout/index.html">Cloud Playout</a>:</p>
     <ul>
       <li>The EPG API allows you to retrieve an electronic programming guide for a Cloud Playout channel. Cloud Playout generates EPG adhering to XML TV standard as described in schema found at <a href="https://repository.data2type.de/XMLTV/v_1.47/html/index.html">https://repository.data2type.de/XMLTV/v_1.47/html/index.html</a>.
-				<aside class="bcls-aside bcls-aside--information">Be sure to read the <a href="/cloud-playout-apis/getting-started/overview-epg-api.html">EPG API: Best Practices</a> to see how to get the best performance.</aside>
+				<aside class="bcls-aside bcls-aside--information">Be sure to read the <a href="/cloud-playout-apis/getting-started/epg-best-practices.html">EPG API: Best Practices</a> to see how to get the best performance.</aside>
 			</li>
-      <li>The Channels API allows you to retrieve information about your Cloud Playout channels which you can display in your UI or web page.</li>
-    <aside class="bcls-aside bcls-aside--information">This feature is currently in Limited Availability. Contact your Brightcove Account Manager for more information.</aside>
+      <li>The Channels API allows you to retrieve information about your Cloud Playout channels which you can display in your UI or web page. See <a href="/cloud-playout-apis/getting-started/overview-channel-api.html">Overview: Channels API</a></li>
   </section>
   <section class="bcls-section">
     <h2 id="authentication">Authentication</h2>
@@ -23,24 +22,11 @@ description: This topic provides and overview of the EPG API and the Channels AP
     <pre><code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">{access token}</span></code></pre>
     <p>Access tokens are retrieved using the OAuth API - see <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a> for details. You will also need client credentials to authenticate the requests for access tokens. These can be created in the Admin section of Studio - see <a href="/general/managing-api-authentication-credentials.html">Managing API Credentials</a>. The permissions your credentials will need for the EPG API are:</p>
     <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/epg/api-permissions.png" alt="EPG API Permissions">
+      <img class="bcls-image" src="/assets/images/cloud-playout/permissions-epg-api.png" alt="EPG API Permissions">
       <figcaption class="bcls-caption--image">EPG API Permissions</figcaption>
     </figure>
   </section>
-  <section class="bcls-section">
-    <h2 id="api_url">API URLs</h2>
-    <h3>Get all Cloud Playout channels</h3>
-    <p>The following endpoint can be used to get a list of all Cloud Playout channels for an account:</p>
-    <pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/cp_channels</code></pre>
-    <p>The <code translate="No">account_id</code> is the Video Cloud account id.</p>
-    <h3>Get an EPG</h3>
-    <p>The URL for the EPG API request is:</p>
-    <pre><code class="language-http" translate="No">https://sm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/channels/<span class="bcls-input">{channel_id}</span>/epg</code></pre>
-    <p>The <code translate="No">account_id</code> is the Video Cloud account id, and the <code translate="No">channel_id</code> is the id for the channel created in Studio.</p>
-    <p>The Channel's ID can be found in the response to the request to get all Cloud Playout channels, or in the browser URL when you are in the Channel view of the Cloud Playout section of Studio:</p>
-    <pre><code class="language-http" translate="No">https://studio.brightcove.com/products/videocloud/cloudplayout/channel/<span class="bcls-highlight">2c73c2112f794e6eb80be1284a495674</span></code></pre>
-
-  </section>
+  
   <section class="bcls-section">
     <h2 id="request_parameters">EPG request parameters</h2>
     <p>The following optional query parameters can be added to the EPG request:</p>
@@ -179,71 +165,7 @@ description: This topic provides and overview of the EPG API and the Channels AP
   }
 }</code></pre>
   </section>
-  <section class="bcls-section">
-    <details>
-      <summary><h2 id="sample_response_channel">Sample Channels API response</h2></summary>
-      <pre class="line-numbers"><code class="language-json" translate="No">{
-        "items": [
-          {
-            "public_id": "f8eb5f9ccfb84f81b4fb506a663c5545",
-            "name": "Channel-4",
-            "description": "Test Channel",
-            "account_id": "1752604059001",
-            "state": "RUNNING",
-            "status": "Channel started",
-            "start_time": "2021-01-03 15:31:12 UTC",
-            "stop_time": null,
-            "input_groups": "slate:rtmp:playlist",
-            "output_groups": "rtmp",
-            "loop_playlist": true,
-            "playlist_id": "1687789969630819284",
-            "channel_class": "single-pipeline",
-            "ssai_enabled": false,
-            "aws_region": "us-east-1",
-            "message": "",
-            "created_at": "2021-01-02 15:39:05 UTC",
-            "updated_at": "2021-01-03 15:31:12 UTC",
-            "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
-            "output_destinations": [
-              "Brightcove Live"
-            ],
-            "channel_created_at": "2021-01-02 15:39:05 UTC",
-            "channel_updated_at": "2021-01-02 15:39:05 UTC",
-            "channel_created_by": "rcrooks@brightcove.com",
-            "channel_updated_by": "rcrooks@brightcove.com"
-          },
-          {
-            "public_id": "42ecb67a9a964662a4071b4fffff0012",
-            "name": "Test-6",
-            "description": "Test Channel",
-            "account_id": "1752604059001",
-            "state": "SCHEDULED",
-            "status": "Scheduled for start",
-            "start_time": "2021-01-09 05:00:00 UTC",
-            "stop_time": "2021-01-09 23:00:00 UTC",
-            "input_groups": "slate:rtmp:playlist",
-            "output_groups": "rtmp",
-            "loop_playlist": true,
-            "playlist_id": "1688070644726417934",
-            "channel_class": "single-pipeline",
-            "ssai_enabled": false,
-            "aws_region": "us-east-1",
-            "message": "",
-            "created_at": "2021-01-05 18:00:18 UTC",
-            "updated_at": "2021-01-06 19:08:41 UTC",
-            "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
-            "output_destinations": [
-              "Brightcove Live"
-            ],
-            "channel_created_at": "2021-01-05 18:00:18 UTC",
-            "channel_updated_at": "2021-01-06 19:06:46 UTC",
-            "channel_created_by": "rcrooks@brightcove.com",
-            "channel_updated_by": "rcrooks@brightcove.com"
-          }
-        ]
-      }</code></pre>
-    </details>
-  </section>
+  
   <section class="bcls-section">
   <h2 id="epg_bumpers">The EPG and Bumpers</h2>
   <h3>How the EPG handles bumpers</h3>
