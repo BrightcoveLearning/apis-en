@@ -37,7 +37,7 @@ paths:
       description: |-
         Gets a page of video objects that are related to the specified video. Using the name and short description of the specified video, the Playback API searches for videos with any partial matches in the following fields: `name`, `short` `description`, `long_description`, `tags`.
 
-        Notes:  When performing this search, you need to use a search-enabled Policy Key. For information on getting policy keys, see the [Policy API Overview](/policy/getting-started/overview-policy-api.html). You can also use this [sample app](/policy/getting-started/quick-start-policy-api.html) to create a search-enabled key
+        Notes:  When performing a search (using the `q` parameter), you must use a search-enabled Policy Key. For information on getting policy keys, see the [Policy API Overview](/policy/getting-started/overview-policy-api.html). You can also use this [sample app](/policy/getting-started/quick-start-policy-api.html) to create a search-enabled key
 
         In general, search-enabled Policy Keys should only be stored on a server and not in a browser player or mobile app, since they can be used to list all playable videos. For some accounts this may not be applicable if you do not care if all of your playable videos can be discovered.
 
@@ -1381,8 +1381,12 @@ components:
       name: BCOV-Policy
       in: header
       required: true
-      description: >-
-        : {policy_key} (there are 3 ways to authenticate — use one of these
-        three headers). You need to use a search-enabled Policy Key.
-      schema:
-        type: string
+      description: |-
+        There are 3 ways to authenticate — use one of these
+        three headers:
+
+        - `Accept: application/json;pk={policy_key}`
+        - `Authorization: BCOV-Policy {policy_key}`
+        - `BCOV-Policy: {policy_key}`
+        
+        You need to use a search-enabled Policy Key if you are using the `q` parameter
