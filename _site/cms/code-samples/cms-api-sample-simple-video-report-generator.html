@@ -3,15 +3,16 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In this sample, you will learn how to schedule videos to become available at some future time, so that they are not accidentally played before they should be. Note that this sample is for accounts using the legacy ingest system. If your account uses the Dynamic Delivery system, see this version instead.">
+  <meta name="description" content="This is a simplified version of the Video Report Generator sample. This one returns less information so that it runs much faster. It also reports the total duration of the  video library in the log, and gives you the option of returning the results as CSV or JSON.">
   
-  <title>Add Scheduled Videos</title>
+  <title>Video Report Generator</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">  
+<link rel="preconnect" href="https://fonts.gstatic.com"> 
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/prism.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/styles.css">
@@ -30,11 +31,18 @@
 
   gtag('config', 'UA-2728311-17');
 </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2728311-17"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-2728311-17');
+</script>
   <script src="/assets/js/sajari-head.js"></script>
-	<script src="https://unpkg.com/feather-icons"></script>
 </head>
-
-
+<script src="https://unpkg.com/feather-icons"></script>
 <body class="body">
 
 <header>
@@ -62,9 +70,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/dynamic-ingest-legacy/code-samples/">Code Samples</a></li>
+      <li class="breadcrumb-item"><a href="/cms/code-samples/">Code Samples</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Add Scheduled Videos</li>
+      <li class="breadcrumb-item active" aria-current="page">Video Report Generator</li>
     </ol>
   </nav>
 </header>
@@ -2136,92 +2144,74 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Add Scheduled Videos</h1>
+<h1>Video Report Generator</h1>
 <article class="bcls-article">
-  <summary><p>In this sample, you will learn how to schedule videos to become available at some future time, so that they are not accidentally played before they should be.</p> <aside class="bcls-aside bcls-aside--information">Note that this sample is for accounts using the legacy ingest system. If your account uses the Dynamic Delivery system, see <a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-add-scheduled-videos-dynamic-delivery.html">this version</a> instead.</aside></summary>
+  <summary>This is a simplified version of the <a href="/cms/code-samples/cms-api-sample-video-report-generator.html">Video Report Generator sample</a>. This one returns less information so that it runs much faster. It also reports the total duration of the  video library in the log, and gives you the option of returning the results as CSV or JSON.</summary>
   <section class="bcls-section">
-  <h2 id="Overview">Overview</h2>
-  
-  <p>When you add a new video to your account, you may not wish to release the video for viewing until some time in the future. The video is potentially playable, however, as soon as a playable rendition is created. In addition to someone publishing the video by mistake, it might show up in a smart playlist because it matches the search criteria that selects the videos for the list.</p>
-  
-  <p>The best way to prevent accidental pre-mature release is to schedule the video for when you want it to become available at the time you ingest it. You can do this simply by including a <code translate="No">schedule</code> object in the request body for the <span translate="No">CMS API</span> call that creates the video:</p>
-  
-  <pre class="line-numbers">
-  <code class="language-json" translate="No">{
-    "name": "greatblueheron.mp4",
-    "schedule": {
-      "starts_at": "2017-03-10",
-      "ends_at": "2018-12-31"
-    }
-  }</code></pre>
-  
-  <p>The <code translate="No">starts_at</code> and <code translate="No">ends_at</code> values can be full ISO 8601 date-time stamps, or you can just include the date part, as shown here. Both fields are optional: omitting the <code translate="No">starts_at</code> field means the video will be available immediately; omitting the <code translate="No">ends_at</code> field means that the video will be available indefinitely.</p>
+    <h2 id="limitations">Limitations</h2>
+
+    <aside class="bcls-aside bcls-aside--information">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
   </section>
-  
+
   <section class="bcls-section">
-  <h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
-  
-  <div class="bcls-expander-content">
-  <p>To get a <code translate="No">client_id</code> and <code translate="No">client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
-  
-  <ul>
-    <li><a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a></li>
-  </ul>
-  
-  <p>These are the permissions you will need:</p>
-  
-  <figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Ingest Permissions" src="/assets/images/dynamic-ingest/code-samples/di-permissions.png" />
-  <figcaption class="bcls-caption--image">Dynamic Ingest Permissions</figcaption>
-  </figure>
-  
-  <p>You can also get your credentials via CURL or Postman - see:</p>
-  
-  <ul>
-    <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Get Client Credentials Using CURL</a></li>
-    <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Get Client Credentials Using Postman</a></li>
-  </ul>
-  
-  <p>If you are getting credentials directly from the API, these are the permissions you need:</p>
-  
-  <pre class="line-numbers">
-  <code class="language-json" translate="No">[
-    "video-cloud/video/all",
-    "video-cloud/ingest-profiles/profile/read",
-    "video-cloud/ingest-profiles/account/read",
-    "video-cloud/upload-urls/read"
-  ]</code></pre>
-  </div>
+    <details>
+      <summary>
+        <h2 id="getCredentials">Get credentials</h2>
+      </summary>
+      <p>To use the <span translate="No">CMS API</span> you will need proper credentials.</p>
+
+      <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all <span translate="No">CMS API</span> operation:</p>
+
+      <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
+        <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+      </figure>
+
+      <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+
+      <pre class="line-numbers">
+            <code class="language-json" translate="No">"operations": [
+              "video-cloud/video/all",
+              "video-cloud/playlist/all",
+              "video-cloud/sharing-relationships/all",
+              "video-cloud/notifications/all"
+            ]</code></pre>
+
+      <ul>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
+      </ul>
+    </details>
   </section>
-  
-  <section class="bcls-section">
-  <h2 id="rateLimiting">Rate limiting</h2>
-  
-  <p>See <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html#best_practices">Best Practices</a> for information on rate limiting.</p>
+
+  <section class="bcls-section" id="workingSample">
+    <h2>Video report generator</h2>
+    <h3>Source code</h3>
+    <p>
+      Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18032-video-report-generator">GitHub repository</a>.
+    </p>
+    <h3>Sample app</h3>
+    <p data-height="1200" data-theme-id="34967" data-slug-hash="mxYYMR" data-default-tab="result" data-user="rcrooks1969" data-pen-title="CMS API Sample: Video Report Generator" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/mxYYMR/">CMS API Sample: Video Report Generator</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
   </section>
-  
+
   <section class="bcls-section">
-  <h2 id="add_scheduled_video_app">Add scheduled video app</h2>
-  Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/17947-di-sample-add-scheduled-videos">GitHub repository</a>.
-  
-  <p data-height="1200" data-theme-id="34967" data-slug-hash="MGgLGO" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="Dynamic Ingest API Sample: Add Scheduled Videos (Legacy Ingest)" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/MGgLGO/">Dynamic Ingest API Sample: Add Scheduled Videos (Legacy Ingest)</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-  <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
-  
-  <section class="bcls-section">
-  <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
-  
-  <div class="bcls-expander-content">
-  <p>Here are some tips to effectively use the above CodePen:</p>
-  
-  <ul>
-    <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
-    <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
-    <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-    <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/17947-di-sample-add-scheduled-videos">GitHub repository</a>.</li>
-  </ul>
-  </div>
+    <details>
+      <summary>
+        <h2 id="Using_the_CodePen">Using the CodePen</h2>
+      </summary>
+      <p>Here are some tips to effectively use the above CodePen:</p>
+
+      <ul>
+        <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+        <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+        <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+        <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18032-video-report-generator">GitHub repository</a>.</li>
+      </ul>
+    </details>
+
   </section>
-  
-  <section class="bcls-section">
+
+    <section class="bcls-section">
     <details>
       <summary>
         <h2 id="proxy">Proxy code</h2>
@@ -2230,7 +2220,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/getting-started/learning-guide-using-rest-apis.html">Using the REST APIs</a>.</p>
     </details>
   </section>
-  </article>
+
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -2246,7 +2237,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 31 Jan 2021
+  Page last updated on 05 Jul 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
