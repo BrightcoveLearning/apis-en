@@ -8,8 +8,6 @@ layout: staging
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
-  <br/>
-  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of Forensic Watermarking.</aside>
 
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
@@ -28,7 +26,7 @@ layout: staging
       </li>
       <li>Get your License Key from <a href="https://dtv.nagra.com/nexguard-forensic-watermarking">NAGRA</a>.</li>
       <li>Generate a public-private key pair which will be used by the Forensic Watermarking JWT and decrypted by the CDN. (see below)</li>
-      <li>Use the script provided by NAGRA to generate a JSON web token (JWT) for forensic watermarking. Be sure to save this token, as you will need it when you <a href="#Configure_your_player">configure your players</a>.</li>
+      <li>Use the script provided by NAGRA to generate a JSON web token (JWT) for forensic watermarking. Be sure to manage how the forensic watermark token and each viewer are linked. You will need it when you <a href="#Configure_your_player">configure your players</a> and in the case of doing a detection service to know which viewer leaked the content illegally.</li>
     </ol>
     <p>
       There are many ways to generate the public-private key pair. Here are some examples:
@@ -196,6 +194,7 @@ echo "Public key to saved in $PUBLIC_TXT"
       <li>
         <p>Forensic Watermarking is not linked to a specific ingest profile. You can use any Dynamic Delivery or Context Aware Encoding profile.</p>
         <ol>
+          <li>Provide Brightcove with your NAGRA License Key. This License Key will be used during transcoding to generate the watermark.</li>
           <li>In the <strong>Upload</strong> module, select your ingest profile.</li>
           <li>
             <p>Check the <strong>Enable Forensic Watermark</strong> option.</p>
@@ -216,7 +215,6 @@ echo "Public key to saved in $PUBLIC_TXT"
           </li>
         </ol>
       </li>
-      <li>Provide Brightcove with your NAGRA License Key. This License Key will be used during transcoding to generate the watermark.</li>
       <!-- <li>In the <strong>Media</strong> module, you can enable/disable your videos for watermarking.</li> -->
       <li id="Configure_your_player">
         <p>Configure your player.</p>
@@ -319,7 +317,7 @@ echo "Public key to saved in $PUBLIC_TXT"
 }</code></pre>
     
     <h3><a href="/cms/index.html">CMS API</a></h3>
-    <p>By default, forensic watermarked renditions will be delivered if forensic watermarking was requested during ingestion. The presence of forensic watermarks will be indicated by the read-only field <code translate="No">forensic_watermarking</code>. If the field has a value of <code translate="No">ACTIVE</code>, forensic watermarks were successfully added. If the field has a value of <code translate="No">UNAVAILABLE</code> or <code translate="No">null</code>, forensic watermarks were not successfully added.</p>
+    <p>By default, forensic watermarked renditions will be delivered if forensic watermarking was requested during ingestion. The presence of forensic watermarks will be indicated by the read-only field <code translate="No">forensic_watermarking</code>. If the field has a value of <code translate="No">ACTIVE</code>, the forensic watermark was added to VOD. If the field has a value of <code translate="No">UNAVAILABLE</code> or <code translate="No">null</code>, the VOD doesn’t have the forensic watermark.</p>
       
       <!-- <p>You can disable this using a video update request to the CMS API and setting <code translate="No">forensic_watermarking</code> to <code translate="No">INACTIVE</code>. To enable delivery of forensic watermarked renditions again, send another update request setting <code translate="No">forensic_watermarking</code> to <code translate="No">ACTIVE</code>.</p>
     <p>For accounts not enable for forensic watermarking, <code translate="No">forensic_watermarking</code> will be <code translate="No">null</code> and not included in API responses</p>
@@ -331,7 +329,7 @@ echo "Public key to saved in $PUBLIC_TXT"
     <h3>Playback API</h3>
     <p>The Playback API GET video responses will also contain a <code translate="No">forensic_watermarking</code> (if the account is enabled for forensic watermarking). If the value is <code translate="No">ACTIVE</code>, renditions with forensic watermarks will be delivered as sources to the player. Otherwise, non-watermarked renditions will be delivered.</p>
     <h3><a href="https://zencoder.support.brightcove.com/index.html">Zencoder</a></h3>
-      <p>To generate outputs with forensic watermarking in Zencoder, you need to specify 2 outputs per video, an output <strong translate="no">A</strong> and <strong translate="no">B</strong>.</p>
+      <p>To generate outputs with forensic watermarking in Zencoder, you need to specify 2 outputs per video, one with <code translate="no">"forensic_watermark": "A"</code> and the other with <code translate="no">"forensic_watermark": "B"</code> (these are the only two values the <code translate="no">forensic_watermark</code> field can have).</p>
       <h4>Sample request (outputs only)</h4>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "outputs": [
