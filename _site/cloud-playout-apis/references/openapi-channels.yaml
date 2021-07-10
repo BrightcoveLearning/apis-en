@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.3
 x-bc-implicit-head: true
 x-bc-implicit-options: true
 x-bc-upstream: 'https://backend_server'
@@ -23,8 +23,8 @@ paths:
       description: 'Creates a cloud playout channel for an account'
       operationId: CreateChannel
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
       requestBody:
         description: Creates a cloudplayout channel for an account
         content:
@@ -70,11 +70,11 @@ paths:
                 Bad Dates:
                   $ref: '#/components/examples/invalidDates'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -91,7 +91,7 @@ paths:
       description: 'Gets all Cloud Playout channels for an account'
       operationId: GetAllChannels
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
       responses:
         '200':
           description: '200'
@@ -100,11 +100,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAllChannels'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -122,7 +122,7 @@ paths:
       description: 'Gets all Cloud Playout channels for an account'
       operationId: GetChannel
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '200':
@@ -132,11 +132,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannel'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -153,7 +153,7 @@ paths:
       description: 'Delete a Cloud Playout channel for an account'
       operationId: DeleteChannel
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '202':
@@ -168,11 +168,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -189,8 +189,8 @@ paths:
       description: 'Update a Cloud Playout channel for an account'
       operationId: UpdateChannel
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/ChannelId'
       requestBody:
         description: Creates a cloudplayout channel for an account
@@ -251,11 +251,11 @@ paths:
                 Bad Dates:
                   $ref: '#/components/examples/invalidDates'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -273,7 +273,7 @@ paths:
       description: 'Start a cloud playout channel'
       operationId: StartChannel
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '202':
@@ -288,11 +288,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -310,7 +310,7 @@ paths:
       description: 'Stop a cloud playout channel'
       operationId: StopChannel
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '202':
@@ -325,11 +325,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -347,7 +347,7 @@ paths:
       description: 'Activate a cloud playout channel'
       operationId: ActivateChannel
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '202':
@@ -359,11 +359,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -381,7 +381,7 @@ paths:
       description: 'Get preview image of a running channel'
       operationId: GetChannelPreview
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '200':
@@ -391,11 +391,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannelPreview'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -413,7 +413,7 @@ paths:
       description: 'Get health metrics of a running channel'
       operationId: GetChannelMetric
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
         - $ref: '#/components/parameters/duration'
         - $ref: '#/components/parameters/period'
@@ -425,11 +425,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannelHealth'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -447,7 +447,7 @@ paths:
       description: 'Create a new asset'
       operationId: CreateAsset
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/AssetType'
       requestBody:
         description: New asset details
@@ -465,11 +465,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -486,7 +486,7 @@ paths:
       description: 'Get all assets'
       operationId: GetAssets
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/AssetType'
       responses:
         '200':
@@ -496,11 +496,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAssetsResponse'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -518,7 +518,7 @@ paths:
       description: 'Get an asset'
       operationId: GetAsset
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/AssetType'
         - $ref: '#/components/parameters/AssetID'
       responses:
@@ -529,11 +529,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAssetResponse'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -550,7 +550,7 @@ paths:
       description: 'Delete an asset'
       operationId: DeleteAsset
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/AssetType'
         - $ref: '#/components/parameters/AssetID'
       responses:
@@ -566,11 +566,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -587,7 +587,7 @@ paths:
       description: 'Update an asset'
       operationId: UpdateAsset
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/AssetType'
         - $ref: '#/components/parameters/AssetID'
       requestBody:
@@ -606,11 +606,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -628,7 +628,7 @@ paths:
       description: 'Skip to a particular asset in a running channel'
       operationId: SkipToVideoId
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
         - $ref: '#/components/parameters/VideoId'
         - $ref: '#/components/parameters/Order'
@@ -645,11 +645,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -667,7 +667,7 @@ paths:
       description: 'Associate an overlay asset for a channel'
       operationId: AssociateOverlay
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       requestBody:
         description: overlay details
@@ -685,11 +685,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -706,7 +706,7 @@ paths:
       description: 'Get All overlay images for a channel'
       operationId: GetChannelOverlays
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '200':
@@ -716,11 +716,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannelOverlays'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -738,7 +738,7 @@ paths:
       description: 'Update an overlay asset for a channel'
       operationId: UpdateAssociatedOverlay
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
         - $ref: '#/components/parameters/OverlayID'
       requestBody:
@@ -757,11 +757,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -778,7 +778,7 @@ paths:
       description: 'Get an overlay image for a channel'
       operationId: GetChannelOverlay
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
         - $ref: '#/components/parameters/OverlayID'
       responses:
@@ -789,11 +789,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannelOverlay'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -810,7 +810,7 @@ paths:
       description: 'Delete an overlay image for a channel'
       operationId: DeleteChannelOverlay
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
         - $ref: '#/components/parameters/OverlayID'
       responses:
@@ -826,11 +826,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -848,7 +848,7 @@ paths:
       description: 'Deactivate an overlay asset for a channel'
       operationId: DeactivateOverlay
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
         - $ref: '#/components/parameters/OverlayID'
       responses:
@@ -862,11 +862,11 @@ paths:
                 "message": "Deactivated"
               }
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -884,8 +884,8 @@ paths:
       description: 'Creates a S3 credential for a channel'
       operationId: CreateCredentials
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
       requestBody:
         description: Creates an s3 credential for a channel
         content:
@@ -901,11 +901,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CredentialProperties'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -922,8 +922,8 @@ paths:
       description: 'Get All S3 credentials for an account'
       operationId: GetCredentials
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
       responses:
         '200':
           description: '200'
@@ -932,11 +932,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListAllCredentials'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -954,8 +954,8 @@ paths:
       description: 'Creates a S3 credential for a channel'
       operationId: GetCredential
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/CredentialId'
       responses:
         '200':
@@ -965,11 +965,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CredentialProperties'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -986,8 +986,8 @@ paths:
       description: 'Creates a S3 credential for a channel'
       operationId: UpdateCredential
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/CredentialId'
       requestBody:
         description: Creates an s3 credential for a channel
@@ -1006,11 +1006,11 @@ paths:
         '400':
           description: 'Bad Request'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -1027,8 +1027,8 @@ paths:
       description: 'Creates a S3 credential for a channel'
       operationId: DeleteCredential
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/CredentialId'
       responses:
         '200':
@@ -1041,11 +1041,11 @@ paths:
                  "message": "credential deleted successfully"
               }
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -1063,8 +1063,8 @@ paths:
       description: 'List all Live profiles that a channel can use'
       operationId: ListProfiles
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
       responses:
         '200':
           description: '200'
@@ -1073,11 +1073,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/LiveProfileProperties'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -1095,7 +1095,7 @@ paths:
       description: 'List all BC Live channels that a channel can use'
       operationId: ListBCLiveChannels
       parameters:
-        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ssai'
       responses:
         '200':
@@ -1105,11 +1105,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/BcLiveChannelProperties'
         '401':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+          $ref: '#/components/responses/401'
         '403':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -2147,11 +2147,9 @@ components:
                       location:
                         type: string
                         description: BC Live job name, in case BC Live is the destination
-                        required: false
                       location_id:
                         type: string
                         description: BC Live job ID, in case BC Live is the destination
-                        required: false
                       destination:
                         type: string
                         enum:
@@ -2590,6 +2588,15 @@ components:
         type: string
         default: application/json
       example: application/json
+    AccountId:
+      name: account_id
+      in: path
+      description: Video Cloud account ID.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
     ChannelId:
       name: channel_id
       in: path
@@ -2688,6 +2695,29 @@ components:
       schema:
         type: integer
         default: 5
+  responses:
+    '204':
+      description: Item was deleted
+      content: {}
+    '401':
+      description: >-
+        UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+      content: {}
+    '403':
+      description: 'BAD_VALUE: Spelling error or other use of non-existent field '
+      content: {}
+    '404':
+      description: >-
+        RESOURCE_NOT_FOUND: The api could not find the resource you requested
+      content: {}
+    '405':
+      description: >-
+        METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+      content: {}
+    '429':
+      description: >-
+        TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      content: {}
   securitySchemes:
     BC_OAuth2:
       type: oauth2
