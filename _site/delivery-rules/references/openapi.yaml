@@ -338,7 +338,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Action"
+              $ref: "#/components/schemas/ActionWithID"
         required: true
       responses:
         '200':
@@ -482,6 +482,56 @@ components:
         id:
           type: string
           readOnly: true
+          description: Unique identifier for the Action
+        properties:
+          type: object
+          description: A list of properties to apply
+          properties:
+            min_video_bitrate:
+              description: Minimum video bitrate
+              type: number
+            max_video_bitrate:
+              description: Maximum video bitrate
+              type: number
+            first_video_bitrate:
+              description: First video bitrate to appear in the manifest
+              type: number
+            min_video_resolution:
+              description: Minimum video resolution
+              type: string
+            max_video_resolution:
+              description: Maximum video resolution
+              type: string
+            max_video_renditions:
+              description: Maximum video renditions
+              type: number
+            max_audio_renditions:
+              description: Maximum audio renditions
+              type: number
+            preferred_cdn_provider:
+              description: Preferred CDN provider
+              type: string
+            preferred_cdn_domain:
+              description: Preferred CDN domain
+              type: string
+            video_codecs:
+              type: array
+              description: A list of Video Codecs to use
+              items:
+                description: Video Codec
+                type: string
+            audio_codecs:
+              type: array
+              description: A list of Audio Codecs to use
+              items:
+                description: Audio Codec
+                type: string
+    ActionWithID:
+      title: Action
+      type: object
+      properties:
+        id:
+          type: string
           description: Unique identifier for the Action
         properties:
           type: object
