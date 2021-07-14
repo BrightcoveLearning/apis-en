@@ -257,6 +257,20 @@ components:
       properties:
         master:
           $ref: '#/components/schemas/IngestMediaAssetbody.master'
+        forensic_watermarking:
+          type: boolean
+          description: >-
+           Whether forensic watermarks should be added to video renditions - if you set it to `true` the account must be enabled for forensic watermarking, or the field will be ignored - see **[Overview: Forensic Watermarking](/general/overview-forensic-watermarking.html) for more details**
+          default: false
+          example: true
+        forensic_watermarking_stub_mode:
+          type: boolean
+          description: |-
+            Whether **visible** forensic watermarks should be added to video renditions - if you set it to `true` the account must be enabled for forensic watermarking, and the `forensic_watermarking` field must also be set to `true` - see **[Overview: Forensic Watermarking](/general/overview-forensic-watermarking.html) for more details**
+
+            Visible watermarks should be used only for testing integrations, to ensure that forensic watermarks have been successfully added to the video (use a video at least 10 minutes long). Once verification is complete, they must be removed by submitting a new ingest request to retranscode the video - `forensic_watermarking_stub_mode` must be set to `false` on the retranscode request.
+          default: false
+          example: true
         profile:
           type: string
           description: >-
