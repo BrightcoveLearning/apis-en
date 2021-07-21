@@ -8,12 +8,11 @@ grandparent: Live API
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary> 
-  <!-- <br>
-  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of Brightcove Playback Restrictions.</aside> -->
 
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
     <p>Playback Restrictions can be enabled for a Live job to extend the protections provided by DRM, including:</p>
+    <!-- <p>Playback Restrictions can be enabled for a Live job to extend the protections provided by DRM and/or AES-128 encryption, including:</p> -->
     <ul>
       <li>Limiting playback to a particular user agent</li>
       <li>Limiting the number of IP addresses</li>
@@ -46,6 +45,13 @@ grandparent: Live API
           <dd>Playback auth JWT will be required when requesting license. Uses playback rights id associated with video or JWT to enforce restrictions.</dd>
         </dl>
       </li>
+      <!-- <li>
+        <h4><code translate="No">encryption</code> object:</h4>
+        <dl>
+          <dt><code translate="No">check_playback_rights</code> (boolean)</dt>
+          <dd>Playback auth JWT will be required when requesting license. Uses playback rights id associated with video or JWT to enforce restrictions. If <code translate="No">false</code> playback restrictions will be bypassed and the encrypted stream will play back as usual.</dd>
+        </dl>
+      </li> -->
       <li>
         <h4><code translate="No">videocloud.video</code> object:</h4>
         <aside class="bcls-aside bcls-aside--information">Note that this field must be added to video using the CMS API <em>after</em> you create the live job, because it cannot be added when the video is created.</aside>
@@ -62,47 +68,53 @@ grandparent: Live API
 
     <h3>Sample request body</h3>
 <pre class="line-numbers"><code class="language-json" translate="No">{
-  &quot;live_stream&quot;: true,
-  &quot;region&quot;: &quot;us-west-2&quot;,
-  &quot;reconnect_time&quot;: 300,
-  &quot;ad_insertion&quot;: false,
-  &quot;static&quot;: false,
-  &quot;drm&quot;: {
-    &quot;modes&quot;:[&quot;all&quot;],
-    <span class="bcls-highlignt">&quot;require_playback_token&quot;: true,</span>
-    <span class="bcls-highlignt">&quot;check_playback_rights&quot;: true</span>
+  "live_stream": true,
+  "region": "us-west-2",
+  "reconnect_time": 300,
+  "ad_insertion": false,
+  "static": false,
+  "drm": {
+    "modes":["all"],
+    <span class="bcls-highlignt">"require_playback_token": true,</span>
+    <span class="bcls-highlignt">"check_playback_rights": true</span>
   },
-  &quot;live_dvr_sliding_window_duration&quot;: 300,
-  &quot;videocloud&quot;: {
-    &quot;live_to_vod&quot;: true,
-    &quot;video&quot;: {
-        &quot;name&quot;: &quot;Test EPA&quot;,
-        &quot;description&quot;: &quot;&quot;,
-        &quot;long_description&quot;: &quot;&quot;,
-        &quot;tags&quot;: [],
-        &quot;reference_id&quot;: &quot;&quot;,
-        &quot;link&quot;: {
-            &quot;url&quot;: &quot;&quot;,
-            &quot;text&quot;: &quot;&quot;
+  "encryption": {
+    "check_playback_rights": true,
+    "method": "aes-128",
+    "type": "internal",
+    "key": "24432646294A404E635266556A586E32"
+  },
+  "live_dvr_sliding_window_duration": 300,
+  "videocloud": {
+    "live_to_vod": true,
+    "video": {
+        "name": "Test EPA",
+        "description": "",
+        "long_description": "",
+        "tags": [],
+        "reference_id": "",
+        "link": {
+            "url": "",
+            "text": ""
         },
-        &quot;custom_fields&quot;: {}
+        "custom_fields": {}
       }
   },  
-  &quot;outputs&quot;: [{
-      &quot;label&quot;: &quot;hls720p&quot;,
-      &quot;live_stream&quot;: true,
-      &quot;height&quot;: 720,
-      &quot;video_bitrate&quot;: 2000,
-      &quot;segment_seconds&quot;: 6,
-      &quot;keyframe_interval&quot;: 60
+  "outputs": [{
+      "label": "hls720p",
+      "live_stream": true,
+      "height": 720,
+      "video_bitrate": 2000,
+      "segment_seconds": 6,
+      "keyframe_interval": 60
   },
   {
-      &quot;label&quot;: &quot;hls480p&quot;,
-      &quot;live_stream&quot;: true,
-      &quot;height&quot;: 480,
-      &quot;video_bitrate&quot;: 1000,
-      &quot;segment_seconds&quot;: 6,
-      &quot;keyframe_interval&quot;: 60
+      "label": "hls480p",
+      "live_stream": true,
+      "height": 480,
+      "video_bitrate": 1000,
+      "segment_seconds": 6,
+      "keyframe_interval": 60
   }
 }</code></pre>
 
@@ -110,106 +122,106 @@ grandparent: Live API
       <summary><h2>Sample response</h2></summary>
       <p>The highlighed line contains the video <code translate="No">id</code> that you need to add the <code translate="No">playback_rights_id</code></p>
 <pre class="line-numbers"><code class="language-json" translate="No">{
-  &quot;id&quot;: &quot;f47487cf81f84764b280fbfaefed524a&quot;,
-  &quot;outputs&quot;: [
+  "id": "f47487cf81f84764b280fbfaefed524a",
+  "outputs": [
       {
-          &quot;id&quot;: &quot;0-f47487cf81f84764b280fbfaefed524a&quot;,
-          &quot;label&quot;: &quot;hls720p&quot;
+          "id": "0-f47487cf81f84764b280fbfaefed524a",
+          "label": "hls720p"
       },
       {
-          &quot;id&quot;: &quot;1-f47487cf81f84764b280fbfaefed524a&quot;,
-          &quot;label&quot;: &quot;hls480p&quot;
+          "id": "1-f47487cf81f84764b280fbfaefed524a",
+          "label": "hls480p"
       },
       {
-          &quot;id&quot;: &quot;2-f47487cf81f84764b280fbfaefed524a&quot;,
-          &quot;playlist_type&quot;: &quot;defaultS3&quot;,
-          &quot;type&quot;: &quot;playlist&quot;,
-          &quot;drm&quot;: {
-              &quot;token&quot;: &quot;eyJh...axy8&quot;,
-              &quot;modes&quot;: [
+          "id": "2-f47487cf81f84764b280fbfaefed524a",
+          "playlist_type": "defaultS3",
+          "type": "playlist",
+          "drm": {
+              "token": "eyJh...axy8",
+              "modes": [
                   {
-                      &quot;type&quot;: &quot;fairplay&quot;,
-                      &quot;key_system&quot;: &quot;com.apple.fps.1_0&quot;,
-                      &quot;license_url&quot;: &quot;https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJh...axy8&quot;,
-                      &quot;certificate_url&quot;: &quot;https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJh...axy8&quot;,
-                      &quot;filename&quot;: &quot;playlist_fp.m3u8&quot;,
-                      &quot;dvr_filename&quot;: &quot;playlist_fp_dvr.m3u8&quot;,
-                      &quot;playback_url&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_fp.m3u8&quot;,
-                      &quot;playback_url_dvr&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_fp_dvr.m3u8&quot;,
-                      &quot;playback_added_cdns&quot;: []
+                      "type": "fairplay",
+                      "key_system": "com.apple.fps.1_0",
+                      "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJh...axy8",
+                      "certificate_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJh...axy8",
+                      "filename": "playlist_fp.m3u8",
+                      "dvr_filename": "playlist_fp_dvr.m3u8",
+                      "playback_url": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_fp.m3u8",
+                      "playback_url_dvr": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_fp_dvr.m3u8",
+                      "playback_added_cdns": []
                   },
                   {
-                      &quot;type&quot;: &quot;widevine&quot;,
-                      &quot;key_system&quot;: &quot;com.widevine.alpha&quot;,
-                      &quot;license_url&quot;: &quot;https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJh...axy8&quot;,
-                      &quot;filename&quot;: &quot;playlist_wv.m3u8&quot;,
-                      &quot;dvr_filename&quot;: &quot;playlist_wv_dvr.m3u8&quot;,
-                      &quot;playback_url&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_wv.m3u8&quot;,
-                      &quot;playback_url_dvr&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_wv_dvr.m3u8&quot;,
-                      &quot;playback_added_cdns&quot;: []
+                      "type": "widevine",
+                      "key_system": "com.widevine.alpha",
+                      "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJh...axy8",
+                      "filename": "playlist_wv.m3u8",
+                      "dvr_filename": "playlist_wv_dvr.m3u8",
+                      "playback_url": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_wv.m3u8",
+                      "playback_url_dvr": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_wv_dvr.m3u8",
+                      "playback_added_cdns": []
                   },
                   {
-                      &quot;type&quot;: &quot;playready&quot;,
-                      &quot;key_system&quot;: &quot;com.microsoft.playready&quot;,
-                      &quot;license_url&quot;: &quot;https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJh...axy8&quot;,
-                      &quot;filename&quot;: &quot;playlist.mpd&quot;,
-                      &quot;dvr_filename&quot;: &quot;playlist_dvr.mpd&quot;,
-                      &quot;playback_url&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist.mpd&quot;,
-                      &quot;playback_url_dvr&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_dvr.mpd&quot;,
-                      &quot;playback_added_cdns&quot;: []
+                      "type": "playready",
+                      "key_system": "com.microsoft.playready",
+                      "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJh...axy8",
+                      "filename": "playlist.mpd",
+                      "dvr_filename": "playlist_dvr.mpd",
+                      "playback_url": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist.mpd",
+                      "playback_url_dvr": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_dvr.mpd",
+                      "playback_added_cdns": []
                   }
               ],
-              &quot;token_expires_in&quot;: 43200,
-              &quot;require_playback_token&quot;: true,
-              &quot;check_playback_rights&quot;: true
+              "token_expires_in": 43200,
+              "require_playback_token": true,
+              "check_playback_rights": true
           }
       }
   ],
-  &quot;stream_url&quot;: &quot;rtmp://ep8-usw2.a-live.io:1935/f47487cf81f84764b280fbfaefed524a&quot;,
-  &quot;stream_name&quot;: &quot;alive&quot;,
-  &quot;static&quot;: false,
-  &quot;event_length&quot;: 93600,
-  <span class="bcls-highlight">&quot;job_videocloud_asset_id&quot;: &quot;70701312966202&quot;,</span>
-  &quot;encryption&quot;: {},
-  &quot;drm_enabled&quot;: true,
-  &quot;drm&quot;: {
-    &quot;token&quot;: &quot;eyJh...axy8&quot;,
-    &quot;modes&quot;: [
+  "stream_url": "rtmp://ep8-usw2.a-live.io:1935/f47487cf81f84764b280fbfaefed524a",
+  "stream_name": "alive",
+  "static": false,
+  "event_length": 93600,
+  <span class="bcls-highlight">"job_videocloud_asset_id": "70701312966202",</span>
+  "encryption": {},
+  "drm_enabled": true,
+  "drm": {
+    "token": "eyJh...axy8",
+    "modes": [
       {
-        &quot;type&quot;: &quot;fairplay&quot;,
-        &quot;key_system&quot;: &quot;com.apple.fps.1_0&quot;,
-        &quot;license_url&quot;: &quot;https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJhb...axy8&quot;,
-        &quot;certificate_url&quot;: &quot;https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJhb...axy8&quot;,
-        &quot;filename&quot;: &quot;playlist_fp.m3u8&quot;,
-        &quot;dvr_filename&quot;: &quot;playlist_fp_dvr.m3u8&quot;,
-        &quot;playback_url&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_fp.m3u8&quot;,
-        &quot;playback_url_dvr&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_fp_dvr.m3u8&quot;,
-        &quot;playback_added_cdns&quot;: []
+        "type": "fairplay",
+        "key_system": "com.apple.fps.1_0",
+        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJhb...axy8",
+        "certificate_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJhb...axy8",
+        "filename": "playlist_fp.m3u8",
+        "dvr_filename": "playlist_fp_dvr.m3u8",
+        "playback_url": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_fp.m3u8",
+        "playback_url_dvr": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_fp_dvr.m3u8",
+        "playback_added_cdns": []
       },
       {
-        &quot;type&quot;: &quot;widevine&quot;,
-        &quot;key_system&quot;: &quot;com.widevine.alpha&quot;,
-        &quot;license_url&quot;: &quot;https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJhb...axy8&quot;,
-        &quot;filename&quot;: &quot;playlist_wv.m3u8&quot;,
-        &quot;dvr_filename&quot;: &quot;playlist_wv_dvr.m3u8&quot;,
-        &quot;playback_url&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_wv.m3u8&quot;,
-        &quot;playback_url_dvr&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_wv_dvr.m3u8&quot;,
-        &quot;playback_added_cdns&quot;: []
+        "type": "widevine",
+        "key_system": "com.widevine.alpha",
+        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJhb...axy8",
+        "filename": "playlist_wv.m3u8",
+        "dvr_filename": "playlist_wv_dvr.m3u8",
+        "playback_url": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_wv.m3u8",
+        "playback_url_dvr": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_wv_dvr.m3u8",
+        "playback_added_cdns": []
       },
       {
-        &quot;type&quot;: &quot;playready&quot;,
-        &quot;key_system&quot;: &quot;com.microsoft.playready&quot;,
-        &quot;license_url&quot;: &quot;https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJh...axy8&quot;,
-        &quot;filename&quot;: &quot;playlist.mpd&quot;,
-        &quot;dvr_filename&quot;: &quot;playlist_dvr.mpd&quot;,
-        &quot;playback_url&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist.mpd&quot;,
-        &quot;playback_url_dvr&quot;: &quot;https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_dvr.mpd&quot;,
-        &quot;playback_added_cdns&quot;: []
+        "type": "playready",
+        "key_system": "com.microsoft.playready",
+        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJh...axy8",
+        "filename": "playlist.mpd",
+        "dvr_filename": "playlist_dvr.mpd",
+        "playback_url": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist.mpd",
+        "playback_url_dvr": "https://playback-qa.a-live.io/f47487cf81f84764b280fbfaefed524a/us-west-2/NA/playlist_dvr.mpd",
+        "playback_added_cdns": []
       }
     ],
-    &quot;token_expires_in&quot;: 43200,
-    &quot;require_playback_token&quot;: true,
-    &quot;check_playback_rights&quot;: true
+    "token_expires_in": 43200,
+    "require_playback_token": true,
+    "check_playback_rights": true
   }
 }</code></pre>
     </details>
