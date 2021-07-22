@@ -712,42 +712,6 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /redundantgroups/{redundant_group_id}/activate:
-    put:
-      tags:
-        - Redundant Groups
-      summary: Activate all SEP jobs in group
-      description: Activate all SEP jobs in a redundant group
-      operationId: ActivateJobsRedundantGroup
-      parameters:
-        - $ref: '#/components/parameters/ContentType'
-        - $ref: '#/components/parameters/XAPIKEY'
-        - $ref: '#/components/parameters/redundant_group_id'
-      responses:
-        '200':
-          description: Successful activation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ActivateRedundantGroupResponse'
-  /redundantgroups/{redundant_group_id}/deactivate:
-    put:
-      tags:
-        - Redundant Groups
-      summary: Deactivate all SEP jobs in group
-      description: Deactivate all SEP jobs in a redundant group
-      operationId: DeactivateJobsRedundantGroup
-      parameters:
-        - $ref: '#/components/parameters/ContentType'
-        - $ref: '#/components/parameters/XAPIKEY'
-        - $ref: '#/components/parameters/redundant_group_id'
-      responses:
-        '200':
-          description: Successful activation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ActivateRedundantGroupResponse'
   /redundantgroups/{redundant_group_id}/jobs:
     post:
       tags:
@@ -1074,7 +1038,7 @@ paths:
             RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
         '500':
           description: >-
-            INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
+             INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
       deprecated: false
       security: []
       x-operation-settings:
@@ -1116,7 +1080,7 @@ paths:
             RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
         '500':
           description: >-
-            INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
+             INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
       deprecated: false
       security: []
       x-operation-settings:
@@ -1149,7 +1113,7 @@ paths:
             RESOURCE_NOT_FOUND: The api could not find the resource you requested - see Live API Error Messages for more details
         '500':
           description: >-
-            INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
+             INTERNAL_SERVER_ERROR: see Live API Error Messages for more details
       deprecated: false
       security: []
       x-operation-settings:
@@ -2487,23 +2451,6 @@ components:
             "playback_url_dvr": "https://bcovlive-a.akamaihd.net/r91c268a6ec5240d79a6004f4ccf0dc6f/us-west-2/NA/playlist_dvr.m3u8"
           }
         }
-    ActivateRedundantGroupResponse:
-      properties:
-        id:
-          type: string
-          description: The redundant group id
-          example: '3d68bcec490849bea6970be4646f5fd9'
-        jobs:
-          type: array
-          description: >-
-            Array of objects that contain either the id of a job that was successfully activated or deactivated, or an error if there was a failure in activating or a deactivating a job
-          example: {
-              "id": "3d68bcec490849bea6970be4646f5fd9",
-              "jobs": [ 
-                { "id": "f19fdcfaf84d4b55b603c177cbb72f8f" },  
-                { "error": "Error activating Job" }
-              ]
-            }
     GetRedundantGroupResponse:
       properties:
         redundant_groups:
@@ -3528,6 +3475,10 @@ components:
       type: object
     CreateLiveJobRequestBody.encryption:
       properties:
+        check_playback_rights:
+          description: 'Playback auth JWT will be required when requesting license. Uses playback rights id associated    with video or JWT to enforce restrictions. If <code translate="No">false</code> playback restrictions will be bypassed and the encrypted stream will play back as usual.'
+          type: boolean
+          default: false
         external_url:
           description: >-
             The URL for the external encryption key - this field is required if you specify type as external, and the external key must match the
@@ -3792,6 +3743,7 @@ components:
         description:
           description: Video short description
           type: string
+          maxLength: 248
         drm_disabled:
           description: >-
             Use to disable DRM packaging for this video - applies only to DRM-enabled accounts
@@ -3810,6 +3762,8 @@ components:
         name:
           description: Title of the video clip
           type: string
+          maxLength: 255
+          minLength: 1
         reference_id:
           description: Reference id for the clip - must be unique within the account
           type: string
@@ -6172,7 +6126,7 @@ components:
         job_id:
           description: >-
             Live Job ID to schedule activation and deactivation for.
-            Job must be a static Job. If `redundant_group` is `true`, the value must be a redundant group id.
+            Job must be a static Job.
           type: string
         activation:
           $ref: '#/components/schemas/CreateJobStartStopRequestBody.TaskInfo'
@@ -6187,11 +6141,6 @@ components:
             URL to send notifications for activation and deactivation.
             Required if a pre-notification is configured for activation or deactivation.
           type: string
-        redundant_group:
-          description: >-
-            Whether this scheduler is for activation/deactivation of a redundant group. If `true`, the `job_id` must be a redundant group id.
-          type: boolean
-          default: false
       required:
         - job_id
         - activation
