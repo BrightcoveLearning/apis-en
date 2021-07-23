@@ -122,14 +122,14 @@ grandparent: Playback Rights
     <p>
       With any page in Studio open, open the developer tools for the browser, go to the Console, and paste in the following code:
     </p>
-    <pre class="line-numbers"><code class="language-javascript" translate="No">var cookiesArray = document.cookie.split(";;";), cookiesObj = {}, i, tmpArray = [];
+    <pre class="line-numbers"><code class="language-javascript" translate="No">var cookiesArray = document.cookie.split(";"), cookiesObj = {}, i, tmpArray = [];
 for (i = 0; i &lt; cookiesArray.length; i++) {
-    tmpArray = cookiesArray[i].split(";=";);
+    tmpArray = cookiesArray[i].split("=");
     if (tmpArray[0].indexOf('BC_TOKEN') &gt; -1) {
         cookiesObj.BC_TOKEN = tmpArray[1];
     }
 }
-window.prompt(";BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
+window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
     <p>
       and press return.
     </p>
@@ -158,14 +158,14 @@ window.prompt(";BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
 </p>
 <pre class="line-numbers"><code class="language-curl">curl \
   --include \
-  --header ";Authorization: BC_TOKEN <span class="bcls-input">your BC_TOKEN</span>"; \
+  --header "Authorization: BC_TOKEN <span class="bcls-input">your BC_TOKEN</span>" \
   --data {
     name=demo&amp;maximum_scope=[{
-      ";identity";: {
-        ";type";: ";video-cloud-account",
-        ";account-id";: <span class="bcls-input">your account id</span>
+      "identity": {
+        "type": "video-cloud-account",
+        "account-id": <span class="bcls-input">your account id</span>
       },
-      ";operations";: [
+      "operations": [
         "video-cloud/playback-auth/playback-rights/read",
         "video-cloud/playback-auth/playback-rights/write",
         "video-cloud/video/read",
@@ -173,7 +173,7 @@ window.prompt(";BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
         "video-cloud/video/update",
         "video-cloud/video/delete",
         "video-cloud/playback-auth/key/read",
-        "video-cloud/playback-auth/key/write";
+        "video-cloud/playback-auth/key/write"
       ]
   }]
 } \
@@ -257,9 +257,9 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
   -H 'Authorization: Bearer {access_token}' \
   -H 'Content-Type: application/json' \
   -d '{
-  ";geo";: {
-    ";allowed_countries";: [
-      ";AU";
+  "geo": {
+    "allowed_countries": [
+      "AU"
     ]
   }
 }'</code></pre>
@@ -288,11 +288,11 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
       The <code translate="No">playback_rights_id</code> value can be found in the response body as the <code translate="No">id</code> field. It should be similar to this:
     </p>
 <pre class="line-numbers"><code class="language-json" translate="No">{
-  ";id";: ";<span class="bcls-highlight">your playback_rights_id</span>",
-  ";geo";: {
-  ";allowed_countries";: [
-    ";MX",
-    ";US";]
+  "id": "<span class="bcls-highlight">your playback_rights_id</span>",
+  "geo": {
+  "allowed_countries": [
+    "MX",
+    "US"]
 }</code></pre>
   </li>
 </ul>
@@ -322,62 +322,62 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
   Here is an example of all of the fields you can include in the request body:
 </p>
 <pre class="line-numbers"><code class="language-json" translate="No">{
-  ";geo";: {
-  ";allowed_countries";: [
-    ";MX",
-    ";US";
+  "geo": {
+  "allowed_countries": [
+    "MX",
+    "US"
   ],
-  ";blocked_countries";: [
-    ";JP",
-    ";CN";
+  "blocked_countries": [
+    "JP",
+    "CN"
   ],
-  ";allowed_zip_codes";: [
-    ";US-90210";
+  "allowed_zip_codes": [
+    "US-90210"
   ],
-  ";blocked_zip_codes";: [
-    ";US-72810";
+  "blocked_zip_codes": [
+    "US-72810"
   ],
-  ";allowed_dmas";: [
+  "allowed_dmas": [
     501
   ],
-  ";blocked_dmas";: [
+  "blocked_dmas": [
     803
   ]
 },
-";blocked_proxies";: {
-  ";anonymous";: true,
-  ";public";: true,
-  ";corporate";: true,
-  ";transparent";: true,
-  ";hosting";: true
+"blocked_proxies": {
+  "anonymous": true,
+  "public": true,
+  "corporate": true,
+  "transparent": true,
+  "hosting": true
 },
-";allowed_domains";: [
-  ";www.google.com",
-  ";www.brightcove.com";
+"allowed_domains": [
+  "www.google.com",
+  "www.brightcove.com"
 ],
-";blocked_domains";: [
-  ";www.ooyala.com";
+"blocked_domains": [
+  "www.ooyala.com"
 ],
-";start_time";: 1572905011,
-";end_time";: 1672905011,
-";allowed_ips";: [
-  ";192.168.1.1";
+"start_time": 1572905011,
+"end_time": 1672905011,
+"allowed_ips": [
+  "192.168.1.1"
 ],
-";blocked_ips";: [
-  ";192.168.1.1";
+"blocked_ips": [
+  "192.168.1.1"
 ],
-";allowed_days";: [
-  ";mon",
-  ";tue";
+"allowed_days": [
+  "mon",
+  "tue"
 ],
-";allowed_hours";: [
-  ";5-6";
+"allowed_hours": [
+  "5-6"
 ],
-";allow_insecure";: true,
-";disabled";: false,
-";geo_global_rule";: ";allow_all",
-";is_default";: true,
-";name";: ";Optional playback right name";
+"allow_insecure": true,
+"disabled": false,
+"geo_global_rule": "allow_all",
+"is_default": true,
+"name": "Optional playback right name"
 }</code></pre>
 
 <p>
@@ -482,7 +482,7 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
       <td>&emsp;<code translate="No">geo.allowed_zip_codes</code>, 
         <br>&emsp;<code translate="No">geo.blocked_zip_codes</code></td>
       <td>String</td>
-      <td>Array of zip codes, which are prefixed with the two letter country and hyphen. e.g. <code translate="No">[";US-90045";]</code>. <br/>
+      <td>Array of zip codes, which are prefixed with the two letter country and hyphen. e.g. <code translate="No">["US-90045"]</code>. <br/>
       The two letter country code must be upper case and follow the ISO 3166-1 alpha-2 standard, as shown in the <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">Officially assigned code elements</a>.</td>
     </tr>
     <tr>
@@ -592,7 +592,7 @@ https://oauth.brightcove.com/v4/client_credentials</code></pre>
   -H 'Authorization: Bearer <span class="bcls-input">your access_token</span>' \
   -H 'Content-Type: application/json' \
   -d '{
-	";playback_rights_id";: ";<span class="bcls-input">your playback_rights_id</span>";
+	"playback_rights_id": "<span class="bcls-input">your playback_rights_id</span>"
 }'</code></pre>
 </details>
 <br />
