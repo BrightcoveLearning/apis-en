@@ -1,0 +1,467 @@
+---
+title: 'Dimension: <code translate="No">viewer</code>'
+description: 'In this topic, you will learn about the <span translate="No">Analytics API</span> <code translate="No">viewer</code> dimension. The <code translate="No">viewer</code> dimension provides analytics by viewer.'
+parent: Dimension Guides
+grandparent: Analytics API
+layout: staging
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <aside class="bcls-aside bcls-aside--information">Viewer level analytics are not available to all accounts. If you are interested in having this feature turned on for your account, contact your Account Manager.</aside>
+    <section class="bcls-section">
+    <h2 id="urlParams">URL parameters</h2>
+
+    <p>Analytics API reports support the following URL parameters.</p>
+
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">URL Parameters</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Parameter</th>
+          <th>Description</th>
+          <th>Required</th>
+          <th>Values</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body" id="paramTableBody">
+        <tr>
+          <td><code translate="No">account</code></td>
+          <td>The accounts you want to report on</td>
+          <td>yes</td>
+          <td>one or more account ids as a comma-delimited list</td>
+          <td>none</td>
+        </tr>
+        <tr>
+          <td><code translate="No">dimensions</code></td>
+          <td>The dimension(s) to report on</td>
+          <td>yes</td>
+          <td>one or more dimensions as a comma-delimited list (some combinations are not valid)</td>
+          <td>none</td>
+        </tr>
+        <tr>
+          <td><code translate="No">where</code></td>
+          <td>Used to specify filters for reports</td>
+          <td>no</td>
+          <td>{dimension}=={value} - one or more as a semi-colon-delimited list</td>
+          <td>none</td>
+        </tr>
+        <tr>
+          <td><code translate="No">limit</code></td>
+          <td>Number of items to return</td>
+          <td>no</td>
+          <td>positive integer</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td><code translate="No">offset</code></td>
+          <td>Number of items to skip</td>
+          <td>no</td>
+          <td>positive integer</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td><code translate="No">sort</code></td>
+          <td>Field to sort items on</td>
+          <td>no</td>
+          <td>a valid field for the request</td>
+          <td>viewer_view</td>
+        </tr>
+        <tr>
+          <td><code translate="No">fields</code></td>
+          <td>Fields to return</td>
+          <td>no</td>
+          <td>varies according to the dimension you are reporting on - see <a href="#fields">fields</a> below for fields available.</td>
+          <td>viewer_view</td>
+        </tr>
+        <tr>
+          <td><code translate="No">format</code></td>
+          <td>Format to return results in</td>
+          <td>no</td>
+          <td>json | csv | xlxs</td>
+          <td>json</td>
+        </tr>
+        <!-- <tr>
+          <td><code translate="No">reconciled</code></td>
+          <td>If included, will limit results to either historical or realtime data</td>
+          <td>no</td>
+          <td>true | false</td>
+          <td>true</td>
+        </tr> -->
+        <tr>
+          <td><code translate="No">from</code></td>
+          <td>The beginning of the date range for the request</td>
+          <td>no</td>
+          <td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string alltime, or relative date (-1m); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
+          <td>30 days prior to now</td>
+        </tr>
+        <tr>
+          <td><code translate="No">to</code></td>
+          <td>The end of the date range for the request</td>
+          <td>no</td>
+          <td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
+          <td>now</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+
+    <section class="bcls-section">
+    <h2 id="fieldValues">Fields available</h2>
+
+    <p>The following fields can be returned for the dimension.</p>
+
+    <ul id="fields">
+      <li><code translate="No">viewer</code> - Event viewer (SSO ID or device id or unique string based on user-agent and IP)</li>
+      <!-- <li><code translate="No">application</code> - the value returned will be the  <code translate="No">account_id</code></li> -->
+      <li><code translate="No">video_view</code> - the number of times viewer playback began</li>
+      <li><code translate="No">time</code> - the epoch time of the video view in milliseconds</li>
+      <li><code translate="No">engagement_score</code> - <a href="https://studio.support.brightcove.com/analytics/calculating-video-engagement-score.html">engagement score</a></li>
+    </ul>
+    </section>
+
+    <section class="bcls-section">
+    <h2 id="filterValues">Filter values</h2>
+
+    <p>Used as a filter, a dimension allows you to narrow the results.</p>
+
+    <p id="filters">Filter values: viewer ids as a comma-delimited list or viewer.q=={viewer field}:{value}</p>
+    </section>
+
+    <section class="bcls-section">
+    <h2 id="combinations">Combining dimensions</h2>
+      <p>The <code translate="No">viewer</code> dimension can be combined with several others, which add addition fields that can be retrieved. The details are in the table below. (<strong>Bold</strong> items are included in the response by default if the dimension is included.)</p>
+      <table class="bcls-table">
+        <caption class="bcls-caption--table">Supported Dimension Combinations</caption>
+        <thead class="bcls-table__head">
+            <tr>
+                <th>Dimension</th>
+                <th>Additional Fields</th>
+            </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+            <tr>
+                <td><code translate="No">video</code></td>
+                <td>
+                  <strong><code translate="No">video</code></strong><br>
+                  <code translate="No">video_engagement_1</code><br>
+                  <code translate="No">video_engagement_25</code><br>
+                  <code translate="No">video_engagement_50</code><br>
+                  <code translate="No">video_engagement_75</code><br>
+                  <code translate="No">video_engagement_100</code><br>
+                  <code translate="No">video_percent_viewed</code><br>
+                  <code translate="No">video_seconds_viewed</code><br>
+                  <code translate="No">video.tags</code><br>
+                  <code translate="No">video.reference_id</code><br>
+                  <code translate="No">video.name</code><br>
+                  <code translate="No">video.description</code><br>
+                  <code translate="No">video.long_description</code><br>
+                  <code translate="No">video.duration</code>
+                </td>
+            </tr>
+            <tr>
+                <td><code translate="No">country</code></td>
+                <td>
+                  <strong><code translate="No">country</code></strong><br>
+                  <code translate="No">country_name</code>
+                </td>
+            </tr>
+            <tr>
+                <td><code translate="No">region</code></td>
+                <td>
+                  <strong><code translate="No">region</code></strong><br>
+                  <code translate="No">region_name</code>
+                </td>
+            </tr>
+            <tr>
+                <td><code translate="No">city</code></td>
+                <td>
+                  <strong><code translate="No">city</code></strong><br>
+                  <code translate="No">dma</code>
+                </td>
+            </tr>
+            <tr>
+                <td><code translate="No">device_type</code></td>
+                <td>
+                  <strong><code translate="No">device_type</code></strong>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- <p>To see what dimensions this on can be combined with, and what fields are available for the combination, see <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Dimension and Fields</a>.</p> -->
+    </section>
+
+    <section class="bcls-section">
+    <h2 id="examples">Request Examples</h2>
+
+    <h3>Dimension request sample</h3>
+
+    <pre class="line-numbers language-http code-toolbar">
+    <code class="language-http" id="dimensionRequest">https://analytics.api.brightcove.com/v1/data?accounts=3365624256001&dimensions=viewer&limit=10&fields=viewer,time,video_view,engagement_score</code></pre>
+    <!-- <button class="bcls-button" id="sendDimensionRequest">Test This Request</button> -->
+    <details>
+      <summary>Sample Response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "item_count": 8,
+  "items": [
+    {
+      "engagement_score": null,
+      "viewer": "6798840584846290049",
+      "time": 1623870475157,
+      "video_view": 0
+    },
+    {
+      "engagement_score": 100,
+      "viewer": "-1094565064376617663",
+      "time": 1623870472882,
+      "video_view": 1
+    },
+    {
+      "engagement_score": 100,
+      "viewer": "8997125557862445199",
+      "time": 1623870433989,
+      "video_view": 1
+    },
+    {
+      "engagement_score": 39.13,
+      "viewer": "-8839675754655082792",
+      "time": 1623872904633,
+      "video_view": 1
+    },
+    {
+      "engagement_score": 143.48,
+      "viewer": "-6771654281667224776",
+      "time": 1623869869930,
+      "video_view": 2
+    }
+  ],
+  "summary": {
+    "engagement_score": 110.51,
+    "time": 1623875119506,
+    "video_view": 12
+  }
+}</code></pre>
+    </details>
+    <h3>Multi-dimension request sample</h3>
+
+    <pre class="line-numbers language-http">
+    <code class="language-http" id="filterRequest">https://analytics.api.brightcove.com/v1/data?accounts=3365624256001&dimensions=viewer,country,region,city,video,device_type&limit=10&fields=viewer,time,video_view,engagement_score,video_percent_viewed,video_seconds_viewed,video_engagement_1,video_engagement_25,video_engagement_50,video_engagement_75,video_engagement_100,video.tags,video.reference_id,video.name,video.description,video.duration,video.long_description,dma,country_name,region_name</code></pre>
+    <!-- <button class="bcls-button" id="sendFilterRequest">Test This Request</button> -->
+
+    <details>
+      <summary>Sample Response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "item_count": 8,
+  "items": [
+    {
+      "country": "MX",
+      "viewer": "6798840584846290049",
+      "video.name": "Bison",
+      "video_seconds_viewed": 23,
+      "video_engagement_75": 1,
+      "city": "Zapopan",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 1,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 100,
+      "country_name": "Mexico",
+      "region_name": null,
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 1,
+      "engagement_score": null,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "0",
+      "time": 1623870475157,
+      "video_view": 0,
+      "region": "MX-JAL"
+    },
+    {
+      "country": "US",
+      "viewer": "-8839675754655082792",
+      "video.name": "Bison",
+      "video_seconds_viewed": 9,
+      "video_engagement_75": 0,
+      "city": "Safety Harbor",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 0,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 39.13,
+      "country_name": "United States",
+      "region_name": "Florida",
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 0,
+      "engagement_score": 39.13,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "539",
+      "time": 1623872904633,
+      "video_view": 1,
+      "region": "US-FL"
+    },
+    {
+      "country": "US",
+      "viewer": "-1094565064376617663",
+      "video.name": "Bison",
+      "video_seconds_viewed": 23,
+      "video_engagement_75": 1,
+      "city": "Boulder",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 1,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 100,
+      "country_name": "United States",
+      "region_name": "Colorado",
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 1,
+      "engagement_score": 100,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "751",
+      "time": 1623870472882,
+      "video_view": 1,
+      "region": "US-CO"
+    },
+    {
+      "country": "US",
+      "viewer": "8997125557862445199",
+      "video.name": "Bison",
+      "video_seconds_viewed": 23,
+      "video_engagement_75": 1,
+      "city": "Boulder",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 1,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 100,
+      "country_name": "United States",
+      "region_name": "Colorado",
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 1,
+      "engagement_score": 100,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "751",
+      "time": 1623870433989,
+      "video_view": 1,
+      "region": "US-CO"
+    },
+    {
+      "country": "US",
+      "viewer": "-4530870087560842176",
+      "video.name": "Bison",
+      "video_seconds_viewed": 46,
+      "video_engagement_75": 2,
+      "city": "Newton Center",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 2,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 200,
+      "country_name": "United States",
+      "region_name": "Massachusetts",
+      "video_engagement_25": 2,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 2,
+      "engagement_score": 100,
+      "video_engagement_1": 2,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "506",
+      "time": 1623875061754,
+      "video_view": 2,
+      "region": "US-MA"
+    },
+    {
+      "country": "MX",
+      "viewer": "-6771654281667224776",
+      "video.name": "Bison",
+      "video_seconds_viewed": 66,
+      "video_engagement_75": 1,
+      "city": "Zapopan",
+      "device_type": "desktop",
+      "video": "5754204614001",
+      "video_engagement_50": 1,
+      "video.description": "Bison in Yellowstone National Park",
+      "video.reference_id": null,
+      "video_percent_viewed": 286.96,
+      "country_name": "Mexico",
+      "region_name": null,
+      "video_engagement_25": 1,
+      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
+      "video.duration": 23295,
+      "video_engagement_100": 1,
+      "engagement_score": 143.48,
+      "video_engagement_1": 1,
+      "video.tags": [
+        "animals",
+        "simulive",
+        "yellowstone"
+      ],
+      "dma": "0",
+      "time": 1623869869930,
+      "video_view": 2,
+      "region": "MX-JAL"
+    }
+  ],
+  "summary": {
+    "video_seconds_viewed": 305,
+    "video_engagement_75": 10,
+    "video_engagement_25": 11,
+    "video_engagement_50": 10,
+    "video_engagement_100": 10,
+    "engagement_score": 110.51,
+    "video_engagement_1": 11,
+    "video_percent_viewed": 1326.09,
+    "country_name": null,
+    "region_name": null,
+    "time": 1623875119506,
+    "video_view": 12,
+    "account": "3365624256001"
+  }
+}</code></pre>
+    </details>
+
+    <pre class="line-numbers language-json">
+    <code class="language-json" id="response">Response will appear here when you test a request</code></pre>
+    </section>
+    </article>
+    <script src="//learning-services-media.brightcove.com/doc-assets/viewer-cloud-apis/analytics-api/aapi-model-v2.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/viewer-cloud-apis/analytics-api/guides/dimension-drupal-v2.js"></script>

@@ -112,6 +112,22 @@ grandparent: Dynamic Ingest API
           </td>
         </tr>
         <tr>
+          <td><code translate="No">forensic_watermarking</code> <em>optional</em></td>
+          <td>Boolean</td>
+          <td>
+            Whether forensic watermarks should be added to video renditions - if you set it to <code translate="no">true</code> the account must be enabled for forensic watermarking, or the field will be ignored - see <a href="/general/overview-forensic-watermarking.html">Overview: Forensic Watermarking</a> for more details
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">forensic_watermarking_stub_mode</code> <em>optional</em></td>
+          <td>Boolean</td>
+          <td>
+            WWhether <strong>visible</strong> forensic watermarks should be added to video renditions - if you set it to true the account must be enabled for forensic watermarking, and the <code translate="no">forensic_watermarking</code> field must also be set to true - see <a href="/general/overview-forensic-watermarking.html">Overview: Forensic Watermarking</a> for more details
+
+            Visible watermarks <strong>should be used only for testing</strong> integrations, to ensure that forensic watermarks have been successfully added to the video (use a video at least 10 minutes long). Once verification is complete, they must be removed by submitting a new ingest request to retranscode the video - <code translate="no">forensic_watermarking_stub_mode</code> must be set to false on the retranscode request.
+          </td>
+        </tr>
+        <tr>
           <td><code translate="No">profile</code> <em>optional</em></td>
           <td>String</td>
           <td>
@@ -310,7 +326,6 @@ grandparent: Dynamic Ingest API
           <td><code translate="No">callbacks</code> <em>optional</em></td>
           <td>String[]</td>
           <td>Array of URLs that <a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.html">notifications</a> should be sent to
-          <p>&nbsp;</p>
           </td>
         </tr>
       </tbody>

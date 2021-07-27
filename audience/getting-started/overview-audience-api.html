@@ -1,0 +1,363 @@
+---
+title: 'Overview: Audience API'
+description: 'In this topic, you will learn about the Audience API. The Audience API allows you to retrieve viewing event and lead data.'
+parent: Getting Started
+grandparent: Audience API
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <aside class="bcls-aside bcls-aside--information language-editable">Note that this API partly powers the Campaign module in Studio. For general Campaign module documentation, see <a href="https://studio.support.brightcove.com/campaign/index.html">Marketing Automation - The Campaign Module</a></aside>
+  <section class="bcls-section">
+    <h2 id="api-reference">API reference</h2>
+    <p>Also see the <a href="/audience/references/reference.html">API Reference</a>.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Base_URL">Base URL</h2>
+    <p>The base URL for the Audience API is:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">https://audience.api.brightcove.com/v1</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Account_path">Account path</h2>
+    <p>In all cases, requests will be made for a specific Video Cloud Account. You will always need to add the term “accounts” followed by your account ID to the base URL:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">https://audience.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span> </code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Authentication">Authentication</h2>
+    <p>The Audience API uses the Brightcove <a href="/oauth/getting-started/overview-oauth-api-v4.html">OAuth Service</a> to authenticate calls.</p>
+    <p>You will first need to obtain client credentials (a <code translate="No">client_id</code> and <code translate="No">client_secret</code>). This is a one-time operation that can be performed using the <a href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">OAuth Credentials UI</a>. You will need permissions for Audience/Read operations:</p>
+    <figure class="bcls-figure"><img class="bcls-image" alt="Required Permissions" src="/assets/images/audience/operations.png" />
+      <figcaption class="bcls-caption--image">Required Permissions</figcaption>
+    </figure>
+    <p>You can get client credentials directly from the Brightcove OAuth Service using <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">cURL</a> or <a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Postman</a>.</p>
+    <p>You will also need an <code translate="No">access_token</code>, which is obtained using the <code translate="No">client_id</code> and <code translate="No">client_secret</code> and passed in an Authorization header with your API request:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">Authorization: Bearer <em>{access_token}</em></code></pre>
+    <p>The <code translate="No">access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Error_handling">Error handling</h2>
+    <p>If an error occurs, the API will respond with one of the following status codes and a corresponding error code in the response body:</p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Status Code</th>
+          <th>Error Code</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>400</td>
+          <td><code translate="No">BAD_REQUEST_ERROR</code></td>
+          <td>Query parameters are invalid</td>
+        </tr>
+        <tr>
+          <td>401</td>
+          <td><code translate="No">UNAUTHORIZED_ERROR</code></td>
+          <td>The access token is either absent, has expired, or is invalid</td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td><code translate="No">RESOURCE_NOT_FOUND</code></td>
+          <td>The URL does not exist</td>
+        </tr>
+        <tr>
+          <td>429</td>
+          <td><code translate="No">REQUEST_THROTTLED_ERROR</code></td>
+          <td>The user has exceeded the rate limiting policy</td>
+        </tr>
+        <tr>
+          <td>500</td>
+          <td><code translate="No">INTERNAL_ERROR</code></td>
+          <td>An internal error has occurred</td>
+        </tr>
+        <tr>
+          <td>504</td>
+          <td><code translate="No">GATEWAY_TIMEOUT_ERROR</code></td>
+          <td>The server timed out while fulfilling your request</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Below is a sample response body for an error:</p>
+    <pre class="line-numbers">
+<code class="language-json" translate="No">[
+	{
+	"error_code": "UNAUTHORIZED_ERROR",
+	"message": "Permission denied"
+	}
+]</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Parameters">Parameters</h2>
+    <p>There are several parameters you can add to requests to limit and filter the data retrieved. These apply to all the request types described in the sections that follow.</p>
+    <h3 id="Filtering_results">Filtering results</h3>
+    <p>You can filter the results using the <code translate="No">where</code> parameter. The syntax for filters is:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">where=field1==value1;field2==value2</code></pre>
+    <p>For example:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">where=video_id==123456789;video_name==test</code></pre>
+    <p>Commas are treated as logical ORs and semicolons as logical ANDs. For example, <code translate="No">where=video_id==1234,5678;video_name=test</code> is interpreted as "where video_id = 1234 OR 5678, AND video_name = test".</p>
+    <h3>Selecting fields to return</h3>
+    <p>A list of fields may be specified in the request to limit the results to that subset of fields. The syntax for fields is:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">fields=field1,field4</code></pre>
+    <p>For example:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">fields=video_id,video_name</code></pre>
+    <p>The fields that you can filter and sort on are detailed for each request type in the sections that follow.</p>
+    <h3 id="Date_ranges">Date ranges</h3>
+    <p>Date ranges can be specified in <code translate="No">from</code> and <code translate="No">to</code> parameters and are applied to the date that the view event was last updated (the updated_at field). Date ranges can be indicated in the following formats:</p>
+    <ul>
+      <li>The text value <code translate="No">now</code> which represents the current time</li>
+      <li>Epoch time values in milliseconds, such as <code translate="No">1377047323000</code></li>
+      <li>Dates expressed in ISO 8601 standard international date format: <code translate="No">YYYY-MM-DD</code> format, such as <code translate="No">2013-09-12</code>. For dates expressed in this format:
+        <ul>
+          <li>Any date range specified will be interpreted in UTC</li>
+          <li>The time for the date give will be interpreted as midnight ( <code translate="No">00:00:00</code>) on the date specified</li>
+        </ul>
+      </li>
+      <li>Relative dates: you can express either of the <code translate="No">to</code> and <code translate="No">from</code> values relative to the other one in <code translate="No">d</code> (days), <code translate="No">h</code> (hours), <code translate="No">m</code> (minutes), or <code translate="No">s</code> (sec). For example:
+        <ul>
+          <li><code class="language-http" translate="No">from=2015-01-01&amp;to=31d</code></li>
+          <li><code class="language-http" translate="No">from=-48h&amp;to=now</code></li>
+          <li><code class="language-http" translate="No">from=-2d&amp;to=now</code> (will give the same results as the previous example)</li>
+          <li><code class="language-http" translate="No">from=-365d&amp;to=2015-12-31</code></li>
+          <li><code class="language-http" translate="No">from=-10m&amp;to=now</code></li>
+        </ul>
+      </li>
+    </ul>
+    <h3 id="Paging_results">Paging results</h3>
+    <p>The <code translate="No">limit</code> is the number of items to return (default: 25; maximum: 200). <code translate="No">offset</code> is the number of items to skip (default: 0). You can use <code translate="No">limit</code> and <code translate="No">offset</code> together to create an app that pages through the results. Each includes the <code translate="No">limit</code>, <code translate="No">offset</code>, and <code translate="No">count.</code>, which you can use to set up iteration over total results. For example, in JavaScript, you could get the total iterations required like this:</p>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">// response is the JSON-parsed response from the first request
+var totalRequests = Math.ceil(response.count / response.limit)</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Retrieving_view_events">Retrieving view events</h2>
+    <p>To retrieve view events in an account, perform a <code translate="No">GET</code> request to the view_events resource:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events</code></pre>
+    <aside class="bcls-aside bcls-aside--warning">Only view events that have been <em>processed</em> will appear in the response.</aside>
+    <p>Here is sample request in cURL</p>
+    <pre class="line-numbers">
+<code class="language-bash" translate="No">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
+  -H "Authorization: Bearer {token}"</code></pre>
+
+    <details>
+			<summary>Sample response</summary>
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+"count": 27,
+"limit": 25,
+"offset": 0,
+"result": [
+		{
+				"created_at": "2016-04-25T18:30:21.651Z",
+				"page_url": "http://players.brightcove.net/1486906377/V1s6NOwRx_default/index.html?videoId=4842718056001",
+				"player_id": "V1s6NOwRx",
+				"time_watched": 2,
+				"updated_at": "2016-04-25T18:30:21.651Z",
+				"video_id": "4842718056001",
+				"video_name": "Horses Heading to the Track",
+				"watched": 19
+		},
+		{
+				"created_at": "2016-04-25T18:31:55.071Z",
+				"page_url": "http://players.brightcove.net/1486906377/BkgFuzyhg_default/index.html?videoId=4842718056001",
+				"player_id": "BkgFuzyhg",
+				"time_watched": 15,
+				"updated_at": "2016-04-25T18:32:00.879Z",
+				"video_id": "4842718056001",
+				"video_name": "Horses Heading to the Track",
+				"watched": 99
+		}, ...
+}
+]</code></pre>
+		</details>
+    <h3 id="fieldsForViewEvents">Fields for filtering and selection</h3>
+    <p>All the <a href="#Parameters">parameters</a> can be used with <code translate="No">view_event</code> requests.</p>
+    <p>Here is sample request in cURL using the parameters:</p>
+    <pre class="line-numbers">
+<code class="language-bash" translate="No">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
+  -H "Authorization: Bearer {token}"</code></pre>
+    <p>The following fields are supported for <code translate="No">view_event</code> requests when filtering with a <code translate="No">where</code> clause or when selecting during a <code translate="No">fields</code> clause:</p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">video_id</code></td>
+          <td>Brightcove video ID</td>
+        </tr>
+        <tr>
+          <td><code translate="No">video_name</code></td>
+          <td>Brightcove video name</td>
+        </tr>
+        <tr>
+          <td><code translate="No">tracking_id</code></td>
+          <td>Custom tracking ID</td>
+        </tr>
+        <tr>
+          <td><code translate="No">external_id</code></td>
+          <td>The Marketo, Eloqua or custom GUID</td>
+        </tr>
+        <tr>
+          <td><code translate="No">player_id</code></td>
+          <td>The ID of the Brightcove player that created the view event</td>
+        </tr>
+        <tr>
+          <td><code translate="No">page_url</code></td>
+          <td>The URL of the page where the view event was created</td>
+        </tr>
+        <tr>
+          <td><code translate="No">watched</code></td>
+          <td>Percent watched</td>
+        </tr>
+        <tr>
+          <td><code translate="No">time_watched</code></td>
+          <td>Seconds of the video watched</td>
+        </tr>
+        <tr>
+          <td><code translate="No">created_at</code></td>
+          <td>Creation date</td>
+        </tr>
+        <tr>
+          <td><code translate="No">updated_at</code></td>
+          <td>Last updated date</td>
+        </tr>
+        <tr>
+          <td><code translate="No">is_synced</code></td>
+          <td>A boolean denoting whether or not the view event has been synchronized</td>
+        </tr>
+        <tr>
+          <td><code translate="No">event_1</code></td>
+          <td rowspan="3">Custom events</td>
+        </tr>
+        <tr>
+          <td><code translate="No">event_2</code></td>
+        </tr>
+        <tr>
+          <td><code translate="No">event_3</code></td>
+        </tr>
+        <tr>
+          <td><code translate="No">metric_1</code></td>
+          <td rowspan="3">Custom metrics</td>
+        </tr>
+        <tr>
+          <td><code translate="No">metric_2</code></td>
+        </tr>
+        <tr>
+          <td><code translate="No">metric_3</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Retrieving_Leads">Retrieving leads</h2>
+    <p>To retrieve view events in an account, perform a <code translate="No">GET</code> request to the <code translate="No">view_events</code> resource:</p>
+    <pre class="line-numbers">
+<code class="language-http" translate="No">https://audience.api.brightcove.com/v1/accounts/{account_id}/leads</code></pre>
+    <details>
+			<summary>Sample response:</summary>
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+"count": 2,
+"limit": 25,
+"offset": 0,
+"result": [
+		{
+				"created_at": "2016-06-30T12:57:11.283Z",
+				"email_address": "bbailey@brightcove.com",
+				"first_name": "Bob",
+				"last_name": "Bailey",
+				"page_url": "http://players.brightcove.net/1486906377/Hk4TBqzL_default/index.html?videoId=4997275041001",
+				"player_id": "Hk4TBqzL",
+				"video_id": "4997275041001"
+		},
+		{
+				"created_at": "2016-06-30T12:57:33.301Z",
+				"email_address": "rcrooks@brightcove.com",
+				"first_name": "Robert",
+				"last_name": "Crooks",
+				"page_url": "http://players.brightcove.net/1486906377/Hk4TBqzL_default/index.html?videoId=4997275041001",
+				"player_id": "Hk4TBqzL",
+				"video_id": "4997275041001"
+		}
+]
+}</code></pre>
+		</details>
+    <h3 id="fieldsForLeads">Fields for filtering and selection</h3>
+    <p>All the <a href="#Parameters">parameters</a> can be used with <code translate="No">leads</code> requests.</p>
+    <p>Here is sample request in cURL using the parameters:</p>
+    <pre class="line-numbers">
+<code class="language-bash" translate="No">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/leads?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
+  -H "Authorization: Bearer {token}"</code></pre>
+    <p>The following fields are supported for <code translate="No">leads</code> requests when filtering with a <code translate="No">where</code> clause or when selecting during a <code translate="No">fields</code> clause:</p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">video_id</code></td>
+          <td>Brightcove video ID</td>
+        </tr>
+        <tr>
+          <td><code translate="No">external_id</code></td>
+          <td>The Marketo, Eloqua or custom GUID</td>
+        </tr>
+        <tr>
+          <td><code translate="No">player_id</code></td>
+          <td>The ID of the Brightcove player that created the view event</td>
+        </tr>
+        <tr>
+          <td><code translate="No">page_url</code></td>
+          <td>The URL of the page where the view event was created</td>
+        </tr>
+        <tr>
+          <td><code translate="No">created_at</code></td>
+          <td>Creation date</td>
+        </tr>
+        <tr>
+          <td><code translate="No">email_address</code></td>
+          <td>The email address of the lead</td>
+        </tr>
+        <tr>
+          <td><code translate="No">first_name</code></td>
+          <td>The first name of the lead if provided</td>
+        </tr>
+        <tr>
+          <td><code translate="No">last_name</code></td>
+          <td>The last name of the lead if provided</td>
+        </tr>
+        <tr>
+          <td><code translate="No">business_phone</code></td>
+          <td>The phone number of the lead if provided</td>
+        </tr>
+        <tr>
+          <td><code translate="No">country</code></td>
+          <td>The country of the lead if provided</td>
+        </tr>
+        <tr>
+          <td><code translate="No">company_name</code></td>
+          <td>The company of the lead if provided</td>
+        </tr>
+        <tr>
+          <td><code translate="No">industry</code></td>
+          <td>The industry that the lead belongs to if provided</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</article>

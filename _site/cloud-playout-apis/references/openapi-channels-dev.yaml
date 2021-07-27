@@ -1,0 +1,2696 @@
+openapi: 3.0.0
+x-bc-implicit-head: true
+x-bc-implicit-options: true
+x-bc-upstream: 'https://backend_server'
+info:
+  title: Brightcove Cloud Playout Channel Manager API Reference
+  description: 'Reference for the Brightcove Cloud Playout Channel Manager API, used to access and manage your Cloud Playout channels.'
+  version: 1.0.0
+  x-bc-access: public
+servers:
+  - url: 'https://cm.cloudplayout.brightcove.com'
+    description: Production server
+    variables: {}
+paths:
+  '/accounts/{account_id}/cp_channels':
+    post:
+      tags:
+        - Channels
+      summary: Create channel
+      description: 'Creates a cloud playout channel for an account'
+      operationId: CreateChannel
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+      requestBody:
+        description: Creates a cloudplayout channel for an account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChannel'
+            examples:
+              For non-SSAI channel with Live input enabled & BC Live destination:
+                $ref: '#/components/examples/nonSSAIWithLive'
+              For non-SSAI channel without Live input enabled & BC Live destination:
+                $ref: '#/components/examples/nonSSAIWithoutLive'
+              For non-SSAI channel without Live input enabled & 3rd party Live destination:
+                $ref: '#/components/examples/nonSSAIWith3rdParty'
+              For non-SSAI channel without Live input enabled & S3 destination:
+                $ref: '#/components/examples/nonSSAIWithS3'
+              For SSAI channel:
+                $ref: '#/components/examples/SSAI'
+              For SSAI channel with s3 destination:
+                $ref: '#/components/examples/SSAIWithS3'
+              Channel with an existing live job id as output location:
+                $ref: '#/components/examples/existingLiveJobIdForOutputLocation'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelTopLevel'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+              examples:
+                Invalid Name and Description:
+                  $ref: '#/components/examples/invalidNameAndDescription'
+                Enable SSAI with no ad slate:
+                  $ref: '#/components/examples/noSlate'
+                Bad Image Url:
+                  $ref: '#/components/examples/invalidImage'
+                Bad Dates:
+                  $ref: '#/components/examples/invalidDates'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    get:
+      tags:
+        - Channels
+      summary: Get all channels for an account
+      description: 'Gets all Cloud Playout channels for an account'
+      operationId: GetAllChannels
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllChannels'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}':
+    get:
+      tags:
+        - Channels
+      summary: Get details of a channel
+      description: 'Gets all Cloud Playout channels for an account'
+      operationId: GetChannel
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChannel'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Channels
+      summary: Delete a channel
+      description: 'Delete a Cloud Playout channel for an account'
+      operationId: DeleteChannel
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '202':
+          description: '202 Accepted'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncMessage'
+              example: {
+                "message": "Delete initiated"
+              }
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    patch:
+      tags:
+        - Channels
+      summary: Update a channel
+      description: 'Update a Cloud Playout channel for an account'
+      operationId: UpdateChannel
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/ChannelId'
+      requestBody:
+        description: Creates a cloudplayout channel for an account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChannel'
+            examples:
+              Update Name:
+                $ref: '#/components/examples/updateName'
+              Update Description:
+                $ref: '#/components/examples/updateDescription'
+              Update Start Time:
+                $ref: '#/components/examples/updateStartTime'
+              Update Stop Time:
+                $ref: '#/components/examples/updateStopTime'
+              Enable SSAI:
+                $ref: '#/components/examples/enableSSAI'
+              Disable SSAI:
+                $ref: '#/components/examples/disableSSAI'
+              Disable Live Input:
+                $ref: '#/components/examples/disableLiveInput'
+              Update Input Groups:
+                $ref: '#/components/examples/updateInputGroup'
+              Update Loop On Completion:
+                $ref: '#/components/examples/updateLoopOnCompletion'
+              Update Live Profile:
+                $ref: '#/components/examples/updateLiveProfile'
+              Update Output Groups:
+                $ref: '#/components/examples/updateOutputGroups'
+              Update Mid-roll slot time:
+                $ref: '#/components/examples/updateMidRollSlotTime'
+              Disable Mid-roll import:
+                $ref: '#/components/examples/DisableMidRollImportWhenSSAIEnabled'
+              Update Multiple Items:
+                $ref: '#/components/examples/updateMultiple'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelTopLevel'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+              examples:
+                Invalid Name and Description:
+                  $ref: '#/components/examples/invalidNameAndDescription'
+                Enable SSAI with no ad slate:
+                  $ref: '#/components/examples/noSlate'
+                Bad Image Url:
+                  $ref: '#/components/examples/invalidImage'
+                Bad Dates:
+                  $ref: '#/components/examples/invalidDates'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/start':
+    post:
+      tags:
+        - Channels
+      summary: Start a channel
+      description: 'Start a cloud playout channel'
+      operationId: StartChannel
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '202':
+          description: '202 Accepted'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncMessage'
+              example: {
+                "message": "Start initiated"
+              }
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/stop':
+    post:
+      tags:
+        - Channels
+      summary: Stop a channel
+      description: 'Stop a cloud playout channel'
+      operationId: StopChannel
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '202':
+          description: '202 Accepted'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncMessage'
+              example: {
+                "message": "Stop initiated"
+              }
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/create':
+    post:
+      tags:
+        - Channels
+      summary: Activate a channel
+      description: 'Activate a cloud playout channel'
+      operationId: ActivateChannel
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '202':
+          description: '202 Accepted'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelTopLevel'
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/preview':
+    get:
+      tags:
+        - Channels
+      summary: Get preview of a running channel
+      description: 'Get preview image of a running channel'
+      operationId: GetChannelPreview
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChannelPreview'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/telemetrics/healthmetric':
+    get:
+      tags:
+        - Channels
+      summary: Get health metrics of a running channel
+      description: 'Get health metrics of a running channel'
+      operationId: GetChannelMetric
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/duration'
+        - $ref: '#/components/parameters/period'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChannelHealth'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/assets/{asset_type}':
+    post:
+      tags:
+        - Assets
+      summary: Create a new cloud playout asset for an account
+      description: 'Create a new asset'
+      operationId: CreateAsset
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AssetType'
+      requestBody:
+        description: New asset details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAsset'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAssetResponse'
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    get:
+      tags:
+        - Assets
+      summary: Get all cloud playout assets for an account
+      description: 'Get all assets'
+      operationId: GetAssets
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AssetType'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAssetsResponse'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/assets/{asset_type}/{asset_id}':
+    get:
+      tags:
+        - Assets
+      summary: Get a cloud playout asset for an account
+      description: 'Get an asset'
+      operationId: GetAsset
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AssetType'
+        - $ref: '#/components/parameters/AssetID'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAssetResponse'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Assets
+      summary: Delete a cloud playout asset for an account
+      description: 'Delete an asset'
+      operationId: DeleteAsset
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AssetType'
+        - $ref: '#/components/parameters/AssetID'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncMessage'
+              example: {
+                "message": "deleted"
+              }
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    patch:
+      tags:
+        - Assets
+      summary: Update a cloud playout asset for an account
+      description: 'Update an asset'
+      operationId: UpdateAsset
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/AssetType'
+        - $ref: '#/components/parameters/AssetID'
+      requestBody:
+        description: Update asset details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAsset'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAssetResponse'
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/video/{video_id}/order/{order}/skip':
+    post:
+      tags:
+        - Play Now
+      summary: Skip to a particular asset in a running channel
+      description: 'Skip to a particular asset in a running channel'
+      operationId: SkipToVideoId
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Order'
+      responses:
+        '202':
+          description: '202 Accepted'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncMessage'
+              example: {
+                "message": "Play Now initiated"
+              }
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/overlays':
+    post:
+      tags:
+        - Channel Overlays
+      summary: Associate an overlay asset for a channel
+      description: 'Associate an overlay asset for a channel'
+      operationId: AssociateOverlay
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+      requestBody:
+        description: overlay details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChannelOverlay'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChannelOverlay'
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    get:
+      tags:
+        - Channel Overlays
+      summary: Get All overlay images for a channel
+      description: 'Get All overlay images for a channel'
+      operationId: GetChannelOverlays
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChannelOverlays'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/overlays/{overlay_id}':
+    patch:
+      tags:
+        - Channel Overlays
+      summary: Update an overlay asset for a channel
+      description: 'Update an overlay asset for a channel'
+      operationId: UpdateAssociatedOverlay
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/OverlayID'
+      requestBody:
+        description: overlay details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChannelOverlay'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChannelOverlay'
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    get:
+      tags:
+        - Channel Overlays
+      summary: Get an overlay image for a channel
+      description: 'Get an overlay image for a channel'
+      operationId: GetChannelOverlay
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/OverlayID'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChannelOverlay'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Channel Overlays
+      summary: delete an overlay image for a channel
+      description: 'Delete an overlay image for a channel'
+      operationId: DeleteChannelOverlay
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/OverlayID'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncMessage'
+              example: {
+                "message": "Deleted"
+              }
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/overlays/{overlay_id}/deactivate':
+    post:
+      tags:
+        - Channel Overlays
+      summary: Deactivate an overlay asset for a channel
+      description: 'Deactivate an overlay asset for a channel'
+      operationId: DeactivateOverlay
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/OverlayID'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncMessage'
+              example: {
+                "message": "Deactivated"
+              }
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/credentials':
+    post:
+      tags:
+        - Credentials
+      summary: Create S3 credentials
+      description: 'Creates a S3 credential for a channel'
+      operationId: CreateCredentials
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+      requestBody:
+        description: Creates an s3 credential for a channel
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credential'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialProperties'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    get:
+      tags:
+        - Credentials
+      summary: Get All S3 credentials
+      description: 'Get All S3 credentials for an account'
+      operationId: GetCredentials
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAllCredentials'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/credentials/{credential_id}':
+    get:
+      tags:
+        - Credentials
+      summary: Get a S3 credential
+      description: 'Creates a S3 credential for a channel'
+      operationId: GetCredential
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/CredentialId'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialProperties'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    patch:
+      tags:
+        - Credentials
+      summary: Update an S3 credential
+      description: 'Creates a S3 credential for a channel'
+      operationId: UpdateCredential
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/CredentialId'
+      requestBody:
+        description: Creates an s3 credential for a channel
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credential'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialProperties'
+        '400':
+          description: 'Bad Request'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Credentials
+      summary: Delete a S3 credential
+      description: 'Creates a S3 credential for a channel'
+      operationId: DeleteCredential
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/CredentialId'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncMessage'
+              example: {
+                 "message": "credential deleted successfully"
+              }
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/profiles':
+    get:
+      tags:
+        - Profiles
+      summary: List All Live profiles
+      description: 'List all Live profiles that a channel can use'
+      operationId: ListProfiles
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/ContentType'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveProfileProperties'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/bc_channels':
+    get:
+      tags:
+        - BC Live channels
+      summary: List All BC Live channels
+      description: 'List all BC Live channels that a channel can use'
+      operationId: ListBCLiveChannels
+      parameters:
+        - $ref: '/cloud-playout-apis/references/general.yaml#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ssai'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BcLiveChannelProperties'
+        '401':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/401'
+        '403':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/403'
+        '404':
+          $ref: '/cloud-playout-apis/references/general.yaml#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+components:
+  examples:
+    nonSSAIWithLive:
+      value:
+        "name": "TestChannel"
+        "description": "A channel to test cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          },
+          {
+            "input_type": "slate",
+            "input_id": "https://s3transition-lambda-poc.s3.amazonaws.com/funny_cartoon.mp4"
+          },
+          {
+            "input_type": "rtmp"
+          }
+        ]
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
+    nonSSAIWithoutLive:
+      value:
+        "name": "TestChannel"
+        "description": "A channel to test cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
+    nonSSAIWith3rdParty:
+      value:
+        "name": "TestChannel"
+        "description": "A channel to test cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "rtmp://path-to/rtmp/destination"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
+    nonSSAIWithS3:
+      value:
+        "name": "TestChannel"
+        "description": "A channel to test cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "s3",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "s3_credential_id"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
+    SSAI:
+      value:
+        "name": "TestSSAIChannel"
+        "description": "A channel to test ssai on cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "ssai_enabled": true
+        "mid_roll_import_enabled": true
+        "mid_roll_slot_time": 30
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
+    SSAIWithS3:
+      value:
+        "name": "TestSSAIChannel"
+        "description": "A channel to test ssai on cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "ssai_enabled": true
+        "mid_roll_import_enabled": true
+        "mid_roll_slot_time": 30
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "s3",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "s3_credential_id"
+              }
+            ]
+          },
+          {
+            "type": "rtp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
+    existingLiveJobIdForOutputLocation:
+      value:
+        "name": "TestChannelWithExistingLiveJob"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "ssai_enabled": true
+        "mid_roll_import_enabled": true
+        "mid_roll_slot_time": 30
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "ac71d53a356d4d95986109257ae62faf"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
+    updateName:
+      value:
+        "name": "test_channel_edit"
+    updateDescription:
+      value:
+        "description": "updated description"
+    updateStartTime:
+      value:
+        "start_time": "2021-05-17T08:18:50.344Z"
+    updateStopTime:
+      value:
+        "stop_time": "2021-05-17T12:18:50.344Z"
+    enableSSAI:
+      value:
+        "output_group": [
+          {
+            "type": "rtp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "ssai_enabled": true
+    disableSSAI:
+      value:
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "ssai_enabled": false
+    updateInputGroup:
+      value:
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          },
+          {
+            "input_type": "slate",
+            "input_id": "https://test.mp4"
+          },
+          {
+            "input_type": "rtmp"
+          }
+        ]
+    disableLiveInput:
+      value:
+        "__comment": "Just pass the required input groups without rtmp & slate to remove the live input"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+    updateLoopOnCompletion:
+      value:
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": false
+          }
+        ]
+    updateLiveProfile:
+      value:
+        "live_profile": "6e1af1a714ee45e7ac27c5ae"
+    updateOutputGroups:
+      value:
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+    updateMidRollSlotTime:
+      value:
+        "mid_roll_slot_time": "55"
+    DisableMidRollImportWhenSSAIEnabled:
+      value:
+        "mid_roll_import_enabled": "false"
+    updateMultiple:
+      value:
+        "name": "test_poster_cleanup"
+        "channel_id": "dfb8f7a5593f4f6cbb8ba13740c59ccc"
+        "description": "test_poster_cleanup"
+        "start_time": "2021-05-18 22:00:00 +0530"
+        "stop_time": "2021-03-28 10:00:00 +0530"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          },
+          {
+            "input_type": "slate",
+            "input_id": "https://s3transition-lambda-poc.s3.amazonaws.com/funny_cartoon.mp4"
+          },
+          {
+            "input_type": "rtmp"
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
+    invalidNameAndDescription:
+      value:
+        message: {
+          errors: [
+              "Invalid special characters or space in Channel Name. Space not allowed. Allowed special characters are _.:/=+-",
+              "Description is too long. Maximum characters allowed : 250"
+          ]
+        }
+    invalidImage:
+      value:
+        message: {
+          errors: [
+              "image_id should be in String format",
+              "Invalid Image URL",
+              "Image URL must be a valid https url"
+          ]
+        }
+    invalidDates:
+      value:
+        message: {
+          errors: [
+              "Error parsing the start-time, cannot be in the past",
+              "Invalid start_time. An example of valid date format would be 2020-12-16 03:41:22 UTC",
+              "Invalid stop_time. An example of valid date format would be 2020-12-16 03:41:22 UTC"
+          ]
+        }
+    noSlate:
+      value:
+        message: "SSAI enabled; but ad slate not found"
+  schemas:
+    AssetType:
+      type: string
+      enum:
+        - overlay
+    ChannelProperties:
+      title: CreateChannel
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the channel
+        description:
+          type: string
+          description: Description of the channel
+        ssai_enabled:
+          type: boolean
+          description: Channel enabled for SSAI
+          default: false
+        mid_roll_import_enabled:
+          type: boolean
+          description: For SSAI enabled channels, specify if midroll import is enabled or disabled
+          default: true
+        mid_roll_slot_time:
+          type: integer
+          description: For SSAI enabled channels, specify midroll slot duration in seconds
+          default: 30
+          minimum: 30
+          maximum: 600
+        start_time:
+          type: string
+          format: date-time
+          description: Scheduled start time of the channel. Should be a future date/time
+        stop_time:
+          type: string
+          format: date-time
+          description: Scheduled stop time of the channel. Should be a future date/time. Leave this empty to run the channel 24*7
+        image_id:
+          type: string
+          description: Image URL that need to be associated with the channel
+          default: "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"
+        live_profile:
+          type: string
+          description: Live profile on the account that need to be associated with this channel. Use the [List Profiles](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListProfiles) API to get the profile id's.
+        channel_class:
+          type: string
+          default: single-pipeline
+        region:
+          type: string
+          enum:
+            - us-east-1
+            - us-east-2
+            - us-west-2
+            - ap-south-1
+            - ap-southeast-1
+            - ap-southeast-2
+            - ap-northeast-1
+            - ap-northeast-2
+            - eu-central-1
+            - eu-west-1
+            - eu-west-2
+            - eu-west-3
+            - eu-north-1
+            - sa-east-1
+          description: Region for the channel.
+        input_group:
+          type: array
+          required:
+            - input_type
+          items:
+            properties:
+              input_type:
+                type: string
+                description: The input types for the channel. Playlist is mandatory, rest others are optional
+                enum:
+                  - playlist
+                  - slate
+                  - rtmp
+              input_id:
+                type: string
+                description: Applicable only in slate input_type. Denotes a http URL for the slate MP4
+                default: "https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4"
+              loop_on_completion:
+                type: boolean
+                description: Applicable only in playlist input_type. Denotes a looped/non-looped channel
+        output_group:
+          type: array
+          items:
+            properties:
+              type:
+                type: string
+                description: Output destination(s) for the channel. rtp is the only option for SSAI enabled channels
+                enum:
+                  - rtmp
+                  - s3
+                  - rtp
+              ingest_locations:
+                type: array
+                items:
+                  properties:
+                    pipeline_id:
+                      type: integer
+                      description: Indicates the output pipeline. 1 only for now
+                    location:
+                      type: string
+                      description: "Location where the output destination is configured.
+                      For rtmp/rtp type;
+                       1. Specify as bc_live if you want Cloud PlayOut to create a new Brightcove Live event.
+                       2. For using an existing BC Live event, pass in the existing event's job ID.
+                       See [ListBCLiveChannels](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListBCLiveChannels) to get the available job id's.
+                      For s3 type; pass in the credentials id (Refer [Credentials](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#tag/Credentials)) for Cloud Playout to create HLS playlist on the given S3 location."
+    CreateChannel:
+      allOf:
+        - $ref: "#/components/schemas/ChannelProperties"
+        - type: object
+          required:
+            - name
+            - start_time
+            - live_profile
+            - input_group
+            - output_group
+            - region
+    UpdateChannel:
+      allOf:
+        - $ref: "#/components/schemas/ChannelProperties"
+        - title: UpdateChannel
+        - type: object
+    GetAllChannels:
+      title: GetAllChannels
+      type: object
+      properties:
+        items:
+          description: >-
+            The list of channels.  List may be empty if no channels
+          items:
+            $ref: '#/components/schemas/ChannelTopLevel'
+          type: array
+      example: {
+          "items": [
+            {
+              "public_id": "8635d6147ab64e4788a44d70c23cced0",
+              "name": "testChannel",
+              "description": "Channel created for testing Cloud Playout",
+              "account_id": "6062814566001",
+              "state": "DRAFT",
+              "status": null,
+              "start_time": "2020-12-17 06:00:00 UTC",
+              "stop_time": "2020-12-17 07:00:00 UTC",
+              "input_groups": "playlist",
+              "output_groups": "rtmp",
+              "loop_playlist": true,
+              "playlist_id": "1686204667297382886",
+              "channel_class": "single-pipeline",
+              "ssai_enabled": false,
+              "aws_region": "us-east-1",
+              "message": null,
+              "created_at": "2020-12-16 03:41:22 UTC",
+              "updated_at": "2020-12-17 04:53:30 UTC",
+              "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+              "output_destinations": [
+                  "Brightcove Live"
+              ],
+              "channel_created_at": "2020-12-16 03:41:22 UTC",
+              "channel_updated_at": "2020-12-17 04:53:30 UTC",
+              "channel_created_by": "abc@xyz.com",
+              "channel_updated_by": "abc@xyz.com"
+            }
+          ]
+        }
+    UpdateChannelSchedule:
+      title: UpdateSchedule
+      type: object
+      properties:
+        start_time:
+          type: string
+          format: date-time
+          description: start time of channel
+        stop_time:
+          type: string
+          format: date-time
+          description: stop time of channel
+        loop_on_completion:
+          type: boolean
+          description: channel looped/non-looped
+      example: {
+          "start_time":"2020-08-06 22:00:00 +0530",
+          "stop_time":"2020-08-07 22:00:00 +0530",
+          "loop_on_completion": true
+        }
+    GetChannel:
+      title: GetChannel
+      type: object
+      properties:
+        channel:
+          $ref: '#/components/schemas/ExtendedChannel'
+      example: {
+        "public_id": "8635d6147ab64e4788a44d70c23cced0",
+        "name": "testChannel",
+        "description": "Channel created for testing Cloud Playout",
+        "account_id": "6062814566001",
+        "state": "DRAFT",
+        "status": null,
+        "start_time": "2020-12-17 06:00:00 UTC",
+        "stop_time": "2020-12-17 07:00:00 UTC",
+        "input_groups": "playlist",
+        "output_groups": "rtmp",
+        "loop_playlist": true,
+        "playlist_id": "1686204667297382886",
+        "channel_class": "single-pipeline",
+        "ssai_enabled": false,
+        "aws_region": "us-east-1",
+        "message": null,
+        "created_at": "2020-12-16 03:41:22 UTC",
+        "updated_at": "2020-12-17 04:53:30 UTC",
+        "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+        "output_destinations": [
+            "Brightcove Live"
+        ],
+        "channel_created_at": "2020-12-16 03:41:22 UTC",
+        "channel_updated_at": "2020-12-17 04:53:30 UTC",
+        "channel_created_by": "abc@xyz.com",
+        "channel_updated_by": "abc@xyz.com",
+        "live_profile": {
+          "display_name": "Standard Live HD 720p - Tier 1",
+          "name": "standard-live-hd-720p-tier-1",
+          "date_created": "2018-06-04 18:16:44 UTC",
+          "date_modified": "2018-06-04 18:16:44 UTC"
+        },
+        "channel_data": {
+          "input_group": [
+            {
+              "input_type": "slate",
+              "value": "https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4",
+              "public_id": "8f5d4bd7474346398f63d29928fe7c11"
+            },
+            {
+              "input_type": "rtmp",
+              "value": {
+                "type": "RTMP_PUSH",
+                "url": "rtmp://cloudplayout.brightcove.com/cloudplayout/2773cfce04834175a16ff3db6c6f713a",
+                "security_groups": [
+                    "2960733"
+                ]
+              }
+            },
+            {
+              "input_type": "playlist",
+              "value": "playlist_name",
+              "description": "Playlist created for Cloud Playout",
+              "public_id": "1691563159090702307"
+            }
+          ],
+          "output_groups": [
+            {
+              "type": "preview",
+              "destination_url": "bc-cloudplayout-prod/framecapture/2773cfce04834175a16ff3db6c6f713a/image",
+              "encoder_settings": [
+                {
+                  "width": 640,
+                  "height": 360,
+                  "capture_interval": 5,
+                  "capture_interval_units": "SECONDS"
+                }
+              ]
+            },
+            {
+              "type": "rtmp",
+              "destination_url": "rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive",
+              "location_id": "3c702c9afcd24a93b73cf57af2eb44f5",
+              "location": "Shared-media-test",
+              "destination": "Brightcove Live",
+              "encoder_settings": [
+                {
+                  "width": 1280,
+                  "height": 720,
+                  "bitrate": 2400000,
+                  "gop_size": 90.0,
+                  "gop_size_units": "FRAMES",
+                  "profile": "HIGH",
+                  "level": "H264_LEVEL_AUTO",
+                  "scan_type": "PROGRESSIVE",
+                  "framerate_control": "SPECIFIED"
+                }
+              ],
+              "stream_url": "rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive",
+              "static": true,
+              "playback_url": "https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist.m3u8",
+              "playback_url_dvr": "https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist_dvr.m3u8"
+            }
+          ]
+        }
+      }
+    AsyncMessage:
+      title: MessageObject
+      type: object
+      properties:
+        message:
+          description: message from the api
+          type: string
+    CredentialProperties:
+      title: CredentialObject
+      type: object
+      properties:
+        public_id:
+          description: Id of the credential.
+          readOnly: true
+          type: string
+        account_id:
+          description: Account id.
+          type: string
+        credtype:
+          description: Credential type.
+          type: string
+          default: s3
+        bucket:
+          description: S3 bucket name
+          type: string
+        access_key:
+          description: Access key
+          type: string
+        secret_key:
+          description: Secret key
+          type: string
+        region:
+          description: S3 region
+          type: string
+        created_at:
+          description: Time of credential creation.
+          type: string
+        updated_at:
+          description: Time of credential update.
+          type: string
+      example: {
+        "public_id": "1d30c41ba9104ec0b48b01852696e45f",
+        "account_id": "70701684296401",
+        "credtype": "s3",
+        "bucket": "docexamplebucket1",
+        "access_key": "ALIBRIUROOGEQKWTPW5O",
+        "secret_key": "RGpR9xYU9xLbuCBgmuZc7HfrvO3VN/cHyrK53Hw=",
+        "region": "us-west-2",
+        "created_at": "2021-07-05 10:30:00 UTC",
+        "updated_at": "2021-07-05 10:30:00 UTC"
+      }
+    LiveProfileProperties:
+      title: LiveProfileObject
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            description: Live profile name.
+            type: string
+          description:
+            description: Live profile description
+            type: string
+          display_name:
+            description: Display name of the profile.
+            type: string
+          id:
+            description: Profile id.
+            type: string
+        example: {
+          "name": "premium-live-hd-1080p-tier-2",
+          "description": "Deliver high-quality renditions to maximize quality for desktop and OTT.",
+          "display_name": "Premium Live HD 1080p - Tier 2",
+          "id": "8d10b1667b864f94bd7cb28s"
+        }
+    BcLiveChannelProperties:
+      title: BcLiveChannelObjcet
+      type: object
+      example: {
+        "jobs": [
+          {
+            "id": "d901a1d5a00947c6804557e46ff37dh8",
+            "videocloud": {
+              "live_to_vod": true,
+              "video": {
+                "name": "hfgh",
+                "link": { },
+                "schedule": { },
+                "state": "ACTIVE",
+                "custom_fields": { }
+              }
+            },
+            "state": "waiting",
+            "static": false,
+            "ad_insertion": false,
+            "region": "us-west-2",
+            "reconnect_time": 600,
+            "submitted_at": "2021-07-05T12:28:23.510Z"
+          }
+        ]
+      }
+      properties:
+        jobs:
+          description: List of bc live jobs for the account.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                description: Id of the bc live channel.
+                type: string
+              videocloud:
+                description: Video cloud properties.
+                type: object
+                properties:
+                  live_to_vod:
+                    description: defines if live to vod is enabled.
+                    type: boolean
+                  video:
+                    description: live event properties.
+                    type: object
+                    properties:
+                      name:
+                        description: name of the live event.
+                        type: string
+                      link:
+                        type: object
+                      schedule:
+                        type: object
+                      state:
+                        type: string
+                        description: State of the live event.
+                      custom_fields:
+                        type: object
+              state:
+                description: State of the bc live channel.
+                type: string
+              static:
+                description: Defines if the live event is SEP/non-SEP.
+                type: boolean
+              ad_insertion:
+                description: Defines if the live event has ssai enabled/not.
+                type: boolean
+              region:
+                description: Region of the bc live channel.
+                type: string
+              reconnect_time:
+                description: Reconnect time of the bc live channel.
+                type: integer
+              submitted_at:
+                description: Time when the bc live channel is submitted.
+                type: string
+    ChannelTopLevel:
+      title: TopLevelChannelObject
+      type: object
+      properties:
+        public_id:
+          description: Id for the channel.
+          readOnly: true
+          type: string
+        name:
+          description: Name of the channel.
+          type: string
+        description:
+          description: Description of the channel.
+          type: string
+        account_id:
+          description: Account id of the channel.
+          type: string
+        state:
+          description: state of the channel.
+          type: string
+          enum:
+            - DRAFT
+            - CREATING
+            - CREATE_ERROR
+            - SCHEDULED
+            - RE-SCHEDULING
+            - STARTING
+            - RUNNING
+            - START_ERROR
+            - STOPPING
+            - STOP_ERROR
+            - DELETING
+            - DELETE_ERROR
+        status:
+          description: Status of the channel.
+          type: string
+        message:
+          description: Error message or status message.
+          type: string
+        start_time:
+          description: Start time of the channel.
+          type: string
+        stop_time:
+          description: Stop time of the channel.
+          type: string
+        input_groups:
+          description: Input groups of the channel.
+          type: string
+        output_groups:
+          description: Output groups of the channel.
+          type: string
+        loop_playlist:
+          description: Looped channel/Non-Looped channel.
+          type: boolean
+        playlist_id:
+          description: Playlist id associated with the channel.
+          type: string
+        channel_class:
+          description: Channel class.
+          type: string
+        ssai_enabled:
+          description: SSAI/non-SSAI channel.
+          type: boolean
+        aws_region:
+          description: Region where the channel is created.
+          type: string
+        image_url:
+          description: Channel image URL.
+          type: string
+        output_destinations:
+          description: Output destinations configured for the channel.
+          type: array
+          items:
+            type: string
+        channel_created_at:
+          description: Time of channel creation.
+          type: string
+        channel_updated_at:
+          description: Last updated time of the channel.
+          type: string
+        channel_created_by:
+          description: User email that created the channel.
+          type: string
+        channel_updated_by:
+          description: User email that last updated the channel.
+          type: string
+      example:
+        public_id: "7ba0ab27e1ba4c69bfbb7e2b6958a3e5"
+        name: "testChannel"
+        description: "testChannel"
+        account_id: "6062814566001"
+        state: "DRAFT"
+        status: null
+        start_time: "2021-10-10 16:30:00 UTC"
+        stop_time: "2021-10-20 04:30:00 UTC"
+        input_groups: "playlist:slate:rtmp"
+        output_groups: "rtmp"
+        loop_playlist: true
+        playlist_id: "1700806648849757071"
+        channel_class: "single-pipeline"
+        ssai_enabled: null
+        aws_region: "us-east-1"
+        message: null
+        created_at: "2021-05-26 07:40:40 UTC"
+        updated_at: "2021-05-26 07:40:40 UTC"
+        image_url: "https://picsum.photos/200/300"
+        output_destinations: [
+            "Brightcove Live"
+        ]
+        channel_created_at: "2021-05-26 07:40:40 UTC"
+        channel_updated_at: "2021-05-26 07:40:40 UTC"
+        channel_created_by: "user@example.com"
+        channel_updated_by: "user@example.com"
+    ImportableAssets:
+      title: ImportableAssetsObject
+      type: object
+      example: {
+            "eligible_assets": [
+                {
+                    "name": "cloudplayout-static-v1-smpte",
+                    "id": "70702002899202",
+                    "images": {
+                        "thumbnail": {
+                            "src": "https://cf-images.us-east-1.qa.boltdns.net/v1/jit/6062814566001/dafe34fd-4485-4d50-adca-afd3cbd45af9/main/1280x720/15s/match/image.jpg"
+                        }
+                    },
+                    "tags": ["tag1","tag2","tag3"],
+                    "duration": 30000,
+                    "delivery_type": "dynamic_origin"
+                }
+            ],
+            "rejected_assets": [
+                "70702089454202",
+                "70702089446202"
+            ]
+        }
+      properties:
+        eligible_assets:
+          type: array
+          items:
+            properties:
+              name:
+                type: string
+                description: asset name
+              id:
+                type: string
+                description: asset id
+              images:
+                type: object
+                description: image object URL
+              tags:
+                type: array
+                description: tags associated with the asset
+                items:
+                  type: string
+              duration:
+                type: integer
+                description: asset duration in milliseconds
+              delivery_type:
+                type: string
+                description: Delivery type for the asset
+        rejected_assets:
+          type: array
+          description: video_ids of rejected assets
+          items:
+            type: string
+    ExtendedChannel:
+      allOf:
+        - $ref: '#/components/schemas/ChannelTopLevel'
+        - type: object
+          properties:
+            live_profile:
+              type: array
+              items:
+                properties:
+                  display_name:
+                    type: string
+                    description: Display name of the profile used by the channel
+                  name:
+                    type: string
+                    description: Name of the profile used by the channel
+                  date_created:
+                    type: string
+                    description: Created date of the profile
+                  date_modified:
+                    type: string
+                    description: Updated date of the profile
+            channel_data:
+              type: object
+              properties:
+                input_group:
+                  type: array
+                  items:
+                    properties:
+                      input_type:
+                        type: string
+                        description: Type of the input
+                        enum:
+                          - rtmp
+                          - slate
+                          - playlist
+                      value:
+                        type: string
+                        description: Value of the input type
+                      description:
+                        type: string
+                        description: Description of the input type
+                      public_id:
+                        type: string
+                        description: public id of the given input type
+                output_group:
+                  type: array
+                  items:
+                    properties:
+                      type:
+                        type: string
+                        description: Type of the output destination
+                        enum:
+                          - rtmp
+                          - rtp
+                          - s3
+                      location:
+                        type: string
+                        description: BC Live job name, in case BC Live is the destination
+                        required: false
+                      location_id:
+                        type: string
+                        description: BC Live job ID, in case BC Live is the destination
+                        required: false
+                      destination:
+                        type: string
+                        enum:
+                          - Brightcove Live
+                          - RTMP
+                          - RTP
+                          - S3
+                        description: Destination for this output group. Brightcove Live - if BC Live is the destination
+                      destination_url:
+                        type: string
+                        description: Output destination URL
+    GetChannelPreview:
+      title: Preview
+      type: object
+      properties:
+        url:
+          type: string
+    GetChannelHealth:
+      title: HealthMetric
+      type: object
+      properties:
+        resp:
+          type: array
+          items:
+            properties:
+              pipeline_0:
+                type: object
+                properties:
+                  metric_data_results:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        label:
+                          type: string
+                        timestamps:
+                          type: array
+                          items:
+                            type: string
+                        values:
+                          type: array
+                          items:
+                            type: string
+                        status_code:
+                          type: string
+      example: {
+        "resp": [
+          {
+            "pipeline_0": {
+              "metric_data_results": [
+                {
+                  "id": "m1",
+                  "label": "NetworkIn",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      71507.5
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m2",
+                  "label": "NetworkOut",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      5517809.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m3",
+                  "label": "InputVideoFrameRate",
+                  "timestamps": [ ],
+                  "values": [ ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m4",
+                  "label": "ActiveAlerts",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      0.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m5",
+                  "label": "DroppedFrames",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      0.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m6",
+                  "label": "SvqTime",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      0.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m7",
+                  "label": "FillMsec",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      0.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m8",
+                  "label": "UdpInputLoss",
+                  "timestamps": [ ],
+                  "values": [ ],
+                  "status_code": "Complete"
+                }
+              ],
+              "messages": [ ]
+            }
+          }
+        ]
+      }
+    GetUploadUrl:
+      title: UploadUrl
+      type: object
+      properties:
+        file_key:
+          type: string
+        upload_url:
+          type: string
+        headers:
+          type: object
+          properties:
+            Content-Type:
+              type: string
+    UploadFileName:
+      title: File name
+      type: object
+      required:
+        - file_name
+      properties:
+        file_name:
+          type: string
+    UploadComplete:
+      title: Complete Upload
+      type: object
+      required:
+        - file_key
+      properties:
+        name:
+          type: string
+        file_key:
+          type: string
+    UploadCompleteResponse:
+      title: Upload Completed
+      type: object
+      properties:
+        id:
+          type: string
+        asset_url:
+          type: string
+        name:
+          type: string
+    CreateAsset:
+      title: Create Asset
+      type: object
+      required:
+        - file_url
+        - name
+      properties:
+        file_url:
+          type: string
+          description: A public http/https URL for the asset
+        name:
+          type: string
+          description: A name identifier for the asset
+    UpdateAsset:
+      title: Create Asset
+      type: object
+      properties:
+        file_url:
+          type: string
+        name:
+          type: string
+    CreateAssetResponse:
+      title: Create Asset response
+      type: object
+      properties:
+        id:
+          type: string
+        asset_url:
+          type: string
+        name:
+          type: string
+    GetAssetResponse:
+      title: Get an Asset
+      type: object
+      properties:
+        public_id:
+          type: string
+        path:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    GetAssetsResponse:
+      title: Get all Assets
+      type: object
+      properties:
+        items:
+          description: >-
+            The list of assets.  List may be empty if no assets are found
+          items:
+            $ref: '#/components/schemas/GetAssetResponse'
+          type: array
+    ChannelOverlayProperties:
+      title: Create Channel Overlay
+      type: object
+      properties:
+        asset_id:
+          type: string
+          description: Overlay image asset's public ID or an URL of a new overlay image
+        layer:
+          type: integer
+          minimum: 0
+          maximum: 1
+          description: The number of the layer. Higher values of layer are inserted on top of overlays with lower values
+        opacity:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: 0 is transparent and 100 is fully opaque
+        width:
+          type: integer
+          description: Specify width for the overlay image in pixels. Select "Use Original" to use image's original resolution.
+        height:
+          type: integer
+          description: Specify height for the overlay image in pixels. Select "Use Original" to use image's original resolution.
+        use_original_resolution:
+          type: boolean
+          default: false
+          description: Enable this to use image's original resolution
+        x:
+          type: integer
+          description: Placement of the left edge of the overlay relative to the left edge of the video frame, in pixels
+        y:
+          type: integer
+          description: Placement of the top edge of the overlay relative to the top edge of the video frame, in pixels
+        start_time:
+          type: string
+          format: date-time
+          description: Specify a futuristic start time for this schedule.
+        duration:
+          type: integer
+          description: Specify how long (hh:mm:ss) the overlay image should appear or leave it empty for unlimited duration
+    CreateChannelOverlay:
+      allOf:
+        - $ref: '#/components/schemas/ChannelOverlayProperties'
+        - type: object
+          required:
+            - asset_id
+            - layer
+            - opacity
+            - start_time
+    UpdateChannelOverlay:
+      allOf:
+        - $ref: '#/components/schemas/ChannelOverlayProperties'
+        - type: object
+    GetChannelOverlay:
+      title: Get Channel Overlay
+      type: object
+      properties:
+        public_id:
+          type: string
+        asset_id:
+          type: string
+        layer:
+          type: integer
+        opacity:
+          type: integer
+        width:
+          type: integer
+        height:
+          type: integer
+        use_original_resolution:
+          type: boolean
+        x:
+          type: integer
+        y:
+          type: integer
+        start_time:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        state:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+            - SCHEDULED
+    GetChannelOverlays:
+      title: Get all channel overlays
+      type: object
+      properties:
+        items:
+          description: >-
+            The list of overlays.  List may be empty if no overlays are found
+          items:
+            $ref: '#/components/schemas/GetChannelOverlay'
+          type: array
+    Credential:
+      title: Credential
+      type: object
+      required:
+        - bucket
+        - access_key
+        - secret_key
+        - region
+      properties:
+        credtype:
+          description: Credential type
+          enum:
+            - s3
+          type: string
+        bucket:
+          description: S3 bucket name (with the path, if needed); please make sure that the given access credential has write access to this bucket location
+          type: string
+        access_key:
+          description: S3 Bucket access key
+          type: string
+        secret_key:
+          description: S3 Bucket secret key
+          type: string
+        region:
+          description: S3 region
+          type: string
+      example: {
+        "credtype": "s3",
+        "bucket": "docexamplebucket1",
+        "access_key": "ALIBRIUROOGEQKWTPW5O",
+        "secret_key": "kTJvQU+7slC6beFnYps6Kr7WIDjFAobeFnYps6Kr7WIDjF6sJ",
+        "region": "us-west-2"
+      }
+    ListAllCredentials:
+      title: GetAllCredentials
+      type: object
+      properties:
+        items:
+          description: >-
+            The list of credentials. List may be empty if no credentials are provisioned
+          items:
+            $ref: '#/components/schemas/Credential'
+          type: array
+    Profiles:
+      title: GetAllProfiles
+      type: object
+      properties:
+        items:
+          description: >-
+            The list of live profiles. List may be empty if no profiles are found
+          items:
+            type: object
+          type: array
+    LiveChannels:
+      title: GetAllLiveChannels
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              videocloud:
+                type: object
+                properties:
+                  video:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+              state:
+                type: string
+              static:
+                type: boolean
+              ad_insertion:
+                type: boolean
+              region:
+                type: string
+    BadRequest:
+      title: BadRequest
+      type: object
+      properties:
+        message:
+          type: object
+  parameters:
+    ContentType:
+      name: Content-Type
+      in: header
+      description: 'Content-Type: application/json'
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        default: application/json
+      example: application/json
+    ChannelId:
+      name: channel_id
+      in: path
+      description: Cloud Playout Channel Id
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    OverlayID:
+      name: overlay_id
+      in: path
+      description: Cloud Playout Overlay Id
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    VideoId:
+      name: video_id
+      in: path
+      description: ID of a video in a Playlist
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+    Order:
+      name: order
+      in: path
+      description: Order of a video in a Playlist
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+    PlaylistId:
+      name: playlist_id
+      in: path
+      description: CMS Playlist ID
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    AssetType:
+      name: asset_type
+      in: path
+      description: Cloud Playout Asset Type
+      required: true
+      style: simple
+      explode: false
+      schema:
+        $ref: "#/components/schemas/AssetType"
+    AssetID:
+      name: asset_id
+      in: path
+      description: Cloud Playout Asset public ID
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    CredentialId:
+      name: credential_id
+      in: path
+      description: Cloud Playout credential Id
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    ssai:
+      name: SSAI true/false for filtering
+      in: query
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    duration:
+      name: duration of metrics in minutes
+      in: query
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: integer
+        default: 35
+    period:
+      name: period of metrics in minutes
+      in: query
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: integer
+        default: 5
+  securitySchemes:
+    BC_OAuth2:
+      type: oauth2
+      description: 'Brightcove OAuth API. See the [support documentation](https://support.brightcove.com/oauth-api) or [Getting Access Tokens](https://support.brightcove.com/oauth-api-sample-get-access-token) to learn more'
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://oauth.brightcove.com/v4/access_token'
+          scopes:
+            video-cloud/cloud-playout/all: Able to manage cloud playout channels.
+            video-cloud/cloud-playout/read: Able to read cloud playout channels.

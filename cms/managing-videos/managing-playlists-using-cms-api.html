@@ -124,12 +124,12 @@ grandparent: CMS API
     <section class="bcls-section">
     <h2 id="Search_field">Search field</h2>
     
-    <p>For all the smart playlist types, the collection of videos is assembled dynamically based on the <code translate="No">search</code> field value for the playlist. The search field value must be a valid search string for a tag <a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">search string</a> for the CMS API. Below are some examples with explanations of the videos they will return.</p>
+    <p>For all the smart playlist types, the collection of videos is assembled dynamically based on the <code translate="No">search</code> field value for the playlist. The search field value must be a valid search string value for the CMS API. This validation depends on the <code translate="No">search_syntax</code> value (either <code translate="no">v1</code> [default] or <code translate="no">v2</code>) set for the playlist; v2 playlists will allow <a href="/cms/searching/cms-and-playback-apis-video-search-v2.html">search v2 syntax</a, while v1 playlists will accept tag search string only. Below are some examples with explanations of the videos they will return.</p>
     
-    <aside class="bcls-aside bcls-aside--warning">Currently playlists can only be constructed out of a search for one or more tags (separated by commas). Also, you cannot search for videos that do <strong>not</strong> have a particular tag.</aside>
+    <aside class="bcls-aside bcls-aside--warning">Currently <strong>v1</strong> playlists can only be constructed out of a search for one or more tags (separated by commas). Also, you cannot search for videos that do <strong>not</strong> have a particular tag.</aside>
     
     <table class="bcls-table">
-      <caption class="bcls-caption--table">Sample Search Strings</caption>
+      <caption class="bcls-caption--table">Sample Search Strings - v1 Playlists</caption>
       <thead class="bcls-table__head">
         <tr>
           <th>Search String</th>
@@ -148,6 +148,30 @@ grandparent: CMS API
         <tr>
           <td><code translate="No">tags:bird,woodland</code></td>
           <td>Returns videos that have <strong>either</strong> of the tags "bird" or "woodland" (note: leaving the <code translate="No">+</code> sign out of the search string makes the difference)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Sample Search Strings - v2 Playlists</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Search String</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">+tags:bird</code></td>
+          <td>Returns videos that have the tag "bird"</td>
+        </tr>
+        <tr>
+          <td><code translate="No">+name:bird</code></td>
+          <td>Returns videos that have "bird" in the title</td>
+        </tr>
+        <tr>
+          <td><code translate="No">(+custom_fields:bird)%20AND%20(NOT%20tags:woodland)</code></td>
+          <td>Returns videos that have the value "bird" for some custom field, but do NOT have the tag "woodland"</td>
         </tr>
       </tbody>
     </table>
@@ -190,14 +214,24 @@ grandparent: CMS API
       ]
     }</code></pre>
     
-    <h4>For smart playlist</h4>
+    <h4>For smart v1 playlist</h4>
     
     <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-      "type": "ACTIVATED_NEWEST_TO_OLDEST",
-      "name": "My smart playlist",
-      "search": "+tags:bird-tags:sea"
-    }</code></pre>
+<code class="language-json" translate="No">{
+  "type": "ACTIVATED_NEWEST_TO_OLDEST",
+  "name": "My smart playlist",
+  "search": "+tags:bird-tags:sea"
+}</code></pre>
+    
+    <h4>For smart v2 playlist</h4>
+    
+    <pre class="line-numbers">
+<code class="language-json" translate="No">{ 
+  "type": "ACTIVATED_NEWEST_TO_OLDEST", 
+  "name": "My smart playlist", 
+  "search": "+name:bird", 
+  <span class="bc-highlight">"search_syntax": "v2" </span>
+}</code></pre>
     
     <aside class="bcls-aside bcls-aside--information">Note that all playlists have a limit of 100 videos, but you can set that limit lower for smart playlists by using the <code translate="No">limit</code> field.</aside>
     

@@ -37,7 +37,7 @@ paths:
       description: |-
         Gets a page of video objects that are related to the specified video. Using the name and short description of the specified video, the Playback API searches for videos with any partial matches in the following fields: `name`, `short` `description`, `long_description`, `tags`.
 
-        Notes:  When performing this search, you need to use a search-enabled Policy Key. For information on getting policy keys, see the [Policy API Overview](/policy/getting-started/overview-policy-api.html). You can also use this [sample app](/policy/getting-started/quick-start-policy-api.html) to create a search-enabled key
+        Notes:  When performing a search (using the `q` parameter), you must use a search-enabled Policy Key. For information on getting policy keys, see the [Policy API Overview](/policy/getting-started/overview-policy-api.html). You can also use this [sample app](/policy/getting-started/quick-start-policy-api.html) to create a search-enabled key
 
         In general, search-enabled Policy Keys should only be stored on a server and not in a browser player or mobile app, since they can be used to list all playable videos. For some accounts this may not be applicable if you do not care if all of your playable videos can be discovered.
 
@@ -48,6 +48,7 @@ paths:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
         - $ref: '#/components/parameters/ad_config_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
         - $ref: '#/components/parameters/Authorization'
@@ -111,6 +112,7 @@ paths:
       description: 'Gets a video object based on a video ID or reference ID.   '
       parameters:
         - $ref: '#/components/parameters/ad_config_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
         - $ref: '#/components/parameters/Authorization'
@@ -186,6 +188,7 @@ paths:
         - $ref: '#/components/parameters/offset'
         - $ref: '#/components/parameters/sort'
         - $ref: '#/components/parameters/ad_config_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
         - $ref: '#/components/parameters/Authorization'
@@ -251,6 +254,7 @@ paths:
         - $ref: '#/components/parameters/bcov_auth'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/BCOV-Policy'
         - $ref: '#/components/parameters/Accept'
@@ -310,6 +314,7 @@ paths:
         - $ref: '#/components/parameters/bcov_auth'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/BCOV-Policy'
         - $ref: '#/components/parameters/Accept'
@@ -369,6 +374,7 @@ paths:
         - $ref: '#/components/parameters/bcov_auth'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/BCOV-Policy'
         - $ref: '#/components/parameters/Accept'
@@ -428,6 +434,7 @@ paths:
         - $ref: '#/components/parameters/bcov_auth'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/BCOV-Policy'
         - $ref: '#/components/parameters/Accept'
@@ -487,6 +494,7 @@ paths:
         - $ref: '#/components/parameters/bcov_auth'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/BCOV-Policy'
         - $ref: '#/components/parameters/Accept'
@@ -546,6 +554,7 @@ paths:
         - $ref: '#/components/parameters/bcov_auth'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/video_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/BCOV-Policy'
         - $ref: '#/components/parameters/Accept'
@@ -605,6 +614,7 @@ paths:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
         - $ref: '#/components/parameters/ad_config_id'
+        - $ref: '#/components/parameters/config_id'
         - $ref: '#/components/parameters/account_id'
         - $ref: '#/components/parameters/playlist_id'
         - $ref: '#/components/parameters/Authorization'
@@ -823,6 +833,10 @@ components:
               "/nature/wildlife/avian/coastal_birds/sandpipers",
               "/nature/wildlife/avian/forest_birds"
             ]
+        playback_rights_id:
+          type: string
+          description: >-
+            Associates specified EPA playback rights with video.
         poster_sources:
           type: array
           description: >-
@@ -1337,6 +1351,16 @@ components:
       explode: true
       schema:
         type: string
+    config_id:
+      name: config_id
+      in: query
+      required: false
+      description: >-
+        include and set equal to the [delivery rules id](/delivery-rules/guides/index.html) in order to have the delivery rules applied
+      style: form
+      explode: true
+      schema:
+        type: string
     account_id:
       name: account_id
       in: path
@@ -1363,7 +1387,7 @@ components:
       in: header
       required: true
       description: >-
-        application/json;pk=policy_key (there are 3 ways to authenticate — use
+        `application/json;pk=policy_key` (there are 3 ways to authenticate — use
         one of these three headers) See Policy API Overview or Policy Keys for
         information on getting policy keys
       schema:
@@ -1373,16 +1397,16 @@ components:
       in: header
       required: true
       description: >-
-        : BCOV-Policy {policy_key} (there are 3 ways to authenticate — use one
-        of these three headers). You need to use a search-enabled Policy Key.
+        `BCOV-Policy {policy_key}` (there are 3 ways to authenticate — use one
+        of these three headers). You need to use a search-enabled Policy Key if you are using the `q` parameter.
       schema:
         type: string
     BCOV-Policy:
       name: BCOV-Policy
       in: header
       required: true
-      description: >-
-        : {policy_key} (there are 3 ways to authenticate — use one of these
-        three headers). You need to use a search-enabled Policy Key.
+      description: |-
+        `BCOV-Policy {policy_key}` (there are 3 ways to authenticate — use one
+        of these three headers). You need to use a search-enabled Policy Key if you are using the `q` parameter.
       schema:
         type: string

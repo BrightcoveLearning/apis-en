@@ -1,0 +1,118 @@
+---
+title: 'Overview: Image API'
+description: The Image API allows you to retrieve a resized, cropped, or rotated version of an image.
+parent: Getting Started
+grandparent: Image API
+layout: staging
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>The Brightcove Image API provides a quick and easy way to resize, crop, and/or rotate an image using a simple GET request.</p>
+    <h3>Request URL</h3>
+    <p>The request URL for the Image API is:</p>
+    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/<span class="bc-input">account_id</span>/default/url/<span class="bc-input">{image_url}</span></code></pre>
+    <p>The required path parameters are:</p>
+    <ul>
+      <li><code translate="No">account_id</code>: your Video Cloud account id</li>
+      <li><code translate="No">image_url</code>: a public URL where the image can be found</li>
+    </ul>
+    <aside class="bcls-aside bcls-aside--information language-editable">
+      Notes:
+      <ul>
+        <li>The following image formats are supported: PNG, JPG, GIF</li>
+        <li>
+          The <code translate="No">image_url</code> must be properly encoded. If you use JavaScript, use the <code translate="No">encodeURIComponent()</code> method. You can also use the <a href="https://general.support.brightcove.com/utilities/string-encoder.html">String Encoder</a> provided by Brightcove Learning Services:
+          <figure class="bcls-figure">
+            <img class="bcls-image" src="/assets/images/image-api/string-encoder.png" alt="String Encoder">
+            <figcaption class="bcls-caption--image">String Encoder</figcaption>
+          </figure>
+        </li>
+      </ul>
+    </aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="URL_parameters">URL parameters</h2>
+    <p>To get a transformed version of your image, use one or more of the URL parameters described below in your request. Note that you can use any combination of the 3 parameters.</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">URL Params for Image API</caption>
+      <thead class="bcls-table__head">
+          <tr>
+              <th>Parameter</th>
+              <th>Description</th>
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+          <tr>
+              <td><code translate="No">resize</code></td>
+              <td>Resize the image by setting this equal to "widthxheight" - example: <code translate="no">resize=160x90</code>)</td>
+          </tr>
+          <tr>
+              <td><code translate="No">crop</code></td>
+              <td>Crop the width and height by setting this equal to "widthxheight" - example: <code translate="no">crop=160x90</code> - the origin point is the center of the image.</td>
+          </tr>
+          <tr>
+              <td><code translate="No">rotate</code></td>
+              <td>rotate the image clockwise by the specified number of degrees - example: <code translate="no">rotate=90</code></td>
+          </tr>
+      </tbody>
+  </table>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Best_practices">Best Practices</h2>
+    <p>If your transformed images will be displayed on web pages or in online apps, use the API to retrieve the images and store them on your server. Do <strong>not</strong> retrieve them at runtime, as rate-limiting on the API would cause some requests to fail on high-traffic pages or apps, and it also degrades the performance of your page/app by forcing the API requests to be made every it is loaded by a user.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Examples">Examples</h2>
+    <p>Here is the original image for examples below:</p>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/image-api/leaf.jpg" alt="Original Image">
+      <figcaption class="bcls-caption--image">Original Image (726x985)</figcaption>
+    </figure>
+    <h3>Resized</h3>
+    <h4>Request</h4>
+    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=221x300</code></pre>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/image-api/leaf-resized.png" alt="Resized Image">
+      <figcaption class="bcls-caption--image">Resized Image</figcaption>
+    </figure>
+    <h3>Cropped</h3>
+    <h4>Request</h4>
+    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?crop=580x670</code></pre>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/image-api/leaf-cropped.png" alt="Cropped Image">
+      <figcaption class="bcls-caption--image">Cropped Image</figcaption>
+    </figure>
+    <h3>Rotated</h3>
+    <h4>Request</h4>
+    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?rotate=-90</code></pre>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/image-api/leaf-rotated.png" alt="Rotated Image">
+      <figcaption class="bcls-caption--image">Rotated Image</figcaption>
+    </figure>
+    <h3>Resized and Rotated</h3>
+    <h4>Request</h4>
+    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=221x300&rotate=-90</code></pre>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/image-api/leaf-resized-rotated.png" alt="Resized and Rotated Image">
+      <figcaption class="bcls-caption--image">Resized and Rotated Image</figcaption>
+    </figure>
+    <h3>Cropped and Rotated</h3>
+    <h4>Request</h4>
+    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?crop=570x660&rotate=-90</code></pre>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/image-api/leaf-cropped-rotated.png" alt="Cropped and Rotated Image">
+      <figcaption class="bcls-caption--image">Cropped and Rotated Image</figcaption>
+    </figure>
+    <h3>Resized, Cropped, and Rotated</h3>
+    <h4>Request</h4>
+    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=221x300&crop=570x660&rotate=-90</code></pre>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/image-api/leaf-resized-cropped-rotated.png" alt="Resized, Cropped and Rotated Image">
+      <figcaption class="bcls-caption--image">Resized, Cropped and Rotated Image</figcaption>
+    </figure>
+  </section>
+</article>

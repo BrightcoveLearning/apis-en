@@ -134,18 +134,18 @@ grandparent: Player Management API
         }]
     }</code></pre>
 
-    <aside class="bcls-aside bcls-aside--warning">Note: This document uses curl statements to perform operations using the Player Management API. In the curl statements you will see values of <strong>$EMAIL</strong>, <strong>$ACCOUNT_ID</strong> and <strong>$PLAYER_ID</strong>. You must either create environment variables by those names and assign corresponding values, or supply the literal values for the variables.</aside>
+    <aside class="bcls-aside bcls-aside--warning">Note: This document uses curl statements to perform operations using the Player Management API. In the curl statements you will see values of <strong>$EMAIL</strong>, <strong>{account_id}</strong> and <strong>{player_id}</strong>. You must either create environment variables by those names and assign corresponding values, or supply the literal values for the variables.</aside>
 
-    <h3>GET with <code translate="No">$PLAYER_ID/configuration</code> endpoint</h3>
+    <h3>GET with <code translate="No">{player_id}/configuration</code> endpoint</h3>
 
-    <p>You can retrieve the same information just shown by using the HTTP <code translate="No">GET</code> method. Using <code translate="No">GET</code> with the <code translate="No">/$PLAYER_ID/configuration</code> endpoint you can retrieve the <em>published player's</em> configuration information. An example curl statement, and the JSON retrieved is shown here:</p>
+    <p>You can retrieve the same information just shown by using the HTTP <code translate="No">GET</code> method. Using <code translate="No">GET</code> with the <code translate="No">/{player_id}/configuration</code> endpoint you can retrieve the <em>published player's</em> configuration information. An example curl statement, and the JSON retrieved is shown here:</p>
 
     <pre class="line-numbers">
     <code class="language-bash" translate="No">curl \
     --header "Content-Type: application/json" \
     --user $EMAIL \
     --request GET \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
 
     <pre class="line-numbers player-only">
     <code class="language-json" translate="No">{
@@ -205,16 +205,16 @@ grandparent: Player Management API
         }]
     }</code></pre>
 
-    <h3>GET method <code translate="No">$PLAYER_ID</code> endpoint</h3>
+    <h3>GET method <code translate="No">{player_id}</code> endpoint</h3>
 
-    <p>The HTTP <code translate="No">GET</code> method used with the <code translate="No">/$PLAYER_ID</code> endpoint is the way to retrieve complete player information. This approach gives a superset of player configuration you have just seen. You can think of this endpoint showing you configuration information "one level up" and includes current configuration information for both the preview and published player versions. An example curl statement, and the JSON retrieved is shown here:</p>
+    <p>The HTTP <code translate="No">GET</code> method used with the <code translate="No">/{player_id}</code> endpoint is the way to retrieve complete player information. This approach gives a superset of player configuration you have just seen. You can think of this endpoint showing you configuration information "one level up" and includes current configuration information for both the preview and published player versions. An example curl statement, and the JSON retrieved is shown here:</p>
 
     <pre class="line-numbers">
     <code class="language-bash" translate="No">curl \
     --header "Content-Type: application/json" \
     --user $EMAIL \
     --request GET \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}</code></pre>
     <!-- <p><code data-gist-id="9629223" data-gist-hide-footer="true" data-gist-line="57-61"></code></p> -->
 
     <pre class="line-numbers player-only">
@@ -379,7 +379,7 @@ grandparent: Player Management API
     <section class="bcls-section">
     <h2 id="Set_name">Set name/description</h2>
 
-    <p>To alter the player configuration you use the <code translate="No">/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code> endpoint, and that is this document's emphasis. There are, however, two properties you change using just the <code translate="No">/$ACCOUNT_ID/players/$PLAYER_ID</code> endpoint. Those two properties are <code translate="No">name</code> and <code translate="No">description</code>.</p>
+    <p>To alter the player configuration you use the <code translate="No">/{account_id}/players/{player_id}/configuration</code> endpoint, and that is this document's emphasis. There are, however, two properties you change using just the <code translate="No">/{account_id}/players/{player_id}</code> endpoint. Those two properties are <code translate="No">name</code> and <code translate="No">description</code>.</p>
 
     <p>Note: the <code translate="No">name</code> you enter for the player is returned as <code translate="No">player_name</code> when you get the configuration by putting <code translate="No">config.json</code> on the end of the player preview URL (it is returned as <code translate="No">name</code> when you get the configuration via the Player Management API. But you must use <code translate="No">name</code> when you create or update the player.</p>
 
@@ -394,7 +394,7 @@ grandparent: Player Management API
       "name": "My New Player Name",
       "description": "My new player description"
     }' \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
 
     <pre class="line-numbers player-only">
     <code class="language-json" translate="No">{
@@ -579,7 +579,7 @@ grandparent: Player Management API
       --data '{
         "autoplay": true
         }' \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
 
     <h4>Example using string values</h4>
 
@@ -591,7 +591,7 @@ grandparent: Player Management API
       --data '{
         "autoplay": "muted"
         }' \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
 
     <p>Getting a video to autoplay can be a complex situation. See the <a href="https://player.support.brightcove.com/playback/autoplay-considerations.html">Autoplay Considerations</a> document for further details.</p>
 
@@ -614,7 +614,7 @@ grandparent: Player Management API
 
     <aside class="bcls-aside bcls-aside--information">There is a downside to this approach. A very slight delay to the retrieval of cached content from outside of the US will be introduced because catalog requests will be going to Virginia rather than through Cloudfront's global network with local servers. It's likely that this will be barely noticeable.</aside>
 
-    <p>The actual configuration change involves setting a value for the Video Cloud <code translate="No">base_url</code>. Remember, this should ONLY be changed if IP restrictions are used with Brightcove Players outside of North America. For an existing player, you would use the following curl command that uses the <code translate="No">PATCH</code> HTTP method (you must substitute your data for the environment variables <code translate="No">$EMAIL</code>, <code translate="No">$ACCOUNT_ID</code> and <code translate="No">$PLAYER_ID</code>):</p>
+    <p>The actual configuration change involves setting a value for the Video Cloud <code translate="No">base_url</code>. Remember, this should ONLY be changed if IP restrictions are used with Brightcove Players outside of North America. For an existing player, you would use the following curl command that uses the <code translate="No">PATCH</code> HTTP method (you must substitute your data for the environment variables <code translate="No">$EMAIL</code>, <code translate="No">{account_id}</code> and <code translate="No">{player_id}</code>):</p>
 
     <pre class="line-numbers">
     <code class="language-bash" translate="No">curl
@@ -626,7 +626,7 @@ grandparent: Player Management API
       "base_url": "https://edge-elb.api.brightcove.com/playback/v1/"
         }
       }'
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
 
     <p>If you are new to curl, the following documents will be of help:</p>
 
@@ -750,7 +750,7 @@ grandparent: Player Management API
           "progressColor": "green"
         }
     }' \</span>
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
 
     <figure class="bcls-figure"><img class="bcls-image" alt="Player with CSS Overrides" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/guides/player-configuration/config-css-green.png" />
     <figcaption class="bcls-caption--image">Player with CSS Overrides</figcaption>
@@ -833,7 +833,7 @@ grandparent: Player Management API
       "autoplay": true,
       "fullscreenControl": false
       }' \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     <!-- <p><code data-gist-id="9629223" data-gist-hide-footer="true" data-gist-line="171-179" data-gist-highlight-line="177"></code></p> -->
 
     <p>The following two screenshots show the player with and without the fullscreen control:</p>
@@ -876,7 +876,7 @@ grandparent: Player Management API
           "inactive": true
       }</span>
     }' \
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
 
     <p>Of course, if you wish to activate the player, you can set the <code translate="No">inactive</code> property to <code translate="No">false</code>.</p>
 
@@ -1096,7 +1096,7 @@ grandparent: Player Management API
       --data '{
           "playback_rates": [0.1,1,2.5,6]
          }' \
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     </section>
 
     <section class="bcls-section">
@@ -1218,7 +1218,7 @@ grandparent: Player Management API
             ]
           }
       }' \
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players</code></pre>
 
     <p>See the <a href="https://player.support.brightcove.com/plugins/plugin-registry.html">Plugin Registry</a> document for information on its use and benefits.</p>
 
@@ -1247,7 +1247,7 @@ grandparent: Player Management API
             <span class="bcls-highlight">"autoadvance": 2</span>
           }
       }' \
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players</code></pre>
 
     <h3>Playlist Version 1 (Legacy)</h3>
 
@@ -1276,7 +1276,7 @@ grandparent: Player Management API
         }
       }
     }' \</span>
-    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
 
     <aside class="bcls-aside bcls-aside--information">When the <code translate="No">height</code> and <code translate="No">width</code> are not assigned values, the sizes of the player and playlist are automatically adjusted.</aside>
 
@@ -1290,7 +1290,7 @@ grandparent: Player Management API
       --data '{
            <span class="bcls-highlight">{"playOnSelect": true}</span>
       }' \
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     <!-- <p><code data-gist-id="9629223" data-gist-hide-footer="true" data-gist-line="248-263" data-gist-highlight-line="252-262"></code></p> -->
 
     <h3>Programmatically determining if player contains a playlist</h3>
@@ -1575,7 +1575,7 @@ grandparent: Player Management API
       --data '{
           "techOrder": "['flash','html']"
          }' \
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     </section>
 
     <section class="bcls-section">
@@ -1605,7 +1605,7 @@ grandparent: Player Management API
           }
         }
       }' \</span>
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players</code></pre>
     <!-- <p><code data-gist-id="8759542" data-gist-hide-footer="true" data-gist-line="240-252" data-gist-highlight-line="247-249"></code></p> -->
 
     <p>Note that in the request body object, <code translate="No">name</code> and <code translate="No">description</code> are top-level properties, and all others are properties of the <code translate="No">configuration</code> object. Any of the <a href="#configproperties">configuration properties</a> can be included in the <code translate="No">configuration</code> when you create the player.</p>
@@ -1618,7 +1618,7 @@ grandparent: Player Management API
 
     <p><code translate="No">volume_orientation</code> information:</p>
 
-    <aside class="bcls-aside bcls-aside--information language-editable">This feature available for Brightcove Player 6.32.0+.</aside>
+    <aside class="bcls-aside bcls-aside--information">This feature available for Brightcove Player 6.32.0+.</aside>
 
     <ul>
       <li>Data type: string</li>
@@ -1642,7 +1642,7 @@ grandparent: Player Management API
       --data '{
           "volume_orientation": "vertical"
          }' \
-      https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+      https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
     </section>
 
     <section class="bcls-section">

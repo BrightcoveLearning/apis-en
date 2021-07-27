@@ -1,0 +1,201 @@
+<article class="markdown-body entry-content" itemprop="text"><h1><a id="user-content-clip" class="anchor" aria-hidden="true" href="#clip"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Clip</h1>
+	<p>With the Clip endpoint, you can schedule the clip event of an existing live job. At the specified time, our system will make the necessary API calls to start a Clip Job on your behalf.</p>
+	<h2><a id="user-content-requirements" class="anchor" aria-hidden="true" href="#requirements"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Requirements</h2>
+	<ul>
+	<li>The Live API key for your account.</li>
+	<li>Your live account must have the scheduler override enabled.</li>
+	</ul>
+	<h2><a id="user-content-create-a-clip-workflow" class="anchor" aria-hidden="true" href="#create-a-clip-workflow"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create a Clip workflow</h2>
+	<p>When creating a clip, you must specify both the clip time boundary (in the <code translate="no">output</code> field), and a scheduled time (<code translate="no">time_utc</code> field) to make the clip request.</p>
+	<p>The <code translate="no">output</code> field in the request body supports all the same fields of the <code translate="no">outputs</code> field in the standard VOD endpoint, however scheduled clips only support a single output rather than a list. See <a href="https://live.support.brightcove.com/live-api/guides/live-api-creating-vod-clips.html" rel="nofollow">VOD clipping support docs</a> for details about available fields.</p>
+	<p>Typically, you would set <code translate="no">time_utc</code> to match the end boundary of your clip. The scheduled time MUST be after the end boundary of the clip, otherwise the clip request will fail at the scheduled time.</p>
+	<p>Timestamps for the <code translate="no">time_utc</code> field must be in UTC formated as unix timestamp in seconds. You can use <a href="https://www.unixtimestamp.com/" rel="nofollow">https://www.unixtimestamp.com/</a> for conversion.</p>
+	<p>Let's say we want to schedule a 15 min clip that will start at <code translate="no">2021-02-09T13:55:00+00:00</code>. We can use the <code translate="no">output.start_time</code> and <code translate="no">output.end_time</code> to specify our clip boundary as unix time in seconds. (Again, see <a href="https://live.support.brightcove.com/live-api/guides/live-api-creating-vod-clips.html" rel="nofollow">VOD clipping support docs</a> for details about available fields).</p>
+	<pre><code translate="no">start_time:
+	2021-02-09T13:55:00+00:00 = 1612878900
+	
+	end_time:
+	2021-02-09T14:10:00+00:00 = 1612879800
+	</code></pre>
+	<p>Since the scheduler will also require a time to schedule the clip request, we can use the same value as <code translate="no">end_time</code> since it is also unix time in seconds.</p>
+	<p>We also want to create a Videocloud Video for the clip, so we include that in the <code translate="no">output</code>. A Videocloud Video will be created at the time of scheduling the workflow and its ID will be returned in the response so that you can know the video ID before the clip is made. If you later cancel the clip request or it fails at its scheduled time, the Videocloud Video will NOT be removed from your account.</p>
+	<p>To create the workflow, make the following request</p>
+	<pre><code translate="no">POST https://api.bcovlive.io/v1/scheduler/clip
+	
+	Headers:
+	
+	Content-Type: application/json
+	X-API-KEY: your API Key
+	
+	Body:
+	
+	{
+		"job_id":  "your Job ID",
+		"description": "My Scheduled Clip",
+		"clip": {
+			"output": {
+				"label": "My Scheduled Clip",
+				"start_time": 1612878900,
+				"end_time": 1612879800,
+				"videocloud": {
+					"video": {
+						"name": "My Scheduled Clip"
+					}
+				}
+			},
+			"time_utc": 1612879800
+		}
+	}
+	
+	</code></pre>
+	<p>You should receive a response similar to</p>
+	<pre><code translate="no">
+	{
+		"account_id": "your Account ID",
+		"description": "My Tuesday Clip",
+		"type": "clip",
+		"job_id": "your Job ID",
+		"clip": {
+			"state": "pending",
+			"output": {
+				"label": "My Scheduled Clip",
+				"start_time": 1612878900,
+				"end_time": 1612879800,
+				"videocloud": {
+					"video": {
+						"id": "70702010152202",
+						"name": "My Scheduled Clip"
+					}
+				}
+			},
+			"time_utc": 1612879800
+		}
+		"workflow_id": "d44cf29f4f184757ac0995beb8a0097e",
+	}
+	
+	</code></pre>
+	<p>Note that <code translate="no">clip.output.videocloud.video.id</code> contains the ID of the newly created Videocloud Video. At <code translate="no">time_utc</code> the video source will be updated with the ingested clip.</p>
+	<h2><a id="user-content-update-a-clip-workflow" class="anchor" aria-hidden="true" href="#update-a-clip-workflow"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Update a Clip workflow</h2>
+	<p>You can update both the <code translate="no">output</code> and <code translate="no">time_utc</code> of your clip. These can only be updated if <code translate="no">"state": "pending"</code>.</p>
+	<p>Following the previous example, we want the clip to be 5 minutes shorter than planned. When updating the <code translate="no">output</code> field, you must provide the full object, not just the changes being made. This includes the Videocloud Video ID returned by the create call above.</p>
+	<p>Note in this example, we updated both <code translate="no">end_time</code> and <code translate="no">time_utc</code> to reflect the 5 minute reduction.</p>
+	<pre><code translate="no">PUT https://api.bcovlive.io/v1/scheduler/clip/workflow_id
+	
+	Headers:
+	
+	Content-Type: application/json
+	X-API-KEY: your API Key
+	
+	Body:
+	
+	{
+		"clip": {
+			"output": {
+				"label": "My Scheduled Clip",
+				"start_time": 1612878900,
+				"end_time": 1612879500,
+				"videocloud": {
+					"video": {
+						"id": "70702010152202",
+						"name": "My Scheduled Clip"
+					}
+				}
+			},
+			"time_utc": 1612879500
+		}
+	}
+	
+	</code></pre>
+	<p>You will receive the updated workflow in the response.</p>
+	<pre><code translate="no">{
+		"account_id": "your Account ID",
+		"description": "My Tuesday Clip",
+		"type": "clip",
+		"job_id": "your Job ID",
+		"clip": {
+			"state": "pending",
+			"output": {
+				"label": "My Scheduled Clip",
+				"start_time": 1612878900,
+				"end_time": 1612879500,
+				"videocloud": {
+					"video": {
+						"id": "70702010152202",
+						"name": "My Scheduled Clip"
+					}
+				}
+			},
+			"time_utc": 1612879500
+		}
+		"workflow_id": "d44cf29f4f184757ac0995beb8a0097e",
+	}
+	
+	</code></pre>
+	<h2><a id="user-content-cancel-a-clip-workflow" class="anchor" aria-hidden="true" href="#cancel-a-clip-workflow"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cancel a Clip workflow</h2>
+	<p>You can cancel the clip with a <code translate="no">DELETE</code> request.</p>
+	<p>Note when cancelling a Clip workflow, any Videocloud Video created at time of scheduling will NOT be removed by the backend. You must remove orphaned videos from your Videocloud account manually.</p>
+	<pre><code translate="no">DELETE https://api.bcovlive.io/v1/scheduler/clip/workflow_id
+	
+	Headers:
+	
+	X-API-KEY: your API Key
+	</code></pre>
+	<p>You will receive the updated workflow in the response.</p>
+	<pre><code translate="no">
+	{
+		"account_id": "your Account ID",
+		"description": "My Tuesday Clip",
+		"type": "clip",
+		"job_id": "your Job ID",
+		"clip": {
+			"state": "cancelled",
+			"output": {
+				"label": "My Scheduled Clip",
+				"start_time": 1612878900,
+				"end_time": 1612879500,
+				"videocloud": {
+					"video": {
+						"id": "70702010152202",
+						"name": "My Scheduled Clip"
+					}
+				}
+			},
+			"time_utc": 1612879500
+		}
+		"workflow_id": "d44cf29f4f184757ac0995beb8a0097e",
+	}
+	
+	</code></pre>
+	<h2><a id="user-content-notifications" class="anchor" aria-hidden="true" href="#notifications"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Notifications</h2>
+	<p>You can optionally configure notifications when creating the workflow. You need to provide a URL for our service to <code translate="no">POST</code> to. We will send a notification when the scheduler makes the clip call. You can also configure to receive a notification <code translate="no">n</code> seconds  before the clip. See the <a href="/alive/task-scheduler/blob/main/docs/guide_notifications.md">Notifications Guide</a> for more details.</p>
+	<pre><code translate="no">POST https://api.bcovlive.io/v1/scheduler/clip
+	
+	Headers:
+	
+	Content-Type: application/json
+	X-API-KEY: your API Key
+	
+	Body:
+	
+	
+	{
+		"job_id":  "your Job ID",
+		"description": "My Scheduled Clip",
+		"notification_url": "http://example.com/live/clip/callbacks",
+		"clip": {
+			"output": {
+				"label": "My Scheduled Clip",
+				"start_time": 1612878900,
+				"end_time": 1612879800,
+				"videocloud": {
+					"video": {
+						"name": "My Scheduled Clip"
+					}
+				}
+			},
+			"time_utc": 1612879800,
+			"notification": 600
+		}
+	}
+	</code></pre>
+	</article>

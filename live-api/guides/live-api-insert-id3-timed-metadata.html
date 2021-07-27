@@ -1,0 +1,141 @@
+---
+title: 'Live API: Insert ID3 timed metadata'
+description: 'This topic explains how to insert ID3 timed metadata into your Live stream using the Live API.'
+parent: Guides
+grandparent: Live API
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+ <summary>{{ page.description }}</summary>
+<section class="bcls-section">
+<h2 id="Insert_ID3_timed_metadata">Overview</h2>
+
+<p>ID3 timed metadata is used to send data with a live stream at a specific point in time. To insert ID3 timed metadata for an ongoing job, make a <code translate="No">POST </code> request to:</p>
+
+<pre class="line-numbers">
+<code class="language-http" translate="No">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">JOB_ID</span>/id3tag
+</code></pre>
+
+<h3>Sample request body</h3>
+
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+ "id3_tag": {
+ "name": "cp1",
+ "value": "Some information I want to send",
+   "timecode": "15:50:49:16"
+ }
+}</code></pre>
+
+<aside class="bcls-aside bcls-aside--warning">Note:
+<ul>
+  <li>Only <code translate="No">id3_tag</code> object may be submitted in a request</li>
+	<li>If you use the <code translate="No">timecode </code> property, the job only stores the most recent request for insertion</li>
+	<li>If you use the <code translate="No">timecode </code> property, the encoder must be sending SMPTE-formatted (HH:MM:SS:FF) timecode stored in the tc property via OnFI</li>
+	<li>Software encoders such as Wirecast and OBS <strong>do not</strong> support the sending timecode via OnFI packets in the RTMP stream</li>
+	<li>Elemental hardware encoders <strong>do</strong> support the sending timecode via OnFI packets in the RTMP stream</li>
+	<li>ID3v2 states tag <code translate="No">name</code> can be up to 4 characters .</li>
+	<li><code translate="No">value</code> can be up to 256KB.</li>
+	<li><code translate="No">Timecode</code> is optional - when omitted, insertion will be immediate.</li>
+</ul>
+</aside>
+
+<ul>
+</ul>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+"id": "JOB_ID",
+"id3_tag": {
+"tag_name": "BCOV",
+"tag_value": "my value"
+}
+}</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Do_SMPTE_timecodes_exist">Do SMPTE timecodes exist in the input?</h2>
+
+<p>Not all encoders send SMPTE timecodes. To check if they exist in your input, one way to check is to look at the VOD chunklist for tags like <code class="language-html" translate="No">#VOD-TIMING:timecode=15:18:36:01,wallclock=1549047672441,tsvideo=25400,tsaudio=-1</code>. The vod chunklist URL should be available on <code class="language-html" translate="No">output_media_files[0].playback_url_vod</code> when you retrieve the Job information.</p>
+
+<h2 id="Do_SMPTE_timecodes_exist">Analyze a Live Playlist to get the timecode</h2>
+
+<p>When you create a Brightcove Live job a default master playlist is returned. For example:</p>
+
+<pre>
+<code class="language-html" translate="No">https://bcovlive-a.akamaihd.net/ade7a7b3aaea4a4d8107fb8bb262381e/eu-central-1/52725330351/playlist.m3u8</code></pre>
+
+<p>We will need the VOD master playlist for which we will need to add "_vod" at the last part of our URL extension as <strong>playlist_vod.m3u8</strong></p>
+
+<pre>
+<code class="language-html" translate="No">https://bcovlive-a.akamaihd.net/ade7a7b3aaea4a4d8107fb8bb262381e/eu-central-1/52725330351/playlist_vod.m3u8</code></pre>
+
+<p>The Playlist will be composed of&nbsp;several renditions/profiles, that if you "curl" the playlist, you will be able to see the renditions. Example:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript" translate="No">
+curl -i "https://bcovlive-a.akamaihd.net/ade7a7b3aaea4a4d8107fb8bb262381e/eu-central-1/52725330351/playlist_vod.m3u8"
+
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-STREAM-INF:BANDWIDTH=4292608,CODECS="avc1.100.41,mp4a.40.2",RESOLUTION=1920x1080
+profile_0/chunklist_vod.m3u8
+#EXT-X-STREAM-INF:BANDWIDTH=2654208,CODECS="avc1.100.41,mp4a.40.2",RESOLUTION=1280x720
+profile_1/chunklist_vod.m3u8
+#EXT-X-STREAM-INF:BANDWIDTH=1937408,CODECS="avc1.77.41,mp4a.40.2",RESOLUTION=960x540
+profile_2/chunklist_vod.m3u8
+#EXT-X-STREAM-INF:BANDWIDTH=1118208,CODECS="avc1.77.31,mp4a.40.2",RESOLUTION=640x360
+profile_3/chunklist_vod.m3u8</code></pre>
+
+<p>The full list of rendition/profiles playlist will&nbsp;look like these "profile_0" and "profile_1" URLs:</p>
+
+<pre>
+<code class="language-html" translate="No">https://bcovlive-a.akamaihd.net/ade7a7b3aaea4a4d8107fb8bb262381e/eu-central-1/52725330351/profile_0/chunklist_vod.m3u8</code></pre>
+
+<pre>
+<code class="language-html" translate="No">https://bcovlive-a.akamaihd.net/ade7a7b3aaea4a4d8107fb8bb262381e/eu-central-1/52725330351/profile_1/chunklist_vod.m3u8</code></pre>
+
+</section>
+
+<section class="bcls-section">
+    <ol class="bcls-tasklist-restart">
+<p>Now there are a few options to look at these VOD playlists to check the timecode:</p>
+
+
+
+    <li>You could do a "curl" command. Example:</li>
+
+<pre class="line-numbers">
+<code class="language-javascript" translate="No">
+curl -i "https://bcovlive-a.akamaihd.net/ade7a7b3aaea4a4d8107fb8bb262381e/eu-central-1/52725330351/profile_0/chunklist_vod.m3u8"
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-DISCONTINUITY-SEQUENCE:0
+#EXT-X-INDEPENDENT-SEGMENTS
+#BCOV-RENDITION-DATA-X-STREAM-INF:BANDWIDTH=4292608,RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="mp4a.40.2,avc1.100.41"
+#VOD-STARTTIMESTAMP:1573207934483
+#VOD-MANIFESTSTARTTIME:1573207934483
+#VOD-TOTALDELETEDDURATION:0.0
+#VOD-FRAMERATE:25.0
+#VOD-TIMING:timecode=null,wallclock=1573207934483,tsvideo=3480040,tsaudio=3480007
+#EXT-X-PROGRAM-DATE-TIME:2019-11-08T10:12:11.871+00:00
+#EXTINF:7.2,
+2etzot2c_66e2f8bc56774f4b9a2e26adee46c5b3_media_2.ts
+#VOD-TIMING:timecode=null,wallclock=1573207941720,tsvideo=3487240,tsaudio=3487239
+#EXT-X-PROGRAM-DATE-TIME:2019-11-08T10:12:19.071+00:00</code></pre>
+
+
+
+
+	
+    <li>If you use the Safari&nbsp;browser, you can play the master playlist or one of the chunklist. Then, open the developer network tab and search for "chunklist". Select one of them and look at the preview tab.</li>
+    <figure class="bcls-figure"><img alt="" class="bcls-image--no-border" width="750" height="400" src="/assets/images/live-api/18758/0.png" /></figure>
+	<li>If you do not have Safari, you can apply the same process in another browser using the Akamai player in <code class="language-html" translate="No">http://players.akamai.com/hls/</code>. Load the playlist in the Akamai Player, then open your browser network tab and search for the "chunklist".</li>
+	<li>If you have a proxy, as "Charles", it is the same principle. Play one of the VOD playlists in the Safari or Akamai HLS player, and then filter the results in your proxy to look at one of the chunklist returned.</li>
+</ol>
+</section>
+</article>

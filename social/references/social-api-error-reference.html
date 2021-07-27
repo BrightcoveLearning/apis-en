@@ -1,0 +1,84 @@
+---
+title: 'Social API: Error Reference'
+description: 'This topic provides a reference for Social API errors.'
+parent: References
+grandparent: Social API
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="errorMessages">General error messages</h2>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Status</th>
+          <th>Name</th>
+          <th>Message</th>
+          <th>Cause</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>401</td>
+          <td><code translate="No">UNAUTHORIZED</code></td>
+          <td><code translate="No">Permission denied.</code></td>
+          <td>Missing or invalid OAuth access token. If you did supply an access token, it may not have for the appropriate scope for this request</td>
+        </tr>
+        <tr>
+          <td>403</td>
+          <td><code translate="No">FORBIDDEN</code></td>
+          <td>&nbsp;</td>
+          <td>You do not have permission to access the resource. In most cases, you will have an error in the request URL.</td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td><code translate="No">RESOURCE_NOT_FOUND</code></td>
+          <td><code translate="No">Resource does not exist.</code></td>
+          <td>You requested a resource that does not exist - check spelling and path errors.</td>
+        </tr>
+        <tr>
+          <td>422</td>
+          <td>&nbsp;</td>
+          <td><code translate="No">(Message varies according to the problem; examples: </code>
+            <ul>
+              <li><code translate="No">"Page size is not within the range(1-100) 200"</code></li>
+              <li><code translate="No">"The since parameter must be an ISO-8601 datetime string"</code></li>
+            </ul>
+            <code translate="No"> )</code></td>
+          <td>Check query parameters to make sure the values are valid</td>
+        </tr>
+        <tr>
+          <td>500</td>
+          <td>&nbsp;</td>
+          <td><code translate="No">an internal error occurred</code></td>
+          <td>Issue in Brightcove system - try again later.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="bcls-section">
+    <h2 id="social_sharing_errors">Social sharing errors</h2>
+    <p>Social sharing errors are not returned as a separate error response to the API request, but rather in an <code translate="No">errors</code> array in the normal response.</p>
+    <p>If the sharing operation failed, the API will report <code translate="No">"result": "ERROR"</code> and return an error object containing the:</p>
+    <ul>
+      <li><code translate="No">error_code</code> - The error code returned recorded by the server, from the social platform, if any.</li>
+      <li><code translate="No">error_message</code> - The error message recorded by the server, or returned from the social platform, if any.</li>
+      <li><code translate="No">platform_error</code> - JSON representation of the error object returned from the social platform, if any.</li>
+    </ul>
+    <p>Here is an example</p>
+    <pre class="line-numbers">
+<code class="language-json" translate="No">"errors": [
+  {
+    "error_code": "UPLOAD_FAILURE",
+    "message": "Upload error: Received Facebook error response of type OAuthException: (#100) sponsor_id requires publishing profile/page to be verified or branding partner. (code 100, subcode null)"
+  }
+]</code></pre>
+    <p>See the documentation for the specific social platform for more information on the errors they return:</p>
+    <ul>
+      <li><a href="https://developers.google.com/youtube/v3/docs/errors">YouTube</a></li>
+      <li><a href="https://developers.facebook.com/docs/graph-api/video-uploads#errors">Facebook</a></li>
+      <li><a href="https://developer.twitter.com/en/docs/basics/response-codes.html">Twitter</a></li>
+    </ul>
+  </section>
+</article>

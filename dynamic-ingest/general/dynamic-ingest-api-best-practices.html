@@ -20,17 +20,9 @@ grandparent: Dynamic Ingest API
     <p>Below are rules and guidelines for Dynamic Ingest.</p>
     
     <ul>
-      <li>You should&nbsp;<strong>not</strong> have duplicate jobs processing for the same video, though ingesting other assets such as images and text tracks along with the video in the same job is fine. 
-				<p>if you are using an automated process for creating ingestion jobs that could potentially create multiple jobs on the same video ID, you need to check <a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.htmls">notifications</a> to ensure that there are no other jobs processing on the same video before creating a new one.</p>
-				
-				<!--  An asset in this instance is defined as a video object, an audio track in a specific language, a text track in a specific language, or a specific image type. Here are some examples to illustrate the point: -->
-    
-      <!-- <ul>
-        <li>UNACCEPTABLE: Submit an ingest request for a video file and then submit another video ingest request with the same Video ID before the first ingest job completes</li>
-        <li>ACCEPTABLE: Submit an ingest request for a video file, then submit an ingest request for a text track in English associated with the same Video ID, and then submit an ingest request for a thumbnail image with the same Video ID</li>
-        <li>ACCEPTABLE: Submit an ingest job for a text track in English and then submit an ingest request for a text track in Spanish in parallel</li>
-        <li>UNACCEPTABLE: Submit a request to ingest a Spanish audio track and then immediately submit a request to ingest another Spanish audio track on the same Video ID</li>
-      </ul> -->
+      <li>You should <strong>not</strong> have duplicate jobs processing for the same video, though ingesting other assets such as images and text tracks along with the video in the same job is fine. 
+        <aside class="bcls-aside bcls-aside--warning"><strong>If you ingest images, text tracks or other assets for the video <em>before</em> the video has finished processing, they will <em>not</em> be added to the video.</strong></aside>
+				<p>if you are using an automated process for creating ingestion jobs that could potentially create multiple jobs on the same video ID, you need to check <a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.html">notifications</a> to ensure that there are no other jobs processing on the same video before creating a new one.</p>
 		</li>
 		<li>The <code translate="No">profile</code> field for ingest requests is <strong>optional</strong>. Avoid hard-coding the <code translate="No">profile </code> in apps and integrations - instead, set the most commonly used profile as the <strong>default</strong> for the account, and omit the field, or <a href="/ingest-profiles/references/reference.html#api-Profile-Get_All_Ingest_Profiles">fetch the available profiles for the account</a> and force the user to choose one.</li>
       <li>A 20 request-per-second limit on each account for total requests across <span translate="No">Dynamic Ingest</span> and the <span translate="No">CMS API</span>.</li>

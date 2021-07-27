@@ -1,0 +1,194 @@
+---
+title: 'Scheduling Activation/Deactivation of an SEP Stream'
+description: 'With the <code translate="No">JobStartStop</code> endpoint, you can schedule the activation and deactivation of an existing live <a href="/live-api/guides/live-api-static-entry-points.html">SEP</a> or a set of SEP jobs that are part of a <a href="/live-api/guides/using-live-redundancy.html">Redundant Group</a>. At the specified time, our system will make the necessary API calls to activate and de-active a Job on your behalf.'
+parent: Guides
+grandparent: Live API
+---
+
+<!-- Remember to change API reference links when going live -->
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+	<section class="bcls-section">
+		<h2 id="Requirements">Requirements</h2>
+		<ul>
+			<li>The Live API key for your account.</li>
+			<li>Your live account must have the scheduler override enabled.</li>
+			<li>An existing Live Job with <code translate="no">"static": true</code> (see <a href="/live-api/guides/live-api-static-entry-points.html">Static Entry Point Jobs</a> for more information).</li>
+		</ul>
+		<aside class="bcls-aside bcls-aside--information">Note that you can also schedule the activation and deactivation in the Live Module - see <a href="https://live.support.brightcove.com/live-module/scheduling-live-event.html">Auto Start/Stop of Live Events in the Control Room</a> for details</aside>
+	</section>
+	<section class="bcls-section">
+		<h2 id="Create_a_scheduler">Create a scheduler</h2>
+		<p>Let's say we want to schedule a 2 hour event that will start at <code translate="no">2021-04-02T14:00:00+00:00</code>.</p>
+
+		<p>Timestamps must be in UTC formated as unix timestamp in seconds. You can use <a href="https://www.unixtimestamp.com/" rel="nofollow">https://www.unixtimestamp.com/</a> for conversion.</p>
+		<aside class="bcls-aside bcls-aside--information">Note that the activation time limitations described <a href="https://live.support.brightcove.com/live-api/guides/live-api-static-entry-points.html#Limitations" rel="nofollow">here</a> still apply to scheduled activations, so we recommended scheduling a time that is at least 60 seconds before your desired start time.
+			<p>For this example, we will choose 5 minutes before the intended start time:</p>
+			<pre><code translate="no">start:
+				2021-04-02T13:55:00+00:00 = 1617386100
+				
+				stop:
+				2021-04-02T16:00:00+00:00 = 1617393600</code></pre>
+		</aside>
+		<p>To implement the scheduler, make the following <code translate="No">POST</code> request:</p>
+		<pre><code class="language-http" translate="No">https://api.bcovlive.io/v1/scheduler/jobstartstop</code></pre>
+		<h3>Headers</h3>
+		<pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
+		X-API-KEY: <span class="bcls-input">{your API Key}</span></code></pre>
+		<h3>Request body: single SEP job</h3>
+		<pre class="line-numbers"><code class="language-json" translate="No">{
+			"job_id": "your_Job_ID",
+			"activation": {
+				"time_utc": 1617386100
+			},
+			"deactivation": {
+				"time_utc": 1617393600
+			},
+			"description": "My Wednesday broadcast"
+		}</code></pre>
+			<details>
+				<summary><h3>Sample response</h3></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"account_id": "1752604059001",
+	"activation": {
+		"state": "pending",
+		"time_utc": 1617386100
+	},
+	"deactivation": {
+		"state": "pending",
+		"time_utc": 1617393600
+	},
+	"description": "My Wednesday broadcast",
+	"job_id": "15981d93877e490185e6ebc9af2c79a3",
+	"type": "jobstartstop",
+	"workflow_id": "d44cf29f4f184757ac0995beb8a0097e"
+}</code></pre>
+			</details>
+		<h3>Request body: redundant group of SEP job</h3>
+    <p>For redundant group activation, the only difference is that the <code translate="No">redundant_group_id</code> is used for the <code translate="No">job_id</code>, and the <code translate="No">redundant_group</code> flag is included (set to <code translate="No">true</code>).</p>
+		<pre class="line-numbers"><code class="language-json" translate="No">{
+			"job_id": "<span class="bcls-highlight">your_Redundant_Group_ID</span>",
+			"activation": {
+				"time_utc": 1617386100
+			},
+			"deactivation": {
+				"time_utc": 1617393600
+			},
+			"description": "My Wednesday broadcast",
+      <span class="bcls-highlight">"redundant_group": true</span>
+		}</code></pre>
+			<details>
+				<summary><h3>Sample response</h3></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"account_id": "1752604059001",
+	"activation": {
+		"state": "pending",
+		"time_utc": 1617386100
+	},
+	"deactivation": {
+		"state": "pending",
+		"time_utc": 1617393600
+	},
+	"description": "My Wednesday broadcast",
+	"job_id": "15981d93877e490185e6ebc9af2c79a3",
+	"type": "jobstartstop",
+	"workflow_id": "d44cf29f4f184757ac0995beb8a0097e"
+}</code></pre>
+			</details>
+		</section>
+		<section class="bcls-section">
+			<h2 id="Update_a_scheduler">Update a scheduler</h2>
+			<p>You can update the <code translate="no">activation</code> and/or <code translate="no">deactivation</code> time for a scheduler provided that the job is in a <strong translate="no">pending</strong> state (<code translate="no">"state": "pending"</code>). To do this, send a <code translate="no">PUT</code> request to:</p>
+<pre><code class="language-http" translate="No">https://api.bcovlive.io/v1/scheduler/jobstartstop/<span class="bcls-input">{workflow_id}</span></code></pre>
+			<p>The headers are the same as for the <code translate="no">POST</code> request shown above.</p>
+			<h3>Request body</h3>
+			<p>In the request body object, include only the <code translate="no">activation</code> and/or <code translate="no">deactivation</code> fields.</p>
+			<p>For example, to stop the event 30 minutes earlier than scheduled:</p>
+			<h3>Request body</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"deactivation": {
+		"time_utc": 1617391800
+	}
+}</code></pre>
+<details>
+	<summary><h3>Sample response</h3></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"account_id": "1752604059001",
+	"activation": {
+		"state": "pending",
+		"time_utc": 1617386100
+	},
+	"deactivation": {
+		"state": "pending",
+		"time_utc": 1617391800
+	},
+	"description": "My Wednesday broadcast",
+	"job_id": "15981d93877e490185e6ebc9af2c79a3",
+	"type": "jobstartstop",
+	"workflow_id": "d44cf29f4f184757ac0995beb8a0097e"
+}</code></pre>
+</details>
+</section>
+<section class="bcls-section">
+  <h2 id="cancel_the_scheduler">Cancel a scheduler</h2>
+  <p>You can cancel the activation and deactivation with a <code translate="no">DELETE</code> request:</p>
+	<pre><code class="language-http" translate="No">https://api.bcovlive.io/v1/scheduler/jobstartstop/<span class="bcls-input">{workflow_id}</span></code></pre>
+	<p>You can also do this after activation to just cancel the deactivation.</p>
+	<h3>Headers</h3>
+	<p>The only required header is:</p>
+	<pre class="line-numbers"><code class="language-bash" translate="No">X-API-KEY: <span class="bcls-input">your API Key</span></code></pre>
+	<h3>Request body</h3>
+	<p>There is no request body for this request.</p>
+	<details>
+		<summary><h3>Sample response</h3></summary>
+	<pre class="line-numbers"><code class="language-json" translate="No">{
+		"account_id": "1752604059001",
+		"activation": {
+			"state": "cancelled",
+			"time_utc": 1617386100
+		},
+		"deactivation": {
+			"state": "cancelled",
+			"time_utc": 1617391800
+		},
+		"description": "My Wednesday broadcast",
+		"job_id": "15981d93877e490185e6ebc9af2c79a3",
+		"type": "jobstartstop",
+		"workflow_id": "d44cf29f4f184757ac0995beb8a0097e"
+	}</code></pre>
+	</details>
+</section>
+<section class="bcls-section">
+  <h2 id="Notifications">Notifications</h2>
+  <p>You can optionally configure notifications when creating the workflow. You need to provide a URL for our service to <code translate="no">POST</code> to. We will send a notification when the scheduler makes the activation and deactivation calls. You can also configure to receive a notification <code translate="no">n</code> seconds  before the activation and/or deactivation. See the <a href="/live-api/guides/live-scheduler-notifications.html">Live Scheduler Notifications</a> for more details.</p>
+	<details>
+		<summary><h3>Sample request body</h3></summary>
+	<pre class="line-numbers"><code class="language-json" translate="No">{
+		"job_id": "your Job ID",
+		"activation": {
+			"time_utc": 1612274100,
+			<span class="bcls-highlight">"notification": 600</span>
+		},
+		"deactivation": {
+			"time_utc": 1612281600,
+			<span class="bcls-highlight">"notification": 600</span>
+		},
+		"description": "My Tuesday broadcast",
+		<span class="bcls-highlight">"notification_url": "http://example.com/live/jobstartstop/callbacks"</span>
+	}</code></pre>
+	</details>
+</section>
+<section class="bcls-section">
+	<h2 id="related_topics">Related topics</h2>
+	<ul>
+		<li><a href="/live-api/guides/live-scheduler-stop-start.html">Scheduling Activation/Deactivation of an SEP Stream</a></li>
+		<li><a href="/live-api/guides/live-scheduler-clips.html">Scheduling Clip Generation for a Live Stream</a></li>
+		<li><a href="/live-api/guides/live-scheduler-notifications.html">Live Scheduler Notifications</a></li>
+		<li><a href="/live-api/guides/live-api-static-entry-points.html">Static Entry Point (SEP) jobs</a></li>
+		<li><a href="/live-api/references/reference-staging.html">Live API Reference</a></li>
+		<li><a href="https://live.support.brightcove.com/live-module/scheduling-live-event.html">Auto Start/Stop of Live Events in the Control Room</a></li>
+	</ul>
+</section>
+</article>

@@ -2,15 +2,15 @@ openapi: 3.0.0
 info:
   title: Brightcove CMS API Reference
   description: |-
-    'Reference for the Brightcove CMS API, used to access and manage your media library. To test API requests, you can use our [API Testing Tools](/getting-started/concepts-testing-tools-brightcove-apis.html). For permissions needed for OAuth credentials, see [API Operations](/oauth/guides/api-operations-client-credentials-requests.html). For information on authenticating API requests, see the [OAuth Overview](/oauth/getting-started/overview-oauth-api-v4.html).'
+    Reference for the Brightcove CMS API, used to access and manage your media library. To test API requests, you can use our [API Testing Tools](/getting-started/concepts-testing-tools-brightcove-apis.html). For permissions needed for OAuth credentials, see [API Operations](/oauth/guides/api-operations-client-credentials-requests.html). For information on authenticating API requests, see the [OAuth Overview](/oauth/getting-started/overview-oauth-api-v4.html).
 
     For additional in-depth guides to features of the API, see the **[general documentation](/cms/index.html)**.
 
-    **Base URL**: https://cms.api.brightcove.com/v1
+    **Base URL**: https://cms.api.brightcove.com
   version: 1.0.0
   x-bc-access: public
 servers:
-  - url: 'https://cms.api.brightcove.com/v1'
+  - url: 'https://cms.api.brightcove.com'
     variables: {}
 tags:
   - name: Videos
@@ -18,6 +18,14 @@ tags:
   - name: Media Sharing
     description: >-
       Operations for creating and managing hierarchical labels that can be associated with videos.
+  - name: Clear-Sources
+    description: |-
+      Clear_sources endpoints expose unencrypted sources to the preview players in the studio for customers who are using [Playback Rights](/playback-restrictions/references/index.html) to protect DRM and HLSe video content. This endpoint is also useful for customers who want to make their protected source files available to 3rd parties or internal users who have access to their API credentials.
+
+        **Important Notes:**
+        
+        1. Once the unprotected URL is made available, Brightcove and the client have no control over who has access to the content or how it is used.
+        2. There will be egress bandwidth charges made to your account when the sources are accessed.
   - name: Playlists
     description: Operations for managing video playlists.
   - name: Folders
@@ -34,7 +42,7 @@ tags:
     description: >-
       Legacy operations - unless your account is still using the legacy ingest system instead of Dynamic Delivery, these operations are not relevant.
 paths:
-  '/accounts/{account_id}/videos':
+  '/v1/accounts/{account_id}/videos':
     get:
       tags:
         - Videos
@@ -140,7 +148,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/counts/videos':
+  '/v1/accounts/{account_id}/counts/videos':
     get:
       tags:
         - Videos
@@ -189,7 +197,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_ids}':
+  '/v1/accounts/{account_id}/videos/{video_ids}':
     get:
       tags:
         - Videos
@@ -268,7 +276,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}':
     patch:
       tags:
         - Videos
@@ -297,6 +305,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Video'
+        '202':
+          description: >-
+            202 is returned as a success response in cases where text tracks are updated, because that is performed by a separate system.
         '400':
           description: >-
             AD_CONFIG_INACTIVE: Ad configuration specified in an SSAI request is inactive
@@ -338,7 +349,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/sources':
+  '/v1/accounts/{account_id}/videos/{video_id}/sources':
     get:
       tags:
         - Videos
@@ -378,7 +389,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/images':
+  '/v1/accounts/{account_id}/videos/{video_id}/images':
     get:
       tags:
         - Videos
@@ -418,7 +429,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/variants':
+  '/v1/accounts/{account_id}/videos/{video_id}/variants':
     get:
       tags:
         - Videos
@@ -504,7 +515,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/variants/{language}':
+  '/v1/accounts/{account_id}/videos/{video_id}/variants/{language}':
     get:
       tags:
         - Videos
@@ -628,7 +639,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/audio_tracks':
+  '/v1/accounts/{account_id}/videos/{video_id}/audio_tracks':
     get:
       tags:
         - Videos
@@ -672,7 +683,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/audio_tracks/{audio_track_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/audio_tracks/{audio_track_id}':
     get:
       tags:
         - Videos
@@ -796,7 +807,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/digital_master':
+  '/v1/accounts/{account_id}/videos/{video_id}/digital_master':
     get:
       tags:
         - Videos
@@ -882,7 +893,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/references':
+  '/v1/accounts/{account_id}/videos/{video_id}/references':
     get:
       tags:
         - Videos
@@ -958,7 +969,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/ingest_jobs':
+  '/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs':
     get:
       tags:
         - Videos
@@ -1004,7 +1015,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/ingest_jobs/{job_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs/{job_id}':
     get:
       tags:
         - Videos
@@ -1050,7 +1061,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/video_fields':
+  '/v1/accounts/{account_id}/video_fields':
     get:
       tags:
         - Videos
@@ -1096,7 +1107,109 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/channels':
+  '/v1/accounts/{accountId}/clear_videos/{videoId}':
+    get:
+      tags:
+        - Clear-Sources
+      summary: Get Video with Clear Sources
+      description: |-
+        Get video data with unencrypted sources.
+        **Notes**
+          - Once the unprotected URL is made available, Brightcove and the client have no control over who has access to the content or how it is used.
+          - There will be egress bandwidth charges made to the customer when the sources are accessed.
+      operationId: GetClearVideo
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoFields'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: >-
+            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: |-
+            UNKNOWN: Issue in Brightcove system; try again later.
+            TIMEOUT: Server likely too busy; try again later.
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/v1/accounts/{accountId}/videos/{videoId}/clear_sources':
+    get:
+      tags:
+        - Clear-Sources
+      summary: Get Video Clear Sources
+      description: |-
+        Get unencrypted sources for a video.
+        **Notes**
+          - Once the unprotected URL is made available, Brightcove and the client have no control over who has access to the content or how it is used.
+          - There will be egress bandwidth charges made to the customer when the sources are accessed.
+      operationId: GetClearVideoSources
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoSources'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: >-
+            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: |-
+            UNKNOWN: Issue in Brightcove system; try again later.
+            TIMEOUT: Server likely too busy; try again later.
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/v1/accounts/{account_id}/channels':
     get:
       tags:
         - Media Sharing
@@ -1141,7 +1254,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/channels/{channel_name}':
+  '/v1/accounts/{account_id}/channels/{channel_name}':
     get:
       tags:
         - Media Sharing
@@ -1237,7 +1350,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/channels/{channel_name}/members':
+  '/v1/accounts/{account_id}/channels/{channel_name}/members':
     get:
       tags:
         - Media Sharing
@@ -1284,7 +1397,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/channels/{channel_name}/members/{affiliate_account_id}':
+  '/v1/accounts/{account_id}/channels/{channel_name}/members/{affiliate_account_id}':
     put:
       tags:
         - Media Sharing
@@ -1375,7 +1488,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/contracts/':
+  '/v1/accounts/{account_id}/contracts/':
     get:
       tags:
         - Media Sharing
@@ -1418,7 +1531,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/contracts/{master_account_id}':
+  '/v1/accounts/{account_id}/contracts/{master_account_id}':
     get:
       tags:
         - Media Sharing
@@ -1513,7 +1626,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/shares':
+  '/v1/accounts/{account_id}/videos/{video_id}/shares':
     get:
       tags:
         - Media Sharing
@@ -1618,7 +1731,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/shares/{affiliate_account_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/shares/{affiliate_account_id}':
     get:
       tags:
         - Media Sharing
@@ -1703,7 +1816,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/playlists':
+  '/v1/accounts/{account_id}/playlists':
     get:
       tags:
         - Playlists
@@ -1808,7 +1921,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/counts/playlists':
+  '/v1/accounts/{account_id}/counts/playlists':
     get:
       tags:
         - Playlists
@@ -1854,7 +1967,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/playlists/{playlist_id}':
+  '/v1/accounts/{account_id}/playlists/{playlist_id}':
     get:
       tags:
         - Playlists
@@ -2000,7 +2113,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/playlists/{playlist_id}/videos':
+  '/v1/accounts/{account_id}/playlists/{playlist_id}/videos':
     get:
       tags:
         - Playlists
@@ -2048,7 +2161,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/counts/playlists/{playlist_id}/videos':
+  '/v1/accounts/{account_id}/counts/playlists/{playlist_id}/videos':
     get:
       tags:
         - Playlists
@@ -2094,7 +2207,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/folders':
+  '/v1/accounts/{account_id}/folders':
     get:
       tags:
         - Folders
@@ -2192,7 +2305,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/folders/{folder_id}':
+  '/v1/accounts/{account_id}/folders/{folder_id}':
     get:
       tags:
         - Folders
@@ -2358,7 +2471,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/folders/{folder_id}/videos':
+  '/v1/accounts/{account_id}/folders/{folder_id}/videos':
     get:
       tags:
         - Folders
@@ -2418,7 +2531,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/folders/{folder_id}/videos/{video_id}':
+  '/v1/accounts/{account_id}/folders/{folder_id}/videos/{video_id}':
     put:
       tags:
         - Folders
@@ -2519,7 +2632,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/labels':
+  '/v1/accounts/{account_id}/labels':
     post:
       tags:
         - Labels
@@ -2616,7 +2729,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/labels/by_path/:label_path':
+  '/v1/accounts/{account_id}/labels/by_path/:label_path':
     patch:
       tags:
         - Labels
@@ -2711,7 +2824,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/subscriptions':
+  '/v1/accounts/{account_id}/subscriptions':
     get:
       tags:
         - Notifications
@@ -2825,7 +2938,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/subscriptions/{subscription_id}':
+  '/v1/accounts/{account_id}/subscriptions/{subscription_id}':
     get:
       tags:
         - Notifications
@@ -2914,7 +3027,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets':
     get:
       tags:
         - Media Assets
@@ -2964,7 +3077,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/dynamic_renditions':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/dynamic_renditions':
     get:
       tags:
         - Media Assets
@@ -3015,7 +3128,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/renditions':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/renditions':
     get:
       tags:
         - Media Assets
@@ -3134,7 +3247,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/renditions/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/renditions/{asset_id}':
     get:
       tags:
         - Media Assets
@@ -3255,8 +3368,8 @@ paths:
       summary: Delete Rendition
       description: >-
         Deletes a remote rendition for the given video. Note: this operation is **only
-        for remote renditions for remote asset videos** do not use it for
-        renditions created by Video Cloud for ingested videos
+        for remote renditions for remote asset videos** do *not* use it for
+        renditions created by Video Cloud for ingested videos!
       operationId: DeleteRendition
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -3295,7 +3408,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/hls_manifest':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/hls_manifest':
     get:
       tags:
         - Media Assets
@@ -3406,7 +3519,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/hls_manifest/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/hls_manifest/{asset_id}':
     get:
       tags:
         - Media Assets
@@ -3563,7 +3676,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/dash_manifests':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/dash_manifests':
     get:
       tags:
         - Media Assets
@@ -3694,7 +3807,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/dash_manifests/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/dash_manifests/{asset_id}':
     get:
       tags:
         - Media Assets
@@ -3852,7 +3965,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/hds_manifest':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/hds_manifest':
     get:
       tags:
         - Media Assets
@@ -3962,7 +4075,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/hds_manifest/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/hds_manifest/{asset_id}':
     get:
       tags:
         - Media Assets
@@ -4119,7 +4232,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/ism_manifest':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/ism_manifest':
     get:
       tags:
         - Media Assets
@@ -4229,7 +4342,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/ism_manifest/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/ism_manifest/{asset_id}':
     get:
       tags:
         - Media Assets
@@ -4386,7 +4499,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/ismc_manifest':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/ismc_manifest':
     get:
       tags:
         - Media Assets
@@ -4496,7 +4609,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/ismc_manifest/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/ismc_manifest/{asset_id}':
     get:
       tags:
         - Media Assets
@@ -4654,7 +4767,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/poster':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/poster':
     get:
       tags:
         - Legacy
@@ -4771,7 +4884,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/poster/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/poster/{asset_id}':
     get:
       tags:
         - Legacy
@@ -4934,7 +5047,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/thumbnail':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/thumbnail':
     get:
       tags:
         - Legacy
@@ -5051,7 +5164,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/thumbnail/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/thumbnail/{asset_id}':
     get:
       tags:
         - Legacy
@@ -5214,7 +5327,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/caption':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/caption':
     get:
       tags:
         - Legacy
@@ -5338,7 +5451,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}/assets/caption/{asset_id}':
+  '/v1/accounts/{account_id}/videos/{video_id}/assets/caption/{asset_id}':
     get:
       tags:
         - Legacy
@@ -5556,7 +5669,6 @@ components:
       name: Authorization
       required: true
       schema:
-        default: application/json
         type: string
       style: simple
     ChannelName:
@@ -5928,10 +6040,10 @@ components:
           account_name: BrightcoveLearning
           approved: true
         - account_id: '1481353044001'
-          account_name: BC - Bob Bailey
+          account_name: BC - Samples
           approved: true
         - account_id: '301925175'
-          account_name: BC Studio Home Page Player - EN
+          account_name: BC Home Page Player
           approved: true
       properties:
         account_id:
@@ -6771,6 +6883,13 @@ components:
           description: search string to retrieve the videos (smart playlists only)
           example: '+tags:birds,sea'
           type: string
+        search_syntax:
+          description: the search syntax used for the search string; see [Managing Playlists](/cms/managing-videos/managing-playlists-using-cms-api.html)
+          type: string
+          default: v1
+          enum:
+            - v1
+            - v2
         type:
           description: 'the playlist type: EXPLICIT or smart playlist type'
           enum:
@@ -6821,12 +6940,14 @@ components:
       description: map of scheduling properties
       properties:
         ends_at:
-          description: 'end date-time of availability in ISO-8601(http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format'
+          description: |-
+            'End date-time of availability in ISO-8601(http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format. Note that you can input a date-time stamp with a time zone, such as `2021-05-01T18:00:00.000+08`, but it will be converted to and stored as a UTC data-time stamp: `2021-05-01T10:00:00.000Z`'
           example: 2020-05-20T20:41:07.689Z
           nullable: true
           type: string
         starts_at:
-          description: 'start date-time of availability in ISO-8601(http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format'
+          description: |-
+            'Start date-time of availability in ISO-8601(http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format. Note that you can input a date-time stamp with a time zone, such as `2021-05-01T18:00:00.000+08`, but it will be converted to and stored as a UTC data-time stamp: `2021-05-01T10:00:00.000Z`'
           example: 2019-05-20T20:41:07.689Z
           nullable: true
           type: string
@@ -7010,7 +7131,7 @@ components:
         created_by:
           $ref: '#/components/schemas/User'
         cue_points:
-          description: 'array of cue points - can only be added on update, not creation'
+          description: 'array of cue points - can be added on creation or update'
           items:
             $ref: '#/components/schemas/CuePoint'
           type: array
@@ -7068,6 +7189,24 @@ components:
           example: 560039e5e4b0e69e4b01cacd
           readOnly: true
           type: string
+        forensic_watermarking:
+          description: |-
+            Indicates whether the video has forensic watermarking
+
+            possible values:
+
+            - `ACTIVE` - the video was transcoded with forensic watermarking and should be used during delivery
+            - `UNAVAILABLE` - the video was not transcoded with forensic watermarking support and can’t be delivered using it
+            - `null` - the value is forensic watermarking is not available for the account; in this case the field is not returned in API responses
+
+            if the video was not ingested with forensic watermarking, this field will be set to `UNAVAILABLE` automatically; if the video was ingested or retranscoded with forensic watermarking, this field will be set to `ACTIVE` automatically
+          example: ACTIVE
+          readOnly: true
+          type: string
+          enum:
+            - ACTIVE
+            - UNAVAILABLE
+            - null
         geo:
           $ref: '#/components/schemas/Geo'
         has_digital_master:
@@ -7117,7 +7256,7 @@ components:
         playback_rights_id:
           type: string
           description: >-
-            Associates specified EPA playback rights with video. **Note that EPA is in Limited Availability Release. Contact your account manager for more information.**
+            Associates specified EPA playback rights with video.
         projection:
           description: used for 360 videos
           enum:
@@ -7128,7 +7267,6 @@ components:
         published_at:
           description: 'start date-time of first activation in ISO-8601(http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format'
           example: 2019-04-30T23:27:22.507Z
-          readOnly: true
           type: string
         reference_id:
           description: video reference-id (must be unique within the account)
@@ -7141,10 +7279,17 @@ components:
         sharing:
           $ref: '#/components/schemas/Sharing'
         state:
-          description: state determines whether the video is playable or not
+          description: |-
+            The state of the video:
+              - ACTIVE: the video is playable
+              - INACTIVE: the video is not playable
+              - PENDING: 
+              - DELETED: the video has been deleted (within the past 10 days; after that, the API won't return the video)
           enum:
             - ACTIVE
             - INACTIVE
+            - PENDING
+            - DELETED
           example: ACTIVE
           type: string
         tags:

@@ -1,0 +1,1516 @@
+openapi: 3.0.0
+x-bc-implicit-head: true
+x-bc-implicit-options: true
+x-bc-upstream: 'https://backend_server'
+info:
+  title: Brightcove Cloud Playout CMS API Interactions
+  description: |-
+    Reference for the Brightcove Cloud Playout CMS API Interactions, used to access and manage your playlists and videos.
+
+    **Note: this is a modified and abbreviated version of the [full CMS API Reference](/cms/references/reference.html). This version focuses on what you need to know for managing content in your Cloud Playout channels.**
+
+    **Base URL: https://cms.api.brightcove.com** 
+  version: 1.0.0
+  x-bc-access: public
+servers:
+  - url: 'https://cms.api.brightcove.com'
+    variables: {}
+paths:
+  '/v1/accounts/{account_id}/playlists/{playlist_id}':
+    patch:
+      tags:
+        - Cloud Playout CMS Interactions
+      summary: Update videos to playlist
+      description: 'Add/Delete videos from the playlist'
+      operationId: UpdatePlaylist
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/PlaylistId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      requestBody:
+        description: Updates a playlist for the account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePlaylist'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedPlaylist'
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/playlist/update
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/v1/accounts/{account_id}/playlists/{playlist_id}/videos':
+    get:
+      tags:
+        - Cloud Playout CMS Interactions
+      summary: Get Videos in Playlist
+      description: 'Get Videos in Playlist'
+      operationId: GetVideosInPlaylist
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/PlaylistId'
+        - $ref: '#/components/parameters/IncludeDetails'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/playlist/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/v1/accounts/{account_id}/counts/videos':
+    get:
+      tags:
+        - Cloud Playout CMS Interactions
+      summary: Get Video Count
+      description: 'Gets count of videos for the account or a search '
+      operationId: GetVideoCount
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoCount'
+        '400':
+          description: 'INVALID_SORT: sort parameter specified and invalid field '
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: >-
+            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: |-
+            UNKNOWN: Issue in Brightcove system; try again later.
+            TIMEOUT: Server likely too busy; try again later.
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/v1/accounts/{account_id}/videos':
+    get:
+      tags:
+        - Cloud Playout CMS Interactions
+      summary: Get Videos or Ads or Bumpers or Live Events.
+      description: 'Gets a page of video objects '
+      operationId: GetVideos
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/VideoSort'
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Video'
+        '400':
+          description: |-
+            INVALID_SORT: sort parameter specified and invalid field
+            ILLEGAL_QUERY: The search string syntax was invalid - example
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: >-
+            NOT_AVAILABLE: The resource you are requesting is  unavailable - this may be a temporary condition while some kind of processing of the video is in progress, but if the message persists, contact
+        '404':
+          description: 'RESOURCE_NOT_FOUND: Resource not found '
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: |-
+            UNKNOWN: Issue in Brightcove system; try again later.
+            TIMEOUT: Server likely too busy; try again later.
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    post:
+      tags:
+        - Cloud Playout CMS Interactions
+      summary: Create Live Event
+      description: >-
+        Create a new Live Event object in the account. Note: this does not ingest a video file - use the Dynamic Ingest API for ingestion
+      operationId: CreateVideo
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      requestBody:
+        description: >-
+          Create a new Live Event in the account. Note: this does not ingest a video file - use the Dynamic Ingest API for ingestion
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVideoRequestBodyFields'
+            examples:
+              Create a Live Event:
+                $ref: '#/components/examples/createLiveEvent'
+        required: true
+      responses:
+        '201':
+          description: Live Event created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: 'BAD_VALUE: Spelling error or other use of non-existent field '
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '409':
+          description: >-
+            REFERENCE_ID_IN_USE: You attempted to create a video with a reference id that is already in use, or add a reference id to a video which is already used by another video
+        '422':
+          description: 'ILLEGAL_FIELD: Spelling error or other use of non-existent field '
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/v1/accounts/{account_id}/videos/{video_id}':
+    patch:
+      tags:
+        - Cloud Playout CMS Interactions
+      summary: Update Live Event
+      description: >-
+        Update live event metadata - note that this API does not ingest any
+        media files - use the Dynamic Ingest API for ingestion. Also note that replacing WebVTT text tracks is a two-step operation - see Add WebVTT Captions for details.
+      operationId: UpdateVideo
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      requestBody:
+        description: >-
+          Update live event metadata - note that this API does not ingest any media files - use the Dynamic Ingest API for ingestion. Also note that replacing WebVTT text tracks is a two-step operation - see Add WebVTT Captions for details.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Video'
+            examples:
+              Update a Live Event:
+                $ref: '#/components/examples/createLiveEvent'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+        '400':
+          description: >-
+            AD_CONFIG_INACTIVE: Ad configuration specified in an SSAI request is inactive
+
+            AD_CONFIG_NOT_FOUND: Ad configuration specified in an SSAI request was not found
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '403':
+          description: 'BAD_VALUE: Spelling error or other use of non-existent field '
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '409':
+          description: >-
+            REFERENCE_ID_IN_USE: You attempted to create a video with a reference id that is already in use, or add a reference id to a video which is already used by another video
+        '422':
+          description: >-
+            ILLEGAL_FIELD: Spelling error or other use of non-existent field
+
+            VALIDATION_ERROR: the JSON data was not valid - error messages vary depending on the problem
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: >-
+            UNKNOWN: an unknown internal error occurred - this might be a temporary system issue, but if the problem persists, it is likely an uncaught error in the request - contact Support
+        '503':
+          description: 'TIMEOUT: Server likely too busy - try again later '
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/v1/accounts/{account_id}/videos/{video_ids}':
+    delete:
+      tags:
+        - Cloud Playout CMS Interactions
+      summary: Delete Live Event
+      description: >-
+        'Deletes one or more live events - note that for this operation you can specify a comma-delimited list of video ids to delete.'
+      operationId: DeleteVideo
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoIds'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '204':
+          description: 'NO_CONTENT'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '409':
+          description: 'REFERENCES_EXIST: The video is in one or more manual playlists '
+        '412':
+          description: >-
+            PRE_CONDITION_FAILED: usually this means the caller provided an ETag that didn't match the version of the video
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: 'INTERNAL_ERROR: Error in the backend '
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/v1/accounts/{account_id}/playlists':
+    get:
+      tags:
+        - Cloud Playout CMS Interactions
+      summary: Get Playlists
+      description: 'Gets a page of playlist objects for the account '
+      operationId: GetPlaylists
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/PlaylistSort'
+        - $ref: '#/components/parameters/SearchPlaylists'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Playlist'
+        '400':
+          description: >-
+            'INVALID_SORT: sort parameter specified and invalid field
+
+            INVALID_SEARCH: search string invalid (may not have been
+            URI-encoded)'
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed - check to make sure your client credentials were correct for the access token
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/playlist/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+components:
+  examples:
+    createLiveEvent:
+      value:
+        "name": "Test Event"
+        "tags": [
+            "cp-live-placeholder",
+            "duration-00:40:00"
+        ]
+        "description": "Test Description"
+      summary: Creates a live event. NOTE - The duration must be in the format hh:mm:ss.
+    createVideo:
+      value:
+        "cue_points": [
+          {
+            "metadata": "string",
+            "name": "string",
+            "time": 10.527,
+            "type": "AD"
+          }
+        ]
+        "custom_fields": {
+          "subject": "birds"
+        }
+        "description": "Laughing Gull"
+        "drm_disabled": true
+        "economics": "AD_SUPPORTED"
+        "geo": {
+          "countries": [
+              "us",
+              "ca",
+              "fr"
+          ],
+          "exclude_countries": true,
+          "restricted": true
+        }
+        "long_description": "Herring Gull near Fort Point Channel in Boston, MA, USA. 2019-04-25."
+        "name": "A happy herring gull"
+        "offline_enabled": true
+        "reference_id": "laughing_gull_2019_04_25"
+        "schedule": {
+          "ends_at": "2020-05-20T20:41:07.689Z",
+          "starts_at": "2019-05-20T20:41:07.689Z"
+        }
+        "state": "ACTIVE"
+        "tags": [
+            "birds",
+            "sea"
+        ]
+  responses:
+    '204':
+      description: Item was deleted
+      content: {}
+    '401':
+      description: >-
+        UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+      content: {}
+    '403':
+      description: 'BAD_VALUE: Spelling error or other use of non-existent field '
+      content: {}
+    '404':
+      description: >-
+        RESOURCE_NOT_FOUND: The api could not find the resource you requested
+      content: {}
+    '405':
+      description: >-
+        METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+      content: {}
+    '429':
+      description: >-
+        TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+      content: {}
+  schemas:
+    BadRequest:
+      title: BadRequest
+      type: object
+      properties:
+        message:
+          type: object
+    VideoVariant:
+      description: Object containing language-specific metadata for a video
+      properties:
+        language:
+          type: string
+          description: 'The language for this variant in the language-country code format (examples: en-US, es-ES) **Note that `language` is only included when you create a variant - you must NOT include it when updating the variant**'
+          example: es-ES
+        name:
+          type: string
+          description: The title of the video in this language
+        description:
+          type: string
+          description: The video short description in this language
+        long_description:
+          type: string
+          description: The video long description in this language
+        custom_fields:
+          type: object
+          description: 'map of `fieldname: value` pairs, where values are for this language; values have a maximum length of 1024 single-byte characters. Note: be sure to use the **internal** name for the field, not the display name'
+    VideoVariants:
+      description: Array of video variants
+      type: array
+      items:
+        $ref: '#/components/schemas/VideoVariant'
+    TextTrack:
+      properties:
+        default:
+          default: false
+          description: whether this is the default track - should only be true for one text track
+          type: boolean
+        id:
+          description: System id for the text track
+          readOnly: true
+          type: string
+        kind:
+          default: captions
+          description: kind of text track
+          enum:
+            - subtitles
+            - captions
+            - descriptions
+            - chapters
+            - metadata
+          type: string
+        label:
+          description: label for the track
+          type: string
+        mime_type:
+          description: mime-type for the track
+          type: string
+        src:
+          description: URL for the .vtt file
+          type: string
+        srclang:
+          description: '2-letter language code, such as "en" or "ko"'
+          type: string
+      required:
+        - src
+        - srclang
+      title: text_track
+      type: object
+    Sharing:
+      description: map of the sharing properties for the video
+      properties:
+        by_external_acct:
+          description: whether the video was shared from another account
+          example: true
+          readOnly: true
+          type: boolean
+        by_id:
+          description: 'id of the account that shared the video; note that this field is populated only for the shared copy, not for the original video'
+          example: 57838016001
+          readOnly: true
+          type: string
+        by_reference:
+          description: whether the video is shared by reference
+          example: true
+          readOnly: true
+          type: boolean
+        source_id:
+          description: 'id of the video in its original account; note that this field is populated only for the shared copy, not for the original video'
+          example: 239487239487
+          readOnly: true
+          type: string
+        to_external_acct:
+          description: whether the video is shared to another account
+          example: true
+          readOnly: true
+          type: boolean
+      readOnly: true
+      title: sharing
+      type: object
+    Link:
+      description: 'map of related link properties - can only be added on update, not creation'
+      properties:
+        text:
+          description: text for the link
+          maxLength: 255
+          type: string
+        url:
+          description: URL for the link
+          maxLength: 255
+          type: string
+      title: link
+      type: object
+    VideoImages:
+      description: |-
+        map of image maps - the map name is in the form `label.language` where the label is one of `poster`, `thumbnail`, `portrait`, `square`, `wide` or `ultra-wide`, and the `language` is a language identifier such as 'en', 'de', or `ko`
+      example: {
+        "thumbnail": {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/160x90/20s629ms/match/image.jpg",
+          "sources": [
+            {
+              "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/160x90/20s629ms/match/image.jpg",
+              "height": 90,
+              "width": 160
+            }
+          ]
+        },
+        "poster": {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/1280x720/20s629ms/match/image.jpg",
+          "sources": [
+            {
+              "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/1280x720/20s629ms/match/image.jpg",
+              "height": 720,
+              "width": 1280
+            }
+          ]
+        },
+        "portrait.es": {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/bac8717a-43db-4fa8-a6f0-189c80ee4c4e/800x1200/match/image.jpg",
+          "sources": [
+            {
+              "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/bac8717a-43db-4fa8-a6f0-189c80ee4c4e/800x1200/match/image.jpg",
+              "height": 1200,
+              "width": 800
+            }
+          ]
+        },
+        "thumbnail.en": {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/0ce2da4d-ca36-469b-9024-0273d79feeeb/292x108/match/image.jpg",
+          "sources": [
+            {
+              "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/0ce2da4d-ca36-469b-9024-0273d79feeeb/292x108/match/image.jpg",
+              "height": 108,
+              "width": 292
+            }
+          ]
+        },
+        "poster.en": {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/a7cb150d-c84a-48e0-9469-5b4ce80fba53/1920x1080/match/image.jpg",
+          "sources": [
+            {
+              "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/a7cb150d-c84a-48e0-9469-5b4ce80fba53/1920x1080/match/image.jpg",
+              "height": 1080,
+              "width": 1920
+            }
+          ]
+        },
+        "square.de": {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/22209955-e136-4f17-914c-e19ec4c58886/570x570/match/image.jpg",
+          "sources": [
+            {
+              "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/22209955-e136-4f17-914c-e19ec4c58886/570x570/match/image.jpg",
+              "height": 570,
+              "width": 570
+            }
+          ]
+        },
+        "ultra-wide.hi": {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/72fd489f-d978-44ba-8d04-1e33c7c36cef/3840x1646/match/image.jpg",
+          "sources": [
+            {
+              "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/72fd489f-d978-44ba-8d04-1e33c7c36cef/3840x1646/match/image.jpg",
+              "height": 1646,
+              "width": 3840
+            }
+          ]
+        },
+        "wide.fr": {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/4405a5d5-8b9e-4c2b-be71-cf4e2c153e87/2560x1440/match/image.jpg",
+          "sources": [
+            {
+              "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/4405a5d5-8b9e-4c2b-be71-cf4e2c153e87/2560x1440/match/image.jpg",
+              "height": 1440,
+              "width": 2560
+            }
+          ]
+        }
+      }
+      readOnly: true
+      title: VideoImages
+      type: object
+    User:
+      description: 'information about who created or modified a video, if available'
+      properties:
+        email:
+          description: the user's email address in Video Cloud
+          type: string
+        id:
+          description: Video Cloud system id of the user
+          type: string
+        type:
+          description: |-
+            The type of the updater, either:
+              - `user` a user in Studio
+              - `api-key` a user via the APIs
+              - `internal` a Brightcove system or user
+          enum:
+            - user
+            - api_key
+            - internal
+          type: string
+      readOnly: true
+      title: User
+      type: object
+    Schedule:
+      description: map of scheduling properties
+      properties:
+        ends_at:
+          description: |-
+            'End date-time of availability in ISO-8601(http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format. Note that you can input a date-time stamp with a time zone, such as `2021-05-01T18:00:00.000+08`, but it will be converted to and stored as a UTC data-time stamp: `2021-05-01T10:00:00.000Z`'
+          example: 2020-05-20T20:41:07.689Z
+          nullable: true
+          type: string
+        starts_at:
+          description: |-
+            'Start date-time of availability in ISO-8601(http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format. Note that you can input a date-time stamp with a time zone, such as `2021-05-01T18:00:00.000+08`, but it will be converted to and stored as a UTC data-time stamp: `2021-05-01T10:00:00.000Z`'
+          example: 2019-05-20T20:41:07.689Z
+          nullable: true
+          type: string
+      title: schedule
+      type: object
+    Geo:
+      description: map of geo-filtering properties
+      properties:
+        countries:
+          description: 'array of ISO 3166 list of 2-letter codes(https://www.iso.org/obp/ui/#home) (search for "country codes")'
+          example:
+            - us
+            - ca
+            - fr
+          items:
+            type: string
+          type: array
+        exclude_countries:
+          description: 'if true, country array is treated as a list of countries excluded from viewing'
+          type: boolean
+        restricted:
+          description: whether geo-restriction is enabled for this video
+          type: boolean
+      required:
+        - countries
+        - exclude_countries
+        - restricted
+      title: geo
+      type: object
+    CuePoint:
+      properties:
+        id:
+          description: System id for the cuepoint
+          readOnly: true
+          type: string
+        metadata:
+          description: optional metadata string (512 single-byte characters maximum)
+          maxLength: 512
+          type: string
+        name:
+          description: cue point name
+          type: string
+        time:
+          description: time of the cue point in seconds
+          example: 10.527
+          type: number
+        type:
+          description: cue point type
+          enum:
+            - AD
+            - DATA
+          type: string
+      required:
+        - time
+        - type
+      title: cue_point
+      type: object
+    UpdatePlaylist:
+      title: UpdatePlaylist
+      type: object
+      properties:
+        video_ids:
+          description: 'array of video ids (EXPLICIT playlists only)'
+          type: array
+          items:
+            type: string
+      example: >-
+        {
+          "video_ids": [
+            "70702887566202",
+            "70702887586202",
+            "70702260704202",
+            "70702260706202"
+          ]
+        }
+    UpdatedPlaylist:
+      title: UpdatedPlaylist
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Video Cloud account id
+        created_at:
+          type: string
+          format: date-time
+          description: date/time created
+        description:
+          type: string
+          maxLength: 255
+          description: playlist description
+        favorite:
+          type: boolean
+          default: false
+          description: whether playlist is in favorites list
+        id:
+          type: string
+          description: the playlist id
+        name:
+          type: string
+          maxLength: 255
+          description: the playlist name
+        reference_id:
+          type: string
+          description: the playlist reference id (must be unique within the account)
+        search:
+          type: string
+          description: search string to retrieve the videos (smart playlists only)
+        type:
+          type: string
+          description: 'the playlist type: EXPLICIT or smart playlist type'
+          enum:
+            - EXPLICIT
+            - ACTIVATED_OLDEST_TO_NEWEST
+            - ACTIVATED_NEWEST_TO_OLDEST
+            - ALPHABETICAL
+            - PLAYS_TOTAL
+            - PLAYS_TRAILING_WEEK
+            - START_DATE_OLDEST_TO_NEWEST
+            - START_DATE_NEWEST_TO_OLDEST
+        updated_at:
+          type: string
+          format: date-time
+          description: date/time last modified
+        video_ids:
+          description: 'array of video ids (EXPLICIT playlists only)'
+          type: array
+          items:
+            type: string
+      example: >-
+        {
+          "id" : "1701632459864392160",
+          "account_id" : "70701684293502",
+          "created_at" : "2021-06-04T10:39:32.934Z",
+          "updated_at" : "2021-06-04T12:29:06.793Z",
+          "description" : "cloudplayout",
+          "favorite" : false,
+          "name" : "cloudplayout_dvfdb",
+          "reference_id" : null,
+          "type" : "EXPLICIT",
+          "video_ids" : [ "70702887566202", "70702887586202", "70702260704202", "70702260706202" ],
+          "state" : "READY"
+        }
+    VideoCount:
+      example:
+        count: 7650
+      properties:
+        count:
+          description: count of videos
+          type: integer
+      title: Get_Video_CountResponse
+      type: object
+    CreateVideoRequestBodyFields:
+      description: 'Only certain video metadata fields can be set when you initially create the video, and are listed here. Other fields must be set through an update (`PATCH`) request type: object'
+      properties:
+        cue_points:
+          description: Array of cuepoint objects
+          items:
+            $ref: '#/components/schemas/CuePoint'
+          type: array
+        custom_fields:
+          description: 'map of `fieldname: value` pairs; values have a maximum length of 1024 single-byte characters Note: be sure to use the **internal** name for the field, not the display name'
+          example:
+            subject: birds
+          type: object
+        description:
+          description: Video short description
+          maxLength: 250
+          example: Laughing Gull
+          type: string
+        drm_disabled:
+          description: Use to disable DRM packaging for this video - applies only to DRM-enabled accounts
+          example: true
+          type: boolean
+        economics:
+          description: whether the video supports ads
+          enum:
+            - AD_SUPPORTED
+            - FREE
+          example: AD_SUPPORTED
+          type: string
+        geo:
+          $ref: '#/components/schemas/Geo'
+        long_description:
+          description: A longer description of the video
+          example: 'Herring Gull near Fort Point Channel in Boston, MA, USA. 2019-04-25.'
+          maxLength: 5000
+          type: string
+        name:
+          description: Title of the video video
+          example: A happy herring gull
+          maxLength: 250
+          minLength: 1
+          type: string
+        offline_enabled:
+          default: false
+          description: whether video is enabled for offline viewing
+          example: true
+          type: boolean
+        reference_id:
+          description: Reference id for the clip - must be unique within the account
+          example: laughing_gull_2019_04_25
+          type: string
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+        state:
+          description: Whether the video should be active or inactive
+          enum:
+            - ACTIVE
+            - INACTIVE
+          example: ACTIVE
+          type: string
+        tags:
+          description: Array of tags for the video - note that  tags are string that may not contain a comma
+          example:
+            - birds
+            - sea
+          items:
+            type: string
+          type: array
+      required:
+        - name
+      title: Create Video Request Body Fields
+    Playlist:
+      properties:
+        account_id:
+          description: Video Cloud account id
+          example: 57838016001
+          readOnly: true
+          type: string
+        created_at:
+          description: date/time created
+          example: 2018-11-14T19:30:36.196Z
+          format: date-time
+          readOnly: true
+          type: string
+        description:
+          description: playlist description
+          example: Sea bird playlist
+          maxLength: 255
+          type: string
+        favorite:
+          default: false
+          description: whether playlist is in favorites list
+          example: false
+          type: boolean
+        id:
+          description: the playlist id
+          example: 1403635561001
+          readOnly: true
+          type: string
+        name:
+          description: the playlist name
+          example: Sea Birds
+          maxLength: 255
+          type: string
+        reference_id:
+          description: the playlist reference id (must be unique within the account)
+          example: sea_birds_playlist
+          type: string
+        search:
+          description: search string to retrieve the videos (smart playlists only)
+          example: '+tags:captions,training'
+          type: string
+        type:
+          description: 'the playlist type: EXPLICIT or smart playlist type'
+          enum:
+            - EXPLICIT
+            - ACTIVATED_OLDEST_TO_NEWEST
+            - ACTIVATED_NEWEST_TO_OLDEST
+            - ALPHABETICAL
+            - PLAYS_TOTAL
+            - PLAYS_TRAILING_WEEK
+            - START_DATE_OLDEST_TO_NEWEST
+            - START_DATE_NEWEST_TO_OLDEST
+          example: ACTIVATED_NEWEST_TO_OLDEST
+          type: string
+        updated_at:
+          description: date/time last modified
+          example: 2018-11-14T19:30:36.196Z
+          format: date-time
+          readOnly: true
+          type: string
+        video_ids:
+          description: array of video ids (EXPLICIT playlists only)
+          example:
+            - '4084164751001'
+            - '1532562858001'
+            - '734484322001'
+            - '1532530235001'
+            - '734462570001'
+            - '734462569001'
+            - '734451481001'
+            - '734445537001'
+          items:
+            type: string
+          type: array
+      title: Playlist
+      type: object
+      example: {
+        "id": "5716873476001",
+        "account_id": "57838016001",
+        "created_at": "2018-01-23T12:55:29.674Z",
+        "description": "My new sea playlist",
+        "favorite": false,
+        "name": "Sea Videos",
+        "reference_id": null,
+        "type": "ACTIVATED_NEWEST_TO_OLDEST",
+        "updated_at": "2018-01-23T12:55:29.677Z",
+        "limit": 20,
+        "search": "+tags:\"birds\""
+      }
+    Video:
+      description: Object containing metadata for a video
+      properties:
+        ad_keys:
+          description: 'string representing the ad key/value pairs assigned to the video. Key/value pairs are formatted as key=value and are separated by ampersands - can only be added on update, not creation'
+          example: ' "adKeys": "category=sports&live=true"'
+          nullable: true
+          type: string
+        clip_source_video_id:
+          description: The ID of the source video that was clipped to produce this video or null if this video is not a clip of another video
+          example: 4723947979
+          readOnly: true
+          type: string
+        complete:
+          description: 'whether processing is complete -Note: when you create a new video, the complete property is automatically set to false. As soon as one rendition exists for the video, the complete property will be automatically set to true'
+          example: true
+          readOnly: true
+          type: boolean
+        created_at:
+          description: when the video was created
+          example: '2015-09-17T16:08:37.108Z'
+          readOnly: true
+          type: string
+        created_by:
+          $ref: '#/components/schemas/User'
+        cue_points:
+          description: 'array of cue points - can be added on creation or update'
+          items:
+            $ref: '#/components/schemas/CuePoint'
+          type: array
+        custom_fields:
+          additionalProperties:
+            description: 'map of fieldname-value pairs; values have a maximum length of 1024 single-byte characters Note: be sure to use the internal name for the field, not the display name'
+            type: string
+          type: object
+        delivery_type:
+          description: |-
+            video delivery type:
+              - `remote`: a remote asset
+              - `static_origin`: processed using the legacy ingest system
+              - `dynamic_origin`: processed using the Dynamic Delivery ingest system
+              - `live_origin`: a live stream from Brightcove Live
+              - `unknown`: the delivery type could not be determined (may mean there are no playable renditions)
+          enum:
+            - remote
+            - static_origin
+            - dynamic_origin
+            - live_origin
+            - unknown
+          example: dynamic_origin
+          readOnly: true
+          type: string
+        description:
+          description: video short description
+          example: Herring gull on a wharf in Boston
+          maxLength: 248
+          type: string
+        digital_master_id:
+          description: asset id of the digital master
+          example: 734462494001
+          readOnly: true
+          type: string
+        drm_disabled:
+          description: 'if true, the video is not DRM-packaged - applies to accounts that are enabled for DRM only'
+          example: true
+          type: boolean
+        duration:
+          description: video duration in milliseconds
+          example: 18160
+          readOnly: true
+          type: integer
+        economics:
+          default: AD_SUPPORTED
+          description: whether video is `AD_SUPPORTED`
+          enum:
+            - AD_SUPPORTED
+            - FREE
+          example: AD_SUPPORTED
+          type: string
+        folder_id:
+          description: id of the folder that contains the video
+          example: 560039e5e4b0e69e4b01cacd
+          readOnly: true
+          type: string
+        geo:
+          $ref: '#/components/schemas/Geo'
+        has_digital_master:
+          description: whether video has an archived master than can be used for retranscoding
+          example: true
+          readOnly: true
+          type: boolean
+        id:
+          description: video id
+          example: 734462567001
+          readOnly: true
+          type: string
+        images:
+          $ref: '#/components/schemas/VideoImages'
+        labels:
+          type: array
+          description: |-
+            Array of labels assigned to the video. See [Working with Labels](/cms/managing-videos/working-with-labels.html) for more information.
+          items:
+            type: string
+            description: full hierarchical path for a label.
+        link:
+          $ref: '#/components/schemas/Link'
+        long_description:
+          description: 'video long description - can only be added on update, not creation'
+          example: 'Herring Gull near Fort Point Channel in Boston, MA, USA. 2019-04-25.'
+          maxLength: 5000
+          type: string
+        name:
+          description: video title
+          example: Laughing Gull
+          maxLength: 255
+          minLength: 1
+          type: string
+        offline_enabled:
+          default: false
+          description: whether video is enabled for offline viewing
+          example: true
+          type: boolean
+        original_filename:
+          description: the original file name for the uploaded video
+          example: gull-boston.mov
+          readOnly: true
+          type: string
+        playback_rights_id:
+          type: string
+          description: >-
+            Associates specified EPA playback rights with video. **Note that EPA is in Limited Availability Release. Contact your account manager for more information.**
+        projection:
+          description: used for 360 videos
+          enum:
+            - equirectangular
+          example: equirectangular
+          nullable: true
+          type: string
+        published_at:
+          description: 'start date-time of first activation in ISO-8601(http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format'
+          example: 2019-04-30T23:27:22.507Z
+          readOnly: true
+          type: string
+        reference_id:
+          description: video reference-id (must be unique within the account)
+          example: laughing_gull_2019_04_25
+          maxLength: 150
+          nullable: true
+          type: string
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+        sharing:
+          $ref: '#/components/schemas/Sharing'
+        state:
+          description: |-
+            The state of the video:
+              - ACTIVE: the video is playable
+              - INACTIVE: the video is not playable
+              - PENDING:
+              - DELETED: the video has been deleted (within the past 10 days; after that, the API won't return the video)
+          enum:
+            - ACTIVE
+            - INACTIVE
+            - PENDING
+            - DELETED
+          example: ACTIVE
+          type: string
+        tags:
+          description: array of tags
+          example:
+            - birds
+            - sea
+          items:
+            type: string
+          type: array
+        text_tracks:
+          description: 'array of text tracks - can only be added on update, not creation'
+          items:
+            $ref: '#/components/schemas/TextTrack'
+          type: array
+        updated_at:
+          description: when the video was last modified
+          example: 2018-02-27T19:09:20.401Z
+          readOnly: true
+          type: string
+        updated_by:
+          $ref: '#/components/schemas/User'
+        variants:
+          $ref: '#/components/schemas/VideoVariants'
+      title: Video
+      type: object
+      example: >-
+        {
+          "id" : "70702834583294",
+          "account_id" : "6062814566001",
+          "ad_keys" : null,
+          "clip_source_video_id" : null,
+          "complete" : false,
+          "created_at" : "2021-06-04T11:00:48.551Z",
+          "created_by" : {
+            "type" : "user",
+            "id" : "76072843583",
+            "email" : "testuser@brightcove.com"
+          },
+          "cue_points" : [ ],
+          "custom_fields" : { },
+          "delivery_type" : "unknown",
+          "description" : "test description",
+          "digital_master_id" : null,
+          "duration" : null,
+          "economics" : "AD_SUPPORTED",
+          "folder_id" : null,
+          "geo" : null,
+          "has_digital_master" : false,
+          "images" : { },
+          "link" : null,
+          "long_description" : null,
+          "name" : "test live event",
+          "original_filename" : null,
+          "projection" : null,
+          "published_at" : "2021-06-04T11:00:48.565Z",
+          "reference_id" : null,
+          "schedule" : null,
+          "sharing" : null,
+          "state" : "ACTIVE",
+          "tags" : [ "cp-live-placeholder", "duration-00:05:00" ],
+          "text_tracks" : [ ],
+          "updated_at" : "2021-06-04T11:00:48.572Z",
+          "updated_by" : {
+            "type" : "user",
+            "id" : "76076294383",
+            "email" : "testuser@brightcove.com"
+          },
+          "playback_rights_id" : "primary"
+        }
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      description: Video Cloud account ID.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    ContentType:
+      name: Content-Type
+      in: header
+      description: 'Content-Type: application/json'
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        default: application/json
+      example: application/json
+    Authorization:
+      name: Authorization
+      in: header
+      description: 'Authorization: Bearer {access_token} - see [Getting Access Tokens](/oauth/code-samples/oauth-api-sample-get-access-token.html)'
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Search:
+      description: 'Search string - see [search guide](/cms/searching/cms-and-playback-apis-video-search-v2.html) for details'
+      explode: true
+      in: query
+      name: query
+      schema:
+        type: string
+      examples:
+        hasMp4:
+          value: 'q=%2Bhas_mp4:1'
+          summary: Search for mp4 videos
+        getAds:
+          value: '%2Btags%3Acp-ad-holder%20%2Bhas_mp4:1'
+          summary: Get Ad videos
+        getBumpers:
+          value: '&q=%2Bhas_mp4%3A1+tags%3Acp-preroll-bumper%2Ccp-postroll-bumper'
+          summary: Get Bumpers
+        getPreRollBumpers:
+          value: '%2Btags%3Acp-preroll-bumper%20%2Bhas_mp4:1'
+          summary: Get Pre-roll Bumpers
+        getPostRollBumpers:
+          value: '%2Btags%3Acp-postroll-bumper%20%2Bhas_mp4:1'
+          summary: Get Post-roll Bumpers
+      style: form
+    Limit:
+      description: 'Number of items to return - see [Paging Search Results](/cms/searching/using-cms-api-page-search-results.html) for more information'
+      explode: true
+      in: query
+      name: limit
+      schema:
+        default: 20
+        example: 20
+        format: int32
+        maximum: 100
+        minimum: 1
+        type: integer
+      style: form
+    VideoIds:
+      description: |-
+        One or more video ids.
+
+        For example:
+        - https://cms.api.brightcove.com/v1/accounts/videos/9827342837937
+        - https://cms.api.brightcove.com/v1/accounts/videos/9827342837937,47584736360
+      explode: false
+      in: path
+      name: video_ids
+      required: true
+      schema:
+        type: string
+      style: simple
+    Offset:
+      description: 'Number of items to skip - see [Paging Search Results](/cms/searching/using-cms-api-page-search-results.html) for more information'
+      explode: true
+      in: query
+      name: offset
+      schema:
+        default: 0
+        example: 20
+        format: int32
+        type: integer
+      style: form
+    PlaylistSort:
+      description: 'Field to sort results by - if absent and there is a search string, results are sorted by relevance or if there is no search string, results are sorted by `-updated_at` - note: to sort in descending order, preface the field name with a minus(`-`) sign'
+      explode: true
+      in: query
+      name: sort
+      schema:
+        default: '-updated_at'
+        enum:
+          - name
+          - -name
+          - reference_id
+          - -reference_id
+          - created_at
+          - -created_at
+          - published_at
+          - -published_at
+          - updated_at
+          - -updated_at
+          - schedule.starts_at
+          - -schedule.starts_at
+          - schedule.ends_at
+          - -schedule.ends_at
+          - state
+          - -state
+          - plays_total
+          - -plays_total
+          - plays_trailing_week
+          - -plays_trailing_week
+        example: created_at
+        type: string
+        x-enum-elements:
+          - description: The playlist name
+            name: name
+          - description: Date playlist was last updated (by a user or the system)
+            name: updated_at
+      style: form
+    SearchPlaylists:
+      description: 'Search string - see [playlist search guide](/cms/searching/cms-api-playlists-search.html) for details'
+      explode: true
+      in: query
+      name: q
+      schema:
+        example: 'name:%28Really%20Short%20Videos%29%20type:EXPLICIT'
+        type: string
+      style: form
+    VideoSort:
+      description: |-
+        Field to sort results by - if absent and there is a search string, results are sorted by relevance or if there is no search string, results are sorted by `-updated_at`.
+        Notes:
+          - to sort in descending order, preface the field name with a minus (`-`) sign
+          - this parameter can be used to sort results both for a get videos request and for a get videos in folder request
+          - the preferred value for cloud playout interaction is -updated_at
+      explode: true
+      in: query
+      name: sort
+      schema:
+        default: '-updated_at'
+        enum:
+          - name
+          - -name
+          - reference_id
+          - -reference_id
+          - created_at
+          - -created_at
+          - published_at
+          - -published_at
+          - updated_at
+          - -updated_at
+          - schedule.starts_at
+          - -schedule.ends_at
+          - state
+          - -state
+          - plays_total
+          - -plays_total
+          - plays_trailing_week
+          - -plays_trailing_week
+        example: created_at
+        type: string
+        x-enum-elements:
+          - description: The video name
+            name: name
+          - description: The video reference id
+            name: reference_id
+          - description: Date video was created in the Video Cloud
+            name: created_at
+          - description: Date video was activated
+            name: published_at
+          - description: Date video was last updated (by a user or the system)
+            name: updated_at
+          - description: Date video scheduled to become available
+            name: schedule.starts_at
+          - description: Date video scheduled to become unavailable
+            name: schedule.ends_at
+          - description: Whether the video is playable (`ACTIVE` or `INACTIVE`)
+            name: state
+          - description: All time video views (this field can only be sorted on - it is not returned)
+            name: plays_total
+          - description: Trailing week video views (this field can only be sorted on - it is not returned)
+            name: plays_trailing_week
+      style: form
+    VideoId:
+      name: video_id
+      in: path
+      description: ID of a video in a Playlist
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+    PlaylistId:
+      name: playlist_id
+      in: path
+      description: CMS Playlist ID
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    IncludeDetails:
+      name: include_details
+      in: query
+      description: When it's false, api call response won't include caption info in [text_tracks] at all and it makes the response returns quicker.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: boolean
+        default: true
+  securitySchemes:
+    BC_OAuth2:
+      type: oauth2
+      description: 'Brightcove OAuth API. See the [support documentation](https://support.brightcove.com/oauth-api) or [Getting Access Tokens](https://support.brightcove.com/oauth-api-sample-get-access-token) to learn more'
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://oauth.brightcove.com/v4/access_token'
+          scopes:
+            video-cloud/video/all: Able to manage videos.
+            video-cloud/video/read: Able to read videos.
+            video-cloud/playlist/update: Playlist Update
+            video-cloud/playlist/read: Playlist Read

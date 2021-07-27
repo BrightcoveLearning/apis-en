@@ -1,0 +1,134 @@
+---
+title: Using HLSe with Device Limits and Stream Concurrency 
+description: "In this topic, you will learn how to enable device limits and limit concurrent streams using HLSe and Brightcove Playback Restrictions."
+parent: Guides
+grandparent: Playback Restrictions
+layout: staging
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  
+  <br/>
+  <aside class="bcls-aside bcls-aside--tip">This feature is available for a specific set of customers with access to the Limited Availability phase of Brightcove Playback Restrictions.</aside>
+  
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>If you want to limit your content per user, but don’t need or want to integrate DRM, than using HLSe may be the solution for you.</p>
+    <p>Standard encryption using AES-128 (HLSe) allows you to encrypt your content over the internet. It is not as secure as using DRM since it uses a publicly accessible decryption key.</p>
+    <p>Using HLSe with <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Brightcove's License Key Protection</a>, allows you to authorize playback requests based on user or advanced information to allow or deny access to the encryption keys and improve the security of standard encryption.</p>
+
+    <p>License Key Protection focuses on protection for DRM license requests as well as AES-128 decryption;. JWT claims enable License Key Protection to support restrictions at the user-level. This means you can restrict playback to a user-agent, a maximum number of different IP addresses, or a maximum number of users for each token.</p>
+
+    <p>If you are new to this feature, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html">Overview: Brightcove Playback Restrictions</a> document.</p>
+
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Getting_started">Getting started</h2>
+    <p>
+      Set up your account and prepare your content.
+    </p>
+    <ol class="bcls-tasklist">
+      <li>Contact your account manager to enable your account for HLSe and Playback Restrictions.</li>
+      <li>
+        Once HLSe is enabled for your account, ingest or re-transcode the videos you want to protect.
+      </li>
+    </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Workflow">Workflow</h2>
+    <p>
+      To set device limits or stream concurrency with HLSe, follow these steps:
+    </p>
+    <ol class="bcls-tasklist-restart">
+      <li>
+        <p>Create a <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">JSON Web Token (JWT)</a> per user.</p>
+        <p>For each user-session, you need to create a JWT. This should be generated based on the desired restrictions with different claims.</p>
+        <ul>
+          <li><p>For device limits, see the <a href="#Setting_device_limits">Setting device limits</a> section.</p></li>
+          <li>For stream concurrency, see the <a href="#Setting_stream_concurrency">Setting stream concurrency</a> section.</li>
+        </ul>
+      </li>
+      <li>
+        <p>Configure your player to use License Key Protections.</p>
+        For details, see the <a href="/playback-restrictions/getting-started/overview-playback-restrictions.html#License_Keys_Protection">Using License Keys Protection</a> section of the Overview: Brightcove Playback Restrictions document.
+      </li>
+    </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Setting_device_limits">Setting device limits</h2>
+    <p>With License Key Protection, you can limit playback to a set number of devices per user.</p>
+    <h3>Claims</h3>
+    <ul>
+      <li>
+        <p><code translate="No">maxip</code>:</p>
+        For HLSe content, the <code translate="No">maxip</code> claim defines how many different IP addresses can stream at the same time.
+      </li>
+    </ul>
+    <h3>Example</h3>
+    <p>This example creates a JWT to restrict playback to one IP address per user (one device per user):</p>
+    <ol class="bcls-tasklist-restart">
+      <li>
+        <p>Generate a public-private key pair.</p>
+        For details, see the <a href="https://general.support.brightcove.com/developer/create-json-web-token.html#Generate_public_private_key_pair">Generate public-private key pair</a> section of the Creating a JSON Web Token (JWT) document.
+      </li>
+      <li>
+        <p>Register your public key.</p>
+        For details, see the <a href="/playback-restrictions/guides/authentication-apis.html">Using Authentication APIs</a> document.
+      </li>
+      <li>
+        <p>Create a JSON Web Token.</p>
+        <p>Here's an example using bash. Make sure to add the <code translate="No">"maxip":1</code> claim to restrict playback to one IP address(device) per user.</p>
+        <pre class="line-numbers">
+<code class="language-bash" translate="No">#! /usr/bin/env bash
+  # Static header fields.
+  HEADER='{
+    &quot;type&quot;: &quot;JWT&quot;,
+    &quot;alg&quot;: &quot;RS256&quot;
+  }'
+  
+  payload='{
+    &quot;pkid&quot;: &quot;<span class="bcls-input">your policy key</span>&quot;,
+    &quot;accid&quot;: &quot;<span class="bcls-input">your account id</span>&quot;,
+    <span class="bcls-highlight">&quot;maxip&quot;: 1</span>
+  }'
+  
+  # Use jq to set the dynamic `iat` and `exp`
+  # fields on the payload using the current time.
+  # `iat` is set to now, and `exp` is now + 1 second.
+  PAYLOAD=$(
+    echo &quot;${payload}&quot; | jq --arg time_str &quot;$(date +%s)&quot; \
+    '
+    ($time_str | tonumber) as $time_num
+    | .iat=$time_num
+    | .exp=($time_num + 60 * 60)
+    '
+  )
+  
+  function b64enc() { openssl enc -base64 -A | tr '+/' '-_' | tr -d '='; }
+  
+  function rs_sign() { openssl dgst -binary -sha256 -sign {your_private_key_path} ; }
+  
+  JWT_HDR_B64=&quot;$(echo -n &quot;$HEADER&quot; | b64enc)&quot;
+  JWT_PAY_B64=&quot;$(echo -n &quot;$PAYLOAD&quot; | b64enc)&quot;
+  UNSIGNED_JWT=&quot;$JWT_HDR_B64.$JWT_PAY_B64&quot;
+  SIGNATURE=$(echo -n &quot;$UNSIGNED_JWT&quot; | rs_sign | b64enc)
+  
+  echo &quot;$UNSIGNED_JWT.$SIGNATURE&quot;</code></pre>
+        
+      </li>
+    </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Setting_stream_concurrency">Setting stream concurrency</h2>
+    <p>Coming soon!</p>
+    
+  </section>
+
+</article>
+

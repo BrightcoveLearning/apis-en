@@ -117,7 +117,7 @@ paths:
               $ref: '#/components/schemas/player_request_body'
         required: true
       responses:
-        '200':
+        '201':
           description: SUCCESS
           content:
             application/json:
@@ -263,7 +263,7 @@ paths:
                   description: The player description
         required: true
       responses:
-        '200':
+        '202':
           description: SUCCESS
           content:
             application/json:
@@ -380,7 +380,7 @@ paths:
         - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/Authorization'
       responses:
-        '200':
+        '201':
           description: SUCCESS
           content:
             application/json:
@@ -1241,7 +1241,7 @@ paths:
       description: |-
         Retrieve the configuration for a parent/child combination of master and preview branches. If you are using the second query parameter (and hence using the ampersand [&]), you MUST use quotes around the endpoint or the curl statement will fail at the ampersand. For example:
 
-        `"https://players.api.brightcove.com/v1/accounts/$ACCOUNT_ID/players/$PLAYER_ID/embeds/$EMBED_ID/configuration/merged?playerBranch=preview&embedBranch=master"`.
+        `"https://players.api.brightcove.com/v1/accounts/{account_id}/players/{player_id}/embeds/{embed_id}/configuration/merged?playerBranch=preview&embedBranch=master"`.
 
         Using this endpoint provides a way to view what the resulting configuration would be when combining different combinations of parent and child (also called embed) versions of players. Using this endpoint does not change any configurations, it is only useful for seeing results of merging changes to configurations.
       operationId: GetConfigurationCombinations
@@ -1384,7 +1384,7 @@ components:
           type: string
           description: >-
             A description of the player - avoid confusion by giving the player a description that will help convey what it should be used for
-        configururation:
+        configuration:
           $ref: '#/components/schemas/configuration'
       example: {
           "name": "Test_Player",
@@ -1392,9 +1392,9 @@ components:
           "configuration": {
             "autoplay": "any",
             "loop": true,
-             "video_cloud": {
-                "video": "4093372393001"
-             }
+            "video_cloud": {
+              "video": "4093372393001"
+            }
           }
         }
     player_response:

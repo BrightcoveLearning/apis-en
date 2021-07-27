@@ -241,7 +241,7 @@ var aapi_model = {
       urlparams: ['account', 'dimensions', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
       fields: ['ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
       filter_values: ['The date dimension is not used as a filter.'],
-      incompatible_dimensions: ['city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type'],
+      incompatible_dimensions: [],
       samples: [{
         dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date'
       }, {
@@ -255,7 +255,7 @@ var aapi_model = {
       urlparams: ['account', 'dimensions', 'limit', 'offset', 'sort', 'fields', 'format', 'from', 'to'],
       fields: ['ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
       filter_values: ['The date_hour dimension is not used as a filter.'],
-      incompatible_dimensions: ['account', 'city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
+      incompatible_dimensions: [],
       samples: [{
         dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date_hour&from=-6h'
       }, {
