@@ -1628,12 +1628,45 @@ components:
         hls:
           oneOf:
             - type: boolean
-              description: 'If `false`,  the player will not include **videojs-contrib-hls**'
+              description: 'If `false`, the player will not include **videojs-contrib-hls**'
             - type: object
               description: >-
                 If an object is passed, it will be used as options for
                 **videojs-contrib-hls**
-          description: Handling of **videojs-contrib-hls**
+              properties:
+                captionServices:
+                  type: object
+                  description: 'Used to rename 608/708 captions'
+                  properties:
+                    CC1:
+                      type: object
+                      description: 'Properties of the captions to use for CC1'
+                      properties:
+                        language:
+                          type: string
+                          description: 'The language of the captions'
+                          example: 'en'
+                        label:
+                          type: string
+                          description: 'Label to used for these captions in the player controls'
+                          example: 'English'
+                    CC2:
+                      type: object
+                      description: 'Properties of the captions to use for CC2'
+                      properties:
+                        language:
+                          type: string
+                          description: 'The language of the captions'
+                          example: 'en'
+                        label:
+                          type: string
+                          description: 'Label to used for these captions in the player controls'
+                          example: 'English'
+                parse708captions:
+                  type: boolean
+                  default: true
+                  description: 'Set to false to hide 708 captions if the encoder is sending both 608 and 708'
+          description: Handling of **videojs-contrib-hls** and renaming of 608/708 captions
           default: {}
         language:
           type: string
