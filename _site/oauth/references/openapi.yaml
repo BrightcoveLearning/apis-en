@@ -27,6 +27,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Token_Content-Type'
         - $ref: '#/components/parameters/Token_Authorization'
+        - $ref: '#/components/parameters/grant_type'
       responses:
         '200':
           description: '200'
@@ -182,7 +183,7 @@ paths:
         - Client Credentials
       summary: Delete Client Credentials
       description: >-
-         Delete a client credential
+        Delete a client credential
       operationId: DeleteClientCredential
       parameters:
         - $ref: '#/components/parameters/client_id'
@@ -254,6 +255,18 @@ components:
       explode: false
       schema:
         type: string
+    grant_type:
+      name: grant_type
+      in: query
+      description: OAuth grant type
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        enum:
+          - client_credentials
+      example: 'client_credentials'
     origin_account_ids:
       name: origin_account_ids
       in: query
@@ -335,9 +348,7 @@ components:
       type: object
       properties:
         identity:
-          description: map defining the account and operations
-          $ref: >-
-            #/components/schemas/ClientCredentialbody.maximumScope.identity
+          $ref: '#/components/schemas/ClientCredentialbody.maximumScope.identity'
         operations:
           type: array
           items:
@@ -399,7 +410,7 @@ components:
         client_secret:
           type: string
           description: >-
-            client secret &mdash; note that this is the only request that will
+            client secret - note that this is the only request that will
             return the client secret; if you do not save it, there is no way to
             retrieve it again
         type:
