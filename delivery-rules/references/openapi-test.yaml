@@ -1,0 +1,548 @@
+openapi: '3.0.0'
+x-bc-implicit-head: true
+x-bc-implicit-options: true
+x-bc-upstream: 'https://backend_server'
+info:
+  title: Brightcove Delivery Rules API
+  description: >-
+    API for Brightcove Delivery Rules
+
+    This API is used for managing operations related to Delivery Rules.
+
+    **Base URL: https://delivery-rules.api.brightcove.com**
+  version: 1.0.0
+  x-bc-access: public
+servers:
+  - url: 'https://delivery-rules.api.brightcove.com'
+    variables: {}
+    
+tags:
+  - name: Delivery Rules
+    description: Operations for reading Delivery Rules
+  - name: Delivery Rule Conditions
+    description: Operations for reading and updating Delivery Rule Conditions
+  - name: Delivery Rule Actions
+    description: Operations for creating, reading, updating and deleting Delivery Rule Actions
+    
+paths:
+  '/accounts/{account_id}':
+    get:
+      tags:
+        - Delivery Rules
+      summary: Fetch the Delivery Rules for the account
+      description: |-
+        List the Conditions and Actions defined for an account that make up the Delivery Rules configuration.
+      operationId: getDeliveryRules
+      security:
+        - BC_OAuth2:
+          - video-cloud/delivery-rules/read
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conditions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Condition'
+                  actions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Action'
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/conditions':
+    get:
+      tags:
+        - Delivery Rule Conditions
+      summary: Fetch the Conditions for the account
+      description: List the Conditions defined for an account
+      operationId: getConditions
+      security:
+        - BC_OAuth2:
+          - video-cloud/delivery-rules/read
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Condition'
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    put:
+      tags:
+        - Delivery Rule Conditions
+      summary: Update the Conditions
+      description: |-
+        Update the Conditions
+      operationId: updateConditions
+      security:
+        - BC_OAuth2:
+          - video-cloud/delivery-rules/all
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: Content-Type
+          in: header
+          description: 'Content-Type: application/json'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Updated Conditions
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Condition'
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Condition'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+
+  '/accounts/{account_id}/actions':
+    get:
+      tags:
+        - Delivery Rule Actions
+      summary: Fetch the Actions for the account
+      description: |-
+        List the Actions defined for an account
+      operationId: getActions
+      security:
+        - BC_OAuth2:
+          - video-cloud/delivery-rules/read
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Action'
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    post:
+      tags:
+        - Delivery Rule Actions
+      summary: Create an Action
+      description: |-
+        Create an Action
+      operationId: createAction
+      security:
+        - BC_OAuth2:
+          - video-cloud/delivery-rules/all
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: Content-Type
+          in: header
+          description: 'Content-Type: application/json'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: New Action
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Action"
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+        
+  '/accounts/{account_id}/actions/{action_id}':
+    get:
+      tags:
+        - Delivery Rule Actions
+      summary: Fetch a specific Action
+      description: |-
+        Fetch a specific Action based on its ID
+      operationId: getAction
+      security:
+        - BC_OAuth2:
+          - video-cloud/delivery-rules/read
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ActionId'
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+        '403':
+          description: Forbidden
+        '500':
+          description: Server error
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    put:
+      tags:
+        - Delivery Rule Actions
+      summary: Update an Action
+      description: |-
+        Update an Action. The Action ID in the body must match the one in the URL.
+      operationId: updateAction
+      security:
+        - BC_OAuth2:
+          - video-cloud/delivery-rules/all
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ActionId'
+        - name: Content-Type
+          in: header
+          description: 'Content-Type: application/json'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Updated Action
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActionWithID"
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Action not found
+        '500':
+          description: Server error
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+    delete:
+      tags:
+        - Delivery Rule Actions
+      summary: Delete an Action
+      description: |-
+        Delete an Action
+      operationId: deleteAction
+      security:
+        - BC_OAuth2:
+          - video-cloud/delivery-rules/all
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ActionId'
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Action deleted successfully
+        '403':
+          description: Forbidden
+        '404':
+          description: Action not found
+        '500':
+          description: Server error
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+          
+components:
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      description: Video Cloud account id
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    ActionId:
+      name: action_id
+      in: path
+      description: ID of the Action to query on
+      required: true
+      schema:
+        type: string
+  schemas:
+    Condition:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name of the Condition
+        if:
+          type: object
+          description: The conditions that a request must match before the associated rules are invoked
+          properties:
+            device_group:
+              type: array
+              description: A list of device groups
+              items:
+                description: Device Group
+                type: string
+                enum:
+                  - ipad
+                  - iphone
+                  - appletv
+                  - chromecast
+                  - ios-other
+                  - fetchtv
+                  - roku-9
+                  - roku-7/8
+                  - desktop-chrome
+                  - desktop-firefox
+                  - desktop-safari
+                  - android
+                  - tablet-android
+                  - tablet-kindle
+                  - smartphone-generic
+            request_country:
+              type: array
+              description: A list of countries
+              items:
+                description: A two-character ISO 3166-1 country code
+                type: string
+            request_continent:
+              type: array
+              description: A list of continents
+              items:
+                description: Continent
+                type: string
+                enum:
+                  - AF
+                  - AN
+                  - AS
+                  - EU
+                  - NA
+                  - OC
+                  - SA
+        then:
+          type: array
+          description: A list of Action IDs to invoke when the conditions are met
+          items:
+            description: Action ID
+            type: string
+    ActionProperties:
+      title: Action Properties
+      type: object
+      description: A list of properties to apply
+      properties:
+            min_video_bitrate:
+              description: Minimum video bitrate
+              type: number
+            max_video_bitrate:
+              description: Maximum video bitrate
+              type: number
+            first_video_bitrate:
+              description: First video bitrate to appear in the manifest
+              type: number
+            min_video_resolution:
+              description: Minimum video resolution
+              type: string
+            max_video_resolution:
+              description: Maximum video resolution
+              type: string
+            max_video_renditions:
+              description: Maximum video renditions
+              type: number
+            max_audio_renditions:
+              description: Maximum audio renditions
+              type: number
+            preferred_cdn_provider:
+              description: Preferred CDN provider
+              type: string
+            preferred_cdn_domain:
+              description: Preferred CDN domain 
+              type: string
+            video_codecs:
+              type: array
+              description: A list of Video Codecs to use
+              items:
+                description: Video Codec
+                type: string
+            audio_codecs:
+              type: array
+              description: A list of Audio Codecs to use
+              items:
+                description: Audio Codec
+                type: string
+    Action:
+      title: Action
+      type: object
+      properties:
+      $ref: '#/components/schemas/ActionProperties'
+      
+    ActionWithID:
+      title: Action
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the Action
+          $ref: '#/components/schemas/Action'
+        
+          
+  securitySchemes:
+    BC_OAuth2:
+      type: oauth2
+      description: >-
+        Brightcove OAuth API. To learn more, see the [OAuth Overview](https://apis.support.brightcove.com/oauth/) or the [Getting Access Tokens](https://apis.support.brightcove.com/oauth/code-samples/oauth-api-sample-get-access-token.html) document.
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://oauth.brightcove.com/v4/access_token'
+          scopes:
+            video-cloud/delivery-rules/read: Read Delivery Rules
+            video-cloud/delivery-rules/all: Read, Write, Delete Delivery Rules
