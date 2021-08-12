@@ -9,6 +9,11 @@ grandparent: Cross Device Resume API
 <article class="bcls-article">
 
   <summary>{{ page.description }}</summary>
+  <style type="text/css">
+    details summary {
+      font-size: 1.15rem;
+    }
+  </style>
 
   <section class="bcls-section">
     <h2 id="Overview">Overview</h2>
@@ -39,12 +44,10 @@ grandparent: Cross Device Resume API
       </li>
     </ul>
     <aside class="bcls-aside bcls-aside--information">Note that there is a delay between the submission of XDR data and the availability of that data via the API of up to 30 seconds.</aside>
-
   </section>
 
   <section class="bcls-section">
     <h2 id="Requirements">Requirements</h2>
-
     <p>
       The following are required to use Cross-Device Resume:
     </p>
@@ -56,16 +59,13 @@ grandparent: Cross Device Resume API
         You will need a server-side application to make the REST API request to get the playback position.
       </li>
     </ul>
-
   </section>
 
   <section class="bcls-section">
     <h2 id="Account_setup">Account setup</h2>
-
     <p>
       Contact your account manager to enable your account for cross-device resume.
     </p>
-
   </section>
 
   <section class="bcls-section">
@@ -153,6 +153,36 @@ grandparent: Cross Device Resume API
         </ul>
       </li>
     </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="FAQ">FAQ</h2>
+    <p>
+      Here are some frequently asked questions related to Cross-Device Resume.
+    </p>
+    <details>
+      <summary>Is the 30-second lag time consistent?</summary>
+      <p>It’s up to 30s, but usually less.</p>
+      <p>If you switch devices before that, you’ll get the last known position, which will be 10s earlier.</p>
+      <p>Playhead changes are every 10s based on the engagement beacon frequency. It is not recorded based on any other events, so play/pause won’t affect the stored position.</p>
+    </details>
+    <br/>
+    <details>
+      <summary>Can the 90-day retention be overridden?</summary>
+      <p>No.</p>
+    </details>
+    <br/>
+    <details>
+      <summary>Why is a backend service needed?</summary>
+      <p>The XDR service extracts position and user ID from the player engagement beacons and makes those available through an Oauth API.</p>
+    </details>
+    <br/>
+    <details>
+      <summary>For non-Brightcove player devices, like roku and smart TVs, what parts of the Data collection API do I need to implement to use this service?</summary>
+      <p>You need to implement <code translate="No">video_engagement</code> beacons, making sure to include the <code translate="No">user=X</code> parameter.</p>
+      <p>Brightcove will automatically parse the playhead time from the engagement <code translate="No">range</code> parameter.</p>
+    </details>
+    <br/>
 
   </section>
 
