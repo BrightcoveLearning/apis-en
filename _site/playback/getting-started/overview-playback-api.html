@@ -2791,56 +2791,201 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
     <aside class="bcls-aside bcls-aside--information">To use server-side ad insertion (SSAI), your videos need to be <a href="https://studio.support.brightcove.com/admin/creating-ingest-profiles-context-aware-encoding.html">ingested for Dynamic Delivery</a>.</aside>
 
-    <h4>Endpoint with URL parameter</h4>
-
-    <p>Append your <code translate="No">ad_config_id</code> to the end of the Playback API request:</p>
-
-    <pre >
+    <ol class="bcls-tasklist-restart">
+      <li>
+        <p>Append your <code translate="No">ad_config_id</code> to the end of the Playback API request:</p>
+        <p><strong>Endpoint with URL parameter</strong></p>
+        <pre>
 <code class="language-http" translate="No">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}?ad_config_id={ad_config_id}</code></pre>
-
-    <h4>Example</h4>
-
-    <pre >
+        <p><strong>Example</strong></p>
+        <pre >
 <code class="language-http" translate="No">https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5565662146001?ad_config_id=1234abcd</code></pre>
+      </li>
+      <li>
+        <p>In the sample response below, you will notice the following:</p>
+        <ul>
+          <li>The response is similar to that if you didn't include an ad config Id.</li>
+          <li>The elements of the <code translate="No">sources</code> array will contain a new property called <code translate="No">vmap</code>.</li>
+          <li>If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code translate="No">vmap</code> property.</li>
+          <!-- <li>The <code translate="No">src</code> property within the <code translate="No">sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code translate="No">src</code> will have ads stitched in with the main content.</li> -->
+        </ul>
+        <details>
+          <summary>
+            <p>Sample Playback API response</p>
+          </summary>
+    
+          <pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "description": "The story of a giant rabbit with a heart bigger than himself. ",
+      "poster_sources": [
+        {
+          "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/3723496277001/dd5bd69c-e962-4a43-9dbd-94faaaba1785/main/1280x720/5m17s130ms/match/image.jpg"
+        }
+      ],
+      "tags": [],
+      "cue_points": [],
+      "custom_fields": {},
+      "account_id": "3723496277001",
+      "sources": [
+        {
+          "ext_x_version": "4",
+          <span class="bcls-highlight">"vmap": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/content.vmap?bc_token=NTllMTMxYjNfMTdkOTY2YThhNjU5MDk5ZTQ3NDBkNmUxOTYyOGRkNzM0ZjBiM2RjMGEwOThjOGFkYjk1MWQxMzFmNGYzMjA5YQ%3D%3D"</span>,
+          "type": "application/x-mpegURL",
+          "src": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/master.m3u8?bc_token=NTllMTMxYjNfZGM5ZDg0NGM2ZGJjZDcxZTFjOGYyODBlMzM2NmNmMmJkMWNhZDczNWViNzRiMjIwNjg5MjkzZGM0ZmJlMTc1Yw%3D%3D"
+        },
+        ...
+      ],
+      "created_at": "2017-05-15T17:09:11.171Z"
+    }</code></pre>
+        </details>
+      </li>
+      <li>Copy one of the <code translate="No">vmap</code> URLs and paste it in a browser searchbar to see the VMAP response.</li>
+      <li>
+        <p>The VMAP response contains a <code translate="No">&lt;bc:Brightcove</code> tag with a <code translate="No">contenturi</code> attribute. This is the URL that you should use to load your player.</p>
+        <details>
+          <summary><p>Sample VMAP response</p></summary>
+          <p>Here is an example of a vmap response:</p>
+          <pre class="line-numbers"><code class="language-xml-doc" translate="No">&lt;vmap:VMAP xmlns:bc=&quot;bc&quot; xmlns:vmap=&quot;http://www.iab.net/vmap-1.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; version=&quot;1.0&quot;&gt;
+        &lt;vmap:Extensions&gt;
+          &lt;bc:Brightcove ttl=&quot;3600&quot; <span class="bcls-highlight">contenturi=&quot;https://ssaimanifest.prod.boltdns.net/us-east-1/playback/once/v1/hls/v4/clear/1752604059001/d6190656-2095-4ff3-8afe-1a0b60d67ed2/dca41ae8-d8f5-48a6-9853-564764d60b84/6830b2e4-3298-439d-beef-e04abef9f23c/content.m3u8?bc_token=NWZkMTE5NTlfZWQxNDAzNDRkNTAxNDRlMWEwODU3MTI1MzY2YjAyZWQ5YzlmZTkzY2UwMjM5NTM1MmI2NGRjZDNhNjE2ZDhlOA%3D%3D&quot;</span>
+          contentlength=&quot;24.0574&quot; payloadlength=&quot;50.1835&quot; contenttype=&quot;application/x-mpegURL&quot; /&gt;
+          &lt;bc:thumbnailURL type=&quot;thumbnail&quot; width=&quot;480&quot; height=&quot;270&quot; bandwidth=&quot;0&quot;&gt;https://ssai.playback.us-east-1.prod.deploys.brightcove.com/v1/thumbnail/1752604059001/dca41ae8-d8f5-48a6-9853-564764d60b84/low-res/6830b2e4-3298-439d-beef-e04abef9f23c/thumbnail.vtt?bc_token=NWZkMTE5NTlfMmVmODIzZDJjMGZkMDBjZjY1YWIxNDQ4Y2YyZmUxYTExNzg5YmIxZDI5ZTdkMjgyODBmMDBmYTViMTE2Yzc0MQ%3D%3D&lt;/bc:thumbnailURL&gt;
+        &lt;/vmap:Extensions&gt;
+        &lt;vmap:AdBreak breakType=&quot;linear&quot; breakId=&quot;PreRoll_0_0&quot; timeOffset=&quot;start&quot;&gt;
+          &lt;vmap:AdSource allowMultipleAds=&quot;true&quot; followRedirects=&quot;true&quot; id=&quot;0&quot;&gt;
+            &lt;vmap:VASTData&gt;
+              &lt;VAST xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+                &lt;Ad id=&quot;1&quot;&gt;
+                  &lt;InLine&gt;
+                    &lt;AdSystem&gt;Test Ad Server&lt;/AdSystem&gt;
+                    &lt;AdTitle&gt;Portals&lt;/AdTitle&gt;
+                    &lt;Description&gt;Demo ad number 6&lt;/Description&gt;
+                    &lt;Error&gt;&lt;/Error&gt;
+                    &lt;Creatives&gt;
+                      &lt;Creative&gt;
+                        &lt;Linear&gt;
+                          &lt;CreativeExtensions&gt;
+                            &lt;CreativeExtension&gt;
+                              &lt;BrightcoveForeignKey&gt;1&lt;/BrightcoveForeignKey&gt;
+                            &lt;/CreativeExtension&gt;
+                          &lt;/CreativeExtensions&gt;
+                          &lt;Duration&gt;00:00:05.9392&lt;/Duration&gt;
+                          &lt;AdParameters&gt;
+                            &lt;xml&gt;&lt;/xml&gt;
+                          &lt;/AdParameters&gt;
+                          &lt;VideoClicks/&gt;
+                        &lt;/Linear&gt;
+                      &lt;/Creative&gt;
+                    &lt;/Creatives&gt;
+                    &lt;Extensions&gt;
+                      &lt;Extension&gt;
+                        &lt;xml&gt;data&lt;/xml&gt;
+                      &lt;/Extension&gt;
+                    &lt;/Extensions&gt;
+                  &lt;/InLine&gt;
+                &lt;/Ad&gt;
+              &lt;/VAST&gt;
+            &lt;/vmap:VASTData&gt;
+          &lt;/vmap:AdSource&gt;
+        &lt;/vmap:AdBreak&gt;
+        &lt;vmap:AdBreak breakType=&quot;linear&quot; breakId=&quot;MidRoll_5_0&quot; timeOffset=&quot;00:00:04.8381&quot;&gt;
+          &lt;vmap:AdSource allowMultipleAds=&quot;true&quot; followRedirects=&quot;true&quot; id=&quot;1&quot;&gt;
+            &lt;vmap:VASTData&gt;
+              &lt;VAST xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+                &lt;Ad id=&quot;2&quot;&gt;
+                  &lt;InLine&gt;
+                    &lt;AdSystem&gt;Test Ad Server&lt;/AdSystem&gt;
+                    &lt;AdTitle&gt;Marketing&lt;/AdTitle&gt;
+                    &lt;Description&gt;Demo ad number 4&lt;/Description&gt;
+                    &lt;Error&gt;&lt;/Error&gt;
+                    &lt;Creatives&gt;
+                      &lt;Creative&gt;
+                        &lt;Linear skipoffset=&quot;00:00:05&quot;&gt;
+                          &lt;CreativeExtensions&gt;
+                            &lt;CreativeExtension&gt;
+                              &lt;BrightcoveForeignKey&gt;2&lt;/BrightcoveForeignKey&gt;
+                            &lt;/CreativeExtension&gt;
+                          &lt;/CreativeExtensions&gt;
+                          &lt;Duration&gt;00:00:12.1788&lt;/Duration&gt;
+                          &lt;AdParameters&gt;
+                            &lt;xml&gt;&lt;/xml&gt;
+                          &lt;/AdParameters&gt;
+                          &lt;VideoClicks/&gt;
+                        &lt;/Linear&gt;
+                      &lt;/Creative&gt;
+                    &lt;/Creatives&gt;
+                    &lt;Extensions&gt;
+                      &lt;Extension&gt;
+                        &lt;xml&gt;data&lt;/xml&gt;
+                      &lt;/Extension&gt;
+                    &lt;/Extensions&gt;
+                  &lt;/InLine&gt;
+                &lt;/Ad&gt;
+              &lt;/VAST&gt;
+            &lt;/vmap:VASTData&gt;
+          &lt;/vmap:AdSource&gt;
+        &lt;/vmap:AdBreak&gt;
+        &lt;vmap:AdBreak breakType=&quot;linear&quot; breakId=&quot;PostRoll_24_0&quot; timeOffset=&quot;end&quot;&gt;
+          &lt;vmap:AdSource allowMultipleAds=&quot;true&quot; followRedirects=&quot;true&quot; id=&quot;2&quot;&gt;
+            &lt;vmap:VASTData&gt;
+              &lt;VAST xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+                &lt;Ad id=&quot;3&quot;&gt;
+                  &lt;InLine&gt;
+                    &lt;AdSystem&gt;Test Ad Server&lt;/AdSystem&gt;
+                    &lt;AdTitle&gt;Brand&lt;/AdTitle&gt;
+                    &lt;Description&gt;Demo ad number 1&lt;/Description&gt;
+                    &lt;Error&gt;&lt;/Error&gt;
+                    &lt;Creatives&gt;
+                      &lt;Creative&gt;
+                        &lt;Linear&gt;
+                          &lt;CreativeExtensions&gt;
+                            &lt;CreativeExtension&gt;
+                              &lt;BrightcoveForeignKey&gt;3&lt;/BrightcoveForeignKey&gt;
+                            &lt;/CreativeExtension&gt;
+                          &lt;/CreativeExtensions&gt;
+                          &lt;Duration&gt;00:00:08.0080&lt;/Duration&gt;
+                          &lt;AdParameters&gt;
+                            &lt;xml&gt;&lt;/xml&gt;
+                          &lt;/AdParameters&gt;
+                          &lt;VideoClicks/&gt;
+                        &lt;/Linear&gt;
+                      &lt;/Creative&gt;
+                    &lt;/Creatives&gt;
+                    &lt;Extensions&gt;
+                      &lt;Extension&gt;
+                        &lt;xml&gt;data&lt;/xml&gt;
+                      &lt;/Extension&gt;
+                    &lt;/Extensions&gt;
+                  &lt;/InLine&gt;
+                &lt;/Ad&gt;
+              &lt;/VAST&gt;
+            &lt;/vmap:VASTData&gt;
+          &lt;/vmap:AdSource&gt;
+        &lt;/vmap:AdBreak&gt;
+      &lt;/vmap:VMAP&gt;</code></pre>
+      </details>
+      <br/>
+      <p>For details, see the <a href="https://ssai.support.brightcove.com/vod/guides/ssai-non-bc-players.html#Configuring_your_player">Implementing SSAI with Non-Brightcove Players and SDKs</a> document.</p>
+      </li>
+    </ol>
 
-    <p>In the sample response below, you will notice the following:</p>
+   
 
-    <ul>
-      <li>The response is similar to that if you didn't include an ad config Id.</li>
-      <li>The elements of the <code translate="No">sources</code> array will contain a new property called <code translate="No">vmap</code>.</li>
-      <li>If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code translate="No">vmap</code> property.</li>
-      <li>The <code translate="No">src</code> property within the <code translate="No">sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code translate="No">src</code> will have ads stitched in with the main content.</li>
-    </ul>
+    
 
-    <details>
-      <summary>
-        <h2>Sample response</h2>
-      </summary>
+   
 
-      <pre class="line-numbers">
-<code class="language-json" translate="No">{
-  "description": "The story of a giant rabbit with a heart bigger than himself. ",
-  "poster_sources": [
-    {
-      "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/3723496277001/dd5bd69c-e962-4a43-9dbd-94faaaba1785/main/1280x720/5m17s130ms/match/image.jpg"
-    }
-  ],
-  "tags": [],
-  "cue_points": [],
-  "custom_fields": {},
-  "account_id": "3723496277001",
-  "sources": [
-    {
-      "ext_x_version": "4",
-      <span class="bcls-highlight">"vmap": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/content.vmap?bc_token=NTllMTMxYjNfMTdkOTY2YThhNjU5MDk5ZTQ3NDBkNmUxOTYyOGRkNzM0ZjBiM2RjMGEwOThjOGFkYjk1MWQxMzFmNGYzMjA5YQ%3D%3D"</span>,
-      "type": "application/x-mpegURL",
-      "src": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/master.m3u8?bc_token=NTllMTMxYjNfZGM5ZDg0NGM2ZGJjZDcxZTFjOGYyODBlMzM2NmNmMmJkMWNhZDczNWViNzRiMjIwNjg5MjkzZGM0ZmJlMTc1Yw%3D%3D"
-    },
-    ...
-  ],
-  "created_at": "2017-05-15T17:09:11.171Z"
-}</code></pre>
-    </details>
+   
+
+   
+
+    
+
+    <h4>Configure your player</h4>
+    <ol class="bcls-tasklist-restart">
+     
+
+    </ol>
 
     <h3 id="Require_ad_config_id">Require ad_config_id</h3>
 
@@ -3448,7 +3593,7 @@ https://manifest.prod.boltdns.net/manifest/v1/hls/v4/clear/1752604059001/3585c49
 
 <hr>
 <div class="last-updated">
-  Page last updated on 28 Jul 2021
+  Page last updated on 12 Aug 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
