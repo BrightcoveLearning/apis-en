@@ -1,12 +1,46 @@
 ---
 title: 'CMS/Playback APIs Release Notes'
 description: 'Release notes for the CMS and Playback APIs.'
-parent: 'Release Notes/Known Issues'
-grandparent: Home
+parent: 'References'
+grandparent: CMS API
 ---
 
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
-  <p><a href="/cms/references/catalog-apis-cms-api-and-playback-api-release-notes.xml">Subscribe <i data-feather="rss" class="button-icon"></i></a></p>
-  <iframe src="/cms/references/catalog-apis-cms-api-and-playback-api-release-notes.xml" frameborder="0" style="width: 100%;height: 1080px;"></iframe>
+  <p><strong><a href="/cms/references/catalog-apis-cms-api-and-playback-api-release-notes.xml">Subscribe <i data-feather="rss" class="button-icon"></i></a></strong></p>
+  <iframe id="feed_frame" src="/cms/references/catalog-apis-cms-api-and-playback-api-release-notes.xml" frameborder="0" style="width: 100%;height: 1080px;"></iframe>
 </article>
+<script>
+  var BCLS_framescript = ( function (window, document) {
+  var iframe = document.getElementById('feed_frame'),
+    feed_doc = iframe.contentWindow.document,
+    doc_links,
+    i,
+    i_max;
+
+    /* 
+    get all links in iframe
+    in case there's delay in loading the doc
+    try again after a second
+    */
+    function get_links() {
+      var t;
+      if (feed_doc) {
+        doc_links = feed_doc.querySelectorAll('link');
+      } else {
+        t = window.setTimeout(get_links, 1000);
+      }
+    }
+
+    get_links();
+
+    i_max = doc_links.length;
+    for (i = 0; i < i_max; i++) {
+      var link = doc_links[i];
+      link.setEventListener('click', function(e) {
+        window.open(link.textContent, '_blank');
+      });
+    }
+      
+})(window, document);
+</script>
