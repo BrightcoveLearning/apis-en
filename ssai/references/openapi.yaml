@@ -376,9 +376,47 @@ components:
       title: "Ad Configuration Response"
       type: object
       properties:
+        account_id:
+          type: string
+          description: The Video Cloud account id
+        ad_config:
+          $ref: '#/components/schemas/AdConfig'
+        ad_tracking_sample_percentage:
+          type: integer
+          description: >-
+            The value determines the percentage of sessions that will be logged. A value of 0 disables logs entirely.  0 is the default value.
+          minimum: 0
+          maximum: 100
+          default: 0
+        beacon_templates:
+          type: array
+          description: |-
+            An array of beacons to fire (example: 3rd-party beacons)
+          items:
+            $ref: '#/components/schemas/BeaconTemplate'
+        config_id:
+          type: string
+          description: System id for this configuration
+          readOnly: true
+        created_timestamp:
+          type: string
+          description: Date-time when the ad configuration was created
+        description:
+          type: string
+          description: Description of the ad configuration
+        discontinuities:
+          $ref: '#/components/schemas/Discontinuities'
+        extend_beacon_guard_ttl:
+          type: boolean
+          description: >-
+            Sets the length of the Beacon Guard TTL (Time to live) to the length of the Content’s Session TTL. Otherwise, the default is 1 minute.
+          default: false
         name:
           type: string
           description: Name of the ad configuration
+        updated_timestamp:
+          type: string
+          description: Date-time when the ad configuration was last updated
         vmap_response_namespace:
           type: string
           description: >-
@@ -387,37 +425,6 @@ components:
               - bc
               - uo
           default: bc
-        config_id:
-          type: string
-          description: System id for this configuration
-          readOnly: true
-        description:
-          type: string
-          description: Description of the ad configuration
-        discontinuities:
-          $ref: '#/components/schemas/Discontinuities'
-        account_id:
-          type: string
-          description: The Video Cloud account id
-        created_timestamp:
-          type: string
-          description: Date-time when the ad configuration was created
-        updated_timestamp:
-          type: string
-          description: Date-time when the ad configuration was last updated
-        ad_config:
-          $ref: '#/components/schemas/AdConfig'
-        beacon_templates:
-          type: array
-          description: |-
-            An array of beacons to fire (example: 3rd-party beacons)
-          items:
-            $ref: '#/components/schemas/BeaconTemplate'
-        extend_beacon_guard_ttl:
-          type: boolean
-          description: >-
-            Sets the length of the Beacon Guard TTL (Time to live) to the length of the Content’s Session TTL. Otherwise, the default is 1 minute.
-          default: false
       example: [
           {
             "name": "SSAI VMAP 2",
