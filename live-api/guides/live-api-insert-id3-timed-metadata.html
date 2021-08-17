@@ -32,6 +32,7 @@ grandparent: Live API
   <li>Only <code translate="No">id3_tag</code> object may be submitted in a request</li>
 	<li>If you use the <code translate="No">timecode </code> property, the job only stores the most recent request for insertion</li>
 	<li>If you use the <code translate="No">timecode </code> property, the encoder must be sending SMPTE-formatted (HH:MM:SS:FF) timecode stored in the tc property via OnFI</li>
+	<li>For TS inputs (RTP or SRT), the <code translate="No">timecode </code> is read from SEI picture timing messages which are part of the H.264 video stream. Those messages have separate hours, minutes, seconds, and frames fields. Therefore the values are not parsed in the SMPTE-formatted string.</li>
 	<li>Software encoders such as Wirecast and OBS <strong>do not</strong> support the sending timecode via OnFI packets in the RTMP stream</li>
 	<li>Elemental hardware encoders <strong>do</strong> support the sending timecode via OnFI packets in the RTMP stream</li>
 	<li>ID3v2 states tag <code translate="No">name</code> can be up to 4 characters .</li>
