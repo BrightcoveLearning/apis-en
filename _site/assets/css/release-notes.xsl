@@ -64,5 +64,3 @@
 	</xsl:template>
 
 </xsl:stylesheet>
-
-
