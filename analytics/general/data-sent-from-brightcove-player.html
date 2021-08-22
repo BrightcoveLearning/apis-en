@@ -20,312 +20,313 @@ grandparent: Analytics API
     <table role="table" class="bcls-table">
       <caption class="bcls-caption--table">Events</caption>
       <thead class="bcls-table__head">
-      <tr>
-      <th><code>event</code></th>
-      <th>Intent/Meaning</th>
-      <th>Example</th>
-      </tr>
+        <tr>
+          <th><code>event</code></th>
+          <th>Intent/Meaning</th>
+          <th>Example</th>
+        </tr>
       </thead>
       <tbody class="bcls-table__body">
-      <tr>
-      <td><code>player_load</code></td>
-      <td>A player session has been initiated by an end-user. This marks the beginning of the analytics session, and should be sent before any other events.</td>
-      <td><code>http://metrics.brightcove.com/v2/tracker?event=player_load&amp;destination=http%3A%2F%2Fwww.nytimes.com%2F&amp;player_name=ADX%20Enabled%20Basic%20Chromeless%20Player%20(black%20bkg%20and%20hidden%20menu%20onload)&amp;mem=44644&amp;source=http%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D0CDYQFjAA%26url%3Dhttp%253A%252F%252Fwww.nytimes.com%252F%26ei%3DoEYWUtCgEIXq9ATznoCgCQ%26usg%3DAFQjCNEtLodOdxWZSGdJpL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg&amp;player=2125004161001&amp;platform=as3&amp;domain=videocloud&amp;flash_version=MAC%2011%2C8%2C800%2C94&amp;account=1749339200&amp;time=1377191644796</code></td>
-      </tr>
-      <tr>
-      <td><code>video_impression</code></td>
-      <td>A video has loaded in the player and is ready for playback.</td>
-      <td><code>http://metrics.brightcove.com/v2/tracker?event=video_impression&amp;destination=http%3A%2F%2Fwww.nytimes.com%2F&amp;time=1377191644801&amp;player_name=ADX%20Enabled%20Basic%20Chromeless%20Player%20(black%20bkg%20and%20hidden%20menu%20onload)&amp;source=http%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D0CDYQFjAA%26url%3Dhttp%253A%252F%252Fwww.nytimes.com%252F%26ei%3DoEYWUtCgEIXq9ATznoCgCQ%26usg%3DAFQjCNEtLodOdxWZSGdJpL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg&amp;player=2125004161001&amp;video=2621468623001&amp;video_name=Democratic%20Rivals%20Target%20Bill%20de%20Blasio&amp;domain=videocloud&amp;flash_version=MAC%2011%2C8%2C800%2C94&amp;account=1749339200&amp;platform=as3</code></td>
-      </tr>
-      <tr>
-      <td><code>video_view</code></td>
-      <td>A video has started playing back (either auto-play after loading, or due to user interaction).</td>
-      <td><code>http://metrics.brightcove.com/v2/tracker?event=video_view&amp;destination=http%3A%2F%2Fwww.nytimes.com%2F&amp;player_name=ADX%20Enabled%20Basic%20Chromeless%20Player%20(black%20bkg%20and%20hidden%20menu%20onload)&amp;player=2125004161001&amp;video=2621468623001&amp;video_name=Democratic%20Rivals%20Target%20Bill%20de%20Blasio&amp;video_duration=189&amp;time=1377191666432&amp;mem=73416&amp;source=http%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D0CDYQFjAA%26url%3Dhttp%253A%252F%252Fwww.nytimes.com%252F%26ei%3DoEYWUtCgEIXq9ATznoCgCQ%26usg%3DAFQjCNEtLodOdxWZSGdJpL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg&amp;platform=as3&amp;connectTime=844&amp;domain=videocloud&amp;flash_version=MAC%2011%2C8%2C800%2C94&amp;account=1749339200</code></td>
-      </tr>
-      <tr>
-      <td><code>load_time_ms</code></td>
-      <td>The time, in milliseconds, between initiating data load for the video and the video becoming playable, collected on a video view.</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td><code>start_time_ms</code></td>
-      <td>The time, in milliseconds, between initiation of playback and the first frame of the video being rendered, collected on a video view. This can be different depending on the experience, for instance, if there are no pre-roll ads configured, this measurement is the time between the 'play_request' and <code>video_view</code> events. If there is a preroll ad, the time between <code>ad_mode_begin</code> and <code>ad_mode_complete</code> should not be included.</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td><a href="#video_engagement-events"><code>video_engagement</code></a></td>
-      <td>A user watched a range of seconds of a video's timeline. This event is a heartbeat for tracking video engagement and will likely be sent many times during playback, depending on the user interaction and the length of the video. The AS3/HTML5 player instrumentation sends this event every 10 seconds, if playback is not interrupted. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong>
-      </td>
-      <td><code>http://metrics.brightcove.com/v2/tracker?event=video_engagement&amp;destination=http%3A%2F%2Fwww.nytimes.com%2F&amp;player_name=ADX%20Enabled%20Basic%20Chromeless%20Player%20(black%20bkg%20and%20hidden%20menu%20onload)&amp;player=2125004161001&amp;video=2621468623001&amp;video_name=Democratic%20Rivals%20Target%20Bill%20de%20Blasio&amp;video_duration=189&amp;time=1377191676589&amp;range=0..9&amp;source=http%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D0CDYQFjAA%26url%3Dhttp%253A%252F%252Fwww.nytimes.com%252F%26ei%3DoEYWUtCgEIXq9ATznoCgCQ%26usg%3DAFQjCNEtLodOdxWZSGdJpL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg&amp;platform=as3&amp;domain=videocloud&amp;flash_version=MAC%2011%2C8%2C800%2C94&amp;account=1749339200</code></td>
-      </tr>
-      <tr>
-      <td><code>play_request</code></td>
-      <td>Sent when the playback is initiated either by the user expressly clicking the play button, or automatically when the platform triggers playback in an auto-play scenario.</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td><code>ad_mode_begin</code></td>
-      <td>Sent when control is handed over to an advertising agent by the playback platform.</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td><code>ad_mode_complete</code></td>
-      <td>Sent when control is handed back from the advertising agent to the playback platform.</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td><code>error</code></td>
-      <td>Sent when fatal errors which disrupt the playback experience are encountered.</td>
-      <td></td>
-      </tr>
-      <tr>
-      <td><code>video_download_request</code></td>
-      <td>Offline DRM video download request.</td>
-      <td><a href="http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_request&amp;domain=videocloud&amp;rendition_indicated_bps=1000000&amp;rendition_height=240&amp;rendition_width=320&amp;rendition_mime_type=foo&amp;rendition_url=http://myrendition.com" rel="nofollow">http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_request&amp;domain=videocloud&amp;rendition_indicated_bps=1000000&amp;rendition_height=240&amp;rendition_width=320&amp;rendition_mime_type=foo&amp;rendition_url=http://myrendition.com</a></td>
-      </tr>
-      <tr>
-      <td><code>video_download_complete</code></td>
-      <td>Offline DRM video download complete.</td>
-      <td><a href="http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_complete&amp;domain=videocloud&amp;file_size_bytes=1024" rel="nofollow">http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_complete&amp;domain=videocloud&amp;file_size_bytes=1024</a></td>
-      </tr>
-      <tr>
-      <td><code>video_download_cancellation</code></td>
-      <td>Offline DRM video download cancellation.</td>
-      <td><a href="http://metrics.aws-qa-s3.rnatest.brightcove.com/v2/tracker?account=321&amp;event=video_download_cancellation&amp;domain=videocloud" rel="nofollow">http://metrics.aws-qa-s3.rnatest.brightcove.com/v2/tracker?account=321&amp;event=video_download_cancellation&amp;domain=videocloud</a></td>
-      </tr>
-      <tr>
-      <td><code>video_download_error</code></td>
-      <td>Offline DRM video download error.</td>
-      <td><a href="http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_error&amp;domain=videocloud&amp;error_code=101" rel="nofollow">http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_error&amp;domain=videocloud&amp;error_code=101</a></td>
-      </tr>
+        <tr>
+          <td><code>player_load</code></td>
+          <td>A player session has been initiated by an end-user. This marks the beginning of the analytics session, and should be sent before any other events.</td>
+          <td><code>http://metrics.brightcove.com/v2/tracker?event=player_load&amp;destination=http%3A%2F%2Fwww.nytimes.com%2F&amp;player_name=ADX%20Enabled%20Basic%20Chromeless%20Player%20(black%20bkg%20and%20hidden%20menu%20onload)&amp;mem=44644&amp;source=http%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D0CDYQFjAA%26url%3Dhttp%253A%252F%252Fwww.nytimes.com%252F%26ei%3DoEYWUtCgEIXq9ATznoCgCQ%26usg%3DAFQjCNEtLodOdxWZSGdJpL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg&amp;player=2125004161001&amp;platform=as3&amp;domain=videocloud&amp;flash_version=MAC%2011%2C8%2C800%2C94&amp;account=1749339200&amp;time=1377191644796</code></td>
+        </tr>
+        <tr>
+          <td><code>video_impression</code></td>
+          <td>A video has loaded in the player and is ready for playback.</td>
+          <td><code>http://metrics.brightcove.com/v2/tracker?event=video_impression&amp;destination=http%3A%2F%2Fwww.nytimes.com%2F&amp;time=1377191644801&amp;player_name=ADX%20Enabled%20Basic%20Chromeless%20Player%20(black%20bkg%20and%20hidden%20menu%20onload)&amp;source=http%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D0CDYQFjAA%26url%3Dhttp%253A%252F%252Fwww.nytimes.com%252F%26ei%3DoEYWUtCgEIXq9ATznoCgCQ%26usg%3DAFQjCNEtLodOdxWZSGdJpL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg&amp;player=2125004161001&amp;video=2621468623001&amp;video_name=Democratic%20Rivals%20Target%20Bill%20de%20Blasio&amp;domain=videocloud&amp;flash_version=MAC%2011%2C8%2C800%2C94&amp;account=1749339200&amp;platform=as3</code></td>
+        </tr>
+        <tr>
+          <td><code>video_view</code></td>
+          <td>A video has started playing back (either auto-play after loading, or due to user interaction).</td>
+          <td><code>http://metrics.brightcove.com/v2/tracker?event=video_view&amp;destination=http%3A%2F%2Fwww.nytimes.com%2F&amp;player_name=ADX%20Enabled%20Basic%20Chromeless%20Player%20(black%20bkg%20and%20hidden%20menu%20onload)&amp;player=2125004161001&amp;video=2621468623001&amp;video_name=Democratic%20Rivals%20Target%20Bill%20de%20Blasio&amp;video_duration=189&amp;time=1377191666432&amp;mem=73416&amp;source=http%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D0CDYQFjAA%26url%3Dhttp%253A%252F%252Fwww.nytimes.com%252F%26ei%3DoEYWUtCgEIXq9ATznoCgCQ%26usg%3DAFQjCNEtLodOdxWZSGdJpL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg&amp;platform=as3&amp;connectTime=844&amp;domain=videocloud&amp;flash_version=MAC%2011%2C8%2C800%2C94&amp;account=1749339200</code></td>
+        </tr>
+        <tr>
+          <td><code>load_time_ms</code></td>
+          <td>The time, in milliseconds, between initiating data load for the video and the video becoming playable, collected on a video view.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>start_time_ms</code></td>
+          <td>The time, in milliseconds, between initiation of playback and the first frame of the video being rendered, collected on a video view. This can be different depending on the experience, for instance, if there are no pre-roll ads configured, this measurement is the time between the 'play_request' and <code>video_view</code> events. If there is a preroll ad, the time between <code>ad_mode_begin</code> and <code>ad_mode_complete</code> should not be included.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><a href="#video_engagement-events"><code>video_engagement</code></a></td>
+          <td>A user watched a range of seconds of a video's timeline. This event is a heartbeat for tracking video engagement and will likely be sent many times during playback, depending on the user interaction and the length of the video. The AS3/HTML5 player instrumentation sends this event every 10 seconds, if playback is not interrupted. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong>
+          </td>
+          <td><code>http://metrics.brightcove.com/v2/tracker?event=video_engagement&amp;destination=http%3A%2F%2Fwww.nytimes.com%2F&amp;player_name=ADX%20Enabled%20Basic%20Chromeless%20Player%20(black%20bkg%20and%20hidden%20menu%20onload)&amp;player=2125004161001&amp;video=2621468623001&amp;video_name=Democratic%20Rivals%20Target%20Bill%20de%20Blasio&amp;video_duration=189&amp;time=1377191676589&amp;range=0..9&amp;source=http%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D0CDYQFjAA%26url%3Dhttp%253A%252F%252Fwww.nytimes.com%252F%26ei%3DoEYWUtCgEIXq9ATznoCgCQ%26usg%3DAFQjCNEtLodOdxWZSGdJpL7WJaEeUJVlnw%26bvm%3Dbv.51156542%2Cd.dmg&amp;platform=as3&amp;domain=videocloud&amp;flash_version=MAC%2011%2C8%2C800%2C94&amp;account=1749339200</code></td>
+        </tr>
+        <tr>
+          <td><code>play_request</code></td>
+          <td>Sent when the playback is initiated either by the user expressly clicking the play button, or automatically when the platform triggers playback in an auto-play scenario.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>ad_mode_begin</code></td>
+          <td>Sent when control is handed over to an advertising agent by the playback platform.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>ad_mode_complete</code></td>
+          <td>Sent when control is handed back from the advertising agent to the playback platform.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>error</code></td>
+          <td>Sent when fatal errors which disrupt the playback experience are encountered.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>video_download_request</code></td>
+          <td>Offline DRM video download request.</td>
+          <td><a href="http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_request&amp;domain=videocloud&amp;rendition_indicated_bps=1000000&amp;rendition_height=240&amp;rendition_width=320&amp;rendition_mime_type=foo&amp;rendition_url=http://myrendition.com" rel="nofollow">http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_request&amp;domain=videocloud&amp;rendition_indicated_bps=1000000&amp;rendition_height=240&amp;rendition_width=320&amp;rendition_mime_type=foo&amp;rendition_url=http://myrendition.com</a></td>
+        </tr>
+        <tr>
+          <td><code>video_download_complete</code></td>
+          <td>Offline DRM video download complete.</td>
+          <td><a href="http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_complete&amp;domain=videocloud&amp;file_size_bytes=1024" rel="nofollow">http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_complete&amp;domain=videocloud&amp;file_size_bytes=1024</a></td>
+        </tr>
+        <tr>
+          <td><code>video_download_cancellation</code></td>
+          <td>Offline DRM video download cancellation.</td>
+          <td><a href="http://metrics.aws-qa-s3.rnatest.brightcove.com/v2/tracker?account=321&amp;event=video_download_cancellation&amp;domain=videocloud" rel="nofollow">http://metrics.aws-qa-s3.rnatest.brightcove.com/v2/tracker?account=321&amp;event=video_download_cancellation&amp;domain=videocloud</a></td>
+        </tr>
+        <tr>
+          <td><code>video_download_error</code></td>
+          <td>Offline DRM video download error.</td>
+          <td><a href="http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_error&amp;domain=videocloud&amp;error_code=101" rel="nofollow">http://metrics.brightcove.com/v2/tracker?account=321&amp;event=video_download_error&amp;domain=videocloud&amp;error_code=101</a></td>
+        </tr>
       </tbody>
-      </table>
+    </table>
   </section>
   <section class="bcls-section">
     <h2 id="event_parameters">Event Parameters</h2>
     <p>Below are data items sent on various <a href="#events">events</a>. Note that some items may not be sent if there is no data available.</p>
     <table role="table" class="bcls-table">
       <thead class="bcls-table__head">
-      <tr>
-      <th>Parameter</th>
-      <th>Value</th>
-      <th>Events</th>
-      </tr>
+        <tr>
+          <th>Parameter</th>
+          <th>Value</th>
+          <th>Events</th>
+        </tr>
       </thead>
       <tbody class="bcls-table__body">
-      <tr>
-      <td><a href="#video-cloud-events"><code>event</code></a></td>
-      <td>The name of the event</td>
-      <td>all, required</td>
-      </tr>
-      <tr>
-      <td><code>domain</code></td>
-      <td><code>videocloud</code></td>
-      <td>all, required</td>
-      </tr>
-      <tr>
-      <td><code>time</code></td>
-      <td>End-user timestamp (ms since epoch)</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>account</code></td>
-      <td>Brightcove account ID</td>
-      <td>all, required</td>
-      </tr>
-      <tr>
-      <td><code>player</code></td>
-      <td>Brightcove player ID that originated the event</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>player_name</code></td>
-      <td>Name of the player specified by the <code>player</code> parameter</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>browser</code></td>
-      <td>Full name and version of the browser used</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>browser_type</code></td>
-      <td>Common name of browser used (i.e. chrome, edge, firefox)</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>video</code></td>
-      <td>Brightcove video ID that originated the event, if there was one</td>
-      <td>
-      <code>video_impression</code>, <code>video_view</code>, <code>video_engagement</code>
-      </td>
-      </tr>
-      <tr>
-      <td><code>video_name</code></td>
-      <td>Name of the video specified by the <code>video</code> parameter</td>
-      <td>
-      <code>video_impression</code>, <code>video_view</code>, <code>video_engagement</code>
-      </td>
-      </tr>
-      <tr>
-      <td>
-      <code>video_duration</code>+<code>range</code>; <code>video_seconds_viewed</code>
-      </td>
-      <td>The <strong>duration</strong> of the video (in seconds) and the <strong>range</strong> (in the format <code>&lt;start_second&gt;..&lt;end_second&gt;</code>) of seconds viewed; or a count of watched seconds since the last update. See more information about  <a href="#video_engagement-events"><code>video_engagement</code> Events</a> below.</td>
-      <td><code>video_engagement</code></td>
-      </tr>
-      <tr>
-      <td>
-      <a href="#destination-and-source-parameters"><code>destination</code></a><br>(formerly <code>embed</code>)</td>
-      <td>The URI that originated the event</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><a href="#destination-and-source-parameters"><code>source</code></a></td>
-      <td>The URI that sent the end-user to the <code>destination</code> URI; if not provided, the Analytics system will treat events as direct traffic for traffic source data.</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><a href="#device_type-and-device_os-parameters"><code>device_type</code></a></td>
-      <td>Override to specify the type of the device that originated the event in cases where the User-Agent is unreliable; ignored unless both <code>device_os</code> and <code>device_type</code> are included. <strong>Not typically included.</strong>
-      </td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><a href="#device_type-and-device_os-parameters"><code>device_os</code></a></td>
-      <td>Override to specify the OS of the device that originated the event in cases where the User-Agent is unreliable; ignored unless both <code>device_os</code> and <code>device_type</code> are included. <strong>Not typically included.</strong>
-      </td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>session</code></td>
-      <td>The session identifier. The session value should be constant for the lifecycle of an experience and sent for all events from that experience. It should be as close as is possible to a universally unique identifier. If there are collisions, the two sessions may be discarded as invalid if they cannot be disentangled.</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>user</code></td>
-      <td>Viewer's User ID, if available, or persistent device unique ID.</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>application</code></td>
-      <td>Application ID, if applicable (enables viewer tracking)</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>device_os_version</code></td>
-      <td>The version of os being used by the device. When not specified, this will be calculated by parsing the user agent string for the tracking request.</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>platform_version</code></td>
-      <td>Used to indicate that a new release of the specified platform is being used to send the events.</td>
-      <td>all</td>
-      </tr>
-      <tr>
-      <td><code>catalog_url</code></td>
-      <td>The destination url associated with the <code>catalog_request</code> event.</td>
-      <td>
-      <code>catalog_request</code>,<code>catalog_response</code>
-      </td>
-      </tr>
-      <tr>
-      <td><code>response_time_ms</code></td>
-      <td>The time, in milliseconds, between the <code>catalog_request</code> event and the <code>catalog_response</code> event.</td>
-      <td><code>catalog_response</code></td>
-      </tr>
-      <tr>
-      <td><code>error_code</code></td>
-      <td>A platform specific error code associated with the event.</td>
-      <td><code>error</code></td>
-      </tr>
-      <tr>
-      <td><code>load_time_ms</code></td>
-      <td>The time, in milliseconds, between initiating data load for the video and the video becoming playable.</td>
-      <td><code>video_view</code></td>
-      </tr>
-      <tr>
-      <td><code>start_time_ms</code></td>
-      <td>The time, in milliseconds, between initiation of playback and the first frame of the video being rendered. This can be different depending on the experience, for instance, if there are no pre-roll ads configured, this measurement is the time between the 'play_request' and video_view events. If there is a preroll ad, the time between <code>ad_mode_begin</code> and <code>ad_mode_complete</code> should not be included.</td>
-      <td><code>video_view</code></td>
-      </tr>
-      <tr>
-      <td><code>rendition_url</code></td>
-      <td>The url to the most recently selected rendition. For example, for an HLS stream this would be the url to the most recently selected variant.</td>
-      <td>
-      <code>video_engagement</code>, <code>video_download_start</code>
-      </td>
-      </tr>
-      <tr>
-      <td><code>rendition_indicated_bps</code></td>
-      <td>The indicated bitrate, in bits per second, of the most recently selected rendition.</td>
-      <td>
-      <code>video_engagement</code>, <code>video_download_start</code>
-      </td>
-      </tr>
-      <tr>
-      <td><code>rendition_mime_type</code></td>
-      <td>The mime type of the most recently selected rendition.</td>
-      <td>
-      <code>video_engagement</code>, <code>video_download_start</code>
-      </td>
-      </tr>
-      <tr>
-      <td><code>rendition_height</code></td>
-      <td>The encoded height of the video rendition in pixels</td>
-      <td>
-      <code>video_engagement</code>, <code>video_download_start</code>
-      </td>
-      </tr>
-      <tr>
-      <td><code>rendition_width</code></td>
-      <td>The encoded width of the video rendition in pixels</td>
-      <td>
-      <code>video_engagement</code>, <code>video_download_start</code>
-      </td>
-      </tr>
-      <tr>
-      <td><code>rebuffering_seconds</code></td>
-      <td>The number of seconds the user spent waiting for video to playback due to un-requested delay during the engagement period.</td>
-      <td><code>video_engagement</code></td>
-      </tr>
-      <tr>
-      <td><code>rebuffering_count</code></td>
-      <td>The number of times playback stopped due to re-buffering during the represented engagement period.</td>
-      <td><code>video_engagement</code></td>
-      </tr>
-      <tr>
-      <td><code>forward_buffer_seconds</code></td>
-      <td>The number of seconds of video currently residing in the forward buffer.</td>
-      <td><code>video_engagement</code></td>
-      </tr>
-      <tr>
-      <td><code>measured_bps</code></td>
-      <td>The ratio of the number of bits included in the most recently downloaded segment to the time spend downloading that segment, in bits per second.</td>
-      <td><code>video_engagement</code></td>
-      </tr>
-      <tr>
-      <td><code>player_width</code></td>
-      <td>The current pixel width of the player at the end of the engagement range.</td>
-      <td><code>video_engagement</code></td>
-      </tr>
-      <tr>
-      <td><code>player_height</code></td>
-      <td>The current pixel height of the player at the end of the engagement range.</td>
-      <td><code>video_engagement</code></td>
-      </tr>
-      <tr>
-      <td><code>dropped_frames</code></td>
-      <td>The number of frames that were dropped from video playback during this engagement period</td>
-      <td><code>video_engagement</code></td>
-      </tr>
-      <tr>
-      <td><code>file_size_bytes</code></td>
-      <td>The size of the download offline DRM file.</td>
-      <td><code>video_download_complete</code></td>
-      </tr>
+        <tr>
+          <td><a href="#video-cloud-events"><code>event</code></a></td>
+          <td>The name of the event</td>
+          <td>all, required</td>
+        </tr>
+        <tr>
+          <td><code>domain</code></td>
+          <td><code>videocloud</code></td>
+          <td>all, required</td>
+        </tr>
+        <tr>
+          <td><code>time</code></td>
+          <td>End-user timestamp (ms since epoch)</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>account</code></td>
+          <td>Brightcove account ID</td>
+          <td>all, required</td>
+        </tr>
+        <tr>
+          <td><code>player</code></td>
+          <td>Brightcove player ID that originated the event</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>player_name</code></td>
+          <td>Name of the player specified by the <code>player</code> parameter</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>browser</code></td>
+          <td>Full name and version of the browser used</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>browser_type</code></td>
+          <td>Common name of browser used (i.e. chrome, edge, firefox)</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>video</code></td>
+          <td>Brightcove video ID that originated the event, if there was one</td>
+          <td>
+            <code>video_impression</code>, <code>video_view</code>, <code>video_engagement</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>video_name</code></td>
+          <td>Name of the video specified by the <code>video</code> parameter</td>
+          <td>
+            <code>video_impression</code>, <code>video_view</code>, <code>video_engagement</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>video_duration</code>+<code>range</code>; <code>video_seconds_viewed</code>
+          </td>
+          <td>The <strong>duration</strong> of the video (in seconds) and the <strong>range</strong> (in the format <code>&lt;start_second&gt;..&lt;end_second&gt;</code>) of seconds viewed; or a count of watched seconds since the last update. See more information about <a href="#video_engagement-events"><code>video_engagement</code> Events</a> below.</td>
+          <td><code>video_engagement</code></td>
+        </tr>
+        <tr>
+          <td>
+            <a href="#destination-and-source-parameters"><code>destination</code></a><br>(formerly <code>embed</code>)
+          </td>
+          <td>The URI that originated the event</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><a href="#destination-and-source-parameters"><code>source</code></a></td>
+          <td>The URI that sent the end-user to the <code>destination</code> URI; if not provided, the Analytics system will treat events as direct traffic for traffic source data.</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><a href="#device_type-and-device_os-parameters"><code>device_type</code></a></td>
+          <td>Override to specify the type of the device that originated the event in cases where the User-Agent is unreliable; ignored unless both <code>device_os</code> and <code>device_type</code> are included. <strong>Not typically included.</strong>
+          </td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><a href="#device_type-and-device_os-parameters"><code>device_os</code></a></td>
+          <td>Override to specify the OS of the device that originated the event in cases where the User-Agent is unreliable; ignored unless both <code>device_os</code> and <code>device_type</code> are included. <strong>Not typically included.</strong>
+          </td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>session</code></td>
+          <td>The session identifier. The session value should be constant for the lifecycle of an experience and sent for all events from that experience. It should be as close as is possible to a universally unique identifier. If there are collisions, the two sessions may be discarded as invalid if they cannot be disentangled.</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>user</code></td>
+          <td>Viewer's User ID, if available, or persistent device unique ID.</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>application</code></td>
+          <td>Application ID, if applicable (enables viewer tracking)</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>device_os_version</code></td>
+          <td>The version of os being used by the device. When not specified, this will be calculated by parsing the user agent string for the tracking request.</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>platform_version</code></td>
+          <td>Used to indicate that a new release of the specified platform is being used to send the events.</td>
+          <td>all</td>
+        </tr>
+        <tr>
+          <td><code>catalog_url</code></td>
+          <td>The destination url associated with the <code>catalog_request</code> event.</td>
+          <td>
+            <code>catalog_request</code>,<code>catalog_response</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>response_time_ms</code></td>
+          <td>The time, in milliseconds, between the <code>catalog_request</code> event and the <code>catalog_response</code> event.</td>
+          <td><code>catalog_response</code></td>
+        </tr>
+        <tr>
+          <td><code>error_code</code></td>
+          <td>A platform specific error code associated with the event.</td>
+          <td><code>error</code></td>
+        </tr>
+        <tr>
+          <td><code>load_time_ms</code></td>
+          <td>The time, in milliseconds, between initiating data load for the video and the video becoming playable.</td>
+          <td><code>video_view</code></td>
+        </tr>
+        <tr>
+          <td><code>start_time_ms</code></td>
+          <td>The time, in milliseconds, between initiation of playback and the first frame of the video being rendered. This can be different depending on the experience, for instance, if there are no pre-roll ads configured, this measurement is the time between the 'play_request' and video_view events. If there is a preroll ad, the time between <code>ad_mode_begin</code> and <code>ad_mode_complete</code> should not be included.</td>
+          <td><code>video_view</code></td>
+        </tr>
+        <tr>
+          <td><code>rendition_url</code></td>
+          <td>The url to the most recently selected rendition. For example, for an HLS stream this would be the url to the most recently selected variant.</td>
+          <td>
+            <code>video_engagement</code>, <code>video_download_start</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rendition_indicated_bps</code></td>
+          <td>The indicated bitrate, in bits per second, of the most recently selected rendition.</td>
+          <td>
+            <code>video_engagement</code>, <code>video_download_start</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rendition_mime_type</code></td>
+          <td>The mime type of the most recently selected rendition.</td>
+          <td>
+            <code>video_engagement</code>, <code>video_download_start</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rendition_height</code></td>
+          <td>The encoded height of the video rendition in pixels</td>
+          <td>
+            <code>video_engagement</code>, <code>video_download_start</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rendition_width</code></td>
+          <td>The encoded width of the video rendition in pixels</td>
+          <td>
+            <code>video_engagement</code>, <code>video_download_start</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rebuffering_seconds</code></td>
+          <td>The number of seconds the user spent waiting for video to playback due to un-requested delay during the engagement period.</td>
+          <td><code>video_engagement</code></td>
+        </tr>
+        <tr>
+          <td><code>rebuffering_count</code></td>
+          <td>The number of times playback stopped due to re-buffering during the represented engagement period.</td>
+          <td><code>video_engagement</code></td>
+        </tr>
+        <tr>
+          <td><code>forward_buffer_seconds</code></td>
+          <td>The number of seconds of video currently residing in the forward buffer.</td>
+          <td><code>video_engagement</code></td>
+        </tr>
+        <tr>
+          <td><code>measured_bps</code></td>
+          <td>The ratio of the number of bits included in the most recently downloaded segment to the time spend downloading that segment, in bits per second.</td>
+          <td><code>video_engagement</code></td>
+        </tr>
+        <tr>
+          <td><code>player_width</code></td>
+          <td>The current pixel width of the player at the end of the engagement range.</td>
+          <td><code>video_engagement</code></td>
+        </tr>
+        <tr>
+          <td><code>player_height</code></td>
+          <td>The current pixel height of the player at the end of the engagement range.</td>
+          <td><code>video_engagement</code></td>
+        </tr>
+        <tr>
+          <td><code>dropped_frames</code></td>
+          <td>The number of frames that were dropped from video playback during this engagement period</td>
+          <td><code>video_engagement</code></td>
+        </tr>
+        <tr>
+          <td><code>file_size_bytes</code></td>
+          <td>The size of the download offline DRM file.</td>
+          <td><code>video_download_complete</code></td>
+        </tr>
       </tbody>
-      </table>
+    </table>
   </section>
   <section class="bcls-section">
     <h2 id="video_engagement_fields">Video engagement fields</h2>
