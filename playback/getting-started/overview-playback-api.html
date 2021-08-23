@@ -327,7 +327,7 @@ grandparent: Playback API
 
     <p>You must use a <a href="/policy/getting-started/overview-policy-api.html#Search_videos">search-enabled Policy Key</a>, when searching for videos using the Playback API. For details, see the <a href="/playback/references/reference_v1.html#api-videoGroup-Get_Videos">Playback API Reference</a> document.</p>
 
-    <aside class="bcls-aside bcls-aside--information">The Playback API search has a limit of 100 videos per request with a cap of 1000 videos. When you need to return more than 1000 videos, you must use the <a href="/cms/index.html">CMS API</a>.</aside>
+    <aside class="bcls-aside bcls-aside--information">The Playback API search has a limit of 1000 videos per request with a cap of 1000 videos. When you need to return more than 1000 videos, you must use the <a href="/cms/index.html">CMS API</a>.</aside>
 
     <h3 id="Parameters">Parameters</h3>
 
@@ -348,7 +348,7 @@ grandparent: Playback API
         </tr>
         <tr>
           <td><code translate="No"><a href="#paging">limit</a></code></td>
-          <td>Number of videos to return - must be an integer between 1 and 100. <strong>Default: 20</strong></td>
+          <td>Number of videos to return - must be an integer between 1 and 1000. <strong>Default: 20</strong></td>
         </tr>
         <tr>
           <td><code translate="No"><a href="#offset">offset</a> </code></td>
@@ -387,7 +387,7 @@ grandparent: Playback API
 
     <h3 id="paging">Paging results</h3>
 
-    <p>Use the <code translate="No"><a href="#Parameters">limit</a></code> parameter to specify how many items you want to return on a request - up to 100. You can then use the <code translate="No"><a href="#Parameters">offset</a></code> parameter to page through result sets that are larger than the <code translate="No">limit</code>. The <code translate="No">offset</code> is the number of items to skip.</p>
+    <p>Use the <code translate="No"><a href="#Parameters">limit</a></code> parameter to specify how many items you want to return on a request - up to 1000. You can then use the <code translate="No"><a href="#Parameters">offset</a></code> parameter to page through result sets that are larger than the <code translate="No">limit</code>. The <code translate="No">offset</code> is the number of items to skip.</p>
 
     <p>For example, the following search returns videos 51-75 of the total result set, assuming the total result set has at least 75 videos:</p>
 
@@ -453,7 +453,7 @@ grandparent: Playback API
     <p>If you are retrieving all the videos in your account, or a large number of videos, there are some things you must be aware of:</p>
 
     <ol class="bcls-tasklist-restart">
-      <li>You may be tempted to use the largest allowed <code translate="No">limit</code> (100), but it's better to retrieve videos in batches of 25 or less to minimize the possibility of API requests timing out</li>
+      <li>You may be tempted to use the largest allowed <code translate="No">limit</code> (1000), but it's better to retrieve videos in batches of 25 or less to minimize the possibility of API requests timing out</li>
       <li>As you are paging through large data sets, it is possible that the video data may be updated during the operation, which could cause items to shift in responses:
       <ul>
         <li>You might see an item repeated on successive pages</li>
@@ -541,7 +541,7 @@ grandparent: Playback API
       <tbody class="bcls-table__body">
         <tr>
           <td><code translate="No">limit</code></td>
-          <td>The number of videos to return (default=20; maximum=100)</td>
+          <td>The number of videos to return (default=20; maximum=1000)</td>
         </tr>
         <tr>
           <td><code translate="No">ad_config_id</code></td>
@@ -550,7 +550,7 @@ grandparent: Playback API
       </tbody>
     </table>
 
-    <p>By default, the response will contain up to 20 videos. You may use the <code translate="No">limit</code> parameter to return up to a maximum of 100 videos, with a cost of increased latency.</p>
+    <p>By default, the response will contain up to 20 videos. You may use the <code translate="No">limit</code> parameter to return up to a maximum of 1000 videos, with a cost of increased latency.</p>
 
     <p>Notice that there is no <code translate="No">offset</code> parameter when finding related videos, so you will not be able to page through your video results.</p>
 
@@ -851,7 +851,7 @@ grandparent: Playback API
 
     <p>A playlist video object can be retrieved using either the playlist id or its reference id.</p>
 
-    <p>Playlists may contain up to 1000 videos, but by default, only the first 20 are returned. Using the parameters described below, you can return up to 100 videos at a time, and use the <code translate="No">offset</code> parameter to retrieve the group of videos you want, or submit multiple requests to return them all.</p>
+    <p>Playlists may contain up to 1000 videos, but by default, only the first 20 are returned. Using the parameters described below, you can return up to 1000 videos at a time, or use a smaller <code translate="No">limit</code> and use the <code translate="No">offset</code> parameter to retrieve the group of videos you want, or submit multiple requests to return them all.</p>
 
     <h3>Parameters</h3>
 
@@ -868,7 +868,7 @@ grandparent: Playback API
       <tbody class="bcls-table__body">
         <tr>
           <td>limit</td>
-          <td>The number of videos to return (default=20; maximum=100)</td>
+          <td>The number of videos to return (default=20; maximum=1000)</td>
         </tr>
         <tr>
           <td>offset</td>
@@ -877,7 +877,7 @@ grandparent: Playback API
       </tbody>
     </table>
 
-    <p>For example, these parameters appended to your request - ?limit=100&amp;offset=100 - would return videos 101-200 in the playlist (assuming there are that many).</p>
+    <p>For example, these parameters appended to your request - ?limit=100&amp;offset=200 - would return videos 201-300 in the playlist (assuming there are that many).</p>
 
     <h3 id="Get_playlist_by_id">Get playlist by id</h3>
 
