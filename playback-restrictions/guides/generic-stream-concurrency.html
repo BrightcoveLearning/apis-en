@@ -3,6 +3,7 @@ title: Generic Stream Concurrency
 description: This document describes how to limit stream concurrency to end-viewers with a heartbeat mechanism and without DRM.
 parent: Guides
 grandparent: Playback Restrictions
+layout: staging
 ---
 
 <h1>{{ page.title }}</h1>
@@ -26,5 +27,21 @@ grandparent: Playback Restrictions
       <li>It should be consistent across all video views for the same Viewer.</li>
     </ul>
     <p>When the "correlator" is different, it will try to fill a "slot" for the viewer id, which means if that value changes during the same viewing, it will be treated like it was a different viewer and prevent playback.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Implementation">Implementation</h2>
+    <h3>Using Brightcove web or SDK players</h3>
+    <ol class="bcls-tasklist-restart">
+      <li>If you wish to change the heartbeat frequency from the default (1 minute) <a href="https://supportportal.brightcove.com/">contact Support</a></li>
+      <li>
+        Create a JWT
+        <ul>
+        <li>You <strong>must</strong> the concurrency limit and viewer identifier</li>
+        <li>You can optionally include a correlator identifier that defines the streaming locations for a viewer</li>
+        </ul>
+      </li>
+      <li>Enable Generic Stream Concurrency on client players</li>
+    </ol>
+    <h3></h3>
   </section>
 </article>
