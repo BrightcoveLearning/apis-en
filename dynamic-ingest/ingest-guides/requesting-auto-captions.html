@@ -8,7 +8,7 @@ grandparent: Dynamic Ingest API
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
 
     <p>In addition to providing captions automatically for your videos, this service can also generate a transcription to be included in metadata to improve SEO and/or provide a full transcription of the video for viewers.</p>
@@ -20,66 +20,66 @@ grandparent: Dynamic Ingest API
     <p>Multiple audio tracks are supported for <code translate="No">HLS V4+</code> and <code translate="No">DASH</code> - with and without <code translate="No">DRM</code> protection.</p>
 
     <aside class="bcls-aside bcls-aside--information">Note:
-    <ul>
-      <li>Multiple audio tracks can only be used with videos set up for <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Delivery</a>.</li>
-      <li>The account must be enabled for multiple audio tracks. To get your account enabled, contact your account manager.</li>
-    </ul>
+      <ul>
+        <li>Multiple audio tracks can only be used with videos set up for <a href="/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html">Dynamic Delivery</a>.</li>
+        <li>The account must be enabled for multiple audio tracks. To get your account enabled, contact your account manager.</li>
+      </ul>
     </aside>
-    </section>
-    <section class="bcls-section">
+  </section>
+  <section class="bcls-section">
     <h2 id="setup">Setup</h2>
 
     <p>The setup for <span translate="No">Dynamic Ingest</span> requests is the same, whether you are ingesting a video, images, audio tracks, <span translate="No">WebVTT</span> files, requesting auto captions, or all of these:</p>
 
     <dl>
-      <dt >Request URL</dt>
-      <dd >
-      <pre class="line-numbers">
+      <dt>Request URL</dt>
+      <dd>
+        <pre class="line-numbers">
       <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest-requests</code></pre>
       </dd>
-      <dt >Authentication</dt>
-      <dd >Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code translate="No">Authorization</code> header:
-      <pre class="line-numbers">
+      <dt>Authentication</dt>
+      <dd>Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code translate="No">Authorization</code> header:
+        <pre class="line-numbers">
       <code class="language-bash" translate="No">Authorization: Bearer {access_token}</code></pre>
 
-      <p>To get access tokens, you will need <strong>client credentials</strong> (see below). For the process of obtaining an access token, see <a href="/oauth/guides/getting-access-tokens.html">Get Access Tokens</a>.</p>
+        <p>To get access tokens, you will need <strong>client credentials</strong> (see below). For the process of obtaining an access token, see <a href="/oauth/guides/getting-access-tokens.html">Get Access Tokens</a>.</p>
       </dd>
     </dl>
 
     <h3>Note on S3</h3>
 
     <p>If your source files will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow <span translate="No">Video Cloud</span> to access the files. See <a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html#setPolicy">Using <span translate="No">Dynamic Ingest</span> with S3</a> for details.</p>
-    </section>
+  </section>
 
-    <section class="bcls-section">
-      <details>
-    <summary>
-      <h2 id="gettingCredentials">Getting Credentials</h2>
-    </summary>
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="gettingCredentials">Getting Credentials</h2>
+      </summary>
 
-    <p>To get a <code translate="No">client_id</code> and <code translate="No">client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+      <p>To get a <code translate="No">client_id</code> and <code translate="No">client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
 
-    <ul>
-      <li><a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a></li>
-    </ul>
+      <ul>
+        <li><a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a></li>
+      </ul>
 
-    <p>These are the permissions you will need:</p>
+      <p>These are the permissions you will need:</p>
 
-    <figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Ingest Permissions" src="/assets/images/dynamic-ingest/code-samples/di-permissions.png" />
-    <figcaption class="bcls-caption--image"><span translate="No">Dynamic Ingest</span> Permissions</figcaption>
-    </figure>
+      <figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Ingest Permissions" src="/assets/images/dynamic-ingest/code-samples/di-permissions.png" />
+        <figcaption class="bcls-caption--image"><span translate="No">Dynamic Ingest</span> Permissions</figcaption>
+      </figure>
 
-    <p>You can also get your credentials via <span translate="No">CURL</span>, <span translate="No">Postman</span>, or our online app - see:</p>
+      <p>You can also get your credentials via <span translate="No">CURL</span>, <span translate="No">Postman</span>, or our online app - see:</p>
 
-    <ul>
-      <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Get Client Credentials Using <span translate="No">CURL</span></a></li>
-      <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Get Client Credentials Using <span translate="No">Postman</span></a></li>
-      <li><a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">Create Client Credentials</a></li>
-    </ul>
+      <ul>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Get Client Credentials Using <span translate="No">CURL</span></a></li>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Get Client Credentials Using <span translate="No">Postman</span></a></li>
+        <li><a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">Create Client Credentials</a></li>
+      </ul>
 
-    <p>If you are getting credentials directly from the API, these are the permissions you need:</p>
+      <p>If you are getting credentials directly from the API, these are the permissions you need:</p>
 
-    <pre class="line-numbers">
+      <pre class="line-numbers">
       <code class="language-json" translate="No">[
         "video-cloud/video/all",
         "video-cloud/ingest-profiles/profile/read",
@@ -87,9 +87,9 @@ grandparent: Dynamic Ingest API
         "video-cloud/upload-urls/read"
       ]</code></pre>
     </details>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="workflow">Use cases</h2>
 
     <p>Here are some typical use cases</p>
@@ -97,7 +97,7 @@ grandparent: Dynamic Ingest API
     <h3>Create auto-captions for new ingestions or retranscoding</h3>
     <details>
       <summary>Request body</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
+      <pre class="line-numbers"><code class="language-json" translate="No">{
   "master": {
     "use_archived_master": true
   },
@@ -113,11 +113,11 @@ grandparent: Dynamic Ingest API
   "priority": "normal"
 }</code></pre>
     </details>
-    
+
     <h3>Create auto-captions when ingesting an audio track</h3>
     <details>
       <summary>Request body</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
+      <pre class="line-numbers"><code class="language-json" translate="No">{
   "audio_tracks": {
     "merge_with_existing": true,
     "masters": [
@@ -146,7 +146,7 @@ grandparent: Dynamic Ingest API
     <h3>Create auto-captions for an existing video using default audio track</h3>
     <details>
       <summary>Request body</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
+      <pre class="line-numbers"><code class="language-json" translate="No">{
   "transcriptions": [
       {
           "srclang": "fr-FR",
@@ -158,11 +158,21 @@ grandparent: Dynamic Ingest API
 }</code></pre>
     </details>
 
-    <h3>Create auto-captions for an existing video defining the audio track</h3>
+    <h3>Create auto-captions for an existing video defining the audio tracks</h3>
     <details>
       <summary>Request body</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
+      <pre class="line-numbers"><code class="language-json" translate="No">{
   "transcriptions": [
+      {
+          "srclang": "en-US",
+          "kind": "captions",
+          "label": "english-EN",
+          "default": false,
+          "input_audio_track": {
+              "language": "en-US",
+              "variant": "main"
+          }
+      },
       {
           "srclang": "fr-FR",
           "kind": "captions",
@@ -177,75 +187,158 @@ grandparent: Dynamic Ingest API
 }</code></pre>
     </details>
 
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Audio_track_metadata">Request body fields for auto captions</h2>
-      <p>The table below shows the request body fields for auto captions.</p>
-      <table class="bcls-table">
-        <caption class="bcls-caption--table">Auto Caption Fields</caption>
-        <thead class="bcls-table__head">
-            <tr>
-                <th>Field</th>
-                <th>Type</th>
-                <th>Required</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody class="bcls-table__body">
-            <tr>
-                <td><code translate="No">autodetect</code></td>
-                <td>boolean</td>
-                <td>no</td>
-                <td>
-                  <code translate="No">true</code> to auto-detect language from audio source. <code translate="No">false</code> to use <code translate="No">srclang</code> specifying the audio language.
-                  <aside class="bcls-aside bcls-aside--warning language-editable">
-                    Notes:
-                    <ul>
-                      <li>If <code translate="No">autodetect</code> is <code translate="No">true</code>, <code translate="No">srclang</code> must <strong>not</strong> be included.</li>
-                      <li>If <code translate="No">autodetect</code> is <code translate="No">false</code>, and <code translate="No">srclang</code> is not included, the request will fail.</li>
-                    </ul>
-                  </aside>
-                </td>
-            </tr>
-            <tr>
-                <td><code translate="No">default</code></td>
-                <td>boolean</td>
-                <td>no</td>
-                <td>
-                  If <code translate="No">true</code>, <code translate="No">srclang</code> will be ignored, and the main audio track will be used - language will be auto-detected.
-                </td>
-            </tr>
-            <tr>
-                <td><a href="#input_audio_track"><code translate="No">input_audio_track</code></a></td>
-                <td>object</td>
-                <td>no</td>
-                <td>
-                  For multiple audio tracks, defines the audio to extract the captions from. It is composed by language and variant (both required).
-                </td>
-            </tr>
-        </tbody>
-        <h3 id="input_audio_track"><code translate="No">input_audio_track</code> fields</h3>
-        <table class="bcls-table">
-          <caption class="bcls-caption--table">input_audio_track Fields</caption>
-          <thead class="bcls-table__head">
-              <tr>
-                <th>Field</th>
-                <th>Type</th>
-                <th>Required</th>
-                <th>Description</th>
-              </tr>
-          </thead>
-          <tbody class="bcls-table__body">
-              <tr>
-                  <td><code translate="No">language</code></td>
-                  <td>string</td>
-                  <td></td>
-                  <td></td>
-              </tr>
-              </tr>
-          </tbody>
-      </table>
+    <p>The table below shows the request body fields for auto captions.</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Auto Caption Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Required</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">autodetect</code></td>
+          <td>boolean</td>
+          <td>no</td>
+          <td>
+            <code translate="No">true</code> to auto-detect language from audio source. <code translate="No">false</code> to use <code translate="No">srclang</code> specifying the audio language.
+            <aside class="bcls-aside bcls-aside--warning language-editable">
+              Notes:
+              <ul>
+                <li>If <code translate="No">autodetect</code> is <code translate="No">true</code>, <code translate="No">srclang</code> must <strong>not</strong> be included.</li>
+                <li>If <code translate="No">autodetect</code> is <code translate="No">false</code>, and <code translate="No">srclang</code> is not included, the request will fail.</li>
+              </ul>
+            </aside>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">default</code></td>
+          <td>boolean</td>
+          <td>no</td>
+          <td>
+            If <code translate="No">true</code>, <code translate="No">srclang</code> will be ignored, and the main audio track will be used - language will be auto-detected.
+          </td>
+        </tr>
+        <tr>
+          <td><a href="#input_audio_track"><code translate="No">input_audio_track</code></a></td>
+          <td>object</td>
+          <td>no</td>
+          <td>
+            For multiple audio tracks, defines the audio to extract the captions from. It is composed by language and variant (both required).
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">kind</code></td>
+          <td>string</td>
+          <td>no</td>
+          <td>
+            The kind of output to generate. Currently the only allowed value is <code translate="No">captions</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">label</code></td>
+          <td>string</td>
+          <td>yes</td>
+          <td>
+            Human readable label.
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">srclang</code></td>
+          <td>string</td>
+          <td>no</td>
+          <td>
+            BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.); see <a href="#supported_languages">supported languages</a>
+          </td>
+        </tr>
+      </tbody>
     </table>
-    </section>
-    </article>
+    <h3 id="input_audio_track"><code translate="No">input_audio_track</code> fields</h3>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">input_audio_track Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Required</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">language</code></td>
+          <td>string</td>
+          <td>yes</td>
+          <td>BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.); see <a href="#supported_languages">supported languages</a></td>
+        </tr>
+        <tr>
+          <td><code translate="No">variant</code></td>
+          <td>string</td>
+          <td>yes</td>
+          <td>
+            Specifies the variant to use:
+            <ul>
+              <li><code translate="no">main</code></li>
+              <li><code translate="no">alternate</code></li>
+              <li><code translate="no">dub</code></li>
+              <li><code translate="no">commentary</code></li>
+              <li><code translate="no">descriptive</code></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="supported_languages">Supported languages</h3>
+    <p>Currently, auto captions are limited to the following languages</p>
+    <table>
+      <tr>
+        <td>
+          <ul>
+            <li>Gulf Arabic (ar-AE)</li>
+            <li>Modern Standard Arabic (ar-SA)</li>
+            <li>Mandarin Chinese – Mainland (zh-CN)</li>
+            <li>Dutch (nl-NL)</li>
+            <li>Australian English (en-AU)</li>
+            <li>British English (en-GB)</li>
+            <li>Indian English (en-IN)</li>
+            <li>Irish English (en-IE)</li>
+            <li>Scottish English (en-AB)</li>
+            <li>US English (en-US)</li>
+            <li>Welsh English (en-WL)</li>
+            <li>Spanish (es-ES)</li>
+            <li>US Spanish (es-US)</li>
+            <li>French (fr-FR)</li>
+            <li>Canadian French (fr-CA)</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li>Farsi Persian (fa-IR)</li>
+            <li>German (de-DE)</li>
+            <li>Swiss German (de-CH)</li>
+            <li>Hebrew (he-IL)</li>
+            <li>Indian Hindi (hi-IN)</li>
+            <li>Indonesian (id-ID)</li>
+            <li>Italian (it-IT)</li>
+            <li>Japanese (ja-JP)</li>
+            <li>Korean (ko-KR)</li>
+            <li>Malay (ms-MY)</li>
+            <li>Portuguese (pt-PT)</li>
+            <li>Brazilian Portuguese (pt-BR)</li>
+            <li>Russian (ru-RU)</li>
+            <li>Tamil (ta-IN)</li>
+            <li>Telugu (te-IN)</li>
+            <li>Turkish (tr-TR)</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </section>
+</article>
