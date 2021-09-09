@@ -151,18 +151,26 @@ API Requests</a>.</p>
 <code class="language-json" translate="No">{% raw %}{
   "name": "VMAP Ad Server",
   "vmap_response_namespace": "bc",
+  "ad_tracking_sample_percentage": 100,
   "ad_config": {
-  	"expected_ad_response": "vast_3_0",
-  	"disable_server_beacons": false,
+    "expected_ad_response": "vast_3_0",
+    "disable_server_beacons": false,
     "round_up_cue_points": false,
-  	"template_url": {
-  		"template": "http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}"
-  	}
+    "template_url": {
+      "template": "http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}"
+    }
   },
   "discontinuities": {
     "hls": [ "*" ]
   }
 }{% endraw %}</code></pre>
+
+<h4>Notes</h4>
+<ul>
+<li>
+  <code translate="No">ad_tracking_sample_percentage</code> determines the percentage of sessions that will be logged. It can any value from 0 (disable logging) to 100 (log all sessions).
+</li>
+</ul>
 
 <h3 id="Get_ad_configuration_details">Get ad configuration details</h3>
 
@@ -187,7 +195,6 @@ API Requests</a>.</p>
 		</tr>
 	</tbody>
 </table>
-
 <details>
 	<summary>Sample response:</summary>
 	
@@ -199,6 +206,7 @@ API Requests</a>.</p>
 		"account_id": "57838016001",
 		"created_timestamp": "2017-07-24T19:28:34.976878586Z",
 		"updated_timestamp": "2017-07-24T19:28:34.976878586Z",
+    "ad_tracking_sample_percentage": 100,
 		"ad_config": {
 			"expected_ad_response": "dfp_ad_rules",
 			"disable_server_beacons": false,
