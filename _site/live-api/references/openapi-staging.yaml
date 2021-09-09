@@ -2871,6 +2871,10 @@ components:
         ad_configuration_variables:
           description: Key/value pairs for the ad server URL template
           type: object
+        ad_tracking_sample_percentage:
+          type: integer
+          description: >-
+            The value determines the percentage of sessions that will be logged. A value of 0 disables logs entirely.  0 is the default value.
         headers:
           description: The ad configuration headers
           type: object
@@ -2961,8 +2965,7 @@ components:
             still work, defaulting to account of the current user)
           type: string
         application_ad_configuration:
-          $ref: >-
-            #/components/schemas/CreateAdConfigurationbody.applicationAdConfiguration
+          $ref: '#/components/schemas/CreateAdConfigurationbody.applicationAdConfiguration'
         application_description:
           description: Human readable description of the ad application.
           type: string
@@ -2973,6 +2976,10 @@ components:
       type: object
     CreateAdConfigurationbody.applicationAdConfiguration:
       properties:
+        ad_configuration_compensation_disable:
+          description: This setting will override ad timing compensation, a setting that reduces timing drift when ads that get returned are longer than expected. This is normally achieved by shortening the next ad break. When set to true, all ad break durations will  be called as-is, and compensation will not happen.
+          type: boolean
+          default: false
         ad_configuration_description:
           description: Human readable description of the configuration.
           type: string
@@ -3006,6 +3013,13 @@ components:
             $ref: >-
               #/components/schemas/CreateAdConfigurationbody.applicationAdConfiguration.adConfigurationTransforms
           type: array
+        ad_tracking_sample_percentage:
+          type: integer
+          description: >-
+            The value determines the percentage of sessions that will be logged. A value of 0 disables logs entirely.  0 is the default value.
+          minimum: 0
+          maximum: 100
+          default: 0
       required:
         - ad_configuration_description
         - ad_configuration_expected_response_type
@@ -3475,10 +3489,6 @@ components:
       type: object
     CreateLiveJobRequestBody.encryption:
       properties:
-        check_playback_rights:
-          description: 'Playback auth JWT will be required when requesting license. Uses playback rights id associated    with video or JWT to enforce restrictions. If <code translate="No">false</code> playback restrictions will be bypassed and the encrypted stream will play back as usual.'
-          type: boolean
-          default: false
         external_url:
           description: >-
             The URL for the external encryption key - this field is required if you specify type as external, and the external key must match the
@@ -5905,6 +5915,13 @@ components:
             $ref: >-
               #/components/schemas/UpdateAdConfigurationbody.applicationAdConfiguration.adConfigurationTransforms
           type: array
+        ad_tracking_sample_percentage:
+          type: integer
+          description: >-
+            The value determines the percentage of sessions that will be logged. A value of 0 disables logs entirely.  0 is the default value.
+          minimum: 0
+          maximum: 100
+          default: 0
       required:
         - ad_configuration_description
         - ad_configuration_expected_response_type
