@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In this topic, you will learn how to use the Server-Side Ad Insertion (SSAI) API to create and manage ad configurations.">
+  <meta name="description" content="This topic shows you how to set up server-side ad insertion (SSAI) for your live stream jobs.">
   
-  <title>Video Cloud SSAI API</title>
+  <title>Brightcove Live API: Server-Side Ad Insertion (SSAI)</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -70,15 +70,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
     
       
-        <li class="breadcrumb-item"><a href="/ssai/">Ssai</a></li>
+        <li class="breadcrumb-item"><a href="/live-api/">Live api</a></li>
       
     
       
-        <li class="breadcrumb-item"><a href="/ssai/getting-started/">Getting started</a></li>
+        <li class="breadcrumb-item"><a href="/live-api/ssai/">Ssai</a></li>
       
     
       
-        <li class="breadcrumb-item active" aria-current="page">Video Cloud SSAI API</li>
+        <li class="breadcrumb-item active" aria-current="page">Brightcove Live API: Server-Side Ad Insertion (SSAI)</li>
       
     
   </nav>
@@ -2167,682 +2167,668 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Video Cloud SSAI API</h1>
+<h1>Brightcove Live API: Server-Side Ad Insertion (SSAI)</h1>
 <article class="bcls-article">
-  <summary>In this topic, you will learn how to use the Server-Side Ad Insertion (SSAI) API to create and manage ad configurations.</summary>
+  <summary>This topic shows you how to set up server-side ad insertion (SSAI) for your live stream jobs.</summary>
 
-<section id="top" class="bcls-section">
-<p>Ad Configurations define various aspects of SSAI playback, including ad call(s), beacons, and other configuration options. An account can have multiple configurations and currently configurations can not be shared across accounts.</p>
+  
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
 
-<aside class="bcls-aside bcls-aside--tip">You can easily create, list and delete ad configurations from Video Cloud Studio. For details, see the <a href="https://studio.support.brightcove.com/admin/configuring-server-side-ad-settings.html">Configuring Server-Side Ad Settings</a> document.</aside>
+<p><span translate="No">SSAI</span> allows you display ads during a live streaming event at specified times. The main features include:</p>
 
-<aside class="bcls-aside bcls-aside--information">Notes:
 <ul>
-	<li>To use SSAI, your Video Cloud account needs to be configured for <a href="https://studio.support.brightcove.com/general/overview-dynamic-delivery.html">Dynamic Delivery</a> and enabled for SSAI. Contact your account manager to start using this feature.</li>
-	<li>SSAI works with Video-on-Demand (VOD) and supports Live playback.</li>
-	<li>For a list of limitations, see the <a href="https://ssai.support.brightcove.com/getting-started/video-cloud-ssai-overview.html#Limitations">SSAI Overview</a> document.</li>
+	<li>Insert ads using cue points sent from your encoder or create an instant cue point using the <span translate="No">Live API</span></li>
+	<li>Ingest "slate" assets to fill any unused ad time</li>
+	<li>Avoid ad blockers with ads that are stitched into the live stream on the server side</li>
 </ul>
+
+<aside class="bcls-aside bcls-aside--information">
+  <ul>
+    <li>Before you can use <span translate="No">SSAI</span>, it must be enabled for your account. Contact your account manager for details.</li>
+    <li>Note that SSAI will increase Origin bandwidth used by the live stream. When ads are being served, the HLS manifests are unique to each viewer session and so cannot be cached, and instead will be requested from origin for each viewer. If DVR is also enabled, that considerably increases the size of the uncached manifests.</li>
+ </ul>
+
+
 </aside>
+
+<p>To create a Live stream with server-side ads, follow these steps:</p>
+
+<ol class="bcls-tasklist-restart">
+	<li><a href="#General_information">Review the general information about the Live API</a></li>
+	<li><a href="#Create_an_ad_configuration">Create a live ad configuration</a>. You can also do this in <a href="https://studio.support.brightcove.com/admin/configuring-server-side-ad-settings.html#bc-ipnav-1">Video Cloud Studio</a>. See the sections below for details about managing your ad configurations using the Live API.</li>
+	<li><a href="#Managing_slates">Create slate assets</a>. If you prefer a UI, you can <a href="https://live.support.brightcove.com/live-module/implementing-server-side-ads-live-module.html#fill_slate">manage slates in Studio</a>.</li>
+	<li>Optional: <a href="/live-api/ssai/live-api-cue-points-and-ad-beacons-ssai.html">Insert cue points and ad beacons</a>.</li>
+	<li>Now, you are ready to <a href="/live-api/getting-started/quick-start-create-live-stream-using-brightcove-live-api.html">create a live stream using the Live API</a>. If you prefer to use Studio, you can <a href="https://live.support.brightcove.com/live-module/implementing-server-side-ads-live-module.html">implement server-side ads in the Live module</a></li>
+</ol>
+
+<p>See the rest of this document for details about custom headers, ad config variables, using DFP and ad macros.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="General_information">General information</h2>
 
-<p>The following information pertains to all SSAI API requests.</p>
+<p>The following information pertains to all Live API with SSAI requests.</p>
 
 <h3>Base URL</h3>
 
-<p>The base URL for the SSAI API is:</p>
+<p>The base URL for the Live API with SSAI is:</p>
 
 <pre>
-<code class="language-http" translate="No">https://ssai.api.brightcove.com/v1</code></pre>
-
-<h4>Account path</h4>
-
-<p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term <code translate="No">accounts</code> followed by your account id to the base URL:</p>
-
-<pre>
-<code class="language-http" translate="No">https://ssai.api.brightcove.com/v1<strong>/accounts/</strong><span class="bcls-input">your account id</span></code></pre>
+    <code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai</code></pre>
 
 <h3>Authentication</h3>
 
-<p>Authentication for requests requires an Authorization header:</p>
+<p>Authentication for requests requires a header with an API key:</p>
+
+<pre class="line-numbers">
+    <code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span>
+    </code></pre>
+
+<p>Contact your account manager to get an API key associated with your account.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Create_an_ad_configuration">Create an ad configuration</h2>
+
+<p>To create a new ad configuration, send a <code translate="No">POST</code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">POST</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications</code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample request body</h3>
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "application_ad_configuration": {
+        "ad_configuration_compensation_disable": true,
+        "ad_configuration_description": "Human readable description of the configuration",
+        "ad_configuration_expected_response_type": "<span class="bcls-input">Dfp, Vast or SmartXML</span>",
+        "ad_configuration_headers": {
+        "X-Custom-Header-Rand": "{{random.int32}}",
+        "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+        },
+        "ad_configuration_headers_for_impressions": false,
+        "ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
+        "ad_configuration_transforms": [
+          {
+          "xpath": "/",
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+          }
+        ],
+        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+      },
+      "application_description": "Human readable description of the ad application",
+      "account_id": "<span class="bcls-input">User's Account ID [Optional]</span>"
+    }</code></pre>
+<aside class="bcls-aside bcls-aside--information">
+  Notes:
+  <ul>
+    <li>The <code translate="No">account_id </code> field is the Live Account ID. When omitted, the Account ID of the requesting user is used.</li>
+    <li><code translate="No">ad_configuration_compensation_disable</code> can override ad timing compensation, a setting that reduces timing drift when ads that get returned are longer than expected. This is normally achieved by shortening the next ad break. When set to true, all ad break durations will  be called as-is, and compensation will not happen.</li>
+  </ul>
+  </aside>
+
+
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "application": {
+        "account_id": "User Account ID",
+        "application_description": "Human readable description of the ad application",
+        "application_ad_configuration": {
+          "ad_configuration_compensation_disable": true,
+          "ad_configuration_description": "Human readable description of the configuration",
+          "ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
+          "ad_configuration_headers": {
+            "X-Custom-Header-Rand": "{{random.int32}}",
+            "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+          },
+          "ad_configuration_headers_for_impressions": false,
+          "ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
+          "ad_configuration_transforms": [
+            {
+              "xpath": "/",
+              "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+            }
+          ],
+          "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+        },
+        "application_id": <span class="bcls-highlight">"Application ID"</span>
+      },
+      "inserted": true
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Update_an_ad_configuration">Update an ad configuration</h2>
+
+<p>Updating an ad configuration is very similar to creating one. Make a <code translate="No">PUT</code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">PUT</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcls-input">Application_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample request body</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "application_ad_configuration": {
+        "ad_configuration_description": "Some Updated Description Value",
+        "ad_configuration_expected_response_type": "<span class="bcls-input">Dfp or Vast or SmartXML</span>,
+        "ad_configuration_headers": {
+          "X-Custom-Header-Rand": "{{random.int32}}",
+          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+        },
+        "ad_configuration_headers_for_impressions": false,
+        "ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
+        "ad_configuration_transforms": [
+          {
+          "xpath": "/",
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+          }
+        ],
+        "ad_configuration_url_format": "https://updated-ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+      },
+      "application_description": "Human readable description of the ad application",
+      "account_id": "<span class="bcls-input">User's Account ID [Optional]</span>"
+    }</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">account_id </code> field is the Live Account ID. When omitted, the Account ID of the requesting user is used.</aside>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "account_id": "User Account ID",
+      "application_description": "Human readable description of the ad application",
+      "application_ad_configuration": {
+        "ad_configuration_description": "Some Updated Description Value",
+        "ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
+        "ad_configuration_headers": {
+        "X-Custom-Header-Rand": "{{random.int32}}",
+        "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+        },
+        "ad_configuration_headers_for_impressions": false,
+        "ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
+        "ad_configuration_transforms": [
+          {
+          "xpath": "/",
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+          }
+        ],
+        "ad_configuration_url_format": "https://updated-ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+      },
+      "application_id": <span class="bcls-highlight">"Application ID"</span>
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Get_all_ad_configurations">Get all ad configurations</h2>
+
+<p>To retrieve all the ad configurations for an account, submit a <code translate="No">GET </code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">GET</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications/account/<span class="bcls-input">Account_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">Account_ID</code> here is the Live Account ID.</aside>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">[
+      {
+        "application_id": "Application_ID_1",
+        "application_description": "DFP Single Midroll",
+        "application_ad_configuration": {
+        "ad_configuration_description": "DFP Test Config Single Midroll",
+        "ad_configuration_strategy": "MultipleAdResponse",
+        "ad_configuration_transforms": [],
+        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler",
+        "ad_configuration_expected_response_type": "Dfp"
+        },
+        "account_id": "Account_ID"
+      },
+      {
+        "application_id": "Application_ID_2",
+        "application_description": "Test DFP Single Midroll"
+        "application_ad_configuration": {
+        "ad_configuration_description": "DFP Test Config Single Midroll",
+        "ad_configuration_strategy": "MultipleAdResponse",
+        "ad_configuration_transforms": [
+        {
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;",
+          "xpath": "/"
+        }
+        ],
+        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}",
+        "ad_configuration_expected_response_type": "Dfp"
+        },
+        "account_id": "Account_ID"
+      }
+    ]</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Get_an_ad_configuration">Get an ad configuration</h2>
+
+<p>You can also retrieve a specific ad configuration by its <code translate="No">application_id </code> by sending a <code translate="No">GET</code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">GET</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcls-input">Application_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "application_id": "Application_ID",
+      "application_description": "Test DFP Single Midroll",
+      "application_ad_configuration": {
+        "ad_configuration_description": "DFP Test Config Single Midroll",
+        "ad_configuration_strategy": "MultipleAdResponse",
+        "ad_configuration_transforms": [
+          {
+          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;",
+          "xpath": "/"
+          }
+        ],
+        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}",
+        "ad_configuration_expected_response_type": "Dfp"
+      },
+      "account_id": "Account_ID"
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Delete_an_ad_configuration">Delete an ad configuration</h2>
+
+<p>To delete an ad configuration, send a <code translate="No">DELETE</code> request as follows:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">DELETE</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcls-input">APPLICATION_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Sample response</h3>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+    "application_id": "Application_ID",
+    "deleted": true
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Managing_slates">Managing slates</h2>
+
+<p>Slates are your own assets used to fill unused ad time. You can use slates to provide a "be right back" message or any content that you like.</p>
+
+<p>Below are details for the API requests to add and manage slate assets.</p>
+
+<h3>Add slate asset</h3>
+
+<p>To ingest a new slate media source asset, submit a <code translate="No">POST</code> request:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">POST</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/slates</code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>Sample request body</h4>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "source_url": "https://somesourceasset.com/slate-to-ingest.mp4",
+      "account_id": "<span class="bcls-input">Account_ID [Optional]</span>",
+      "source_description": "<span class="bcls-input">User identifiable description for the slate  [Optional]</span>"
+    }
+    </code>
+    </pre>
+
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">account_id </code> here is the Live Account ID. When omitted, Account ID of the requesting user is used.</aside>
+
+<h4>Sample response</h4>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "media_source_asset_id": "New_UUID",
+      "account_id": "Account_ID",
+      "media_source_asset_default": false,
+      "media_source_asset_type": "slate",
+      "media_source_asset_url": "https://somesourceasset.com/slate-to-ingest.mp4",
+      "media_source_asset_status": "transcoding"
+      "media_source_asset_description": "User identifiable description for the slate"
+    }</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">Note: that setting <code translate="No">media_source_asset_default</code> is <strong>not</strong> supported at this time.</aside>
+
+<h3>Delete slate asset</h3>
+
+<p>To delete a slate media source asset, send a <code translate="No">DELETE</code> request:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">DELETE</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/slates/slate/<span class="bcls-input">Slate_MSA_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>Sample response</h4>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">{
+      "media_source_asset_id": "MSA_UUID",
+      "media_source_asset_type": "slate",
+      "media_source_asset_url": "http://someS3urlpath/media.mp4",
+      "media_source_asset_default": false,
+      "media_source_asset_status": "ready",
+      "account_id": "ACCOUNT_ID"
+    }</code></pre>
+
+<h3>Get slate assets</h3>
+
+<p>You can retrieve an array of all the slate media source assets for an account by sending a <code translate="No">GET</code> request:</p>
+
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td style="width:80em;"><code class="language-http" translate="No">GET</code></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td><code class="language-http" translate="No">https://api.bcovlive.io/v1/ssai/slates/account/<span class="bcls-input">Account_ID</span></code></td>
+		</tr>
+		<tr>
+			<th>Header</th>
+			<td><code class="language-http" translate="No">X-API-KEY: <span class="bcls-input">your API KEY</span></code></td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--information">The <code translate="No">Account_ID </code> here is the Live Account ID.</aside>
+
+<h4>Sample response</h4>
+
+<pre class="line-numbers">
+    <code class="language-json" translate="No">[
+      {
+      "media_source_asset_id": "MSA_UUID_1",
+      "media_source_asset_type": "slate",
+      "media_source_asset_default": false,
+      "media_source_asset_url": "http://someS3urlpath.com/media.mp4",
+      "account_id": "ACCOUNT_ID",
+      "media_source_asset_status": "ready"
+      },
+      {
+      "media_source_asset_id": "MSA_UUID_2",
+      "media_source_asset_type": "slate",
+      "media_source_asset_default": true,
+      "media_source_asset_url": "http://someS3urlpath.com/media.mp4",
+      "account_id": "ACCOUNT_ID",
+      "media_source_asset_status": "ready"
+      }
+    ]</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Notes_about_DFP">Notes about DFP</h2>
+
+<p>If you are obtaining ads from DFP, here are some things to keep in mind to help prevent issues.</p>
+
+<h3>Ad tag</h3>
+
+<p>When you are creating an ad tag for Live, be sure you are following the proper guidelines and including <code translate="No">/live </code>. See the DFP document <a href="https://support.google.com/dfp_premium/answer/1068325?hl=en">Create a master video tag manually</a> for full details.</p>
+
+<h3>Concurrency</h3>
+
+<p>If you are expecting a high amount of concurrency we recommended that you talk to your DFP account team.</p>
+
+<h3>Single/multiple ad responses</h3>
+
+<p>The <code translate="No">singleadresponse </code> and <code translate="No">multiadresponse </code> parameters are not currently used by <span translate="No">SSAI</span>.</p>
+
+<p>Live <span translate="No">SSAI</span> only makes a single ad server call and expects the response to contain all the ads for the break with the exception that it will follow any necessary ad wrappers with a limit of 5 redirects per ad. The following ad response formats are accepted and will be parsed as follows:</p>
+
+<ul>
+	<li>VAST - Single response or a pod of ads in a single response</li>
+	<li>DFP Ad Rules - Aggregates all available ads in the response including pre-, mid-, post-roll defined ads</li>
+	<li>Smart XML - Aggregates all available ads in the response including pre-, mid-, post-roll defined ads</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Custom_headers_for_ad_requests">Custom headers for ad requests</h2>
+
+<p>The <span translate="No">SSAI</span> platform can pass custom headers with the Ad calls and all beacons used by the backend platform. Some ad servers such as VideoPlaza require custom headers.</p>
+
+<p>Custom headers are specified as a set of key-value pairs in an <code translate="No">ad_configuration_headers</code> object, which is part of the <code translate="No">application_ad_configuration </code> (see the <a href="#Create_an_ad_configuration">Create an ad configuration</a> section).</p>
+
+<h3>Notes</h3>
+
+<ul>
+	<li>Standard headers are handled by default such as:
+	<ul>
+		<li><code translate="No">X-Forwarded-For </code></li>
+		<li><code translate="No">X-Device-User-Agent </code></li>
+	</ul>
+	</li>
+	<li>Header values can use the <a href="#Ad_configuration_variables">ad configuration variables</a></li>
+	<li>Header values can also be static strings</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--warning">Headers will be passed to all downstream requests including ad wrappers or impressions/quartiles so you should use them with caution.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Targeting_ads_using_ad_macros">Targeting ads using ad macros</h2>
+
+<p>When you <a href="#Create_an_ad_configuration">create an ad configuration</a>, your ad tag will typically look something like this:</p>
 
 <pre>
-<code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">your access token</span></code></pre>
+      <code class="language-http" translate="No">https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;
+      num={{random.int32}}&amp;ses={{session.session_id}}&amp;IDFA={{deviceid}}&amp;
+      sitesection={{sitesection}}&amp;breakid={{breakid}}&amp;breaktheme={{breaktheme}}</code></pre>
 
-<p>The <code translate="No">access_token</code> is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/getting-started/authentication-brightcove-api-requests.html">Authentication for Brightcove 
-API Requests</a>.</p>
-
-<h3>Operations</h3>
-
-<p>When you request client credentials, you will need to specify the type of account access or operations that you want. The following is a list of the currently supported operations for the SSAI API:</p>
-
-<ul>
-	<li>SSAI data:
-	<p><code translate="No">video-cloud/ssai/read</code><br />
-	<code translate="No">video-cloud/ssai/all</code></p>
-	</li>
-</ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="Manage_ad_configurations">Manage ad configurations</h2>
-
-<p>The API supports the following GET and PUT requests:</p>
-
-<ul>
-	<li><a href="#List_ad_configurations">List ad configurations</a></li>
-	<li><a href="#Create_an_ad_configuration">Create an ad configuration</a></li>
-	<li><a href="#Get_ad_configuration_details">Get ad configuration details</a></li>
-	<li><a href="#Update_an_ad_configuration">Update an ad configuration</a></li>
-</ul>
-
-<h3 id="List_ad_configurations">List ad configurations</h3>
-
-<p>List the ad configurations defined for an account.</p>
-
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<th>Method</th>
-			<td>GET</td>
-		</tr>
-		<tr>
-			<th>URL</th>
-			<td>https://ssai.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/ssai_configs</td>
-		</tr>
-		<tr>
-			<th rowspan="2">Headers</th>
-			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
-		</tr>
-		<tr>
-			<td>Content-Type: application/json</td>
-		</tr>
-	</tbody>
-</table>
-
-<p>Sample response:</p>
-
-<pre class="line-numbers">
-<code class="language-json" translate="No">[
-  {
-    "name": "VMAP Ad Server",
-    "vmap_response_namespace": "bc",
-    "config_id": "2ecc6beb-d6a4-4deb-a78e-37ac27e0f883",
-    "account_id": "57838016001",
-    "created_timestamp": "2017-07-24T19:28:34.976878586Z",
-    "updated_timestamp": "2017-07-24T19:28:34.976878586Z",
-    "ad_config": {
-      "expected_ad_response": "dfp_ad_rules",
-      "disable_server_beacons": false,
-      "template_url": {
-          "template": "http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}"
-      }
-    }
-  }
-]</code></pre>
-
-<h3 id="Create_an_ad_configuration">Create an ad configuration</h3>
-
-<p>Create an ad configuration for an account.</p>
-
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<th>Method</th>
-			<td>POST</td>
-		</tr>
-		<tr>
-			<th>URL</th>
-			<td>https://ssai.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/ssai_configs</td>
-		</tr>
-		<tr>
-			<th rowspan="2">Headers</th>
-			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
-		</tr>
-		<tr>
-			<td>Content-Type: application/json</td>
-		</tr>
-	</tbody>
-</table>
-
-<p>Sample Body:</p>
-
-<pre class="line-numbers">
-<code class="language-json" translate="No">{
-  "name": "VMAP Ad Server",
-  "vmap_response_namespace": "bc",
-  "ad_tracking_sample_percentage": 100,
-  "ad_config": {
-    "expected_ad_response": "vast_3_0",
-    "disable_server_beacons": false,
-    "round_up_cue_points": false,
-    "template_url": {
-      "template": "http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}"
-    }
-  },
-  "discontinuities": {
-    "hls": [ "*" ]
-  }
-}</code></pre>
-
-<h4>Notes</h4>
-<ul>
-<li>
-  <code translate="No">ad_tracking_sample_percentage</code> determines the percentage of sessions that will be logged. It can any value from 0 (disable logging) to 100 (log all sessions).
-</li>
-</ul>
-
-<h3 id="Get_ad_configuration_details">Get ad configuration details</h3>
-
-<p>For an account, get the ad configuration details by config Id.</p>
-
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<th>Method</th>
-			<td>GET</td>
-		</tr>
-		<tr>
-			<th>URL</th>
-			<td>https://ssai.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/ssai_configs/<span class="bcls-input">your ad config id</span></td>
-		</tr>
-		<tr>
-			<th rowspan="2">Headers</th>
-			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
-		</tr>
-		<tr>
-			<td>Content-Type: application/json</td>
-		</tr>
-	</tbody>
-</table>
-<details>
-	<summary>Sample response:</summary>
-	
-	<pre class="line-numbers">
-	<code class="language-json" translate="No">{
-		"name": "VMAP Ad Server",
-		"vmap_response_namespace": "bc",
-		"config_id": "2ecc6beb-d6a4-4deb-a78e-37ac27e0f883",
-		"account_id": "57838016001",
-		"created_timestamp": "2017-07-24T19:28:34.976878586Z",
-		"updated_timestamp": "2017-07-24T19:28:34.976878586Z",
-    "ad_tracking_sample_percentage": 100,
-		"ad_config": {
-			"expected_ad_response": "dfp_ad_rules",
-			"disable_server_beacons": false,
-			"template_url": {
-					"template": "http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}"
-			}
-		},
-		"beacon_templates": [
-				{
-					"type": "content_start",
-					"template_url": {
-						"template": "https://myserver.com/beaconRX/{{metadata.video_id}}/load?position=load&amp;sid={{system.xfp.unique_user_id}}&amp;jid={{metadata.video_id}}&amp;rnd32={{sytem.random_number_32}}&amp;bid={{system.uuid}}&amp;t={{system.timestamp_utc}}&amp;ua={{system.user_agent}}&amp;ip={{system.ip_address}}&amp;ref={{system.referer}}"
-					}
-				},
-				{
-					"type": "content_midpoint",
-					"template_url": {
-						"template": "https://myserver.com/beaconRX/{{metadata.video_id}}/load?position=load&amp;sid={{system.xfp.unique_user_id}}&amp;jid={{metadata.video_id}}&amp;rnd32={{sytem.random_number_32}}&amp;bid={{system.uuid}}&amp;t={{system.timestamp_utc}}&amp;ua={{system.user_agent}}&amp;ip={{system.ip_address}}&amp;ref={{system.referer}}"
-					}
-				},
-				{
-					"type": "ad_start",
-					"template_url": {
-						"template": "https://myserver.com/beaconRX/{{metadata.video_id}}/load?position=load&amp;sid={{system.xfp.unique_user_id}}&amp;jid={{metadata.video_id}}&amp;rnd32={{sytem.random_number_32}}&amp;bid={{system.uuid}}&amp;t={{system.timestamp_utc}}&amp;ua={{system.user_agent}}&amp;ip={{system.ip_address}}&amp;ref={{system.referer}}"
-					}
-				},
-				{
-					"type": "content_complete",
-					"template_url": {
-						"template": "https://myserver.com/beaconRX/{{metadata.video_id}}/load?position=load&amp;sid={{system.xfp.unique_user_id}}&amp;jid={{metadata.video_id}}&amp;rnd32={{sytem.random_number_32}}&amp;bid={{system.uuid}}&amp;t={{system.timestamp_utc}}&amp;ua={{system.user_agent}}&amp;ip={{system.ip_address}}&amp;ref={{system.referer}}"
-					}
-				}
-			],
-			"discontinuities": {
-				"dash": [
-					"*"
-				],
-				"hls": [
-					"*"
-				]
-			},
-			"extend_beacon_guard_ttl": true
-		}
-	}</code></pre>
-</details>
-
-<h3 id="Update_an_ad_configuration">Update an ad configuration</h3>
-
-<p>Update an ad configuration by config Id.</p>
-
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<th>Method</th>
-			<td>PUT</td>
-		</tr>
-		<tr>
-			<th>URL</th>
-			<td>https://ssai.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/ssai_configs/<span class="bcls-input">your ad config id</span></td>
-		</tr>
-		<tr>
-			<th rowspan="2">Headers</th>
-			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
-		</tr>
-		<tr>
-			<td>Content-Type: application/json</td>
-		</tr>
-		<tr>
-			<th>Sample Body</th>
-			<td>
-			<pre>
-<code class="language-json" translate="No">{
-    "name": "VMAP Ad Server - updated"
-}</code></pre>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
-<details>
-	<summary>Sample response:</summary>
-	
-	<pre class="line-numbers">
-	<code class="language-json" translate="No">{
-		"name": "VMAP Ad Server - updated",
-		"vmap_response_namespace": "bc",
-		"config_id": "2ecc6beb-d6a4-4deb-a78e-37ac27e0f883",
-		"account_id": "57838016001",
-		"created_timestamp": "2017-07-24T19:28:34.976878586Z",
-		"updated_timestamp": "2017-07-24T19:28:34.976878586Z",
-		"ad_config": {
-			"expected_ad_response": "dfp_ad_rules",
-			"disable_server_beacons": false,
-			"template_url": {
-				"template": "http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}"
-			}
-		}
-	}</code></pre>
-</details>
-</section>
-
-<section class="bcls-section">
-<h2 id="Configuration_field_details">Configuration field details</h2>
-
-<p>This table defines the ad configuration fields used within the body section of a request.</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code translate="No">name</code></td>
-			<td>String</td>
-			<td>Human readable name</td>
-		</tr>
-		<tr>
-			<td><code translate="No">vmap_response_namespace</code></td>
-			<td>String</td>
-			<td>Adjusts the VMAP output to use the legacy Unicorn Once namespace format or to use the new Brightcove namespace format.<br />
-			<br />
-			Values: <code translate="No">uo</code>, <code translate="No">bc</code> Default: <code translate="No">bc</code></td>
-		</tr>
-		<tr>
-			<td><code translate="No">description</code></td>
-			<td>String</td>
-			<td>Human readable description</td>
-		</tr>
-		<tr>
-			<td><code translate="No">ad_config.expected_ad_response</code></td>
-			<td>String</td>
-			<td>Which tech to use to parse the response. <sup><a href="#n1"> [1]</a></sup><br />
-			<br />
-			Values:
-			<ul>
-				<li><code translate="No">dfp_ad_rules</code></li>
-				<li><code translate="No">dfp_vmap</code></li>
-				<li><code translate="No">smart_xml</code></li>
-				<li><code translate="No">vast_3_0</code></li>
-			</ul>
-			</td>
-		</tr>
-		<tr>
-			<td><code translate="No">ad_config.disable_server_beacons</code></td>
-			<td>Boolean</td>
-			<td>Flags whether to disable the server side firing of ad impressions/beacons<br />
-			<br />
-			When set to <code translate="No">true</code>, SSAI will not fire any beacons server-side and will include all beacons in the VMAP output<br />
-			<br />
-			When set to <code translate="No">false</code>, SSAI will fire the beacons it is able to server-side and include any it is not able to in the VMAP output</td>
-		</tr>
-		<tr>
-			<td><code translate="No">ad_config.round_up_cue_points</code></td>
-			<td>Boolean</td>
-			<td>Flags whether to round up to the next keyframe when choosing a nearby position for inserting ads.<br />
-			<br />
-			Default: <code translate="No">false</code>, which chooses the closest keyframe to the desired ad position.</td>
-		</tr>
-		<tr>
-			<td><code translate="No">ad_config.template_url.template</code></td>
-			<td>String</td>
-			<td>Ad tag template. Available variables described in a later section.</td>
-		</tr>
-		<tr>
-			<td><code translate="No">ad_config.template_url.defaults</code></td>
-			<td>Object</td>
-			<td>Map of String to String defining the default to use in the case where a url param is not provided.<br />
-			<br />
-			Can be a literal <code translate="No">{ "url.foo": "SomeString" }</code><br />
-			<br />
-			Or reference another variable <code translate="No">{ "url.foo": "{{ metadata.title_id }}" }</code></td>
-		</tr>
-		<tr>
-			<td><code translate="No">discontinuities.dash</code> <sup><a href="#n2"> [2]</a></sup></td>
-			<td>[]String</td>
-			<td>Controls which versions of dash to deliver Multi Period Dash manifests.<br />
-			<br />
-			Set to <code translate="No">["*"]</code> to deliver multi-period dash for all versions<br />
-			<br />
-			Empty list for never<br />
-			<br />
-			Example: <code translate="No">["live-timeline"]</code> to deliver for live-timeline but not for hbbtv</td>
-		</tr>
-		<tr>
-			<td><code translate="No">discontinuities.hls</code> <sup><a href="#n2"> [2]</a></sup></td>
-			<td>[]String</td>
-			<td>Controls which versions of hls to deliver with discontinuities.<br />
-			<br />
-			Set to <code translate="No">["*"]</code> to delivery with discontinuities in all versions of HLS<br />
-			<br />
-			Empty list for never<br />
-			<br />
-			Example: <code translate="No">["v4","v5"]</code> to deliver for v4 &amp; v5 but not for v3</td>
-		</tr>
-		<tr>
-			<td><code translate="No">beacon_templates</code></td>
-			<td>Array</td>
-			<td>An array of beacons to fire (example: 3rd-party beacons)</td>
-		</tr>
-		<tr>
-			<td><code translate="No">beacon_templates[].type</code></td>
-			<td>String</td>
-			<td>
-			<p>Type of beacon to fire. Values:</p>
-
-			<ul>
-				<li><code translate="No">content_start</code></li>
-				<li><code translate="No">content_first_quartile</code></li>
-				<li><code translate="No">content_midpoint</code></li>
-				<li><code translate="No">content_third_quartile</code></li>
-				<li><code translate="No">content_complete</code></li>
-				<li><code translate="No">content_quartiles</code></li>
-				<li><code translate="No">content_interval</code></li>
-				<li><code translate="No">ad_start</code></li>
-				<li><code translate="No">ad_first_quartile</code></li>
-				<li><code translate="No">ad_midpoint</code></li>
-				<li><code translate="No">ad_third_quartile</code></li>
-				<li><code translate="No">ad_complete</code></li>
-				<li><code translate="No">ad_quartiles</code></li>
-				<li><code translate="No">ad_break_start</code></li>
-				<li><code translate="No">ad_break_end</code></li>
-				<li><code translate="No">segment_start</code></li>
-				<li><code translate="No">segment_end</code></li>
-				<li><code translate="No">on_load</code></li>
-			</ul>
-			</td>
-		</tr>
-		<tr>
-			<td><code translate="No">beacon_templates[].template_url.template</code></td>
-			<td>String</td>
-			<td>Beacon URL template</td>
-		</tr>
-		<tr>
-			<td><code translate="No">extend_beacon_guard_ttl</code></td>
-			<td>Boolean</td>
-			<td>Sets the length of the Beacon Guard TTL (Time to live) to the length of the Content’s Session TTL. Otherwise, the default is 1 minute.</td>
-		</tr>
-	</tbody>
-</table>
+<p>The items inside the double curly braces are variables, also called ad macros, which Brightcove Live will replace with values, if they exist, when it sends the ad request.</p>
 
 <aside class="bcls-aside bcls-aside--information">
-<p>The following notes refer to the fields in the table above.</p>
-
-<p id="n1"><sup>[1]</sup> When the <code translate="No">expected_ad_response</code> is set to <code translate="No">vast_3_0</code>, SSAI makes one VAST call for each ad cue point defined in Video Cloud. For VMAP and ad rules, SSAI makes requests based on the defined ad breaks in the initial ad response.</p>
-
-<p id="n2"><sup>[2]</sup> Discontinuity tags indicate a change in frame rate encoding between content video and ad segments. They tell the system to reconstruct the rendering chain. For scalable SSAI, the video player needs to be able to play HLS with Discontinuity tags and MPEG DASH containing multiple periods.</p>
+  <p>Notes:</p>
+  <ul>
+    <li>The variables that will be useful depend on the ad server.</li>
+    <li>Brightcove URI encodes any value being inserted into the ad server URL.</li>
+    <li>If there are several values for one key, the encoded variables won't be readable by the ad server. This is because of the URI encoding.</li>
+  </ul>
 </aside>
-</section>
 
-<section class="bcls-section">
-<h2 id="Ad_variables">Ad variables</h2>
-
-<p>Variables in the <strong>template url</strong> are identified by double curly braces (<code translate="No">{{ … }}</code>) with optional whitespace before and after the variable path. All variables are prefixed by one of three namespaces:</p>
+<p>Ad macro values can be supplied in following ways:</p>
 
 <ul>
-	<li><a href="#System_variables">system</a></li>
-	<li><a href="#URL_variables">url</a></li>
-	<li><a href="#Metadata_variables">metadata</a></li>
+	<li><a href="#Using_header_information">Using header information</a></li>
+	<li><a href="#Appending_the_URL">Appending the URL</a></li>
+	<li><a href="#Adding_URLs_dynamically">Adding URLs dynamically</a></li>
+	<li><a href="#Using_manual_cue_points">Using manual cue points</a></li>
 </ul>
 
-<h3 id="System_variables">System variables</h3>
+<h3 id="Using_header_information">Using header information</h3>
 
-<p>System variables are provided by the SSAI system and can be information about the end user or helper variables to generate random values. The values must be URI-encoded before being inserted into the URL templates.</p>
+<p>Header information, detailed in the <a href="#Ad_configuration_variables">Ad configuration variables</a> section above, is available for any request. Simply specify the variables you want with the appropriate key names in your ad configuration.</p>
 
-<p>System variables are identified as: <code translate="No">{{system.*}}</code></p>
+<h3 id="Appending_the_URL">Appending the URL</h3>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code translate="No">ad.position_time</code></td>
-			<td>The time in seconds of the Cue Point that triggered the ad request; Only available for the VAST ad response type</td>
-		</tr>
-    <tr>
-			<td><code translate="No">ip_address</code></td>
-			<td>End User's IP Address</td>
-		</tr>
-		<tr>
-			<td><code translate="No">random_number_32</code></td>
-			<td>Random 32-bit integer</td>
-		</tr>
-		<tr>
-			<td><code translate="No">random_guid</code></td>
-			<td>Random UUID</td>
-		</tr>
-		<tr>
-			<td><code translate="No">referer</code></td>
-			<td>End User's Referer header value</td>
-		</tr>
-		<tr>
-			<td><code translate="No">timestamp_utc</code></td>
-			<td>Current time as a unix timestamp</td>
-		</tr>
-		<tr>
-			<td><code translate="No">unique_user_id</code></td>
-			<td>MD5(ip_address + user_agent)</td>
-		</tr>
-		<tr>
-			<td><code translate="No">unix_timestamp</code></td>
-			<td>Current time as a unix timestamp (seconds)</td>
-		</tr>
-		<tr>
-			<td><code translate="No">user_agent</code></td>
-			<td>End User's User-Agent header value</td>
-		</tr>
-		<tr>
-			<td><code translate="No">uuid</code></td>
-			<td>Random uuid</td>
-		</tr>
-		<tr>
-			<td><code translate="No">x_forwarded_for</code></td>
-			<td>End User's X-Forwarded-For header value</td>
-		</tr>
-		<tr>
-			<td><code translate="No">xfp.correlator</code></td>
-			<td>Random 64-bit Integer</td>
-		</tr>
-		<tr>
-			<td><code translate="No">xfp.ip_address</code></td>
-			<td>End User's IP Address</td>
-		</tr>
-		<tr>
-			<td><code translate="No">xfp.unique_user_id</code></td>
-			<td>MD5(ip_address + user_agent)</td>
-		</tr>
-		<tr>
-			<td><code translate="No">xfp.scor</code></td>
-			<td>Random 64-bit Integer</td>
-		</tr>
-	</tbody>
-</table>
-
-<h3 id="URL_variables">URL variables</h3>
-
-<p>Query Params provided on the entry point VMAP/Manifest are available under the <code translate="No">url</code> namespace. Unlike variables under other namespaces, these params are not url encoded when inserting into the template. If variable values need to be url encoded going to the ad provider, they will need to be double url encoded on the entry point url.</p>
-
-<p>URL variables are identified as: <code translate="No">{{url.*}}</code></p>
-
-<h3 id="Metadata_variables">Metadata variables</h3>
-
-<p>Metadata variables are those that describe the content video, derived from both Video Cloud and Dynamic Delivery data sources. The values are URL encoded before being inserted into the URL templates.</p>
-
-<p>Metadata variables are identified as: <code translate="No">{{metadata.*}}</code></p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code translate="No">ad_keys</code></td>
-			<td>Free form text string that can be added and edited in the Video Cloud Studio Media module</td>
-		</tr>
-		<tr>
-			<td><code translate="No">custom_fields.{field_name}</code></td>
-			<td>Video Cloud custom fields</td>
-		</tr>
-		<tr>
-			<td><code translate="No">long_description</code></td>
-			<td>Video Cloud long description</td>
-		</tr>
-		<tr>
-			<td><code translate="No">name</code></td>
-			<td>Video Cloud video name</td>
-		</tr>
-		<tr>
-			<td><code translate="No">reference_id</code></td>
-			<td>Video Cloud reference id</td>
-		</tr>
-		<tr>
-			<td><code translate="No">tags</code></td>
-			<td>Comma separated list of the Video Cloud tags for the video</td>
-		</tr>
-		<tr>
-			<td><code translate="No">title.duration</code></td>
-			<td>Duration of the content in seconds</td>
-		</tr>
-		<tr>
-			<td><code translate="No">title.id</code></td>
-			<td>Dynamic Delivery title id</td>
-		</tr>
-		<tr>
-			<td><code translate="No">title.name</code></td>
-			<td>Dynamic Delivery title name</td>
-		</tr>
-		<tr>
-			<td><code translate="No">video_id</code></td>
-			<td>Video Cloud video id</td>
-		</tr>
-		<tr>
-			<td colspan="2"><em>Other Video Cloud key/value pairs would be here as well</em></td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="Entrypoint_URL_parameters">Entrypoint URL parameters</h2>
-
-<p>There are a handful of query parameters that can be added to the SSAI entry point URL (VMAP or manifest) in order to tweak some behaviors:</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th width="25%">Parameter</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code translate="No">?rule=sd-only</code></td>
-			<td>Filters out any video rendition that has a height less than the threshold set in the Account Configuration</td>
-		</tr>
-		<tr>
-			<td><code translate="No">?rule=discos-enabled</code></td>
-			<td>Enable Playback with Discontinuities in HLS &amp; MultiPeriods in Dash. Takes precedence over discontinuities setting in Playback Config</td>
-		</tr>
-		<tr>
-			<td><code translate="No">?rule=discos-disabled</code></td>
-			<td>Disable Playback with Discontinuities in HLS &amp; MultiPeriods in Dash. Takes precedence over discontinuities setting in Playback Config</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="Configuration_notes">Configuration notes</h2>
-
-<ol>
-	<li>Preloading ads should not be done with SSAI. The reason for this is that if you preload the player will report an ad impression and probably the first quartile beacons before the video is played. This could lead to inaccurate ad analytics. If you configure SSAI in Studio, this will automatically be done, but if you happen to setup SSAI manually you need to be aware of this issue.</li>
-	<li>If the web player is using SSAI, and one of your motivations for doing so is to work around ad blockers, you should use server-side beacons. Client-side beacons should not be used as they will be blocked.</li>
-</ol>
-</section>
-
-<section class="bcls-section">
-<h2 id="Client_side_macros">Client-side macros</h2>
-
-<p>Use the <code translate="No">page</code> prefix when you want to use client-side ad macros. These macros enable you to use variables in the VMAP and server URLs. For ad macro details, see the <a href="https://player.support.brightcove.com/plugins/advertising-ima3-plugin.html#Ad_macros_and_the_serverUrl">Ad macros and the serverURL</a> section of the Advertising with the IMA3 Plugin document.</p>
-<!-- <p>
-              When you prefix an Ad variable with , then a client-side macro will be appended to the end of the VMAP and SRC fields in the catalog response, when SSAI is being used. Then, the Brightcove player will run those strings through the client-side macro replacement logic.
-            </p> -->
-
-<p>Client-side macros are prefixed with: <code translate="No">{{page.*}}</code></p>
-
-<p>For example, to add the <code translate="No">document.referrer</code> and a <code translate="No">pageVariable</code> DOM window variable, you would prefix them with <code translate="No">page</code> in the ad template as follows:</p>
+<p>Additional session values can be appended to the URL for the live stream, like this:</p>
 
 <pre>
-<code class="language-html" translate="No">https://adserver.com/{{page.document.referrer}}/{{page.pageVariable.whateverIwant}}</code></pre>
+      <code class="language-http" translate="No">http://playback.bcovlive.io/e058d9f2737e18/us-west-2/NA/
+      playlist.m3u8<span class="bcls-highlight">?deviceid=123456&amp;sitesection=services</span>"</code></pre>
 
-<p>The Playback API returns <code translate="No">document.referrer</code> and <code translate="No">pageVariable.whateverIwant</code> appended to the VMAP and SRC URLs. The Brightcove player then runs through its client-side macro replacement logic to replace the appropriate values, before sending the request:</p>
+<h3 id="Adding_URLs_dynamically">Adding URLs dynamically</h3>
 
-<pre>
-<code class="language-html" translate="No">https://bolt-prefix/blah.vmap?document.referrer={document.referrer}&amp;pageVariable.whateverIwant={pageVariable.whateverIwant}</code></pre>
+<p>You can add URLs dynamically, using Javascript and the Brightcove Player API:</p>
+
+<pre class="line-numbers">
+      <code class="language-html" translate="No">&lt;!DOCTYPE html&gt;
+      &lt;body&gt;
+        &lt;video
+        id="myPlayerID"
+        data-video-id="5975635167001"
+        data-account="3737230870001"
+        data-player="tIG7lVKBm"
+        data-embed="default"
+        data-application-id
+        class="video-js"
+        controls
+        width="640"
+        height="360"&gt;&lt;/video&gt;
+        &lt;script src="//players.brightcove.net/3737230870001/tIG7lVKBm_default/index.min.js"&gt;&lt;/script&gt;
+
+        &lt;script type="text/javascript"&gt;
+        var player = videojs("myPlayerID");
+
+        player.one("loadstart", function(){
+          var sourceUrl = player.currentSource();
+          console.log(sourceUrl);
+          var liveUrlWithParams = sourceUrl.src + "?player_width={width}&amp;player_height={height}&amp;deviceid={deviceid}";
+
+          player.src([{
+            "type": "application/vnd.apple.mpegurl",
+            "src": liveUrlWithParams
+          }]);
+        });
+      &lt;/script&gt;
+
+      &lt;/body&gt;</code></pre>
+
+<p>Note that the key names in this example correspond to the variable names in the ad tag shown above.</p>
 </section>
 
 <section class="bcls-section">
-<h2 id="Ad_error_beacons">Ad error beacons</h2>
+<h2 id="Ad_configuration_variables">Ad configuration variables</h2>
 
-<p>VAST ad error beacons when using SSAI can be helpful for proactively finding and fixing problems with your ad workflow. For details, see the <a href="https://ssai.support.brightcove.com/vod/guides/ad-error-beacons-ssai.html">Ad Error Beacons with SSAI</a> document.</p>
+<p>Ad configuration variables, also known as beacons, can be used in requests to manage ad configurations. For details, see the <a href="/live-api/ssai/live-api-cue-points-and-ad-beacons-ssai.html#Beacons">Live API: Cue Points and Ad Beacons with SSAI</a> document.</p>
 </section>
+
+<section class="bcls-section">
+<h2 id="Using_manual_cue_points">Using manual cue points</h2>
+
+<p>Values for specific ad breaks can be sent with the manual cue point insertion request. For details, see the <a href="/live-api/ssai/live-api-cue-points-and-ad-beacons-ssai.html#Manual_cue_point_insertion">Live API: Cue Points and Ad Beacons</a> document.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Known_issues">Known issues</h2>
+
+<ul>
+	<li>SSAI requires that the live streaming video have an audio track.</li>
+	<li>If the VAST returned has the same ad ID, then the server will not request the ad content, even though the ad URL uses dynamic variables to make it a unique URL. This does <strong>not</strong> apply if you are using DFP for ads.</li>
+	<li>With DFP, while you can use the same ad ID, there still needs to be a different creative ID - in other words, you can't do a simple swap of the MediaFile.</li>
+	<li>
+	<p>If an ad break has a duration less than the MAX duration of the ad URL (min_ad_duration=0&amp;max_ad_duration=30000), if ad is returned longer than the ad break, the ad will not be played.</p>
+	</li>
+	<li>
+	<p>VPAID or clickable ads are not supported for <span translate="No">Brightcove Live SSAI</span>.</p>
+	</li>
+	<li>
+	<p>When an ad break has remaining time shorter than the segment seconds of the stream and a slate is displayed, the slate is displayed for its segment duration and the actual ad break will be longer than expected.</p>
+   <li>
+     <p>The above can cause that one of the following ad breaks, will be shrunk by the latency duration, to try to get the session back to the live edge.</p></li>
+	</li>
+	<li>The first time the ad is seen by our system, it will not play until it is transcoded and ready to deliver.</li>
+	<li>VMAP for Live SSAI is not currently supported.</li>
+</ul>
+</section>
+
+
 </article>
-
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
