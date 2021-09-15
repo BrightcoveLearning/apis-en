@@ -298,6 +298,11 @@ components:
           items:
             $ref: '#/components/schemas/IngestMediaAssetbody.textTracks'
           description: array of text_track maps
+        transcriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngestMediaAssetbody.captions'
+          description: array of auto captions to be generated
         audio_tracks:
           type: array
           items:
@@ -415,6 +420,136 @@ components:
         default:
           type: boolean
           description: sets the default language for captions/subtitles
+      example: [
+          {
+            "url": "https://learning-services-media.brightcove.com.s3.amazonaws.com/captions/bc_smart.vtt",
+            "srclang": "en",
+            "kind": "captions",
+            "label": "EN",
+            "default": true
+          }
+        ]
+    IngestMediaAssetbody.captions:
+      title: Ingest Media Asset Body.captions
+      description: >-
+        array of auto captions to be generated - see [Requesting Auto Captions](/dynamic-ingest/ingest-guides/requesting-auto-captions.html)
+      type: object
+      properties:
+        autodetect:
+          type: boolean
+          description: |-
+            `true` to auto-detect language from audio source.
+            `false`  to use srclang specifying the audio language.
+
+            **Note:**
+              - If `autodetect` is set to `true`, `srclang` must **not** be present
+              - If `autodetect` is set to `false`, and `srclang` is not present, the request will fail
+        default:
+          type: boolean
+          description: If true, srclang should be ignored and we will get captions for main audio, and the language will be determined from audio.
+          default: false
+        input_audio_track:
+          type: object
+          description: Defines the audio to extract the captions. Composed by language and variant (both required).
+          properties:
+            language:
+              type: string
+              description: BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.)
+              enum:
+                - af-ZA
+                - ar-AE
+                - ar-SA
+                - cy-GB
+                - da-DK
+                - de-CH
+                - de-DE
+                - en-AB
+                - en-AU
+                - en-GB
+                - en-IE
+                - en-IN
+                - en-US
+                - en-WL
+                - es-ES
+                - es-US
+                - fa-IR
+                - fr-CA
+                - fr-FR
+                - ga-IE
+                - gd-GB
+                - he-IL
+                - hi-IN
+                - id-ID
+                - it-IT
+                - ja-JP
+                - ko-KR
+                - ms-MY
+                - nl-NL
+                - pt-BR
+                - pt-PT
+                - ru-RU
+                - ta-IN
+                - te-IN
+                - tr-TR
+                - zh-CN
+            variant:
+              type: string
+              description: Specifies the variant to use.
+              enum:
+                - main
+                - alternate
+                - dub
+                - commentary
+                - descriptive
+        kind:
+          type: string
+          description: The kind of output to generate - currently the only value allowed is `captions`
+          default: captions
+          enum:
+            - captions
+        label:
+          type: string
+          description: user-readable title - defaults to the BCP-47 style language code 
+        srclang:
+          type: string
+          description: BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.)
+          enum:
+            - af-ZA
+            - ar-AE
+            - ar-SA
+            - cy-GB
+            - da-DK
+            - de-CH
+            - de-DE
+            - en-AB
+            - en-AU
+            - en-GB
+            - en-IE
+            - en-IN
+            - en-US
+            - en-WL
+            - es-ES
+            - es-US
+            - fa-IR
+            - fr-CA
+            - fr-FR
+            - ga-IE
+            - gd-GB
+            - he-IL
+            - hi-IN
+            - id-ID
+            - it-IT
+            - ja-JP
+            - ko-KR
+            - ms-MY
+            - nl-NL
+            - pt-BR
+            - pt-PT
+            - ru-RU
+            - ta-IN
+            - te-IN
+            - tr-TR
+            - zh-CN
       example: [
           {
             "url": "https://learning-services-media.brightcove.com.s3.amazonaws.com/captions/bc_smart.vtt",
