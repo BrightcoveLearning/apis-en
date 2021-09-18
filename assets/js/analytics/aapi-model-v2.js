@@ -241,7 +241,7 @@ var aapi_model = {
       urlparams: ['account', 'dimensions', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
       fields: ['ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
       filter_values: ['The date dimension is not used as a filter.'],
-      incompatible_dimensions: ['city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type',
+      incompatible_dimensions: [],
       samples: [{
         dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date'
       }, {
@@ -255,7 +255,7 @@ var aapi_model = {
       urlparams: ['account', 'dimensions', 'limit', 'offset', 'sort', 'fields', 'format', 'from', 'to'],
       fields: ['ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
       filter_values: ['The date_hour dimension is not used as a filter.'],
-      incompatible_dimensions: ['account', 'city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
+      incompatible_dimensions: [],
       samples: [{
         dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date_hour&from=-6h'
       }, {
@@ -359,7 +359,7 @@ var aapi_model = {
       description: 'In this topic, you will learn about the Analytics API player dimension. The player dimension provides analytics for video players.',
       from: '2011-01-01',
       urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
-      fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'player', 'player_load', 'player_name', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
+      fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player', 'player_load', 'player_name', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
       filter_values: ['player ids as a comma-delimited list'],
       incompatible_dimensions: ['city', 'destination_path', 'region', 'search_terms'],
       samples: [{
@@ -464,15 +464,45 @@ var aapi_model = {
       from: '2011-01-01',
       fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
     },
+    account__video__date: {
+      dimensions: ['account', 'video', 'date'],
+      from: '2011-01-01',
+      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
+    },
+    account__video__date_hour: {
+      dimensions: ['account', 'video', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
+    },
     account__player: {
       dimensions: ['account', 'player'],
       from: '2011-01-01',
       fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name']
     },
+    account__player__date: {
+      dimensions: ['account', 'player', 'date'],
+      from: '2011-01-01',
+      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'date','play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name']
+    },
+    account__player__date_hour: {
+      dimensions: ['account', 'player', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'date_hour','play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name']
+    },
     account__player__video: {
       dimensions: ['account', 'video', 'player'],
       from: '2011-01-01',
       fields: ['account', 'ad_mode_begin', 'ad_mode_complete', 'play_request', 'play_rate', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
+    },
+    account__player__video__date: {
+      dimensions: ['account', 'video', 'player', 'date'],
+      from: '2011-01-01',
+      fields: ['account', 'ad_mode_begin', 'ad_mode_complete', 'date', 'play_request', 'play_rate', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}', 'player', 'player_name']
+    },
+    account__player__video__date_hour: {
+      dimensions: ['account', 'video', 'player', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'play_request', 'play_rate', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}', 'player', 'player_name']
     },
     player__video: {
       dimensions: ['video', 'player'],
@@ -484,15 +514,45 @@ var aapi_model = {
       from: '2011-01-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'country', 'country_name']
     },
+    account__country__date: {
+      dimensions: ['account', 'country', 'date'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'country', 'country_name']
+    },
+    account__country__date_hour: {
+      dimensions: ['account', 'country', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'country', 'country_name']
+    },
     account__region: {
       dimensions: ['account', 'region'],
       from: '2011-01-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'region', 'region_name']
     },
+    account__region__date: {
+      dimensions: ['account', 'region', 'date'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'region', 'region_name']
+    },
+    account__region__date_hour: {
+      dimensions: ['account', 'region', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'region', 'region_name']
+    },
     account__city: {
       dimensions: ['account', 'city'],
       from: '2011-01-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'city', 'dma']
+    },
+    account__city__date: {
+      dimensions: ['account', 'city', 'date'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'city', 'dma']
+    },
+    account__city__date_hour: {
+      dimensions: ['account', 'city', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'city', 'dma']
     },
     account__country__region: {
       dimensions: ['account', 'country', 'region'],
@@ -554,15 +614,45 @@ var aapi_model = {
       from: '2011-01-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os']
     },
+    account__device_os__date: {
+      dimensions: ['account', 'device_os', 'date'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os']
+    },
+    account__device_os__date_hour: {
+      dimensions: ['account', 'device_os', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os']
+    },
     account__device_type: {
       dimensions: ['account', 'device_type'],
       from: '2011-01-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type']
     },
+    account__device_type__date: {
+      dimensions: ['account', 'device_type', 'date'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type']
+    },
+    account__device_type__date_hour: {
+      dimensions: ['account', 'device_type', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type']
+    },
     account__device_manufacturer: {
       dimensions: ['account', 'device_manufacturer'],
       from: '2011-01-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer']
+    },
+    account__device_manufacturer__date: {
+      dimensions: ['account', 'device_manufacturer', 'date'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer']
+    },
+    account__device_manufacturer__date_hour: {
+      dimensions: ['account', 'device_manufacturer', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer']
     },
     account__device_manufacturer__browser_type: {
       dimensions: ['account', 'device_manufacturer', 'browser_type'],
@@ -588,6 +678,16 @@ var aapi_model = {
       dimensions: ['account', 'browser_type'],
       from: '2011-01-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'browser_type']
+    },
+    account__browser_type__date: {
+      dimensions: ['account', 'browser_type', 'date'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'browser_type']
+    },
+    account__browser_type__date_hour: {
+      dimensions: ['account', 'browser_type', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'browser_type']
     },
     account__device_os__device_type: {
       dimensions: ['account', 'device_os', 'device_type'],
@@ -654,6 +754,16 @@ var aapi_model = {
       from: '2012-10-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'referrer_domain']
     },
+    account__referrer_domain__date: {
+      dimensions: ['account', 'referrer_domain', 'date'],
+      from: '2012-10-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'referrer_domain']
+    },
+    account__referrer_domain__date_hour: {
+      dimensions: ['account', 'referrer_domain', 'date_hour'],
+      from: '2012-10-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'referrer_domain']
+    },
     referrer_domain__source_type: {
       dimensions: ['referrer_domain', 'source_type'],
       from: '2012-10-01',
@@ -684,6 +794,16 @@ var aapi_model = {
       from: '2012-10-01',
       fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'search_terms', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'source_type']
     },
+    search_terms__source_type__date: {
+      dimensions: ['source_type', 'search_terms', 'date'],
+      from: '2012-10-01',
+      fields: ['ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'search_terms', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'source_type']
+    },
+    search_terms__source_type__date_hour: {
+      dimensions: ['source_type', 'search_terms', 'date_hour'],
+      from: '2012-10-01',
+      fields: ['ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'search_terms', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'source_type']
+    },
     account__source_type: {
       dimensions: ['account', 'source_type'],
       from: '2012-10-01',
@@ -693,6 +813,16 @@ var aapi_model = {
       dimensions: ['account', 'search_terms'],
       from: '2012-10-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'search_terms']
+    },
+    account__search_terms__date: {
+      dimensions: ['account', 'search_terms', 'date'],
+      from: '2012-10-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'search_terms']
+    },
+    account__search_terms__date_hour: {
+      dimensions: ['account', 'search_terms', 'date_hour'],
+      from: '2012-10-01',
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'search_terms']
     },
     account__search_terms__source_type: {
       dimensions: ['account', 'source_type', 'search_terms'],
@@ -897,7 +1027,7 @@ var aapi_model = {
     device_manufacturer__date: {
       dimensions: ['device_manufacturer', 'date'],
       from: '2011-01-01',
-      fields: ['device_manufacturer', 'ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+      fields: ['device_manufacturer', 'ad_mode_begin', 'ad_mode_complete', 'active_media', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
     device_type__date: {
       dimensions: ['device_type', 'date'],
@@ -907,7 +1037,7 @@ var aapi_model = {
     player__date: {
       dimensions: ['player', 'date'],
       from: '2011-01-01',
-      fields: ['player', 'player_name', 'ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+      fields: ['player', 'player_name', 'ad_mode_begin', 'ad_mode_complete', 'active_media', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
     referrer_domain__date: {
       dimensions: ['referrer_domain', 'date'],
