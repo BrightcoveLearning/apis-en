@@ -599,45 +599,6 @@ grandparent: Player Management API
     </section>
 
     <section class="bcls-section">
-    <h3 id="base_url">base_url (for IP restriction issues)</h3>
-
-    <p>Problems can occur when using IP restrictions with Brightcove Players used outside North America. When a Brightcove Player is asked to load a video from a Video Cloud account, it connects to the catalog at this address<strong>https://edge.api.brightcove.com/playback/v1/</strong>.</p>
-
-    <p>That Edge endpoint behaves in a way that can cause problems for IP restriction:</p>
-
-    <ul>
-      <li>When hitting Edge from WITHIN North America, it hits Edge directly, and Edge sees the user's IP address. It can either allow or deny access to the catalog as per the IP Restriction whitelist. This is desired functionality.</li>
-      <li>When hitting Edge from OUTSIDE North America, it goes via Cloudfront for load-balancing/local caching CDN reasons. That's important, because as a result of this, Edge sees the Cloudfront IP instead of the user's IP, and denies everyone, because Cloudfront isn't on the whitelist (and never should it be, because then anyone using Cloudfront would have access).</li>
-    </ul>
-
-    <p>To resolve this issue, you can configure the player to use an alternative Edge endpoint, <strong>edge-elb.api.brightcove.com</strong>. This change must be made to every player that needs to access the IP restricted account from outside North America.</p>
-
-    <aside class="bcls-aside bcls-aside--information">There is a downside to this approach. A very slight delay to the retrieval of cached content from outside of the US will be introduced because catalog requests will be going to Virginia rather than through Cloudfront's global network with local servers. It's likely that this will be barely noticeable.</aside>
-
-    <p>The actual configuration change involves setting a value for the Video Cloud <code translate="No">base_url</code>. Remember, this should ONLY be changed if IP restrictions are used with Brightcove Players outside of North America. For an existing player, you would use the following curl command that uses the <code translate="No">PATCH</code> HTTP method (you must substitute your data for the environment variables <code translate="No">$EMAIL</code>, <code translate="No">{account_id}</code> and <code translate="No">{player_id}</code>):</p>
-
-    <pre class="line-numbers">
-    <code class="language-bash" translate="No">curl
-    --header "Content-Type: application/json"
-    --user $EMAIL
-    --request PATCH
-    --data '{
-        "video_cloud": {
-      "base_url": "https://edge-elb.api.brightcove.com/playback/v1/"
-        }
-      }'
-    https://players.api.brightcove.com/v2/accounts/{account_id}/players/{player_id}/configuration</code></pre>
-
-    <p>If you are new to curl, the following documents will be of help:</p>
-
-    <ul>
-      <li><a href="https://apis.support.brightcove.com/player-management/getting-started/step-step-player-management.html">Step-by-Step: Player Management</a></li>
-      <li><a href="https://general.support.brightcove.com/developer/concepts-cors.html">Set up cURL</a></li>
-      <li><a href="https://apis.support.brightcove.com/general/use-postman-api-requests.html">Use Postman for HTTP Requests</a></li>
-    </ul>
-    </section>
-
-    <section class="bcls-section">
     <h3 id="breakpoints">breakpoints</h3>
 
     <p><code translate="No">breakpoints</code> information:</p>
