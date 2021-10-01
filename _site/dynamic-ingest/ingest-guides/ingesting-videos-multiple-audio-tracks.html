@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="This page describes how the basic samples for the new player are written. This includes details on basic authentication and how AJAX is used in the Player Management API samples.">
+  <meta name="description" content="Language audio tracks in your source videos can be preserved in your Video Cloud video renditions. Ingestion of multi-language audio tracks is supported through the Dynamic Ingest API only,">
   
-  <title>Setup for Player Management Samples</title>
+  <title>Ingesting Videos with Multi-Language Audio Tracks</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -70,15 +70,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
     
       
-        <li class="breadcrumb-item"><a href="/player-management/">Player management</a></li>
+        <li class="breadcrumb-item"><a href="/dynamic-ingest/">Dynamic ingest</a></li>
       
     
       
-        <li class="breadcrumb-item"><a href="/player-management/code-samples/">Code samples</a></li>
+        <li class="breadcrumb-item"><a href="/dynamic-ingest/ingest-guides/">Ingest guides</a></li>
       
     
       
-        <li class="breadcrumb-item active" aria-current="page">Setup for Player Management Samples</li>
+        <li class="breadcrumb-item active" aria-current="page">Ingesting Videos with Multi-Language Audio Tracks</li>
       
     
   </nav>
@@ -2175,229 +2175,220 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Setup for Player Management Samples</h1>
+<h1>Ingesting Videos with Multi-Language Audio Tracks</h1>
 <article class="bcls-article">
-  <summary>This page describes how the basic samples for the new player are written. This includes details on basic authentication and how AJAX is used in the Player Management API samples.</summary>
-    <section class="bcls-section">
+  <summary>Language audio tracks in your source videos can be preserved in your Video Cloud video renditions. Ingestion of multi-language audio tracks is supported through the Dynamic Ingest API only,</summary>
+  <article class="bcls-article">
+    <p><a href="index.html">Return to the Documentation Index</a></p>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note: these topics apply <strong>only</strong> to Ooyala customers recently migrated to Video Cloud.</aside>
+  <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
+    <p>language audio tracks in your source videos can be preserved in your Video Cloud video renditions. Ingestion of multi-language audio tracks is supported through the <a href="https://support.brightcove.com/dynamic-ingest-api">Dynamic Ingest API</a> <strong>only</strong>,</p>
+
+    <p>For general information on how to ingest videos using the API, please see the <a href="https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery">Overview of the Dynamic Ingest API</a>.</p>
+
+    <h4>Notes and Limitations</h4>
+    <ul>
+      <li>You must input only <a href="https://www.loc.gov/standards/iso639-2/php/code_list.php">ISO 639-2 three letter codes</a>, using only Terminology and not <strong>Bibliography</strong> codes.</li>
+      <li>When no supplied language codes are matched with the source audio, we will process the default language and tag it with supplied language code</li>
+      <li>If you do specify a Bibliography language code and it matches a source track, we will attach the language code to that track, but you should <strong><em>always</em></strong> use <strong>Terminology</strong> language codes.</li>
+      <li>When multiple tracks are specified as <code>default</code> we will use the first one as the default</li>
+      <li>If you specify a non-English track as default, but no audio information is supplied about the track, we will tag it as "eng".</li>
+      <li>There is limit of 100 jobs that can be in the processing queue (unless you specify <a href="http://support.brightcove.com/dynamic-ingest-api-sample-ingesting-low-priority-videos-dynamic-delivery">Low Priority</a> processing). If you are adding a large number of audio tracks, you may hit this limit, and requests will fail until the processing queue falls below 100. See <a href="http://support.brightcove.com/fallback-retry-strategy">Fallback/Retry Strategy</a> for more details.</li>
+      <li>
+        Not all audio service types are supported: only the following types may be used:
+        <ul>
+          <li><code>main</code></li>
+          <li><code>alternate</code></li>
+          <li><code>commentary</code></li>
+          <li><code>dub</code></li>
+          <li><code>descriptive</code></li>
+        </ul>
+      </li>
+      <li>When you add eng &gt; main and eng &gt; commentary tracks during ingestion and the source contain eng with no audio service type, the source audio will be missing in the output renditions.</li>
+      <li>If you include two tracks with the same language code, and specify one as <code>variant</code> and provide no service type for the other, the ingest will fail.</li>
+      <li>When a video with a single audio track is replaced by a video with multiple language audio tracks, the track for the original single language will also be included in the renditions, with its original language identifier.</li>
+      <li>Both multiple audio tracks within the source video and additional separate audio files can be used for multiple audio tracks. Video Cloud does not store audio masters, however - separate audio files used as alternate audio tracks must be hosted on public URLs.</li>
+      <li>By default, external audio tracks will be merged with those contained in the video. If instead you want to replace the audio tracks contained in the video, you can set the <code>merge_with_existing</code> flag to <code>false</code>.</li>
+      <li>Ingest will <strong>not</strong> fail the job for any master track that is not part of the media info and that track will be skipped.</li>
+      <li>For the master audio tracks input, any one of the languages or the variants can be passed as well. In that case we will look for that in media info and skip it if not present.</li>
+      <li>Where the language or variant for a track is not specified in the request, we will default to <code>en</code> for the language, and <code>main</code> for the variant.</li>
+    </ul>
+  </section>
+
     
-    <p>In the Step-by-Step: Player Management document you used curl statements to interact with the API. When an API call was made you were interactively prompted for a password. While this works well for curl, this kind of interactive authentication is not feasible when building an application.</p>
-    
-    <p>Here you will learn how you make the API requests using JavaScript and XMLHttpRequest - also known as AJAX - to build web clients for player management operations</p>
-    
-    <p>Because the Player Management API is <a href="https://general.support.brightcove.com/developer/concepts-cors.html">CORS-enabled</a> and allows basic authentication using your Brightcove login credentials, it is possible to make API requests directly from a web page, as we do in Player Management API samples. Brightcove's other RESTful APIs require authentication via <a href="/oauth/index.html">OAuth</a>. Since the API used to retrieve access tokens is not CORS-enabled (nor are the APIs themselves), you must make requests through a server-side app. See <a href="/getting-started/learning-guide-using-rest-apis.html">Using the REST APIs</a> for a guide to building hybrid apps with a web UI and proxy to access the REST APIs. This is the approach we recommend for apps using the Player Management API in production as well, because it is more secure, sending no credentials over HTTP connections.</p>
-    
-    <aside class="bcls-aside bcls-aside--warning">
-    <p>The sample apps referred to on this page are meant as a way for you to explore the basics of the Player Management API. They are not meant to be enterprise ready, deployable apps. For instance, form validation is not exhaustive and passwords are sent NOT using HTTPS.</p>
-    </aside>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="Basic_authentication">Basic authentication</h2>
-    
-    <p>In the Step-by-Step: Player Management document you used curl statements to interact with the API. When an API call was made you were interactively prompted for a password. While this works well for curl, this kind of interactive authentication is not feasible when building an application.</p>
-    
-    <p>You can use basic authentication when building an app. In the header you need to send the credentials, encrypted in a base-64 encoded ASCII string. You can use the JavaScript <code translate="No">btoa()</code> method to do the encoding. Assuming <code translate="No">account_username</code> and <code translate="No">account_password</code> are populated from, for example a form, the Authorization header would appear as follows:</p>
-    
-    <pre class="line-numbers">
-    <code class="language-javascript" translate="No"> "Authorization": "Basic " + btoa(account_username + ":" + account_password),</code></pre>
-    </section>
-    
-    <section id="ajax" class="bcls-section">
-    <h2>AJAX</h2>
-    
-    <aside class="bcls-aside bcls-aside--information">
-    <p>In this section, you will learn how to use AJAX using <a href="//jquery.org">jQuery</a>. jQuery encapsulates the commands involved in making AJAX requests into an ajax() function, and so simplifies things for you as a developer. However, jQuery is not required to AJAX, and in the section that follows, we'll show you how to make AJAX requests with plain JavaScript.</p>
-    </aside>
-    
-    <p>Instead of using curl statements these samples will use JavaScript to communicate with the API. This means using AJAX to issue the request to the API. A specific example request might look something like this:</p>
-    
-    <pre class="line-numbers">
-    <code class="language-javascript" translate="No">$.ajax({
-        type: "DELETE",
-        headers: {
-        "Authorization": "Basic " + btoa("username:password"),
-        "Content-Type": "application/json"
+  <section class="bcls-section">
+      <h2 id="using_dynamic_ingest_api">Using the Dynamic Ingest API</h2>
+      <p>There are two steps to ingesting a video using the Dynamic Ingest API</p>
+      <ol>
+        <li><a href="#create_video">Create a video object</a> in Video Cloud using the CMS API</li>
+        <li><a href="#ingest_video">Ingest the video</a> using the Dynamic Ingest API</li>
+      </ol>
+      <section class="bcls-subsection">
+        <h3 id="create_video">Create the video object</h3>
+        <p>To create a new video object in your Video Cloud video library, make <code>POST</code> request to:</p>
+<pre class=" language-http"><code class=" language-http"><span class="token header-name keyword">https:</span>//cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos</code></pre>
+        <p>You must include a request body that contains at least the video <code>name</code>:</p>
+<pre class="line-numbers language-json"><code class=" language-json"><span class="token punctuation">{</span>
+<span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My Video Title"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+        <p>You can also include additional video metadata (see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/CreateVideo">CMS API Reference</a>), but these can also be added later in Studio or via the CMS API.</p>
+        <p>The response will be a JSON object containing many video properties. The first one will be the video <code>id</code>, and you will need this value to make the ingest request.</p>
+      </section>
+      <section class="bcls-subsection">
+        <h3 id="ingest_video">Ingest the video</h3>
+        <p>After you create the video object and retrieve its <code>id</code>, you can ingest the video to Video Cloud by sending a <code>POST</code> request to:</p>
+<pre class=" language-http"><code class=" language-http"><span class="token header-name keyword">https:</span>//ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/ingest-requests</code></pre>
+        <p>The request body will look something like this:</p>
+<pre class="line-numbers language-json"><code class=" language-json">{
+  "master": {
+    "url": "http://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4",
+    "audio_tracks": [
+      {
+        "language": "eng",
+        "variant": "main"
+      },
+      {
+        "language": "fra",
+        "variant": "main"
+      },
+      {
+        "language": "spa",
+        "variant": "main"
+      }
+    ]
+  },
+  "profile": "Multiplatform Extended with MP4",
+  "audio_tracks": [
+    {
+      "merge_with_existing": true,
+      "masters": [
+        {
+          "url": "http://learning-services-media.brightcove.com/audio/alternate-en.m4a",
+          "language": "eng",
+          "variant": "alternate"
         },
-        url: "https://players.api.brightcove.com/v2/accounts/123456789/players/478772a5-a2f2-44c6-a26b-2d7234bd97f5",
-        success: ajaxSuccess,
-        error: ajaxError
-    });</code></pre>
-    
-    <p>Associated <code translate="No">success</code> and <code translate="No">error</code> handlers could look something like this:</p>
-    
-    <pre class="line-numbers">
-    <code class="language-javascript" translate="No">var ajaxSuccess = function (data) {
-        document.getElementById("jsonResponse").innerHTML = JSON.stringify(data,null,2);
-        };
-    
-        var ajaxError = function (data) {
-        console.log("error data: ");
-        console.log(data);
-    };</code></pre>
-    
-    <p>Of course, you don't want to hard code all the information in the AJAX call as shown above, so it makes sense to abstract the actual call to a function that is reusable, as shown here:</p>
-    
-    <pre class="line-numbers">
-    <code class="language-javascript" translate="No">var makeAjaxCall = function (callURL, callType, callData) {
-        if (callData) {
-            $.ajax({
-                type: callType,
-                headers: {
-                    "Authorization": "Basic " + btoa(account_username + ":" + account_password),
-                    "Content-Type": "application/json"
-                },
-                url: callURL,
-                data: JSON.stringify(callData),
-                success: ajaxSuccess,
-                error: ajaxError
-            });
-        } else {
-            $.ajax({
-            type: callType,
-            headers: {
-                "Authorization": "Basic " + btoa(account_username + ":" + account_password),
-                "Content-Type": "application/json"
-            },
-            url: callURL,
-            success: ajaxSuccess,
-            error: ajaxError
-            });
+        {
+          "url": "http://learning-services-media.brightcove.com/audio/commentary-es.m4a",
+          "language": "spa",
+          "variant": "commentary"
         }
-    };</code></pre>
-    <!-- <code data-gist-id="9216425" data-gist-hide-footer="true" data-gist-line="22-47"></code><br /> -->
-    
-    <aside class="bcls-aside bcls-aside--information">Separate calls are built if data needs to be passed with the API call. In the Ste-by-Step: Player Management document you have seen both use cases. Publishing a player does not require any data to be passed, whereas creating a player with a media source does require passing data.</aside>
-    
-    <p>You are then ready to call the function. In the following example the <code translate="No">account_id</code>, <code translate="No">account_password</code> and <code translate="No">account_username</code> values are all extracted from a form.</p>
-    
-    <pre class="line-numbers">
-    <code class="language-javascript" translate="No">var getPlayerInfo = function () {
-        account_id = document.getElementById("account_id").value,
-        account_password = document.getElementById("account_password").value,
-        account_username = document.getElementById("account_username").value;
-        call_url = "https://players.api.brightcove.com/v2/accounts/" + account_id + "/players";
-        makeAjaxCall(call_url, "GET", null);
-    };</code></pre>
-    <!-- <code data-gist-id="9216425" data-gist-hide-footer="true" data-gist-line="49-55"></code><br /> -->
-    
-    <p>If you have completed the Step-by-Step: Player Management document you know that some processes take multiple API calls, like creating and publishing a player. Also, the logic of some apps may require multiple API calls, like getting a list of all players to display, then deleting players the user marked. In these instances you will most likely need to alter your <code translate="No">success</code> handler to perform different logic based on which call was just successfully carried out. In these sample apps the implementation logic for these use cases will be implemented using a flag variable, <code translate="No">callPurpose</code>, and a <code translate="No">case</code> statement using that flag, as shown here:</p>
-    
-    <pre class="line-numbers">
-    <code class="language-javascript" translate="No">var ajaxSuccess = function (data) {
-        switch (callPurpose) {
-            case "getPlayers":
-                createCheckboxes(data);
-                watchCheckboxes();
-                break;
-            case "deletePlayer":
-                document.getElementById("jsonResponse").textContent += data;
-                break;
-        }
-    };</code></pre>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="AJAX_without_jquery">AJAX without jQuery</h2>
-    
-    <p>If you would rather not use jQuery, making AJAX requests is a little more complex, but not too much. Here is some sample code, with comments, to get you started:</p>
-    
-    <pre class="line-numbers">
-    <code class="language-javascript" translate="No">/**
-     * createRequest sets up requests, send them to makeRequest(), and handles responses
-     * @param  {string} type the request type
-     */
-    function createRequest(type) {
-        var options   = {},
-            baseURL = 'https://players.api.brightcove.com/v2/accounts/',
-            account_id = '1234567890',
-            // would be better to get these from form fields
-            // and not hardcode them
-            username = 'jane@myplace.com',
-            password = 'mypassword',
-            responseDecoded;
-    
-        // set credentials
-        options.client_id     = cid.value;
-        options.client_secret = secret.value;
-    
-        switch (type) {
-            case 'getPlayers':
-                options.url         = ipBaseURL + account_id + '/players';
-                options.requestType = 'GET';
-                options.username = username;
-                options.password = password;
-                makeRequest(options, function(response) {
-                    // use try catch in case something went wrong
-                    try {
-                        responseDecoded = JSON.parse(response);
-                        // now do whatever you want with the response
-                    }
-                    catch (e) {
-                        console.log('something went wrong - this was the JSON.parse error: ' + e);
-                    }
-                });
-                break;
-            // additional cases
-            default:
-                console.log('Should not be getting to the default case - bad request type sent');
-                break;
-        }
+      ]
     }
-    
-    /**
-     * send API request
-     * @param  {Object} options for the request
-     * @param  {String} options.url the full API request URL
-     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
-     * @param  {String} options.username username for the account
-     * @param  {String} options.password password for the account
-     * @param  {JSON} [options.requestBody] Data (if any) to be sent in the request body in the form of a JSON string
-     * @param  {Function} [callback] callback function that will process the response
-     */
-    function makeRequest(options, callback) {
-        var httpRequest = new XMLHttpRequest(),
-            response,
-            requestParams,
-            dataString,
-            // response handler
-            getResponse = function() {
-                try {
-                    if (httpRequest.readyState === 4) {
-                        // don't just check for status = 200
-                        // some requests return other 2xx codes
-                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
-                            response = httpRequest.responseText;
-                            // return the response to the callback
-                            callback(response);
-                        } else {
-                            alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                        }
-                    }
-                } catch (e) {
-                    alert('Caught Exception: ' + e);
-                }
-            };
-        /**
-         * set up request data
-         */
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open(options.requestType, options.url);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/json");
-        httpRequest.setRequestHeader("Authorization", "Basic " + btoa(options.username + ":" + options.password));
-        // open and send request
-        if (options.requestBody) {
-            httpRequest.send(options.requestBody)
-        } else {
-            httpRequest.send();
-        }
-    }</code></pre>
+  ]
+}</code></pre>
+        <p>In this example:</p>
+        <ul>
+          <li>The <code>master</code> &gt; <code>url</code> is the location of the source video file</li>
+          <li>The <code>master</code> &gt; <code>audio_tracks</code> provide information about the audio tracks embedded in the video</li>
+          <li>Note that the language codes should come from <a href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a></li>
+          <li>The <code>profile</code> is the name of the ingest profile to use - if you omit this, the default profile for the account will be used</li>
+          <li>The additional <code>audio_tracks</code> array contains information about separate, externally hosted audio files to be used as additional audio tracks</li>
+          <li><code>merge_with_existing</code> means "use the remote audio tracks in addition to the embedded ones" if <code>true</code> (or replace the embedded tracks with the remote ones if <code>false</code>)</li>
+          <li>
+            <p>The <code translate="No">variant</code> field describes the kind of audio track. The possible values, with standard meanings are:</p>
+            <ul>
+              <li><code translate="No">main</code> - the main track, usually the one muxed into the video file</li>
+              <li><code translate="No">alternate</code> - an alternate audio track</li>
+              <li><code translate="No">commentary</code> - an audio track that provides commentary on the video track</li>
+              <li><code translate="No">dub</code> - a track containing a dubbed version of spoken words in a different language</li>
+              <li><code translate="No">descriptive</code> - track is descriptive of the video content in some way</li>
+            </ul>
+            <aside class="bcls-aside bcls-aside--warning language-editable">Note that the <code translate="No">variant</code> field is optional.
+              <p><strong>Known limitation:</strong></p>
+              <p>If the actual audience tracks don't have <code translate="No">variant</code> in their own metadata, <strong>do not use it</strong> in the request. If it is present in the request, but not in the audio track metadata, the track will be skipped. When you are not sure, first try to ingest the file without <code translate="No">variant</code> as the system might be able to identify the tracks with the language-code you provide.</p>
+            </aside>
+          </li>
+        </ul>
+        <p>Additional notes:</p>
+        <ul>
+          <li>There are additional (all optional) fields for the ingest request, such as adding images and text tracks. See the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#operation/AccountsVideosIngestRequestsByAccountIdAndVideoIdPost">Dynamic Ingest API Reference</a> for full details.</li>
+          <li>You do not have to ingest all video assets at once. For instance, in the example above, you could just ingest the video with its embedded audio tracks first, and then submit a separate request to add the additional remote audio tracks.</li>
+        </ul>
+      </section>
     </section>
-    </article>
-    
+    <section class="bcls-section">
+      <h2 id="Multiple_audio_tracks_in_player">Multiple audio tracks in the Brightcove Player</h2>
+      <p>When you embed a video with multiple audio tracks in a Brightcove Player,the tracks will be available from a selector in the player control bar:</p>
+      <figure class="bcls-figure">
+        <img class="bcls-image" src="/en/staging/heritage-ooyala/images/sample_player_audio_tracks.png" alt="Audio Track Selector">
+        <figcaption class="bcls-caption--image">Audio Track Selector</figcaption>
+      </figure>
+    </section>
+  <!-- <section class="bcls-section">
+    <h2 id="Sample_request_bodies">Sample request bodies</h2>
+    <p>Below are some sample request bodies for different cases.</p>
+    <h3>Only master audio tracks</h3>
+<pre class="line-numbers"><code class="language-json">{
+"master": {
+"url": "https://mybucket.com/videos/video1.mp4",
+"audio_tracks": [
+{
+  "language": "eng",
+  "variant": "main"
+},
+{
+  "language": "fra",
+  "variant": "main"
+},
+{
+  "language": "spa",
+  "variant": "main"
+}
+]
+},
+}</code></pre>
+    <h3>Master audio tracks with multiple audio inputs</h3>
+<pre class="line-numbers"><code class="language-json">{
+"master": {
+"url": "https://mybucket.com/videos/video1.mp4",
+"audio_tracks": [
+  {
+      "language": "eng",
+      "variant": "main"
+  },
+  {
+      "language": "fra",
+      "variant": "main"
+  },
+  {
+      "language": "spa",
+      "variant": "main"
+  }
+]
+},
+"audio_tracks": {
+"merge_with_existing": true,
+"masters": [
+  {
+      "language": "eng",
+      "variant": "commentary",
+      "url": "https://mybucket.com/audio/video1-en-commentary.m4a"
+  },
+  {
+      "language": "fra",
+      "variant": "commentary",
+      "url": "https://mybucket.com/audio/video1-fr-commentary.m4a"
+  }
+]
+}
+}</code></pre>
+  </section> -->
+  <section class="bcls-section">
+      <h2 id="Audio_service_type">Audio service type</h2>
+      <p>Dolby audio codecs (ac-3 and eac-3) support including audio service type metadata. (AAC audio <strong>cannot</strong> contain service type metadata.)</p>
+      <p>The following service types can be specified for supported Dobly tracks:</p>
+      <ul>
+        <li><code>main</code></li>
+        <li><code>music_and_effects</code></li>
+        <li><code>visually_impaired</code></li>
+        <li><code>hearing_impaired</code></li>
+        <li><code>dialogue</code></li>
+        <li><code>commentary</code></li>
+        <li><code>emergency</code></li>
+        <li><code>voice_over</code></li>              </ul>
+    </section>
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -2413,7 +2404,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 28 Sep 2020
+  Page last updated on 01 Oct 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
