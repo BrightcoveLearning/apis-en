@@ -395,4 +395,125 @@ Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
       </details>
       <p>To check the state of the channel, see <a href="#get-channel">Get Channel section</a> above. Once the channel has been deleted, you should no longer see the channel info from get channel by id request.</p>
     </section>
+    <section class="bcls-section">
+      <h2 id="as_run_log">Get an As-Run log</h2>
+      <p>An <strong>as-run log</strong> provides a record of what content (including ads and bumpers) was actually transmitted by a Cloud Playout Channel during the previous day. As-run logs are useful for auditing purposes and record-keeping.</p>
+      </p>
+      <p>You can retrieve an as-run log for a channel in JSON, XML, or CSV format by sending a <code translate="No">GET</code> request to:</p>
+<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bc-input">{account_id}</span>/cp_channels/<span class="bc-input">{channel_id}</span>/as_run_logs?format=<span class="bcls-input">{format}</span></code></pre>
+      <p>The value of <code translate="No">format</code> must be <code translate="No">json</code> (default), <code translate="No">xml</code>, or <code translate="No">csv</code></p>
+      <h3>Notes</h3>
+      <ul>
+        <li>The log is constructed regardless of the current state of the channel.</li>
+        <li>The log provides previous day(24 hrs) record. Eg. If current date is <code translate="No">2021-09-22 05:30:00 UTC</code>, then as-run logging provides playback data of the channel from <code translate="No">2021-09-21 00:00:00 UTC</code> to <code translate="No">2021-09-22 00:00:00 UTC</code>.</li>
+        <li>
+          An asset in which a mid-roll is played is split and shown in the data as follows:
+          <ol>
+            <li>VOD asset</li>
+            <li>Mid-roll asset (played, for example, at 45 second)</li>
+            <li>VOD asset with <code translate="No">playhead_start_time = 00:00:45</code>, the position from which it continues.</li>
+          </ol>
+        </li>
+      </ul>
+      <details>
+        <summary>Sample log: JSON</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "account_id": "Account ID",
+  "channel_id": "62713ed768434ffbac9ce2ff974c9cb9",
+  "channel_name": "TestChannelName",
+  "from": "Query start time (UTC)",
+  "to": "Query end time (UTC)",
+  "events": [
+    {
+      "name": "Video Cloud Asset name",
+      "id": "Video cloud video ID",
+      "type": "LIVE | AD | VIDEO | PRE_ROLL_BUMPER | POST_ROLL_BUMPER | MIDROLL",
+      "start_time": "2021-07-30 00:00:00.0 UTC",
+      "end_time": "2021-07-30 01:00:00.0 UTC"
+    },
+    {
+      "name": "AD Placeholder",
+      "id": "Video cloud video ID",
+      "type": "AD",
+      "start_time": "2021-07-30 01:00:00.0 UTC",
+      "end_time": "2021-07-30 01:05:00.0 UTC"
+    },
+    {
+      "name": "Asset with a Midroll AD",
+      "id": "6246656690001",
+      "type": "VIDEO",
+      "start_time": "2021-07-30 01:05:00.0 UTC",
+      "end_time": "2021-07-30 01:10:00.0 UTC"
+    },
+    {
+      "name": "Asset with a Midroll AD",
+      "id": "6246656690001",
+      "type": "MIDROLL",
+      "start_time": "2021-07-30 01:10:00.0 UTC",
+      "end_time": "2021-07-30 01:10:30.0 UTC"
+    },
+    {
+      "name": "Asset with a Midroll AD",
+      "id": "6246656690001",
+      "type": "VIDEO",
+      "start_time": "2021-07-30 01:10:30.0 UTC",
+      "end_time": "2021-07-30 01:20:00.0 UTC",
+      "playhead_start_time": "00:05:00"
+    }
+  ]
+}</code></pre>
+      </details>
+      <details>
+        <summary>Sample log: XML</summary>
+<pre class="line-numbers"><code class="language-xml" translate="No"><as_run_log>
+  <account_id> Account ID </account_id>
+  <channel_id>62713ed768434ffbac9ce2ff974c9cb9</channel_id>
+  <channel_name>TestChannelName</channel_name>
+  <from>Query start time (UTC)</from>
+  <to>Query end time (UTC)</to>
+<events>
+<event>
+  <name>Video Cloud Asset name</name>
+  <id>Video cloud video ID</id>
+  <type> LIVE | AD | VIDEO | PRE_ROLL_BUMPER | POST_ROLL_BUMPER | MIDROLL </type>
+  <start_time>2021-07-30 00:00:00.0 UTC</start_time>
+  <end_time>2021-07-30 01:00:00.0 UTC</end_time>
+</event>
+<event>
+  <name>AD Placeholder</name>
+  <id>Video cloud video ID</id>
+  <type>AD</type>
+  <start_time>2021-07-30 01:00:00.0 UTC</start_time>
+  <end_time>2021-07-30 01:05:00.0 UTC</end_time>
+</event>
+<event>
+  <name>Asset with a Midroll AD</name>
+  <id>6246656690001</id>
+  <type>VIDEO</type>
+  <start_time>2021-07-30 01:05:00.0 UTC</start_time>
+  <end_time>2021-07-30 01:10:00.0 UTC</end_time>
+</event>
+<event>
+  <name>Asset with a Midroll AD</name>
+  <id>6246656690001</id>
+  <type>MIDROLL</type>
+  <start_time>2021-07-30 01:10:00.0 UTC</start_time>
+  <end_time>2021-07-30 01:10:30.0 UTC</end_time>
+</event>
+<event>
+  <name>Asset with a Midroll AD</name>
+  <id>6246656690001</id>
+  <type>VIDEO</type>
+  <start_time>2021-07-30 01:10:30.0 UTC</start_time>
+  <end_time>2021-07-30 01:20:00.0 UTC</end_time>
+  <playhead_start_time>00:05:00</playhead_start_time>
+</event>
+</events>
+</as_run_log></code></pre>
+      </details>
+      <details>
+        <summary>Sample response: CSV</summary>
+<pre class="line-numbers">account_id, channel_id, channel_name, from, to, event:name, event:id, event:type, event:start_time, event:end_time, event:playhead_start_time<code class="language-csv"></code></pre>
+      </details>
+    </section>
 </article>

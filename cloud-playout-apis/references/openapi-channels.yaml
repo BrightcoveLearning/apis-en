@@ -438,6 +438,51 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/as_run_logs':
+    get:
+      tags:
+        - Channels
+      summary: Get as run logs of a channel
+      description: "Provides an ability to retrieve a log of a prior day's events (in UTC 24 hours timeframe), allowing for auditing of aired content"
+      operationId: GetAsRunLogs
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ChannelId'
+        - $ref: '#/components/parameters/format'
+        - $ref: '#/components/parameters/download'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsRunLogs'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AsRunLogs'
+            text/csv:
+              schema:
+                type: string
+              example: >
+                account_id,channel_id,channel_name,from,to,event:name,event:id,event:type,event:start_time,event:end_time,event:playhead_start_time
+                6063799226732,af3e4e124e094368bd7542660c9865ec,test_channel,2021-09-27T00:00:00Z,2021-09-28T00:00:00Z,Ad Placeholder,70700388925202,AD,2021-09-27T00:02:01Z,2021-09-27T00:04:11Z,
+                6063799226732,af3e4e124e094368bd7542660c9865ec,test_channel,2021-09-27T00:00:00Z,2021-09-28T00:00:00Z,4by3video,70700388925202,VIDEO,2021-09-27T00:04:11Z,2021-09-27T00:06:22Z,
+                6063799226732,af3e4e124e094368bd7542660c9865ec,test_channel,2021-09-27T00:00:00Z,2021-09-28T00:00:00Z,MI_rogue_nation_eng_aac,70700027119202,PRE_ROLL_BUMPER,2021-09-27T00:08:19Z,2021-09-27T00:09:49Z,
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/read
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
   /accounts/{account_id}/assets/{asset_type}:
     post:
       tags:
@@ -2117,6 +2162,95 @@ components:
         channel_updated_at: 2021-05-26 07:40:40 UTC
         channel_created_by: user@example.com
         channel_updated_by: user@example.com
+    GetAsRunEvent:
+      title: As run logs event
+      type: object
+      xml:
+        name: event
+      properties:
+        name:
+          type: string
+          description: video cloud asset name
+        id:
+          type: string
+          description: video cloud asset id
+        type:
+          type: string
+          description: asset type
+          enum:
+            - LIVE
+            - AD
+            - VIDEO
+            - PRE_ROLL_BUMPER
+            - POST_ROLL_BUMPER
+            - MIDROLL
+        start_time:
+          type: string
+          description: The time at which the asset has started.
+        end_time:
+          type: string
+          description: The time at which the asset has ended. This would be empty for ongoing events.
+        playhead_start_time:
+          type: string
+          description: This is available only when the asset had mid-roll cue points in it.
+    AsRunLogs:
+      title: AsRunLogsJsonObject
+      type: object
+      example:
+        account_id: "6061296220191"
+        channel_id: "af3e4ed87e092738bd7542660c3782ec"
+        channel_name: "test_channel"
+        from: "2021-09-27T00:00:00Z"
+        to: "2021-09-28T00:00:00Z"
+        events: [
+          {
+            "name": "Ad Placeholder",
+            "id": "70700388925202",
+            "type": "AD",
+            "start_time": "2021-09-27T00:02:01Z",
+            "end_time": "2021-09-27T00:04:11Z"
+          },
+          {
+            "name": "4by3video",
+            "id": "70700027118202",
+            "type": "VIDEO",
+            "start_time": "2021-09-27T00:04:11Z",
+            "end_time": "2021-09-27T00:06:22Z"
+          },
+          {
+            "name": "MI_rogue_nation_eng_aac",
+            "id": "70700027119202",
+            "type": "PRE_ROLL_BUMPER",
+            "start_time": "2021-09-27T00:08:19Z",
+            "end_time": "2021-09-27T00:09:49Z"
+          }
+        ]
+      properties:
+        account_id:
+          description: Video cloud account id
+          type: string
+        channel_id:
+          description: Id of the channel
+          type: string
+        channel_name:
+          description: Name of the channel
+          type: string
+        from:
+          description: Start date & time of the logs
+          type: string
+        to:
+          description: End date & time of the logs
+          type: string
+        events:
+          description: List of events between from & to
+          type: array
+          xml:
+            wrapped: true
+            name: events
+          items:
+            $ref: '#/components/schemas/GetAsRunEvent'
+      xml:
+        name: 'as_run_log'
     ImportableAssets:
       title: ImportableAssetsObject
       type: object
@@ -2793,11 +2927,12 @@ components:
     Type:
       name: type
       in: query
+      description: Cloud Playout Overlay Asset Type
       required: true
       style: form
       explode: false
       schema:
-        $ref: '#/components/schemas/AssetType'
+        $ref: "#/components/schemas/Type"
     AssetID:
       name: asset_id
       in: path
@@ -2842,6 +2977,28 @@ components:
       schema:
         type: integer
         default: 5
+    format:
+      name: as run logs format
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        default: json
+        enum:
+          - json
+          - xml
+          - csv
+    download:
+      name: download as run logs
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: boolean
+        default: true
   responses:
     '204':
       description: Item was deleted
