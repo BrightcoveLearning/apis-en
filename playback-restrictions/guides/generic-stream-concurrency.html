@@ -21,12 +21,16 @@ layout: staging
     <p>The frequency of the heartbeat defines how often the player makes mid-stream checks to see if the conditions for playback are still met. By default the frequency is set to 1 minute, but this can be changed.</p>
     <h3>Blocking streams</h3>
     <p>When the maximum number of concurrent streams is reached and the viewer, or someone with their account credentials, tries to open an additional stream, any new stream from that user identified as a different streaming location will be blocked.</p>
-    <p>A <strong>correlator identifier</strong> is used to define viewer streaming locations. By default, this correlator identifier will be assigned by the device. However, with a claim in the JWT, this can be overridden. The characteristics of this identifier are:</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="correlator_identifier">Correlator identifier</h2>
+    <p>A <a href="#correlator_identifier">correlator identifier</a> is used to define viewer streaming locations. The characteristics of this identifier are:</p>
     <ul>
       <li>It should be specific enough to correlate all requests from the same Viewer. If the correlator is too generic it will bucket multiple viewers with the same viewer ID together and group them all into the same slot.</li>
       <li>It should be consistent across all video views for the same Viewer.</li>
     </ul>
     <p>When the "correlator" is different, it will try to fill a "slot" for the viewer id, which means if that value changes during the same viewing, it will be treated as if it were a different viewer and prevent playback.</p>
+    <p>The correlator is set in the JWT using the <code translate="No">uid</code> claim</p>
   </section>
   <section class="bcls-section">
     <h2 id="Implementation">Implementation</h2>
@@ -34,13 +38,29 @@ layout: staging
     <ol class="bcls-tasklist-restart">
       <li>If you wish to change the heartbeat frequency from the default (1 minute) <a href="https://supportportal.brightcove.com/">contact Support</a>.</li>
       <li>
-        Create a JWT
+        <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Create a JWT</a> for playback restrictions. (Only the <code translate="No">climit</code>, <code translate="No">sid</code>, and <code translate="No">uid</code> claims are required.)
         <ul>
-        <li>You <strong>must</strong> the concurrency limit and viewer identifier</li>
-        <li>You can optionally include a correlator identifier that defines the streaming locations for a viewer</li>
+        <li>You <strong>must</strong> set the concurrency limit (<code translate="No">climit</code>) and viewer identifier (<code translate="No">sid</code>)</li>
+        <li>
+          You must also include a <a href="#correlator_identifier">correlator identifier</a> (<code translate="No">uid</code>) that defines the streaming locations for a viewer. The correlator identifier is typically a device name, possibly combined with a client app name, such as:
+          <ul>
+            <li>Chrome MAC (Cadmium) HTML 5</li>
+            <li>Apple iPad 7th Gen 10.2 (Wi-Fi)</li>
+            <li>Apple Apple TV TBD Apple TV</li>
+            <li>Android DefaultWidevineL3Phone Android Phone</li>
+            <li>Firefox MAC (Cadmium) HTML 5</li>
+            <li>Google Chromecast streaming stick</li>
+          </ul>
+        </li>
         </ul>
       </li>
-      <li>Enable Generic Stream Concurrency on client players</li>
+      <li>
+        Enable Generic Stream Concurrency on client players:
+        <ul>
+          <li><a href="https://player.support.brightcove.com/playback/playback-restrictions-with-bcp.html">Playback Restrictions with Brightcove Player</a></li>
+          <li><a href="https://sdks.support.brightcove.com/features/playback-restrictions-with-sdks.html">Playback Restrictions with the Native SDKs</a></li>
+        </ul>
+      </li>
     </ol>
     <h3>Via API</h3>
     <p>This feature can be implemented via API without using the Brightcove Web Player or SDK players. The authorization method is through a JWT.</p>
