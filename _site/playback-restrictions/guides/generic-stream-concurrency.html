@@ -2200,9 +2200,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>
         <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Create a JWT</a> for playback restrictions. (Only the <code translate="No">climit</code>, <code translate="No">sid</code>, and <code translate="No">uid</code> claims are required.)
         <ul>
-        <li>You <strong>must</strong> set the concurrency limit (<code translate="No">climit</code>) and viewer identifier (<code translate="No">sid</code>)</li>
+        <li>You <strong>must</strong> set the concurrency limit (<code translate="No">climit</code>) and viewer identifier (<code translate="No">uid</code>)</li>
         <li>
-          You must also include a <a href="#correlator_identifier">correlator identifier</a> (<code translate="No">uid</code>) that defines the streaming locations for a viewer. The correlator identifier is typically a device name, possibly combined with a client app name, such as:
+          You must also include a <a href="#correlator_identifier">correlator identifier</a> (<code translate="No">sid</code>) that defines the streaming locations for a viewer. The correlator identifier is typically a device name, possibly combined with a client app name, such as:
           <ul>
             <li>Chrome MAC (Cadmium) HTML 5</li>
             <li>Apple iPad 7th Gen 10.2 (Wi-Fi)</li>
@@ -2222,6 +2222,22 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         </ul>
       </li>
     </ol>
+    <details>
+      <summary>
+        Sample <span translate="No">JSON Web Token</span> (JWT) claims
+      </summary>
+      <pre class="line-numbers"><code class="language-json" translate="No">{
+// account id: JWT is only valid for this account
+"accid":"4590388311111",
+// limit of concurrent users
+"climit": 3,
+// user id
+"uid": "108.26.184.3_1634052241",
+// correlator identifier
+"sid": "Firefox MAC (Cadmium) HTML 5"
+}
+}</code></pre>
+    </details>
     <h3>Via API</h3>
     <p>This feature can be implemented via API without using the Brightcove Web Player or SDK players. The authorization method is through a JWT.</p>
     <h4>The API endpoints</h4>
@@ -2263,7 +2279,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 27 Sep 2021
+  Page last updated on 11 Oct 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
