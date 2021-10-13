@@ -2308,8 +2308,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </p>
 
     <h4>Get all user devices</h4>
+    <p>Get all of the devices for the specified account and user.</p>
+    <strong>Request endpoint</strong>
     <pre><code class="language-http" translate="No">GET /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
-    <h5>Response body</h5>
+    <strong>Response body</strong>
     <p>
       The response body contains an array of devices, and should look similar to this:
     </p>
@@ -2331,14 +2333,92 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 ]</code></pre>
     <br />
 
+    <h4>Get all account devices</h4>
+    <p>Get all devices for each user within an account. You will use the <code translate="No">page</code> and <code translate="No">per_page</code> parameters to limit the response.</p>
+    <strong>Request endpoint</strong>
+    <pre><code class="language-http" translate="No">GET /v1/accounts/{accountID}/devices?page=0&per_page=10</code></pre>
+    <p>
+      Parameters:
+    </p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default value</th>
+          <th>Max value</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">page</code></td>
+          <td>Integer</td>
+          <td>Index of the page to request. If the number is greater than the page limit, it will take the last page.</td>
+          <td>0</td>
+          <td>Last index</td>
+        </tr>
+        <tr>
+          <td><code translate="No">per_page</code></td>
+          <td>Integer</td>
+          <td>Number of items to show in the request. You can set it from 1 to 100 items. If you don't set a value, the default is used.</td>
+          <td>10</td>
+          <td>100</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+
+    <strong>Response body</strong>
+    <p>
+      The response body contains an array of devices, and should look similar to this:
+    </p>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+  "metadata": 
+  {
+    &quot;page&quot;: 3,
+    &quot;per_page&quot;: 10,
+    &quot;page_count&quot;: 5,
+    &quot;total_count&quot;: 55,
+    &quot;Links&quot;: [
+      {&quot;self&quot;: &quot;/v1/accounts/123/devices?page=3&amp;per_page=10&quot;},
+      {&quot;first&quot;: &quot;/v1/accounts/123/devices?page=0&amp;per_page=10&quot;&quot;},
+      {&quot;previous&quot;: &quot;/v1/accounts/123/devices?page=2&amp;per_page=10&quot;&quot;},
+      {&quot;next&quot;: &quot;/v1/accounts/123/devices?page=4&amp;per_page=10&quot;&quot;},
+      {&quot;last&quot;: &quot;/v1/accounts/123/devices?page=4&amp;per_page=10&quot;&quot;},
+    ]
+  },
+  &quot;records&quot;: [
+    {
+      &quot;account_id&quot;: &quot;123456&quot;,
+      &quot;user_id&quot;: &quot;user_1&quot;,
+      &quot;device&quot;: &quot;device_1&quot;
+    },
+    {
+      &quot;account_id&quot;: &quot;123456&quot;,
+      &quot;user_id&quot;: &quot;user_1&quot;,
+      &quot;device&quot;: &quot;device_2&quot;
+    },
+    ...,
+    {
+      &quot;account_id&quot;: &quot;123456&quot;,
+      &quot;user_id&quot;: &quot;user_10&quot;,
+      &quot;device&quot;: &quot;device_1&quot;
+    },
+  ]
+}</code></pre>
+    <br />
+
     <h4>Update device name</h4>
+    <p>Update the device name for the specified account, user and device.</p>
+    <strong>Request endpoint</strong>
     <p>
       The <code translate="No">PATCH</code> request lets you set a descriptive name for the device.
     </p>
     <pre><code class="language-http" translate="No">PATCH  /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}
   Content-Type: application/json
   Body: {devices object}</code></pre>
-    <h5>Request body</h5>
+    <strong>Request body</strong>
     <p>
       The request body contains the device name.
     </p>
@@ -2368,10 +2448,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <br />
 
     <h4>Delete all user devices</h4>
+    <p>Delete all of the devices associated with a user.</p>
+    <strong>Request endpoint</strong>
     <pre><code class="language-http" translate="No">DELETE /v1/accounts/{accountID}/users/{userID}/devices</code></pre>
     <br />
 
     <h4>Delete a specific user device</h4>
+    <p>Delete a specific device for a user.</p>
+    <strong>Request endpoint</strong>
     <pre><code class="language-http" translate="No">DELETE /v1/accounts/{accountID}/users/{userID}/devices/{deviceID}</code></pre>
     <br />
   </section>
