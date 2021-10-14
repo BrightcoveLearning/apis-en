@@ -469,34 +469,48 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/device"
+    links:
+      type: object
+      properties:
+        self:
+          description: "Link for the current page of results"
+          type: string
+          example: "/v1/accounts/123456/devices?page=3&per_page=10"
+        first:
+          description: "Link for the first page of results"
+          type: string
+          example: "/v1/accounts/123456/devices?page=0&per_page=10"
+          
+
+      
     account_devices:
       type: object
       properties:
         metadata:
-          description: "Metadata associated with the account."
+          description: "Metadata associated with the account"
           type: object
           properties:
             page: 
-              description: "Index of the page returned."
+              description: "Index of the page returned"
               type: integer
               example: 3
             per_page: 
-              description: "Number of items to shown in the response."
+              description: "Number of items to shown in the response"
               type: integer
               example: 10
             page_count: 
-              description: "Total number of pages."
+              description: "Total number of pages"
               type: integer
               example: 5
             total_count: 
-              description: "Total number of devices in the account."
+              description: "Total number of devices in the account"
               type: integer
               example: 55
             Links: 
-              description: "Links with query parameters for specific pages."
+              description: "Links with query parameters for specific pages"
               type: array
               items:
-                oneOf: 
+                $ref: "#/components/schemas/links"
 
             
 
