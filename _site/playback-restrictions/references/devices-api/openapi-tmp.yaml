@@ -469,44 +469,6 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/device"
-    links:
-      type: object
-      properties:
-        self:
-          description: "Link for the current page of results"
-          type: string
-          example: "/v1/accounts/123456/devices?page=3&per_page=10"
-        first:
-          description: "Link for the first page of results"
-          type: string
-          example: "/v1/accounts/123456/devices?page=0&per_page=10"
-        previous:
-          description: "Link for previus page of results"
-          type: string
-          example: "/v1/accounts/123456/devices?page=2&per_page=10"
-        next:
-          description: "Link for next page of results"
-          type: string
-          example: "/v1/accounts/123456/devices?page=4&per_page=10"
-        last:
-          description: "Link for last page of results"
-          type: string
-          example: "/v1/accounts/123456/devices?page=4&per_page=10"
-    records:
-      type: object
-      properties:
-        account_id:
-          description: "Video Cloud account id"
-          type: string
-          example: "123456"
-        user_id:
-          description: "Unique user id"
-          type: string
-          example: "user_1"
-        device:
-          description: "end user unique device id"
-          type: string
-          example: "device_1"
           
     account_devices:
       type: object
@@ -535,13 +497,46 @@ components:
               description: "Links with query parameters for specific pages"
               type: array
               items:
-                $ref: "#/components/schemas/links"
-        records:
-          description: "An array of users and devices for an account"
-          type: array
-          items:
-
-            
+                type: object
+                properties: 
+                  self:
+                    description: "Link for the current page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=3&per_page=10"
+                  first:
+                    description: "Link for the first page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=0&per_page=10"
+                  previous:
+                    description: "Link for previus page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=2&per_page=10"
+                  next:
+                    description: "Link for next page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=4&per_page=10"
+                  last:
+                    description: "Link for last page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=4&per_page=10"
+            records:
+              description: "An array of users and devices for an account"
+              type: array
+              items:
+                type: object
+                properties:
+                  account_id:
+                    description: "Video Cloud account id"
+                    type: string
+                    example: "1712345012345"
+                  user_id:
+                    description: "Unique user id"
+                    type: string
+                    example: "user_1"
+                  device:
+                    description: "end user unique device id"
+                    type: string
+                    example: "device_1"    
 
   securitySchemes:
     BC_OAuth2:
