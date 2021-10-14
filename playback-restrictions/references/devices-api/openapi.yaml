@@ -17,6 +17,96 @@ tags:
   - name: Devices
     description: Operations for reading, updating and deleting user devices.
 paths:
+  '/accounts/{account_id}/devices?page=0&per_page=10':
+    get:
+      tags:
+        - Devices
+      summary: Get all account devices
+      description: 'Get all devices for all users within an account'
+      operationId: GetAllDevices
+      security:
+        - BC_OAuth2:
+          - video-cloud/playback-auth/devices/read
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - in: query
+          name: page
+          description: 'Index of the page to request. If the number is greater than the page limit, it will take the last page.'
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: per_page
+          description: "Number of items to show in the request. You can set it from 1 to 100 items. If you don't set a value, the default is used."
+          schema:
+            type: integer 
+            default: 10
+            maximum: 100
+        - name: Content-Type
+          in: header
+          description: 'Content-Type: application/json'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: 'Authorization: Bearer access_token (see Getting Access Tokens)'
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get all account devices
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account_devices"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    "error_code": "BAD_REQUEST",
+                    "error_subcode": "INVALID_ACCOUNT_ID",
+                    "message": "Invalid characters in {account_id}",
+                  },
+                ]
+        '404':
+          description: Devices were not found
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    "error_code": "NOT_FOUND",
+                    "error_subcode": "RESOURCE_NOT_FOUND",
+                    "message": "Devices not found",
+                  },
+                ]
+        '502':
+          description: Bad Gateway
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    "error_code": "SERVER_ERROR",
+                    "error_subcode": "DEVICES_RETRIEVE_FAILURE",
+                    "message": "Cannot retrieve devices",
+                  },
+                ]
+      deprecated: false
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
   '/accounts/{account_id}/users/{user_id}/devices':
     get:
       tags:
@@ -48,7 +138,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Get all devices
+          description: Get all user devices
           content:
             application/json:
               schema:
@@ -379,6 +469,74 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/device"
+          
+    account_devices:
+      type: object
+      properties:
+        metadata:
+          description: "Metadata associated with the account"
+          type: object
+          properties:
+            page: 
+              description: "Index of the page returned"
+              type: integer
+              example: 3
+            per_page: 
+              description: "Number of items to shown in the response"
+              type: integer
+              example: 10
+            page_count: 
+              description: "Total number of pages"
+              type: integer
+              example: 5
+            total_count: 
+              description: "Total number of devices in the account"
+              type: integer
+              example: 55
+            Links: 
+              description: "Links with query parameters for specific pages"
+              type: array
+              items:
+                type: object
+                properties: 
+                  self:
+                    description: "Link for the current page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=3&per_page=10"
+                  first:
+                    description: "Link for the first page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=0&per_page=10"
+                  previous:
+                    description: "Link for previus page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=2&per_page=10"
+                  next:
+                    description: "Link for next page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=4&per_page=10"
+                  last:
+                    description: "Link for last page of results"
+                    type: string
+                    example: "/v1/accounts/1712345012345/devices?page=4&per_page=10"
+            records:
+              description: "An array of users and devices for an account"
+              type: array
+              items:
+                type: object
+                properties:
+                  account_id:
+                    description: "Video Cloud account id"
+                    type: string
+                    example: "1712345012345"
+                  user_id:
+                    description: "Unique user id"
+                    type: string
+                    example: "user_1"
+                  device:
+                    description: "end user unique device id"
+                    type: string
+                    example: "device_1"    
 
   securitySchemes:
     BC_OAuth2:
