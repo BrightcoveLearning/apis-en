@@ -2182,238 +2182,237 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <script src="https://players.brightcove.net/20318290001/experience_5a73630f7afd7a00101bc1b5/live.js"></script>
 
   <section class="bcls-section">
-  <h2 id="Introduction">Introduction</h2>
+    <h2 id="Introduction">Introduction</h2>
 
-  <p>The <span translate="No">Analytics API</span> allows you to obtain analytics data for your Video Cloud accounts directly. You can also view the built-in analytics reports in the Analytics Module of Video Cloud Studio. Accessing the data programmatically gives you additional flexibility.</p>
+    <p>The <span translate="No">Analytics API</span> allows you to obtain analytics data for your Video Cloud accounts directly. You can also view the built-in analytics reports in the Analytics Module of Video Cloud Studio. Accessing the data programmatically gives you additional flexibility.</p>
 
-  <p>Also see the <a href="/analytics/references/reference.html">API Reference</a>.</p>
+    <p>Also see the <a href="/analytics/references/reference.html">API Reference</a>.</p>
 
-  <aside bcls-aside--information>Note that requests that will return a large number of records will take up to 20 seconds to process.</aside>
+    <aside bcls-aside--information>Note that requests that will return a large number of records will take up to 20 seconds to process.</aside>
   </section>
 
   <section class="bcls-section">
-  <h2 id="Typical_uses">Typical uses</h2>
+    <h2 id="Typical_uses">Typical uses</h2>
 
-  <p>Here are some typical uses of the API:</p>
+    <p>Here are some typical uses of the API:</p>
 
-  <ul>
-    <li>Creating custom charts and displays</li>
-    <li>Working with multiple APIs together - for example, getting video data using the <span translate="No">CMS API</span> for videos with the most views over the previous week</li>
-    <li>Combining your video analytic data with other site analytics data</li>
-    <li>For some sample solutions, see
     <ul>
-      <li><a href="/analytics/code-samples/analyticscms-apis-sample-analytics-playlists.html">Analytics for Playlists</a></li>
-      <li><a href="/analytics/code-samples/analytics-api-sample-video-report-player-and-day.html">Analytics by Country and Day</a></li>
+      <li>Creating custom charts and displays</li>
+      <li>Working with multiple APIs together - for example, getting video data using the <span translate="No">CMS API</span> for videos with the most views over the previous week</li>
+      <li>Combining your video analytic data with other site analytics data</li>
+      <li>For some sample solutions, see
+        <ul>
+          <li><a href="/analytics/code-samples/analyticscms-apis-sample-analytics-playlists.html">Analytics for Playlists</a></li>
+          <li><a href="/analytics/code-samples/analytics-api-sample-video-report-player-and-day.html">Analytics by Country and Day</a></li>
+        </ul>
+      </li>
     </ul>
-    </li>
-  </ul>
   </section>
 
   <section class="bcls-section">
-  <h2 id="Base_URL">Base URL</h2>
+    <h2 id="Base_URL">Base URL</h2>
 
-  <p>The base URL for the <span translate="No">Analytics API</span> is:</p>
+    <p>The base URL for the <span translate="No">Analytics API</span> is:</p>
 
-  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
   <code class="language-http translate="No">https://analytics.api.brightcove.com/v1</code></pre>
   </section>
 
   <section class="bcls-section">
-  <h2 id="Headers">Headers</h2>
+    <h2 id="Headers">Headers</h2>
 
-  <h3>Authentication (required)</h3>
+    <h3>Authentication (required)</h3>
 
-  <p>The <span translate="No">Analytics API</span> uses the Brightcove <a href="/oauth/getting-started/overview-oauth-api-v4.html">OAuth Service</a> to authenticate calls.</p>
+    <p>The <span translate="No">Analytics API</span> uses the Brightcove <a href="/oauth/getting-started/overview-oauth-api-v4.html">OAuth Service</a> to authenticate calls.</p>
 
-  <p>You will first need to obtain client credentials (a <code translate="No">client_id</code> and <code translate="No">client_secret</code>). This is a one-time operation that can be performed using the <a href="/general/managing-api-authentication-credentials.html">OAuth Credentials UI</a>. You can get client credentials directly from the Brightcove OAuth Service using <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html" translate="No">CURL</a>, <a href="/oauth/guides/oauth-create-client-credentials-using-postman.html" translate="No">Postman</a>, or <a href="/general/use-insomnia-api-requests.html" translate="No">Insomnia</a>.</p>
+    <p>You will first need to obtain client credentials (a <code translate="No">client_id</code> and <code translate="No">client_secret</code>). This is a one-time operation that can be performed using the <a href="/general/managing-api-authentication-credentials.html">OAuth Credentials UI</a>. You can get client credentials directly from the Brightcove OAuth Service using <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html" translate="No">CURL</a>, <a href="/oauth/guides/oauth-create-client-credentials-using-postman.html" translate="No">Postman</a>, or <a href="/general/use-insomnia-api-requests.html" translate="No">Insomnia</a>.</p>
 
-  <p>You need both Analytics Read and Video Read permissions for client credentials:</p>
+    <p>You need both Analytics Read and Video Read permissions for client credentials:</p>
 
-  <figure class="bcls-figure"><img class="bcls-image" alt="Permissions for Credentials" src="/assets/images/analytiics/getting-started/analytics-permissions.png" />
-  <figcaption class="bcls-caption--image">Permissions for <span translate="No">Analytics API</span> Credentials</figcaption>
-  </figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="Permissions for Credentials" src="/assets/images/analytiics/getting-started/analytics-permissions.png" />
+      <figcaption class="bcls-caption--image">Permissions for <span translate="No">Analytics API</span> Credentials</figcaption>
+    </figure>
 
-  <p>If you are creating your credentials directly through the OAuth API, the required permissions are:</p>
+    <p>If you are creating your credentials directly through the OAuth API, the required permissions are:</p>
 
-  <pre class="line-numbers">
+    <pre class="line-numbers">
   <code class="language-json" translate="No">[
     "video-cloud/analytics/read"
     "video-cloud/video/read"
   ]</code></pre>
 
-  <p>You will also need an <code translate="No">access_token</code>, which is obtained using the <code translate="No">client_id</code> and <code translate="No">client_secret</code> and passed in an Authorization header with your API request:</p>
+    <p>You will also need an <code translate="No">access_token</code>, which is obtained using the <code translate="No">client_id</code> and <code translate="No">client_secret</code> and passed in an Authorization header with your API request:</p>
 
-  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
   <code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">{access_token}</span></code></pre>
 
-  <p>The <code translate="No">access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
+    <p>The <code translate="No">access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
 
-  <h3 translate="No">Accept-Encoding: gzip (optional)</h3>
+    <h3 translate="No">Accept-Encoding: gzip (optional)</h3>
 
-  <p>Passing this header will cause the response to be returned in compressed form. This may improve performance for large reports.</p>
+    <p>Passing this header will cause the response to be returned in compressed form. This may improve performance for large reports.</p>
   </section>
 
   <section class="bcls-section">
-  <h2 id="Caching">Caching</h2>
+    <h2 id="Caching">Caching</h2>
 
-  <p>For performance reasons, API responses are cached for approximately 5 minutes, though the exact amount of time may vary based on several factors. For any <span translate="No">Analytics API</span> query, you can get information about the cache from the response headers:</p>
+    <p>For performance reasons, API responses are cached for approximately 5 minutes, though the exact amount of time may vary based on several factors. For any <span translate="No">Analytics API</span> query, you can get information about the cache from the response headers:</p>
 
-  <figure class="bcls-figure"><img class="bcls-image" alt="Cache Control Headers" src="/assets/images/analytiics/getting-started/aapi-cach-headers.png" />
-  <figcaption class="bcls-caption--image">Cache Control Headers</figcaption>
-  </figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="Cache Control Headers" src="/assets/images/analytiics/getting-started/aapi-cach-headers.png" />
+      <figcaption class="bcls-caption--image">Cache Control Headers</figcaption>
+    </figure>
 
-  <p>The <code translate="No">Cache-Control</code> tells you the maximum time the results will be cached for in seconds (in the example above, 24 seconds). The <code translate="No">Last-Modified</code> and <code translate="No">Expires</code> headers tell you when the current cache was created and when it will expire.</p>
+    <p>The <code translate="No">Cache-Control</code> tells you the maximum time the results will be cached for in seconds (in the example above, 24 seconds). The <code translate="No">Last-Modified</code> and <code translate="No">Expires</code> headers tell you when the current cache was created and when it will expire.</p>
 
-  <p>In most cases this is probably not an issue, but if the freshness of analytics data is of critical importance, you should know that the longer a query runs, the longer it will be cached, and reports that fetch realtime (unreconciled hourly) data only will not be cached as long as those that fetch reconciled data (only, or in addition to realtime data). Find a <a href="https://studio.support.brightcove.com/analytics/faq-analytics-module.html#26">full explanation of realtime and reconciled data</a> if you like; the short version is that the <span translate="No">Analytics API</span> relies on two data buckets:</p>
+    <p>In most cases this is probably not an issue, but if the freshness of analytics data is of critical importance, you should know that the longer a query runs, the longer it will be cached, and reports that fetch realtime (unreconciled hourly) data only will not be cached as long as those that fetch reconciled data (only, or in addition to realtime data). Find a <a href="https://studio.support.brightcove.com/analytics/faq-analytics-module.html#17">full explanation of realtime and reconciled data</a> if you like; the short version is that the <span translate="No">Analytics API</span> relies on two data buckets:</p>
 
-  <ul>
-    <li>realtime, or hourly unreconciled data, which is made available immediately and stored for 32 days</li>
-    <li>reconciled data, which is stored permanently; realtime data is reconciled to improve accuracy and stored in the reconciled data repository every 24 hours</li>
-  </ul>
+    <ul>
+      <li>realtime, or hourly unreconciled data, which is made available immediately and stored for 32 days</li>
+      <li>reconciled data, which is stored permanently; realtime data is reconciled to improve accuracy and stored in the reconciled data repository every 24 hours</li>
+    </ul>
 
-  <p>You can limit the results to reconciled or realtime data using the <a href="#reconciled">reconciled</a> parameter.</p>
+    <p>You can limit the results to reconciled or realtime data using the <a href="#reconciled">reconciled</a> parameter.</p>
 
-  <p>To minimize caching:</p>
+    <p>To minimize caching:</p>
 
-  <ul>
-    <li>Use the <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#reconciled"> <code class="language-http" translate="No">reconciled=false</code> </a> parameter to limit results to realtime data</li>
-    <li>Use a small <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#dateRanges">date range</a>, and be sure that the entire range falls within the past 32 days</li>
-  </ul>
+    <ul>
+      <li>Use the <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#reconciled"> <code class="language-http" translate="No">reconciled=false</code> </a> parameter to limit results to realtime data</li>
+      <li>Use a small <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#dateRanges">date range</a>, and be sure that the entire range falls within the past 32 days</li>
+    </ul>
 
-  <aside class="bcls-aside bcls-aside--warning language-editable">Also note that if additional <strong>identical</strong> requests are made <strong>before</strong> first request finishes processing, all subsequent <strong>identical</strong> will receive a 429 error response (Too many concurrent requests for same query) until the first request is cached.</aside>
+    <aside class="bcls-aside bcls-aside--warning language-editable">Also note that if additional <strong>identical</strong> requests are made <strong>before</strong> first request finishes processing, all subsequent <strong>identical</strong> will receive a 429 error response (Too many concurrent requests for same query) until the first request is cached.</aside>
   </section>
 
   <section class="bcls-section">
-  <h2 id="timeouts">Timeouts</h2>
+    <h2 id="timeouts">Timeouts</h2>
 
-  <p>Analytics API requests timeout after 8 minutes if not completed. If you see timeouts at less than 8 minutes, then the cause is some client-side limit.</p>
+    <p>Analytics API requests timeout after 8 minutes if not completed. If you see timeouts at less than 8 minutes, then the cause is some client-side limit.</p>
   </section>
 
   <section class="bcls-section">
-  <h2 id="maximum_items">Maximum items you can return</h2>
+    <h2 id="maximum_items">Maximum items you can return</h2>
 
-  <p>The maximum number of items that can be returned is one million. In most cases you are unlikely to hit the limit, but if you are requesting reports on the <code translate="No">date</code> dimension over a large span of time, for instance, it is possible. If you hit the million item limit, you will need to modify the request to reduce the number of items returned. Generally, the most straightforward way to do this will be to reduce the data range (using the <code translate="No">from</code> and <code translate="No">to</code> parameters discussed later).</p>
+    <p>The maximum number of items that can be returned is one million. In most cases you are unlikely to hit the limit, but if you are requesting reports on the <code translate="No">date</code> dimension over a large span of time, for instance, it is possible. If you hit the million item limit, you will need to modify the request to reduce the number of items returned. Generally, the most straightforward way to do this will be to reduce the data range (using the <code translate="No">from</code> and <code translate="No">to</code> parameters discussed later).</p>
   </section>
 
   <section class="bcls-section">
-  <h2 id="concurrency">Concurrent Requests</h2>
+    <h2 id="concurrency">Concurrent Requests</h2>
 
-  <p>A single account is limited to one request at a time. Multiple concurrent requests will execute in series.</p>
+    <p>A single account is limited to one request at a time. Multiple concurrent requests will execute in series.</p>
 
-  <p>For example:</p>
+    <p>For example:</p>
 
-  <ol>
-    <li>Start an API request "A".</li>
-    <li>Start API request "B" for the same account.</li>
-    <li>Request "B" will not complete until "A" completes.</li>
-    <li>If request "A" takes too long, request "A" will receive an error saying "your request is pending; try again".</li>
-    <li>If request "A" takes too long, it may cause request "B" to receive the same error. Note that request "B" will get an error if the time to complete A + B is greater than our timeout value.</li>
-  </ol>
+    <ol>
+      <li>Start an API request "A".</li>
+      <li>Start API request "B" for the same account.</li>
+      <li>Request "B" will not complete until "A" completes.</li>
+      <li>If request "A" takes too long, request "A" will receive an error saying "your request is pending; try again".</li>
+      <li>If request "A" takes too long, it may cause request "B" to receive the same error. Note that request "B" will get an error if the time to complete A + B is greater than our timeout value.</li>
+    </ol>
 
-  <p>If you make multiple concurrent requests, they will be processed one at a time, in the order received.</p>
+    <p>If you make multiple concurrent requests, they will be processed one at a time, in the order received.</p>
 
-  <p>Requests that return with a "pending error" will eventually complete and be saved to our cache. This means that future requests for the same data will return almost instantly, but only if the request is made before the five minute cache expires.</p>
+    <p>Requests that return with a "pending error" will eventually complete and be saved to our cache. This means that future requests for the same data will return almost instantly, but only if the request is made before the five minute cache expires.</p>
 
-  <p>Your systems should handle the pending error by waiting 2-4 minutes and making the same request again.</p>
+    <p>Your systems should handle the pending error by waiting 2-4 minutes and making the same request again.</p>
   </section>
 
   <section class="bcls-section">
-  <h2 id="Best_practices">Best practices</h2>
+    <h2 id="Best_practices">Best practices</h2>
 
-  <aside class="bcls-aside bcls-aside--tip">Based on the information above, we recommend the following as best practices:
-  <ol>
-    <li>Make requests to the <span translate="No">Analytics API</span> asynchronously if other operations in your app can proceed without the data</li>
-    <li>Automatically retry requests if the response is <code translate="No">Processing query in background</code></li>
-    <li>Don't repeat requests oftener than every 5 minutes, since you will be retrieving cached data anyway</li>
-    <li>If you are making several request concurrently or in quick succession, try to make longer-running requests (those that will return the most items and data) last, so that they don't delay shorter-running requests</li>
-  </ol>
-  </aside>
+    <aside class="bcls-aside bcls-aside--tip">Based on the information above, we recommend the following as best practices:
+      <ol>
+        <li>Make requests to the <span translate="No">Analytics API</span> asynchronously if other operations in your app can proceed without the data</li>
+        <li>Automatically retry requests if the response is <code translate="No">Processing query in background</code></li>
+        <li>Don't repeat requests oftener than every 5 minutes, since you will be retrieving cached data anyway</li>
+        <li>If you are making several request concurrently or in quick succession, try to make longer-running requests (those that will return the most items and data) last, so that they don't delay shorter-running requests</li>
+      </ol>
+    </aside>
   </section>
 
   <section class="bcls-section">
-  <h2 id="requestTypes">Request types</h2>
+    <h2 id="requestTypes">Request types</h2>
 
-  <p>The <span translate="No">Analytics API</span> accepts three request types</p>
+    <p>The <span translate="No">Analytics API</span> accepts three request types</p>
 
-  <dl>
-    <dt>Data (also called a Report)</dt>
-    <dd>A report on one or more <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html" translate="No">dimensions</a>. The endpoint for a report request is:
-    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <dl>
+      <dt>Data (also called a Report)</dt>
+      <dd>A report on one or more <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html" translate="No">dimensions</a>. The endpoint for a report request is:
+        <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
   <code class="language-http" translate="No">https://analytics.api.brightcove.com/v1/data?accounts={account_id(s)}&amp;dimensions={dimensions}</code></pre>
-    </dd>
-    <dt>Engagement report</dt>
-    <dd>Detailed engagement data that is available for periods within the past 32 days. See <a href="#engagement">the engagement section</a> for more details.</dd>
-    <dt>Video information endpoint</dt>
-    <dd>A specific piece of analytics data served with minimal latency. See <a href="/analytics/getting-started/overview-video-data-endpoint.html">Video Data Endpoint</a> for more information.</dd>
-  </dl>
+      </dd>
+      <dt>Engagement report</dt>
+      <dd>Detailed engagement data that is available for periods within the past 32 days. See <a href="#engagement">the engagement section</a> for more details.</dd>
+      <dt>Video information endpoint</dt>
+      <dd>A specific piece of analytics data served with minimal latency. See <a href="/analytics/getting-started/overview-video-data-endpoint.html">Video Data Endpoint</a> for more information.</dd>
+    </dl>
 
-  <p><a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#filterValues">Where filters</a> and <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#dateRanges">date ranges</a> can be applied to reports. Report requests can have additional parameters detailed in <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">this document</a>.</p>
+    <p><a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#filterValues">Where filters</a> and <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#dateRanges">date ranges</a> can be applied to reports. Report requests can have additional parameters detailed in <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">this document</a>.</p>
   </section>
 
   <section class="bcls-section">
-  <h2 id="metrics">Dimensions and fields</h2>
+    <h2 id="metrics">Dimensions and fields</h2>
 
-  <p>Detailed information on dimensions and fields is now in a separate document: <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Overview of Dimensions, Fields, and Parameters</a>.</p>
+    <p>Detailed information on dimensions and fields is now in a separate document: <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Overview of Dimensions, Fields, and Parameters</a>.</p>
   </section>
 
   <section class="bcls-section">
-  <h2 id="params">Parameters</h2>
+    <h2 id="params">Parameters</h2>
 
-  <p>Detailed information on parameters is now in a separate document: <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Overview of Dimensions, Fields, and Parameters</a>.</p>
+    <p>Detailed information on parameters is now in a separate document: <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Overview of Dimensions, Fields, and Parameters</a>.</p>
   </section>
 
   <section class="bcls-section">
-  <h2 id="engagement">Engagement reports</h2>
+    <h2 id="engagement">Engagement reports</h2>
 
-  <p>Detailed engagement reports showing views for each 100th part of videos (or the averages across all videos for an account or player) are available for periods within the past 32 days. (Requests for date ranges outside the past 32 days will return an error.)</p>
+    <p>Detailed engagement reports showing views for each 100th part of videos (or the averages across all videos for an account or player) are available for periods within the past 32 days. (Requests for date ranges outside the past 32 days will return an error.)</p>
 
-  <aside class="bcls-aside bcls-aside--warning">
-  <p>There are several limitations on requests to the engagement endpoints:</p>
+    <aside class="bcls-aside bcls-aside--warning">
+      <p>There are several limitations on requests to the engagement endpoints:</p>
 
-  <ul>
-    <li>Reports are available only for a single account, player, or video</li>
-    <li><code translate="No">where</code> filters are not supported</li>
-    <li>The only parameters supported are <code translate="No">from</code> and <code translate="No">to</code></li>
-    <li>If you provide <code translate="No">from</code> and <code translate="No">to</code> values in date format (MM-DD-YYYY), the report will reflect full day values</li>
-    <li>If you want hourly engagement data, the <code translate="No">from</code> and <code translate="No">to</code> values must be given in epoch milliseconds values that fall within the hours you want to report on</li>
-  </ul>
-  </aside>
+      <ul>
+        <li>Reports are available only for a single account, player, or video</li>
+        <li><code translate="No">where</code> filters are not supported</li>
+        <li>The only parameters supported are <code translate="No">from</code> and <code translate="No">to</code></li>
+        <li>If you provide <code translate="No">from</code> and <code translate="No">to</code> values in date format (MM-DD-YYYY), the report will reflect full day values</li>
+        <li>If you want hourly engagement data, the <code translate="No">from</code> and <code translate="No">to</code> values must be given in epoch milliseconds values that fall within the hours you want to report on</li>
+      </ul>
+    </aside>
 
-  <h3>Account engagement</h3>
+    <h3>Account engagement</h3>
 
-  <p>To get average values for engagement on viewed videos, use the endpoint:</p>
+    <p>To get average values for engagement on viewed videos, use the endpoint:</p>
 
-  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
   <code class="language-http" translate="No">
       https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>
   </code></pre>
 
-  <h3>Player engagement</h3>
+    <h3>Player engagement</h3>
 
-  <p>To get average values for all videos viewed in a player, use the endpoint:</p>
+    <p>To get average values for all videos viewed in a player, use the endpoint:</p>
 
-  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
   <code class="language-http" translate="No">
       https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>/players/<em>:player_id</em>
   </code></pre>
 
-  <h3>Video engagement</h3>
+    <h3>Video engagement</h3>
 
-  <p>To get engagement data for a specific video, use the endpoint:</p>
+    <p>To get engagement data for a specific video, use the endpoint:</p>
 
-  <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
   <code class="language-http" translate="No">
       https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>/videos/<em>:video_id</em>
   </code></pre>
   </section>
 
   <section class="bcls-section">
-  <h2 id="live_analytics">Live Analytics</h2>
+    <h2 id="live_analytics">Live Analytics</h2>
 
-  <p>The <span translate="No">Analytics API</span> provides two endpoints for retrieving analytics for Brightcove Live streams, either by a time series or by event. See the <a href="/analytics/references/reference.html#tag/Live-Analytics" translate="No">Analytics API Reference</a> for details.</p>
+    <p>The <span translate="No">Analytics API</span> provides two endpoints for retrieving analytics for Brightcove Live streams, either by a time series or by event. See the <a href="/analytics/references/reference.html#tag/Live-Analytics" translate="No">Analytics API Reference</a> for details.</p>
   </section>
-  </article>
-
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">

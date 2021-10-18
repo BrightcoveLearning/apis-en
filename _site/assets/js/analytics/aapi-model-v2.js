@@ -1484,6 +1484,16 @@ var aapi_model = {
       from: '2015-10-19',
       fields: ['account.name', 'device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'region', 'region_name']
     },
+    device_os__device_manufacturer: {
+      dimensions: ['device_os', 'device_manufacturer'],
+      from: '2015-10-19',
+      fields: ['account.name', 'device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer']
+    },
+    device_os__device_manufacturer__browser_type: {
+      dimensions: ['device_os', 'device_manufacturer', 'browser_type'],
+      from: '2015-10-19',
+      fields: ['account.name', 'device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer', 'browser_type']
+    },
     country__device_os__region: {
       dimensions: ['device_os', 'country', 'region'],
       from: '2015-10-19',
