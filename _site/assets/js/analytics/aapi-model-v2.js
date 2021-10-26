@@ -456,6 +456,21 @@ var aapi_model = {
       }, {
         filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video&where=video==4093643993001,1754276206001'
       }]
+    },
+    viewer: {
+      name: 'viewer',
+      data_group: 'Viewer',
+      description: 'In this topic, you will learn about the Analytics API viewer dimension. The video dimension provides analytics by viewer. NOTE: to get meaningful viewer analytics, you must pass a viewer ID to the data collector.',
+      from: '2011-01-01',
+      urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
+      fields: ['viewer', 'video_view', 'time', 'engagement_score'],
+      filter_values: ['video ids as a comma-delimited list or video.q=={video field}:{value}'],
+      incompatible_dimensions: ['account', 'date', 'date_hour', 'destination_domain', 'destination_path', 'player', 'search_terms'],
+      samples: [{
+        dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=viewer'
+      }, {
+        filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=viewer&where=viewer==4093643993001,1754276206001'
+      }]
     }
   },
   combinations: {
