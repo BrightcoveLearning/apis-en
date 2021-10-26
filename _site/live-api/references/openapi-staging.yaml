@@ -919,6 +919,130 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
+  /redundantgroups/{redundant_group_id}/activate:
+    put:
+      tags:
+        - Redundant Groups
+      summary: Activates all SEP Jobs in the Group
+      description: >-
+        Activates all SEP Jobs in the Redundant Group.
+      operationId: ActivateRedundantGroup
+      parameters:
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+        - $ref: '#/components/parameters/redundant_group_id'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the redundant group
+                  jobs:
+                    type: array
+                    description: >-
+                      Array of objects.
+                    items:
+                      type: object
+                      description: >-
+                        Object containing either an id for a job that was activated or an error message for jobs that failed to activate.
+                      properties:
+                        id:
+                          type: string
+                          description: ID of an SEP job that was activated
+                        error:
+                          type: string
+                          description: Error message for a job that failed to activate
+                example: {
+                          "id": "3d68bcec490849bea6970be4646f5fd9",
+                          "jobs": [ 
+                                    { "id": "f19fdcfaf84d4b55b603c177cbb72f8f" },  
+                                    { "error": "Error activating Job" }
+                                  ]
+                        }
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more
+            details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you
+            requested - see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more details
+        '500':
+          description: 'INTERNAL_SERVER_ERROR: see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more details'
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /redundantgroups/{redundant_group_id}/deactivate:
+    put:
+      tags:
+        - Redundant Groups
+      summary: Deactivates all SEP Jobs in the Group
+      description: >-
+        Deactivates all SEP Jobs in the Redundant Group.
+      operationId: DeactivateRedundantGroup
+      parameters:
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+        - $ref: '#/components/parameters/redundant_group_id'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the redundant group
+                  jobs:
+                    type: array
+                    description: >-
+                      Array of objects.
+                    items:
+                      type: object
+                      description: >-
+                        Object containing either an id for a job that was activated or an error message for jobs that failed to deactivate.
+                      properties:
+                        id:
+                          type: string
+                          description: ID of an SEP job that was deactivated
+                        error:
+                          type: string
+                          description: Error message for a job that failed to deactivate
+                example: {
+                          "id": "3d68bcec490849bea6970be4646f5fd9",
+                          "jobs": [ 
+                                    { "id": "f19fdcfaf84d4b55b603c177cbb72f8f" },  
+                                    { "error": "Error deactivating Job" }
+                                  ]
+                        }
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more
+            details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you
+            requested - see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more details
+        '500':
+          description: 'INTERNAL_SERVER_ERROR: see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more details'
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
   /redundantgroups/{redundant_group_id}/cuepoint:
     post:
       tags:
@@ -2468,12 +2592,21 @@ components:
               processing_regions:
                 type: array
                 description: The processing regions defined for the group
+                items:
+                  type: string
+                  description: A processing region
               storage_regions:
                 type: array
                 description: The storage regions defined for the group
+                items:
+                  type: string
+                  description: A storage region
               jobs:
                 type: array
                 description: Array of live job ids included in the group
+                items:
+                  type: string
+                  description: A job id
               state:
                 type: string
                 description: The current state of the group
@@ -3357,6 +3490,14 @@ components:
         slate:
           description: Id for a set of slate assets
           type: string
+        srt_config:
+          type: object
+          description: Settings for latency
+          properties:
+            lantency:
+              type: number
+              description: >-
+                Time in milliseconds for which the SRT receiver shall be buffering the input data to overcome packet loss by retransmission. It is recommended to be greater than four times the RTT(round trip time).
         static:
           default: false
           description: Whether this is a static entry point (SEP) job
@@ -5721,6 +5862,13 @@ components:
             a set of any variables (key/value pairs) that should be passed to
             the adServer
           type: object
+        cancel:
+          description: When `true`, cuepoint specified by `cuepoint_id` will be canceled. If an ad break is already in progress, a crash-out will occur, returning to the main content. 
+          type: boolean
+          default: false
+        cuepoint_id:
+          description: ID to use when creating cuepoint. If `cancel` is `true`, then this field is required and is the ID of cuepoint to cancel. 
+          type: string
         duration:
           description: An integer value to indicate the length of the ad break in seconds
           type: number
@@ -6162,6 +6310,10 @@ components:
             URL to send notifications for activation and deactivation.
             Required if a pre-notification is configured for activation or deactivation.
           type: string
+        redundant_group:
+          type: boolean
+          description: If `true`, then `job_id` must be a redundant group id
+          default: false
       required:
         - job_id
         - activation
