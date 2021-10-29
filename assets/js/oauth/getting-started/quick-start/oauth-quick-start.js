@@ -43,7 +43,7 @@ var BCLS = (function() {
             return;
         }
         str = "curl --include --header 'Authorization: BC_TOKEN " + BC_TOKEN + "' --data 'name=Sample-Client&maximum_scope=[ {\"identity\": { \"type\": \"" + accountType + "\", \"account-id\": " + account_id +
-            "}, \"operations\": [ \"" + productOperations + "\" ]}]' https://oauth.brightcove.com/v3/client_credentials";
+            "}, \"operations\": [ \"" + productOperations + "\" ]}]' https://oauth.brightcove.com/v4/client_credentials";
 
         getCredentialsCall.textContent = str;
         getCredentialsCall.select();
@@ -54,7 +54,7 @@ var BCLS = (function() {
         client_id = (isDefined(client_idEl.value)) ? client_idEl.value : "";
         client_secret = (isDefined(client_secretEl.value)) ? client_secretEl.value : "";
 
-        str = "curl -s --user '" + client_id + ":" + client_secret + "' --header \"Content-Type: application/x-www-form-urlencoded\" --data \"grant_type=client_credentials\" https://oauth.brightcove.com/v3/access_token";
+        str = "curl -s --user '" + client_id + ":" + client_secret + "' --header \"Content-Type: application/x-www-form-urlencoded\" --data \"grant_type=client_credentials\" https://oauth.brightcove.com/v4/access_token";
         getTokenCall.textContent = str;
         getTokenCall.select();
     };
