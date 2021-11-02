@@ -2219,11 +2219,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         </ul>
       </li>
       <li>
-        Enable Generic Stream Concurrency on client players:
-        <ul>
-          <li><a href="https://player.support.brightcove.com/playback/playback-restrictions-with-bcp.html">Playback Restrictions with Brightcove Player</a></li>
-          <li><a href="https://sdks.support.brightcove.com/features/playback-restrictions-with-sdks.html">Playback Restrictions with the Native SDKs</a></li>
-        </ul>
+        Enable Generic Stream Concurrency on client players: see <a href="#implementation_in_players">Implementation in players</a> below
       </li>
     </ol>
     <details>
@@ -2242,7 +2238,39 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 }
 }</code></pre>
     </details>
-    <h3>Via API</h3>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Notes">Notes</h2>
+    <ul>
+      <li>When the maximum number of sessions is exceeded for a viewer, a session will be stopped. It may take as long as the heartbeat frequency for the session to be stopped.</li>
+      <li>If the client player cannot to connect to the server, it will re-try three times. If it still cannot connect, playback will continue, but concurrency limits will no longer be enforced.</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="implementation_in_players">Implementation in players</h2>
+    <h3>Brightcove web player</h3>
+    <p>To enable the Generic Stream Concurrency feature for a specific player, modify Player configurations by going to the Players/JSON Editor section in Studio. You will need to add the following key/value pair to specify they want GSC to be activated.</p>
+    <pre class="line-numbers"><code class="language-json" translate="No">“stream_concurrency” : true</code></pre>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/playback-restrictions/guides/generic-stream-concurrency/edit-player-config.png" alt="Player Configuration">
+      <figcaption class="bcls-caption--image">Player Configuration</figcaption>
+    </figure>
+    <p>If this key/value pair is not present in JSON or the value is false, GSC feature would not be enabled for the player.</p>
+    <h3>iOS</h3>
+    <p>To enable the Generic Stream Concurrency feature for iOS SDK, you need to enable the option <code translate="No">streamConcurrencyEnabled</code> in their playbackController. Optionally they can send the value for `sid`, if the sid is empty, this value will not be sent as header.</p>
+    <h4>Objective-C</h4>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/playback-restrictions/guides/generic-stream-concurrency/objective-c.png" alt="Objective-C Sample Code">
+      <figcaption class="bcls-caption--image">Objective-C Sample Code</figcaption>
+    </figure>
+    <h4>Swift</h4>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/playback-restrictions/guides/generic-stream-concurrency/swift.png" alt="Swift Sample Code">
+      <figcaption class="bcls-caption--image">Swift Sample Code</figcaption>
+    </figure>
+  </section>
+  <section class="bcls-section">
+    <h2 id="implementation_via_API">Implementation via API</h2>
     <p>This feature can be implemented via API without using the Brightcove Web Player or SDK players. The authorization method is through a JWT.</p>
     <h4>The API endpoints</h4>
     <dl>
@@ -2259,13 +2287,6 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         This endpoint allows you to to stop a streaming session.
       </dd>
     </dl>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Notes">Notes</h2>
-    <ul>
-      <li>When the maximum number of sessions is exceeded for a viewer, a session will be stopped. It may take as long as the heartbeat frequency for the session to be stopped.</li>
-      <li>If the client player cannot to connect to the server, it will re-try three times. It it still cannot connect, playback will be stopped.</li>
-    </ul>
   </section>
 </article>
 <!-- complete bootstrap layout -->
