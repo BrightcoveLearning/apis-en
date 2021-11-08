@@ -1,0 +1,165 @@
+---
+title: Fallback HDCP
+description: In this topic, you will learn about using HDCP-protected content to block streaming on unauthorized devices, with a standard definition fallback for devices that do not support HDCP.
+parent: Guides
+grandparent: Playback Restrictions
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+
+  <section class="bcls-section">
+    <h2 id="What_is_HDCP">What is HDCP?</h2>
+    <p>High-bandwidth Digital Content Protection (HDCP) is a form of digital copy protection used to protect high definition (HD) video and audio signals from being copied on unauthorized devices. The transmitting device first checks if the receiver is authorized to receive data. If yes, then the transmitter sends encrypted data to prevent eavesdropping.</p>
+    <p>The receiving setup must be HDCP compliant, including devices, cables, adaptors, and software drivers. If the receiver is not HDCP compliant, then video will play in standard definition (SD) only. In general, newer HDTVs and HDMI or DVI cables should be HDCP compliant.</p>
+    <p>To make a device HDCP compatible, the manufacturer must obtain a license from the Intel subsidiary, Digital Content Protection LLC, and pay an annual fee. There are three types of security rules:</p>
+    <ul>
+      <li>Data traveling through HDCP-enabled cabling is encrypted to stay hidden from cyber criminals</li>
+      <li>Digital devices that have been compromised have their keys taken away, so the device can no longer get data</li>
+      <li>Authentication prevents data and content from being sent to devices that don’t have a license</li>
+    </ul>
+    <p>For details about HDCP, see the Wikipedia page about <a href="https://en.wikipedia.org/wiki/High-bandwidth_Digital_Content_Protection">High-bandwidth Digital Content Protection</a>.</p>
+    <p>Learn how <a href="#Hardware_Security">Hardware Security</a> levels relate to HDCP.</p>
+    
+  </section>
+  <section class="bcls-section">
+    <h2 id="How_does_Brightcove_protect_your_content_using_HDCP">How does Brightcove protect your content using HDCP?</h2>
+    <p>Content owners may want to protect their content with DRM and force HDCP for specific hardware setups. For devices that don't support HDCP, Brightcove will provide a fallback experience using lower quality SD renditions.</p>
+    <!-- <h3>Keys</h3> -->
+    <p>To accomplish this, we use multiple keys that unlock different renditions. The player uses a DRM keychain for multiple keys and switches as needed. There will be three keys for each protection type instead of just one.</p>
+    <p>There will be one key for each:</p>
+    <ul>
+      <li>audio</li>
+      <li>HD</li>
+      <li>SD</li>
+    </ul>
+    <h3>Workflow</h3>
+    <ol class="bcls-tasklist">
+      <li>Enable your account for HDCP fallback.</li>
+      <li>The player makes a request to the Playback API for video content.</li>
+      <li>If the player finds HDCP-protected video data, then it will check the device.</li>
+      <li>For HDCP-enabled devices, the player will use the associated DRM key and play the encrypted HD renditions.</li>
+      <li>For hardware that is not HDCP compliant, playback will use SD renditions with a lower level of protection.</li>
+    </ol>
+    <h3>Notes:</h3>
+    <ul>
+      <li>All renditions will be protected with DRM</li>
+      <li>Each key is set to unlock multiple renditions, allowing Brightcove to continue to deliver the best rendition for the device being used</li>
+    </ul>
+    
+  </section>
+  <section class="bcls-section">
+    <h2 id="Which_players_can_I_use">Which players can I use?</h2>
+    <p>This feature is supported with Brightcove Player (web) as well as the Native SDK players (Android, iOS, tvOS).</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="How_do_I_enable_my_account">How do I enable my account?</h2>
+    <p>This feature is available for any account that is enabled for DRM protection. Contact your account manager to enable this feature.</p>
+    <p>For details about DRM, see the <a href="/general/overview-digital-rights-management-drm-video-cloud.html">Overview: Digital Rights Management (DRM)</a> document.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Hardware_Security">Hardware Security</h2>
+    <p>Each DRM type implements a set of industry standards to protect content as it is distributed over the internet and played back on devices. They do this by providing security levels for devices.</p>
+    <h3>FairPlay</h3>
+    <p>This table shows how hardware security levels relate to HDCP.</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Hardware security levels and HDCP</caption>
+      <thead class="bcls-table__head">
+          <tr>
+            <th>Security level</th>       
+            <th>Description</th>
+            <th>Devices</th>                  
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+          <tr>
+            <td>Not required</td>    
+            <td>HDCP is not enforced.</td>  
+            <td>All devices</td>                 
+          </tr>
+          <tr>
+            <td>Type 0 required</td>    
+            <td>HDCP type 0 content streams is enforced.</td>  
+            <td>Streams are transmitted by the HDCP repeater to all HDCP devices.</td>                 
+          </tr>
+          <tr>
+            <td>Type 1 required (Highest)</td>    
+            <td>HDCP content type 1 (HDCP version 2.2 or later) is enforced.</td>    
+            <td>Streams may not be transmitted by the HDCP repeater to HDCP 1.x-compliant devices or HDCP2.0-compliant repeaters.</td>               
+          </tr>            
+      </tbody>
+    </table>
+
+    <h3 id="Widevine">Widevine</h3>
+    <p>A common implementation solution is to stream premium HD content only on devices supporting L1 security. Most Android devices for instance support L1 security. L2 and L3 devices (such as Chrome on Desktops) on the other hand receive standard-quality video streams.</p>
+    <p>This table shows how hardware security levels relate to HDCP.</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Hardware security levels and HDCP</caption>
+      <thead class="bcls-table__head">
+          <tr>
+            <th>Security level</th>       
+            <th>Description</th>  
+            <th>Devices</th>                
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+          <tr>
+            <td>Level: L1 (Highest)</td>    
+            <td>Video decryption and processing is performed in a hardware Trusted Execution Environment (TEE).
+            </td>   
+            <td>Most Android and ChromeOS devices</td>                
+          </tr>
+          <tr>
+            <td>Level: L2</td>    
+            <td>Video decryption occurs in a hardware Trusted Execution Environment (TEE), but video processing occurs outside TEE.
+            </td> 
+            <td></td>                  
+          </tr>
+          <tr>
+            <td>Level: L3</td>    
+            <td>Does not have a TEE, but may include a hardware cryptographic engine.
+            </td>  
+            <td>Legacy Android and ChromeOS devices</td>                
+          </tr>            
+      </tbody>
+    </table>
+
+    <h3 id="PlayReady">PlayReady</h3>
+    <p>PlayReady provides security levels that define how robust the client is against unauthorized use. For details, see Microsoft's <a href="https://docs.microsoft.com/en-us/playready/overview/security-level">Security Level</a> document.</p>
+    <p>This table shows how hardware security levels relate to HDCP.</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Hardware security levels and HDCP</caption>
+      <thead class="bcls-table__head">
+          <tr>
+            <th>Security level</th>       
+            <th>Description</th>  
+            <th>Devices</th>                
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+          <tr>
+            <td>SL2000</td>    
+            <td>For hardened devices and applications consuming commercial content.</td>   
+            <td>For devices and applications. <br/>
+              Assets, client secrets, or content secrets are protected through software or hardware means.</td>                
+          </tr>
+          <tr>
+            <td>SL3000 (Highest)</td>    
+            <td>For hardened devices with the highest security consuming the highest quality of commercial content.</td> 
+            <td>For devices only.<br/>
+              Assets, client secrets, and content secrets are protected through hardware means, using a Trusted Execution Environment (TEE) of the processor. Uses a superset of the compliance and robustness requirements.</td>                  
+          </tr>            
+      </tbody>
+    </table>
+  </section>
+  
+  <section class="bcls-section">
+    <h2 id="limitations">Limitations</h2>
+    <ul>
+      <li>HDCP fallback requires the Brightcove web player 6.62 or later.</li>
+      <li>HDCP fallback requires the Brightcove iOS SDK player 6.10.1, or later.</li>
+      <li>HDCP fallback requires the Brightcove Android SDK player 6.17.1 or later.</li>
+    </ul>
+  </section>
+</article>
