@@ -7047,13 +7047,15 @@ components:
           type: string
         kind:
           default: captions
-          description: kind of text track
+          description: >-
+            How the track is meant to be used: `subtitles`, `captions`, `descriptions`, `chapters`, `metadata`, `transcripts`. The `transcripts` kind is unavailable for static delivery.
           enum:
             - subtitles
             - captions
             - descriptions
             - chapters
             - metadata
+            - transcripts
           type: string
         label:
           description: label for the track
@@ -7067,6 +7069,8 @@ components:
         srclang:
           description: '2-letter language code, such as "en" or "ko"'
           type: string
+        status:
+          description: Indicates the actual situation of the track, if it is `published`, `draft`, or `null` for pre-existing text tracks. Draft tracks will not be displayed in the player.
       required:
         - src
         - srclang

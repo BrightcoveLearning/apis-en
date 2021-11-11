@@ -52,21 +52,22 @@ grandparent: Dynamic Ingest API
     <h4>Sample request body</h4>
     
     <pre class="line-numbers">
-        <code class="language-json" translate="No">{
-            "master": {
-                "url":"http://learning-services-media.brightcove.com/videos/mp4/Water-Droplet.mp4"
-            },
-            "capture-images": false,
-            "text_tracks": [
-                {
-        "url": "http://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt",
-        "srclang": "en",
-        "kind": "captions",
-        "label": "English",
-        "default": true
-                }
-            ]
-        }</code></pre>
+  <code class="language-json" translate="No">{
+      "master": {
+          "url":"http://learning-services-media.brightcove.com/videos/mp4/Water-Droplet.mp4"
+      },
+      "capture-images": false,
+      "text_tracks": [
+          {
+  "url": "http://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt",
+  "srclang": "en",
+  "kind": "captions",
+  "label": "English",
+  "default": true,
+  "status": "published"
+          }
+      ]
+  }</code></pre>
     </section>
     
     <section class="bcls-section">
@@ -82,17 +83,18 @@ grandparent: Dynamic Ingest API
     </aside>
     
     <pre class="line-numbers">
-        <code class="language-json" translate="No">{
-            "text_tracks": [
-              {
-                "url": "http://media.brightcove.com/captions/Water.dfxp",
-                "srclang": "fr",
-                "kind": "captions",
-                "label": "français",
-                "default": true
-              }
-            ]
-          }</code></pre>
+<code class="language-json" translate="No">{
+    "text_tracks": [
+      {
+        "url": "http://media.brightcove.com/captions/Water.dfxp",
+        "srclang": "fr",
+        "kind": "captions",
+        "label": "français",
+        "default": true,
+        "status": "published"
+      }
+    ]
+  }</code></pre>
     </section>
     
     <section class="bcls-section">
@@ -119,7 +121,8 @@ grandparent: Dynamic Ingest API
               "srclang": "es",
               "kind": "captions",
               "label": "Español",
-              "default": true
+              "default": true,
+              "status": "published"
             }
           ]
         }</code></pre>
@@ -136,6 +139,7 @@ grandparent: Dynamic Ingest API
       <li>for text tracks, Dynamic Ingest adds/appends them to the video’s vtt list even if it is a re-encode request. You should use the <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">CMS API</a> to manage them (update/delete).</li>
       <li>Dynamic Ingest accepts up to 100 text tracks at a time.</li>
       <li>Although <code translate="No">"mime_type": "text/vtt"</code> is generally supported for WebVTT, Dynamic Ingest does <strong>not</strong> currently allow that field for ingestion of text tracks.</li>
+      <li>Existing text tracks have <code translate="no">“status”: null</code>, which won’t hide text tracks in players.</li>
     </ol>
     </aside>
     

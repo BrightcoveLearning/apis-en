@@ -4,126 +4,207 @@ description: 'In this topic, you will learn how to use the CMS API to update Web
 parent: Managing Videos/Assets
 grandparent: CMS API
 ---
-
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    
-    <p>Whether the text tracks are ingested (Static or Dynamic) or remote, you can use a <code translate="no">PATCH</code> request to update the metadata associated with the text tracks.</p>
+    <p>Whether the text tracks are ingested (Static or Dynamic) or remote, you can use a
+      <code translate="no">PATCH</code> request to update the metadata associated with the text tracks.
+    </p>
     <h3>Notes</h3>
     <ul>
-      <li>The methods explained in this document are for updating WebVTT files added to your videos. You can ingest WebVTT files to Video Cloud using the <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Dynamic Ingest API</a> or <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">add remote WebVTT files</a> to your videos using the CMS API.</li>
+      <li>The methods explained in this document are for updating WebVTT files added to your videos. You can ingest WebVTT files to Video Cloud using the
+        <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Dynamic Ingest API</a> or
+        <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">add remote WebVTT files</a> to your videos using the CMS API.
+      </li>
     </ul>
-    
-    </section>
-    
-    <section class="section">
+  </section>
+  <section class="section">
     <h2 id="authorization">Authorization</h2>
-    
-		<p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
-    
-    <p>The operations you will need to update video metadata are <code translate="No">video-cloud/video/update</code> or <code translate="No">video-cloud/video/all</code>.</p>
-    </section>
-    
-    <section class="section">
+    <p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the
+      <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
+    </p>
+    <p>The operations you will need to update video metadata are
+      <code translate="No">video-cloud/video/update</code> or
+      <code translate="No">video-cloud/video/all</code>.
+    </p>
+  </section>
+  <section class="section">
     <h2 id="syntax">Syntax</h2>
-
-		<aside class="bcls-aside bcls-aside--warning">The <strong>entire array must be patched</strong>, not just the track or the field that is changing.</aside>
-
-		<p>We recommend making the following request first to get the complete array:</p>
-<pre><code class="language-http" translate="No">GET
+    <aside class="bcls-aside bcls-aside--warning">The
+      <strong>entire array must be patched</strong>, not just the track or the field that is changing.
+    </aside>
+    <p>We recommend making the following request first to get the complete array:</p>
+    <pre>
+      <code class="language-http" translate="No">
+        GET
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
-</code></pre>
+      </code>
+    </pre>
     <h3>Updating Text Tracks</h3>
-		<p>When updating Text Tracks, some fields in <a href="/cms/references/cms-api-video-fields-reference-stage.html#text_tracks">Text Tracks Fields</a> can be treated differently according to its type.</p>
-
-		<table class="bcls-table">
-			<caption class="bcls-caption--table">Text Track Fields</caption>
-			<thead class="bcls-table__head">
-					<tr>
-							<th>Field</th>
-							<th>Type</th>
-							<th>Remote Text Tracks</th>
-							<th>Static Ingested Text Tracks</th>
-							<th>Dynamic Ingested Text Tracks</th>
-					</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-					<tr>
-							<td><code translate="no">id</code></td>
-							<td>String</td>
-							<td colspan="3">READ-ONLY value. Required to identify the TT that needs to be updated.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">account_id</code></td>
-							<td>String</td>
-							<td colspan="3">Updates on this field will be ignored.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">src</code></td>
-							<td>String</td>
-							<td>Required and limited to 255 characters.</td>
-							<td colspan="2">Updates on this field will be ignored.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">srclang</code></td>
-							<td>String</td>
-							<td colspan="3">Limited to 32 characters.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">label</code></td>
-							<td>String</td>
-							<td colspan="3">Limited to 255 characters.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">kind</code></td>
-							<td>Enum</td>
-							<td colspan="3">Valid values are <code translate="no">subtitles</code>, <code translate="no">captions</code>, <code translate="no">descriptions</code>, <code translate="no">chapters</code>, <code translate="no">metadata</code>. Case sensitive.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">mime_type</code></td>
-							<td>String</td>
-							<td colspan="2">Limited to 32 characters.</td>
-							<td>Updates on this field will be ignored.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">asset_id</code></td>
-							<td>String</td>
-							<td colspan="2">READ-ONLY value.</td>
-							<td>Field not applicable for this type. Updates on this field will be ignored.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">in_band_metadata_track_dispatch_type</code></td>
-							<td>String</td>
-							<td colspan="2">Field not applicable for this type. </td>
-							<td>Updates on this field will be ignored.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">sources</code></td>
-							<td>Array</td>
-							<td colspan="3">READ-ONLY value.</td>
-					</tr>
-					<tr>
-							<td><code translate="no">default</code></td>
-							<td>Boolean</td>
-							<td colspan="2"><code translate="no">true</code> or <code translate="no">false</code>. You cannot add multiple <code translate="no">default=true</code> to text tracks with different <code translate="no">srclang</code>.</td>
-							<td>Updates on this field will be ignored.</td>
-					</tr>
-			</tbody>
-	</table>
+    <p>When updating Text Tracks, some fields in
+      <a href="/cms/references/cms-api-video-fields-reference-stage.html#text_tracks">Text Tracks Fields</a> can be treated differently according to its type.
+    </p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Text Track Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Remote Text Tracks</th>
+          <th>Static Ingested Text Tracks</th>
+          <th>Dynamic Ingested Text Tracks</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>
+            <code translate="no">id</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">READ-ONLY value. Required to identify the TT that needs to be updated.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">account_id</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">src</code>
+          </td>
+          <td>String</td>
+          <td>Required and limited to 255 characters.</td>
+          <td colspan="2">Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">srclang</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">Limited to 32 characters.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">label</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">Limited to 255 characters.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">kind</code>
+          </td>
+          <td>Enum</td>
+          <td colspan="3">
+            Valid values are:
+            <ul>
+              <li>
+                <code translate="no">subtitles</code>
+              </li>
+              <li>
+                <code translate="no">captions</code>
+              </li>
+              <li>
+                <code translate="no">descriptions</code>
+              </li>
+              <li>
+                <code translate="no">chapters</code>
+              </li>
+              <li>
+                <code translate="no">metadata</code>
+              </li>
+              <li>
+                <code translate="No">transcripts</code>
+              </li>
+            </ul>
+            <aside class="bcls-aside bcls-aside--information language-editable">
+              Notes:
+              <ol>
+                <li>All values are case sensitive.</li>
+                <li>The
+                  <code translate="No">transcripts</code> kind is not available for static delivery.
+                </li>
+              </ol>
+            </aside>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="no">status</code></td>
+          <td>enum</td>
+          <td colspan="3">
+            Valid values (case-sensitive):
+            <ul>
+              <li><code translate="no">published</code> - text tracks will be displayed</li>
+              <li><code translate="no">draft</code> - text tracks will not be displayed</li>
+              <li><code translate="no">null</code> - (default) text tracks will be displayed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">mime_type</code>
+          </td>
+          <td>String</td>
+          <td colspan="2">Limited to 32 characters.</td>
+          <td>Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">asset_id</code>
+          </td>
+          <td>String</td>
+          <td colspan="2">READ-ONLY value.</td>
+          <td>Field not applicable for this type. Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">in_band_metadata_track_dispatch_type</code>
+          </td>
+          <td>String</td>
+          <td colspan="2">Field not applicable for this type.</td>
+          <td>Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">sources</code>
+          </td>
+          <td>Array</td>
+          <td colspan="3">READ-ONLY value.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">default</code>
+          </td>
+          <td>Boolean</td>
+          <td colspan="2">
+            <code translate="no">true</code> or
+            <code translate="no">false</code>. You cannot add multiple
+            <code translate="no">default=true</code> to text tracks with different
+            <code translate="no">srclang</code>.
+          </td>
+          <td>Updates on this field will be ignored.</td>
+        </tr>
+      </tbody>
+    </table>
     <h3>Request</h3>
     <p>Applicable to Remote, Static and Dynamic Text Tracks.</p>
     <pre class="line-numbers">
-<code class="language-http" translate="No">PATCH
-https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}</code></pre>
-    
+      <code class="language-http" translate="No">
+        PATCH
+https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
+      </code>
+    </pre>
     <h3>Request body examples</h3>
     <details>
-			<summary>Remote text tracks</summary>
-			<p>The request body will be a JSON object containing an array of text tracks:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
+      <summary>Remote text tracks</summary>
+      <p>The request body will be a JSON object containing an array of text tracks:</p>
+      <pre class="line-numbers">
+        <code class="language-json" translate="No">
+          {
 	"text_tracks" : 
 	[ 
 		{ 
@@ -145,12 +226,16 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}</code>
 			"default" : false 
 		} 
 	] 
-}</code></pre>
-		</details>
+}
+        </code>
+      </pre>
+    </details>
     <details>
-			<summary>Static text tracks</summary>
-			<p>The request body will be a JSON object containing an array of text tracks:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
+      <summary>Static text tracks</summary>
+      <p>The request body will be a JSON object containing an array of text tracks:</p>
+      <pre class="line-numbers">
+        <code class="language-json" translate="No">
+          {
 	"text_tracks" : 
 	[ 
 		{ 
@@ -170,12 +255,16 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}</code>
 			"default" : false 
 		} 
 	] 
-}</code></pre>
-		</details>
+}
+        </code>
+      </pre>
+    </details>
     <details>
-			<summary>Dynamic text tracks</summary>
-			<p>The request body will be a JSON object containing an array of text tracks:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
+      <summary>Dynamic text tracks</summary>
+      <p>The request body will be a JSON object containing an array of text tracks:</p>
+      <pre class="line-numbers">
+        <code class="language-json" translate="No">
+          {
 	"text_tracks" : 
 	[ 
 		{ 
@@ -195,9 +284,12 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}</code>
 			"default" : false 
 		} 
 	] 
-}</code></pre>
-		</details>
-    <aside class="bcls-aside--information">Note to delete text tracks, simply leave them of the array you submit on the update request. To delete all text tracks, send an update containing <code translate="no">"text_tracks"=[]</code>.</aside> 
+}
+        </code>
+      </pre>
+    </details>
+    <aside class="bcls-aside--information">Note to delete text tracks, simply leave them of the array you submit on the update request. To delete all text tracks, send an update containing
+      <code translate="no">"text_tracks"=[]</code>.
+    </aside>
   </section>
 </article>
-    
