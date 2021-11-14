@@ -2252,6 +2252,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </section>
   <section class="bcls-section">
     <h2 id="implementation_in_players">Implementation in players</h2>
+    <h3>Requirements</h3>
+    <ul>
+      <li>Generic Stream Concurrency requires the Brightcove web player 6.62 or later.</li>
+      <li>Generic Stream Concurrency requires the Brightcove iOS SDK player 6.10.1, or later.</li>
+      <li>Generic Stream Concurrency requires the Brightcove Android SDK player 6.17.1 or later.</li>
+    </ul>
     <h3>Brightcove web player</h3>
     <p>To enable the Generic Stream Concurrency feature for a specific player, modify the player configuration by going to the Players/JSON Editor section in Studio. You will need to add the following key/value pair to specify they want GSC to be activated.</p>
     <pre class="line-numbers"><code class="language-json" translate="No">“stream_concurrency” : true</code></pre>
@@ -2263,41 +2269,64 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h3>iOS</h3>
     <p>To enable the Generic Stream Concurrency feature for iOS SDK, you need to enable the option <code translate="No">streamConcurrencyEnabled</code> in their playbackController. Optionally they can send the value for `sid`, if the sid is empty, this value will not be sent as header.</p>
     <h4>Objective-C</h4>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/playback-restrictions/guides/generic-stream-concurrency/objective-c.png" alt="Objective-C Sample Code">
-      <figcaption class="bcls-caption--image">Objective-C Sample Code</figcaption>
-    </figure>
+<pre><code class="language-objectivec" translate="No">self.playbackController.streamConcurrencyEnabled = YES;
+// Optional. Sot custom sid
+self.playbackController.options ■ (?{ kBCOVAuthHeartbeatPropertyKeySessionld: G'sessionld" };</code></pre>
     <h4>Swift</h4>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/playback-restrictions/guides/generic-stream-concurrency/swift.png" alt="Swift Sample Code">
-      <figcaption class="bcls-caption--image">Swift Sample Code</figcaption>
-    </figure>
+<pre><code class="language-swift" translate="No">self.playbackController.streamConcurrencyEnabled ■ true
+// Optional. Set custom sid
+self.playbackController.options = [ kBCOVAuthHeartbeatPropertyKeySessionld: "sessionld" ]</code></pre>
   </section>
   <section class="bcls-section">
     <h2 id="implementation_via_API">Implementation via API</h2>
-    <p>This feature can be implemented via API without using the Brightcove Web Player or SDK players. The authorization method is through the JWT sent in an <code translate="No">Authorization</code> header:</p>
+    <p>This feature can be implemented via the Concurrency Service API without using the Brightcove Web Player or SDK players. See the <a href="/">API Reference</a> for additional details.</p>
+
+    <p>The base URL for the Concurrency Service API is:</p>
+    <pre><code class="language-http" translate="No">https://edge-gsc.api.brightcove.com</code></pre>
+      
+    <p>The authorization method is through the JWT sent in an <code translate="No">Authorization</code> header:</p>
     <pre><code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">code translate="No">/code>t</span></code></pre>
+
+    <p>The basic logic your player/app needs to perform is shown in the diagram below:</p>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/playback-restrictions/guides/generic-stream-concurrency/concurrency-api-logic.svg" alt="Logic for Concurrency">
+      <figcaption class="bcls-caption--image">Logic for Concurrency</figcaption>
+    </figure>
     <h4>The API endpoints</h4>
     <dl>
       <dt>Session</dt>
       <dd>
-        This endpoint is used to create new streaming sessions:
+        This endpoint is used to create new streaming sessions with a heartbeat for concurrency management:
 <pre><code class="language-http" translate="No">/api/v1/accounts/{account_id}/sessions</code></pre>
-        <p>Method: <code translate="No">POST</code></p>
+        <p><strong>Method: <code translate="No">POST</code></strong></p>
+        <p><strong>Request body:</strong></p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "sid": "<span class="bcls-input">a_unique_session_id</span>",
+  "video": "<span class="bcls-input">the_video_id</span>"
+}</code></pre>
       </dd>
       <dt>Active sessions</dt>
       <dd>
-        This endpoint allows you to list streaming sessions to keep track of them.
+        This endpoint allows you to list streaming sessions to keep track of them - mainly useful if you are implementing logic to decide which session to stop if the concurrency limit is reached:
+        <pre><code class="language-http" translate="No">/api/v1/accounts/{account_id}/sessions</code></pre>
+        <p><strong>Method: <code translate="No">POST</code></strong></p>
       </dd>
       <dt>Stop sessions</dt>
       <dd>
-        This endpoint allows you to to stop a streaming session.
+        This endpoint allows you to to stop a streaming session - you would use this if you are implementing logic to decide which session to stop when a new playback request exceeds the concurrency limit:
+<pre><code class="language-http" translate="No">/api/v1/accounts/{account_id}/sessions/{session_id}</code></pre>
+        <p><strong>Method: <code translate="No">DELETE</code></strong></p>
       </dd>
     </dl>
   </section>
   <section class="bcls-section">
     <h2 id="when_to_use_gsc">When to use GSC</h2>
-    <p>The table below offers a comparison of Generic Stream Concurrency and <a href="/playback-restrictions/guides/stream-concurrency.html">Stream Concurrency with DRM</a></p>
+    <p>Brightcove offers two solutions for managing concurrency:</p>
+    <ul>
+      <li>Generic Stream Concurrency (covered in this topic)</li>
+      <li><a href="/playback-restrictions/guides/stream-concurrency.html">Stream Concurrency with DRM</a></li>
+    </ul>
+    <p>The table below offers a comparison of the two to help you decide which is more appropriate for your situation. </p>
     <div style="overflow-x: scroll;">
       <table class="bcls-table">
         <caption class="bcls-caption--table">Stream Concurrency Solutions</caption>
@@ -2309,26 +2338,42 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         </thead>
         <tbody class="bcls-table__body">
             <tr>
-                <td>Table cell</td>
-                <td>Table cell</td>
+                <td>
+                  Advantages:
+                  <ul>
+                    <li>Does not require DRM</li>
+                    <li>Active stream sessions can be listed via the API</li>
+                  </ul>
+                </td>
+                <td>
+                  Advantages
+                  <ul>
+                    <li>There is no way to disable it from the client-side</li>
+                    <li>Renewal mechanism is transparent on custom implementations</li>
+                    <li>More secure</li>
+                  </ul>
+                </td>
             </tr>
             <tr>
-                <td>Table cell</td>
-                <td>Table cell</td>
+                <td>
+                  Disadvantages
+                  <ul>
+                    <li>Heartbeat runs from client-side</li>
+                    <li>Custom implementations require integrating the heartbeat mechanism</li>
+                  </ul>
+                </td>
+                <td>
+                  Disadvantages
+                  <ul>
+                    <li>It requires many DRM licenses</li>
+                    <li>no way to list all active sessions of a specific user</li>
+                  </ul>
+                </td>
             </tr>
         </tbody>
       </table>
     </div>
   </section>
-  <section class="bcls-section">
-    <h2 id="limitations">Limitations</h2>
-    <ul>
-      <li>Generic Stream Concurrency requires the Brightcove web player 6.62 or later.</li>
-      <li>Generic Stream Concurrency requires the Brightcove iOS SDK player 6.10.1, or later.</li>
-      <li>Generic Stream Concurrency requires the Brightcove Android SDK player 6.17.1 or later.</li>
-    </ul>
-  </section>
-
 </article>
 <!-- complete bootstrap layout -->
     </div>
