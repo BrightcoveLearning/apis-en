@@ -163,6 +163,15 @@ self.playbackController.options ■ (?{ kBCOVAuthHeartbeatPropertyKeySessionld: 
 <pre><code class="language-swift" translate="No">self.playbackController.streamConcurrencyEnabled ■ true
 // Optional. Set custom sid
 self.playbackController.options = [ kBCOVAuthHeartbeatPropertyKeySessionld: "sessionld" ]</code></pre>
+    <h3>Android</h3>
+    <p>In your player Activity’s onCreate method, add this line:</p>
+    <pre class="line-numbers"><code translate="no" class="language-java">brightcoveVideoView.setStreamConcurrencyEnabled(true);</code></pre> 
+    <p>In the <code translate="No">onCreate</code> method add an event listener for the <code translate="No">DID_SET_VIDEO</code> event, with this code to set heartbeat headers. Note that the same JWT used to retrieve the video is used here, and should include a <code translate="No">uid</code> claim (and optionally, a <code translate="No">sid</code> claim):</p>
+<pre class="line-numbers"><code translate="no" class="language-java">Map&lt;String, String&gt; requestHeaders = new HashMap&lt;&gt;();
+requestHeaders.put(ConcurrencyClient.HEARTBEAT_VIDEO_HEADER_KEY, video.getId());
+requestHeaders.put(ConcurrencyClient.HEARTBEAT_ACCOUNTID_HEADER_KEY, accountId);
+requestHeaders.put(BrightcoveTokenAuthorizer.BRIGHTCOVE_AUTHORIZATION_HEADER_KEY, jwtToken);
+brightcoveVideoView.setStreamConcurrencyRequestHeaders(requestHeaders);</code></pre>
   </section>
   <section class="bcls-section">
     <h2 id="implementation_via_API">Implementation via API</h2>
