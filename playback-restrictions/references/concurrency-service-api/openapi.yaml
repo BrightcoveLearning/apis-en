@@ -78,8 +78,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/model.ErrorResponse"
-  "/api/v1/accounts/{account_id}/sessions/{session_id}":
+                $ref: "#/components/schemas/model.403ErrorResponse"
     delete:
       security:
         - JWTAuth: []
@@ -127,15 +126,35 @@ components:
       properties:
         code:
           type: string
-          example: ACCESS_DENIED
+          example: INVALID_TOKEN
+        sub_code:
+          type: string
+          example: INVALID_TOKEN
         message:
           type: string
-          example: Video not available.
+          example: Invalid token
+    model.403ErrorDetails:
+      type: object
+      properties:
+        code:
+          type: string
+          example: ACCESS_DENIED
+        sub_code:
+          type: string
+          example: MAX_CONCURRENCY
+        message:
+          type: string
+          example: Playback denied due to reaching max allowed concurrency
     model.ErrorResponse:
       type: object
       properties:
         error:
           $ref: "#/components/schemas/model.ErrorDetails"
+    model.403ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: "#/components/schemas/model.403ErrorDetails"
     model.HeartbeatRequest:
       type: object
       properties:
@@ -153,7 +172,7 @@ components:
           description: Number of current active sessions
         heartbeat_interval:
           type: integer
-          description: Interval for heartbeats in seconds
+          description: Interval for heartbeats in milliseconds
         max:
           type: integer
           description: Maximum number of allowed concurrent sessions
