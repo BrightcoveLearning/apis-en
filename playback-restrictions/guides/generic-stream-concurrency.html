@@ -141,18 +141,48 @@ grandparent: Playback Restrictions
     <h2 id="implementation_in_players">Implementation in players</h2>
     <h3>Requirements</h3>
     <ul>
-      <li>Generic Stream Concurrency requires the Brightcove web player 6.62 or later.</li>
+      <li>Generic Stream Concurrency requires the Brightcove web player 6.63.1 or later.</li>
       <li>Generic Stream Concurrency requires the Brightcove iOS SDK player 6.10.1, or later.</li>
       <li>Generic Stream Concurrency requires the Brightcove Android SDK player 6.17.2 or later.</li>
     </ul>
     <h3>Brightcove web player</h3>
-    <p>To enable the Generic Stream Concurrency feature for a specific player, modify the player configuration by going to the Players/JSON Editor section in Studio. You will need to add the following key/value pair to specify they want GSC to be activated.</p>
+    <p>Generic stream concurrency in the Brightcove Player can be enabled using the <code translate="No">video_cloud.stream_concurrency</code> player configuration.</p>
+    <p>At this time, there is no dedicated UI for this feature in Studio, so the JSON editor must be used. The configuration will look something like this:</p>
     <pre class="line-numbers"><code class="language-json" translate="No">“stream_concurrency” : true</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/playback-restrictions/guides/generic-stream-concurrency/edit-player-config.png" alt="Player Configuration">
-      <figcaption class="bcls-caption--image">Player Configuration</figcaption>
-    </figure>
+<pre class="line-numbers"><code class="language-json" translate="No">...
+  "video_cloud": {
+    <span class="bcls-highlight">"stream_concurrency": true,</span>
+    "policy_key": "BCpk..."
+  },
+  "player": {
+    "template": {
+      "name": "single-video-template",
+      "version": "6.63.1"
+    }
+  },
+...</code></pre>
     <p>If this key/value pair is not present in JSON or the value is false, GSC feature would not be enabled for the player.</p>
+    <h4>Setting the JWT at Runtime</h4>
+    <p>Similar to the EPA stream concurrency limiting feature, generic stream concurrency depends on a JSON Web Token.</p>
+    <p>Once the player is configured for generic stream concurrency, as above, the remaining step is to provide a JWT to the player at runtime. This is the same process as when using EPA:</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">player.catalog.setBcovAuthToken('<MY_TOKEN>');</code></pre>
+      <h5>Example</h5>
+      <p>After adding a JWT token, the final step is to request data from the Playback API and load it into the player. This example demonstrates fetching a single video:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">// Set the authorization token.
+  player.catalog.setBcovAuthToken('<MY_TOKEN>');
+  
+  // Initiate a catalog request. API selection will occur each time this
+  // is called.
+  player.catalog.get({id: '1', type: 'video'}).
+    then(function(data) {
+  
+      // When the request is complete, you must load the returned metadata
+      // and sources into the player.
+      player.catalog.load(data);
+    }).
+    catch(function(error) {
+      throw new Error(error);
+    });</code></pre>
     <h3>iOS</h3>
     <p>To enable the Generic Stream Concurrency feature for iOS SDK, you need to enable the option <code translate="No">streamConcurrencyEnabled</code> in their playbackController. Optionally they can send the value for `sid`, if the sid is empty, this value will not be sent as header.</p>
     <h4>Objective-C</h4>
