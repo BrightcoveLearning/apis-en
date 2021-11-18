@@ -33,7 +33,7 @@ grandparent: Live API
 </section>
 
 <section class="bcls-section">
-<h2 id="getCredentials" class="bcls-expander-head">Get credentials for the CMS API</h2>
+<h2 id="Get_credentials_for_the_CMS_API" class="bcls-expander-head">Get credentials for the CMS API</h2>
 
 <div class="bcls-expander-content">
 <p>To use the <span translate="No">CMS API</span> you will need proper credentials.</p>
@@ -46,8 +46,7 @@ grandparent: Live API
 
 <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get the proper permissions:</p>
 
-<pre class="line-numbers">
-    <code class="language-json" translate="No">"operations": [
+<pre class="line-numbers"><code class="language-json" translate="No">"operations": [
     "video-cloud/videos/read",
     "video-cloud/videos/create",
     "video-cloud/videos/update"]</code></pre>
@@ -67,15 +66,11 @@ grandparent: Live API
 <ol class="bcls-tasklist-restart">
 	<li>For this step, you will submit a <code translate="No">POST </code> request to:
 
-	<pre class="line-numbers">
-<code class="language-http" translate="No">https://api.bcovlive.io/v1/jobs
-</code>
-</pre>
+	<pre class="line-numbers"><code class="language-http" translate="No">https://api.bcovlive.io/v1/jobs</code></pre>
 
 	<p>Use the following as the request body:</p>
 
-	<pre class="line-numbers">
-<code class="language-json" translate="No">{
+	<pre class="line-numbers"><code class="language-json" translate="No">{
     "live_stream": true,
     "region": "us-west-2",
     "reconnect_time": 1800,
@@ -114,9 +109,7 @@ grandparent: Live API
             "keyframe_interval": 60
         }
     ]
-}
-</code>
-</pre>
+}</code></pre>
 	</li>
 	<li>If you are using a REST client such as <a href="/general/use-insomnia-api-requests.html">Insomnia</a> or <a href="/general/use-postman-api-requests.html">Postman</a>, you will need to add the following headers for your request:
 	<table class="bcls-table">
@@ -257,14 +250,12 @@ grandparent: Live API
 	<li>
 	<p>First, you will need to create a new video by making a <code translate="No">POST</code> request to:</p>
 
-	<pre>
-<code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos</code></pre>
+	<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos</code></pre>
 	</li>
 	<li>
 	<p>The request body can include several pieces of metadata (see <a href="/cms/references/reference.html#/Videos/CreateVideo">the API reference</a> for details), but the only thing required is a <code translate="No">name</code>:</p>
 
-	<pre class="line-numbers">
-<code class="language-json" translate="No">{
+	<pre class="line-numbers"><code class="language-json" translate="No">{
     "name": "<span class="bcls-input">some name for your live stream</span>"
 }</code></pre>
 	</li>
@@ -274,14 +265,12 @@ grandparent: Live API
 	<li>
 	<p>To add the HLS stream, you will make another <code translate="No">POST</code> request to:</p>
 
-	<pre>
-<code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/assets/hls_manifest</code></pre>
+	<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/assets/hls_manifest</code></pre>
 	</li>
 	<li>
 	<p>This time, the request body will be:</p>
 
-	<pre class="line-numbers">
-<code class="language-json" translate="No">{
+	<pre class="line-numbers"><code class="language-json" translate="No">{
     "remote_url": "<span class="bcls-input">playback_url for your live stream</span>"
 }</code></pre>
 	</li>
@@ -304,12 +293,12 @@ grandparent: Live API
 	</figure>
 	</li>
 	<li>In the Publish dialog, select a player (the Brightcove Default Player is fine):
-	<figure class="bcls-figure"><img class="bcls-image" alt="Select Player" src="/assets/images/get-started/select-player.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="Select Player" src="/assets/images/live-api/17765/select-player.png" />
 	<figcaption class="bcls-caption--image">Select Player</figcaption>
 	</figure>
 	</li>
 	<li>Scroll down, set the size the player as you wish, and then click in code block to select the Standard player code - copy this code and paste into the body of your html page:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Get Publishing Code" src="/assets/images/get-started/get-publishing-code.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="Get Publishing Code" src="/assets/images/live-api/17765/get-publishing-code.png" />
 	<figcaption class="bcls-caption--image">Get Publishing Code</figcaption>
 	</figure>
 	</li>
@@ -323,7 +312,7 @@ grandparent: Live API
 </section>
 
 <section class="bcls-section">
-<h2 id="curl_commands">cURL commands</h2>
+<h2 id="cURL_commands">cURL commands</h2>
 
 <p>This section provides alternative cURL commands for those who do not use a REST client such as Insomnia or Postman.</p>
 
@@ -332,8 +321,7 @@ grandparent: Live API
 		<h3 id="curlCreateLiveJob">cURL for creating a live job</h3>
 	</summary>
 	
-	<pre class="line-numbers">
-	<code class="language-bash" translate="No">## Create Job - Simple
+	<pre class="line-numbers"><code class="language-bash" translate="No">## Create Job - Simple
 	curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 	-H "X-API-KEY: <span class="bcls-input">YOUR_API_KEY_HERE</span>" \
 	-H "Content-Type: application/json" \
@@ -383,7 +371,7 @@ grandparent: Live API
 </section>
 
 <section class="bcls-section">
-<h2 id="useStudio">Use Studio to create the video</h2>
+<h2 id="Use_Studio_to_create_the_video">Use Studio to create the video</h2>
 
 <p>Here are alternative steps for creating the video in Studio.</p>
 
@@ -391,12 +379,12 @@ grandparent: Live API
 	<li>Login to Video Cloud Studio.</li>
 	<li>Go to the Media Module.</li>
 	<li>In the options on the left, click <strong>Add Remote Video</strong>:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Remote Video Menu Item" src="/assets/images/get-started/add-remote-video-option.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="Add Remote Video Menu Item" src="/assets/images/live-api/17765/add-remote-video-option.png" />
 	<figcaption class="bcls-caption--image">Add Remote Video Menu Item</figcaption>
 	</figure>
 	</li>
 	<li>In the <strong>Add Remote Video</strong> dialog, add a video name and copy and paste the value for the <code translate="No">playback_url</code> from the Live API response into the URL field. Then click <strong>Add Rendition</strong>, and <strong>Save</strong>:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Rendition Dialog" src="/assets/images/get-started/remote-video-dialog.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="Add Rendition Dialog" src="/assets/images/live-api/17765/remote-video-dialog.png" />
 	<figcaption class="bcls-caption--image">Add Rendition Dialog</figcaption>
 	</figure>
 
@@ -406,7 +394,7 @@ grandparent: Live API
 </section>
 
 <section class="bcls-section">
-<h2 id="wirecast">Use Wirecast to stream an event</h2>
+<h2 id="Use_Wirecast_to_stream_an_event">Use Wirecast to stream an event</h2>
 
 <p>In this section, we will configure and use the Telestream Wirecast encoder to support a live streaming event. Telestream Wirecast software is a desktop application that captures input from your camera and produces a stream that can be delivered by a CDN. Note that there are hardware and other software based encoding solutions available that may be better suited for delivering your live streaming event. You can download a trial version of the Wirecast software from the <a href="http://www.telestream.net/controls/wirecast/download-wirecast.htm">Telestream website</a>.</p>
 
@@ -441,7 +429,7 @@ grandparent: Live API
 </section>
 
 <section class="bcls-section">
-<h2 id="conclusion">Conclusion</h2>
+<h2 id="Conclusion">Conclusion</h2>
 
 <p>You are now ready to create a live streaming session. You need to add the following to your encoder configuration:</p>
 
