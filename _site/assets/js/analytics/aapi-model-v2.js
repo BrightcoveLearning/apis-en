@@ -1484,6 +1484,11 @@ var aapi_model = {
       from: '2011-01-01',
       fields: ['ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'video', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at']
     },
+    video__date__destination_domain: {
+      dimensions: ['video', 'date', 'destination_domain'],
+      from: '2011-01-01',
+      fields: ['ad_mode_begin', 'ad_mode_complete', 'date', 'destination_domain', 'engagement_score', 'video',  'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at']
+    },
     video__date__country: {
       dimensions: ['video', 'date', 'country'],
       from: '2011-01-01',
