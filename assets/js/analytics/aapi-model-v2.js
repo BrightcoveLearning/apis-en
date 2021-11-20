@@ -1507,12 +1507,47 @@ var aapi_model = {
     device_os__device_manufacturer: {
       dimensions: ['device_os', 'device_manufacturer'],
       from: '2015-10-19',
+      fields: ['device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer']
+    },
+    device_os__device_manufacturer__account: {
+      dimensions: ['device_os', 'device_manufacturer', 'account'],
+      from: '2015-10-19',
       fields: ['account.name', 'device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer']
     },
     device_os__device_manufacturer__browser_type: {
       dimensions: ['device_os', 'device_manufacturer', 'browser_type'],
       from: '2015-10-19',
       fields: ['account.name', 'device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer', 'browser_type']
+    },
+    device_os__device_manufacturer__country: {
+      dimensions: ['device_os', 'device_manufacturer', 'country'],
+      from: '2015-10-19',
+      fields: ['device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'country', 'country_name', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer', 'browser_type']
+    },
+    device_os__device_manufacturer__region: {
+      dimensions: ['device_os', 'device_manufacturer', 'country'],
+      from: '2015-10-19',
+      fields: ['device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'region', 'region_name', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer', 'browser_type']
+    },
+    device_os__device_manufacturer__date_hour: {
+      dimensions: ['device_os', 'device_manufacturer', 'date_hour'],
+      from: '2015-10-19',
+      fields: ['device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'date_hour', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer', 'browser_type']
+    },
+    device_os__device_manufacturer__device_type: {
+      dimensions: ['device_os', 'device_manufacturer', 'device_type'],
+      from: '2015-10-19',
+      fields: ['device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'device_type', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer', 'browser_type']
+    },
+    device_os__device_manufacturer__player: {
+      dimensions: ['device_os', 'device_manufacturer', 'player'],
+      from: '2015-10-19',
+      fields: ['device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'player', 'player_name', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer', 'browser_type']
+    },
+    device_os__device_manufacturer__player: {
+      dimensions: ['device_os', 'device_manufacturer', 'video'],
+      from: '2015-10-19',
+      fields: ['device_os', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'video', 'video_name', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_manufacturer', 'browser_type']
     },
     country__device_os__region: {
       dimensions: ['device_os', 'country', 'region'],
