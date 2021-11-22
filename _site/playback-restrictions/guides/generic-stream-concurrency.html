@@ -2383,6 +2383,7 @@ self.playbackController.options = [ kBCOVAuthHeartbeatPropertyKeySessionld: "ses
     <p>For more details, see the <a href="https://sdks.support.brightcove.com/ios/reference/sdk/index.html#GSC">Brightcove Native Player for iOS Reference</a>.</p>   
 
     <h3>Android</h3>
+    <aside class="bcls-aside bcls-aside--warning">Note that the 6.17.2 build of the Brightcove Native SDK for Android includes a PRE-RELEASE version of the GSC feature. This release is intended for verification purposes, and not to be used in a production application.</aside>
     <p>In your player Activity’s onCreate method, add this line:</p>
     <pre class="line-numbers"><code translate="no" class="language-java">brightcoveVideoView.setStreamConcurrencyEnabled(true);</code></pre> 
     <p>In the <code translate="No">onCreate</code> method add an event listener for the <code translate="No">DID_SET_VIDEO</code> event, with this code to set heartbeat headers. Note that the same JWT used to retrieve the video is used here, and should include a <code translate="No">uid</code> claim (and optionally, a <code translate="No">sid</code> claim):</p>
@@ -2391,7 +2392,9 @@ requestHeaders.put(ConcurrencyClient.HEARTBEAT_VIDEO_HEADER_KEY, video.getId());
 requestHeaders.put(ConcurrencyClient.HEARTBEAT_ACCOUNTID_HEADER_KEY, accountId);
 requestHeaders.put(BrightcoveTokenAuthorizer.BRIGHTCOVE_AUTHORIZATION_HEADER_KEY, jwtToken);
 brightcoveVideoView.setStreamConcurrencyRequestHeaders(requestHeaders);</code></pre>
+  <p>For more details, see the <a href="https://sdks.support.brightcove.com/android/content-protection/generic-stream-concurrency-android.html">Generic Stream Concurrency (GSC) with the Native SDK for Android</a> document.</p>
   </section>
+
   <section class="bcls-section">
     <h2 id="implementation_via_API">Implementation via API</h2>
     <p>This feature can be implemented via the Concurrency Service API without using the Brightcove Web Player or SDK players. See the <a href="/playback-restrictions/references/concurrency-service-api/reference.html">API Reference</a> for additional details.</p>
@@ -2450,7 +2453,7 @@ brightcoveVideoView.setStreamConcurrencyRequestHeaders(requestHeaders);</code></
 
 <hr>
 <div class="last-updated">
-  Page last updated on 19 Nov 2021
+  Page last updated on 22 Nov 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
