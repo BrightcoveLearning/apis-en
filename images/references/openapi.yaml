@@ -128,6 +128,15 @@ components:
       style: form
       schema:
         type: string
+    Watermark:
+      name: rotate
+      explode: true
+      in: query
+      description: Add a play button watermark
+      required: false
+      style: form
+      schema:
+        type: boolean
 paths:
   /image/v1/{account_id}/default/url/{imageURL}:
     parameters:
@@ -137,6 +146,12 @@ paths:
       - $ref: "#/components/parameters/Resize"
       - $ref: "#/components/parameters/Crop"
       - $ref: "#/components/parameters/Rotate"
+      - $ref: "#/components/parameters/Width"
+      - $ref: "#/components/parameters/Height"
+      - $ref: "#/components/parameters/Fallback"
+      - $ref: "#/components/parameters/FillArea"
+      - $ref: "#/components/parameters/Watermark"
+      - $ref: "#/components/parameters/Nocache"
     get:
       summary: Get a specific Image with the specified transformations
       operationId: TransformCustomImage
