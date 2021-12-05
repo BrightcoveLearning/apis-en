@@ -1874,7 +1874,7 @@ paths:
       description: |-
         Creates a new playlist.
 
-        **A maximum of 100 videos can be added to a playlist** (both Manual and Smart). There is no limit to the number of playlists that can be created. The videos that are initially loaded into a playlist in the player is determined by the type of playlist.
+        **A maximum of 1000 videos can be added to a playlist** (both Manual and Smart). There is no limit to the number of playlists that can be created. The videos that are initially loaded into a playlist in the player is determined by the type of playlist.
       operationId: CreatePlaylist
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -2290,7 +2290,7 @@ paths:
             RESOURCE_NOT_FOUND: The api could not find the resource you requested
         '409':
           description: >-
-            MAXIUMUM_FOLDER_COUNT_REACHED: You have exceeded the maximum number of folders
+            MAXIMUM_FOLDER_COUNT_REACHED: You have exceeded the maximum number of folders
         '405':
           description: >-
             METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
@@ -5719,7 +5719,7 @@ components:
         type: string
       style: simple
     include_variants:
-      description: 'Whether to include the language variants in the respons'
+      description: 'Whether to include the language variants in the response'
       explode: true
       in: query
       name: include_variants
@@ -6185,6 +6185,7 @@ components:
             - sea
           items:
             type: string
+            maxLength: 128
           type: array
       required:
         - name
@@ -6606,7 +6607,7 @@ components:
           example: [
               "/nature/birds",
               "/nature/birds/shorebirds",
-              "/nature/birds/forentbirds",
+              "/nature/birds/forestbirds",
               "/nature/mammals/seamammals"
             ]
         version:
@@ -6920,7 +6921,8 @@ components:
           example: START_DATE_NEWEST_TO_OLDEST
           type: string
         video_ids:
-          description: array of video ids (EXPLICIT playlists only)
+          description: >-
+            array of video ids (EXPLICIT playlists only) - maximum length: 1000
           example:
             - '4084164751001'
             - '1532562858001'
@@ -7320,6 +7322,7 @@ components:
             - sea
           items:
             type: string
+            maxLength: 128
           type: array
         text_tracks:
           description: 'array of text tracks - can only be added on update, not creation'
