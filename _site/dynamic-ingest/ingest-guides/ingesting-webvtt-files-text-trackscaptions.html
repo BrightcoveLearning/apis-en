@@ -2197,7 +2197,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <section class="bcls-section">
     <h2 id="setup">Setup</h2>
     
-    <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a WebVTT file, or all of these:</p>
+    <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a WebVTT file, or all of these. For full details of the request body fields, see the <a href="/dynamic-ingest/references/reference.html#tag/Ingest">API Reference</a>.</p>
     
     <dl>
       <dt>Request URL</dt>
@@ -2239,21 +2239,21 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <pre class="line-numbers">
   <code class="language-json" translate="No">{
-      "master": {
-          "url":"http://learning-services-media.brightcove.com/videos/mp4/Water-Droplet.mp4"
-      },
-      "capture-images": false,
-      "text_tracks": [
-          {
-  "url": "http://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt",
-  "srclang": "en",
-  "kind": "captions",
-  "label": "English",
-  "default": true,
-  "status": "published"
-          }
-      ]
-  }</code></pre>
+  "master": {
+      "url":"http://learning-services-media.brightcove.com/videos/mp4/Water-Droplet.mp4"
+  },
+  "capture-images": false,
+  "text_tracks": [
+      {
+      "url": "http://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt",
+      "srclang": "en",
+      "kind": "captions",
+      "label": "English",
+      "default": true,
+      "embed_closed_caption": true
+    }
+  ]
+}</code></pre>
     </section>
     
     <section class="bcls-section">
@@ -2276,8 +2276,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         "srclang": "fr",
         "kind": "captions",
         "label": "français",
-        "default": true,
-        "status": "published"
+        "default": true
       }
     ]
   }</code></pre>
@@ -2307,8 +2306,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
               "srclang": "es",
               "kind": "captions",
               "label": "Español",
-              "default": true,
-              "status": "published"
+              "default": true
             }
           ]
         }</code></pre>
@@ -2325,7 +2323,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>for text tracks, Dynamic Ingest adds/appends them to the video’s vtt list even if it is a re-encode request. You should use the <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">CMS API</a> to manage them (update/delete).</li>
       <li>Dynamic Ingest accepts up to 100 text tracks at a time.</li>
       <li>Although <code translate="No">"mime_type": "text/vtt"</code> is generally supported for WebVTT, Dynamic Ingest does <strong>not</strong> currently allow that field for ingestion of text tracks.</li>
-      <li>Existing text tracks have <code translate="no">“status”: null</code>, which won’t hide text tracks in players.</li>
+      <!-- <li>Existing text tracks have <code translate="no">“status”: null</code>, which won’t hide text tracks in players.</li> -->
     </ol>
     </aside>
     
@@ -2350,7 +2348,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 11 Nov 2021
+  Page last updated on 18 Dec 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">

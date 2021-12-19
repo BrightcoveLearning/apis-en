@@ -415,20 +415,25 @@ components:
             - chapters
             - metadata
             - transcripts
-        status:
-          type: string
-          description: current status of the text tracks
-          default: null
-          enum:
-            - published
-            - draft
-            - null
+#        status:
+#          type: string
+#          description: current status of the text tracks
+#          default: null
+#          enum:
+#            - published
+#            - draft
+#            - null
         label:
           type: string
           description: user-readable title
         default:
           type: boolean
           description: sets the default language for captions/subtitles
+          default: false
+        embed_closed_caption:
+          type: boolean
+          description: whether to embed the text tracks in MP4 renditions as 608/708 embedded captions
+          default: false
       example: [
           {
             "url": "https://learning-services-media.brightcove.com.s3.amazonaws.com/captions/bc_smart.vtt",
@@ -436,7 +441,7 @@ components:
             "kind": "captions",
             "label": "EN",
             "default": true,
-            "status": "published"
+            "embed_closed_caption": true
           }
         ]
     IngestMediaAssetbody.captions:
