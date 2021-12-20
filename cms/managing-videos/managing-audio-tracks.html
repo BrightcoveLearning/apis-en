@@ -1,0 +1,203 @@
+---
+title: Managing Audio Tracks Using the CMS API
+description: 'In this topic, you will learn how to use the CMS API to get, update, and delete audio  tracks of your videos.'
+parent: Managing Videos/Assets
+grandparent: CMS API
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>If your account is enabled for multiple audio tracks, you can retrieve all or a specific audio track for a video, and also update the metadata for the track, or delete it.</p>
+    <p>Also see <a href="/dynamic-ingest/ingest-guides/implementing-multiple-audio-tracks-using-apis.html">Implementing Multiple Audio Tracks</a> for information on ingesting audio tracks.</p>
+  </section>
+  <details>
+    <summary>
+      <h2 id="authorization">Authenticating requests</h2>
+    </summary>
+    <p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the
+      <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
+    </p>
+    <p>The operations you will need to get and update video metadata are
+      <code translate="No">video-cloud/video/all</code>.
+    </p>
+    <p>See <a href="/cms/getting-started/overview-cms-api.html#General_Information">Overview: CMS API</a> for more details on authentication.</p>
+  </details>
+  <section class="section">
+    <h2 id="Get_all_audio_tracks_for_a_video">Get audio tracks for a video</h2>
+    <h3>All audio tracks</h3>
+    <h4>Request</h4>
+<pre>
+  <code class="language-http" translate="No">
+<strong>GET</strong>
+https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks
+  </code>
+</pre>
+  <e>
+    <summary>Sample response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">[
+	{
+		"id": "en_main",
+		"language": "en",
+		"variant": "main",
+		"duration": 25588,
+		"encoding_rates": [
+			63000,
+			96000,
+			127000,
+			192000
+		],
+		"is_default": true
+	},
+	{
+		"id": "es_alternate",
+		"language": "es",
+		"variant": "alternate",
+		"duration": 27328,
+		"encoding_rates": [
+			64000,
+			96000,
+			128000,
+			192000
+		],
+		"is_default": false
+	}
+]</code></pre>
+    <h3>One audio tracks</h3>
+    <h4>Request</h4>
+<pre>
+  <code class="language-http" translate="No">
+<strong>GET</strong>
+https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks/<span class="bcls-input">{audio_track_id}</span>
+  </code>
+</pre>
+  <details>
+    <summary>Sample response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"id": "es_alternate",
+	"language": "es",
+	"variant": "alternate",
+	"duration": 27328,
+	"encoding_rates": [
+		64000,
+		96000,
+		128000,
+		192000
+	],
+	"is_default": false
+}</code></pre>
+  </details>
+</section>
+<section class="bcls-section">
+    <h2 id="Updating audio tracks">Updating audio tracks</h2>
+    <h3>Request</h3>
+<pre>
+  <code class="language-http" translate="No">
+<strong>PATCH</strong>
+https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks/<span class="bcls-input">{audio_track_id}</span>
+  </code>
+</pre>
+<h4>Sample request body</h4>
+  <details>
+    <summary>Sample response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "language": "es-MX",
+	"variant": "alternate",
+	"is_default": false
+}</code></pre>
+  </details>
+  <p>The table below shows the audio track properties and indicates the ones that can be updated.</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Audio Track Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>
+            <code translate="no">id</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">READ-ONLY value. Made up of the orinigal language code and variant for the track.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">duration</code>
+          </td>
+          <td>Number</td>
+          <td>READ-ONLY value. Duration of the audio track in milleseconds.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">encoding_rates</code>
+          </td>
+          <td>Array (integers)</td>
+          <td>READ-ONLY value. Encoding rates for the transcoded audio track in KBPS</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">is_default</code>
+          </td>
+          <td>Boolean</td>
+          <td>Wether the track is the default track to be played</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">language</code>
+          </td>
+          <td>String</td>
+          <td>An ISO language code to identify the language of the audio. You can use basic codes such as <code translate="No">fr</code> or codes with a locale identifier, such as <code translate="No">fr-CA. See the <a href="http://www.lingoes.net/en/translator/langcode.htm">ISO Language Code Table</a></code>.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">variant</code>
+          </td>
+          <td>Enum</td>
+          <td>
+            Valid values are:
+            <ul>
+              <li>
+                <code translate="no">main</code>
+              </li>
+              <li>
+                <code translate="no">alternate</code>
+              </li>
+              <li>
+                <code translate="no">dub</code>
+              </li>
+              <li>
+                <code translate="no">commentary</code>
+              </li>
+              <li>
+                <code translate="no">descriptive</code>
+              </li>
+            </ul>
+            <aside class="bcls-aside bcls-aside--information language-editable">
+              Notes:
+              <ol>
+                <li>All values are case sensitive.</li>
+                <li>The muxed in audio track is usually designated as <code translate="no">main</code></li>
+              </ol>
+            </aside>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="bcls-section">
+    <h2 id="">Delete an audio track</h2>
+    <h3>Request</h3>
+<pre>
+  <code class="language-http" translate="No">
+<strong>DELETE</strong>
+https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks/<span class="bcls-input">{audio_track_id}</span>
+  </code>
+</pre>
+    <p>A successful request will return a 204 NO CONTENT response.</p>
+  </section>
+</article>

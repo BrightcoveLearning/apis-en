@@ -3,18 +3,20 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="The Image API allows you to retrieve a resized, cropped, or rotated version of an image.">
+  <meta name="description" content="In this topic, you will learn how to use the CMS API to get, update, and delete audio  tracks of your videos.">
   
-  <title>Overview: Image API</title>
+  <title>Managing Audio Tracks Using the CMS API</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">  
+<link rel="preconnect" href="https://fonts.gstatic.com"> 
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/prism.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/styles.css">
+  <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/learning-paths/learning-paths.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/landing-page.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/tabs.css">
   <link rel="stylesheet" href="/assets/css/local.css">
@@ -30,11 +32,18 @@
 
   gtag('config', 'UA-2728311-17');
 </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2728311-17"></script>
+<script translate="no">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-2728311-17');
+</script>
   <script src="/assets/js/sajari-head.js"></script>
-	<script src="https://unpkg.com/feather-icons"></script>
 </head>
-
-
+<script src="https://unpkg.com/feather-icons"></script>
 <body class="body">
 
 <header>
@@ -61,15 +70,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
     
       
-        <li class="breadcrumb-item"><a href="/images/">Images</a></li>
+        <li class="breadcrumb-item"><a href="/cms/">Cms</a></li>
       
     
       
-        <li class="breadcrumb-item"><a href="/images/getting-started/">Getting started</a></li>
+        <li class="breadcrumb-item"><a href="/cms/managing-videos/">Managing videos</a></li>
       
     
       
-        <li class="breadcrumb-item active" aria-current="page">Overview: Image API</li>
+        <li class="breadcrumb-item active" aria-current="page">Managing Audio Tracks Using the CMS API</li>
       
     
   </nav>
@@ -2182,191 +2191,204 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Overview: Image API</h1>
+<h1>Managing Audio Tracks Using the CMS API</h1>
 <article class="bcls-article">
-  <summary>The Image API allows you to retrieve a resized, cropped, or rotated version of an image.</summary>
+  <summary>In this topic, you will learn how to use the CMS API to get, update, and delete audio  tracks of your videos.</summary>
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    <p>The Brightcove Image API provides a quick and easy way to resize, crop, and/or rotate an image using a simple GET request.</p>
-    <h3>Request URL</h3>
-    <p>The request URL for the Image API is:</p>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/<span class="bc-input">account_id</span>/default/url/<span class="bc-input">{image_url}</span></code></pre>
-    <p>The required path parameters are:</p>
-    <ul>
-      <li><code translate="No">account_id</code>: your Video Cloud account id</li>
-      <li><code translate="No">image_url</code>: a public URL where the image can be found</li>
-    </ul>
-    <aside class="bcls-aside bcls-aside--information language-editable">
-      Notes:
-      <ul>
-        <li>The following image formats are supported: PNG, JPG, GIF</li>
-        <li>
-          The <code translate="No">image_url</code> must be properly encoded. If you use JavaScript, use the <code translate="No">encodeURIComponent()</code> method. You can also use the <a href="https://general.support.brightcove.com/utilities/string-encoder.html">String Encoder</a> provided by Brightcove Learning Services:
-          <figure class="bcls-figure">
-            <img class="bcls-image" src="/assets/images/image-api/string-encoder.png" alt="String Encoder">
-            <figcaption class="bcls-caption--image">String Encoder</figcaption>
-          </figure>
-        </li>
-      </ul>
-    </aside>
+    <p>If your account is enabled for multiple audio tracks, you can retrieve all or a specific audio track for a video, and also update the metadata for the track, or delete it.</p>
+    <p>Also see <a href="/dynamic-ingest/ingest-guides/implementing-multiple-audio-tracks-using-apis.html">Implementing Multiple Audio Tracks</a> for information on ingesting audio tracks.</p>
   </section>
-  <section class="bcls-section">
-    <h2 id="URL_parameters">URL parameters</h2>
-    <p>To get a transformed version of your image, use one or more of the URL parameters described below in your request. Note that you can use any combination of the 3 parameters.</p>
+  <details>
+    <summary>
+      <h2 id="authorization">Authenticating requests</h2>
+    </summary>
+    <p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the
+      <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
+    </p>
+    <p>The operations you will need to get and update video metadata are
+      <code translate="No">video-cloud/video/all</code>.
+    </p>
+    <p>See <a href="/cms/getting-started/overview-cms-api.html#General_Information">Overview: CMS API</a> for more details on authentication.</p>
+  </details>
+  <section class="section">
+    <h2 id="Get_all_audio_tracks_for_a_video">Get audio tracks for a video</h2>
+    <h3>All audio tracks</h3>
+    <h4>Request</h4>
+<pre>
+  <code class="language-http" translate="No">
+<strong>GET</strong>
+https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks
+  </code>
+</pre>
+  <e>
+    <summary>Sample response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">[
+	{
+		"id": "en_main",
+		"language": "en",
+		"variant": "main",
+		"duration": 25588,
+		"encoding_rates": [
+			63000,
+			96000,
+			127000,
+			192000
+		],
+		"is_default": true
+	},
+	{
+		"id": "es_alternate",
+		"language": "es",
+		"variant": "alternate",
+		"duration": 27328,
+		"encoding_rates": [
+			64000,
+			96000,
+			128000,
+			192000
+		],
+		"is_default": false
+	}
+]</code></pre>
+    <h3>One audio tracks</h3>
+    <h4>Request</h4>
+<pre>
+  <code class="language-http" translate="No">
+<strong>GET</strong>
+https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks/<span class="bcls-input">{audio_track_id}</span>
+  </code>
+</pre>
+  <details>
+    <summary>Sample response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+	"id": "es_alternate",
+	"language": "es",
+	"variant": "alternate",
+	"duration": 27328,
+	"encoding_rates": [
+		64000,
+		96000,
+		128000,
+		192000
+	],
+	"is_default": false
+}</code></pre>
+  </details>
+</section>
+<section class="bcls-section">
+    <h2 id="Updating audio tracks">Updating audio tracks</h2>
+    <h3>Request</h3>
+<pre>
+  <code class="language-http" translate="No">
+<strong>PATCH</strong>
+https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks/<span class="bcls-input">{audio_track_id}</span>
+  </code>
+</pre>
+<h4>Sample request body</h4>
+  <details>
+    <summary>Sample response</summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "language": "es-MX",
+	"variant": "alternate",
+	"is_default": false
+}</code></pre>
+  </details>
+  <p>The table below shows the audio track properties and indicates the ones that can be updated.</p>
     <table class="bcls-table">
-      <caption class="bcls-caption--table">URL Params for Image API</caption>
+      <caption class="bcls-caption--table">Audio Track Fields</caption>
       <thead class="bcls-table__head">
-          <tr>
-              <th>Parameter</th>
-              <th>Description</th>
-          </tr>
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
       </thead>
       <tbody class="bcls-table__body">
-          <tr>
-              <td><code translate="No">resize</code></td>
-              <td>
-                Resize the image by setting this equal to "widthxheight" - example: <code translate="no">resize=160x90</code>)
-                <!-- <aside class="bcls-aside bcls-aside--information language-editable">If you use the <code translate="No">resize</code> parameter and also the <code translate="No">width</code> and <code translate="No">height</code> parameters, whichever parameters are last in the query string will be applied.</aside> -->
-              </td>
-          </tr>
-          <!-- <tr>
-              <td><code translate="No">width</code></td>
-              <td>
-                Resize the image by setting this equal to the width in pixels along with the corresponding <code translate="No">height</code> parameter - example: <code translate="no">width=320&height=180</code>)
-                <aside class="bcls-aside bcls-aside--information language-editable">Notes:
-                  <ul>
-                    <li>If you use the <code translate="No">resize</code> parameter and also the <code translate="No">width</code> and <code translate="No">height</code> parameters, whichever parameters are last in the query string will be applied.</li>
-                    <li>If you are using the <code translate="No">width</code> and <code translate="No">height</code> parameters to resize the image, both parameters must be included</li>
-                  </ul>
-                  </aside>
-              </td>
-          </tr>
-          <tr>
-              <td><code translate="No">height</code></td>
-              <td>
-                Resize the image by setting this equal to the height in pixels along with the corresponding <code translate="No">width</code> parameter - example: <code translate="no">width=320&height=180</code>)
-                <aside class="bcls-aside bcls-aside--information language-editable">Notes:
-                  <ul>
-                    <li>If you use the <code translate="No">resize</code> parameter and also the <code translate="No">width</code> and <code translate="No">height</code> parameters, whichever parameters are last in the query string will be applied.</li>
-                    <li>If you are using the <code translate="No">width</code> and <code translate="No">height</code> parameters to resize the image, both parameters must be included</li>
-                  </ul>
-                  </aside>
-              </td>
-          </tr> -->
-          <tr>
-              <td><code translate="No">fallback</code></td>
-              <td>If <code translate="No">true</code>, the API will return a black image if it is unable to return the requested image.</td>
-          </tr>
-          <tr>
-              <td><code translate="No">fillArea</code></td>
-              <td>Keep the aspect ratio of the image filling entirely the area given by the resize parameter. Default behavior fills only one side of the same area.</td>
-          </tr>
-          <tr>
-              <td><code translate="No">crop</code></td>
-              <td>Crop the width and height by setting this equal to "widthxheight" - example: <code translate="no">crop=160x90</code> - the origin point is the center of the image.</td>
-          </tr>
-          <tr>
-              <td><code translate="No">rotate</code></td>
-              <td>rotate the image clockwise by the specified number of degrees - example: <code translate="no">rotate=90</code></td>
-          </tr>
-          <tr>
-              <td><code translate="No">nocache</code></td>
-              <td>
-                If<code translate="no">true</code> the API response will include a <code translate="No">Cache-Control</code> header with the value <code translate="no">public, max-age=0</code>.
-                <aside class="bcls-aside bcls-aside--information language-editable">Note that the <code translate="No">nocache</code> parameter <strong>must</strong> follow one of the other parameters or an error will be returned.</aside>
-              </td>
-          </tr>
-          <tr>
-              <td><code translate="No">watermark</code></td>
-              <td>If<code translate="no">true</code> a play button icon will be added to the image</td>
-          </tr>
+        <tr>
+          <td>
+            <code translate="no">id</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">READ-ONLY value. Made up of the orinigal language code and variant for the track.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">duration</code>
+          </td>
+          <td>Number</td>
+          <td>READ-ONLY value. Duration of the audio track in milleseconds.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">encoding_rates</code>
+          </td>
+          <td>Array (integers)</td>
+          <td>READ-ONLY value. Encoding rates for the transcoded audio track in KBPS</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">is_default</code>
+          </td>
+          <td>Boolean</td>
+          <td>Wether the track is the default track to be played</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">language</code>
+          </td>
+          <td>String</td>
+          <td>An ISO language code to identify the language of the audio. You can use basic codes such as <code translate="No">fr</code> or codes with a locale identifier, such as <code translate="No">fr-CA. See the <a href="http://www.lingoes.net/en/translator/langcode.htm">ISO Language Code Table</a></code>.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">variant</code>
+          </td>
+          <td>Enum</td>
+          <td>
+            Valid values are:
+            <ul>
+              <li>
+                <code translate="no">main</code>
+              </li>
+              <li>
+                <code translate="no">alternate</code>
+              </li>
+              <li>
+                <code translate="no">dub</code>
+              </li>
+              <li>
+                <code translate="no">commentary</code>
+              </li>
+              <li>
+                <code translate="no">descriptive</code>
+              </li>
+            </ul>
+            <aside class="bcls-aside bcls-aside--information language-editable">
+              Notes:
+              <ol>
+                <li>All values are case sensitive.</li>
+                <li>The muxed in audio track is usually designated as <code translate="no">main</code></li>
+              </ol>
+            </aside>
+          </td>
+        </tr>
       </tbody>
-  </table>
+    </table>
   </section>
   <section class="bcls-section">
-    <h2 id="Best_practices">Best Practices</h2>
-    <p>If your transformed images will be displayed on web pages or in online apps, use the API to retrieve the images and store them on your server. Do <strong>not</strong> retrieve them at runtime, as rate-limiting on the API would cause some requests to fail on high-traffic pages or apps, and it also degrades the performance of your page/app by forcing the API requests to be made every it is loaded by a user.</p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Examples">Examples</h2>
-    <p>Here is the original image for examples below:</p>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf.jpg" alt="Original Image">
-      <figcaption class="bcls-caption--image">Original Image (726x985)</figcaption>
-    </figure>
-    <h3>Resized (using the <code translate="No">resize</code> parameter)</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=221x300</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-resized.png" alt="Resized Image">
-      <figcaption class="bcls-caption--image">Resized Image</figcaption>
-    </figure>
-    <!-- <h3>Resized (using the <code translate="No">width</code> and <code translate="No">height</code> parameters)</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?width=221&height=300</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-resized-2.png" alt="Resized Image">
-      <figcaption class="bcls-caption--image">Resized Image</figcaption>
-    </figure> -->
-    <h3>Cropped</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?crop=580x670</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-cropped.png" alt="Cropped Image">
-      <figcaption class="bcls-caption--image">Cropped Image</figcaption>
-    </figure>
-    <h3>Rotated</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?rotate=-90</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-rotated.png" alt="Rotated Image">
-      <figcaption class="bcls-caption--image">Rotated Image</figcaption>
-    </figure>
-    <h3>Resized and Fill Area</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=200x300&fillArea=true</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-resize-and-fillarea.png" alt="Resized and Fill Area">
-      <figcaption class="bcls-caption--image">Resized and Fill Area</figcaption>
-    </figure>
-    <h3>Resized and Rotated</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=221x300&rotate=-90</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-resized-rotated.png" alt="Resized and Rotated Image">
-      <figcaption class="bcls-caption--image">Resized and Rotated Image</figcaption>
-    </figure>
-    <h3>Cropped and Rotated</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?crop=570x660&rotate=-90</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-cropped-rotated.png" alt="Cropped and Rotated Image">
-      <figcaption class="bcls-caption--image">Cropped and Rotated Image</figcaption>
-    </figure>
-    <h3>Resized, Cropped, and Rotated</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=221x300&crop=570x660&rotate=-90</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-resized-cropped-rotated.png" alt="Resized, Cropped, Rotated Image">
-      <figcaption class="bcls-caption--image">Resized, Cropped, Rotated Image</figcaption>
-    </figure>
-    <h3>Watermarked</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?watermark=true</code></pre>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/leaf-watermark.png" alt="Watermarked">
-      <figcaption class="bcls-caption--image">Watermarked</figcaption>
-    </figure>
-    <h3>No cache</h3>
-    <h4>Request</h4>
-    <pre><code class="language-http" translate="No">https://images.brightcovecdn.com/image/v1/1752604059001/default/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=221x300&nocache=true</code></pre>
-    <p>Below are the response headers (returned by <a href="insomnia.rest">Insomnia</a>).</p>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/image-api/insominia-response-headers.png" alt="Response Headers">
-      <figcaption class="bcls-caption--image">Response Headers</figcaption>
-    </figure>
+    <h2 id="">Delete an audio track</h2>
+    <h3>Request</h3>
+<pre>
+  <code class="language-http" translate="No">
+<strong>DELETE</strong>
+https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks/<span class="bcls-input">{audio_track_id}</span>
+  </code>
+</pre>
+    <p>A successful request will return a 204 NO CONTENT response.</p>
   </section>
 </article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -2382,7 +2404,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 16 Dec 2021
+  Page last updated on 20 Dec 2021
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
