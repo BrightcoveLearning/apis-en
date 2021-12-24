@@ -1124,6 +1124,7 @@ paths:
         **Notes**
           - Once the unprotected URL is made available, Brightcove and the client have no control over who has access to the content or how it is used.
           - There will be egress bandwidth charges made to the customer when the sources are accessed.
+          - This endpoint requires the special permission `video-cloud/video/clear-sources` which is not available in the Studio UI. To generate credentials to get clear sources, this permission must be enabled for the account, and you must either ask Support to create the credentials, or use the [OAuth API](/oauth/getting-started/overview-oauth-api-v4.html)
       operationId: GetClearVideoSources
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1159,7 +1160,7 @@ paths:
       deprecated: false
       security:
         - BC_OAuth2:
-            - video-cloud/video/read
+            - video-cloud/video/clear-sources
       x-operation-settings:
         CollectParameters: false
         AllowDynamicQueryParameters: false
@@ -8275,3 +8276,4 @@ components:
             video-cloud/sharing-relationships/delete: Sharing Relationships Delete
             video-cloud/sharing-relationships/all: Sharing Relationships All
             video-cloud/notifications/all: Notifications All
+            video-cloud/video/clear-sources: Read clear sources
