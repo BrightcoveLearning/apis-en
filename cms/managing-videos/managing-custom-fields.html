@@ -1,5 +1,5 @@
 ---
-title: Managing Custom Fields
+title: Managing Custom Fields Using the CMS API
 description: 'This topic explains how to use the CMS API to manage the custom fields for an account.'
 parent: Managing Videos
 grandparent: CMS API
@@ -56,7 +56,7 @@ layout: staging
               <td><code translate="No">id</code></td>
               <td>string</td>
               <td>
-                Internal name for the field. Can be updated.
+                Internal name for the field. Can be updated. Note that updating it will trigger an internal process to update the <code translate="No">id</code> in any videos that have the custom field.
                 <p>Requirements:</p>
                 <ul>
                   <li>all lowercase</li>
@@ -64,6 +64,7 @@ layout: staging
                   <li>letters and numbers only - no special characters</li>
                   <li>max length: 128 single-byte characters</li>
                   <li>must be unique among all custom fields for the account</li>
+                  <li>must not be one of the <a href="https://studio.support.brightcove.com/admin/creating-custom-metadata-fields.html#reserved">Reserved names</a></li>
                 </ul>
               </td>
           </tr>
@@ -115,7 +116,7 @@ layout: staging
               Allowed values for an <code translate="No">enum</code> field. Can be updated.
               <p>Requirements:</p>
               <ul>
-                <li>up to 150 items</li>
+                <li>up to 150 items (note: this maximum value can be increased up to 1000 - create a <a href="https://supportportal.brightcove.com/">Support Request</a> if you wish to increase it)</li>
                 <li>each item has a maximum length of 100 single-byte characters</li>
                 <li><strong>required for <code translate="No">enum</code> type fields</strong></li>
                 <li><strong>not allowed for <code translate="No">string</code> type fields</strong></li>
@@ -133,7 +134,7 @@ layout: staging
     <h4>Request URL</h4>
 <pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/{account_id}/video_fields/custom_fields</code></pre>
     <h4>Method</h4>
-    <pre><code class="language-http" translate="No">POST</code></pre>
+    <pre><code class="language-http" translate="No">GET</code></pre>
     <details>
       <summary>Sample response (success status code: 200) </summary>
 <pre class="line-numbers"><code class="language-json" translate="No">[{
@@ -153,12 +154,12 @@ layout: staging
   "enum_values" : ["EnumValue1", "EnumValue2"]
 }]</code></pre>
     </details>
-    <h3>Get one custom fields</h3>
+    <h3>Get one custom field</h3>
     <p>To get an array of all custom fields, you send a <code translate="No">GET</code> request with the custom field details.</p>
     <h4>Request URL</h4>
 <pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/{account_id}/video_fields/custom_fields/<span class="bcls-input">{custom_field_id}</span></code></pre>
     <h4>Method</h4>
-    <pre><code class="language-http" translate="No">POST</code></pre>
+    <pre><code class="language-http" translate="No">GET</code></pre>
     <details>
       <summary>Sample response (success status code: 200) </summary>
 <pre class="line-numbers"><code class="language-json" translate="No">{
@@ -283,7 +284,7 @@ layout: staging
               <td><code translate="No">id</code></td>
               <td>string</td>
               <td>
-                Internal name for the field. Can be updated.
+                Internal name for the field. Can be updated.<strong>Note</strong> that updating it will trigger an internal process to update the <code translate="No">id</code> in any videos that have the custom field.
                 <p>Requirements:</p>
                 <ul>
                   <li>all lowercase</li>
@@ -344,6 +345,7 @@ layout: staging
   <section class="bcls-section">
     <h2 id="delete_custom_fields">Delete custom fields</h2>
     <p>To create a custom field, you send a <code translate="No">Delete</code> request with the custom field details.</p>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that when a custom field is deleted, this action will trigger an event that will remove the custom field from all the videos in the account that have it.</aside>
     <h3>Request URL</h3>
 <pre><code class="language-http" translate="No">hhttps://cms.api.brightcove.com/v1/accounts/{account_id}/video_fields/custom_fields/<span class="bcls-input">{custom_field_id}</span></code></pre>
     <h3>Method</h3>
