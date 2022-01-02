@@ -12,6 +12,8 @@ grandparent: Dynamic Ingest API
     <h2 id="setup">Setup</h2>
     
     <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a WebVTT file, or all of these. For full details of the request body fields, see the <a href="/dynamic-ingest/references/reference.html#tag/Ingest">API Reference</a>.</p>
+
+    <p>Note that to embed 608/708 closed captions in the MP4 renditions for the video, you must include the <code translate="No">"embed_closed_caption": true</code> in the request body.</p>
     
     <dl>
       <dt>Request URL</dt>
@@ -51,8 +53,7 @@ grandparent: Dynamic Ingest API
     
     <h4>Sample request body</h4>
     
-    <pre class="line-numbers">
-  <code class="language-json" translate="No">{
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "master": {
       "url":"http://learning-services-media.brightcove.com/videos/mp4/Water-Droplet.mp4"
   },
@@ -68,6 +69,7 @@ grandparent: Dynamic Ingest API
     }
   ]
 }</code></pre>
+      <aside class="bcls-aside bcls-aside--information language-editable">Note: set <code translate="No">embed_closed_captions</code> to <code translate="No">true</code> to add 608/708 captions to MP4 renditions.</aside>
     </section>
     
     <section class="bcls-section">
@@ -82,18 +84,20 @@ grandparent: Dynamic Ingest API
     </ul>
     </aside>
     
-    <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-json" translate="No">{
-    "text_tracks": [
-      {
-        "url": "http://media.brightcove.com/captions/Water.dfxp",
-        "srclang": "fr",
-        "kind": "captions",
-        "label": "français",
-        "default": true
-      }
-    ]
-  }</code></pre>
+  "text_tracks": [
+    {
+      "url": "http://media.brightcove.com/captions/Water.dfxp",
+      "srclang": "fr",
+      "kind": "captions",
+      "label": "français",
+      "default": true
+      "embed_closed_caption": true
+    }
+  ]
+}</code></pre>
+      <aside class="bcls-aside bcls-aside--information language-editable">Note: set <code translate="No">embed_closed_captions</code> to <code translate="No">true</code> to add 608/708 captions to MP4 renditions.</aside>
     </section>
     
     <section class="bcls-section">
