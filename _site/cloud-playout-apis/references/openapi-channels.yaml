@@ -94,6 +94,7 @@ paths:
       operationId: GetAllChannels
       parameters:
         - $ref: '#/components/parameters/AccountId'
+#        - $ref: '#/components/parameters/Q'
       responses:
         '200':
           description: '200'
@@ -2952,7 +2953,8 @@ components:
       schema:
         type: string
     ssai:
-      name: SSAI true/false for filtering
+      name: ssai
+      description: true/false for filtering
       in: query
       required: true
       style: form
@@ -2960,7 +2962,8 @@ components:
       schema:
         type: boolean
     duration:
-      name: duration of metrics in minutes
+      name: duration
+      description: duration of metrics in minutes
       in: query
       required: true
       style: form
@@ -2969,7 +2972,8 @@ components:
         type: integer
         default: 35
     period:
-      name: period of metrics in minutes
+      name: period
+      description: period of metrics in minutes
       in: query
       required: true
       style: form
@@ -2978,7 +2982,8 @@ components:
         type: integer
         default: 5
     format:
-      name: as run logs format
+      name: format
+      description: as run logs format
       in: query
       required: false
       style: form
@@ -2991,13 +2996,25 @@ components:
           - xml
           - csv
     download:
-      name: download as run logs
+      name: download
+      description: download as run logs
       in: query
       required: false
       style: form
       explode: false
       schema:
         type: boolean
+        default: true
+    Q:
+      name: q
+      description: >-
+        search string to search for channels - see [Searching for Channels using the Channels API](/cloud-playout-apis/guides/search-channels-api.html) for details
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
         default: true
   responses:
     '204':

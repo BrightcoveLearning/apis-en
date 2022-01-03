@@ -15,6 +15,165 @@ grandparent: Cloud Playout APIs
   </section>
   <section class="bcls-section">
     <h2 id="Search_parameter">Search Parameter</h2>
-    <p></p>
+    <p>Channel search uses a parameter (<code translate="No">q</code>) that is added to the GET CHANNELS request:</p>
+<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/cp_channels</code></pre>
+
+    <p>The general form of the q parameter with a value is:</p>
+    <pre><code class="language-http" translate="No">q=search_text advanced_search</code></pre>
+    <p>The components of the search query are as follows:</p>
+    <ul>
+      <li><code translate="no">search_text</code> - the word(s) to search for in name, description, or id of the channel</li>
+      <li><code translate="no">advanced_search</code> - a set of filters that narrow the search</li>
+    </ul>
+    <p>Both the <code translate="No">search_text</code> and <code translate="No">advanced_search</code> filters are optional.</p>
+    <p><strong>Example</strong></p>
+    <pre><code class="language-http" translate="No">...?q=nature stories loop:true desc:"nature stories" startTime:2021-12-11 10:30:00..2021-12-12 12:23:00</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Advanced_search_patterns">Advanced search patterns</h2>
+    <p>The advanced_search part of the query is a combination of patterns separated by a space. Patterns that don't match the accepted ones will result in a error returned. The table below shows the supported patterns.</p>
+    <div style="overflow-x: scroll;">
+      <table class="bcls-table">
+          <caption class="bcls-caption--table">Advanced Search Patterns</caption>
+          <thead class="bcls-table__head">
+              <tr>
+                  <th><code translate="No">Pattern Name</code></th>
+                  <th>Description</th>
+                  <th><code translate="No">Accepted Values</code></th>
+              </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+              <tr>
+                  <td><code translate="No">state</code></td>
+                  <td>to filter channels based on its state. This pattern accepts multiple values & the values should always be enclosed between square brackets - [] - even for a single value. This is a OR case. The API will fetch channels matching any of the given states.</td>
+                  <td>
+                    <code translate="No">state:[draft,running,create_error]</code> or<br>
+                    <code translate="No">state:[running,stopping]</code> or<br>
+                    <code translate="No">state:[starting]</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">region</code></td>
+                  <td>to filter channels based on its region. This pattern accepts multiple values & the values should always be enclosed between square brackets - [] - even for a single value. This is a OR case. The API will fetch channels matching any of the given regions.</td>
+                  <td>
+                    <code translate="No">region:[us-east-1,us-east-2,us-west-2]</code> or<br>
+                    <code translate="No">region:[eu-west-1,eu-west-2]</code> or<br>
+                    <code translate="No">region:[us-west-2]</code>
+                  </td>
+              </tr>
+              <tr>
+                <td><code translate="No">live</code></td>
+                <td>to filter channels with live input</td>
+                <td><code translate="No">live:true/false</code></td>
+            </tr>
+            <tr>
+                <td><code translate="No">loop</code></td>
+                <td>to filter looped/non-looped channels.</td>
+                <td><code translate="No">loop:true/false</code></td>
+            </tr>
+            <tr>
+                  <td><code translate="No">dynamicOverlays</code></td>
+                  <td>to filter channels with dynamic overlays</td>
+                  <td><code translate="No">dynamicOverlays:true/false</code></td>
+              </tr>
+              <tr>
+                  <td><code translate="No">output</code></td>
+                  <td>to filter based on channel outputs. Accepts multiple values and the values should always be enclosed between square brackets - [] - even for a single value. Though only accepted values are rtmp, rtp & s3. This is a AND case. If rtmp & s3 are chosen then the API will filter channels with both rtmp & s3 as outputs.</td>
+                  <td>
+                    <code translate="No">output:[rtmp,s3]</code> or<br>
+                    <code translate="No">output:[rtp,s3]</code> or<br>
+                    <code translate="No">output:[rtmp]</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">name</code></td>
+                  <td>to filter based on a term contained in the channel name. When the name contains spaces then it should be wrapped inside single/double quotes.</td>
+                  <td>
+                    <code translate="No">name:nature</code> or<br>
+                    <code translate="No">name:'nature stories'</code> or<br>
+                    <code translate="No">name:"nature videos"</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">desc</code></td>
+                  <td>to filter based on a term contained in the channel description. When the value contains spaces then it should be wrapped inside single/double quotes.</td>
+                  <td>
+                    <code translate="No">desc:nature</code> or<br>
+                    <code translate="No">desc:'nature stories'</code> or<br>
+                    <code translate="No">desc:"nature videos 'amateur'"</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">id</code></td>
+                  <td>to filter based on channel public id</td>
+                  <td><code translate="No">id:67ytd89</code> or <code translate="no">id:252748cef5de464e8e8f87b7e15e7d34</code></td>
+              </tr>
+              <tr>
+                  <td><code translate="No">startTime</code></td>
+                  <td>to filter based on channel start time range. Both from and to date times are separated by <code>..</code> and the accepted date time format is <code translate="no">yyyy-mm-dd hh:mm:ss</code>. A timezone offset is also accepted and is optional. When not provided the value will be considered as UTC date time. Only 24hr format is accepted.</td>
+                  <td>
+                    <code translate="No">startTime:2021-10-29 05:57:10..2021-10-30 05:57:10</code> or<br>
+                    <code translate="No">startTime:..2021-10-30 05:57:10</code> or<br>
+                    <code translate="No">startTime:2021-10-30 05:57:10..</code> or<br>
+                    <code translate="No">startTime:2021-10-29 05:57:10 +09:30..2021-10-30 05:57:10 +09:30</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">createTime</code></td>
+                  <td>to filter based on channel creation time range. Both from and to date times are separated by <code>..</code> and the accepted date time format is <code translate="no">yyyy-mm-dd hh:mm:ss</code>. A timezone offset is also accepted and is optional. When not provided the value will be considered as UTC date time. Only 24hr format is accepted.</td>
+                  <td>
+                    <code translate="No">createTime:2021-10-29 05:57:10..2021-10-30 05:57:10</code> or<br>
+                    <code translate="No">createTime:..2021-10-30 05:57:10</code> or<br>
+                    <code translate="No">createTime:2021-10-30 05:57:10..</code> or<br>
+                    <code translate="No">createTime:2021-10-29 05:57:10 +09:30..2021-10-30 05:57:10 +09:30</code>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      </div>
+      <aside class="bcls-aside bcls-aside--information language-editable">
+        Notes: 
+        <ul>
+          <li>impossible combinations of filters will result in no results returned. For example <code translate="No">output:rtmp ad:true</code> will return no results because SSAI-enabled channels cannot be output to RTMP.</li>
+          <li>Any additional text <strong>after</strong> the <code translate="No">search_text advanced_search</code> combination will ignored.</li>
+        </ul> 
+      </aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Examples">Examples</h2>
+    <p>Below is a sample query:</p>
+<pre><code class="language-http" translate="No">...?q=hello world 'in this world' loop:true live:true startTime:..2021-12-11 10:30:00 state:[draft,running] output:[rtmp,s3]</code></pre>
+    <p>Here the search_text will be <code translate="no">hello world 'in this world'</code>
+      And advanced_search will be <code translate="no">loop:true live:true startTime:..2021-12-11 10:30:00 state:[draft,running] output:[rtmp,s3]</code></p>
+      <p>Some more examples:</p>
+      <div style="overflow-x: scroll;">
+        <table class="bcls-table">
+            <caption class="bcls-caption--table">Search Examples</caption>
+            <thead class="bcls-table__head">
+                <tr>
+                    <th>search_text</th>
+                    <th>advanced_search</th>
+                    <th>comments</th>
+                </tr>
+            </thead>
+            <tbody class="bcls-table__body">
+                <tr>
+                    <td><code translate="No">hello "world is</code></td>
+                    <td>(empty)</td>
+                    <td>Only the search_text will be searched against id, name, and description</td>
+                </tr>
+                <tr>
+                    <td>(empty)</td>
+                    <td><code translate="No">loop:true name:cloud</code></td>
+                    <td>Only channels matching the filters will be returned</td>
+                </tr>
+                <tr>
+                    <td><code translate="No">ced52df</code></td>
+                    <td><code translate="No">ad:true region[us-east-1,us-west-2]</code></td>
+                    <td>Results will include channels where "ced52df" is contained in the id, name, or description AND the channels match the filters</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
   </section>
 </article>

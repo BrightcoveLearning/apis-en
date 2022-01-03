@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Dynamic Ingest can be used to ingest WebVTT files (for captions, subtitles, chapters, etc.) with your video, or separately, after the video has been ingested. For Dynamic Delivery videos, you can also ingest SRT, DFXP, or SCC captions. This topic explains the details of adding text tracks files to your videos using the Dynamic Ingest API.">
+  <meta name="description" content="This topic explains how to search for Cloud Playout channels using the Channels API.">
   
-  <title>Ingesting WebVTT Files</title>
+  <title>Searching for Channels using the Channels API</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -70,15 +70,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
     
       
-        <li class="breadcrumb-item"><a href="/dynamic-ingest/">Dynamic ingest</a></li>
+        <li class="breadcrumb-item"><a href="/cloud-playout-apis/">Cloud playout apis</a></li>
       
     
       
-        <li class="breadcrumb-item"><a href="/dynamic-ingest/ingest-guides/">Ingest guides</a></li>
+        <li class="breadcrumb-item"><a href="/cloud-playout-apis/guides/">Guides</a></li>
       
     
       
-        <li class="breadcrumb-item active" aria-current="page">Ingesting WebVTT Files</li>
+        <li class="breadcrumb-item active" aria-current="page">Searching for Channels using the Channels API</li>
       
     
   </nav>
@@ -2199,152 +2199,179 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Ingesting WebVTT Files</h1>
+<h1>Searching for Channels using the Channels API</h1>
 <article class="bcls-article">
-  <summary>Dynamic Ingest can be used to ingest WebVTT files (for captions, subtitles, chapters, etc.) with your video, or separately, after the video has been ingested. For Dynamic Delivery videos, you can also ingest SRT, DFXP, or SCC captions. This topic explains the details of adding text tracks files to your videos using the Dynamic Ingest API.</summary>
-    <section class="bcls-section">
-    <h2 id="setup">Setup</h2>
-    
-    <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a WebVTT file, or all of these. For full details of the request body fields, see the <a href="/dynamic-ingest/references/reference.html#tag/Ingest">API Reference</a>.</p>
+  <summary>This topic explains how to search for Cloud Playout channels using the Channels API.</summary>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>If you create many Cloud Playout channels, you will likely find it useful to search for the one(s) you want to work on at the moment. Cloud Playout provides a robust mechanism for searching for channels using either the <a href="https://studio.support.brightcove.com/cloud-playout/searching-for-channels.html">Studio module</a> or the Channels API.</p>
+    <p>This topic covers searching for channels using the Channels API.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Search_parameter">Search Parameter</h2>
+    <p>Channel search uses a parameter (<code translate="No">q</code>) that is added to the GET CHANNELS request:</p>
+<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/cp_channels</code></pre>
 
-    <p>Note that to embed 608/708 closed captions in the MP4 renditions for the video, you must include the <code translate="No">"embed_closed_caption": true</code> in the request body.</p>
-    
-    <dl>
-      <dt>Request URL</dt>
-      <dd>
-      <pre>
-        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
-      </dd>
-      <dt>Authentication</dt>
-      <dd>Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code translate="No">Authorization</code> header:
-      <pre>
-        <code class="language-bash" translate="No">Authorization: Bearer {access_token}</code></pre>
-      </dd>
-    </dl>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="s3">Note on S3</h2>
-    
-    <p>If your WebVTT will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow Video Cloud to access the files. See <a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html#setPolicy">Using Dynamic Ingest with S3</a> for details.</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="ingestWebVTT">Ingest WebVTT files</h2>
-    
-    <p>You can also add WebVTT captions to your video or upload them for an existing video using Dynamic Ingest:</p>
-    
-    <h3>Add text tracks during video ingestion</h3>
-    
-    <h4>Request URL</h4>
-    
-    <pre>
-        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
-    
-    <h4>Method</h4>
-    
-    <p><code translate="No">POST</code></p>
-    
-    <h4>Sample request body</h4>
-    
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "master": {
-      "url":"http://learning-services-media.brightcove.com/videos/mp4/Water-Droplet.mp4"
-  },
-  "capture-images": false,
-  "text_tracks": [
-      {
-      "url": "http://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt",
-      "srclang": "en",
-      "kind": "captions",
-      "label": "English",
-      "default": true,
-      "embed_closed_caption": true
-    }
-  ]
-}</code></pre>
-      <aside class="bcls-aside bcls-aside--information language-editable">Note: set <code translate="No">embed_closed_captions</code> to <code translate="No">true</code> to add 608/708 captions to MP4 renditions.</aside>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="adding_srt_dfxp">Adding/converting SRT or DFXP</h2>
-    
-    <p>For <strong>Dynamic Delivery videos only</strong>, you can ingest SRT or DFXP files in the same way. The Video Cloud ingest system will automatically convert them to WebVTT format and add them to the video.</p>
-    
-    <aside class="bcls-aside bcls-aside--information">Note that:
+    <p>The general form of the q parameter with a value is:</p>
+    <pre><code class="language-http" translate="No">q=search_text advanced_search</code></pre>
+    <p>The components of the search query are as follows:</p>
     <ul>
-      <li>The language set in the DFXP file <code translate="No">xml:lang</code> must match the value in the ingest call for <code translate="No">srclang</code>. For example, if the <code translate="No">srclang</code> value in the ingest request is <code translate="No">en</code>, then the DFXP file must contain <code translate="No">xml:lang="en"</code>.</li>
-      <li>Custom formatting in SRT files (such as fading) is stripped from the track when it is converted to WebVTT.</li>
+      <li><code translate="no">search_text</code> - the word(s) to search for in name, description, or id of the channel</li>
+      <li><code translate="no">advanced_search</code> - a set of filters that narrow the search</li>
     </ul>
-    </aside>
-    
-<pre class="line-numbers">
-<code class="language-json" translate="No">{
-  "text_tracks": [
-    {
-      "url": "http://media.brightcove.com/captions/Water.dfxp",
-      "srclang": "fr",
-      "kind": "captions",
-      "label": "français",
-      "default": true
-      "embed_closed_caption": true
-    }
-  ]
-}</code></pre>
-      <aside class="bcls-aside bcls-aside--information language-editable">Note: set <code translate="No">embed_closed_captions</code> to <code translate="No">true</code> to add 608/708 captions to MP4 renditions.</aside>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="add_to_existing_video">Add text tracks existing videos</h2>
-    
-    <p>Adding text tracks to existing videos is exactly the same, except that you do not need any of the video information or the profile in the request body.</p>
-    
-    <h4>Request URL</h4>
-    
-    <pre>
-        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
-    
-    <h4>Method</h4>
-    
-    <p><code translate="No">POST</code></p>
-    
-    <h4>Sample request body</h4>
-    
-    <pre class="line-numbers">
-        <code class="language-json" translate="No">{
-          "text_tracks": [
-            {
-              "url": "http://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt",
-              "srclang": "es",
-              "kind": "captions",
-              "label": "Español",
-              "default": true
-            }
-          ]
-        }</code></pre>
-    
-    <aside class="bcls-aside bcls-aside--information">
-    <p>Notes:</p>
-    
-    <ol>
-      <li>Caption file names should only include letters (upper or lower case), numbers, dashes (-) and underscores (_).</li>
-      <li>The <code translate="No">label</code> for the captions is used by the Brightcove player for the captions language menu. Best practice is to use the appropriate language for the label. For example: <code translate="No">français</code> for <code translate="No">French</code> and so forth.</li>
-      <li>The text of the captions must be encoded UTF-8 to display properly for double-byte languages such as Japanese and Korean.</li>
-      <li>The default value is not per track, but set to true for all tracks of the same language (<code translate="No">srclang</code>).</li>
-      <li>For images and text tracks, only public HTTP or HTTPS URLs or signed S3 URLs are supported.</li>
-      <li>for text tracks, Dynamic Ingest adds/appends them to the video’s vtt list even if it is a re-encode request. You should use the <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">CMS API</a> to manage them (update/delete).</li>
-      <li>Dynamic Ingest accepts up to 100 text tracks at a time.</li>
-      <li>Although <code translate="No">"mime_type": "text/vtt"</code> is generally supported for WebVTT, Dynamic Ingest does <strong>not</strong> currently allow that field for ingestion of text tracks.</li>
-      <!-- <li>Existing text tracks have <code translate="no">“status”: null</code>, which won’t hide text tracks in players.</li> -->
-    </ol>
-    </aside>
-    
-    <h3>Adding text tracks to a remote asset video</h3>
-    
-    <p>See <a href="/cms/managing-videos/using-cms-api-remote-assets.html#addTextTracks">Adding Text Tracks to Remote Asset Videos</a>.</p>
-    </section>
-    </article>
-    
+    <p>Both the <code translate="No">search_text</code> and <code translate="No">advanced_search</code> filters are optional.</p>
+    <p><strong>Example</strong></p>
+    <pre><code class="language-http" translate="No">...?q=nature stories loop:true desc:"nature stories" startTime:2021-12-11 10:30:00..2021-12-12 12:23:00</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Advanced_search_patterns">Advanced search patterns</h2>
+    <p>The advanced_search part of the query is a combination of patterns separated by a space. Patterns that don't match the accepted ones will result in a error returned. The table below shows the supported patterns.</p>
+    <div style="overflow-x: scroll;">
+      <table class="bcls-table">
+          <caption class="bcls-caption--table">Advanced Search Patterns</caption>
+          <thead class="bcls-table__head">
+              <tr>
+                  <th><code translate="No">Pattern Name</code></th>
+                  <th>Description</th>
+                  <th><code translate="No">Accepted Values</code></th>
+              </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+              <tr>
+                  <td><code translate="No">state</code></td>
+                  <td>to filter channels based on its state. This pattern accepts multiple values & the values should always be enclosed between square brackets - [] - even for a single value. This is a OR case. The API will fetch channels matching any of the given states.</td>
+                  <td>
+                    <code translate="No">state:[draft,running,create_error]</code> or<br>
+                    <code translate="No">state:[running,stopping]</code> or<br>
+                    <code translate="No">state:[starting]</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">region</code></td>
+                  <td>to filter channels based on its region. This pattern accepts multiple values & the values should always be enclosed between square brackets - [] - even for a single value. This is a OR case. The API will fetch channels matching any of the given regions.</td>
+                  <td>
+                    <code translate="No">region:[us-east-1,us-east-2,us-west-2]</code> or<br>
+                    <code translate="No">region:[eu-west-1,eu-west-2]</code> or<br>
+                    <code translate="No">region:[us-west-2]</code>
+                  </td>
+              </tr>
+              <tr>
+                <td><code translate="No">live</code></td>
+                <td>to filter channels with live input</td>
+                <td><code translate="No">live:true/false</code></td>
+            </tr>
+            <tr>
+                <td><code translate="No">loop</code></td>
+                <td>to filter looped/non-looped channels.</td>
+                <td><code translate="No">loop:true/false</code></td>
+            </tr>
+            <tr>
+                  <td><code translate="No">dynamicOverlays</code></td>
+                  <td>to filter channels with dynamic overlays</td>
+                  <td><code translate="No">dynamicOverlays:true/false</code></td>
+              </tr>
+              <tr>
+                  <td><code translate="No">output</code></td>
+                  <td>to filter based on channel outputs. Accepts multiple values and the values should always be enclosed between square brackets - [] - even for a single value. Though only accepted values are rtmp, rtp & s3. This is a AND case. If rtmp & s3 are chosen then the API will filter channels with both rtmp & s3 as outputs.</td>
+                  <td>
+                    <code translate="No">output:[rtmp,s3]</code> or<br>
+                    <code translate="No">output:[rtp,s3]</code> or<br>
+                    <code translate="No">output:[rtmp]</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">name</code></td>
+                  <td>to filter based on a term contained in the channel name. When the name contains spaces then it should be wrapped inside single/double quotes.</td>
+                  <td>
+                    <code translate="No">name:nature</code> or<br>
+                    <code translate="No">name:'nature stories'</code> or<br>
+                    <code translate="No">name:"nature videos"</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">desc</code></td>
+                  <td>to filter based on a term contained in the channel description. When the value contains spaces then it should be wrapped inside single/double quotes.</td>
+                  <td>
+                    <code translate="No">desc:nature</code> or<br>
+                    <code translate="No">desc:'nature stories'</code> or<br>
+                    <code translate="No">desc:"nature videos 'amateur'"</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">id</code></td>
+                  <td>to filter based on channel public id</td>
+                  <td><code translate="No">id:67ytd89</code> or <code translate="no">id:252748cef5de464e8e8f87b7e15e7d34</code></td>
+              </tr>
+              <tr>
+                  <td><code translate="No">startTime</code></td>
+                  <td>to filter based on channel start time range. Both from and to date times are separated by <code>..</code> and the accepted date time format is <code translate="no">yyyy-mm-dd hh:mm:ss</code>. A timezone offset is also accepted and is optional. When not provided the value will be considered as UTC date time. Only 24hr format is accepted.</td>
+                  <td>
+                    <code translate="No">startTime:2021-10-29 05:57:10..2021-10-30 05:57:10</code> or<br>
+                    <code translate="No">startTime:..2021-10-30 05:57:10</code> or<br>
+                    <code translate="No">startTime:2021-10-30 05:57:10..</code> or<br>
+                    <code translate="No">startTime:2021-10-29 05:57:10 +09:30..2021-10-30 05:57:10 +09:30</code>
+                  </td>
+              </tr>
+              <tr>
+                  <td><code translate="No">createTime</code></td>
+                  <td>to filter based on channel creation time range. Both from and to date times are separated by <code>..</code> and the accepted date time format is <code translate="no">yyyy-mm-dd hh:mm:ss</code>. A timezone offset is also accepted and is optional. When not provided the value will be considered as UTC date time. Only 24hr format is accepted.</td>
+                  <td>
+                    <code translate="No">createTime:2021-10-29 05:57:10..2021-10-30 05:57:10</code> or<br>
+                    <code translate="No">createTime:..2021-10-30 05:57:10</code> or<br>
+                    <code translate="No">createTime:2021-10-30 05:57:10..</code> or<br>
+                    <code translate="No">createTime:2021-10-29 05:57:10 +09:30..2021-10-30 05:57:10 +09:30</code>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      </div>
+      <aside class="bcls-aside bcls-aside--information language-editable">
+        Notes: 
+        <ul>
+          <li>impossible combinations of filters will result in no results returned. For example <code translate="No">output:rtmp ad:true</code> will return no results because SSAI-enabled channels cannot be output to RTMP.</li>
+          <li>Any additional text <strong>after</strong> the <code translate="No">search_text advanced_search</code> combination will ignored.</li>
+        </ul> 
+      </aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Examples">Examples</h2>
+    <p>Below is a sample query:</p>
+<pre><code class="language-http" translate="No">...?q=hello world 'in this world' loop:true live:true startTime:..2021-12-11 10:30:00 state:[draft,running] output:[rtmp,s3]</code></pre>
+    <p>Here the search_text will be <code translate="no">hello world 'in this world'</code>
+      And advanced_search will be <code translate="no">loop:true live:true startTime:..2021-12-11 10:30:00 state:[draft,running] output:[rtmp,s3]</code></p>
+      <p>Some more examples:</p>
+      <div style="overflow-x: scroll;">
+        <table class="bcls-table">
+            <caption class="bcls-caption--table">Search Examples</caption>
+            <thead class="bcls-table__head">
+                <tr>
+                    <th>search_text</th>
+                    <th>advanced_search</th>
+                    <th>comments</th>
+                </tr>
+            </thead>
+            <tbody class="bcls-table__body">
+                <tr>
+                    <td><code translate="No">hello "world is</code></td>
+                    <td>(empty)</td>
+                    <td>Only the search_text will be searched against id, name, and description</td>
+                </tr>
+                <tr>
+                    <td>(empty)</td>
+                    <td><code translate="No">loop:true name:cloud</code></td>
+                    <td>Only channels matching the filters will be returned</td>
+                </tr>
+                <tr>
+                    <td><code translate="No">ced52df</code></td>
+                    <td><code translate="No">ad:true region[us-east-1,us-west-2]</code></td>
+                    <td>Results will include channels where "ced52df" is contained in the id, name, or description AND the channels match the filters</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+  </section>
+</article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -2360,7 +2387,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 01 Jan 2022
+  Page last updated on 03 Jan 2022
 </div>
 
 <footer class="bcls-footer" role="contentinfo">
