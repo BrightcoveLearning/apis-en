@@ -15,6 +15,14 @@ grandparent: Dynamic Ingest API
 
     <p>Brightcove Auto Captioning is a platform-level service that allows you to automatically generate captions for new or existing videos in 31 different languages (provided you have an audio track for the language specified). Like all speech-to-text services Auto Captioning is not 100% accurate, but it provides a quick and easy way to generate captions right in Video Cloud.</p>
 
+    <p>Video Cloud uses the follow process to determine the source that will be used to generate the captions.</p>
+    <ul>
+      <li>If the video has default audio track, that will be used as the captions source file (supported by default in the Media module)</li>
+      <li>If the video has no default audio track but a master/mezzanine file exists, that will be used as the source file (supported by default in the Media module)</li>
+      <li>If the video has no default audio track or master/mezzanine files, but audio tracks are specified in the Dynamic Ingest call, the specified audio track will be used (not yet supported in the Media module)</li>
+      <li>If the video has no default audio track, no master/mezzanine files, and no audio track is specified, captions cannot be generated</li>
+    </ul>
+
     <aside class="bcls-aside bcls-aside--information language-editable">
       Notes:
       <ul>
