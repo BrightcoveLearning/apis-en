@@ -2214,6 +2214,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>To embed closed captions for a video you are ingesting, be sure to use an ingest profile that includes one or more MP4 renditions. If you are adding text tracks/closed captions to an existing video, be sure it has at least one MP4 rendition, or re-transcode with an ingest profile that will include MP4.</p>
 
     <p>If you are using Cloud Playout, note that you can now <a href="https://studio.support.brightcove.com/cloud-playout/import-captions.html">import these closed captions</a> into your channel to provide them to your viewers.</p>
+
+    <h3>Notes</h3>
+    <ul>
+      <li>If the source file already contains 608 closed captions, those will be retained in any MP4 renditions rather than replaced by the contents of the WebVTT file. Closed captions in the source file are <strong>only</strong> retained if you ingest a WebVTT file with the <code translate="No">"embed_closed_caption": true</code> however.</li>
+      <li>Closed captions currently <strong>cannot</strong> be added while you are retranscoding video - you must be ingesting or replacing the video. Retranscode jobs will support this feature in a future release.</li>
+      <li>This feature <strong>cannot</strong> be used when you are <a href="/dynamic-ingest/ingest-guides/requesting-auto-captions.html">requesting auto captions</a>.</li>
+    </ul>
   </section>
 
     <section class="bcls-section">
