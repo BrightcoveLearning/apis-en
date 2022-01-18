@@ -2287,6 +2287,41 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </thead>
       <tbody class="bcls-table__body">
         <tr>
+          <td>Authorization</td>
+          <td>JSON Web Token (JWT)</td>
+        </tr>
+        <tr>
+          <td>BYO CDN</td>
+          <td>
+            Brightcove’s CDN will continue to deliver the manifest and sub-manifests.
+            <p>Customer's CDN will deliver only the video segments.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>Closed Captions</td>
+          <td>Only in-manifest captions are currently supported.</td>
+        </tr>
+        <tr>
+          <td>Delivery Rules</td>
+          <td>VOD only </td>
+        </tr>
+        <tr>
+          <td>DRM</td>
+          <td>VOD only </td>
+        </tr>
+        <tr>
+          <td>Live streams</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Playback Rights Service (EPA)</td>
+          <td>Contact your account manager for details.</td>
+        </tr>
+        <tr>
+          <td>Server-Side Ad Insertion (SSAI)</td>
+          <td>VOD and Live </td>
+        </tr>
+        <tr>
           <td>Video-On-Demand (VOD)</td>
           <td>Supported video formats via Dynamic Delivery only:
             <ul>
@@ -2311,45 +2346,6 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         <tr>
           <td>VOD assets</td>
           <td>Thumbnails and poster images</td>
-        </tr>
-        <tr>
-          <td>Authorization</td>
-          <td>JSON Web Token (JWT)</td>
-        </tr>
-        <tr>
-          <td>DRM</td>
-          <td>VOD only </td>
-        </tr>
-        <tr>
-          <td>Delivery Rules</td>
-          <td>VOD only </td>
-        </tr>
-        <tr>
-          <td>Server-Side Ad Insertion (SSAI)</td>
-          <td>VOD and Live </td>
-        </tr>
-        <tr>
-          <td>BYO CDN</td>
-          <td>
-            Brightcove’s CDN will continue to deliver the manifest and sub-manifests.
-            <p>Customer's CDN will deliver only the video segments.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>Closed Captions</td>
-          <td>Only in-manifest captions are currently supported.</td>
-        </tr>
-        <!-- <tr>
-          <td>Live streams</td>
-          <td></td>
-        </tr> -->
-        <tr>
-          <td>Playback Rights Service (EPA)</td>
-          <td>Contact your account manager for details.</td>
-        </tr>
-        <tr>
-          <td>Delivery Rules</td>
-          <td>VOD only</td>
         </tr>
       </tbody>
     </table>
@@ -2384,7 +2380,25 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       The domain used for Static URLs is the Playback API v2 (PAPIv2) URL:
     </p>
     <pre><code class="language-html" translate="No">https://edge.api.brightcove.com/playback/v1/</code></pre>
-    <h3>Endpoints</h3>
+
+    <h3>Query params</h3>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Query Params</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Query Param</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">bcov_auth</code></td>
+          <td>JWT see <a href="#Creating_a_JSON_Web_Token">below</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>VOD Endpoints</h3>
     <p>
       Static URL examples for each Delivery Type:
     </p>
@@ -2424,27 +2438,31 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </dl>
     <h4>Notes</h4>
     <ul>
-      <li id="note1"><sup>[1]</sup> HLS and DASH VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you create the JWT - see the following section.</li>
+      <li id="note1"><sup>[1]</sup> HLS and DASH VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you <a href="#Creating_a_JSON_Web_Token">create the JWT</a>.</li>
       <li id="note2"><sup>[2]</sup> When using the <code translate="No">high.mp4</code> and <code translate="No">low.mp4</code> endpoints, your videos must include MP4 renditions or you will get the following error:
       <pre><code class="language-html" translate="No">404 (NO RESOURCE)</code></pre>
     </li>
     </ul>
-    <h3>Query params</h3>
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">Query Params</caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Query Param</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td><code translate="No">bcov_auth</code></td>
-          <td>JWT see <a href="#Creating_a_JSON_Web_Token">below</a></td>
-        </tr>
-      </tbody>
-    </table>
+
+    <h3>Live Endpoints</h3>
+    <p>
+      Static URL examples for Live streams:
+    </p>
+    <dl>
+      <dt>HLS Master Manifest</dt>
+      <dd>
+        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/master.m3u8?bcov_auth={jwt}</code></pre>
+      </dd>
+      <dt>HLS VMAP <sup><a href="#note1">[1]</a></sup></dt>
+      <dd>
+        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/hls.vmap?bcov_auth={jwt}</code></pre>
+      </dd>
+    </dl>
+    <h4>Notes</h4>
+    <ul>
+      <li id="note1"><sup>[1]</sup> HLS VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you <a href="#Creating_a_JSON_Web_Token">create the JWT</a>.</li>
+    </li>
+    </ul>
   </section>
 
   <section class="bcls-section">
