@@ -452,6 +452,59 @@ components:
             "embed_closed_caption": true
           }
         ]
+    IngestMediaAssetbody.transcriptions:
+      title: Ingest Media Asset Body.text_tracks
+      description: >-
+        array of transcription objects - see [Requesting Auto Captions)](/dynamic-ingest/ingest-guides/requesting-auto-captions.html)
+      required:
+        - srclang
+      type: object
+      properties:
+        srclang:
+          type: string
+          description: ISO 639 2-letter (alpha-2) language code for the text tracks
+        kind:
+          type: string
+          description: how the vtt file is meant to be used
+          default: captions
+          enum:
+            - captions
+            - subtitles
+            - chapters
+            - metadata
+            - transcripts
+#        status:
+#          type: string
+#          description: current status of the text tracks
+#          default: null
+#          enum:
+#            - published
+#            - draft
+#            - null
+        label:
+          type: string
+          description: user-readable title
+        default:
+          type: boolean
+          description: sets the default language for captions/subtitles
+          default: false
+        status:
+          type: string
+          description: The status of the text tracks - `published` or `draft` (use `draft` if you want the text tracks added but not yet available to users - `status` can be updated using the CMS API if you need to)
+          enum:
+            - published
+            - draft
+          default: null
+      example: [
+          {
+            "srclang": "en",
+            "kind": "captions",
+            "label": "EN",
+            "default": true,
+            "status" : "published",
+            "embed_closed_caption": true
+          }
+        ]
     IngestMediaAssetbody.captions:
       title: Ingest Media Asset Body.captions
       description: >-
