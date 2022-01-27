@@ -38,14 +38,14 @@ components:
       style: simple
       schema:
         type: string
-    # Token:
-    #   name: token
-    #   in: path
-    #   description: JWT token
-    #   required: false
-    #   style: simple
-    #   schema:
-    #     type: string
+    ImageToken:
+      name: image-token
+      in: path
+      description: A generated Image Token per account to allow images transformations. Tokens must be obtained from Brightcove Support.
+      required: true
+      style: simple
+      schema:
+        type: string
     Crop:
       name: crop
       explode: true
@@ -141,7 +141,7 @@ paths:
   /image/v1/{account_id}/default/url/{imageURL}:
     parameters:
       - $ref: "#/components/parameters/AccountId"
-      # - $ref: "#/components/parameters/Token"
+      - $ref: "#/components/parameters/ImageToken"
       - $ref: "#/components/parameters/ImageURL"
       - $ref: "#/components/parameters/Resize"
       - $ref: "#/components/parameters/Crop"
