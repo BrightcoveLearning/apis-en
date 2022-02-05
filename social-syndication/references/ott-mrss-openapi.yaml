@@ -3,10 +3,7 @@ x-bc-implicit-head: true
 x-bc-implicit-options: true
 x-bc-upstream: 'https://mrss_config_server'
 info:
-  description: |-
-    The Syndication Configuration API allows you to create, manage, and retrieve MRSS feeds generated from your Video Cloud video library.
-
-    **Base URL: 'https://social.api.brightcove.com/v1'**
+  description: Syndication Configuration API
   version: 1.0.0
   title: Brightcove Syndication Configuration API
   x-bc-access: public
@@ -29,7 +26,7 @@ paths:
       operationId: postSyndication
       security:
         - BC_OAuth2:
-          - video-cloud/social/mrss/write
+            - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
       requestBody:
@@ -77,7 +74,7 @@ paths:
       operationId: getSyndications
       security:
         - BC_OAuth2:
-          - video-cloud/social/mrss/read
+            - video-cloud/social/mrss/read
       parameters:
         - $ref: '#/components/parameters/AccountId'
       responses:
@@ -105,11 +102,11 @@ paths:
         - General Syndications
       summary: Update a syndication.
       description: >-
-        Updates the configuration data for a syndication.  A fully populated Syndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
+        Updates the confguration data for a syndication.  A fully populated Syndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
       operationId: putSyndication
       security:
         - BC_OAuth2:
-          - video-cloud/social/mrss/write
+            - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -152,7 +149,7 @@ paths:
       operationId: patchSyndication
       security:
         - BC_OAuth2:
-          - video-cloud/social/mrss/write
+            - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -195,7 +192,7 @@ paths:
       operationId: deleteSyndication
       security:
         - BC_OAuth2:
-          - video-cloud/social/mrss/write
+            - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -229,7 +226,7 @@ paths:
       operationId: getSyndication
       security:
         - BC_OAuth2:
-          - video-cloud/social/mrss/read
+            - video-cloud/social/mrss/read
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -268,7 +265,7 @@ paths:
       operationId: putTemplate
       security:
         - BC_OAuth2:
-          - video-cloud/social/mrss/write
+            - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -309,13 +306,13 @@ paths:
       operationId: getTemplate
       security:
         - BC_OAuth2:
-          - video-cloud/social/mrss/read
+            - video-cloud/social/mrss/read
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
       responses:
         '200':
-          description: The universal syndication's feed template.  If one has not yet been uploaded, a default empty template will be returned.
+          description: The universal syndication's feed template.
         '401':
           description: Insufficient permissions to access this API method
           content:
@@ -329,7 +326,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseErrorList'
         '404':
-          description: Syndication not found
+          description: Template not found
           content:
             application/json:
               schema:
@@ -426,7 +423,7 @@ paths:
         - OTT Syndications
       summary: Update an OTT syndication.
       description: >-
-        Updates the configuration data for a syndication.  A fully populated OTTSyndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
+        Updates the confguration data for a syndication.  A fully populated OTTSyndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
       operationId: putOTTSyndication
       security:
         - BC_OAuth2:
@@ -785,8 +782,8 @@ components:
     Syndication:
       type: object
       required:
-      - name
-      - type
+        - name
+        - type
       properties:
         id:
           type: string
@@ -832,44 +829,42 @@ components:
           type: string
           description: The URL to be included inside of the <channel> tag in the feed.
         keywords:
-            type: string
-            description: A comma-separated list of keywords for iTunes
+          type: string
+          description: A comma-separated list of keywords for iTunes
         author:
-            type: string
-            description: iTunes author specification
+          type: string
+          description: iTunes author specification
         category:
-            type: string
-            description: iTunes category specification
+          type: string
+          description: iTunes category specification
         album_art_url:
-            type: string
-            description: iTunes album art url.
+          type: string
+          description: iTunes album art url.
         explicit:
-            type: string
-            enum: ["yes", "no"]
-            description: iTunes explicit content indicator, accepts "yes" or "no" values.
+          type: string
+          enum: ["yes", "no"]
+          description: iTunes explicit content indicator, accepts "yes" or "no" values.
         owner_name:
-            type: string
-            description: iTunes owner name.
+          type: string
+          description: iTunes owner name.
         owner_email:
-            type: string
-            description: iTunes owner email.
+          type: string
+          description: iTunes owner email.
         language:
-            type: string
-            description: iTunes or Roku feed language field.
+          type: string
+          description: iTunes or Roku feed language field.
         fetch_sources:
-            type: boolean
-            description: For universal feeds, specifies whether the feed service should fetch video source metadata and make it available to the template.  The default value is true.  If source metadata is not needed by the template, setting this to false can improve feed generation performance.
+          type: boolean
+          description: For universal feeds, specifies whether the feed service should fetch video source metadata and make it available to the template.  The default value is true.  If source metadata is not needed by the template, setting this to false can improve feed generation performance.
         fetch_digital_master:
-            type: boolean
-            description: For universal feeds, specifies whether the feed service should fetch digital master metadata and make it available to the template.  The default value is false.  If digital master metadata is not needed by the template, keeping this setting as false can improve feed generation performance.
+          type: boolean
+          description: For universal feeds, specifies whether the feed service should fetch digital master metadata and make it available to the template.  The default value is false.  If digital master metadata is not needed by the template, keeping this setting as false can improve feed generation performance.
         fetch_dynamic_renditions:
-            type: boolean
-            description: For universal feeds, specifies whether the feed service should fetch dynamic rendition metadata and make it available to the template.  The default value is false.  If dynamic rendition metadata is not needed by the template, keeping this setting as false can improve feed generation performance.
+          type: boolean
+          description: For universal feeds, specifies whether the feed service should fetch dynamic rendition metadata and make it available to the template.  The default value is false.  If dynamic rendition metadata is not needed by the template, keeping this setting as false can improve feed generation performance.
         content_type_header:
-            type: string
-            description: >-
-              If set, overrides the Content-Type header returned by the feed server for this syndication's feed. Otherwise the feed defaults to a syndication type-specific header value
-            example: 'application/xml'
+          type: string
+          description: Content type header that the syndication's feed will be served with.  If not specified, a default that is specific to the syndication type will be used.
     SyndicationList:
       type: array
       items:
@@ -1039,7 +1034,7 @@ components:
     BC_OAuth2:
       type: oauth2
       description: >-
-        Brightcove OAuth API. See the [support documentation](/oauth/) or [Getting Access Tokens](/oauth/guides/getting-access-tokens.html) to learn more
+        Brightcove OAuth API. See the [support documentation](https://support.brightcove.com/oauth-api) or [Getting Access Tokens](https://support.brightcove.com/oauth-api-sample-get-access-token) to learn more
       flows:
         clientCredentials:
           tokenUrl: 'https://oauth.brightcove.com/v4/access_token'
