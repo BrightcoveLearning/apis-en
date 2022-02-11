@@ -99,6 +99,16 @@ var BCLS = (function (window, document) {
     }
   }
 
+  /**
+   * remove all children from a node 
+   * @param (object) parent - the parent element
+   */  
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 
   function writeReport(videos, tableEl, csvEl) {
     var i,
@@ -108,11 +118,11 @@ var BCLS = (function (window, document) {
       td,
       frag = document.createDocumentFragment(),
       csvStr;
-      if (csvEl === text_track_csv) {
-        csvStr = '"ID","Name","Number of Tracks","Languages","Kinds"\r\n';
-      } else {
-        csvStr = '"ID","Name"\r\n';
-      }
+    if (csvEl === text_track_csv) {
+      csvStr = '"ID","Name","Number of Tracks","Languages","Kinds"\r\n';
+    } else {
+      csvStr = '"ID","Name"\r\n';
+    }
     if (videos.length > 0) {
       iMax = videos.length;
       for (i = 0; i < iMax; i += 1) {
@@ -150,12 +160,7 @@ var BCLS = (function (window, document) {
           tr.appendChild(td);
           frag.appendChild(tr);
         } else {
-          csvStr +=
-            '"' +
-            video.id +
-            '","' +
-            video.name +
-            '"\r\n';
+          csvStr += '"' + video.id + '","' + video.name + '"\r\n';
           // add table row
           tr = document.createElement("tr");
           td = document.createElement("td");
@@ -196,16 +201,16 @@ var BCLS = (function (window, document) {
           } else if (track.label) {
             languages.push(track.label);
           } else {
-            languages = 'unknown';
+            languages = "unknown";
           }
           if (track.kind) {
             kinds.push(track.kind);
           } else {
-            kinds = 'unknown';
+            kinds = "unknown";
           }
         }
-        obj.languages = languages.join(';');
-        obj.kinds = kinds.join(';');
+        obj.languages = languages.join("; ");
+        obj.kinds = kinds.join("; ");
         videos_with_tracks.push(obj);
       } else {
         obj.id = video.id;
@@ -213,9 +218,12 @@ var BCLS = (function (window, document) {
         videos_without_tracks.push(obj);
       }
     }
-    console.log('videos_with_tracks', videos_with_tracks)
     writeReport(videos_with_tracks, text_track_table, text_track_csv);
-    writeReport(videos_without_tracks, no_text_tracks_table, no_text_tracks_csv);
+    writeReport(
+      videos_without_tracks,
+      no_text_tracks_table,
+      no_text_tracks_csv
+    );
     logText.textContent = "Finished! See the reports below.";
     enableButtons();
   }
@@ -283,8 +291,7 @@ var BCLS = (function (window, document) {
               "Getting video " + (callNumber + 1) + " of " + totalVideos;
             createRequest("getVideos");
           } else {
-            logText.textContent =
-              "Videos retrieved; processing... ";
+            logText.textContent = "Videos retrieved; processing... ";
             processVideos(videosArray);
           }
         });
@@ -359,8 +366,12 @@ var BCLS = (function (window, document) {
     // button event handlers
     makeReport.addEventListener("click", function () {
       // in case of re-run, clear the results
+      videos_with_tracks = [];
+      videos_without_tracks = [];
       no_text_tracks_csv.textContent = "";
       text_track_csv.textContent = "";
+      removeAllChildNodes(text_track_table);
+      removeAllChildNodes(no_text_tracks_table);
       // get the inputs
       client_id = client_id_element.value;
       client_secret = client_secret_element.value;
@@ -368,7 +379,12 @@ var BCLS = (function (window, document) {
         ? account_id_element.value
         : "1752604059001";
       totalVideos = getSelectedValue(videoCount);
-      first_offset = start_offset.value;
+      if (start_offset.value > 0) {
+        first_offset = parseInt(start_offset.value) - 1;
+      } else {
+        first_offset = 0;
+      }
+      
       // only use entered account id if client id and secret are entered also
       if (
         !isDefined(client_id) ||
