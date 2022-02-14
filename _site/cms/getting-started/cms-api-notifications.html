@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow"> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="In this topic, you will learn about CMS API notifications. The CMS API provides notifications of changes to the videos in your account, whether made by an account user or the Video Cloud system.">
   
@@ -11,12 +12,9 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">  
-<link rel="preconnect" href="https://fonts.gstatic.com"> 
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/prism.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/styles.css">
-  <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/learning-paths/learning-paths.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/landing-page.css">
   <link rel="stylesheet" href="https://support.brightcove.com/site-assets/css/site/tabs.css">
   <link rel="stylesheet" href="/assets/css/local.css">
@@ -32,18 +30,11 @@
 
   gtag('config', 'UA-2728311-17');
 </script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2728311-17"></script>
-<script translate="no">
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-2728311-17');
-</script>
   <script src="/assets/js/sajari-head.js"></script>
-  <script src="https://unpkg.com/feather-icons"></script>
+	<script src="https://unpkg.com/feather-icons"></script>
 </head>
+
+
 <body class="body">
 
 <header>
@@ -2214,6 +2205,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <h2 id="overview">Overview</h2>
   
   <p>You can receive notifications when <code translate="No">video-change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <span translate="No">HTTP</span> <code translate="No">POST</code> requests.</p>
+
+  <aside class="bcls-aside bcls-aside--information language-editable">Note that two new fields, <code translate="No">action</code> and <code translate="No">updated_by</code> are added to notifications as of February 2022. If you have an app in place to handle notifications, <strong>these are non-breaking changes and will not affect your current app</strong>. The changes are noted below.</aside>
   
   <h3>Authentication</h3>
   
@@ -2233,16 +2226,23 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   
   <p>Notifications are sent in JSON format. Here's an example:</p>
   
-  <pre class="line-numbers">
-        <code class="language-json" translate="No">{"timestamp":1423840514446,
-        "account_id":"775205503001",
-        "event":"video-change",
-        "video":"4020894387001",
-        "version":26}
-        </code>
+  <pre class="line-numbers"><code class="language-json" translate="No">{"timestamp":1423840514446, 
+  "account_id":"775205503001", 
+  "event":"video-change", 
+  "video":"4020894387001", 
+  "version":26,
+  <span class="bcls-highlight">“action”:”UPDATE”,</span>
+  <span class="bcls-highlight">“updated_by”:{ "email": "string", "id": "string", "type": "user" }</span>
+}</code>
         </pre>
   
-  <aside class="bcls-aside bcls-aside--information">There is currently no other way to subscribe to notifications except through the API.</aside>
+  <aside class="bcls-aside bcls-aside--information">
+    Notes:
+    <ul>
+      <li>The highlighted fields above were added in February 2022.</li>
+      <li>There is currently no other way to subscribe to notifications except through the API.</li>
+    </ul>
+  </aside>
   
   <h3>Notification fields</h3>
   
@@ -2273,6 +2273,32 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <tr>
         <td ><code translate="No">version</code></td>
         <td >the version of the video - each set of change events increments the video version - for example, creation of a new set of renditions would constitute a set of change events</td>
+      </tr>
+      <tr>
+        <td ><code translate="No">action</code><sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+        <td >
+          the action that was performed - one of the following:
+          <li><code translate="no">UPDATE</code></li>
+          <li><code translate="no">CREATE</code></li>
+          <li><code translate="no">TRIGGERED_MANUAL</code></li>
+          <li><code translate="no">DELETE</code></li>
+        </td>
+      </tr>
+      <tr>
+        <td ><code translate="No">updated_by</code><sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+        <td >
+          an object containing information about who performed the action, if available; the object properties are:
+          <li><code translate="no">email</code> - the user's email address</li>
+          <li><code translate="no">id</code>- the Video Cloud system id for the user</li>
+          <li>
+            <code translate="no">type</code> - the type of update:
+            <ul>
+              <li><code translate="no">user</code> - a user in Studio</li>
+              <li><code translate="no">api-key</code> - a user via the API</li>
+              <li><code translate="no">internal</code> - a Brightcove system or user</li>
+            </ul>
+          </li>
+        </td>
       </tr>
     </tbody>
   </table>

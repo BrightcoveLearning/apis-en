@@ -3,6 +3,7 @@ title: 'CMS API Notifications'
 description: 'In this topic, you will learn about <span translate="No">CMS API</span> notifications. The <span translate="No">CMS API</span> provides notifications of changes to the videos in your account, whether made by an account user or the Video Cloud system.'
 parent: 'Getting Started'
 grandparent: CMS API
+layout: staging
 ---
 
 <h1>{{ page.title }}</h1>
@@ -12,6 +13,8 @@ grandparent: CMS API
   <h2 id="overview">Overview</h2>
   
   <p>You can receive notifications when <code translate="No">video-change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <span translate="No">HTTP</span> <code translate="No">POST</code> requests.</p>
+
+  <aside class="bcls-aside bcls-aside--information language-editable">Note that two new fields, <code translate="No">action</code> and <code translate="No">updated_by</code> are added to notifications as of February 2022. If you have an app in place to handle notifications, <strong>these are non-breaking changes and will not affect your current app</strong>. The changes are noted below.</aside>
   
   <h3>Authentication</h3>
   
@@ -31,16 +34,23 @@ grandparent: CMS API
   
   <p>Notifications are sent in JSON format. Here's an example:</p>
   
-  <pre class="line-numbers">
-        <code class="language-json" translate="No">{"timestamp":1423840514446,
-        "account_id":"775205503001",
-        "event":"video-change",
-        "video":"4020894387001",
-        "version":26}
-        </code>
+  <pre class="line-numbers"><code class="language-json" translate="No">{"timestamp":1423840514446, 
+  "account_id":"775205503001", 
+  "event":"video-change", 
+  "video":"4020894387001", 
+  "version":26,
+  <span class="bcls-highlight">“action”:”UPDATE”,</span>
+  <span class="bcls-highlight">“updated_by”:{ "email": "string", "id": "string", "type": "user" }</span>
+}</code>
         </pre>
   
-  <aside class="bcls-aside bcls-aside--information">There is currently no other way to subscribe to notifications except through the API.</aside>
+  <aside class="bcls-aside bcls-aside--information">
+    Notes:
+    <ul>
+      <li>The highlighted fields above were added in February 2022.</li>
+      <li>There is currently no other way to subscribe to notifications except through the API.</li>
+    </ul>
+  </aside>
   
   <h3>Notification fields</h3>
   
@@ -71,6 +81,32 @@ grandparent: CMS API
       <tr>
         <td ><code translate="No">version</code></td>
         <td >the version of the video - each set of change events increments the video version - for example, creation of a new set of renditions would constitute a set of change events</td>
+      </tr>
+      <tr>
+        <td ><code translate="No">action</code><sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+        <td >
+          the action that was performed - one of the following:
+          <li><code translate="no">UPDATE</code> - an asset was updated</li>
+          <li><code translate="no">CREATE</code> - an asset was created</li>
+          <li><code translate="no">TRIGGERED_MANUAL</code> - a notification was triggered by an internal Brightcove application</li>
+          <li><code translate="no">DELETE</code> - an asset was deleted</li>
+        </td>
+      </tr>
+      <tr>
+        <td ><code translate="No">updated_by</code><sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+        <td >
+          an object containing information about who performed the action, if available; the object properties are:
+          <li><code translate="no">email</code> - the user's email address</li>
+          <li><code translate="no">id</code>- the Video Cloud system id for the user</li>
+          <li>
+            <code translate="no">type</code> - the type of update:
+            <ul>
+              <li><code translate="no">user</code> - a user in Studio</li>
+              <li><code translate="no">api-key</code> - a user via the API</li>
+              <li><code translate="no">internal</code> - a Brightcove system or user</li>
+            </ul>
+          </li>
+        </td>
       </tr>
     </tbody>
   </table>
