@@ -1,6 +1,6 @@
 var aapi_model = {
   baseURL: 'https://analytics.api.brightcove.com/v1',
-  dimensionsArray: ['account', 'browser_type', 'city', 'country', 'date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_manufacturer', 'device_type', 'live_stream', 'player', 'referrer_domain', 'region', 'search_terms', 'social_platform', 'source_type', 'video'],
+  dimensionsArray: ['account', 'browser_type', 'city', 'country', 'date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_manufacturer', 'device_type', 'live_stream', 'player', 'referrer_domain', 'region', 'search_terms', 'social_platform', 'source_type', 'video', 'viewer'],
   endpointGroups: {
     report: {
       name: 'report',
