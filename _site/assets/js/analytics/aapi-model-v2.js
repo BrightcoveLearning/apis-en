@@ -499,6 +499,11 @@ var aapi_model = {
       from: '2011-01-01',
       fields: ['account', 'account.name', 'video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'time']
     },
+    viewer__video: {
+      dimensions: ['viewer', 'video'],
+      from: '2011-01-01',
+      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'time']
+    },
     account__viewer__video__date: {
       dimensions: ['account', 'viewer', 'video', 'date'],
       from: '2011-01-01',
