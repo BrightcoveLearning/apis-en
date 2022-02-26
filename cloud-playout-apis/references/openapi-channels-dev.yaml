@@ -20,13 +20,13 @@ paths:
       tags:
         - Channels
       summary: Create channel
-      description: 'Creates a cloud playout channel for an account'
+      description: 'Creates a cloud playout channel'
       operationId: CreateChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ContentType'
       requestBody:
-        description: Creates a cloudplayout channel for an account
+        description: Creates a cloudplayout channel
         content:
           application/json:
             schema:
@@ -164,7 +164,7 @@ paths:
       tags:
         - Channels
       summary: Delete a channel
-      description: 'Delete a Cloud Playout channel for an account'
+      description: 'Delete a Cloud Playout channel'
       operationId: DeleteChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -200,14 +200,14 @@ paths:
       tags:
         - Channels
       summary: Update a channel
-      description: 'Update a Cloud Playout channel for an account'
+      description: 'Update a Cloud Playout channel'
       operationId: UpdateChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/ChannelId'
       requestBody:
-        description: Creates a cloudplayout channel for an account
+        description: Creates a cloudplayout channel
         content:
           application/json:
             schema:
@@ -460,7 +460,7 @@ paths:
       tags:
         - Channels
       summary: Get as run logs of a channel
-      description: "Provides an ability to retrieve a log of a prior day's events (in UTC 24 hours timeframe), allowing for auditing of aired content"
+      description: "Provides an ability to retrieve a log of a prior day's events (in 24-hour UTC time), allowing for auditing of aired content"
       operationId: GetAsRunLogs
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -549,7 +549,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/AssetType'
-        - $ref: '#/components/parameters/Type'
       responses:
         '200':
           description: '200'
@@ -1965,7 +1964,7 @@ components:
             "videocloud": {
               "live_to_vod": true,
               "video": {
-                "name": "hfgh",
+                "name": "sample",
                 "link": { },
                 "schedule": { },
                 "state": "ACTIVE",
@@ -2338,13 +2337,16 @@ components:
                       description: Indicates the output pipeline. 1 only for now
                     location:
                       type: string
-                      description: "Location where the output destination is configured.
-                      For rtmp/rtp type;
-                       1. Specify as bc_live if you want Cloud PlayOut to create a new Brightcove Live event.
-                       2. For using an existing BC Live event, pass in the existing event's job ID.
-                       3. When redundancy is enabled & to use an existing BC Live redundant group, pass in the existing redundant group's ID.
-                       See [ListBCLiveChannels](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListBCLiveChannels) to get the available job id's.
-                      For s3 type; pass in the credentials id (Refer [Credentials](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#tag/Credentials)) for Cloud Playout to create HLS playlist on the given S3 location."
+                      description: |-
+                        "Location where the output destination is configured.
+                        For rtmp/rtp Type:
+                          1. Specify as bc_live if you want Cloud PlayOut to create a new Brightcove Live event.
+                          2. For using an existing BC Live event, pass in the existing event's job ID.
+                          3. When redundancy is enabled & to use an existing BC Live redundant group, pass in the existing redundant group's ID.
+
+                        See [ListBCLiveChannels](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListBCLiveChannels) to get the available job id's.
+
+                        For s3 type; pass in the credentials id (Refer [Credentials](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#tag/Credentials)) for Cloud Playout to create HLS playlist on the given S3 location."
                     redundancy:
                       type: boolean
                       description: Enables or disables Brightcove Live redundancy. Applicable only for rtmp/rtp type with location as either 'bc_live' or an existing Brightcove live redundant group id available in the users videocloud account.
@@ -2881,7 +2883,7 @@ components:
                       redundancy:
                         type: boolean
                         description: BC Live redundancy true/false, in case BC Live is the destination
-                        required: false
+                        default: false
                       destination:
                         type: string
                         enum:
@@ -2907,11 +2909,9 @@ components:
                             location:
                               type: string
                               description: BC Live job name, in case BC Live is the destination
-                              required: false
                             location_id:
                               type: string
                               description: BC Live job ID, in case BC Live is the destination
-                              required: false
                             destination_url:
                               type: string
                               description: Output destination URL
@@ -3511,9 +3511,9 @@ components:
         $ref: "#/components/schemas/AssetType"
     Type:
       name: type
-      in: query
+      in: path
       description: Cloud Playout Overlay Asset Type
-      required: false
+      required: true
       style: simple
       explode: false
       schema:
