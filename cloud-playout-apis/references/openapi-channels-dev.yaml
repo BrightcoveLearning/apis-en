@@ -48,6 +48,12 @@ paths:
                 $ref: '#/components/examples/existingLiveJobIdForOutputLocation'
               Channel with dynamic overlays enabled:
                 $ref: '#/components/examples/dynamicOverlaysEnabled'
+              Channel with import captions enabled:
+                $ref: '#/components/examples/importCaptionsEnabled'
+              Channel with new Brightcove Live redundancy enabled:
+                $ref: '#/components/examples/newBcLiveRedundancyEnabled'
+              Channel with existing Brightcove Live redundancy enabled:
+                $ref: '#/components/examples/existingBcLiveRedundancyEnabled'
         required: true
       responses:
         '200':
@@ -94,6 +100,7 @@ paths:
       operationId: GetAllChannels
       parameters:
         - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/searchQuery'
       responses:
         '200':
           description: '200'
@@ -133,6 +140,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetChannel'
+              examples:
+                Get channel:
+                  $ref: "#/components/examples/getChannelById"
+                Brightcove Live redundancy enabled channel once scheduled:
+                  $ref: '#/components/examples/getBcLiveRedundancyEnabledChannel'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -229,6 +241,8 @@ paths:
                 $ref: '#/components/examples/DisableMidRollImportWhenSSAIEnabled'
               Update Multiple Items:
                 $ref: '#/components/examples/updateMultiple'
+              Update Brightcove Live redundancy:
+                $ref: '#/components/examples/updateBcLiveRedundancy'
         required: true
       responses:
         '200':
@@ -1367,6 +1381,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ssai'
+        - $ref: '#/components/parameters/redundancy'
       responses:
         '200':
           description: '200'
@@ -1374,6 +1389,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BcLiveChannelProperties'
+              examples:
+                Brightcove Live jobs:
+                  $ref: '#/components/examples/bcLiveJobs'
+                Brightcove Live redundant groups:
+                  $ref: '#/components/examples/bcRedundantGroups'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -1620,6 +1640,406 @@ components:
         ]
         "region": "us-west-2"
         "dynamic_overlays_enabled": true
+    importCaptionsEnabled:
+      value:
+        "name": "import_captions"
+        "channel_model": "Model A"
+        "description": "test_cloudplayout_roebuck"
+        "start_time": "2020-09-17T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "input_id": "dummy",
+            "loop_on_completion": true
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "channel_class": "single-pipeline"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-west-2"
+        "import_captions_enabled": true
+    newBcLiveRedundancyEnabled:
+      value:
+        "name": "new_bc_live_redundancy"
+        "channel_model": "Model A"
+        "description": "test_cloudplayout_roebuck"
+        "start_time": "2020-09-17T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "input_id": "dummy",
+            "loop_on_completion": true
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "channel_class": "single-pipeline"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "redundancy": true,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-west-2"
+    existingBcLiveRedundancyEnabled:
+      value:
+        "name": "existing_bc_live_redundancy"
+        "channel_model": "Model A"
+        "description": "test_cloudplayout_roebuck"
+        "start_time": "2020-09-17T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "input_id": "dummy",
+            "loop_on_completion": true
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "channel_class": "single-pipeline"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "redundancy": true,
+                "location": "${EXISTING_BRIGHTCOVE_LIVE_REDUNDANT_GROUP_ID}"
+              }
+            ]
+          }
+        ]
+        "region": "us-west-2"
+    getChannelById:
+      value:
+        "public_id": "8635d6147ab64e4788a44d70c23cced0"
+        "name": "testChannel"
+        "description": "Channel created for testing Cloud Playout"
+        "account_id": "6062814566001"
+        "state": "DRAFT"
+        "status": null
+        "start_time": "2020-12-17 06:00:00 UTC"
+        "stop_time": "2020-12-17 07:00:00 UTC"
+        "input_groups": "playlist"
+        "output_groups": "rtmp"
+        "loop_playlist": true
+        "playlist_id": "1686204667297382886"
+        "channel_class": "single-pipeline"
+        "ssai_enabled": false
+        "aws_region": "us-east-1"
+        "message": null
+        "created_at": "2020-12-16 03:41:22 UTC"
+        "updated_at": "2020-12-17 04:53:30 UTC"
+        "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"
+        "output_destinations": [
+            "Brightcove Live"
+        ]
+        "channel_created_at": "2020-12-16 03:41:22 UTC"
+        "channel_updated_at": "2020-12-17 04:53:30 UTC"
+        "channel_created_by": "abc@xyz.com"
+        "channel_updated_by": "abc@xyz.com"
+        "live_profile": {
+          "display_name": "Standard Live HD 720p - Tier 1",
+          "name": "standard-live-hd-720p-tier-1",
+          "date_created": "2018-06-04 18:16:44 UTC",
+          "date_modified": "2018-06-04 18:16:44 UTC"
+        }
+        "channel_data": {
+          "input_group": [
+            {
+              "input_type": "slate",
+              "value": "https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4",
+              "public_id": "8f5d4bd7474346398f63d29928fe7c11"
+            },
+            {
+              "input_type": "rtmp",
+              "value": {
+                "type": "RTMP_PUSH",
+                "url": "rtmp://cloudplayout.brightcove.com/cloudplayout/2773cfce04834175a16ff3db6c6f713a",
+                "security_groups": [
+                    "2960733"
+                ]
+              }
+            },
+            {
+              "input_type": "playlist",
+              "value": "playlist_name",
+              "public_id": "1691563159090702307",
+              "description": "Playlist created for Cloud Playout",
+            }
+          ],
+          "output_groups": [
+            {
+              "type": "preview",
+              "destination_url": "bc-cloudplayout-prod/framecapture/2773cfce04834175a16ff3db6c6f713a/image",
+              "encoder_settings": [
+                {
+                  "width": 640,
+                  "height": 360,
+                  "capture_interval": 5,
+                  "capture_interval_units": "SECONDS"
+                }
+              ]
+            },
+            {
+              "type": "rtmp",
+              "destination_url": "rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive",
+              "location_id": "3c702c9afcd24a93b73cf57af2eb44f5",
+              "location": "Shared-media-test",
+              "destination": "Brightcove Live",
+              "encoder_settings": [
+                {
+                  "width": 1280,
+                  "height": 720,
+                  "bitrate": 2400000,
+                  "gop_size": 90.0,
+                  "gop_size_units": "FRAMES",
+                  "profile": "HIGH",
+                  "level": "H264_LEVEL_AUTO",
+                  "scan_type": "PROGRESSIVE",
+                  "framerate_control": "SPECIFIED"
+                }
+              ],
+              "stream_url": "rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive",
+              "static": true,
+              "playback_url": "https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist.m3u8",
+              "playback_url_dvr": "https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist_dvr.m3u8"
+            }
+          ]
+        }
+    getBcLiveRedundancyEnabledChannel:
+      value:
+        "public_id": "e2d38b8304c84601b27630ae05b764b8"
+        "name": "redundancy_testing_local"
+        "description": "test_cloudplayout_roebuck"
+        "account_id": "70701684277202"
+        "state": "SCHEDULED"
+        "status": "Scheduled for start"
+        "start_time": "2022-02-10 05:57:10 UTC"
+        "stop_time": null
+        "input_groups": "playlist"
+        "output_groups": "rtmp"
+        "loop_playlist": false
+        "playlist_id": "1724281533777310596"
+        "channel_class": "single-pipeline"
+        "ssai_enabled": null
+        "aws_region": "us-east-1"
+        "message": ""
+        "created_at": "2022-02-09 10:36:51 UTC"
+        "updated_at": "2022-02-09 10:49:03 UTC"
+        "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"
+        "output_destinations": [
+            "Brightcove Live with Redundancy"
+        ]
+        "channel_created_at": "2022-02-09 10:36:51 UTC"
+        "channel_updated_at": "2022-02-09 10:36:51 UTC"
+        "channel_created_by": "Created by API"
+        "channel_updated_by": "Updated by API"
+        "import_captions_enabled": true
+        "live_profile": {
+          "display_name": "Premium Live HD 1080p - Tier 2",
+          "name": "premium-live-hd-1080p-tier-2",
+          "date_created": "2018-06-04 18:16:44 UTC",
+          "date_modified": "2018-06-04 18:16:44 UTC"
+        }
+        "channel_data": {
+          "destinations": [
+            {
+              "id": "dest-rtmp-0",
+              "url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02",
+              "stream_name": "alive"
+            },
+            {
+              "id": "dest-rtmp-1",
+              "url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b",
+              "stream_name": "alive"
+            },
+            {
+              "id": "framecapture",
+              "url": "s3://cloudplayout-preview/framecapture/e2d38b8304c84601b27630ae05b764b8/image",
+              "stream_name": null
+            }
+          ],
+          "input_specification": {
+            "codec": "AVC",
+            "maximum_bitrate": "MAX_20_MBPS",
+            "resolution": "HD"
+          },
+          "output_groups": [
+            {
+              "type": "preview",
+              "destination_url": "s3://cloudplayout-preview/framecapture/e2d38b8304c84601b27630ae05b764b8/image",
+              "encoder_settings": [
+                {
+                  "width": 640,
+                  "height": 360,
+                  "capture_interval": 5,
+                  "capture_interval_units": "SECONDS"
+                }
+              ]
+            },
+            {
+              "type": "rtmp",
+              "location_id": "374d4846292042af82c4c573e58bba39",
+              "redundancy": true,
+              "location": "redundancy_testing_local_group",
+              "destination": "Brightcove Live with Redundancy",
+              "playback_url": "https://playback-qa.a-live.io/r374d4846292042af82c4c573e58bba39/us-east-1/NA/playlist.m3u8",
+              "playback_url_dvr": "https://playback-qa.a-live.io/r374d4846292042af82c4c573e58bba39/us-east-1/NA/playlist_dvr.m3u8",
+              "outputs": [
+                {
+                  "destination_url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02/alive",
+                  "location_id": "d42f9b597f9f4cff90f3d48ddc665a02",
+                  "location": "redundancy_testing_local_2",
+                  "encoder_settings": [
+                    {
+                      "width": 1920,
+                      "height": 1080,
+                      "bitrate": 4000000,
+                      "gop_size": 60.0,
+                      "gop_size_units": "FRAMES",
+                      "profile": "HIGH",
+                      "level": "H264_LEVEL_AUTO",
+                      "scan_type": "PROGRESSIVE",
+                      "framerate_control": "SPECIFIED"
+                    }
+                  ],
+                  "stream_url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02/alive",
+                  "static": true,
+                  "playback_url": "https://playback-qa.a-live.io/d42f9b597f9f4cff90f3d48ddc665a02/us-west-2/NA/playlist.m3u8",
+                  "playback_url_dvr": "https://playback-qa.a-live.io/d42f9b597f9f4cff90f3d48ddc665a02/us-west-2/NA/playlist_dvr.m3u8"
+                },
+                {
+                  "destination_url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b/alive",
+                  "location_id": "2f84603cc5bf45babfc92e58f444eb0b",
+                  "location": "redundancy_testing_local_1",
+                  "encoder_settings": [
+                    {
+                      "width": 1920,
+                      "height": 1080,
+                      "bitrate": 4000000,
+                      "gop_size": 60.0,
+                      "gop_size_units": "FRAMES",
+                      "profile": "HIGH",
+                      "level": "H264_LEVEL_AUTO",
+                      "scan_type": "PROGRESSIVE",
+                      "framerate_control": "SPECIFIED"
+                    }
+                  ],
+                  "stream_url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b/alive",
+                  "static": true,
+                  "playback_url": "https://playback-qa.a-live.io/2f84603cc5bf45babfc92e58f444eb0b/us-east-1/NA/playlist.m3u8",
+                  "playback_url_dvr": "https://playback-qa.a-live.io/2f84603cc5bf45babfc92e58f444eb0b/us-east-1/NA/playlist_dvr.m3u8"
+                }
+              ]
+            }
+          ],
+          "input_group": [
+            {
+              "input_type": "playlist",
+              "value": "redundancy_testing_local_cc",
+              "description": "cloudplayout",
+              "public_id": "1724281533777310596"
+            }
+          ]
+        }
+    bcLiveJobs:
+      value:
+        "jobs": [
+          {
+            "id": "d901a1d5a00947c6804557e46ff37dh8",
+            "videocloud": {
+              "live_to_vod": true,
+              "video": {
+                "name": "hfgh",
+                "link": { },
+                "schedule": { },
+                "state": "ACTIVE",
+                "custom_fields": { }
+              }
+            },
+            "state": "waiting",
+            "static": false,
+            "ad_insertion": false,
+            "region": "us-west-2",
+            "reconnect_time": 600,
+            "submitted_at": "2021-07-05T12:28:23.510Z"
+          }
+        ]
+    bcRedundantGroups:
+      value: [
+        {
+          "id": "3b6d373ff07d4d1ba45e277b2f61af8e",
+          "account_id": "0039c773a6154dd6aebc97535f3e3829",
+          "user_id": "54cb044f5c0542a08885b2479151d7a4",
+          "processing_regions": [
+            {
+              "region": "us-west-2",
+              "probability": 1
+            }
+          ],
+          "storage_regions": [
+              "us-west-2",
+              "us-east-1"
+          ],
+          "jobs": [
+            {
+              "job_id": "31aac412423346ae897e4cc0277db833",
+              "streams": [
+                  "hls720p",
+                  "hls540p",
+                  "hls360p"
+              ],
+              "state": "standby"
+            },
+            {
+              "job_id": "d977fdcf65634d6cbda20bba1a0c283e",
+              "streams": [
+                  "hls720p",
+                  "hls540p",
+                  "hls360p"
+              ],
+              "state": "standby"
+            }
+          ],
+          "state": "standby",
+          "created_at": 1641550583491,
+          "updated_at": 1641552235271,
+          "label": "Test RG",
+          "live_dvr_sliding_window_duration": 1800,
+          "status": {
+            "us-west-2": {
+              "SwitchDrift": 0,
+              "MasterManifestsUpdatedAt": "0001-01-01T00:00:00Z",
+              "Ended": false,
+              "OnAir": "31aac412423346ae897e4cc0277db833",
+              "Mode": "auto",
+              "InManifest": true,
+              "MediaSequence": 0,
+              "DiscontinuitySequence": 0,
+              "UpdatedAt": "0001-01-01T00:00:00Z"
+            }
+          },
+          "outputs": {
+            "playback_url": "https://playback-qa.a-live.io/r3b6d373ff07d4d1ba45e277b2f61af8e/us-west-2/NA/playlist.m3u8",
+            "playback_url_dvr": "https://playback-qa.a-live.io/r3b6d373ff07d4d1ba45e277b2f61af8e/us-west-2/NA/playlist_dvr.m3u8"
+          }
+        }
+      ]
     updateName:
       value:
         "name": "test_channel_edit"
@@ -1703,6 +2123,20 @@ components:
             "ingest_locations": [
               {
                 "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+    updateBcLiveRedundancy:
+      value:
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "redundancy": true,
                 "location": "bc_live"
               }
             ]
@@ -1838,6 +2272,14 @@ components:
         channel_class:
           type: string
           default: single-pipeline
+        dynamic_overlays_enabled:
+          type: boolean
+          description: Channel enabled for dynamic overlays
+          default: false
+        import_captions_enabled:
+          type: boolean
+          description: Channel enabled for import captions
+          default: true
         region:
           type: string
           enum:
@@ -1900,8 +2342,12 @@ components:
                       For rtmp/rtp type;
                        1. Specify as bc_live if you want Cloud PlayOut to create a new Brightcove Live event.
                        2. For using an existing BC Live event, pass in the existing event's job ID.
+                       3. When redundancy is enabled & to use an existing BC Live redundant group, pass in the existing redundant group's ID.
                        See [ListBCLiveChannels](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListBCLiveChannels) to get the available job id's.
                       For s3 type; pass in the credentials id (Refer [Credentials](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#tag/Credentials)) for Cloud Playout to create HLS playlist on the given S3 location."
+                    redundancy:
+                      type: boolean
+                      description: Enables or disables Brightcove Live redundancy. Applicable only for rtmp/rtp type with location as either 'bc_live' or an existing Brightcove live redundant group id available in the users videocloud account.
     CreateChannel:
       allOf:
         - $ref: "#/components/schemas/ChannelProperties"
@@ -1986,103 +2432,6 @@ components:
       properties:
         channel:
           $ref: '#/components/schemas/ExtendedChannel'
-      example: {
-        "public_id": "8635d6147ab64e4788a44d70c23cced0",
-        "name": "testChannel",
-        "description": "Channel created for testing Cloud Playout",
-        "account_id": "6062814566001",
-        "state": "DRAFT",
-        "status": null,
-        "start_time": "2020-12-17 06:00:00 UTC",
-        "stop_time": "2020-12-17 07:00:00 UTC",
-        "input_groups": "playlist",
-        "output_groups": "rtmp",
-        "loop_playlist": true,
-        "playlist_id": "1686204667297382886",
-        "channel_class": "single-pipeline",
-        "ssai_enabled": false,
-        "aws_region": "us-east-1",
-        "message": null,
-        "created_at": "2020-12-16 03:41:22 UTC",
-        "updated_at": "2020-12-17 04:53:30 UTC",
-        "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
-        "output_destinations": [
-            "Brightcove Live"
-        ],
-        "channel_created_at": "2020-12-16 03:41:22 UTC",
-        "channel_updated_at": "2020-12-17 04:53:30 UTC",
-        "channel_created_by": "abc@xyz.com",
-        "channel_updated_by": "abc@xyz.com",
-        "live_profile": {
-          "display_name": "Standard Live HD 720p - Tier 1",
-          "name": "standard-live-hd-720p-tier-1",
-          "date_created": "2018-06-04 18:16:44 UTC",
-          "date_modified": "2018-06-04 18:16:44 UTC"
-        },
-        "channel_data": {
-          "input_group": [
-            {
-              "input_type": "slate",
-              "value": "https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4",
-              "public_id": "8f5d4bd7474346398f63d29928fe7c11"
-            },
-            {
-              "input_type": "rtmp",
-              "value": {
-                "type": "RTMP_PUSH",
-                "url": "rtmp://cloudplayout.brightcove.com/cloudplayout/2773cfce04834175a16ff3db6c6f713a",
-                "security_groups": [
-                    "2960733"
-                ]
-              }
-            },
-            {
-              "input_type": "playlist",
-              "value": "playlist_name",
-              "description": "Playlist created for Cloud Playout",
-              "public_id": "1691563159090702307"
-            }
-          ],
-          "output_groups": [
-            {
-              "type": "preview",
-              "destination_url": "bc-cloudplayout-prod/framecapture/2773cfce04834175a16ff3db6c6f713a/image",
-              "encoder_settings": [
-                {
-                  "width": 640,
-                  "height": 360,
-                  "capture_interval": 5,
-                  "capture_interval_units": "SECONDS"
-                }
-              ]
-            },
-            {
-              "type": "rtmp",
-              "destination_url": "rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive",
-              "location_id": "3c702c9afcd24a93b73cf57af2eb44f5",
-              "location": "Shared-media-test",
-              "destination": "Brightcove Live",
-              "encoder_settings": [
-                {
-                  "width": 1280,
-                  "height": 720,
-                  "bitrate": 2400000,
-                  "gop_size": 90.0,
-                  "gop_size_units": "FRAMES",
-                  "profile": "HIGH",
-                  "level": "H264_LEVEL_AUTO",
-                  "scan_type": "PROGRESSIVE",
-                  "framerate_control": "SPECIFIED"
-                }
-              ],
-              "stream_url": "rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive",
-              "static": true,
-              "playback_url": "https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist.m3u8",
-              "playback_url_dvr": "https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist_dvr.m3u8"
-            }
-          ]
-        }
-      }
     AsyncMessage:
       title: MessageObject
       type: object
@@ -2161,29 +2510,6 @@ components:
     BcLiveChannelProperties:
       title: BcLiveChannelObjcet
       type: object
-      example: {
-        "jobs": [
-          {
-            "id": "d901a1d5a00947c6804557e46ff37dh8",
-            "videocloud": {
-              "live_to_vod": true,
-              "video": {
-                "name": "hfgh",
-                "link": { },
-                "schedule": { },
-                "state": "ACTIVE",
-                "custom_fields": { }
-              }
-            },
-            "state": "waiting",
-            "static": false,
-            "ad_insertion": false,
-            "region": "us-west-2",
-            "reconnect_time": 600,
-            "submitted_at": "2021-07-05T12:28:23.510Z"
-          }
-        ]
-      }
       properties:
         jobs:
           description: List of bc live jobs for the account.
@@ -2548,10 +2874,14 @@ components:
                           - s3
                       location:
                         type: string
-                        description: BC Live job name, in case BC Live is the destination
+                        description: BC Live job/redundant_group name, in case BC Live is the destination
                       location_id:
                         type: string
-                        description: BC Live job ID, in case BC Live is the destination
+                        description: BC Live job/redundant_group ID, in case BC Live is the destination
+                      redundancy:
+                        type: boolean
+                        description: BC Live redundancy true/false, in case BC Live is the destination
+                        required: false
                       destination:
                         type: string
                         enum:
@@ -2563,6 +2893,28 @@ components:
                       destination_url:
                         type: string
                         description: Output destination URL
+                      outputs:
+                        type: array
+                        description: BC Live jobs info, in case of BC Live redundancy enabled channles
+                        items:
+                          properties:
+                            type:
+                              type: string
+                              description: Type of the output destination
+                              enum:
+                                - rtmp
+                                - rtp
+                            location:
+                              type: string
+                              description: BC Live job name, in case BC Live is the destination
+                              required: false
+                            location_id:
+                              type: string
+                              description: BC Live job ID, in case BC Live is the destination
+                              required: false
+                            destination_url:
+                              type: string
+                              description: Output destination URL
     GetChannelPreview:
       title: Preview
       type: object
@@ -3192,6 +3544,14 @@ components:
       explode: false
       schema:
         type: boolean
+    redundancy:
+      name: Brightcove Live redundant groups true/false for filtering
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: boolean
     duration:
       name: duration of metrics in minutes
       in: query
@@ -3232,6 +3592,16 @@ components:
       schema:
         type: boolean
         default: true
+    searchQuery:
+      name: q
+      description: 'Search string - see [channels search guide]() for details'
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        example: 'hello%20%22world%22%20loop%3Atrue%20startTime%3A2021-10-10%2010%3A25%3A10..%20state%3A%5Bdraft%2Crunning%5D'
   responses:
     '204':
       description: Item was deleted
