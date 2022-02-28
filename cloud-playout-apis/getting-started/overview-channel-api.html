@@ -115,7 +115,15 @@ Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
   <section class="bcls-section">
     <h2 id="creating_a_channel_with_live_redundancy">Channel with Live redundancy</h2>
     <h3>Creating a Brightcove Live redundant group in live module</h3>
-    <p>To create a Live redundant group, see <a href="https://live.support.brightcove.com/live-module/live-redundancy.html">Using Live Redundancy</a>. Once a redundant group is created using the above document you can use them in Cloud Playout.</p>
+    <p>To create a Live redundant group, see <a href="https://live.support.brightcove.com/live-module/live-redundancy.html">Using Live Redundancy</a>. Once redundant groups are created using the above document you can use them in Cloud Playout.</p>
+    <h4>Redundant groups eligibility criteria</h4>
+    <p>To be available for use as a Cloud Playout channel destination, the redundant group must meet the following criteria:</p>
+    <ul>
+      <li>The redundant group should contain exactly 2 live jobs.</li>
+      <li>Both live jobs in the redundant group must be of <strong>Static Entry Point</strong> type.</li>
+      <li>The redundant group (and the jobs in it) must be in <strong>standby</strong> state.</li>
+      <li>If the Cloud Playout channel is SSAI-enabled then the redundant group must also be SSAI-enabled with <strong>RTP-FEC</strong> protocol.</li>
+    </ul>
 
     <h4>Getting available Brightcove Live redundant groups</h4>
     <p>To retrieve a list of available Brightcove Live redundant groups in your account, make a <code translate="No">GET</code> request to:</p>
