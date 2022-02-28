@@ -2302,8 +2302,7 @@ API Requests</a>.</p>
 	</tbody>
 </table>
 
-<p>Sample response:</p>
-
+<h4>Sample response:</h4>
 <pre class="line-numbers">
 <code class="language-json" translate="No">[
   {
@@ -2322,6 +2321,8 @@ API Requests</a>.</p>
     }
   }
 ]</code></pre>
+
+<p>For field definitions, see the <a href="#Configuration_field_details">Configuration field details</a> section.</p>
 
 <h3 id="Create_an_ad_configuration">Create an ad configuration</h3>
 
@@ -2347,7 +2348,7 @@ API Requests</a>.</p>
 	</tbody>
 </table>
 
-<p>Sample Body:</p>
+<h4>Sample Body:</h4>
 
 <pre class="line-numbers">
 <code class="language-json" translate="No">{
@@ -2366,6 +2367,8 @@ API Requests</a>.</p>
     "hls": [ "*" ]
   }
 }</code></pre>
+
+<p>For field definitions, see the <a href="#Configuration_field_details">Configuration field details</a> section.</p>
 
 <h4>Notes</h4>
 <ul>
@@ -2454,6 +2457,8 @@ API Requests</a>.</p>
 		}
 	}</code></pre>
 </details>
+<br/>
+<p>For field definitions, see the <a href="#Configuration_field_details">Configuration field details</a> section.</p>
 
 <h3 id="Update_an_ad_configuration">Update an ad configuration</h3>
 
@@ -2508,6 +2513,8 @@ API Requests</a>.</p>
 		}
 	}</code></pre>
 </details>
+<br/>
+<p>For field definitions, see the <a href="#Configuration_field_details">Configuration field details</a> section.</p>
 </section>
 
 <section class="bcls-section">
@@ -2585,27 +2592,15 @@ API Requests</a>.</p>
 			<br />
 			Or reference another variable <code translate="No">{ "url.foo": "{{ metadata.title_id }}" }</code></td>
 		</tr>
-		<tr>
-			<td><code translate="No">discontinuities.dash</code> <sup><a href="#n2"> [2]</a></sup></td>
-			<td>[]String</td>
-			<td>Controls which versions of dash to deliver Multi Period Dash manifests.<br />
+    <tr>
+			<td><code translate="No">ad_tracking_sample_percentage</code></td>
+			<td>integer</td>
+			<td>This value determines the percentage of sessions that will be logged. It can any value from <code translate="No">0</code> (disable logging) to <code translate="No">100</code> (log all sessions). A value of <code translate="No">0</code> disables logs entirely.<br />
 			<br />
-			Set to <code translate="No">["*"]</code> to deliver multi-period dash for all versions<br />
-			<br />
-			Empty list for never<br />
-			<br />
-			Example: <code translate="No">["live-timeline"]</code> to deliver for live-timeline but not for hbbtv</td>
-		</tr>
-		<tr>
-			<td><code translate="No">discontinuities.hls</code> <sup><a href="#n2"> [2]</a></sup></td>
-			<td>[]String</td>
-			<td>Controls which versions of hls to deliver with discontinuities.<br />
-			<br />
-			Set to <code translate="No">["*"]</code> to delivery with discontinuities in all versions of HLS<br />
-			<br />
-			Empty list for never<br />
-			<br />
-			Example: <code translate="No">["v4","v5"]</code> to deliver for v4 &amp; v5 but not for v3</td>
+			Default: <code translate="No">0</code><br />
+      <br />
+			Values: <code translate="No">[ 0 .. 100 ]</code><br />
+			</td>
 		</tr>
 		<tr>
 			<td><code translate="No">beacon_templates</code></td>
@@ -2644,6 +2639,28 @@ API Requests</a>.</p>
 			<td><code translate="No">beacon_templates[].template_url.template</code></td>
 			<td>String</td>
 			<td>Beacon URL template</td>
+		</tr>
+    <tr>
+			<td><code translate="No">discontinuities.dash</code> <sup><a href="#n2"> [2]</a></sup></td>
+			<td>[]String</td>
+			<td>Controls which versions of dash to deliver Multi Period Dash manifests.<br />
+			<br />
+			Set to <code translate="No">["*"]</code> to deliver multi-period dash for all versions<br />
+			<br />
+			Empty list for never<br />
+			<br />
+			Example: <code translate="No">["live-timeline"]</code> to deliver for live-timeline but not for hbbtv</td>
+		</tr>
+		<tr>
+			<td><code translate="No">discontinuities.hls</code> <sup><a href="#n2"> [2]</a></sup></td>
+			<td>[]String</td>
+			<td>Controls which versions of hls to deliver with discontinuities.<br />
+			<br />
+			Set to <code translate="No">["*"]</code> to delivery with discontinuities in all versions of HLS<br />
+			<br />
+			Empty list for never<br />
+			<br />
+			Example: <code translate="No">["v4","v5"]</code> to deliver for v4 &amp; v5 but not for v3</td>
 		</tr>
 		<tr>
 			<td><code translate="No">extend_beacon_guard_ttl</code></td>
