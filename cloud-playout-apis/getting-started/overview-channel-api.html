@@ -113,6 +113,333 @@ Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
 <p>In addition to mandatory fields, there are fields which can be set like <code translate="No">description</code>, <code translate="No">stop_time</code>, <code translate="No">ssai_enabled</code>, <code translate="No">image_id</code>, <code translate="No">mid_roll_import_enabled</code>, <code translate="No">mid_roll_slot_time</code>,  etc. Please refer the examples from the <a href="/cloud-playout-apis/references/reference-channels.html">Channels API Reference</a> for creating channels with different configurations.</p>
   </section>
   <section class="bcls-section">
+    <h2 id="creating_a_channel_with_live_redundancy">Channel with Live redundancy</h2>
+    <h3>Creating a Brightcove Live redundant group in live module</h3>
+    <p>To create a Live redundant group, see <a href="https://live.support.brightcove.com/live-module/live-redundancy.html">Using Live Redundancy</a>. Once redundant groups are created using the above document you can use them in Cloud Playout.</p>
+    <h4>Redundant groups eligibility criteria</h4>
+    <p>To be available for use as a Cloud Playout channel destination, the redundant group must meet the following criteria:</p>
+    <ul>
+      <li>The redundant group should contain exactly 2 live jobs.</li>
+      <li>Both live jobs in the redundant group must be of <strong>Static Entry Point</strong> type.</li>
+      <li>The redundant group (and the jobs in it) must be in <strong>standby</strong> state.</li>
+      <li>If the Cloud Playout channel is SSAI-enabled then the redundant group must also be SSAI-enabled with <strong>RTP-FEC</strong> protocol.</li>
+    </ul>
+
+    <h4>Getting available Brightcove Live redundant groups</h4>
+    <p>To retrieve a list of available Brightcove Live redundant groups in your account, make a <code translate="No">GET</code> request to:</p>
+<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/bc_channels<span class="bcls-highlight">?redundancy=true</span></code></pre>
+    <p>To limit the results to redundant groups that are enabled for SSAI, add the <code translate="No">ssai=true</code> parameter:</p>
+<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/{account_id}/bc_channels<span class="bcls-highlight">?redundancy=true&ssai=true</span></code></pre>
+    <h3>Creating a channel with Live redundancy</h3>
+    <p>You can create a Brightcove Live redundancy enabled channel using the <code translate="No">output_group</code> field in the request body,</p>
+    <h4>Sample request body</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "name": "channel name",
+  "start_time": "2021-06-29T08:30:50.344Z",
+  "input_group": [
+    {
+      "input_type": "playlist or rtmp or slate",
+      "input_id": "dummy",
+      "loop_on_completion": false
+    }
+  ],
+  "live_profile": "your live profile",
+  "output_group": [
+    {
+      "type": "rtmp or rtp",
+      "ingest_locations": [
+        {
+          "pipeline_id": 1,
+          <span class="bcls-highlight">"redundancy": true,</span>
+          "location": "bc_live/<span class="bcls-input">{EXISTING_BC_REDUNDANT_GROUP_ID}</span>"
+        }
+      ]
+    }
+  ],
+  "region": "aws region"
+}</code></pre>
+    <details>
+      <summary><h4>Sample response</h4></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "public_id": "79f0e7503fd64af3b7d2b0f825100f28",
+  "name": "channel name",
+  "description": "",
+  "account_id": "Your account id",
+  "state": "DRAFT",
+  "status": null,
+  "start_time": "2021-06-29 08:30:50 UTC",
+  "stop_time": null,
+  "input_groups": "playlist",
+  "output_groups": "rtmp",
+  "loop_playlist": false,
+  "playlist_id": "1703814612527248093",
+  "channel_class": "single-pipeline",
+  "ssai_enabled": true,
+  "aws_region": "aws region",
+  "message": null,
+  "created_at": "2021-06-28 12:43:55 UTC",
+  "updated_at": "2021-06-28 12:43:55 UTC",
+  "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+  "output_destinations": [
+    "Brightcove Live with Redundancy"
+  ],
+  "channel_created_at": "2021-06-28 12:43:55 UTC",
+  "channel_updated_at": "2021-06-28 12:43:55 UTC",
+  "channel_created_by": "username@brightcove.com",
+  "channel_updated_by": "username@brightcove.com"
+}</code></pre>
+    </details>
+    <h3>Updating a channel to enable or disable Live redundancy</h3>
+    <p>You can also enable or disable redundancy for an existing channel. The key is the <code translate="No">redundancy</code> flag in the <code translate="No">ingest_locations</code> object. To enable redundancy you need to set it to <code translate="No">true</code>, while to disable redundancy for the channel you can either set it to <code translate="No">false</code> or omit it altogether, since <code translate="No">false</code> is the default value.</p>
+    <h4>Sample request body</h4>
+    <h5>Enable redundancy</h5>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "output_group": [
+    {
+      "type": "rtmp or rtp",
+      "ingest_locations": [
+        {
+          "pipeline_id": 1,
+          <span class="bcls-highlight">"redundancy": true,</span>
+          "location": "bc_live/<span class="bcls-input">{EXISTING_BC_REDUNDANT_GROUP_ID}</span>"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+    <h5>Disable redundancy</h5>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "output_group": [
+    {
+      "type": "rtmp or rtp",
+      "ingest_locations": [
+        {
+          "pipeline_id": 1,
+          "location": "bc_live/<span class="bcls-input">{EXISTING_BC_REDUNDANT_GROUP_ID}</span>"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+    <p>Note the missing <code translate="No">redundancy</code> above. Or:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "output_group": [
+    {
+      "type": "rtmp or rtp",
+      "ingest_locations": [
+        {
+          "pipeline_id": 1,
+          <span class="bcls-highlight">"redundancy": false,</span>
+          "location": "bc_live/<span class="bcls-input">{EXISTING_BC_REDUNDANT_GROUP_ID}</span>"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+    <h3>Getting channel details</h3>
+    <p>To get channel details and verify that it is using redundancy, make a <code translate="No">GET</code> request to:</p>
+<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/cp_channels/<span class="bcls-input">{channel_id}</span></code></pre>
+    <details>
+      <summary><h4>Sample response (draft state)</h4></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "public_id": "a7a58da9794a484a90a60c6c9b3a04a2",
+  "name": "redundancy",
+  "description": "test_cloudplayout_roebuck",
+  "account_id": "70701684277202",
+  "state": "DRAFT",
+  "status": "",
+  "start_time": "2022-02-17 12:53:48 UTC",
+  "stop_time": null,
+  "input_groups": "playlist",
+  "output_groups": "rtmp",
+  "loop_playlist": false,
+  "playlist_id": "1725014456212124545",
+  "channel_class": "single-pipeline",
+  "ssai_enabled": null,
+  "aws_region": "us-east-1",
+  "message": "",
+  "created_at": "2022-02-17 12:46:22 UTC",
+  "updated_at": "2022-02-17 13:01:55 UTC",
+  "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+  "output_destinations": [
+      "Brightcove Live with Redundancy"
+  ],
+  "channel_created_at": "2022-02-17 12:46:22 UTC",
+  "channel_updated_at": "2022-02-17 12:46:22 UTC",
+  "channel_created_by": "user@brightcove.com",
+  "channel_updated_by": "user@brightcove.com",
+  "import_captions_enabled": true,
+  "live_profile": {
+      "display_name": "Premium Live HD 1080p - Tier 2",
+      "name": "premium-live-hd-1080p-tier-2",
+      "date_created": "2018-06-04 18:16:44 UTC",
+      "date_modified": "2018-06-04 18:16:44 UTC"
+  },
+  "channel_data": {
+      "input_group": [
+          {
+              "input_type": "playlist",
+              "value": "redundancy_testing_local",
+              "description": "cloudplayout",
+              "public_id": "1725014456212124545"
+          }
+      ],
+      "output_groups": [
+          {
+              "type": "rtmp",
+              <span class="bcls-highlight">"redundancy": true,</span>
+              "location": "bc_live/${Existing redundant group id}",
+              "destination": "Brightcove Live with Redundancy"
+          }
+      ]
+  }
+}</code></pre>
+    </details>
+    <details>
+      <summary>Sample response (scheduled state)</summary>
+      <p>Note the multiple destinations both in the <code translate="No">channel_data</code> and the <code translate="No">outputs</code>:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "public_id": "e2d38b8304c84601b27630ae05b764b8",
+  "name": "redundancy",
+  "description": "test_cloudplayout_roebuck",
+  "account_id": "70701684277202",
+  "state": "SCHEDULED",
+  "status": "Scheduled for start",
+  "start_time": "2022-02-10 05:57:10 UTC",
+  "stop_time": null,
+  "input_groups": "playlist",
+  "output_groups": "rtmp",
+  "loop_playlist": false,
+  "playlist_id": "1724281533777310596",
+  "channel_class": "single-pipeline",
+  "ssai_enabled": null,
+  "aws_region": "us-east-1",
+  "message": "",
+  "created_at": "2022-02-09 10:36:51 UTC",
+  "updated_at": "2022-02-09 10:49:03 UTC",
+  "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+  "output_destinations": [
+      "Brightcove Live with Redundancy"
+  ],
+  "channel_created_at": "2022-02-09 10:36:51 UTC",
+  "channel_updated_at": "2022-02-09 10:36:51 UTC",
+  "channel_created_by": "Created by API",
+  "channel_updated_by": "Updated by API",
+  "import_captions_enabled": true,
+  "live_profile": {
+      "display_name": "Premium Live HD 1080p - Tier 2",
+      "name": "premium-live-hd-1080p-tier-2",
+      "date_created": "2018-06-04 18:16:44 UTC",
+      "date_modified": "2018-06-04 18:16:44 UTC"
+  },
+  "channel_data": {
+      "destinations": [
+          {
+              "id": "dest-rtmp-0",
+              "url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02",
+              "stream_name": "alive"
+          },
+          {
+              "id": "dest-rtmp-1",
+              "url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b",
+              "stream_name": "alive"
+          },
+          {
+              "id": "framecapture",
+              "url": "s3://cloudplayout-preview/framecapture/e2d38b8304c84601b27630ae05b764b8/image",
+              "stream_name": null
+          }
+      ],
+      "input_specification": {
+          "codec": "AVC",
+          "maximum_bitrate": "MAX_20_MBPS",
+          "resolution": "HD"
+      },
+      "output_groups": [
+          {
+              "type": "preview",
+              "destination_url": "s3://cloudplayout-preview/framecapture/e2d38b8304c84601b27630ae05b764b8/image",
+              "encoder_settings": [
+                  {
+                      "width": 640,
+                      "height": 360,
+                      "capture_interval": 5,
+                      "capture_interval_units": "SECONDS"
+                  }
+              ]
+          },
+          {
+              "type": "rtmp",
+              "location_id": "374d4846292042af82c4c573e58bba39",
+              "location": "redundancy_testing_local_group",
+              "destination": "Brightcove Live with Redundancy",
+              "playback_url": "https://playback-qa.a-live.io/r374d4846292042af82c4c573e58bba39/us-east-1/NA/playlist.m3u8",
+              "playback_url_dvr": "https://playback-qa.a-live.io/r374d4846292042af82c4c573e58bba39/us-east-1/NA/playlist_dvr.m3u8",
+              "outputs": [
+                  {
+                      "destination_url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02/alive",
+                      "location_id": "d42f9b597f9f4cff90f3d48ddc665a02",
+                      "location": "redundancy_testing_local_2",
+                      "encoder_settings": [
+                          {
+                              "width": 1920,
+                              "height": 1080,
+                              "bitrate": 4000000,
+                              "gop_size": 60.0,
+                              "gop_size_units": "FRAMES",
+                              "profile": "HIGH",
+                              "level": "H264_LEVEL_AUTO",
+                              "scan_type": "PROGRESSIVE",
+                              "framerate_control": "SPECIFIED"
+                          }
+                      ],
+                      "stream_url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02/alive",
+                      "static": true,
+                      "playback_url": "https://playback-qa.a-live.io/d42f9b597f9f4cff90f3d48ddc665a02/us-west-2/NA/playlist.m3u8",
+                      "playback_url_dvr": "https://playback-qa.a-live.io/d42f9b597f9f4cff90f3d48ddc665a02/us-west-2/NA/playlist_dvr.m3u8"
+                  },
+                  {
+                      "destination_url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b/alive",
+                      "location_id": "2f84603cc5bf45babfc92e58f444eb0b",
+                      "location": "redundancy_testing_local_1",
+                      "encoder_settings": [
+                          {
+                              "width": 1920,
+                              "height": 1080,
+                              "bitrate": 4000000,
+                              "gop_size": 60.0,
+                              "gop_size_units": "FRAMES",
+                              "profile": "HIGH",
+                              "level": "H264_LEVEL_AUTO",
+                              "scan_type": "PROGRESSIVE",
+                              "framerate_control": "SPECIFIED"
+                          }
+                      ],
+                      "stream_url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b/alive",
+                      "static": true,
+                      "playback_url": "https://playback-qa.a-live.io/2f84603cc5bf45babfc92e58f444eb0b/us-east-1/NA/playlist.m3u8",
+                      "playback_url_dvr": "https://playback-qa.a-live.io/2f84603cc5bf45babfc92e58f444eb0b/us-east-1/NA/playlist_dvr.m3u8"
+                  }
+              ]
+          }
+      ],
+      "input_group": [
+          {
+              "input_type": "playlist",
+              "value": "redundancy_testing_local_cc",
+              "description": "cloudplayout",
+              "public_id": "1724281533777310596"
+          }
+      ]
+  }
+}</code></pre>
+    </details>
+  </section>
+  <section class="bcls-section">
+    <h2 id="enabling_a_channel_for_ssai">Enabling a channel for SSAI</h2>
+    <p>To enable a channel for SSAI (server-side ad insertion), include <code translate="No">ssai_enabled: true</code> in the request body when you created the channel. If SSAI is enabled for your account, it can be used for channels that include VOD and/or Live streaming content.</p>
+  </section>
+  <section class="bcls-section">
     <h2 id="Add_content">Add content to the playlist</h2>
     <p>The next step is to add content to the channel content. For this you will use the <a href="/cloud-playout-apis/references/reference-cms-interactions.html">CMS API</a> (note that this is an abbreviated version of the whole <a href="/cms/references/reference.html">CMS API Reference</a> including just the operations relevant to Cloud Playout and with descriptions that are more appropriate to Cloud Playout).</p>
     <p>Get the playlist_id of the channel (from the response to the create channel request or from a get channel request). This is the playlist in which we manage our assets for our Cloud Playout channel.</p>

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 x-bc-implicit-head: true
 x-bc-implicit-options: true
-x-bc-upstream: https://backend_server
+x-bc-upstream: 'https://backend_server'
 info:
   title: Brightcove Cloud Playout Channel Manager API Reference
   description: |-
@@ -11,22 +11,22 @@ info:
   version: 1.0.0
 x-bc-access: public
 servers:
-  - url: https://cm.cloudplayout.brightcove.com
+  - url: 'https://cm.cloudplayout.brightcove.com'
     description: Production server
     variables: {}
 paths:
-  /accounts/{account_id}/cp_channels:
+  '/accounts/{account_id}/cp_channels':
     post:
       tags:
         - Channels
       summary: Create channel
-      description: Creates a cloud playout channel for an account
+      description: 'Creates a cloud playout channel'
       operationId: CreateChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ContentType'
       requestBody:
-        description: Creates a cloudplayout channel for an account
+        description: Creates a cloudplayout channel
         content:
           application/json:
             schema:
@@ -48,6 +48,12 @@ paths:
                 $ref: '#/components/examples/existingLiveJobIdForOutputLocation'
               Channel with dynamic overlays enabled:
                 $ref: '#/components/examples/dynamicOverlaysEnabled'
+              Channel with import captions enabled:
+                $ref: '#/components/examples/importCaptionsEnabled'
+              Channel with new Brightcove Live redundancy enabled:
+                $ref: '#/components/examples/newBcLiveRedundancyEnabled'
+              Channel with existing Brightcove Live redundancy enabled:
+                $ref: '#/components/examples/existingBcLiveRedundancyEnabled'
         required: true
       responses:
         '200':
@@ -57,7 +63,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ChannelTopLevel'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
           content:
             application/json:
               schema:
@@ -90,11 +96,11 @@ paths:
       tags:
         - Channels
       summary: Get all channels for an account
-      description: Gets all Cloud Playout channels for an account
+      description: 'Gets all Cloud Playout channels for an account'
       operationId: GetAllChannels
       parameters:
         - $ref: '#/components/parameters/AccountId'
-        - $ref: '#/components/parameters/Q'
+        - $ref: '#/components/parameters/searchQuery'
       responses:
         '200':
           description: '200'
@@ -117,12 +123,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}:
+  '/accounts/{account_id}/cp_channels/{channel_id}':
     get:
       tags:
         - Channels
       summary: Get details of a channel
-      description: Gets all Cloud Playout channels for an account
+      description: 'Gets all Cloud Playout channels for an account'
       operationId: GetChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -134,6 +140,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetChannel'
+              examples:
+                Get channel:
+                  $ref: "#/components/examples/getChannelById"
+                Brightcove Live redundancy enabled channel once scheduled:
+                  $ref: '#/components/examples/getBcLiveRedundancyEnabledChannel'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -153,22 +164,23 @@ paths:
       tags:
         - Channels
       summary: Delete a channel
-      description: Delete a Cloud Playout channel for an account
+      description: 'Delete a Cloud Playout channel'
       operationId: DeleteChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '202':
-          description: 202 Accepted
+          description: '202 Accepted'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: Delete initiated
+              example: {
+                "message": "Delete initiated"
+              }
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -188,14 +200,14 @@ paths:
       tags:
         - Channels
       summary: Update a channel
-      description: Update a Cloud Playout channel for an account
+      description: 'Update a Cloud Playout channel'
       operationId: UpdateChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ContentType'
         - $ref: '#/components/parameters/ChannelId'
       requestBody:
-        description: Creates a cloudplayout channel for an account
+        description: Creates a cloudplayout channel
         content:
           application/json:
             schema:
@@ -229,6 +241,8 @@ paths:
                 $ref: '#/components/examples/DisableMidRollImportWhenSSAIEnabled'
               Update Multiple Items:
                 $ref: '#/components/examples/updateMultiple'
+              Update Brightcove Live redundancy:
+                $ref: '#/components/examples/updateBcLiveRedundancy'
         required: true
       responses:
         '200':
@@ -238,7 +252,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ChannelTopLevel'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
           content:
             application/json:
               schema:
@@ -267,27 +281,28 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/start:
+  '/accounts/{account_id}/cp_channels/{channel_id}/start':
     post:
       tags:
         - Channels
       summary: Start a channel
-      description: Start a cloud playout channel
+      description: 'Start a cloud playout channel'
       operationId: StartChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '202':
-          description: 202 Accepted
+          description: '202 Accepted'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: Start initiated
+              example: {
+                "message": "Start initiated"
+              }
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -303,27 +318,28 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/stop:
+  '/accounts/{account_id}/cp_channels/{channel_id}/stop':
     post:
       tags:
         - Channels
       summary: Stop a channel
-      description: Stop a cloud playout channel
+      description: 'Stop a cloud playout channel'
       operationId: StopChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '202':
-          description: 202 Accepted
+          description: '202 Accepted'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: Stop initiated
+              example: {
+                "message": "Stop initiated"
+              }
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -339,25 +355,25 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/create:
+  '/accounts/{account_id}/cp_channels/{channel_id}/create':
     post:
       tags:
         - Channels
       summary: Activate a channel
-      description: Activate a cloud playout channel
+      description: 'Activate a cloud playout channel'
       operationId: ActivateChannel
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ChannelId'
       responses:
         '202':
-          description: 202 Accepted
+          description: '202 Accepted'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChannelTopLevel'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -373,12 +389,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/preview:
+  '/accounts/{account_id}/cp_channels/{channel_id}/preview':
     get:
       tags:
         - Channels
       summary: Get preview of a running channel
-      description: Get preview image of a running channel
+      description: 'Get preview image of a running channel'
       operationId: GetChannelPreview
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -405,12 +421,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/telemetrics/healthmetric:
+  '/accounts/{account_id}/cp_channels/{channel_id}/telemetrics/healthmetric':
     get:
       tags:
         - Channels
       summary: Get health metrics of a running channel
-      description: Get health metrics of a running channel
+      description: 'Get health metrics of a running channel'
       operationId: GetChannelMetric
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -444,7 +460,7 @@ paths:
       tags:
         - Channels
       summary: Get as run logs of a channel
-      description: "Provides an ability to retrieve a log of a prior day's events (in UTC 24 hours timeframe), allowing for auditing of aired content"
+      description: "Provides an ability to retrieve a log of a prior day's events (in 24-hour UTC time), allowing for auditing of aired content"
       operationId: GetAsRunLogs
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -484,12 +500,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/assets/{asset_type}:
+  '/accounts/{account_id}/assets/{asset_type}':
     post:
       tags:
         - Assets
       summary: Create a new cloud playout asset for an account
-      description: Create a new asset
+      description: 'Create a new asset'
       operationId: CreateAsset
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -508,7 +524,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateAssetResponse'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -528,12 +544,11 @@ paths:
       tags:
         - Assets
       summary: Get all cloud playout assets for an account
-      description: Get all assets
+      description: 'Get all assets'
       operationId: GetAssets
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/AssetType'
-        - $ref: '#/components/parameters/Type'
       responses:
         '200':
           description: '200'
@@ -556,12 +571,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/assets/{asset_type}/{asset_id}:
+  '/accounts/{account_id}/assets/{asset_type}/{asset_id}':
     get:
       tags:
         - Assets
       summary: Get a cloud playout asset for an account
-      description: Get an asset
+      description: 'Get an asset'
       operationId: GetAsset
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -593,7 +608,7 @@ paths:
       tags:
         - Assets
       summary: Delete a cloud playout asset for an account
-      description: Delete an asset
+      description: 'Delete an asset'
       operationId: DeleteAsset
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -606,10 +621,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: deleted
+              example: {
+                "message": "deleted"
+              }
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -629,7 +645,7 @@ paths:
       tags:
         - Assets
       summary: Update a cloud playout asset for an account
-      description: Update an asset
+      description: 'Update an asset'
       operationId: UpdateAsset
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -649,7 +665,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateAssetResponse'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -665,12 +681,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/video/{video_id}/order/{order}/skip:
+  '/accounts/{account_id}/cp_channels/{channel_id}/video/{video_id}/order/{order}/skip':
     post:
       tags:
         - Play Now
       summary: Skip to a particular asset in a running channel
-      description: Skip to a particular asset in a running channel
+      description: 'Skip to a particular asset in a running channel'
       operationId: SkipToVideoId
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -679,15 +695,16 @@ paths:
         - $ref: '#/components/parameters/Order'
       responses:
         '202':
-          description: 202 Accepted
+          description: '202 Accepted'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: Play Now initiated
+              example: {
+                "message": "Play Now initiated"
+              }
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -703,12 +720,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/overlays:
+  '/accounts/{account_id}/cp_channels/{channel_id}/overlays':
     post:
       tags:
         - Channel Static Overlays
       summary: Associate a static overlay asset for a channel
-      description: Associate a static overlay asset for a channel
+      description: 'Associate a static overlay asset for a channel'
       operationId: AssociateOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -727,7 +744,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannelOverlay'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -747,7 +764,7 @@ paths:
       tags:
         - Channel Static Overlays
       summary: Get All static overlay images for a channel
-      description: Get All static overlay images for a channel
+      description: 'Get All static overlay images for a channel'
       operationId: GetChannelOverlays
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -774,12 +791,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/overlays/{overlay_id}:
+  '/accounts/{account_id}/cp_channels/{channel_id}/overlays/{overlay_id}':
     patch:
       tags:
         - Channel Static Overlays
       summary: Update a static overlay asset for a channel
-      description: Update a static overlay asset for a channel
+      description: 'Update a static overlay asset for a channel'
       operationId: UpdateAssociatedOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -799,7 +816,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannelOverlay'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -819,7 +836,7 @@ paths:
       tags:
         - Channel Static Overlays
       summary: Get a static overlay image for a channel
-      description: Get a static overlay image for a channel
+      description: 'Get a static overlay image for a channel'
       operationId: GetChannelOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -851,7 +868,7 @@ paths:
       tags:
         - Channel Static Overlays
       summary: delete a static overlay image for a channel
-      description: Delete a static overlay image for a channel
+      description: 'Delete a static overlay image for a channel'
       operationId: DeleteChannelOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -864,10 +881,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: Deleted
+              example: {
+                "message": "Deleted"
+              }
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -883,12 +901,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/overlays/{overlay_id}/deactivate:
+  '/accounts/{account_id}/cp_channels/{channel_id}/overlays/{overlay_id}/deactivate':
     post:
       tags:
         - Channel Static Overlays
       summary: Deactivate a static overlay asset for a channel
-      description: Deactivate a static overlay asset for a channel
+      description: 'Deactivate a static overlay asset for a channel'
       operationId: DeactivateOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -901,8 +919,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: Deactivated
+              example: {
+                "message": "Deactivated"
+              }
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -918,12 +937,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/dynamic_overlays:
+  '/accounts/{account_id}/cp_channels/{channel_id}/dynamic_overlays':
     post:
       tags:
         - Channel Dynamic Overlays
       summary: Associate a dynamic overlay for a channel
-      description: Associate a dynamic overlay for a channel
+      description: 'Associate a dynamic overlay for a channel'
       operationId: AssociateDynamicOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -947,7 +966,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannelDynamicOverlay'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -967,7 +986,7 @@ paths:
       tags:
         - Channel Dynamic Overlays
       summary: Get All dynamic overlays for a channel
-      description: Get All dynamic overlays for a channel
+      description: 'Get All dynamic overlays for a channel'
       operationId: GetChannelDynamicOverlays
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -994,12 +1013,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/dynamic_overlays/{overlay_id}:
+  '/accounts/{account_id}/cp_channels/{channel_id}/dynamic_overlays/{overlay_id}':
     patch:
       tags:
         - Channel Dynamic Overlays
       summary: Update a dynamic overlay for a channel
-      description: Update a dynamic overlay for a channel
+      description: 'Update a dynamic overlay for a channel'
       operationId: UpdateAssociatedDynamicOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1019,7 +1038,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetChannelDynamicOverlay'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -1039,7 +1058,7 @@ paths:
       tags:
         - Channel Dynamic Overlays
       summary: Get a dynamic overlay for a channel
-      description: Get a dynamic overlay for a channel
+      description: 'Get a dynamic overlay for a channel'
       operationId: GetChannelDynamicOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1071,7 +1090,7 @@ paths:
       tags:
         - Channel Dynamic Overlays
       summary: delete a dynamic overlay for a channel
-      description: Delete a dynamic overlay for a channel
+      description: 'Delete a dynamic overlay for a channel'
       operationId: DeleteChannelDynamicOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1084,10 +1103,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: Deleted
+              example: {
+                "message": "Deleted"
+              }
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -1103,12 +1123,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/cp_channels/{channel_id}/dynamic_overlays/{overlay_id}/deactivate:
+  '/accounts/{account_id}/cp_channels/{channel_id}/dynamic_overlays/{overlay_id}/deactivate':
     post:
       tags:
         - Channel Dynamic Overlays
       summary: Deactivate a dynamic overlay for a channel
-      description: Deactivate a dynamic overlay for a channel
+      description: 'Deactivate a dynamic overlay for a channel'
       operationId: DeactivateDynamicOverlay
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1121,8 +1141,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: Deactivated
+              example: {
+                "message": "Deactivated"
+              }
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -1138,12 +1159,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/credentials:
+  '/accounts/{account_id}/credentials':
     post:
       tags:
         - Credentials
       summary: Create S3 credentials
-      description: Creates a S3 credential for a channel
+      description: 'Creates a S3 credential for a channel'
       operationId: CreateCredentials
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1181,7 +1202,7 @@ paths:
       tags:
         - Credentials
       summary: Get All S3 credentials
-      description: Get All S3 credentials for an account
+      description: 'Get All S3 credentials for an account'
       operationId: GetCredentials
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1208,12 +1229,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/credentials/{credential_id}:
+  '/accounts/{account_id}/credentials/{credential_id}':
     get:
       tags:
         - Credentials
       summary: Get a S3 credential
-      description: Creates a S3 credential for a channel
+      description: 'Creates a S3 credential for a channel'
       operationId: GetCredential
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1245,7 +1266,7 @@ paths:
       tags:
         - Credentials
       summary: Update an S3 credential
-      description: Creates a S3 credential for a channel
+      description: 'Creates a S3 credential for a channel'
       operationId: UpdateCredential
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1266,7 +1287,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CredentialProperties'
         '400':
-          description: Bad Request
+          description: 'Bad Request'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -1286,7 +1307,7 @@ paths:
       tags:
         - Credentials
       summary: Delete a S3 credential
-      description: Creates a S3 credential for a channel
+      description: 'Creates a S3 credential for a channel'
       operationId: DeleteCredential
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1299,8 +1320,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AsyncMessage'
-              example:
-                message: credential deleted successfully
+              example: {
+                "message": "credential deleted successfully"
+              }
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -1316,12 +1338,12 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/profiles:
+  '/accounts/{account_id}/profiles':
     get:
       tags:
         - Profiles
       summary: List All Live profiles
-      description: List all Live profiles that a channel can use
+      description: 'List all Live profiles that a channel can use'
       operationId: ListProfiles
       parameters:
         - $ref: '#/components/parameters/AccountId'
@@ -1348,16 +1370,17 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /accounts/{account_id}/bc_channels:
+  '/accounts/{account_id}/bc_channels':
     get:
       tags:
         - BC Live channels
       summary: List All BC Live channels
-      description: List all BC Live channels that a channel can use
+      description: 'List all BC Live channels that a channel can use'
       operationId: ListBCLiveChannels
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/ssai'
+        - $ref: '#/components/parameters/redundancy'
       responses:
         '200':
           description: '200'
@@ -1365,6 +1388,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BcLiveChannelProperties'
+              examples:
+                Brightcove Live jobs:
+                  $ref: '#/components/examples/bcLiveJobs'
+                Brightcove Live redundant groups:
+                  $ref: '#/components/examples/bcRedundantGroups'
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -1379,273 +1407,818 @@ components:
   examples:
     nonSSAIWithLive:
       value:
-        name: TestChannel
-        description: A channel to test cloud playout
-        start_time: 2020-09-17T00.00.00Z
-        stop_time: 2020-09-18T00.00.00Z
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-          - input_type: slate
-            input_id: https://s3transition-lambda-poc.s3.amazonaws.com/funny_cartoon.mp4
-          - input_type: rtmp
-        image_id: https://path-to/channel/image.png
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        output_group:
-          - type: rtmp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
-        region: us-east-1
+        "name": "TestChannel"
+        "description": "A channel to test cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          },
+          {
+            "input_type": "slate",
+            "input_id": "https://s3transition-lambda-poc.s3.amazonaws.com/funny_cartoon.mp4"
+          },
+          {
+            "input_type": "rtmp"
+          }
+        ]
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
     nonSSAIWithoutLive:
       value:
-        name: TestChannel
-        description: A channel to test cloud playout
-        start_time: 2020-09-17T00.00.00Z
-        stop_time: 2020-09-18T00.00.00Z
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-        image_id: https://path-to/channel/image.png
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        output_group:
-          - type: rtmp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
-        region: us-east-1
+        "name": "TestChannel"
+        "description": "A channel to test cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
     nonSSAIWith3rdParty:
       value:
-        name: TestChannel
-        description: A channel to test cloud playout
-        start_time: 2020-09-17T00.00.00Z
-        stop_time: 2020-09-18T00.00.00Z
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-        image_id: https://path-to/channel/image.png
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        output_group:
-          - type: rtmp
-            ingest_locations:
-              - pipeline_id: 1
-                location: rtmp://path-to/rtmp/destination
-        region: us-east-1
+        "name": "TestChannel"
+        "description": "A channel to test cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "rtmp://path-to/rtmp/destination"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
     nonSSAIWithS3:
       value:
-        name: TestChannel
-        description: A channel to test cloud playout
-        start_time: 2020-09-17T00.00.00Z
-        stop_time: 2020-09-18T00.00.00Z
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-        image_id: https://path-to/channel/image.png
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        output_group:
-          - type: s3
-            ingest_locations:
-              - pipeline_id: 1
-                location: s3_credential_id
-        region: us-east-1
+        "name": "TestChannel"
+        "description": "A channel to test cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "s3",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "s3_credential_id"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
     SSAI:
       value:
-        name: TestSSAIChannel
-        description: A channel to test ssai on cloud playout
-        start_time: 2020-09-17T00.00.00Z
-        stop_time: 2020-09-18T00.00.00Z
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-        ssai_enabled: true
-        mid_roll_import_enabled: true
-        mid_roll_slot_time: 30
-        image_id: https://path-to/channel/image.png
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        output_group:
-          - type: rtp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
-        region: us-east-1
+        "name": "TestSSAIChannel"
+        "description": "A channel to test ssai on cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "ssai_enabled": true
+        "mid_roll_import_enabled": true
+        "mid_roll_slot_time": 30
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
     SSAIWithS3:
       value:
-        name: TestSSAIChannel
-        description: A channel to test ssai on cloud playout
-        start_time: 2020-09-17T00.00.00Z
-        stop_time: 2020-09-18T00.00.00Z
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-        ssai_enabled: true
-        mid_roll_import_enabled: true
-        mid_roll_slot_time: 30
-        image_id: https://path-to/channel/image.png
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        output_group:
-          - type: s3
-            ingest_locations:
-              - pipeline_id: 1
-                location: s3_credential_id
-          - type: rtp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
-        region: us-east-1
+        "name": "TestSSAIChannel"
+        "description": "A channel to test ssai on cloud playout"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "ssai_enabled": true
+        "mid_roll_import_enabled": true
+        "mid_roll_slot_time": 30
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "s3",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "s3_credential_id"
+              }
+            ]
+          },
+          {
+            "type": "rtp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
     existingLiveJobIdForOutputLocation:
       value:
-        name: TestChannelWithExistingLiveJob
-        start_time: 2020-09-17T00.00.00Z
-        stop_time: 2020-09-18T00.00.00Z
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-        ssai_enabled: true
-        mid_roll_import_enabled: true
-        mid_roll_slot_time: 30
-        image_id: https://path-to/channel/image.png
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        output_group:
-          - type: rtmp
-            ingest_locations:
-              - pipeline_id: 1
-                location: ac71d53a356d4d95986109257ae62faf
-        region: us-east-1
+        "name": "TestChannelWithExistingLiveJob"
+        "start_time": "2020-09-17T00.00.00Z"
+        "stop_time": "2020-09-18T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
+        "ssai_enabled": true
+        "mid_roll_import_enabled": true
+        "mid_roll_slot_time": 30
+        "image_id": "https://path-to/channel/image.png"
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "ac71d53a356d4d95986109257ae62faf"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
     dynamicOverlaysEnabled:
       value:
-        name: dynamic_overlay
-        channel_model: Model A
-        description: test_cloudplayout_roebuck
-        start_time: 2020-09-17T00.00.00Z
-        input_group:
-          - input_type: playlist
-            input_id: dummy
-            loop_on_completion: true
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        channel_class: single-pipeline
-        output_group:
-          - type: rtmp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
-        region: us-west-2
-        dynamic_overlays_enabled: true
+        "name": "dynamic_overlay"
+        "channel_model": "Model A"
+        "description": "test_cloudplayout_roebuck"
+        "start_time": "2020-09-17T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "input_id": "dummy",
+            "loop_on_completion": true
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "channel_class": "single-pipeline"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-west-2"
+        "dynamic_overlays_enabled": true
+    importCaptionsEnabled:
+      value:
+        "name": "import_captions"
+        "channel_model": "Model A"
+        "description": "test_cloudplayout_roebuck"
+        "start_time": "2020-09-17T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "input_id": "dummy",
+            "loop_on_completion": true
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "channel_class": "single-pipeline"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-west-2"
+        "import_captions_enabled": true
+    newBcLiveRedundancyEnabled:
+      value:
+        "name": "new_bc_live_redundancy"
+        "channel_model": "Model A"
+        "description": "test_cloudplayout_roebuck"
+        "start_time": "2020-09-17T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "input_id": "dummy",
+            "loop_on_completion": true
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "channel_class": "single-pipeline"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "redundancy": true,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-west-2"
+    existingBcLiveRedundancyEnabled:
+      value:
+        "name": "existing_bc_live_redundancy"
+        "channel_model": "Model A"
+        "description": "test_cloudplayout_roebuck"
+        "start_time": "2020-09-17T00.00.00Z"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "input_id": "dummy",
+            "loop_on_completion": true
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "channel_class": "single-pipeline"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "redundancy": true,
+                "location": "${EXISTING_BRIGHTCOVE_LIVE_REDUNDANT_GROUP_ID}"
+              }
+            ]
+          }
+        ]
+        "region": "us-west-2"
+    getChannelById:
+      value:
+        "public_id": "8635d6147ab64e4788a44d70c23cced0"
+        "name": "testChannel"
+        "description": "Channel created for testing Cloud Playout"
+        "account_id": "6062814566001"
+        "state": "DRAFT"
+        "status": null
+        "start_time": "2020-12-17 06:00:00 UTC"
+        "stop_time": "2020-12-17 07:00:00 UTC"
+        "input_groups": "playlist"
+        "output_groups": "rtmp"
+        "loop_playlist": true
+        "playlist_id": "1686204667297382886"
+        "channel_class": "single-pipeline"
+        "ssai_enabled": false
+        "aws_region": "us-east-1"
+        "message": null
+        "created_at": "2020-12-16 03:41:22 UTC"
+        "updated_at": "2020-12-17 04:53:30 UTC"
+        "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"
+        "output_destinations": [
+            "Brightcove Live"
+        ]
+        "channel_created_at": "2020-12-16 03:41:22 UTC"
+        "channel_updated_at": "2020-12-17 04:53:30 UTC"
+        "channel_created_by": "abc@xyz.com"
+        "channel_updated_by": "abc@xyz.com"
+        "live_profile": {
+          "display_name": "Standard Live HD 720p - Tier 1",
+          "name": "standard-live-hd-720p-tier-1",
+          "date_created": "2018-06-04 18:16:44 UTC",
+          "date_modified": "2018-06-04 18:16:44 UTC"
+        }
+        "channel_data": {
+          "input_group": [
+            {
+              "input_type": "slate",
+              "value": "https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4",
+              "public_id": "8f5d4bd7474346398f63d29928fe7c11"
+            },
+            {
+              "input_type": "rtmp",
+              "value": {
+                "type": "RTMP_PUSH",
+                "url": "rtmp://cloudplayout.brightcove.com/cloudplayout/2773cfce04834175a16ff3db6c6f713a",
+                "security_groups": [
+                    "2960733"
+                ]
+              }
+            },
+            {
+              "input_type": "playlist",
+              "value": "playlist_name",
+              "public_id": "1691563159090702307",
+              "description": "Playlist created for Cloud Playout",
+            }
+          ],
+          "output_groups": [
+            {
+              "type": "preview",
+              "destination_url": "bc-cloudplayout-prod/framecapture/2773cfce04834175a16ff3db6c6f713a/image",
+              "encoder_settings": [
+                {
+                  "width": 640,
+                  "height": 360,
+                  "capture_interval": 5,
+                  "capture_interval_units": "SECONDS"
+                }
+              ]
+            },
+            {
+              "type": "rtmp",
+              "destination_url": "rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive",
+              "location_id": "3c702c9afcd24a93b73cf57af2eb44f5",
+              "location": "Shared-media-test",
+              "destination": "Brightcove Live",
+              "encoder_settings": [
+                {
+                  "width": 1280,
+                  "height": 720,
+                  "bitrate": 2400000,
+                  "gop_size": 90.0,
+                  "gop_size_units": "FRAMES",
+                  "profile": "HIGH",
+                  "level": "H264_LEVEL_AUTO",
+                  "scan_type": "PROGRESSIVE",
+                  "framerate_control": "SPECIFIED"
+                }
+              ],
+              "stream_url": "rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive",
+              "static": true,
+              "playback_url": "https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist.m3u8",
+              "playback_url_dvr": "https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist_dvr.m3u8"
+            }
+          ]
+        }
+    getBcLiveRedundancyEnabledChannel:
+      value:
+        "public_id": "e2d38b8304c84601b27630ae05b764b8"
+        "name": "redundancy_testing_local"
+        "description": "test_cloudplayout_roebuck"
+        "account_id": "70701684277202"
+        "state": "SCHEDULED"
+        "status": "Scheduled for start"
+        "start_time": "2022-02-10 05:57:10 UTC"
+        "stop_time": null
+        "input_groups": "playlist"
+        "output_groups": "rtmp"
+        "loop_playlist": false
+        "playlist_id": "1724281533777310596"
+        "channel_class": "single-pipeline"
+        "ssai_enabled": null
+        "aws_region": "us-east-1"
+        "message": ""
+        "created_at": "2022-02-09 10:36:51 UTC"
+        "updated_at": "2022-02-09 10:49:03 UTC"
+        "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"
+        "output_destinations": [
+            "Brightcove Live with Redundancy"
+        ]
+        "channel_created_at": "2022-02-09 10:36:51 UTC"
+        "channel_updated_at": "2022-02-09 10:36:51 UTC"
+        "channel_created_by": "Created by API"
+        "channel_updated_by": "Updated by API"
+        "import_captions_enabled": true
+        "live_profile": {
+          "display_name": "Premium Live HD 1080p - Tier 2",
+          "name": "premium-live-hd-1080p-tier-2",
+          "date_created": "2018-06-04 18:16:44 UTC",
+          "date_modified": "2018-06-04 18:16:44 UTC"
+        }
+        "channel_data": {
+          "destinations": [
+            {
+              "id": "dest-rtmp-0",
+              "url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02",
+              "stream_name": "alive"
+            },
+            {
+              "id": "dest-rtmp-1",
+              "url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b",
+              "stream_name": "alive"
+            },
+            {
+              "id": "framecapture",
+              "url": "s3://cloudplayout-preview/framecapture/e2d38b8304c84601b27630ae05b764b8/image",
+              "stream_name": null
+            }
+          ],
+          "input_specification": {
+            "codec": "AVC",
+            "maximum_bitrate": "MAX_20_MBPS",
+            "resolution": "HD"
+          },
+          "output_groups": [
+            {
+              "type": "preview",
+              "destination_url": "s3://cloudplayout-preview/framecapture/e2d38b8304c84601b27630ae05b764b8/image",
+              "encoder_settings": [
+                {
+                  "width": 640,
+                  "height": 360,
+                  "capture_interval": 5,
+                  "capture_interval_units": "SECONDS"
+                }
+              ]
+            },
+            {
+              "type": "rtmp",
+              "location_id": "374d4846292042af82c4c573e58bba39",
+              "redundancy": true,
+              "location": "redundancy_testing_local_group",
+              "destination": "Brightcove Live with Redundancy",
+              "playback_url": "https://playback-qa.a-live.io/r374d4846292042af82c4c573e58bba39/us-east-1/NA/playlist.m3u8",
+              "playback_url_dvr": "https://playback-qa.a-live.io/r374d4846292042af82c4c573e58bba39/us-east-1/NA/playlist_dvr.m3u8",
+              "outputs": [
+                {
+                  "destination_url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02/alive",
+                  "location_id": "d42f9b597f9f4cff90f3d48ddc665a02",
+                  "location": "redundancy_testing_local_2",
+                  "encoder_settings": [
+                    {
+                      "width": 1920,
+                      "height": 1080,
+                      "bitrate": 4000000,
+                      "gop_size": 60.0,
+                      "gop_size_units": "FRAMES",
+                      "profile": "HIGH",
+                      "level": "H264_LEVEL_AUTO",
+                      "scan_type": "PROGRESSIVE",
+                      "framerate_control": "SPECIFIED"
+                    }
+                  ],
+                  "stream_url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02/alive",
+                  "static": true,
+                  "playback_url": "https://playback-qa.a-live.io/d42f9b597f9f4cff90f3d48ddc665a02/us-west-2/NA/playlist.m3u8",
+                  "playback_url_dvr": "https://playback-qa.a-live.io/d42f9b597f9f4cff90f3d48ddc665a02/us-west-2/NA/playlist_dvr.m3u8"
+                },
+                {
+                  "destination_url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b/alive",
+                  "location_id": "2f84603cc5bf45babfc92e58f444eb0b",
+                  "location": "redundancy_testing_local_1",
+                  "encoder_settings": [
+                    {
+                      "width": 1920,
+                      "height": 1080,
+                      "bitrate": 4000000,
+                      "gop_size": 60.0,
+                      "gop_size_units": "FRAMES",
+                      "profile": "HIGH",
+                      "level": "H264_LEVEL_AUTO",
+                      "scan_type": "PROGRESSIVE",
+                      "framerate_control": "SPECIFIED"
+                    }
+                  ],
+                  "stream_url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b/alive",
+                  "static": true,
+                  "playback_url": "https://playback-qa.a-live.io/2f84603cc5bf45babfc92e58f444eb0b/us-east-1/NA/playlist.m3u8",
+                  "playback_url_dvr": "https://playback-qa.a-live.io/2f84603cc5bf45babfc92e58f444eb0b/us-east-1/NA/playlist_dvr.m3u8"
+                }
+              ]
+            }
+          ],
+          "input_group": [
+            {
+              "input_type": "playlist",
+              "value": "redundancy_testing_local_cc",
+              "description": "cloudplayout",
+              "public_id": "1724281533777310596"
+            }
+          ]
+        }
+    bcLiveJobs:
+      value:
+        "jobs": [
+          {
+            "id": "d901a1d5a00947c6804557e46ff37dh8",
+            "videocloud": {
+              "live_to_vod": true,
+              "video": {
+                "name": "sample",
+                "link": { },
+                "schedule": { },
+                "state": "ACTIVE",
+                "custom_fields": { }
+              }
+            },
+            "state": "waiting",
+            "static": false,
+            "ad_insertion": false,
+            "region": "us-west-2",
+            "reconnect_time": 600,
+            "submitted_at": "2021-07-05T12:28:23.510Z"
+          }
+        ]
+    bcRedundantGroups:
+      value: [
+        {
+          "id": "3b6d373ff07d4d1ba45e277b2f61af8e",
+          "account_id": "0039c773a6154dd6aebc97535f3e3829",
+          "user_id": "54cb044f5c0542a08885b2479151d7a4",
+          "processing_regions": [
+            {
+              "region": "us-west-2",
+              "probability": 1
+            }
+          ],
+          "storage_regions": [
+              "us-west-2",
+              "us-east-1"
+          ],
+          "jobs": [
+            {
+              "job_id": "31aac412423346ae897e4cc0277db833",
+              "streams": [
+                  "hls720p",
+                  "hls540p",
+                  "hls360p"
+              ],
+              "state": "standby"
+            },
+            {
+              "job_id": "d977fdcf65634d6cbda20bba1a0c283e",
+              "streams": [
+                  "hls720p",
+                  "hls540p",
+                  "hls360p"
+              ],
+              "state": "standby"
+            }
+          ],
+          "state": "standby",
+          "created_at": 1641550583491,
+          "updated_at": 1641552235271,
+          "label": "Test RG",
+          "live_dvr_sliding_window_duration": 1800,
+          "status": {
+            "us-west-2": {
+              "SwitchDrift": 0,
+              "MasterManifestsUpdatedAt": "0001-01-01T00:00:00Z",
+              "Ended": false,
+              "OnAir": "31aac412423346ae897e4cc0277db833",
+              "Mode": "auto",
+              "InManifest": true,
+              "MediaSequence": 0,
+              "DiscontinuitySequence": 0,
+              "UpdatedAt": "0001-01-01T00:00:00Z"
+            }
+          },
+          "outputs": {
+            "playback_url": "https://playback-qa.a-live.io/r3b6d373ff07d4d1ba45e277b2f61af8e/us-west-2/NA/playlist.m3u8",
+            "playback_url_dvr": "https://playback-qa.a-live.io/r3b6d373ff07d4d1ba45e277b2f61af8e/us-west-2/NA/playlist_dvr.m3u8"
+          }
+        }
+      ]
     updateName:
       value:
-        name: test_channel_edit
+        "name": "test_channel_edit"
     updateDescription:
       value:
-        description: updated description
+        "description": "updated description"
     updateStartTime:
       value:
-        start_time: '2021-05-17T08:18:50.344Z'
+        "start_time": "2021-05-17T08:18:50.344Z"
     updateStopTime:
       value:
-        stop_time: '2021-05-17T12:18:50.344Z'
+        "stop_time": "2021-05-17T12:18:50.344Z"
     enableSSAI:
       value:
-        output_group:
-          - type: rtp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
-        ssai_enabled: true
+        "output_group": [
+          {
+            "type": "rtp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "ssai_enabled": true
     disableSSAI:
       value:
-        output_group:
-          - type: rtmp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
-        ssai_enabled: false
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "ssai_enabled": false
     updateInputGroup:
       value:
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-          - input_type: slate
-            input_id: https://test.mp4
-          - input_type: rtmp
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          },
+          {
+            "input_type": "slate",
+            "input_id": "https://test.mp4"
+          },
+          {
+            "input_type": "rtmp"
+          }
+        ]
     disableLiveInput:
       value:
-        __comment: Just pass the required input groups without rtmp & slate to remove the live input
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
+        "__comment": "Just pass the required input groups without rtmp & slate to remove the live input"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          }
+        ]
     updateLoopOnCompletion:
       value:
-        input_group:
-          - input_type: playlist
-            loop_on_completion: false
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": false
+          }
+        ]
     updateLiveProfile:
       value:
-        live_profile: 6e1af1a714ee45e7ac27c5ae
+        "live_profile": "6e1af1a714ee45e7ac27c5ae"
     updateOutputGroups:
       value:
-        output_group:
-          - type: rtmp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+    updateBcLiveRedundancy:
+      value:
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "redundancy": true,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
     updateMidRollSlotTime:
       value:
-        mid_roll_slot_time: '55'
+        "mid_roll_slot_time": "55"
     DisableMidRollImportWhenSSAIEnabled:
       value:
-        mid_roll_import_enabled: 'false'
+        "mid_roll_import_enabled": "false"
     updateMultiple:
       value:
-        name: test_poster_cleanup
-        channel_id: dfb8f7a5593f4f6cbb8ba13740c59ccc
-        description: test_poster_cleanup
-        start_time: 2021-05-18 22:00:00 +0530
-        stop_time: 2021-03-28 10:00:00 +0530
-        input_group:
-          - input_type: playlist
-            loop_on_completion: true
-          - input_type: slate
-            input_id: https://s3transition-lambda-poc.s3.amazonaws.com/funny_cartoon.mp4
-          - input_type: rtmp
-        live_profile: 6e1af1a714ee45e7ac27c5ad
-        output_group:
-          - type: rtmp
-            ingest_locations:
-              - pipeline_id: 1
-                location: bc_live
-        region: us-east-1
+        "name": "test_poster_cleanup"
+        "channel_id": "dfb8f7a5593f4f6cbb8ba13740c59ccc"
+        "description": "test_poster_cleanup"
+        "start_time": "2021-05-18 22:00:00 +0530"
+        "stop_time": "2021-03-28 10:00:00 +0530"
+        "input_group": [
+          {
+            "input_type": "playlist",
+            "loop_on_completion": true
+          },
+          {
+            "input_type": "slate",
+            "input_id": "https://s3transition-lambda-poc.s3.amazonaws.com/funny_cartoon.mp4"
+          },
+          {
+            "input_type": "rtmp"
+          }
+        ]
+        "live_profile": "6e1af1a714ee45e7ac27c5ad"
+        "output_group": [
+          {
+            "type": "rtmp",
+            "ingest_locations": [
+              {
+                "pipeline_id": 1,
+                "location": "bc_live"
+              }
+            ]
+          }
+        ]
+        "region": "us-east-1"
     invalidNameAndDescription:
       value:
-        message:
-          errors:
-            - Invalid special characters or space in Channel Name. Space not allowed. Allowed special characters are _.:/=+-
-            - 'Description is too long. Maximum characters allowed : 250'
+        message: {
+          errors: [
+              "Invalid special characters or space in Channel Name. Space not allowed. Allowed special characters are _.:/=+-",
+              "Description is too long. Maximum characters allowed : 250"
+          ]
+        }
     invalidImage:
       value:
-        message:
-          errors:
-            - image_id should be in String format
-            - Invalid Image URL
-            - Image URL must be a valid https url
+        message: {
+          errors: [
+              "image_id should be in String format",
+              "Invalid Image URL",
+              "Image URL must be a valid https url"
+          ]
+        }
     invalidDates:
       value:
-        message:
-          errors:
-            - Error parsing the start-time, cannot be in the past
-            - Invalid start_time. An example of valid date format would be 2020-12-16 03:41:22 UTC
-            - Invalid stop_time. An example of valid date format would be 2020-12-16 03:41:22 UTC
+        message: {
+          errors: [
+              "Error parsing the start-time, cannot be in the past",
+              "Invalid start_time. An example of valid date format would be 2020-12-16 03:41:22 UTC",
+              "Invalid stop_time. An example of valid date format would be 2020-12-16 03:41:22 UTC"
+          ]
+        }
     noSlate:
       value:
-        message: SSAI enabled; but ad slate not found
+        message: "SSAI enabled; but ad slate not found"
     dynamicOverlayWithAssetId:
       value:
-        start_time: '2021-07-14T08:02:30.344Z'
+        start_time: "2021-07-14T08:02:30.344Z"
         duration: 4200
-        asset_id: 11a8b72fa00c480da05fc22b6d2f76dc
+        asset_id: "11a8b72fa00c480da05fc22b6d2f76dc"
     dynamicOverlayWithAssetUrl:
       value:
-        start_time: '2021-07-14T08:02:30.344Z'
+        start_time: "2021-07-14T08:02:30.344Z"
         duration: 4200
-        asset_id: https://app.singular.live/output/5EoxJK8A3ehK6zOUxm2NNk/Default?aspect=16:9
+        asset_id: "https://app.singular.live/output/5EoxJK8A3ehK6zOUxm2NNk/Default?aspect=16:9"
   schemas:
     AssetType:
       type: string
@@ -1691,13 +2264,21 @@ components:
         image_id:
           type: string
           description: Image URL that need to be associated with the channel
-          default: https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png
+          default: "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"
         live_profile:
           type: string
           description: Live profile on the account that need to be associated with this channel. Use the [List Profiles](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListProfiles) API to get the profile id's.
         channel_class:
           type: string
           default: single-pipeline
+        dynamic_overlays_enabled:
+          type: boolean
+          description: Channel enabled for dynamic overlays
+          default: false
+        import_captions_enabled:
+          type: boolean
+          description: Channel enabled for import captions
+          default: true
         region:
           type: string
           enum:
@@ -1732,7 +2313,7 @@ components:
               input_id:
                 type: string
                 description: Applicable only in slate input_type. Denotes a http URL for the slate MP4
-                default: https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4
+                default: "https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4"
               loop_on_completion:
                 type: boolean
                 description: Applicable only in playlist input_type. Denotes a looped/non-looped channel
@@ -1756,10 +2337,22 @@ components:
                       description: Indicates the output pipeline. 1 only for now
                     location:
                       type: string
-                      description: Location where the output destination is configured. For rtmp/rtp type; 1. Specify as bc_live if you want Cloud PlayOut to create a new Brightcove Live event. 2. For using an existing BC Live event, pass in the existing event's job ID. See [ListBCLiveChannels](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListBCLiveChannels) to get the available job id's. For s3 type; pass in the credentials id (Refer [Credentials](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#tag/Credentials)) for Cloud Playout to create HLS playlist on the given S3 location.
+                      description: |-
+                        "Location where the output destination is configured.
+                        For rtmp/rtp Type:
+                          1. Specify as bc_live if you want Cloud PlayOut to create a new Brightcove Live event.
+                          2. For using an existing BC Live event, pass in the existing event's job ID.
+                          3. When redundancy is enabled & to use an existing BC Live redundant group, pass in the existing redundant group's ID.
+
+                        See [ListBCLiveChannels](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListBCLiveChannels) to get the available job id's.
+
+                        For s3 type; pass in the credentials id (Refer [Credentials](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#tag/Credentials)) for Cloud Playout to create HLS playlist on the given S3 location."
+                    redundancy:
+                      type: boolean
+                      description: Enables or disables Brightcove Live redundancy. Applicable only for rtmp/rtp type with location as either 'bc_live' or an existing Brightcove live redundant group id available in the users videocloud account.
     CreateChannel:
       allOf:
-        - $ref: '#/components/schemas/ChannelProperties'
+        - $ref: "#/components/schemas/ChannelProperties"
         - type: object
           required:
             - name
@@ -1770,7 +2363,7 @@ components:
             - region
     UpdateChannel:
       allOf:
-        - $ref: '#/components/schemas/ChannelProperties'
+        - $ref: "#/components/schemas/ChannelProperties"
         - title: UpdateChannel
         - type: object
     GetAllChannels:
@@ -1778,37 +2371,43 @@ components:
       type: object
       properties:
         items:
-          description: The list of channels.  List may be empty if no channels
+          description: >-
+            The list of channels.  List may be empty if no channels
           items:
             $ref: '#/components/schemas/ChannelTopLevel'
           type: array
-      example:
-        items:
-          - public_id: 8635d6147ab64e4788a44d70c23cced0
-            name: testChannel
-            description: Channel created for testing Cloud Playout
-            account_id: '6062814566001'
-            state: DRAFT
-            status: null
-            start_time: 2020-12-17 06:00:00 UTC
-            stop_time: 2020-12-17 07:00:00 UTC
-            input_groups: playlist
-            output_groups: rtmp
-            loop_playlist: true
-            playlist_id: '1686204667297382886'
-            channel_class: single-pipeline
-            ssai_enabled: false
-            aws_region: us-east-1
-            message: null
-            created_at: 2020-12-16 03:41:22 UTC
-            updated_at: 2020-12-17 04:53:30 UTC
-            image_url: https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png
-            output_destinations:
-              - Brightcove Live
-            channel_created_at: 2020-12-16 03:41:22 UTC
-            channel_updated_at: 2020-12-17 04:53:30 UTC
-            channel_created_by: abc@xyz.com
-            channel_updated_by: abc@xyz.com
+      example: {
+        "items": [
+          {
+            "public_id": "8635d6147ab64e4788a44d70c23cced0",
+            "name": "testChannel",
+            "description": "Channel created for testing Cloud Playout",
+            "account_id": "6062814566001",
+            "state": "DRAFT",
+            "status": null,
+            "start_time": "2020-12-17 06:00:00 UTC",
+            "stop_time": "2020-12-17 07:00:00 UTC",
+            "input_groups": "playlist",
+            "output_groups": "rtmp",
+            "loop_playlist": true,
+            "playlist_id": "1686204667297382886",
+            "channel_class": "single-pipeline",
+            "ssai_enabled": false,
+            "aws_region": "us-east-1",
+            "message": null,
+            "created_at": "2020-12-16 03:41:22 UTC",
+            "updated_at": "2020-12-17 04:53:30 UTC",
+            "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
+            "output_destinations": [
+                "Brightcove Live"
+            ],
+            "channel_created_at": "2020-12-16 03:41:22 UTC",
+            "channel_updated_at": "2020-12-17 04:53:30 UTC",
+            "channel_created_by": "abc@xyz.com",
+            "channel_updated_by": "abc@xyz.com"
+          }
+        ]
+      }
     UpdateChannelSchedule:
       title: UpdateSchedule
       type: object
@@ -1824,89 +2423,17 @@ components:
         loop_on_completion:
           type: boolean
           description: channel looped/non-looped
-      example:
-        start_time: 2020-08-06 22:00:00 +0530
-        stop_time: 2020-08-07 22:00:00 +0530
-        loop_on_completion: true
+      example: {
+        "start_time":"2020-08-06 22:00:00 +0530",
+        "stop_time":"2020-08-07 22:00:00 +0530",
+        "loop_on_completion": true
+      }
     GetChannel:
       title: GetChannel
       type: object
       properties:
         channel:
           $ref: '#/components/schemas/ExtendedChannel'
-      example:
-        public_id: 8635d6147ab64e4788a44d70c23cced0
-        name: testChannel
-        description: Channel created for testing Cloud Playout
-        account_id: '6062814566001'
-        state: DRAFT
-        status: null
-        start_time: 2020-12-17 06:00:00 UTC
-        stop_time: 2020-12-17 07:00:00 UTC
-        input_groups: playlist
-        output_groups: rtmp
-        loop_playlist: true
-        playlist_id: '1686204667297382886'
-        channel_class: single-pipeline
-        ssai_enabled: false
-        aws_region: us-east-1
-        message: null
-        created_at: 2020-12-16 03:41:22 UTC
-        updated_at: 2020-12-17 04:53:30 UTC
-        image_url: https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png
-        output_destinations:
-          - Brightcove Live
-        channel_created_at: 2020-12-16 03:41:22 UTC
-        channel_updated_at: 2020-12-17 04:53:30 UTC
-        channel_created_by: abc@xyz.com
-        channel_updated_by: abc@xyz.com
-        live_profile:
-          display_name: Standard Live HD 720p - Tier 1
-          name: standard-live-hd-720p-tier-1
-          date_created: 2018-06-04 18:16:44 UTC
-          date_modified: 2018-06-04 18:16:44 UTC
-        channel_data:
-          input_group:
-            - input_type: slate
-              value: https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4
-              public_id: 8f5d4bd7474346398f63d29928fe7c11
-            - input_type: rtmp
-              value:
-                type: RTMP_PUSH
-                url: rtmp://cloudplayout.brightcove.com/cloudplayout/2773cfce04834175a16ff3db6c6f713a
-                security_groups:
-                  - '2960733'
-            - input_type: playlist
-              value: playlist_name
-              description: Playlist created for Cloud Playout
-              public_id: '1691563159090702307'
-          output_groups:
-            - type: preview
-              destination_url: bc-cloudplayout-prod/framecapture/2773cfce04834175a16ff3db6c6f713a/image
-              encoder_settings:
-                - width: 640
-                  height: 360
-                  capture_interval: 5
-                  capture_interval_units: SECONDS
-            - type: rtmp
-              destination_url: rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive
-              location_id: 3c702c9afcd24a93b73cf57af2eb44f5
-              location: Shared-media-test
-              destination: Brightcove Live
-              encoder_settings:
-                - width: 1280
-                  height: 720
-                  bitrate: 2400000
-                  gop_size: 90
-                  gop_size_units: FRAMES
-                  profile: HIGH
-                  level: H264_LEVEL_AUTO
-                  scan_type: PROGRESSIVE
-                  framerate_control: SPECIFIED
-              stream_url: rtmp://3c702c9afcd24a93b73cf57af2eb44f5.sep.bcovlive.io:1935/3c702c9afcd24a93b73cf57af2eb44f5/alive
-              static: true
-              playback_url: https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist.m3u8
-              playback_url_dvr: https://bcovlive-a.akamaihd.net/3c702c9afcd24a93b73cf57af2eb44f5/us-west-2/NA/playlist_dvr.m3u8
     AsyncMessage:
       title: MessageObject
       type: object
@@ -1947,16 +2474,17 @@ components:
         updated_at:
           description: Time of credential update.
           type: string
-      example:
-        public_id: 1d30c41ba9104ec0b48b01852696e45f
-        account_id: '70701684296401'
-        credtype: s3
-        bucket: docexamplebucket1
-        access_key: ALIBRIUROOGEQKWTPW5O
-        secret_key: RGpR9xYU9xLbuCBgmuZc7HfrvO3VN/cHyrK53Hw=
-        region: us-west-2
-        created_at: 2021-07-05 10:30:00 UTC
-        updated_at: 2021-07-05 10:30:00 UTC
+      example: {
+        "public_id": "1d30c41ba9104ec0b48b01852696e45f",
+        "account_id": "70701684296401",
+        "credtype": "s3",
+        "bucket": "docexamplebucket1",
+        "access_key": "ALIBRIUROOGEQKWTPW5O",
+        "secret_key": "RGpR9xYU9xLbuCBgmuZc7HfrvO3VN/cHyrK53Hw=",
+        "region": "us-west-2",
+        "created_at": "2021-07-05 10:30:00 UTC",
+        "updated_at": "2021-07-05 10:30:00 UTC"
+      }
     LiveProfileProperties:
       title: LiveProfileObject
       type: array
@@ -1975,31 +2503,15 @@ components:
           id:
             description: Profile id.
             type: string
-        example:
-          name: premium-live-hd-1080p-tier-2
-          description: Deliver high-quality renditions to maximize quality for desktop and OTT.
-          display_name: Premium Live HD 1080p - Tier 2
-          id: 8d10b1667b864f94bd7cb28s
+        example: {
+          "name": "premium-live-hd-1080p-tier-2",
+          "description": "Deliver high-quality renditions to maximize quality for desktop and OTT.",
+          "display_name": "Premium Live HD 1080p - Tier 2",
+          "id": "8d10b1667b864f94bd7cb28s"
+        }
     BcLiveChannelProperties:
       title: BcLiveChannelObjcet
       type: object
-      example:
-        jobs:
-          - id: d901a1d5a00947c6804557e46ff37dh8
-            videocloud:
-              live_to_vod: true
-              video:
-                name: hfgh
-                link: {}
-                schedule: {}
-                state: ACTIVE
-                custom_fields: {}
-            state: waiting
-            static: false
-            ad_insertion: false
-            region: us-west-2
-            reconnect_time: 600
-            submitted_at: '2021-07-05T12:28:23.510Z'
       properties:
         jobs:
           description: List of bc live jobs for the account.
@@ -2138,31 +2650,32 @@ components:
           description: User email that last updated the channel.
           type: string
       example:
-        public_id: 7ba0ab27e1ba4c69bfbb7e2b6958a3e5
-        name: testChannel
-        description: testChannel
-        account_id: '6062814566001'
-        state: DRAFT
+        public_id: "7ba0ab27e1ba4c69bfbb7e2b6958a3e5"
+        name: "testChannel"
+        description: "testChannel"
+        account_id: "6062814566001"
+        state: "DRAFT"
         status: null
-        start_time: 2021-10-10 16:30:00 UTC
-        stop_time: 2021-10-20 04:30:00 UTC
-        input_groups: playlist:slate:rtmp
-        output_groups: rtmp
+        start_time: "2021-10-10 16:30:00 UTC"
+        stop_time: "2021-10-20 04:30:00 UTC"
+        input_groups: "playlist:slate:rtmp"
+        output_groups: "rtmp"
         loop_playlist: true
-        playlist_id: '1700806648849757071'
-        channel_class: single-pipeline
+        playlist_id: "1700806648849757071"
+        channel_class: "single-pipeline"
         ssai_enabled: null
-        aws_region: us-east-1
+        aws_region: "us-east-1"
         message: null
-        created_at: 2021-05-26 07:40:40 UTC
-        updated_at: 2021-05-26 07:40:40 UTC
-        image_url: https://picsum.photos/200/300
-        output_destinations:
-          - Brightcove Live
-        channel_created_at: 2021-05-26 07:40:40 UTC
-        channel_updated_at: 2021-05-26 07:40:40 UTC
-        channel_created_by: user@example.com
-        channel_updated_by: user@example.com
+        created_at: "2021-05-26 07:40:40 UTC"
+        updated_at: "2021-05-26 07:40:40 UTC"
+        image_url: "https://picsum.photos/200/300"
+        output_destinations: [
+            "Brightcove Live"
+        ]
+        channel_created_at: "2021-05-26 07:40:40 UTC"
+        channel_updated_at: "2021-05-26 07:40:40 UTC"
+        channel_created_by: "user@example.com"
+        channel_updated_by: "user@example.com"
     GetAsRunEvent:
       title: As run logs event
       type: object
@@ -2255,22 +2768,26 @@ components:
     ImportableAssets:
       title: ImportableAssetsObject
       type: object
-      example:
-        eligible_assets:
-          - name: cloudplayout-static-v1-smpte
-            id: '70702002899202'
-            images:
-              thumbnail:
-                src: https://cf-images.us-east-1.qa.boltdns.net/v1/jit/6062814566001/dafe34fd-4485-4d50-adca-afd3cbd45af9/main/1280x720/15s/match/image.jpg
-            tags:
-              - tag1
-              - tag2
-              - tag3
-            duration: 30000
-            delivery_type: dynamic_origin
-        rejected_assets:
-          - '70702089454202'
-          - '70702089446202'
+      example: {
+        "eligible_assets": [
+          {
+            "name": "cloudplayout-static-v1-smpte",
+            "id": "70702002899202",
+            "images": {
+              "thumbnail": {
+                "src": "https://cf-images.us-east-1.qa.boltdns.net/v1/jit/6062814566001/dafe34fd-4485-4d50-adca-afd3cbd45af9/main/1280x720/15s/match/image.jpg"
+              }
+            },
+            "tags": ["tag1","tag2","tag3"],
+            "duration": 30000,
+            "delivery_type": "dynamic_origin"
+          }
+        ],
+        "rejected_assets": [
+            "70702089454202",
+            "70702089446202"
+        ]
+      }
       properties:
         eligible_assets:
           type: array
@@ -2359,10 +2876,14 @@ components:
                           - s3
                       location:
                         type: string
-                        description: BC Live job name, in case BC Live is the destination
+                        description: BC Live job/redundant_group name, in case BC Live is the destination
                       location_id:
                         type: string
-                        description: BC Live job ID, in case BC Live is the destination
+                        description: BC Live job/redundant_group ID, in case BC Live is the destination
+                      redundancy:
+                        type: boolean
+                        description: BC Live redundancy true/false, in case BC Live is the destination
+                        default: false
                       destination:
                         type: string
                         enum:
@@ -2374,6 +2895,26 @@ components:
                       destination_url:
                         type: string
                         description: Output destination URL
+                      outputs:
+                        type: array
+                        description: BC Live jobs info, in case of BC Live redundancy enabled channles
+                        items:
+                          properties:
+                            type:
+                              type: string
+                              description: Type of the output destination
+                              enum:
+                                - rtmp
+                                - rtp
+                            location:
+                              type: string
+                              description: BC Live job name, in case BC Live is the destination
+                            location_id:
+                              type: string
+                              description: BC Live job ID, in case BC Live is the destination
+                            destination_url:
+                              type: string
+                              description: Output destination URL
     GetChannelPreview:
       title: Preview
       type: object
@@ -2409,63 +2950,97 @@ components:
                             type: string
                         status_code:
                           type: string
-      example:
-        resp:
-          - pipeline_0:
-              metric_data_results:
-                - id: m1
-                  label: NetworkIn
-                  timestamps:
-                    - 2021-07-05 03:41:00 UTC
-                  values:
-                    - 71507.5
-                  status_code: Complete
-                - id: m2
-                  label: NetworkOut
-                  timestamps:
-                    - 2021-07-05 03:41:00 UTC
-                  values:
-                    - 5517809
-                  status_code: Complete
-                - id: m3
-                  label: InputVideoFrameRate
-                  timestamps: []
-                  values: []
-                  status_code: Complete
-                - id: m4
-                  label: ActiveAlerts
-                  timestamps:
-                    - 2021-07-05 03:41:00 UTC
-                  values:
-                    - 0
-                  status_code: Complete
-                - id: m5
-                  label: DroppedFrames
-                  timestamps:
-                    - 2021-07-05 03:41:00 UTC
-                  values:
-                    - 0
-                  status_code: Complete
-                - id: m6
-                  label: SvqTime
-                  timestamps:
-                    - 2021-07-05 03:41:00 UTC
-                  values:
-                    - 0
-                  status_code: Complete
-                - id: m7
-                  label: FillMsec
-                  timestamps:
-                    - 2021-07-05 03:41:00 UTC
-                  values:
-                    - 0
-                  status_code: Complete
-                - id: m8
-                  label: UdpInputLoss
-                  timestamps: []
-                  values: []
-                  status_code: Complete
-              messages: []
+      example: {
+        "resp": [
+          {
+            "pipeline_0": {
+              "metric_data_results": [
+                {
+                  "id": "m1",
+                  "label": "NetworkIn",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      71507.5
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m2",
+                  "label": "NetworkOut",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      5517809.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m3",
+                  "label": "InputVideoFrameRate",
+                  "timestamps": [ ],
+                  "values": [ ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m4",
+                  "label": "ActiveAlerts",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      0.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m5",
+                  "label": "DroppedFrames",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      0.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m6",
+                  "label": "SvqTime",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      0.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m7",
+                  "label": "FillMsec",
+                  "timestamps": [
+                      "2021-07-05 03:41:00 UTC"
+                  ],
+                  "values": [
+                      0.0
+                  ],
+                  "status_code": "Complete"
+                },
+                {
+                  "id": "m8",
+                  "label": "UdpInputLoss",
+                  "timestamps": [ ],
+                  "values": [ ],
+                  "status_code": "Complete"
+                }
+              ],
+              "messages": [ ]
+            }
+          }
+        ]
+      }
     GetUploadUrl:
       title: UploadUrl
       type: object
@@ -2522,7 +3097,7 @@ components:
           description: A name identifier for the asset
         type:
           type: string
-          description: Applicable only for overlay assets. By default type will be considered as static for overlay assets if value not passed.
+          description: "Applicable only for overlay assets. By default type will be considered as static for overlay assets if value not passed."
           enum:
             - static
             - dynamic
@@ -2573,7 +3148,8 @@ components:
       type: object
       properties:
         items:
-          description: The list of assets.  List may be empty if no assets are found
+          description: >-
+            The list of assets.  List may be empty if no assets are found
           items:
             $ref: '#/components/schemas/GetAssetResponse'
           type: array
@@ -2607,7 +3183,7 @@ components:
         x:
           type: integer
           description: Placement of the left edge of the overlay relative to the left edge of the video frame, in pixels
-        'y':
+        y:
           type: integer
           description: Placement of the top edge of the overlay relative to the top edge of the video frame, in pixels
         start_time:
@@ -2617,17 +3193,18 @@ components:
         duration:
           type: integer
           description: Specify how long in seconds the overlay image should appear or leave it empty for unlimited duration
-      example:
-        asset_id: c0d744be01d24bdca4941554bc4e3531
-        layer: 1
-        opacity: 100
-        width: 100
-        height: 100
-        use_original_resolution: false
-        x: 0
-        'y': 0
-        start_time: '2021-07-30T08:46:28.832Z'
-        duration: 0
+      example: {
+        "asset_id": "c0d744be01d24bdca4941554bc4e3531",
+        "layer": 1,
+        "opacity": 100,
+        "width": 100,
+        "height": 100,
+        "use_original_resolution": false,
+        "x": 0,
+        "y": 0,
+        "start_time": "2021-07-30T08:46:28.832Z",
+        "duration": 0
+      }
     CreateChannelOverlay:
       allOf:
         - $ref: '#/components/schemas/ChannelOverlayProperties'
@@ -2686,7 +3263,7 @@ components:
           type: boolean
         x:
           type: integer
-        'y':
+        y:
           type: integer
         start_time:
           type: string
@@ -2733,23 +3310,26 @@ components:
               type: string
             id:
               type: string
-      example:
-        public_id: 1c918ddef69a42c4a6743a2423e9455d
-        start_time: 2021-07-16 17:30:00 UTC
-        duration: 4200
-        created_at: 2021-07-13 07:25:27 UTC
-        updated_at: 2021-07-13 07:25:27 UTC
-        state: INACTIVE
-        asset_details:
-          name: singular live updated
-          asset_url: https://app.singular.live/output/5EoxJK8A3ehK6zOUxm2NNk/Default?aspect=16:9
-          id: dffd5980771d40b9919132c4c7395a3f
+      example: {
+        "public_id": "1c918ddef69a42c4a6743a2423e9455d",
+        "start_time": "2021-07-16 17:30:00 UTC",
+        "duration": 4200,
+        "created_at": "2021-07-13 07:25:27 UTC",
+        "updated_at": "2021-07-13 07:25:27 UTC",
+        "state": "INACTIVE",
+        "asset_details": {
+          "name": "singular live updated",
+          "asset_url": "https://app.singular.live/output/5EoxJK8A3ehK6zOUxm2NNk/Default?aspect=16:9",
+          "id": "dffd5980771d40b9919132c4c7395a3f"
+        }
+      }
     GetChannelOverlays:
       title: Get all channel overlays
       type: object
       properties:
         items:
-          description: The list of overlays.  List may be empty if no overlays are found
+          description: >-
+            The list of overlays.  List may be empty if no overlays are found
           items:
             $ref: '#/components/schemas/GetChannelOverlay'
           type: array
@@ -2758,7 +3338,8 @@ components:
       type: object
       properties:
         items:
-          description: The list of dynamic overlays.  List may be empty if no dynamic overlays are found
+          description: >-
+            The list of dynamic overlays.  List may be empty if no dynamic overlays are found
           items:
             $ref: '#/components/schemas/GetChannelDynamicOverlay'
           type: array
@@ -2788,18 +3369,20 @@ components:
         region:
           description: S3 region
           type: string
-      example:
-        credtype: s3
-        bucket: docexamplebucket1
-        access_key: ALIBRIUROOGEQKWTPW5O
-        secret_key: kTJvQU+7slC6beFnYps6Kr7WIDjFAobeFnYps6Kr7WIDjF6sJ
-        region: us-west-2
+      example: {
+        "credtype": "s3",
+        "bucket": "docexamplebucket1",
+        "access_key": "ALIBRIUROOGEQKWTPW5O",
+        "secret_key": "kTJvQU+7slC6beFnYps6Kr7WIDjFAobeFnYps6Kr7WIDjF6sJ",
+        "region": "us-west-2"
+      }
     ListAllCredentials:
       title: GetAllCredentials
       type: object
       properties:
         items:
-          description: The list of credentials. List may be empty if no credentials are provisioned
+          description: >-
+            The list of credentials. List may be empty if no credentials are provisioned
           items:
             $ref: '#/components/schemas/Credential'
           type: array
@@ -2808,7 +3391,8 @@ components:
       type: object
       properties:
         items:
-          description: The list of live profiles. List may be empty if no profiles are found
+          description: >-
+            The list of live profiles. List may be empty if no profiles are found
           items:
             type: object
           type: array
@@ -2924,13 +3508,13 @@ components:
       style: simple
       explode: false
       schema:
-        $ref: '#/components/schemas/AssetType'
+        $ref: "#/components/schemas/AssetType"
     Type:
       name: type
-      in: query
+      in: path
       description: Cloud Playout Overlay Asset Type
       required: true
-      style: form
+      style: simple
       explode: false
       schema:
         $ref: "#/components/schemas/Type"
@@ -2953,17 +3537,23 @@ components:
       schema:
         type: string
     ssai:
-      name: ssai
-      description: true/false for filtering
+      name: SSAI true/false for filtering
       in: query
       required: true
       style: form
       explode: false
       schema:
         type: boolean
+    redundancy:
+      name: Brightcove Live redundant groups true/false for filtering
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: boolean
     duration:
-      name: duration
-      description: duration of metrics in minutes
+      name: duration of metrics in minutes
       in: query
       required: true
       style: form
@@ -2972,8 +3562,7 @@ components:
         type: integer
         default: 35
     period:
-      name: period
-      description: period of metrics in minutes
+      name: period of metrics in minutes
       in: query
       required: true
       style: form
@@ -2982,8 +3571,7 @@ components:
         type: integer
         default: 5
     format:
-      name: format
-      description: as run logs format
+      name: as run logs format
       in: query
       required: false
       style: form
@@ -2996,8 +3584,7 @@ components:
           - xml
           - csv
     download:
-      name: download
-      description: download as run logs
+      name: download as run logs
       in: query
       required: false
       style: form
@@ -3005,43 +3592,46 @@ components:
       schema:
         type: boolean
         default: true
-    Q:
+    searchQuery:
       name: q
-      description: >-
-        search string to search for channels - see [Searching for Channels using the Channels API](/cloud-playout-apis/guides/search-channels-api.html) for details
+      description: 'Search string - see [channels search guide]() for details'
       in: query
       required: false
       style: form
       explode: false
       schema:
         type: string
-        default: true
+        example: 'hello%20%22world%22%20loop%3Atrue%20startTime%3A2021-10-10%2010%3A25%3A10..%20state%3A%5Bdraft%2Crunning%5D'
   responses:
     '204':
       description: Item was deleted
       content: {}
     '401':
-      description: 'UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token'
+      description: >-
+        UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
       content: {}
     '403':
       description: 'BAD_VALUE: Spelling error or other use of non-existent field '
       content: {}
     '404':
-      description: 'RESOURCE_NOT_FOUND: The api could not find the resource you requested'
+      description: >-
+        RESOURCE_NOT_FOUND: The api could not find the resource you requested
       content: {}
     '405':
-      description: 'METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint'
+      description: >-
+        METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
       content: {}
     '429':
-      description: 'TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second'
+      description: >-
+        TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
       content: {}
   securitySchemes:
     BC_OAuth2:
       type: oauth2
-      description: Brightcove OAuth API. See the [support documentation](https://support.brightcove.com/oauth-api) or [Getting Access Tokens](https://support.brightcove.com/oauth-api-sample-get-access-token) to learn more
+      description: 'Brightcove OAuth API. See the [support documentation](https://support.brightcove.com/oauth-api) or [Getting Access Tokens](https://support.brightcove.com/oauth-api-sample-get-access-token) to learn more'
       flows:
         clientCredentials:
-          tokenUrl: https://oauth.brightcove.com/v4/access_token
+          tokenUrl: 'https://oauth.brightcove.com/v4/access_token'
           scopes:
             video-cloud/cloud-playout/all: Able to manage cloud playout channels.
             video-cloud/cloud-playout/read: Able to read cloud playout channels.
