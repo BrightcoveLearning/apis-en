@@ -11,8 +11,8 @@ grandparent: Live API
 
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    <!-- <p>Playback Restrictions can be enabled for a Live job to extend the protections provided by DRM, including:</p> -->
-    <p>Playback Restrictions can be enabled for a Live job to extend the protections provided by DRM and/or AES-128 encryption, including:</p>
+    <p>Playback Restrictions can be enabled for a Live job to extend the protections provided by DRM, including:</p>
+    <!-- <p>Playback Restrictions can be enabled for a Live job to extend the protections provided by DRM and/or AES-128 encryption, including:</p> -->
     <ul>
       <li>Limiting playback to a particular user agent</li>
       <li>Limiting the number of IP addresses</li>
@@ -30,79 +30,43 @@ grandparent: Live API
   </section>
 
   <section class="bcls-section">
-    <h2 id="Create_Live_job_using_Studio">Create a Live job using Studio</h2>
-    <p>You can create a live job that utilizes playback restrictions in Video Cloud Studio.</p>
-    <ol class="bcls-tasklist">
-      <li>
-        Look over the details for creating live streams in the <a href="/live-api/getting-started/quick-start-create-live-stream-using-brightcove-live-api.html">Create a Live Stream Using the Brightcove Live API</a> document.
-      </li>
-      <li>
-        <p>In Studio, when you create your live event, expand the <strong>Advanced Options</strong> section.</p>
-      </li>
-      <li>
-        <p>For  <strong>Content Encryption</strong>, select either:</p>
-        <ul>
-          <li>AES-128</li>
-          <li>Digital Rights Management (DRM)</li>
-        </ul>
-        <figure class="bcls-figure"><img class="bcls-image--no-border" alt="AES-128 encryption" src="/assets/images/live-api/playback-restrictions/aes-128.png" />
-          <figcaption class="bcls-caption--image">AES-128 encryption</figcaption>
-        </figure>
-       <p>For details, see the <a href="https://live.support.brightcove.com/live-module/creating-and-managing-live-events-using-live-module.html#advanced">Configuring advanced options</a> section of the <strong>Creating and Managing Live Events using the Live Module</strong> document.</p>
-      </li>
-      <li>
-        <p>To extend playback protections, check the box to <strong>Enable Playback Restrictions</strong>.</p>
-        <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Enable Playback Restrictions" src="/assets/images/live-api/playback-restrictions/enable-pr.png" />
-          <figcaption class="bcls-caption--image">Enable Playback Restrictions</figcaption>
-        </figure>
-        <p>The job request must include a <code translate="No">videocloud.video</code> attribute so that a Video Cloud video is created and linked to the live job.  The <code translate="No">playback_rights_id</code> attribute can be updated on the Video Cloud video to change the playback restrictions via the <a href="https://apis.support.brightcove.com/cms/references/reference.html#operation/UpdateVideo">CMS API</a>.</p>
-      </li>
-    </ol>
-  </section>
+    <h2 id="Create_Live_job">Create a Live job</h2>
+    <p>You can create live jobs that utilize playback restrictions. For details about creating live streams, see the <a href="/live-api/getting-started/quick-start-create-live-stream-using-brightcove-live-api.html">Create a Live Stream Using the Brightcove Live API</a> document.</p>
 
-  <section class="bcls-section">
-    <h2 id="Create_Live_job_using_the_Live_API">Create a Live job using the Live API</h2>
-    <p>You can create a live job that utilizes playback restrictions using the Brightcove Live API.</p>
-    <ol class="bcls-tasklist-restart">
+    <h3>New fields</h3>
+    <p>The following new fields are used to add Playback Restrictions to a Live job.</p>
+    <ul>
       <li>
-        Look over the details for creating live streams in the <a href="https://live.support.brightcove.com/live-module/creating-and-managing-live-events-using-live-module.html">Creating and Managing Live Events using the Live Module</a> document.
+        <h4><code translate="No">drm</code> object:</h4>
+        <dl>
+          <dt><code translate="No">require_playback_token</code> (boolean)</dt>
+          <dd>Playback auth JWT will be required when requesting license.</dd>
+          <dt><code translate="No">check_playback_rights</code> (boolean)</dt>
+          <dd>Playback auth JWT will be required when requesting license. Uses playback rights id associated with video or JWT to enforce restrictions.</dd>
+        </dl>
       </li>
+      <!-- <li>
+        <h4><code translate="No">encryption</code> object:</h4>
+        <dl>
+          <dt><code translate="No">check_playback_rights</code> (boolean)</dt>
+          <dd>Playback auth JWT will be required when requesting license. Uses playback rights id associated with video or JWT to enforce restrictions. If <code translate="No">false</code> playback restrictions will be bypassed and the encrypted stream will play back as usual.</dd>
+        </dl>
+      </li> -->
       <li>
-        <p>Review the new fields used to add Playback Restrictions to a Live job:</p>
-        <ul>
-          <li>
-            <h4><code translate="No">drm</code> object:</h4>
-            <dl>
-              <dt><code translate="No">require_playback_token</code> (boolean)</dt>
-              <dd>Playback auth JWT will be required when requesting license.</dd>
-              <dt><code translate="No">check_playback_rights</code> (boolean)</dt>
-              <dd>Playback auth JWT will be required when requesting license. Uses playback rights id associated with video or JWT to enforce restrictions.</dd>
-            </dl>
-          </li>
-          <!-- <li>
-            <h4><code translate="No">encryption</code> object:</h4>
-            <dl>
-              <dt><code translate="No">check_playback_rights</code> (boolean)</dt>
-              <dd>Playback auth JWT will be required when requesting license. Uses playback rights id associated with video or JWT to enforce restrictions. If <code translate="No">false</code> playback restrictions will be bypassed and the encrypted stream will play back as usual.</dd>
-            </dl>
-          </li> -->
-          <li>
-            <h4><code translate="No">videocloud.video</code> object:</h4>
-            <aside class="bcls-aside bcls-aside--information">Note that this field must be added to video using the CMS API <em>after</em> you create the live job, because it cannot be added when the video is created.</aside>
-            <dl>
-              <dt><code translate="No">playback_rights_id</code> (string)</dt>
-              <dd>Associates specified Playback Restrictions with a video.</dd>
-            </dl>
-          </li> 
-        </ul>
-      </li>
-      <li>
-        <p>Create a live job using the <a href="/live-api/getting-started/quick-start-create-live-stream-using-brightcove-live-api.html">Brightcove Live API</a>.</p>
-        <h4 id="Sample_request_response">Sample request and response</h4>
+        <h4><code translate="No">videocloud.video</code> object:</h4>
+        <aside class="bcls-aside bcls-aside--information">Note that this field must be added to video using the CMS API <em>after</em> you create the live job, because it cannot be added when the video is created.</aside>
+        <dl>
+          <dt><code translate="No">playback_rights_id</code> (string)</dt>
+          <dd>Associates specified Playback Restrictions with a video.</dd>
+        </dl>
+      </li> 
+    </ul>
+
+    <h3 id="Sample_request_response">Sample request and response</h3>
     <p>Below is a sample Live API request body for creating a Live job with Playback Restrictions.</p>
     <aside class="bcls-aside bcls-aside--information">There is also a CMS API request to update the video created for the live job with the <code translate="No">playback_rights_id</code>. (This field can only be added with an <strong>update video</strong> request, and so must be added after the Live API request creates the video.)</aside>
 
-    <h4>Sample request body</h4>
+    <h3>Sample request body</h3>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "live_stream": true,
   "region": "us-west-2",
@@ -261,8 +225,6 @@ grandparent: Live API
   }
 }</code></pre>
     </details>
-      </li>
-    </ol>
   </section>
 
   <section class="bcls-section">
