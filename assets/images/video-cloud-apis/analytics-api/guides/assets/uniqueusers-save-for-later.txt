@@ -1,0 +1,10 @@
+                <p>A unique user might have a login name that is unique on a website, an email address, or a unique <code>guid</code> in a browser cookie. The method for determining a unique user id is complex, and site-dependant.</p>
+                <p>For this reason, we allow you to determine how unique users are tracked. The analytics data collection API has been updated to accept a <code>user</code> parameter:
+                    <ul>
+                        <li>If the player/client application wants to track the unique viewer, it should send a unique Id for the user as the value of the <code>user</code> parameter to the collector.</li>
+                        <li>If the user parameter is not provided or the value is blank, we use the fallback method of using the <code>(Source IP address + the User-Agent String)</code> as the unique identifier.</li>
+                        <li>The value of the user parameter is never stored in the logs or database. Only a hash (using SHA-256) is stored.</li>
+                        <li>No cookies are set by the collector.</li>
+                    </ul>
+                <p>Today no Brightcove players are updated to accept a "user" parameter to send to analytics. This means that today all values for daily_unique_viewers are based on the fallback mechanism.</p>
+

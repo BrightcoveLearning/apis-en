@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+	<!-- change title to match the h1 heading -->
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+	<script src="//use.edgefonts.net/source-code-pro.js"></script>
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/font-hack/2.015/css/hack-extended.min.css">
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/atelier-forest.light.min.css" />
+    <link rel="stylesheet" type="text/css" href="/en/styles/bcls-doc-site.css" />
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/font-hack/2.015/css/hack-extended.min.css">
+
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2728311-29', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+</head>
+
+<body>
+	<!-- header navbar -->
+	<div id="navWrapper" class="fixed"></div>
+	<!-- breadcrumbs -->
+	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+	<!-- search -->
+	<div id="searchModal" class="reveal-modal" data-reveal></div>
+	<!-- content -->
+	<!-- content -->
+	<div class="row">
+		<div class="sidebar large-2 columns show-for-large-up">
+			<div id="sidenav" class="side-nav"></div>
+		</div>
+		<div id="main" class="large-10 small-12 columns">
+			<div id="top" class="section">
+				<h1>OAuth2 flows</h1>
+				<p>Audience: OAuth2 client users (callers of Brightcove APIs)</p>
+				<p>Use this page to determine what flow a client should use to interact with Brightcove APIs.</p>
+			</div>
+			<div class="section" id="client-credentials">
+				<h2>Client credentials flow</h2>
+				<ul>
+					<li>I am a script or service that doesn&#39;t have a logged-in user (e.g., I run automatically without user intervention, like a cron job). I want to get access to a specific set of resources, without necessarily making the owner of those resources log in every time. (&quot;I am a service developer testing my API&quot; is usually a special case of this.) I am running in a context that is secure enough to hold a long-lived persistent access object for those resources, and I am being run by a person or entity authorized to hold such an object.
+						<ul>
+							<li>You want the <strong>client credentials flow</strong>. A client ID and secret for client credentials flow is as dangerous as a Media API token: it is a complete credential for the resources it grants access to, without any other authenticator required. For many use cases, this is exactly what you need.</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="section" id="authorization-code">
+				<h2>Authorization code flow</h2>
+				<ul>
+					<li>I am a server based application that has a logged-in user (e.g., I am the server side of a webapp and I need to make some calls to another API). I want to do things invoking Brightcove APIs on the user&#39;s behalf, but I am not necessarily allowed to handle their actual authenticators (like <code>BC_TOKEN</code>). However, I am not a browser or phone app; I can keep secrets.
+						<ul>
+							<li>You want the <strong>authorization code flow</strong>. (This is often the most appropriate flow for services that want to invoke other services as clients.)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<!--
+<div class="section" id="implicit-flow">
+				<h2>Implicit flow</h2>
+				<ul>
+					<li>I am a Studio module, or other browser- or mobile-device-based client (e.g., a page that makes AJAX requests to an API on behalf of a logged in user). I want users to log into the Brightcove service and then more-or-less transparently use that authentication
+						to authorize service calls. Since I run in a browser or phone, I can&#39;t keep secrets from my user or other programs in the same environment.
+						<ul>
+							<li>You want the <strong>implicit flow</strong>. Also check out <a href="https://bithub.brightcove.com/videocloud/bcapi.js">bcapi.js</a> which automates most of the implicit flow mechanics for Studio modules.</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="section" id="resource-owner">
+				<h2>Resource owner password flow</h2>
+				<ul>
+					<li>For some reason I need to handle users&#39; actual passwords directly (Players have some special cases of this form).
+						<ul>
+							<li>You want the <strong>resource owner password flow</strong> (not yet implemented).</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+-->
+		</div>
+	</div>
+	<!-- bcl scripts -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/gist-embed/2.2/gist-embed.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+	<script src="/en/scripts/log.js"></script>
+	<script src="/en/scripts/docs-nav-data.min.js"></script>
+	<script src="/en/scripts/bcls-doc-site.js"></script>
+	<script src="/en/scripts/bc-mapi.js"></script>
+	<script>
+		$(document).foundation();
+	</script>
+	<script type="text/javascript">
+		/******** Any scripts specific to page samples should go here *********/
+	</script>
+	
+	</div>
+<div style="text-align:center">
+    
+</div>
+
+</body>
+
+</html>

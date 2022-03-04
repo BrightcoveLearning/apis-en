@@ -1,0 +1,53 @@
+Subscription Collection
+List all Subscriptions
+
+Lists all the subscriptions in the system for an account across services.
+Subscription Collection / List all Subscriptions GET http://paperboy.brightcove.com/accounts/service_account/subscriptionsRequest
+Production
+200
+Content-Type: application/json
+[
+  {
+    "service_account": "999",
+    "id": "25705474-16b7-47ab-ada6-20182e8cde74",
+    "events": "video-change",
+    "endpoint": "https://mylittlepony.com/notification"
+  },
+  {
+    "service_account": "999",
+    "id": "25705474-16b7-47ab-ada6-22182e8cda90",
+    "events": "video-change",
+    "endpoint": "http://moreexamples.com/endpoint"
+  }
+]
+Create a Subscription
+Production
+Raw
+Try
+Content-Type: application/json
+{
+  "endpoint": "https://mylittlepony.com/notification",
+  "events": [
+    "video-change"
+  ]
+}    Response
+201
+Content-Type: application/json
+{
+  "service_account": "999",
+  "id": "25705474-16b7-47ab-ada6-20182e8cde74",
+  "events": [
+    "video-change"
+  ],
+  "endpoint": "https://mylittlepony.com/notification"
+}
+When creating an end-point, two parameters must be provided.A valid http or https URL for receiving notifications callbacks. This is specified as the 'endpoint'A list of event types that the subscription will monitor. Currently, we only generate events of type 'video-change' in response to create/modify/delete operations on Video Cloud videos. Subscription A single Subscription object with details. Also returns most recent 20 notifications (down the road).
+Retrieve a Subscription
+
+Update a Subscription
+
+Should primarily be used for updating account / service information. Updating the the endpoints (addition, removal, modification) should be done through the "endpoints" endpoint.NOTE: This is not implemented! For now delete and create a new subscription, but this may be added back in the future.
+Remove a Subscription
+
+
+

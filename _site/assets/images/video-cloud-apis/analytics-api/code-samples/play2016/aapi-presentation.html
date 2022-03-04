@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Analytics API Sample Requests</title>
+    <style>
+        body {
+            margin: 1em 2em;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            color: #64b0b7;
+            font-size: 2em;
+        }
+
+        button {
+            padding: .5em;
+        }
+
+        pre, textarea {
+            background-color: #eeeeee;
+            border: 1px #64b0b7 solid;
+            border-left: .5em solid #64b0b7;
+            box-shadow: 5px 5px 10px rgba(192, 192, 192, 1.000);
+            color: #465bc4;
+            font-family: "Source Code Pro", "Menlo", "Andale Mono", monospace;
+            font-size: 1em;
+            padding: 1em;
+            width: 96%;
+        }
+
+        textarea {
+            height: 3.5em;
+        }
+
+        .buttonBlock {
+            display: inline-block;
+            padding: 0 .5em;
+            vertical-align: top;
+        }
+
+        div:nth-of-type(2) {
+            border-right: 1px solid #CCC;
+            border-left: 1px solid #CCC;
+        }
+
+        input {
+            margin-bottom: .5em;
+        }
+
+        label {
+            font-size: .8em;
+            margin-bottom: .5em;
+        }
+
+        #requestDescription {
+            padding: .5em;
+            background-color: #eeeeee;
+            border: 1px #64b0b7 solid;
+            width: 98%;
+        }
+
+        code {
+            color: #dd712e;
+            font-size: 1.3em;
+        }
+
+        precode {
+            color: #85a93e;
+        }
+
+        #apiData {
+            height: 170px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Brightcove <span translate="No">Analytics API</span> Samples</h1>
+
+    <div class="buttonBlock">
+        <p><strong>Dimension Reports</strong></p>
+        <p>
+                <input type="radio" name="APIrequests" id="account" value="account"><label for="account"> Account</label>
+            <br><input type="radio" name="APIrequests" id="video" value="video"><label for="video"> Video</label>
+            <br><input type="radio" name="APIrequests" id="player" value="player"><label for="player"> Player</label>
+            <br><input type="radio" name="APIrequests" id="date" value="date"><label for="date"> Date</label>
+            <br><input type="radio" name="APIrequests" id="destination_path" value="destination_path"><label for="destination_path"> Destination Path</label>
+            <br><input type="radio" name="APIrequests" id="country" value="country"><label for="country"> Country</label>
+            <br><input type="radio" name="APIrequests" id="source_type" value="source_type"><label for="source_type"> Source Type</label>
+            <br><input type="radio" name="APIrequests" id="device_os" value="device_os"><label for="device_os"> Device OS</label>
+            <br><input type="radio" name="APIrequests" id="videoCountry" value="videoCountry"><label for="videoCountry"> Video and Country</label>
+        </p>
+    </div>
+    <div class="buttonBlock">
+        <p><strong>Using Parameters</strong></p>
+        <p>
+                <input type="radio" name="APIrequests" value="multipleAccounts" id="multipleAccounts"><label for="multipleAccounts"> Multiple Accounts</label>
+            <br><input type="radio" name="APIrequests" value="limitOffset" id="limitOffset"><label for="limitOffset"> Limit and Offset</label>
+            <br><input type="radio" name="APIrequests" value="sort" id="sort"><label for="sort"> Sort</label>
+            <br><input type="radio" name="APIrequests" value="dateRange" id="dateRange"><label for="dateRange"> Date Range</label>
+            <br><input type="radio" name="APIrequests" value="oneDay" id="oneDay"><label for="oneDay"> One Day</label>
+            <br><input type="radio" name="APIrequests" value="fields" id="fields"><label for="fields"> Fields</label>
+            <br><input type="radio" name="APIrequests" value="whereDevice" id="whereDevice"><label for="whereDevice"> Device Filter</label>
+            <br><input type="radio" name="APIrequests" value="whereTags" id="whereTags"><label for="whereTags"> Filter by Tag</label>
+            <br><input type="radio" name="APIrequests" value="formatCSV" id="formatCSV"><label for="formatCSV"> CSV Response</label>
+        </p>
+    </div>
+    <div class="buttonBlock">
+        <p><strong>Engagement Reports</strong></p>
+        <p>
+                <input type="radio" name="APIrequests" value="accountEngagement" id="accountEngagement"><label for="accountEngagement"> Account</label>
+            <br><input type="radio" name="APIrequests" value="accountEngagement" id="videoEngagement"><label for="accountEngagement"> Video</label>
+            <br><input type="radio" name="APIrequests" value="accountEngagement" id="playerEngagement"><label for="accountEngagement"> Player</label>
+        </p>
+    </div>
+    <p><strong>API request:</strong></p>
+    <textarea id="apiRequest"></textarea>
+    <p><strong>Description:</strong></p>
+    <p id="requestDescription"></p>
+    <p><strong>Response data</strong></p>
+    <pre id="responseData"></pre>
+    <script>
+        var BCLS = (function(window, document) {
+            var reportURL = 'https://analytics.api.brightcove.com/v1/data',
+                engagementURL = 'https://analytics.api.brightcove.com/v1/engagement/accounts/1752604059001',
+                proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/training-videos-proxy.php',
+                video_id = '4562259880001',
+                player_id = '901fa759-2353-412c-83ff-e8be6011e9f2',
+                allButtons = document.getElementsByTagName('button'),
+                account = document.getElementById('account'),
+                video = document.getElementById('video'),
+                player = document.getElementById('player'),
+                date = document.getElementById('date'),
+                country = document.getElementById('country'),
+                destination_path = document.getElementById('destination_path'),
+                source_type = document.getElementById('source_type');
+            device_os = document.getElementById('device_os');
+            videoCountry = document.getElementById('videoCountry');
+            multipleAccounts = document.getElementById('multipleAccounts');
+            limitOffset = document.getElementById('limitOffset');
+            sort = document.getElementById('sort');
+            dateRange = document.getElementById('dateRange');
+            oneDay = document.getElementById('oneDay');
+            fields = document.getElementById('fields');
+            whereDevice = document.getElementById('whereDevice');
+            whereTags = document.getElementById('whereTags');
+            formatCSV = document.getElementById('formatCSV');
+            accountEngagement = document.getElementById('accountEngagement');
+            videoEngagement = document.getElementById('videoEngagement');
+            playerEngagement = document.getElementById('playerEngagement');
+            /**
+             * disables all buttons so user can't submit new request until current one finishes
+             */
+            function disableButtons() {
+                var i,
+                    iMax = allButtons.length;
+                for (i = 0; i < iMax; i++) {
+                    allButtons[i].setAttribute('disabled', 'disabled');
+                }
+            }
+            /**
+             * re-enables all buttons
+             */
+            function enableButtons() {
+                var i,
+                    iMax = allButtons.length;
+                for (i = 0; i < iMax; i++) {
+                    allButtons[i].removeAttribute('disabled');
+                }
+            }
+            /**
+             * sets up the data for the API request
+             * @param {String} id the id of the button that was clicked
+             */
+            function setRequestData(id) {
+                var endPoint = '',
+                    requestData = {};
+                // disable buttons to prevent a new request before current one finishes
+                disableButtons();
+                switch (id) {
+                    case 'account':
+                        endPoint = '?accounts=1752604059001&dimensions=account&fields=account.name,video_impression,video_view';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Summary data for an account retrieved by setting <code>dimensions=account</code>. For additional metrics you can retrieve, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'video':
+                        endPoint = '?accounts=1752604059001&dimensions=video&fields=video,video.name,video_view';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Summary data for videos in an account that have views during the specified (or default) date range, retrieved by setting <code>dimensions=video</code>. For additional metrics you can retrieve, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'player':
+                        endPoint = '?accounts=1752604059001&dimensions=player';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Summary data for players in an account that have video views during the specified (or default) date range, retrieved by setting <code>dimensions=player</code>.For additional metrics you can retrieve, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'date':
+                        endPoint = '?accounts=1752604059001&dimensions=date';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Analytics data by date, retrieved by setting <code>dimensions=date</code>. For additional metrics you can retrieve, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'destination_path':
+                        endPoint = '?accounts=1752604059001&dimensions=destination_path';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Analytics data by the URL path where videos were viewed, retrieved by setting <code>dimensions=destination_path</code>. Note that you can also get data by <code>destination_domain</code>, or combine these 2 dimensions. For additional metrics you can retrieve, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'country':
+                        endPoint = '?accounts=1752604059001&dimensions=country';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Analytics data by the country where videos were viewed, retrieved by setting <code>dimensions=country</code>. There are additional <code>region</code> and <code>city</code> dimensions, and these can be combined. For additional metrics you can retrieve, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'source_type':
+                        endPoint = '?accounts=1752604059001&dimensions=source_type';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Analytics data by the source type, retrieved by setting <code>dimensions=source_type</code>. This tells you whether the viewer got to the video via a search, a link from another page, etc. For additional metrics you can retrieve, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'device_os':
+                        endPoint = '?accounts=1752604059001&dimensions=device_os';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Analytics data by the device operating system, retrieved by setting <code>dimensions=device_os</code>. This tells you whether the viewer\'s device was running OS X, Windows, iOS, etc. For additional metrics you can retrieve, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'videoCountry':
+                        endPoint = '?accounts=1752604059001&dimensions=video,country';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='This is an example of combining multiple dimensions, in this case <code>video</code> and <code>country</code> to get video viewing data by country, retrieved by setting <code>dimensions=video,country</code>. To see which dimensions can be combined and what metrics you can retrieve for the combination, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'multipleAccounts':
+                        endPoint = '?accounts=1752604059001,20318290001&dimensions=account,video&fields=account.name,video.name,video_view';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='This is an example of a request for a video report on multiple Video Cloud accounts, retrieved by setting <code>accounts</code> equal to a comma-delimited list of account ids. To see which dimensions can be combined and what metrics you can retrieve for the combination, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'limitOffset':
+                        endPoint = '?accounts=1752604059001&dimensions=video&limit=5&offset=5';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='The previous examples returned the default limit of (up to) 10 items. This example uses the <code>limit</code> parameter to set the limit to 5 items, and also uses the offset parameter to get the second group of 5 items from the total possible results. Using these parameters in combination allows you to page through large collections of items. Note the <code>item_count</code> in the reponse that gives you the total number of items. For more on parameters, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#params">Parameters</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'sort':
+                        endPoint = '?accounts=1752604059001&dimensions=video,country&sort=country_name';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='This example uses the <code>sort</code> parameter to sort the results. You can sort results by any field that can be returned for the request, even if you are not returning that field. You can also reverse the sort order by including a <code>-</code> sign before the sort field. For more on parameters, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#params">Parameters</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'dateRange':
+                        endPoint = '?accounts=1752604059001&dimensions=video&from=alltime&to=now';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='This example uses the <code>from</code> and <code>to</code> parameters to set the date range for the request. By default you get results for the last 30 days, but you can set these parameters to any ISO 8601 date (e.g. 2016-05-01 - use only the date part, not including the time). You can also use the special values <code>from=alltime</code> and <code>to=now</code> (as in this example). For more on date ranges, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#dateRanges">Date Ranges</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'oneDay':
+                        endPoint = '?accounts=1752604059001&dimensions=video&from=2016-03-25&to=2016-03-25&sort=-video_view';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='This is another date range example that gets a analytics report for a single day by setting the <code>from</code> and <code>to</code> parameters to the same date. For more on date ranges, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#dateRanges">Date Ranges</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'fields':
+                        endPoint =
+                            '?accounts=1752604059001&dimensions=video&fields=video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video.name,video_percent_viewed,video_seconds_viewed';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestDescription ='By default, reports include <code>video_view</code> and one or two other fields that vary depending on the dimension you are requesting. This example uses the <code>fields</code> parameter to request additional fields. To see which fields you can retrieve for any dimension or combination of dimensions, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#metrics">Dimensions and Fields</a>.';
+                        requestData.requestType = 'GET';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'whereDevice':
+                        endPoint = '?accounts=1752604059001&dimensions=video&where=device_type==tablet';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='This example uses a <code>where</code> filter to limit the items returned, in this case to items where the user\'s <code>device_type</code> was <code>tablet</code>. To learn more about where filters, see <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#filterValues">Where Filters</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'whereTags':
+                        endPoint = '?accounts=1752604059001&dimensions=video&where=video.q==tags:bird&fields=video,video.name,video.tags,video_view';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='Like the previous example, this example uses a <code>where</code> filter to limit the items returned, but in this case the filter is a specific video metadate field (<code>where=video.q==tags:bird</code>). In other words, our report will only include those videos that have the tag "bird". To learn more about filtering by video properties, see the Filtering by video properties subsection under <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#filterValues">Where Filters</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'formatCSV':
+                        endPoint = '?accounts=1752604059001&dimensions=video,country&sort=country_name&format=csv';
+                        requestData.url = reportURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='By default, analytics data is returned in JSON format, which is best if you are going to use the data in some way (such as sending it to a charting application). However, if you just want to view the report in a spreadsheet application, you can use the <code>format</code> parameter to specify <code>csv</code> (used here) or <code>xlsx</code> format instead.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'accountEngagement':
+                        endPoint = '';
+                        requestData.url = engagementURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='The <span translate="No">Analytics API</span> has special endpoints to get more detailed engagement data. Detailed engagement data is only available for period starting 32 days before the current day. This example gets a detailed engagement summary for the whole account. Learn more about detailed engagement reports in <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#engagement">Engagement Reports</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'videoEngagement':
+                        endPoint = '/videos/1754276205001';
+                        requestData.url = engagementURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='This example gets a detailed engagement report for a particular video. Remember that detailed engagement data is only available for the past 32 days. Learn more about detailed engagement reports in <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#engagement">Engagement Reports</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                    case 'playerEngagement':
+                        endPoint = '/players/2748583357001';
+                        requestData.url = engagementURL + endPoint;
+                        requestData.requestType = 'GET';
+                        requestData.requestDescription ='This example gets a detailed engagement report for a particular player. Remember that detailed engagement data is only available for the past 32 days. Learn more about detailed engagement reports in <a href="//docs.brightcove.com/en/video-cloud/analytics-api/getting-started/api-overview.html#engagement">Engagement Reports</a>.';
+                        apiRequest.textContent = requestData.url;
+                        requestDescription.innerHTML = requestData.requestDescription;
+                        getMediaData(requestData, id);
+                        break;
+                }
+            }
+            /**
+             * send API request to the proxy
+             * @param  {Object} requestData options for the request
+             * @param  {String} requestID the type of request = id of the button
+             */
+            function getMediaData(options, requestID) {
+                var httpRequest = new XMLHttpRequest(),
+                    responseRaw,
+                    parsedData,
+                    requestParams,
+                    dataString,
+                    // response handler
+                    getResponse = function() {
+                        try {
+                            if (httpRequest.readyState === 4) {
+                                if (httpRequest.status === 200) {
+                                    if (requestID === 'formatCSV') {
+                                        responseData.textContent = httpRequest.responseText;
+                                    } else {
+                                        console.log(httpRequest.responseText);
+                                        responseRaw = httpRequest.responseText;
+                                        responseData.textContent = responseRaw;
+                                        parsedData = JSON.parse(responseRaw);
+                                        responseData.textContent = JSON.stringify(parsedData, null, '  ');
+                                    }
+
+                                    // re-enable the buttons
+                                    enableButtons();
+                                } else {
+                                    alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                                }
+                            }
+                        } catch (e) {
+                            alert('Caught Exception: ' + e);
+                        }
+                    };
+                // set up request data
+                requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
+                if (options.requestBody) {
+                    dataString = JSON.stringify(options.requestBody);
+                    requestParams += '&requestBody=' + encodeURIComponent(dataString);
+                }
+                console.log(requestParams);
+                // set response handler
+                httpRequest.onreadystatechange = getResponse;
+                // open the request
+                httpRequest.open('POST', proxyURL);
+                // set headers
+                httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                // open and send request
+                httpRequest.send(requestParams);
+            }
+            // event listeners
+            video.addEventListener('click', function() {
+                setRequestData('video');
+            });
+            player.addEventListener('click', function() {
+                setRequestData('player');
+            });
+            country.addEventListener('click', function() {
+                setRequestData('country');
+            });
+            date.addEventListener('click', function() {
+                setRequestData('date');
+            });
+            destination_path.addEventListener('click', function() {
+                setRequestData('destination_path');
+            });
+            device_os.addEventListener('click', function() {
+                setRequestData('device_os');
+            });
+            source_type.addEventListener('click', function() {
+                setRequestData('source_type');
+            });
+            account.addEventListener('click', function() {
+                setRequestData('account');
+            });
+            videoCountry.addEventListener('click', function() {
+                setRequestData('videoCountry');
+            });
+            multipleAccounts.addEventListener('click', function() {
+                setRequestData('multipleAccounts');
+            });
+            limitOffset.addEventListener('click', function() {
+                setRequestData('limitOffset');
+            });
+            sort.addEventListener('click', function() {
+                setRequestData('sort');
+            });
+            fields.addEventListener('click', function() {
+                setRequestData('fields');
+            });
+            dateRange.addEventListener('click', function() {
+                setRequestData('dateRange');
+            });
+            oneDay.addEventListener('click', function() {
+                setRequestData('oneDay');
+            });
+            whereDevice.addEventListener('click', function() {
+                setRequestData('whereDevice');
+            });
+            whereTags.addEventListener('click', function() {
+                setRequestData('whereTags');
+            });
+            formatCSV.addEventListener('click', function() {
+                setRequestData('formatCSV');
+            });
+            accountEngagement.addEventListener('click', function() {
+                setRequestData('accountEngagement');
+            });
+            videoEngagement.addEventListener('click', function() {
+                setRequestData('videoEngagement');
+            });
+            playerEngagement.addEventListener('click', function() {
+                setRequestData('playerEngagement');
+            });
+        })(window, document);
+    </script>
+</body>
+
+</html>

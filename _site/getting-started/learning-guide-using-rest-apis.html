@@ -2225,7 +2225,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li><strong>REST APIs</strong>: Brightcove supplies a comprehensive set of APIs to customize, extend, and integrate with the Brightcove platform. See the <a href="https://apis.support.brightcove.com/getting-started/getting-started-brightcove-apis.html">Overview: Video Cloud APIs</a> document for more information.</li>
     </ul>
     <p>The following diagram shows the interaction between the three core entities of the process to retrieve data from one of Brightcove's REST APIs:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="Basic Pieces Overview" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/client-proxy-api.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="Basic Pieces Overview" src="/assets/images/getting-started/proxy-API-call/client-proxy-api.png" /></figure>
   </section>
   <section class="bcls-section">
     <h2 id="Client_functionality_overview">Client functionality overview</h2>
@@ -2244,7 +2244,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>The proxy to return the data to the client.</li>
     </ul>
     <p>Note that the logic flow arrows from the box that calls <code translate="No">makeRequest()</code> (bottom-left box) seem to indicate that the code is executed at two different times, which is exactly the case. The call to the function is made, but the callback function is not executed until <code translate="No">makeRequest()</code> has done its job and the callback function is executed, which returns the requested data to the function calling code.</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="Client functionality overview" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/proxy-API-call.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="Client functionality overview" src="/assets/images/getting-started/proxy-API-call/proxy-API-call.png" /></figure>
   </section>
   <section class="bcls-section">
     <h2 id="Example_code_walkthrough">Example code walkthrough</h2>
@@ -2315,7 +2315,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>This code section makes the call to <code translate="No">makeRequest()</code> function. Note that two parameters are passed. The first being the options object that holds info for the endpoint, and the second is the callback function. Remember, this is an asynchronous call so the anonymously defined callback function won't be called until data has been returned by the REST API to the <code translate="No">makeRequest()</code> function.</p>
     <ul>
       <li>Line 1: Call the <code translate="No">makeRequest()</code> function, passing the required values for the call in the <code translate="No">options</code> object. In this case the object contains the following:
-        <figure class="bcls-figure"><img class="bcls-image" alt="options object" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/options-object-console.png" /></figure>
+        <figure class="bcls-figure"><img class="bcls-image" alt="options object" src="/assets/images/getting-started/proxy-API-call/options-object-console.png" /></figure>
       </li>
       <li>Lines 3-13: The callback function is defined as an anonymous function (highlighted in yellow). Remember that this function is a parameter and NOT called here but later in the code.</li>
       <li>Lines 6, 8, 10: <code translate="No">console.log()</code> statements that display:
@@ -2328,7 +2328,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>Line 12: Calls the function that displays the number of views in the controlbar.</li>
     </ul>
     <p>The following screenshot from the console shows actual displayed data from the <code translate="No">console.log</code> statements:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="Processing of data in callback function" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/console-data-process-callback-function.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="Processing of data in callback function" src="/assets/images/getting-started/proxy-API-call/console-data-process-callback-function.png" /></figure>
     <pre class="line-numbers">
 	<code class="language-javascript" translate="No">// +++ Make the request to the <span translate="No">Analytics API</span> +++
 	// Extract views from data returned by Analytics API
@@ -2390,7 +2390,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>Lines 8, 26: Defines the event handler function for <code translate="No">readyState</code> changes.</li>
       <li>Lines 9, 23, 25: Use a <code translate="No">try-catch</code> in case the request fails at a high level.</li>
       <li>Lines 10, 11: Use <code translate="No">if</code> statements to be sure the request is finished (<code translate="No">readyState</code> is 4) and completed successfully, the status is in the 200 range. The following shows console logging of the <code translate="No">readyState</code> and <code translate="No">status</code> values in the event handler definition:
-        <figure class="bcls-figure"><img class="bcls-image" alt="Logging readyState and status" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/console-readystate-and-status.png" /></figure>
+        <figure class="bcls-figure"><img class="bcls-image" alt="Logging readyState and status" src="/assets/images/getting-started/proxy-API-call/console-readystate-and-status.png" /></figure>
       </li>
       <li>Line 18: The callback function is executed. This passes the returned data from the API back to the callback function as detailed in the <strong>Call makeRequest()</strong> section above.</li>
       <li>Line 33: Set the event handler for the <code translate="No">XMLHttpRequest.onreadystatechange</code> event.</li>
@@ -2474,7 +2474,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>A couple of simple suggestions are made in this section, and are a great place to start your debugging adventure. The following two sections give you a way to see the most basic information you need, what is being passed in to make the call, and what is returned.</p>
     <h3>Checking the call options</h3>
     <p>The client side code discussed in this document is basically all about providing the correct options to be used with the proxy, and in turn the actual API. So knowing the options are correct is essential to the correct functioning of your code. A simple way to do this is log to the console the <code translate="No">options</code> object just before they get passed into the <code translate="No">makeRequest</code> function where they are used:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="debugging code log options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-code-log-options.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="debugging code log options" src="/assets/images/getting-started/proxy-API-call/debugging-code-log-options.png" /></figure>
     <p>What the options object contains will vary upon what you are trying to do, but some basics will always be there, those being:</p>
     <ul>
       <li>The account ID. This can be either a separate property, or part of the API endPoint URL.</li>
@@ -2488,17 +2488,17 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </li>
     </ul>
     <p>Other properties may be required in the options object depending on the API request. Here is an example of what you would see in the console when logging the options object for making a request for all the players in a specific account:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="debugging options simple" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-options-simple.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="debugging options simple" src="/assets/images/getting-started/proxy-API-call/debugging-options-simple.png" /></figure>
     <p>Here is a bit more complex logged options object used when updating players:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="debugging options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-options.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="debugging options" src="/assets/images/getting-started/proxy-API-call/debugging-options.png" /></figure>
     <h3>Viewing returned data</h3>
     <p>What is returned will vary upon what data you have requested, and if an error is returned. But no matter what is returned, you will most likely want to see what data is returned. A simple way to do this is log to the console the raw <code translate="No">response</code> data just after the call to the <code translate="No">makeRequest</code> function:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="debugging code log options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-code-log-response.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="debugging code log options" src="/assets/images/getting-started/proxy-API-call/debugging-code-log-response.png" /></figure>
     <p>What will be returned has nearly infinite possibilities, but following are a few examples. The first shows the beginning of a response when asking for all the players in an account:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on players request" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-response-multiple-players.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on players request" src="/assets/images/getting-started/proxy-API-call/debugging-response-multiple-players.png" /></figure>
     <aside class="bcls-aside bcls-aside--tip">This is a good example of when viewing the response can be exceedingly helpful for it shows the player information is stored in an array named <code translate="No">items</code>.</aside>
     <p>Here is the response after updating players, using the <code translate="No">PATCH</code> HTTP method:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on player patch" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-response-on-player-patch.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on player patch" src="/assets/images/getting-started/proxy-API-call/debugging-response-on-player-patch.png" /></figure>
     <p>Here is a more nicely formatted view of the data in the first response:</p>
     <pre class="line-numbers">
 	<code class="language-json" translate="No">{
@@ -2508,7 +2508,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 		"preview_embed_code": "&lt;iframe src='//preview-players.brightcove.net/v2/accounts/.../master/index.html' ...&gt;&lt;/iframe&gt;"
 	}</code></pre>
     <p>And finally, here is a very valuable response from when an error occurred. In this case, an account was being used without proper credentials:</p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on error" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-response-on-error.png" /></figure>
+    <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on error" src="/assets/images/getting-started/proxy-API-call/debugging-response-on-error.png" /></figure>
   </section>
   <h3>Other troubleshooting tips</h3>
   <p>If you are having problems, here are some other things to look for.</p>

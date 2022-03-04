@@ -1,0 +1,262 @@
+
+<h1>Client app registration API</h1>
+
+<p>Audience: Callers of Brightcove APIs (OAuth2 client users)</p>
+
+<h2>Overview</h2>
+
+<p>To request OAuth access tokens in OAuth flows other than the client
+credentials flow, the request must be made against a registered
+<em>client app</em>.  This is a record describing the application that will
+request tokens and use them to access resources on the user&#39;s behalf,
+and there is an API in OAuth to create and manipulate these client app
+registrations.</p>
+
+<p>(Technically, token requests in the client credentials flow are made
+against a registered client app also, namely the client whose
+credentials are being presented; but the authentication flow and
+criteria are so different that we treat them separately.  Internally,
+client credentials are almost but not entirely the same thing as
+client app registrations.)</p>
+
+<h2>Client app registration data</h2>
+
+<p>Client app registrations have the following fields.  All of them
+except <code>redirect_url</code> and <code>trusted</code> also appear on client credentials.</p>
+
+<ul>
+<li><strong>client_id</strong> (UUID, issued at creation time): Identifies the client
+app registration.</li>
+<li><strong>client_secret</strong> (base64-encoded bit string, issued at creation
+time and never disclosed thereafter): For <code>untrusted</code> app
+registrations (see below for definitions), this secret is used to
+make changes to the app registration.  For <code>trusted</code> registrations,
+the secret is irrelevant.  (For client credentials, this is used
+to authenticate token requests against the client.)</li>
+<li><strong>type</strong> (string, constant, issued at creation time): Equal to
+&quot;app_registration&quot; for client app registrations.</li>
+<li><strong>name</strong> (string, <code>required</code> at creation time): A short name used to
+identify this client app to users.</li>
+<li><strong>description</strong> (string, <code>required</code> at creation time): A longer text
+used to identify and describe this client app to users.</li>
+<li><strong>privilege_level</strong> (integer, issued at creation or update time): An
+internal number describing how &quot;sensitive&quot; this registration is
+and thus what API endpoints may be used to manipulate it.</li>
+<li><strong>issued_to</strong> (string, issued at creation time): A string
+designating the entity to whom this client app registration was
+issued; if it was issued based on a BC<em>TOKEN authentication, the
+value is the MaitreD email address of the BC</em>TOKEN&#39;s user.</li>
+<li><strong>issued_user</strong> (integer, issued at creation time): An integer
+designating the entity to whom this client app registration was
+issued; if it was issued based on a BC<em>TOKEN authentication, the
+value is the MaitreD user ID of the BC</em>TOKEN&#39;s user.</li>
+<li><strong>issued_at</strong> (timestamp, issued at creation time): Time of issuance
+of the client registration.</li>
+<li><strong>expires_at</strong> (timestamp, <code>optional argument</code> at creation or update
+time, defaults to nil): Time after which the client registration
+will no longer be considered valid.</li>
+<li><strong>maximum_scope</strong> (scope, <code>required</code> at creation time): Maximum
+scope of an access token issued against this client registration.
+See &quot;Registration authorization&quot; below for how this scope
+parameter is interpreted and what authentication credentials must
+be presented to justify the maximum scope.</li>
+<li><strong>revoked</strong> (boolean, set only by DELETE requests, cannot be unset):
+True if this client registration has been revoked (is no longer
+valid).</li>
+<li><strong>redirect_url</strong> (string, <code>required</code> at creation time): The OAuth
+redirect URL where access tokens will be sent; see the OAuth2
+standard for the intended semantics. Must use https protocol.</li>
+<li><strong>trusted</strong> (boolean, <code>required</code> at creation time): See &quot;Trusted and
+untrusted registrations&quot; below for interpretation.</li>
+</ul>
+
+<p>Thus, the required arguments for a client app registration create
+operation are <code>name</code>, <code>description</code>, <code>maximum_scope</code>, <code>redirect_url</code>,
+and <code>trusted</code>, and in addition <code>expires_at</code> may be specified.  All
+these fields except for <code>trusted</code> may be updated by a PUT request.</p>
+
+<h2>Trusted and untrusted registrations</h2>
+
+<p>A client app registration is either <code>trusted</code> or <code>untrusted</code>.  The
+difference, from the user&#39;s point of view, is that before we are
+willing to issue an access token for consumption by an untrusted app,
+we must have a record that the user has explicitly chosen to trust the
+app – we present a page something like the Facebook &quot;Allow this app
+access to your account?  It wants blah-de-blah&quot; page, and record the
+user&#39;s assent.  For trusted app registrations we do not require this
+additional step.  Trusted app registrations are for use by
+Brightcove&#39;s own apps; untrusted registrations are for third-party
+apps.</p>
+
+<p>Please note that untrusted apps are <strong>not currently supported</strong>. They
+can be registered, but cannot acquire tokens. (There is not yet
+infrastructure for displaying the trust challenge to the user.)</p>
+
+<h2>Registration authorization</h2>
+
+<p>The mechanics of authorization for client app registration requests
+differ between trusted and untrusted registrations, because trusted
+registrations confer the right to interpret user authentication
+credentials into tokens with real force, and untrusted registrations
+do not, at least not without explicit assent by the user.  Thus:</p>
+
+<ul>
+<li>To create, view, update, or revoke a <code>trusted</code> client app
+registration, you must present authorization credentials sufficient
+to authorize the maximum scope (see [Scope authorization][TODO]),
+exactly as if you were creating a client credential; and the
+restriction of API endpoint based on privilege level is enforced.</li>
+<li>To create an <code>untrusted</code> client app registration, no credentials
+whatsoever are required.  To view, update, or revoke an untrusted
+client app registration, you must present its client ID and secret
+as HTTP Basic authentication parameters, exactly as if you were
+requesting an access token against a client credential.  For
+untrusted app registrations, the restriction of API endpoint based
+on privilege level is not enforced.  (Rationale: We want it to be
+possible for third parties to request client app registrations with
+maximum scopes covering all accounts, which each user will interpret
+into their own account by making a trust assertion.  Normally the
+privilege level restriction would prohibit registering such a strong
+scope except through the private API.)</li>
+</ul>
+
+<p>In practice, a useful client app registration has maximum scope with a
+blanket identity such as &quot;all video cloud accounts&quot; on it.  Scopes of
+this sort are subject to two restrictions: they must be accessed
+through the private API endpoint, and you must authenticate with your
+<strong>devops LDAP (login.arc)</strong> username and password, since no BC_TOKEN
+authentication will authorize all Video Cloud accounts at once.
+(OAuth doesn&#39;t know what to do with wacky tokens yet.)  <em>If you do not
+have a devops account, you cannot use this API.</em></p>
+
+<h2>Example</h2>
+
+<p>Suppose you want to register a client app that will ask for tokens
+with the operation tag &quot;video-cloud/player/read&quot; on any Video Cloud
+account.  To register the client, do something like the following
+(where whitespace and comments should be ignored):</p>
+
+<p><strong>XXX In QA environments the &quot;cacert.pem&quot; below is not actually the QA
+root cert right now – it is a OAuth self-signed cert.  For the
+moment use -k or --insecure to disable CA cert verification in QA.
+We will update this document when this is fixed – as a general rule
+we do not want to encourage you to use -k. XXX</strong></p>
+
+<pre><code class="sh">curl -i # verbose response
+     --cacert cacert.pem # tell curl to trust the QA or Infrastructure Root CA Certificate
+     --cert client.crt --key client.key # You need a client certificate to talk to the private endpoint; it&#39;s in //configs/*/*/OAuth/client-cert
+     -d # POST body
+        &#39;name=my_client # Name of your client app registration
+        &amp;description=My%20client%20application # Human readable name of your app registration
+        &amp;redirect_url=https://myapp.brightcove.com/receive_token # MUST be https
+        &amp;trusted=true
+        &amp;maximum_scope=[{&quot;identity&quot;:{&quot;type&quot;:&quot;video-cloud-account&quot;,&quot;account-id&quot;:&quot;all&quot;},&quot;operations&quot;:[&quot;video-cloud/player/read&quot;]}]&#39;
+     --user cjeris # Your login.arc username
+     https://private.oauth.brightcove.com/OAuth/private/v3/client_apps
+</code></pre>
+
+<p>This will challenge you for your login.arc password (as part of the
+HTTP Basic authentication you supplied with --user) and also a
+passphrase for the client certificate.  On QA the passphrase for the
+client cert is &#39;1234abcd&#39;.  Contact Team OAuth for help getting the
+client cert authentication working.  If everything goes well, you will
+get back a blob of JSON containing a client ID and client secret and
+some other things.  Save the client ID, but don&#39;t worry about the
+client secret; because your app registration is trusted, you will need
+to authenticate in exactly this way every time you read or update the
+app registration, and your secret is irrelevant.</p>
+
+<p>Say the client ID you got back from this call was
+c29c66c4-5341-4d16-ac19-49e99f84ae7.  You could then request an access
+token in the implicit flow like this:</p>
+
+<pre><code class="sh">curl -i -H &#39;Authorization: BC_TOKEN &lt;BC_TOKEN authenticating a user with access to account 8523&gt;&#39;
+     &#39;https://oauth.brightcove.com/v3/authorization?
+        client_id=c29c66c4-5341-4d16-ac19-49e99f84ae7 # have to specify the client you&#39;re requesting for
+       &amp;response_type=token # Tells OAuth you want to use the implicit flow
+       &amp;state=Massachusetts # This parameter is reproduced unchanged in the response, it&#39;s for CSRF prevention
+       &amp;scope=8523__vca:video-cloud/player/read # The account ID and operation you&#39;re asking for on the token
+       &amp;redirect_uri=https://myapp.brightcove.com/receive_token&#39; # Optional, but must match the client.  Note redirect_ur*i* here not ur*L*.
+</code></pre>
+
+<p>Assuming everything authenticates, you will get back a redirect to
+your redirect URI with the access token packed into the fragment ID.
+Be aware that the fragment ID will probably be gigantic (500-1000
+characters).</p>
+
+<h2>App registration REST API</h2>
+
+<h3>Base URL</h3>
+
+<p>The base URL of the public API endpoint is
+<code>https://oauth.brightcove.com/v3/client_apps</code>.</p>
+
+<p>To use the private endpoint or a OAuth in a different environment,
+consult the &quot;Where is OAuth?&quot; section of the
+<a href="http://confluence.vidmark.local/display/DEV/OAuth#OAuth-WhereisOAuth?">OAuth Confluence page</a>.</p>
+
+<h3>Creation</h3>
+
+<pre><code>POST https://oauth.brightcove.com/v3/client_apps`
+POST https://private.oauth.brightcove.com/OAuth/private/v3/client_apps
+</code></pre>
+
+<p>Parameters and authorization (depending on trust status) as above.
+Returns:</p>
+
+<ul>
+<li>200 OK, (should be 201 Created, but isn&#39;t yet) if the request is
+successful; response body is a JSON encoding of the app registration
+including client ID and secret.  This is the <strong>only</strong> time the
+client secret will ever be returned.</li>
+<li>400 Bad Request if some parameter fails to validate.</li>
+<li>403 Forbidden if this is a trusted app registration and the
+requested maximum scope is not allowed through the endpoint used.</li>
+<li>401 Unauthorized if this is a trusted app registration and auth
+credentials sufficient to authorize the requested maximum scope were
+not supplied.</li>
+<li>500 Internal Server Error if something went wrong.</li>
+</ul>
+
+<h3>Retrieval</h3>
+
+<pre><code>GET https://oauth.brightcove.com/v3/client_apps/:client_id
+GET https://private.oauth.brightcove.com/OAuth/private/v3/client_apps/:client_id
+</code></pre>
+
+<p>Authorization (depending on trust status) as above.  There is
+currently <em>no</em> &quot;index&quot; API to query app registrations or retrieve them
+except by individual client ID.  Returns:</p>
+
+<ul>
+<li>200 OK if the request is successful; response body is a JSON
+encoding of the app registration, not including secrets.</li>
+<li>401 Unauthorized if this is a trusted app registration and auth
+credentials sufficient to authorize the maximum scope were not
+supplied, or if this is an untrusted app registration and the client
+secret was not supplied.</li>
+<li>Other error responses as for creation above.</li>
+</ul>
+
+<h3>Update</h3>
+
+<pre><code>PUT https://oauth.brightcove.com/v3/client_apps/:client_id
+PUT https://private.oauth.brightcove.com/OAuth/private/v3/client_apps/:client_id
+</code></pre>
+
+<p>Parameters and authorization (depending on trust status) as above.
+Parameters are the same as for creation except that <strong>trusted</strong> may not be
+updated.  Returns as for retrieval above.</p>
+
+<h3>Revocation</h3>
+
+<pre><code>DELETE https://oauth.brightcove.com/v3/client_apps/:client_id
+DELETE https://private.oauth.brightcove.com/OAuth/private/v3/client_apps/:client_id
+</code></pre>
+
+<p>Authorization (depending on trust status) as above.  The client
+registration is not deleted, merely marked <strong>revoked</strong>.  Un-revocation
+is not possible.  Returns as for retrieval above, except that
+successful revocation only reports success, it does not return the
+revoked registration.</p>
+

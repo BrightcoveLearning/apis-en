@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+	<!-- change title to match the h1 heading -->
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+	<script src="//use.edgefonts.net/source-code-pro.js"></script>
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/font-hack/2.015/css/hack-extended.min.css">
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/atelier-forest.light.min.css" />
+    <link rel="stylesheet" type="text/css" href="/en/styles/bcls-doc-site.css" />
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/font-hack/2.015/css/hack-extended.min.css">
+
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2728311-29', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+</head>
+
+<body>
+	<!-- header navbar -->
+	<div id="navWrapper" class="fixed"></div>
+	<!-- breadcrumbs -->
+	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+	<!-- search -->
+	<div id="searchModal" class="reveal-modal" data-reveal></div>
+	<!-- content -->
+	<!-- content -->
+	<div class="row">
+		<div class="sidebar large-2 columns show-for-large-up">
+			<div id="sidenav" class="side-nav"></div>
+		</div>
+		<div id="main" class="large-10 small-12 columns">
+			<div id="top" class="section">
+				<h1>OAuth concepts</h1>
+			</div>
+			<div class="section" id="scopes">
+				<h2>Scopes</h2>
+				<p>A <strong>scope</strong> in OAuth is a data object describing a set of resources and some operations on those resources. The scope of an access token limits what you can do by presenting that token.</p>
+				<p>This might be a typical scope for an access token used by a Studio user. It grants access to perform a variety of operations on videos and players belonging to a specific Video Cloud account.</p>
+<pre><code class="json">[{&quot;identity&quot;:   {&quot;type&quot;: &quot;video-cloud-account&quot;, &quot;account-id&quot;: 8523},
+  &quot;operations&quot;: [&quot;video-cloud/video/all&quot;, &quot;video-cloud/player/all&quot;]}]
+</code></pre>
+				<p>A user might (through a Studio module) present a token with this scope to the Catalog API, asking to read metadata on a particular video. the Catalog API would determine the video&#39;s owning publisher ID to be 8523, and then ask whether the token&#39;s scope permits the operation <code>&quot;video-cloud/video/read&quot;</code> on that publisher ID. Irving knows that <code>&quot;video-cloud/video/read&quot;</code> is subordinate to <code>&quot;video-cloud/video/all&quot;</code>, so the authorization succeeds.</p>
+				<p>Here is the scope for access tokens used by the <code>benson-admin</code> app to manipulate resources in Benson.</p>
+<pre><code class="json">[{&quot;identity&quot;:   {&quot;type&quot;: &quot;internal&quot;, &quot;app-name&quot;: &quot;benson&quot;},
+  &quot;operations&quot;: [&quot;benson_read&quot;, &quot;benson_write&quot;]}]
+</code></pre>
+				<p>Here the <code>&quot;internal&quot;</code> identity designates the set of resources owned by the Benson service; internal authorization tasks often don&#39;t require any more granularity than this.</p>
+				<p>In general, when you request an access token from OAuth, OAuth compares the scope you asked for (explicitly or implicitly) with various limits derived from the client making the request, the authenticators you presented on the request, and other constraints. If you are allowed to have everything you asked for, you get the token; if not, you don&#39;t. (Note that we may in the future cause OAuth to give a token with whatever lesser subscope you can actually have, rather than denying access. Either this weakening behavior, or the current outright denial, is permitted by the OAuth 2 standard.)</p> 				
+				<p>When you present an access token to a resource server on an API call, the resource server (using OAuth&#39;s Irving library) checks whether the scope of the token is strong enough to contain the scope required for the call you&#39;re making. What the &quot;scope required for the call&quot; contains is set by the resource server implementors when they define their security policy. If the token&#39;s scope is strong enough (and it&#39;s still valid), authorization succeeds and the call is answered; if not, it isn&#39;t.</p>
+				<p>Refer to the documentation on <a href="scopes.md">scopes</a> and currently defined
+<a href="operations.md">operation tags</a> for fuller information.</p>
+			</div>
+			<div class="section" id="clientRegistrations">
+				<h2>Client registrations</h2>
+				<p>If you want to access a OAuth-authorized API, the program that requests the access token needs to be registered as a OAuth <strong>client</strong>. OAuth does not issue access tokens to unregistered clients.</p>
+				<p><em>The word &quot;client&quot; has a specific meaning in the OAuth standard: a client is a program used by an end user to access a resource.  In the OAuth docs, we try very hard never to use the word &quot;client&quot; with any other meaning.</em></p>
+				<p>A client registration is a record in OAuth which identifies a particular client and defines some attributes. The most important attribute of a client registration is its <em>maximum scope</em>, which is just what it sounds like: You can only request an access token through a given client if the scope of that token fits within the client&#39;s maximum scope. When a Facebook app tells you that it wants access to your social graph and your photo albums, that&#39;s the client informing you of what its programmers have set its maximum scope to. That doesn&#39;t mean that every access token the app requests for you will have that full strength (but in practice it probably will).</p>
+				<p>There are other important attributes of a client registration, depending on <a href="oauth-flows.html">what OAuth flow(s)</a> the registration is for. If it&#39;s intended for the client credentials flow or authorization code flow, then the <em>client secret</em> is significant; this is a string of bits which serves as a password to authenticate the client. If the client registration is for the authorization code flow or implicit flow, the <em>redirect URL</em> is significant; this tells OAuth where it should expect to send tokens (more importantly, where it should refuse to send tokens, to protect against XSS attacks). See the detailed documentation on <a href="http://confluence.vidmark.local/x/YoXnAQ">client registrations</a> for more information.</p>
+				<p>To create this registration, you use the <a href="http://confluence.vidmark.local/x/WYZrAQ">client credentials API</a> or the <a href="http://confluence.vidmark.local/x/YoXnAQ">client app registration API</a>, depending on which OAuth flow you want to use. Client registrations last forever, or until explicitly revoked.</p>
+			</div>
+			<div class="section" id="BCLreferences">
+				<h2>Related Topics</h2>
+				<ul>
+					<li> <a href="internal:node/XXXX">DOC TITLE</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- bcl scripts -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/gist-embed/2.2/gist-embed.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+	<script src="/en/scripts/log.js"></script>
+	<script src="/en/scripts/docs-nav-data.min.js"></script>
+	<script src="/en/scripts/bcls-doc-site.js"></script>
+	<script src="/en/scripts/bc-mapi.js"></script>
+	<script>
+		$(document).foundation();
+	</script>
+	<script type="text/javascript">
+		/******** Any scripts specific to page samples should go here *********/
+	</script>
+	
+	</div>
+<div style="text-align:center">
+    
+</div>
+
+</body>
+
+</html>

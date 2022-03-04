@@ -1,0 +1,177 @@
+<h1 id="toc_0">
+    Digital Master</h1>
+
+<h2 id="toc_1">Path</h2>
+
+<p><a href="README.md">$BASE_URL</a>/accounts/1234/videos/5678/digital_master</p>
+
+<h2 id="toc_2">Usage</h2>
+
+<h3 id="toc_3">GET</h3>
+
+<p>Returns digital master info for the video with the given ID.</p>
+
+<h4 id="toc_4">Fields</h4>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>id</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>account_id</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>audio_only</td>
+            <td>Boolean</td>
+        </tr>
+        <tr>
+            <td>cdn
+                <em>origin</em>id</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>complete</td>
+            <td>Boolean</td>
+        </tr>
+        <tr>
+            <td>controller_type</td>
+            <td>String; one of the valid values in the controller type enum</td>
+        </tr>
+        <tr>
+            <td>current_filename</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>drm</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>encoding_rate</td>
+            <td>Number</td>
+        </tr>
+        <tr>
+            <td>frame_height</td>
+            <td>Number</td>
+        </tr>
+        <tr>
+            <td>frame_width</td>
+            <td>Number</td>
+        </tr>
+        <tr>
+            <td>hds</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>hls</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>preview
+                <em>thumbnail</em>asset_id</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>progressive_download</td>
+            <td>Boolean</td>
+        </tr>
+        <tr>
+            <td>reference_id</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>remote
+                <em>stream</em>name</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>remote_url</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>sharded_directory</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>size</td>
+            <td>Number</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String; one of the valid values in the type enum</td>
+        </tr>
+        <tr>
+            <td>updated_at</td>
+            <td>String in ISO-8601 date format</td>
+        </tr>
+        <tr>
+            <td>uploaded_at</td>
+            <td>String in ISO-8601 date format</td>
+        </tr>
+        <tr>
+            <td>video_codec</td>
+            <td>String; one of the valid values in the video codec enum</td>
+        </tr>
+        <tr>
+            <td>video_container</td>
+            <td>String; one of the valid values in the video container enum</td>
+        </tr>
+        <tr>
+            <td>video_duration</td>
+            <td>Number</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>If the digital master exists, but we have no asset information on it, only the ID will be returned in the GET response.</p>
+
+<h4 id="toc_5">Options</h4>
+
+<p>None</p>
+
+<h3 id="toc_6">POST</h3>
+
+<p>Not supported.</p>
+
+<h3 id="toc_7">PATCH</h3>
+
+<p>
+    <strong>THIS SHOULD NOT BE PUBLICALLY DOCUMENTED! IT IS A SPECIAL FUNCTION FOR A VERY SPECIFIC USE CASE, WHICH PUBLISHERS SHOULD LEARN ABOUT BY CONTACTING CUSTOMER SUPPORT.</strong>
+</p>
+
+<p>Make a PATCH request to the parent video at <a href="README.md">$BASE_URL</a>/accounts/1234/videos/5678, with a body of {&quot;digital
+    <em>master</em>id&quot;: id
+    <em>of</em>valid
+    <em>mp4</em>source}.</p>
+
+<p>
+    <em>Restrictions</em>
+</p>
+
+<ul>
+    <li>Source for new digital master must already be in the video&#39;s sources array.</li>
+    <li>Fails if the new source is null, incomplete, errored, remote, audio, drm, hls (has container=M2TS), or is not an FLV_FULL.</li>
+    <li>Fails if the video already has a digital master. To replace an existing digital master, first delete the old then add the new via PATCH.</li>
+    <li>Changing the digital master on a shared video will
+        <em>not</em> affect the sharee copies.</li>
+</ul>
+
+<h3 id="toc_8">DELETE</h3>
+
+<p>
+    <strong>THIS SHOULD NOT BE PUBLICALLY DOCUMENTED! IT IS A SPECIAL FUNCTION FOR A VERY SPECIFIC USE CASE, WHICH PUBLISHERS SHOULD LEARN ABOUT BY CONTACTING CUSTOMER SUPPORT.</strong>
+</p>
+
+<p>Removes the digital master from the video (sets it to null); Kali will do the actual deleting if the asset becomes orphaned by this action. Does not cascade for shared videos; you must explicitly delete the digital master from all copies.</p>

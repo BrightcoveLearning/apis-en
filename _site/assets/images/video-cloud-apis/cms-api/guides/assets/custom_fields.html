@@ -1,0 +1,139 @@
+<h1 id="toc_0">
+    Video fields resource</h1>
+
+<p>This resource provides access to the account-level custom field definition. This is currently a read-only resource. To view or edit the
+    <em>value</em> of a custom field, see <a href="video.md">the video resource</a>.</p>
+
+<p>The standard_fields array will only be populated when standard fields have a description or are required.</p>
+
+<h2 id="toc_1">Path</h2>
+
+<p><a href="README.md">$BASE_URL</a>/accounts/1234/video_fields</p>
+
+<h2 id="toc_2">Usage</h2>
+
+<h3 id="toc_3">GET</h3>
+
+<p>Returns video field data for the account.</p>
+
+<h4 id="toc_4">Fields</h4>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>max_custom_fields</td>
+            <td>Number</td>
+            <td>Number of custom fields a publisher can create on the account</td>
+        </tr>
+        <tr>
+            <td>custom_fields</td>
+            <td>Array</td>
+            <td>List of custom field objects on the account</td>
+        </tr>
+        <tr>
+            <td>standard_fields</td>
+            <td>Array</td>
+            <td>List of fields that are required or have a description. Standard fields that have neither will not appear in this array.</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    <strong>For each custom field:</strong>
+</p>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>id</td>
+            <td>String</td>
+            <td>Internal name of the field</td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>String</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>display_name</td>
+            <td>String</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String</td>
+            <td>one of &#39;enum&#39; or &#39;string&#39; (which translates to &#39;List&#39; or &#39;Text&#39; in the UI)</td>
+        </tr>
+        <tr>
+            <td>enum_values</td>
+            <td>Array</td>
+            <td>Array of String values valid for the custom field; only present when type = &#39;enum&#39;</td>
+        </tr>
+        <tr>
+            <td>required</td>
+            <td>Boolean</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    <strong>For each standard field:</strong>
+</p>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>id</td>
+            <td>String</td>
+            <td>Name of the field</td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>String</td>
+            <td>Can be null if this was not set by the user</td>
+        </tr>
+        <tr>
+            <td>required</td>
+            <td>Boolean</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<h4 id="toc_5">Options</h4>
+
+<p>None - no sort, paging, or query</p>
+
+<h3 id="toc_6">POST</h3>
+
+<p>Not yet supported</p>
+
+<h3 id="toc_7">PATCH</h3>
+
+<p>Not yet supported</p>
+
+<h3 id="toc_8">DELETE</h3>
+
+<p>Not yet supported</p>

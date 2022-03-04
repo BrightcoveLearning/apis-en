@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+	<!-- change title to match the h1 heading -->
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+	<script src="//use.edgefonts.net/source-code-pro.js"></script>
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/font-hack/2.015/css/hack-extended.min.css">
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/atelier-forest.light.min.css" />
+    <link rel="stylesheet" type="text/css" href="/en/styles/bcls-doc-site.css" />
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/font-hack/2.015/css/hack-extended.min.css">
+
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2728311-29', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+</head>
+
+<body>
+	<!-- header navbar -->
+	<div id="navWrapper" class="fixed"></div>
+	<!-- breadcrumbs -->
+	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+	<!-- search -->
+	<div id="searchModal" class="reveal-modal" data-reveal></div>
+	<!-- content -->
+	<!-- content -->
+	<div class="row">
+		<div class="sidebar large-2 columns show-for-large-up">
+			<div id="sidenav" class="side-nav"></div>
+		</div>
+		<div id="main" class="large-10 small-12 columns">
+			<div id="top" class="section">
+
+                <h1>I want to use an API that is protected with OAuth</h1>
+                
+                <p>You will need to choose a client type, register your client with Cathy, implement an OAuth flow
+                to get an access token, and include the access token in your API requests. You need to know
+                what operations the API requires (this should be documented by the API developers).</p>
+                
+                <ul>
+                <li><a href="#choose-a-client-type">Choose a client type</a></li>
+                <li><a href="#register-your-client">Register your client</a></li>
+                <li><a href="#implement-an-oauth-flow">Implement an OAuth flow</a></li>
+                <li><a href="#use-the-access-token">Use the access token</a></li>
+                </ul>
+                
+                <h2>Choose a client type</h2>
+                
+                <p>The kind of client you are writing will determine how you register your client
+                and which OAuth flow you implement. <a href="oauth2-flows.md">Pick the appropriate flow</a> based
+                on your needs.</p>
+                
+                <h2>Register your client</h2>
+                
+                <h3>Client credential registration</h3>
+                
+                <p>If you are writing a script or service that runs without a specific user, you
+                need a <strong>client credential</strong>. You need to pick an app name, and know the set of
+                operations required by the API you&#39;ll be calling.</p>
+                
+                <p>Here&#39;s a sample invocation of the API:</p>
+                
+                <pre><code class="sh">ssh &lt;user&gt;@login.arc.brightcove.com
+                
+                # create a client credential good for one BC account
+                curl -i --insecure -H &#39;Authorization: BC_TOKEN yy1Nqrseat7WDXgr-xhGuwPrP_d0gRyTXxcAJa-PObiK1tGodT2wusubPNZDtVMj&#39; -d &#39;name=SampleClient&amp;maximum_scope=[{&quot;identity&quot;: {&quot;type&quot;: &quot;video-cloud-account&quot;, &quot;account-id&quot;: 30704003839001}, &quot;operations&quot;: [&quot;video-cloud/video/all&quot;]}]&#39; https://cathy01:22843/cathy/private/v3/client_credentials
+                
+                # or, create an internal client credential
+                curl -i --insecure --user &lt;username&gt; -d &#39;name=SampleClient&amp;maximum_scope=[{&quot;identity&quot;:{&quot;type&quot;:&quot;internal&quot;,&quot;app-name&quot;:&quot;valkyrie&quot;},&quot;operations&quot;:[&quot;roebuck/asset-delete-read&quot;, &quot;roebuck/asset-delete-write&quot;]}]&#39; https://cathy01:22843/cathy/private/v3/client_credentials
+                # enter your login.arc password
+                </code></pre>
+                
+                <p>Save the <code>client_id</code> and <code>client_secret</code> you receive in a secure place.</p>
+                
+                <p>See also:</p>
+                
+                <ul>
+                <li><a href="client-credentials-registration-api.md">Cathy client credentials REST API</a></li>
+                </ul>
+                
+                <h3>Client app registration</h3>
+                
+                <p>Otherwise, you need a <strong>client app</strong>. You need to pick an app name, description,
+                and redirect url, and know the set of operations required by the API you&#39;ll be
+                calling.</p>
+                
+                <p>The redirect url is the address of a resource that will process tokens from
+                Cathy and make them available to your app. It must be a secure (https) url. See
+                the OAuth flow section.</p>
+                
+                <p>Again, a sample invocation:</p>
+                
+                <pre><code class="sh">ssh &lt;user&gt;@login.arc.brightcove.com
+                curl -i --insecure --user &lt;user&gt; -d &#39;name=SampleClient&amp;description=test+api+webapp&amp;redirect_url=https://myapp.brightcove.com/receive_token.html&amp;trusted=true&amp;maximum_scope=[{&quot;identity&quot;:{&quot;type&quot;:&quot;video-cloud-account&quot;,&quot;account-id&quot;:&quot;all&quot;},&quot;operations&quot;:[&quot;video-cloud/video/all&quot;]}]&#39; https://cathy01:22843/cathy/private/v3/client_apps
+                # enter your login.arc password
+                </code></pre>
+                
+                <p>See also: <a href="client-app-registration-api.md">Client app registration</a></p>
+                
+                <h2>Implement an OAuth flow</h2>
+                
+                <p>If you have a client credential you need to exchange your id and secret for
+                tokens. There is probably an OAuth library in your chosen language to help with
+                this. See <a href="https://bithub.brightcove.com/videocloud/cathy/tree/master/examples/client">Cathy examples</a>
+                for help.</p>
+                
+                <p>If you are writing a webapp you will use the <a href="oauth2-flows.md#implicit-flow">implicit flow</a>. You make an AJAX
+                request to cathy, usually in a new window or iframe. Cathy then redirects to your registered
+                <code>redirect_url</code> with the token in the url, in a #hash-fragment. You should have a page at the
+                <code>redirect_url</code> that extracts the token and passes it back to your app. In practice you probably
+                want to just use <a href="https://bithub.brightcove.com/videocloud/bcapi.js">bcapi</a>, or at least look
+                there for guidance. If you are writing a module for the new Studio, the <a href="https://bithub.brightcove.com/videocloud/studio-client">Studio Module SDK</a> can perform the entire flow for you.</p>
+                
+                <p>If you are writing a server app, you will use the
+                <a href="oauth2-flows.md#authorization-code-flow">authorization code flow</a>. I haven&#39;t done this before. Figure it out
+                and document your adventures here!  (Sorry.)</p>
+                
+                <h2>Use the access token</h2>
+                
+                <p>When you make an API request, include your access token in a header:</p>
+                
+                <pre><code>Authorization: Bearer &lt;access token&gt;
+                </code></pre>
+                
+                <p>You will need to get a new access token whenever the old one expires.</p>
+                
+			</div>
+		</div>
+	</div>
+	<!-- bcl scripts -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/gist-embed/2.2/gist-embed.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+	<script src="/en/scripts/log.js"></script>
+	<script src="/en/scripts/docs-nav-data.min.js"></script>
+	<script src="/en/scripts/bcls-doc-site.js"></script>
+	<script src="/en/scripts/bc-mapi.js"></script>
+	<script>
+		$(document).foundation();
+	</script>
+	<script type="text/javascript">
+		/******** Any scripts specific to page samples should go here *********/
+	</script>
+	
+    
+<div style="text-align:center">
+    
+</div>
+
+</body>
+
+</html>

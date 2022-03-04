@@ -1,0 +1,141 @@
+<h1 id="toc_0">
+    Text tracks (WebVTT captions)</h1>
+
+<h2 id="toc_1">Path</h2>
+
+<p>Text tracks are a map on the video object, accessible via the /videos/123 endpoint. They may also be seen in the video list (at the /videos end point), but can only be edited on the individual video object.</p>
+
+<p><a href="README.md">$BASE_URL</a>/accounts/1234/videos/5678</p>
+
+<p><a href="README.md">$BASE_URL</a>/accounts/1234/videos/ref:myRefId</p>
+
+<h2 id="toc_2">Usage</h2>
+
+<h3 id="toc_3">GET</h3>
+
+<p>See the <a href="video.md">video</a> object documentation.</p>
+
+<h3 id="toc_4">PATCH</h3>
+
+<p>See the <a href="video.md">video</a> object documentation for general information. The following is specific to the text_tracks array on an individual video object.</p>
+
+<h4 id="toc_5">Fields</h4>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>id</td>
+            <td>String</td>
+            <td>read-only</td>
+        </tr>
+        <tr>
+            <td>src</td>
+            <td>String</td>
+            <td>address of the track file (URL). Only one of &#39;src&#39; or &#39;asset_id&#39; should be provided. &#39;src&#39; will be ignored if &#39;asset_id&#39; is present.</td>
+        </tr>
+        <tr>
+            <td>srclang</td>
+            <td>String</td>
+            <td>language of the track, e.g. &quot;en&quot;</td>
+        </tr>
+        <tr>
+            <td>label</td>
+            <td>String</td>
+            <td>a user-readable title</td>
+        </tr>
+        <tr>
+            <td>kind</td>
+            <td>String</td>
+            <td>how the track is meant to be used: &quot;subtitles&quot;, &quot;captions&quot;, &quot;descriptions&quot;, &quot;chapters&quot;, &quot;metadata&quot;</td>
+        </tr>
+        <tr>
+            <td>mime_type</td>
+            <td>String</td>
+            <td>mime type of the track file, e.g. &quot;text/vtt&quot;</td>
+        </tr>
+        <tr>
+            <td>asset_id</td>
+            <td>String</td>
+            <td>read-only; managed (ingested) assets only. Only one of &#39;src&#39; or &#39;asset_id&#39; should be provided. &#39;src&#39; will be ignored if &#39;asset_id&#39; is present.</td>
+        </tr>
+        <tr>
+            <td>sources</td>
+            <td>Array</td>
+            <td>read-only</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;
+                <em>src</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>address of the track file (URL)</td>
+        </tr>
+        <tr>
+            <td>default</td>
+            <td>Boolean</td>
+            <td>indicates that the track should be enabled by default. Should only be true on one track.</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>The entire array must be patched, not just the track or the field that is changing.</p>
+
+<h4 id="toc_6">Examples</h4>
+
+<p>
+    <strong>Add a new text track to a video that has none</strong>
+</p>
+
+<p>For remote assets:</p>
+
+<p>PATCH {&quot;text_tracks&quot;:[{&quot;src&quot;:&quot;http://remote/video/url.vtt&quot;, &quot;label&quot;:&quot;test&quot;, &quot;srclang&quot;:&quot;en&quot;, &quot;kind&quot;:&quot;captions&quot;, &quot;mime-type&quot;:&quot;text/vtt&quot;, &quot;default&quot;:true}]}</p>
+
+<p>For managed assets:</p>
+
+<p>Use the <a href="https://bithub.brightcove.com/videocloud/wedge/blob/master/doc/apis/pbi-api.md">Dynamic Ingest API</a>.</p>
+
+<p>
+    <strong>Add a new text track to a video that already has one</strong>
+</p>
+
+<ol>
+    <li>GET /videos/123</li>
+    <li>Parse for text_tracks</li>
+    <li>Append a new text track object to the array</li>
+    <li>PATCH the array to /videos/123</li>
+</ol>
+
+<p>The entire array must be sent, not just the text track you are adding. The CMS API will ignore normally read-only fields like id, asset_id, and sources if they do not change.</p>
+
+<p>
+    <strong>Edit an existing text track</strong>
+</p>
+
+<ol>
+    <li>GET /videos/123</li>
+    <li>Parse for text_tracks</li>
+    <li>Update the relevant text track within the array</li>
+    <li>PATCH the array to /videos/123</li>
+</ol>
+
+<p>The entire array must be sent, not just the text track you are editing. The CMS API will ignore normally read-only fields like &#39;id&#39;, &#39;asset
+    <em>id&#39;, and &#39;sources&#39; if they do not change. It will also ignore &#39;src&#39; if &#39;asset</em>id&#39; is provided.</p>
+
+<p>
+    <strong>Clear out a video&#39;s text tracks</strong>
+</p>
+
+<p>PATCH {&quot;text_tracks&quot;:[]}</p>
+
+<h3 id="toc_7">DELETE</h3>
+
+<p>See the <a href="video.md">video</a> object documentation.</p>

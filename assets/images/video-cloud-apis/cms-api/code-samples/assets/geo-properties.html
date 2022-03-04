@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <style>
+        body {
+        margin: 2em;
+        font-family: sans-serif;
+        }
+        h2 {
+        font-size: 1.1em;
+        }
+        button {
+        padding: .5em;
+        }
+        .exchange {
+            width: 100%;
+        }
+        div.select {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        pre {
+        background-color: #F1EFEE;
+        border-left: .5em solid #636363;
+        box-shadow: 5px 5px 10px rgba(192, 192, 192, 1.000);
+        font-family: Hack, monospace;
+        font-size: .8em;
+        padding: 1em;
+        }
+        .video-item {
+        border: 1px solid #999;
+        margin: 0;
+        padding: 0;
+        height: 74px;
+        width: 480px;
+        overflow: scroll;
+        }
+        textarea {
+            width: 100%;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>CMS API Geo-Filtering Updater</h1>
+        <p>Note: this app updates <code>geo</code> properties for <strong>all videos</strong> in an account.</p>
+        <p>
+            <input name="excluded" type="radio" value="true" checked>Selected countries may <strong>not</strong> view videos</input>
+            <input name="excluded" type="radio" value="false">Selected countries <strong>can</strong> view videos</input>
+        </p>
+        <div class="select">
+            <p>Select countries</p>
+            <select id="countries" multiple="multiple" size="10">
+                <option value="af">Afghanistan</option>
+                <option value="al">Albania</option>
+                <option value="dz">Algeria</option>
+                <option value="as">American Samoa</option>
+                <option value="ad">Andorra</option>
+                <option value="ag">Angola</option>
+                <option value="ai">Anguilla</option>
+                <option value="ag">Antigua &amp; Barbuda</option>
+                <option value="ar">Argentina</option>
+                <option value="aa">Armenia</option>
+                <option value="aw">Aruba</option>
+                <option value="au">Australia</option>
+                <option value="at">Austria</option>
+                <option value="az">Azerbaijan</option>
+                <option value="bs">Bahamas</option>
+                <option value="bh">Bahrain</option>
+                <option value="bd">Bangladesh</option>
+                <option value="bb">Barbados</option>
+                <option value="by">Belarus</option>
+                <option value="be">Belgium</option>
+                <option value="bz">Belize</option>
+                <option value="bj">Benin</option>
+                <option value="bm">Bermuda</option>
+                <option value="bt">Bhutan</option>
+                <option value="bo">Bolivia</option>
+                <option value="bl">Bonaire</option>
+                <option value="ba">Bosnia &amp; Herzegovina</option>
+                <option value="bw">Botswana</option>
+                <option value="br">Brazil</option>
+                <option value="bc">British Indian Ocean Ter</option>
+                <option value="bn">Brunei</option>
+                <option value="bg">Bulgaria</option>
+                <option value="bf">Burkina Faso</option>
+                <option value="bi">Burundi</option>
+                <option value="kh">Cambodia</option>
+                <option value="cm">Cameroon</option>
+                <option value="ca">Canada</option>
+                <option value="ic">Canary Islands</option>
+                <option value="cv">Cape Verde</option>
+                <option value="ky">Cayman Islands</option>
+                <option value="cf">Central African Republic</option>
+                <option value="td">Chad</option>
+                <option value="cd">Channel Islands</option>
+                <option value="cl">Chile</option>
+                <option value="cn">China</option>
+                <option value="ci">Christmas Island</option>
+                <option value="cs">Cocos Island</option>
+                <option value="co">Colombia</option>
+                <option value="cc">Comoros</option>
+                <option value="cg">Congo</option>
+                <option value="ck">Cook Islands</option>
+                <option value="cr">Costa Rica</option>
+                <option value="ct">Cote D'Ivoire</option>
+                <option value="hr">Croatia</option>
+                <option value="cu">Cuba</option>
+                <option value="cb">Curacao</option>
+                <option value="cy">Cyprus</option>
+                <option value="cz">Czech Republic</option>
+                <option value="dk">Denmark</option>
+                <option value="dj">Djibouti</option>
+                <option value="dm">Dominica</option>
+                <option value="do">Dominican Republic</option>
+                <option value="tm">East Timor</option>
+                <option value="ec">Ecuador</option>
+                <option value="eg">Egypt</option>
+                <option value="sv">El Salvador</option>
+                <option value="gq">Equatorial Guinea</option>
+                <option value="er">Eritrea</option>
+                <option value="ee">Estonia</option>
+                <option value="et">Ethiopia</option>
+                <option value="fa">Falkland Islands</option>
+                <option value="fo">Faroe Islands</option>
+                <option value="fj">Fiji</option>
+                <option value="fi">Finland</option>
+                <option value="fr">France</option>
+                <option value="gf">French Guiana</option>
+                <option value="pf">French Polynesia</option>
+                <option value="fs">French Southern Ter</option>
+                <option value="ga">Gabon</option>
+                <option value="gm">Gambia</option>
+                <option value="ge">Georgia</option>
+                <option value="de">Germany</option>
+                <option value="gh">Ghana</option>
+                <option value="gi">Gibraltar</option>
+                <option value="gb">Great Britain</option>
+                <option value="gr">Greece</option>
+                <option value="gl">Greenland</option>
+                <option value="gd">Grenada</option>
+                <option value="gp">Guadeloupe</option>
+                <option value="gu">Guam</option>
+                <option value="gt">Guatemala</option>
+                <option value="gn">Guinea</option>
+                <option value="gy">Guyana</option>
+                <option value="ht">Haiti</option>
+                <option value="hw">Hawaii</option>
+                <option value="hn">Honduras</option>
+                <option value="hk">Hong Kong</option>
+                <option value="hu">Hungary</option>
+                <option value="is">Iceland</option>
+                <option value="in">India</option>
+                <option value="id">Indonesia</option>
+                <option value="ia">Iran</option>
+                <option value="iq">Iraq</option>
+                <option value="ir">Ireland</option>
+                <option value="im">Isle of Man</option>
+                <option value="il">Israel</option>
+                <option value="it">Italy</option>
+                <option value="jm">Jamaica</option>
+                <option value="jp">Japan</option>
+                <option value="jo">Jordan</option>
+                <option value="kz">Kazakhstan</option>
+                <option value="ke">Kenya</option>
+                <option value="ki">Kiribati</option>
+                <option value="nk">Korea North</option>
+                <option value="ks">Korea South</option>
+                <option value="kw">Kuwait</option>
+                <option value="kg">Kyrgyzstan</option>
+                <option value="la">Laos</option>
+                <option value="lv">Latvia</option>
+                <option value="lb">Lebanon</option>
+                <option value="ls">Lesotho</option>
+                <option value="lr">Liberia</option>
+                <option value="ly">Libya</option>
+                <option value="li">Liechtenstein</option>
+                <option value="lt">Lithuania</option>
+                <option value="lu">Luxembourg</option>
+                <option value="mo">Macau</option>
+                <option value="mk">Macedonia</option>
+                <option value="mg">Madagascar</option>
+                <option value="my">Malaysia</option>
+                <option value="mw">Malawi</option>
+                <option value="mv">Maldives</option>
+                <option value="ml">Mali</option>
+                <option value="mt">Malta</option>
+                <option value="mh">Marshall Islands</option>
+                <option value="mq">Martinique</option>
+                <option value="mr">Mauritania</option>
+                <option value="mu">Mauritius</option>
+                <option value="me">Mayotte</option>
+                <option value="mx">Mexico</option>
+                <option value="mi">Midway Islands</option>
+                <option value="md">Moldova</option>
+                <option value="mc">Monaco</option>
+                <option value="mn">Mongolia</option>
+                <option value="ms">Montserrat</option>
+                <option value="ma">Morocco</option>
+                <option value="mz">Mozambique</option>
+                <option value="mm">Myanmar</option>
+                <option value="na">Nambia</option>
+                <option value="nu">Nauru</option>
+                <option value="np">Nepal</option>
+                <option value="an">Netherland Antilles</option>
+                <option value="nl">Netherlands (Holland, Europe)</option>
+                <option value="nv">Nevis</option>
+                <option value="nc">New Caledonia</option>
+                <option value="nz">New Zealand</option>
+                <option value="ni">Nicaragua</option>
+                <option value="ne">Niger</option>
+                <option value="ng">Nigeria</option>
+                <option value="nw">Niue</option>
+                <option value="nf">Norfolk Island</option>
+                <option value="no">Norway</option>
+                <option value="om">Oman</option>
+                <option value="pk">Pakistan</option>
+                <option value="pw">Palau Island</option>
+                <option value="ps">Palestine</option>
+                <option value="pa">Panama</option>
+                <option value="pg">Papua New Guinea</option>
+                <option value="py">Paraguay</option>
+                <option value="pe">Peru</option>
+                <option value="ph">Philippines</option>
+                <option value="po">Pitcairn Island</option>
+                <option value="pl">Poland</option>
+                <option value="pt">Portugal</option>
+                <option value="pr">Puerto Rico</option>
+                <option value="qa">Qatar</option>
+                <option value="me">Republic of Montenegro</option>
+                <option value="rs">Republic of Serbia</option>
+                <option value="re">Reunion</option>
+                <option value="ro">Romania</option>
+                <option value="ru">Russia</option>
+                <option value="rw">Rwanda</option>
+                <option value="nt">St Barthelemy</option>
+                <option value="eu">St Eustatius</option>
+                <option value="he">St Helena</option>
+                <option value="kn">St Kitts-Nevis</option>
+                <option value="lc">St Lucia</option>
+                <option value="mb">St Maarten</option>
+                <option value="pm">St Pierre &amp; Miquelon</option>
+                <option value="vc">St Vincent &amp; Grenadines</option>
+                <option value="sp">Saipan</option>
+                <option value="so">Samoa</option>
+                <option value="as">Samoa American</option>
+                <option value="sm">San Marino</option>
+                <option value="st">Sao Tome &amp; Principe</option>
+                <option value="sa">Saudi Arabia</option>
+                <option value="sn">Senegal</option>
+                <option value="rs">Serbia</option>
+                <option value="sc">Seychelles</option>
+                <option value="sl">Sierra Leone</option>
+                <option value="sg">Singapore</option>
+                <option value="sk">Slovakia</option>
+                <option value="si">Slovenia</option>
+                <option value="sb">Solomon Islands</option>
+                <option value="oi">Somalia</option>
+                <option value="za">South Africa</option>
+                <option value="es">Spain</option>
+                <option value="lk">Sri Lanka</option>
+                <option value="sd">Sudan</option>
+                <option value="sr">Suriname</option>
+                <option value="sz">Swaziland</option>
+                <option value="se">Sweden</option>
+                <option value="ch">Switzerland</option>
+                <option value="sy">Syria</option>
+                <option value="ta">Tahiti</option>
+                <option value="tw">Taiwan</option>
+                <option value="tj">Tajikistan</option>
+                <option value="tz">Tanzania</option>
+                <option value="th">Thailand</option>
+                <option value="tg">Togo</option>
+                <option value="tk">Tokelau</option>
+                <option value="to">Tonga</option>
+                <option value="tt">Trinidad &amp; Tobago</option>
+                <option value="tn">Tunisia</option>
+                <option value="tr">Turkey</option>
+                <option value="tu">Turkmenistan</option>
+                <option value="tc">Turks &amp; Caicos Is</option>
+                <option value="tv">Tuvalu</option>
+                <option value="ug">Uganda</option>
+                <option value="ua">Ukraine</option>
+                <option value="ae">United Arab Emirates</option>
+                <option value="gb">United Kingdom</option>
+                <option value="us">United States of America</option>
+                <option value="uy">Uruguay</option>
+                <option value="uz">Uzbekistan</option>
+                <option value="vu">Vanuatu</option>
+                <option value="vs">Vatican City State</option>
+                <option value="ve">Venezuela</option>
+                <option value="vn">Vietnam</option>
+                <option value="vb">Virgin Islands (Brit)</option>
+                <option value="va">Virgin Islands (USA)</option>
+                <option value="wk">Wake Island</option>
+                <option value="wf">Wallis &amp; Futana Is</option>
+                <option value="ye">Yemen</option>
+                <option value="zr">Zaire</option>
+                <option value="zm">Zambia</option>
+                <option value="zw">Zimbabwe</option>
+            </select>
+            </div>
+            <div class="select" style="text-align: center;">
+                <button id="addCountry" class="exchange">Add <strong>&gt;</strong></button>
+                <br>
+                <button id="removeCountry" class="exchange"><strong>&lt;</strong> Remove</button>
+            </div>
+            <div class="select">
+                <p>Selected countries</p>
+                <select id="selectedCountries" multiple="multiple" size="10" style="min-width: 100px;">
+
+                </select>
+            </div>
+        </p>
+        <p>
+            <button id="updateVideos" disabled="disabled">Update videos</button>
+        </p>
+        <p><strong id="count"></strong></p>
+        <p><strong id="logger"></strong></p>
+        <p><strong>API request:</strong></p>
+    <pre id="apiRequest"></pre>
+    <p><strong>Input data for write requests:</strong></p>
+    <pre id="apiData"></pre>
+    <p><strong>Request method:</strong></p>
+    <pre id="apiMethod"></pre>
+    <p><strong>Response data</strong></p>
+<pre id="responseData"></pre>
+<script>
+var BCLS = (function(window, document) {
+  var baseURL                 = 'https://cms.api.brightcove.com/v1/accounts/1485884786001',
+      proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy.php',
+      video_id                = '',
+      video_name              = '',
+      offset                  = 0,
+      excludedValue           = 'true',
+      excluded                = true,
+      countriesArray          = [],
+      videoCount              = 0,
+      count                   = document.getElementById('count'),
+      allButtons              = document.getElementsByTagName('button'),
+      excludedEl              = document.getElementsByName('excluded'),
+      countries               = document.getElementById('countries'),
+      selectedCountries       = document.getElementById('selectedCountries'),
+      addCountry              = document.getElementById('addCountry'),
+      removeCountry           = document.getElementById('removeCountry'),
+      updateVideos            = document.getElementById('updateVideos'),
+      apiRequest              = document.getElementById('apiRequest'),
+      apiData                 = document.getElementById('apiData'),
+      apiMethod               = document.getElementById('apiMethod'),
+      generatedContent        = document.getElementById('generatedContent'),
+      responseData            = document.getElementById('responseData'),
+      logger                  = document.getElementById('logger'),
+      i,
+      iMax;
+
+    /**
+     * disables all buttons so user can't submit new request until current one finishes
+     */
+    function disableButtons() {
+        var i,
+            iMax = allButtons.length;
+        for (i = 0; i < iMax; i++) {
+            allButtons[i].setAttribute('disabled', 'disabled');
+        }
+    }
+
+    /**
+     * re-enables all buttons
+     */
+    function enableButtons() {
+        var i,
+            iMax = allButtons.length;
+        for (i = 0; i < iMax; i++) {
+            allButtons[i].removeAttribute('disabled');
+        }
+    }
+
+    /**
+     * gets the selected value for the excluded radio group and sets the var
+     */
+    function getExcludedValue() {
+        iMax = excludedEl.length;
+        for (i = 0; i < iMax; i++) {
+            if (excludedEl[i].checked === true) {
+                if (excludedEl[i].value === 'true') {
+                    excluded = true;
+                } else {
+                    excluded = false;
+                }
+            }
+        }
+    }
+
+    /**
+     * sort the elements of an array - use as is to sort by text
+     * to sort by value, make that the 0 element of the tmpAry
+     * @param  {HTMLElement} selElem the select element
+     */
+    function sortSelect(selElem) {
+    var tmpAry = new Array();
+    for (var i=0;i<selElem.options.length;i++) {
+        tmpAry[i] = new Array();
+        tmpAry[i][0] = selElem.options[i].text;
+        tmpAry[i][1] = selElem.options[i].value;
+    }
+    tmpAry.sort();
+    while (selElem.options.length > 0) {
+        selElem.options[0] = null;
+    }
+    for (var i=0;i<tmpAry.length;i++) {
+        var op = new Option(tmpAry[i][0], tmpAry[i][1]);
+        selElem.options[i] = op;
+    }
+    return;
+}
+
+    /**
+     * gets a collection of selected options for multi-select control
+     * @param  {Element}   sel      the selector element
+     * @param  {Function} [callback] callback to handle individual selected options
+     * @return {Array}  array of selected options
+     */
+    function getSelectedOptions(sel, callback) {
+        var opts = [], opt, i, len;
+        i = sel.options.length;
+        // loop through options in select list
+        while (i > 0) {
+            i--;
+            opt = sel.options[i];
+            console.log(opt);
+            // check if selected
+            if ( opt.selected ) {
+                // add to array of option elements to return from this function
+                opts.push(opt);
+
+                // invoke optional callback function if provided
+                // and pass the selector and the selected option
+                if (callback) {
+                    callback(sel, opt);
+                }
+            }
+        }
+
+        // return array containing references to selected option elements
+        return opts;
+    }
+
+    /**
+     * or removes country codes to country array
+     * this is a callback for getSelectedOptions
+     * @param  {HTMLElement} sel the selector that is processing
+     * @param  {HTMLElement} opt the option to be processed
+     */
+    function addtoCountriesArray(sel, opt) {
+        var i, iMax;
+        if (sel.id === 'countries') {
+            countriesArray.push(opt.value);
+            sel.removeChild(opt);
+            selectedCountries.appendChild(opt);
+        } else {
+            sel.removeChild(opt);
+            countries.appendChild(opt);
+            sortSelect(countries);
+            iMax = countriesArray.length;
+            for (i = 0; i < iMax; i++) {
+                if (countriesArray[i] === opt.value) {
+                    countriesArray.splice(i, 1);
+                    break;
+                }
+            }
+        }
+
+    }
+
+    /**
+     * sets up the data for the API request
+     * @param {String} id the id of the button that was clicked
+     */
+    function setRequestData(id) {
+        var endPoint = '',
+            requestData = {};
+        // disable buttons to prevent a new request before current one finishes
+        disableButtons();
+        switch (id) {
+            case 'getCount':
+                endPoint = '/counts/videos';
+                requestData.url = baseURL + endPoint;
+                requestData.requestType = 'GET';
+                apiRequest.textContent = requestData.url;
+                apiMethod.textContent = requestData.requestType;
+                getMediaData(requestData, id);
+                break;
+            case 'get1video':
+                endPoint = '/videos?limit=1&sort=created_at&offset=' + offset;
+                requestData.url = baseURL + endPoint;
+                requestData.requestType = 'GET';
+                apiRequest.textContent = requestData.url;
+                apiMethod.textContent = requestData.requestType;
+                getMediaData(requestData, id);
+                break;
+            case 'updateVideos':
+                endPoint = '/videos/' + video_id;
+                requestData.url = baseURL + endPoint;
+                requestData.requestType = 'PATCH';
+                requestData.requestBody = {geo: {countries: countriesArray, exclude_countries: excluded, restricted: true}};
+                apiRequest.textContent = requestData.url;
+                apiData.textContent = JSON.stringify(requestData.requestBody);
+                apiMethod.textContent = requestData.requestType;
+                getMediaData(requestData, id);
+                break;
+        }
+    }
+
+    /**
+     * send API request to the proxy
+     * @param  {Object} requestData options for the request
+     * @param  {String} requestID the type of request = id of the button
+     */
+    function getMediaData(options, requestID) {
+        var httpRequest = new XMLHttpRequest(),
+            responseRaw,
+            parsedData,
+            requestParams,
+            dataString,
+            // response handler
+            getResponse = function() {
+                try {
+                  if (httpRequest.readyState === 4) {
+                    if (httpRequest.status === 200) {
+                      // check for completion
+                      if (requestID === 'getCount') {
+                        if (httpRequest.responseText === '[]') {
+                            // no video returned
+                            alert('no video returned');
+                        }
+                        responseRaw = httpRequest.responseText;
+                        responseData.textContent = responseRaw;
+                        parsedData = JSON.parse(responseRaw);
+                        // set total videos
+                        videoCount = parsedData.count;
+                        count.textContent = 'Total videos: ' + videoCount;
+                        setRequestData('get1video');
+                      } else if (requestID === 'get1video') {
+                        responseRaw = httpRequest.responseText;
+                        responseData.textContent = responseRaw;
+                        parsedData = JSON.parse(responseRaw);
+                        // set the video id for the update
+                        video_id = parsedData[0].id;
+                        video_name = parsedData[0].name;
+                        logger.textContent = 'Processing ' + video_name;
+                        setRequestData('updateVideos');
+                      } else if (requestID === 'updateVideos') {
+                        responseRaw = httpRequest.responseText;
+                        responseData.textContent = responseRaw;
+                        // increment offset
+                        offset++;
+                        if (offset < videoCount) {
+                            // move on to next video
+                            setRequestData('get1video');
+                        } else {
+                            // we are done
+                            logger.textContent = 'Finished... ' + offset + ' videos processed'
+                        }
+
+                      }
+                    } else {
+                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                    }
+                  }
+                } catch (e) {
+                  alert('Caught Exception: ' + e);
+                }
+            };
+        // set up request data
+        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+        if (options.requestBody) {
+            dataString = JSON.stringify(options.requestBody);
+            requestParams += "&requestBody=" + encodeURIComponent(dataString);
+        }
+
+        // set response handler
+        httpRequest.onreadystatechange = getResponse;
+        // open the request
+        httpRequest.open('POST', proxyURL);
+        // set headers
+        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // open and send request
+        httpRequest.send(requestParams);
+    }
+    // event listeners
+    updateVideos.addEventListener('click', function() {
+        setRequestData('getCount');
+    });
+    iMax = excludedEl.length;
+    for (i = 0; i < iMax; i++) {
+        excludedEl[i].addEventListener('change', getExcludedValue);
+    }
+    addCountry.addEventListener('click', function() {
+        updateVideos.removeAttribute('disabled');
+        getSelectedOptions(countries, addtoCountriesArray);
+    });
+    removeCountry.addEventListener('click', function(evt) {
+        getSelectedOptions(selectedCountries, addtoCountriesArray);
+    });
+})(window, document);
+</script>
+<div style="text-align:center">
+    
+</div>
+
+<br><br>
+
+</body>
+</html>

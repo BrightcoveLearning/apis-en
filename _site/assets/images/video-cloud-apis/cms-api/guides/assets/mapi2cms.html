@@ -1,0 +1,1190 @@
+<h1 id="toc_0">
+    Mapping the old media API to the new CMS API</h1>
+
+<h2 id="toc_1">Video</h2>
+
+<p>Note that not all fields are available in both APIs.</p>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Media API Field</th>
+            <th>CMS API Field</th>
+            <th>Type</th>
+            <th>Can be updated in CMS API?</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>accountId</td>
+            <td>account_id</td>
+            <td>String</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>adKeys</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>captioning</td>
+            <td>text_tracks</td>
+            <td>Array of HTML5-style text tracks</td>
+            <td>yes</td>
+            <td>WebVTT assets; more details <a href="text_tracks.md">here</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>id</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>src</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td>address of the track file (URL)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>srclang</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td>language of the track, e.g. &quot;en&quot;</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>label</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td>a user-readable title</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>kind</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td>how the track is meant to be used: &quot;subtitles&quot;, &quot;captions&quot;, &quot;descriptions&quot;, &quot;chapters&quot;, &quot;metadata&quot;</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>mime</em>type_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td>mime type of the track file, e.g. &quot;text/vtt&quot;</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>asset</em>id_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>no</td>
+            <td>null if asset is remote</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>sources</em>
+            </td>
+            <td>
+                <em>Array</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>src</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td>address of the track file (URL)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>default</em>
+            </td>
+            <td>
+                <em>Boolean</em>
+            </td>
+            <td>yes</td>
+            <td>indicates that the track should be enabled by default. Should only be true on one track.</td>
+        </tr>
+        <tr>
+            <td>creationDate</td>
+            <td>created_at</td>
+            <td>Number, milliseconds from epoch</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>cuePoints</td>
+            <td>cue_points</td>
+            <td>Array of Maps</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>cue</em>points.0.id_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>cue</em>points.0.force
+                <em>stop</em>
+            </td>
+            <td>
+                <em>Boolean</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>cue</em>points.0.metadata_</td>
+            <td>_String</td>
+            <td>yes</td>
+            <td>code point only_</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>cue</em>points.0.name_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>cue</em>points.0.time_</td>
+            <td>
+                <em>Float</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>cue</em>points.0.type_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>customFields</td>
+            <td>custom_fields</td>
+            <td>Map of field-value pairs (Strings)</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>dashManifestUrl</td>
+            <td>dash
+                <em>manifest</em>id</td>
+            <td>String</td>
+            <td>no</td>
+            <td>Was an URL, is now an ID</td>
+        </tr>
+        <tr>
+            <td>dashRenditions</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td>digitalMaster</td>
+            <td>digital
+                <em>master</em>id</td>
+            <td>String</td>
+            <td>no</td>
+            <td>Was an object; is now an ID</td>
+        </tr>
+        <tr>
+            <td>economics</td>
+            <td>economics</td>
+            <td>String enum</td>
+            <td>yes</td>
+            <td>FREE, AD_SUPPORTED</td>
+        </tr>
+        <tr>
+            <td>FLVPreBumper</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>FLVURL</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>geo</td>
+            <td>Map of property-value pairs</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>geoFilteredCountries</td>
+            <td>&nbsp;&nbsp;
+                <em>geo.countries</em>
+            </td>
+            <td>
+                <em>Array of country code Strings</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>geoFilterExclude</td>
+            <td>&nbsp;&nbsp;
+                <em>geo.exclude</em>countries_</td>
+            <td>
+                <em>Boolean</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>geoRestricted</td>
+            <td>&nbsp;&nbsp;
+                <em>geo.restricted</em>
+            </td>
+            <td>
+                <em>Boolean</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>geoFiltered</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>hdsManifestUrl</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td>HDSRenditions</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td>HLSURL</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>id</td>
+            <td>String</td>
+            <td>no</td>
+            <td>Was a Long, is now a String</td>
+        </tr>
+        <tr>
+            <td>IOSRenditions</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td>itemState</td>
+            <td>state</td>
+            <td>String enum</td>
+            <td>yes</td>
+            <td>ACTIVE, INACTIVE, PENDING, DELETED</td>
+        </tr>
+        <tr>
+            <td>lastModifiedDate</td>
+            <td>updated_at</td>
+            <td>Number, milliseconds from epoch</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>length</td>
+            <td>duration</td>
+            <td>Number, milliseconds</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>link</td>
+            <td>Map of property-value pairs</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>linkUrl</td>
+            <td>&nbsp;&nbsp;
+                <em>link.url</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>linkText</td>
+            <td>&nbsp;&nbsp;
+                <em>link.text</em>
+            </td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>logoOverlay</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>longDescription</td>
+            <td>long_description</td>
+            <td>String</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>name</td>
+            <td>String</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>playsTotal</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>playsTrailingWeek</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>publishedDate</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>referenceId</td>
+            <td>reference_id</td>
+            <td>String</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>renditions</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>schedule</td>
+            <td>Map of property-value pairs</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>endDate</td>
+            <td>&nbsp;&nbsp;
+                <em>schedule.ends</em>at_</td>
+            <td>
+                <em>String in ISO-8601 date format</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>startDate</td>
+            <td>&nbsp;&nbsp;
+                <em>schedule.starts</em>at_</td>
+            <td>
+                <em>String in ISO-8601 date format</em>
+            </td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>sharing</td>
+            <td>Map of property-value pairs</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>sharedByExternalAccount</td>
+            <td>&nbsp;&nbsp;
+                <em>sharing.by</em>external
+                <em>acct</em>
+            </td>
+            <td>
+                <em>Boolean</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>sharing.by</em>id_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>no</td>
+            <td>pub ID that originated the share</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>sharing.source</em>id_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>no</td>
+            <td>video ID of the original video (sharer&#39;s copy)</td>
+        </tr>
+        <tr>
+            <td>sharedToExternalAccount</td>
+            <td>&nbsp;&nbsp;
+                <em>sharing.to</em>external
+                <em>acct</em>
+            </td>
+            <td>
+                <em>Boolean</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;
+                <em>sharing.by</em>reference_</td>
+            <td>
+                <em>Boolean</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>shortDescription</td>
+            <td>description</td>
+            <td>String</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>smooth
+                <em>client</em>manifest_id</td>
+            <td>String</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>smoothManifestUrl</td>
+            <td>smooth
+                <em>server</em>manifest_id</td>
+            <td>String</td>
+            <td>no</td>
+            <td>Was a URL, is now an ID</td>
+        </tr>
+        <tr>
+            <td>smoothRenditions</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td>tags</td>
+            <td>tags</td>
+            <td>Array of tags (Strings)</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>images</td>
+            <td>Map of property-value pairs</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>thumbnail</td>
+            <td>&nbsp;&nbsp;
+                <em>images.thumbnail</em>
+            </td>
+            <td>
+                <em>Map</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.thumbnail.asset</em>id_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.thumbnail.src</em>
+            </td>
+            <td>
+                <em>String URL</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.thumbnail.sources</em>
+            </td>
+            <td>
+                <em>Array of Maps</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.thumbnail.sources.asset</em>id_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>thumbnailUrl</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.thumbnail.sources.src</em>
+            </td>
+            <td>
+                <em>String URL</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.thumbnail.sources.height</em>
+            </td>
+            <td>
+                <em>Number</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.thumbnail.sources.width</em>
+            </td>
+            <td>
+                <em>Number</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>videoStill</td>
+            <td>&nbsp;&nbsp;
+                <em>images.poster</em>
+            </td>
+            <td>
+                <em>Map</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.poster.asset</em>id_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.poster.src</em>
+            </td>
+            <td>
+                <em>String URL</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.poster.sources</em>
+            </td>
+            <td>
+                <em>Array of Maps</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.poster.sources.asset</em>id_</td>
+            <td>
+                <em>String</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>videoStillUrl</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.poster.sources.src</em>
+            </td>
+            <td>
+                <em>String URL</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.poster.sources.height</em>
+            </td>
+            <td>
+                <em>Number</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <em>images.poster.sources.width</em>
+            </td>
+            <td>
+                <em>Number</em>
+            </td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>original_filename</td>
+            <td>String</td>
+            <td>no</td>
+            <td>Will be null for remote asset videos</td>
+        </tr>
+        <tr>
+            <td>version</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See the etag header on the request reponse</td>
+        </tr>
+        <tr>
+            <td>videoFullLength</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td>WMVRenditions</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td>See sources</td>
+        </tr>
+        <tr>
+            <td>n/a</td>
+            <td>complete</td>
+            <td>Boolean</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>n/a</td>
+            <td>folder_id</td>
+            <td>String</td>
+            <td>no</td>
+            <td>Mongo-type ID of folder to which the video belongs</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 id="toc_2">Sources (Renditions)</h2>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Media API Field</th>
+            <th>CMS API Field</th>
+            <th>Type</th>
+            <th>Patchable in CMS?</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>audioOnly</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>controllerType</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>displayName</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>encodingRate</td>
+            <td>encoding_rate</td>
+            <td>Number</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>frameHeight</td>
+            <td>height</td>
+            <td>Integer</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>frameWidth</td>
+            <td>width</td>
+            <td>Integer</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>id</td>
+            <td>String</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>referenceId</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>remoteUrl</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>remoteStreamName</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>size</td>
+            <td>size</td>
+            <td>Long</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>uploadTimestampMillis</td>
+            <td>uploaded_at</td>
+            <td>String in ISO-8601 date format</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>url</td>
+            <td>src</td>
+            <td>String URL</td>
+            <td>no</td>
+            <td>For PD web assets and HLS assets only*</td>
+        </tr>
+        <tr>
+            <td>url</td>
+            <td>app_name</td>
+            <td>String</td>
+            <td>no</td>
+            <td>For streaming web assets only*</td>
+        </tr>
+        <tr>
+            <td>url</td>
+            <td>stream_name</td>
+            <td>String</td>
+            <td>no</td>
+            <td>For streaming web assets only*</td>
+        </tr>
+        <tr>
+            <td>videoCodec</td>
+            <td>codec</td>
+            <td>String enum</td>
+            <td>no</td>
+            <td>UNDEFINED, NONE, SORENSON, ON2, H264</td>
+        </tr>
+        <tr>
+            <td>videoContainer</td>
+            <td>container</td>
+            <td>String enum</td>
+            <td>no</td>
+            <td>FLV, MP4, M2TS</td>
+        </tr>
+        <tr>
+            <td>videoDuration</td>
+            <td>duration</td>
+            <td>Number</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="toc_3">HLS manifest fields in the CMS API</h3>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>src</td>
+            <td>String URL</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String (application/x-mpegURL)</td>
+        </tr>
+        <tr>
+            <td>codec</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>container</td>
+            <td>String</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="toc_4">HDS manifest fields in the CMS API</h3>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>asset_id</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>src</td>
+            <td>String URL</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String (application/f4m)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="toc_5">Dash manifest fields in the CMS API</h3>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>asset_id</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>src</td>
+            <td>String URL</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String (application/dash+xml)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="toc_6">Smooth manifests (server and client) fields in the CMS API</h3>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>asset_id</td>
+            <td>String</td>
+        </tr>
+        <tr>
+            <td>src</td>
+            <td>String URL</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String (application/vnd.ms-sstr+xml)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 id="toc_7">Playlists</h2>
+
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Media API Field</th>
+            <th>CMS API</th>
+            <th>Type</th>
+            <th>Patchable in CMS</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>accountId</td>
+            <td>account_id</td>
+            <td>String</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>filterTags</td>
+            <td>search</td>
+            <td>String</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>tagInclusionRule</td>
+            <td>search</td>
+            <td>String</td>
+            <td>yes</td>
+            <td>The presence or absence of a &#39;+&#39; before &#39;tags&#39; in the search field value</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>id</td>
+            <td>String</td>
+            <td>no</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>name</td>
+            <td>String</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>playlistType</td>
+            <td>type</td>
+            <td>String enum</td>
+            <td>yes</td>
+            <td>EXPLICIT, OLDEST
+                <em>TO</em>NEWEST, NEWEST
+                <em>TO</em>OLDEST, ALPHABETICAL, PLAYS
+                <em>TOTAL, PLAYS</em>TRAILING_WEEK. If you change from manual to smart or vice versa, other fields must also change</td>
+        </tr>
+        <tr>
+            <td>referenceId</td>
+            <td>reference_id</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>shortDescription</td>
+            <td>description</td>
+            <td>String</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>thumbnailUrl</td>
+            <td>n/a</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>videoIds</td>
+            <td>video_ids</td>
+            <td></td>
+            <td>yes</td>
+            <td>Manual playlists</td>
+        </tr>
+        <tr>
+            <td>videos</td>
+            <td>n/a</td>
+            <td></td>
+            <td>no</td>
+            <td>Load via playlists/:id/videos endpoint</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>favorite</td>
+            <td>Boolean</td>
+            <td>yes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>limit</td>
+            <td>Number</td>
+            <td>yes</td>
+            <td>Smart playlists only</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>updated_at</td>
+            <td>Number</td>
+            <td>no</td>
+            <td>Milliseconds from epoch</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 id="toc_8">Video Permissions</h2>
+
+<p>OAuth operator required for GET in the CMS API: &quot;video-cloud/video/read&quot;</p>
+
+<p>OAuth operator required for PATCH in the CMS API: &quot;video-cloud/video/update&quot;</p>
+
+<p>OAuth operator required for DELETE in the CMS API: &quot;video-cloud/video/delete&quot;</p>
+
+<p>OAuth operator required for POST (at the /videos endpoint): &quot;video-cloud/video/create&quot;</p>
+
+<h2 id="toc_9">Playlist Permissions</h2>
+
+<p>OAuth operator required for GET in the CMS API: &quot;video-cloud/playlist/read&quot;</p>
+
+<p>OAuth operator required for PATCH in the CMS API: &quot;video-cloud/playlist/update&quot;</p>
+
+<p>OAuth operator required for DELETE in the CMS API: &quot;video-cloud/playlis/delete&quot;</p>
+
+<p>OAuth operator required for POST (at the /videos endpoint): &quot;video-cloud/playlist/create&quot;</p>

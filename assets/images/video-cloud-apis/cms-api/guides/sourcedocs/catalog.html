@@ -1,0 +1,730 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style media="all">/************** BASE CSS **************/
+html, body { margin: 0; padding: 0; }
+body { margin: 0 auto 2rem; padding: 0 2.5rem; max-width: 600px; font-family: Helvetica Neue; font-size: 9.0pt; font-weight: 400; }
+
+h1 { margin-bottom: 0.6rem; font-size: 2rem; }
+h2 { margin: 1.5rem 0 1rem; font-size: 1.5rem; }
+h3 { margin: 1.3rem 0 1rem; font-size: 1.2rem; }
+h4, h5, h6 { font-size: 1rem; }
+
+hr { margin: 2em 0; border: none; height: 3px; }
+
+img { max-width: 100%; }
+p { padding-top: 0.3rem; line-height: 1.5rem; font-size: 0.9rem; }
+
+.img-sandbox-error { padding: 20px 10px; border: solid 1px #ddd; }
+    .img-sandbox-error h2 { margin: 0; text-align: center; font-size: 16px; }
+    .img-sandbox-error p { margin: 0; padding-top: 15px; text-align: center; font-size: 12px; }
+
+table { width: 100%; border-collapse: collapse; border-spacing: 0; }
+    thead th { text-align: left; }
+        thead th[align="center"] { text-align: center; }
+        thead th[align="right"] { text-align: right; }
+    tr { margin: 0; padding: 0; }
+    th, td { margin: 0; padding: .75rem; }
+
+ul, ol { margin: 0; padding: 0 0 0 3rem; }
+  ul ul, ol ol { padding: 0.5rem 0 0.5rem 2rem; }
+ul { list-style-type: disc; }
+  li { padding: 0.15rem 0; font-size: 0.9rem; line-height: 1.4rem; }
+    .checkitem { position: relative; list-style: none; }
+    li p:first-child { margin: 0; padding: 0; }
+
+.checkitem input[type=checkbox] { -webkit-appearance: button; position: absolute; top: 4epx; left: -22px; width: 0.8rem; height: 0.8rem; border: solid 1px #000; border-radius: 2px; }
+
+code { padding: 0 3px; }
+pre { padding-top: 0.3rem; white-space: normal; }
+@media screen { pre { white-space: pre; } }
+pre code { display: block; padding: 7px; overflow: auto; line-height: 1.4rem; }
+
+blockquote { margin: 1rem 0 1rem 2rem; padding: 0 1rem; }
+    blockquote p { margin: 0; padding-bottom: 1rem; }
+    blockquote p:last-child { padding-bottom: 0.3rem; }
+
+.footnotes { font-size: .9rem; }
+sup a { padding-left: 1px; }
+    .footnotes a, sup a { text-decoration: none; }
+
+.erato-range, .erato-range a { display: inline; margin: 0 !important; padding: 0 !important; width: 0; height: 0; }
+
+/* -----------------------------------------------------------------------------
+   github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+----------------------------------------------------------------------------- */
+
+.hljs {
+  display: block; padding: 0.5rem;
+  color: #333;
+}
+
+.hljs-comment,
+.hljs-template_comment,
+.diff .hljs-header,
+.hljs-javadoc {
+  color: #998;
+  font-style: italic
+}
+
+.hljs-keyword,
+.css .rule .hljs-keyword,
+.hljs-winutils,
+.javascript .hljs-title,
+.nginx .hljs-title,
+.hljs-subst,
+.hljs-request,
+.hljs-status {
+  color: #333;
+  font-weight: bold
+}
+
+.hljs-number,
+.hljs-hexcolor,
+.ruby .hljs-constant {
+  color: #099;
+}
+
+.hljs-string,
+.hljs-tag .hljs-value,
+.hljs-phpdoc,
+.tex .hljs-formula {
+  color: #d14
+}
+
+.hljs-title,
+.hljs-id,
+.coffeescript .hljs-params,
+.scss .hljs-preprocessor {
+  color: #900;
+  font-weight: bold
+}
+
+.javascript .hljs-title,
+.lisp .hljs-title,
+.clojure .hljs-title,
+.hljs-subst {
+  font-weight: normal
+}
+
+.hljs-class .hljs-title,
+.haskell .hljs-type,
+.vhdl .hljs-literal,
+.tex .hljs-command {
+  color: #458;
+  font-weight: bold
+}
+
+.hljs-tag,
+.hljs-tag .hljs-title,
+.hljs-rules .hljs-property,
+.django .hljs-tag .hljs-keyword {
+  color: #000080;
+  font-weight: normal
+}
+
+.hljs-attribute,
+.hljs-variable,
+.lisp .hljs-body {
+  color: #008080
+}
+
+.hljs-regexp {
+  color: #009926
+}
+
+.hljs-symbol,
+.ruby .hljs-symbol .hljs-string,
+.lisp .hljs-keyword,
+.tex .hljs-special,
+.hljs-prompt {
+  color: #990073
+}
+
+.hljs-built_in,
+.lisp .hljs-title,
+.clojure .hljs-built_in {
+  color: #0086b3
+}
+
+.hljs-preprocessor,
+.hljs-pragma,
+.hljs-pi,
+.hljs-doctype,
+.hljs-shebang,
+.hljs-cdata {
+  color: #999;
+  font-weight: bold
+}
+
+.hljs-deletion {
+  background: #fdd
+}
+
+.hljs-addition {
+  background: #dfd
+}
+
+.diff .hljs-change {
+  background: #0086b3
+}
+
+.hljs-chunk {
+  color: #aaa
+}
+
+/************** ERATO LIGHT CSS **************/
+body { color: #333; }
+
+hr { background: #eee; }
+a { color: #0060ff; }
+    a:hover { color: #0843a3; }
+
+thead th { background: #f8f8f8; }
+th, td { border: solid 1px #eee; }
+
+.checkitem input[type=checkbox] { border: solid 1px #ddd; background-color: #fff; }
+    .checkitem input[type=checkbox]:checked { background-color: #eee; }
+
+code { background: #f5f5f4; }
+blockquote { border-left: solid 6px #eee; }
+
+.footnotes { color: #999; }</style><script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script></head><body><div class="erato-range"><a data-range="0,14" name="0,14"></a></div><p>FORMAT: X-1A</p>
+
+<div class="erato-range"><a data-range="14,64" name="14,64"></a></div><p>HOST: <a href="http://catalog.api.brightcove.com/v1alpha2">http://catalog.api.brightcove.com/v1alpha2</a></p>
+
+<div class="erato-range"><a data-range="64,89" name="64,89"></a></div><h1>Catalog API v1 alpha2</h1>
+
+<div class="erato-range"><a data-range="89,161" name="89,161"></a></div><p>The Catalog API supports read-only access to videos, by id and search.</p>
+
+<div class="erato-range"><a data-range="161,449" name="161,449"></a></div><h2>Search Syntax</h2>
+
+<p><a id="searchSyntax"></a></a><br>
+The query string you provide should be a url encoded list of terms separated by a space (+ or %20 after encoding). (<a href="//docs.brightcove.com/en/video-cloud/utilities/URLencoder.html">String encoder</a> &mdash; use the <code>encodeURIComponent</code> encoding)</p>
+
+<div class="erato-range"><a data-range="449,467" name="449,467"></a></div><h3>Basic search</h3>
+
+<div class="erato-range"><a data-range="467,511" name="467,511"></a></div><p>If you provide a value with no qualifiers:</p>
+
+<pre><code class="txt"><div class="erato-range"><a data-range="511,522" name="511,522"></a></div>q=foo
+</code></pre>
+
+<div class="erato-range"><a data-range="522,679" name="522,679"></a></div><p>This will execute a text search against the following fields: <code>name</code>, <code>description</code>, <code>long_description</code>, <code>tags</code>, <code>reference_id</code>, and all custom fields.</p>
+
+<div class="erato-range"><a data-range="679,727" name="679,727"></a></div><h3>Search against values for a specific field</h3>
+
+<pre><code class="txt"><div class="erato-range"><a data-range="727,743" name="727,743"></a></div>q=name:foo
+</code></pre>
+
+<div class="erato-range"><a data-range="743,850" name="743,850"></a></div><p>This will search for videos with the term &#39;foo&#39; in the name field of the video. The supported fields are:</p>
+
+<div class="erato-range"><a data-range="850,2087" name="850,2087"></a></div><table class="bcls-table"><thead class="bcls-table__head">
+<tr>
+<th align="left">Field</th>
+<th align="left">Legal Values</th>
+</tr>
+</thead><tbody class="bcls-table__body">
+<tr>
+<td align="left"><code>name</code></td>
+<td align="left">strings or <a href="#quotedStrings">quoted strings</a></td>
+</tr>
+<tr>
+<td align="left"><code>text</code></td>
+<td align="left">strings or <a href="#quotedStrings">quoted strings</a> (values in <code>name</code>, <code>description</code>, <code>long_description</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>tags</code></td>
+<td align="left">strings or <a href="#quotedStrings">quoted strings</a></td>
+</tr>
+<tr>
+<td align="left"><code>reference_id</code></td>
+<td align="left">string or <a href="#quotedStrings">quoted strings</a></td>
+</tr>
+<tr>
+<td align="left"><code>state</code></td>
+<td align="left"><code>ACTIVE</code>, <code>INACTIVE</code>, <code>DELETED</code>, <code>PENDING</code></td>
+</tr>
+<tr>
+<td align="left"><code>updated_at</code></td>
+<td align="left"><a href="#dates">date range</a></td>
+</tr>
+<tr>
+<td align="left"><code>created_at</code></td>
+<td align="left"><a href="#dates">date range</a></td>
+</tr>
+<tr>
+<td align="left"><code>published_at</code></td>
+<td align="left"><a href="#dates">date range</a></td>
+</tr>
+<tr>
+<td align="left"><code>complete</code></td>
+<td align="left"><code>true</code> or <code>false</code></td>
+</tr>
+</tbody></table>
+
+<div class="erato-range"><a data-range="2087,2341" name="2087,2341"></a></div><h4>Required and prohibited terms</h4>
+
+<p><a id="requiredTerms"></a></a><br>
+You can mark a term as required (returned videos <strong>MUST</strong> match) or prohibited (returned videos must <strong>NOT</strong> match). This is controlled with a <code>+</code> or <code>-</code> sign immediately preceding the term:</p>
+
+<div class="erato-range"><a data-range="2341,2931" name="2341,2931"></a></div><table class="bcls-table"><thead class="bcls-table__head">
+<tr>
+<th align="left">Example</th>
+<th align="left">urlencoded</th>
+<th align="left">meaning</th>
+</tr>
+</thead><tbody class="bcls-table__body">
+<tr>
+<td align="left"><code>+foo</code></td>
+<td align="left"><code>%2Bfoo</code></td>
+<td align="left">videos <strong>MUST</strong> include the term &#39;foo&#39; in the <code>name</code>, <code>description</code>, or <code>long_description</code></td>
+</tr>
+<tr>
+<td align="left"><code>-foo</code></td>
+<td align="left"><code>%2Dfoo</code> or <code>-foo</code></td>
+<td align="left">videos must <strong>NOT</strong> include the term &#39;foo&#39; in the <code>name</code>, <code>description</code>, or <code>long_description</code></td>
+</tr>
+<tr>
+<td align="left"><code>+name:foo</code></td>
+<td align="left"><code>%2Bname%3Afoo</code></td>
+<td align="left">videos <strong>MUST</strong> include the term &#39;foo&#39; in the name</td>
+</tr>
+<tr>
+<td align="left"><code>-name:foo</code></td>
+<td align="left"><code>%2Dname%3Afoo</code> or <code>-name%3Afoo</code></td>
+<td align="left">video must <strong>NOT</strong> include the term &#39;foo&#39; in the name</td>
+</tr>
+</tbody></table>
+
+<div class="erato-range"><a data-range="2931,3121" name="2931,3121"></a></div><h4>Quoted strings</h4>
+
+<p><a id="quotedStrings"></a></a><br>
+By default, a search term could match similar words. If you want to do an exact match, or match multiple words, just wrap the term in quotes:</p>
+
+<pre><code class="txt"><div class="erato-range"><a data-range="3121,3208" name="3121,3208"></a></div>&quot;foo&quot;
+&quot;foo bar&quot;
+</code></pre>
+
+<p>This also works when searching against a specific field:</p>
+
+<pre><code class="txt"><div class="erato-range"><a data-range="3208,3401" name="3208,3401"></a></div>name:&quot;foo&quot;
+name:&quot;foo bar&quot;
+</code></pre>
+
+<h4>Dates</h4>
+
+<p><a id="dates"></a></a><br>
+Date-dependent search fields take <a href="dateRanges">date range</a> values. Multiple formats for specifying the date are supported:</p>
+
+<div class="erato-range"><a data-range="3401,3898" name="3401,3898"></a></div><table class="bcls-table"><thead class="bcls-table__head">
+<tr>
+<th align="left">Format</th>
+<th align="left">Meaning</th>
+</tr>
+</thead><tbody class="bcls-table__body">
+<tr>
+<td align="left">2012-08-01T00:00:00Z</td>
+<td align="left">A time in UTC format</td>
+</tr>
+<tr>
+<td align="left">-1d</td>
+<td align="left">Current time minus 1 day (see <a href="#relativeDates">Relative dates</a>)</td>
+</tr>
+<tr>
+<td align="left">+1d</td>
+<td align="left">Current time plus 1 day (see <a href="#relativeDates">Relative dates</a>)</td>
+</tr>
+</tbody></table>
+
+<div class="erato-range"><a data-range="3898,4120" name="3898,4120"></a></div><h5>Relative Dates</h5>
+
+<p><a id="relativeDates"></a></a><br>
+For relative dates we support a direction (+ or -) followed by a number, followed by a duration (or its abbreviation). Legal durations are: minutes (m), hours (h), days (d)</p>
+
+<div class="erato-range"><a data-range="4120,4134" name="4120,4134"></a></div><p>For example:</p>
+
+<div class="erato-range"><a data-range="4134,4200" name="4134,4200"></a></div><ul>
+<li>-1day<br></li>
+<li>-2days<br></li>
+<li>+4hours<br></li>
+<li>-60minutes<br></li>
+<li>-1d<br></li>
+<li>-2d<br></li>
+<li>+4h<br></li>
+<li>-60m<br></li>
+</ul>
+
+<div class="erato-range"><a data-range="4200,4340" name="4200,4340"></a></div><h5>Date Ranges</h5>
+
+<p><a id="dataRanges"></a>&lt;/a<br>
+If the field you are searching on is a date, then you can specify a range of dates to search for:</p>
+
+<pre><code class="txt"><div class="erato-range"><a data-range="4340,4399" name="4340,4399"></a></div>updated_at:2012-08-01T00:00:00Z..2012-10-08T00:00:00Z
+</code></pre>
+
+<div class="erato-range"><a data-range="4399,4498" name="4399,4498"></a></div><p>This will search for all videos with an updated_at value between Aug 1, 2012 and October 8, 2012.</p>
+
+<div class="erato-range"><a data-range="4498,4691" name="4498,4691"></a></div><h5>&gt;Open ended ranges</h5>
+
+<p><a id="openEndedDateRanges"></a>&lt;/a<br>
+If you want to match all dates until a given time, or match all dates since a given time, leave off one end of the range. For example:</p>
+
+<div class="erato-range"><a data-range="4691,4773" name="4691,4773"></a></div><p>Search for all videos modified in the last 2 days</p>
+
+<pre><code class="txt">q=updated_at:-2days..
+</code></pre>
+
+<div class="erato-range"><a data-range="4773,4874" name="4773,4874"></a></div><p>Search for all videos modified before August 11, 2013:</p>
+
+<pre><code class="txt">q=updated_at:..2013-08-11T00:00:00Z
+</code></pre>
+
+<div class="erato-range"><a data-range="4874,5203" name="4874,5203"></a></div><p>OAuth is enabled and enforced in <em>Kong</em>, <em>Staging</em>, and <em>Production</em>. It is no longer possible to make unauthenticated calls against the catalog api. To get a client id and secret, go here: <a href="http://confluence.vidmark.local/display/DEV/Client+app+registration">http://confluence.vidmark.local/display/DEV/Client+app+registration</a>. The only operation you currently need is <code>video-cloud/video/read</code>.</p>
+
+<div class="erato-range"><a data-range="5203,5217" name="5203,5217"></a></div><h1>Group List</h1>
+
+<div class="erato-range"><a data-range="5217,5260" name="5217,5260"></a></div><p><a id="list"></a></a>List an account’s videos</p>
+
+<div class="erato-range"><a data-range="5260,5344" name="5260,5344"></a></div><h2>Endpoint [/accounts/{accountId}/videos{?limit&amp;offset&amp;sort}]</h2>
+
+<h2>GET</h2>
+
+<div class="erato-range"><a data-range="5344,5358" name="5344,5358"></a></div><ul>
+<li><p>Parameters</p>
+
+<div class="erato-range"><a data-range="5358,5861" name="5358,5861"></a></div><ul>
+<li>limit = <code>20</code> (optional, number, <code>50</code>) ... Limits the number of videos returned. Must be between 1 and 100.<br></li>
+<li>offset = <code>0</code> (optional, number, <code>20</code>) ... Number of videos to skip in the returned set. Must be a positive number.<br></li>
+<li>sort (optional, string, <code>name</code>) ... Specifies the field to sort by. Start with <code>-</code> to sort descending.<br>
+
+<ul>
+<li>Values<br>
+
+<ul>
+<li><code>name</code><br></li>
+<li><code>id</code><br></li>
+<li><code>reference_id</code><br></li>
+<li><code>description</code><br></li>
+<li><code>updated_at</code><br></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="5861,5872" name="5861,5872"></a></div><ul>
+<li><p>Request</p>
+
+<div class="erato-range"><a data-range="5872,5991" name="5872,5991"></a></div><ul>
+<li><p>Headers</p>
+
+<pre><code class="txt">Authorization: Bearer {token}
+</code></pre></li>
+<li><p>Body</p>
+
+<pre><code class="txt">
+<div class="erato-range"><a data-range="5991,6004" name="5991,6004"></a></div></code></pre></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="6004,6069" name="6004,6069"></a></div><ul>
+<li><p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li><p>Body</p>
+
+<div class="erato-range"><a data-range="6069,7411" name="6069,7411"></a></div><pre><code class="txt">[
+    {
+        &quot;id&quot;: &quot;51c33adee4b0ce670af6006b&quot;,
+        &quot;description&quot;: &quot;This is my video&quot;,
+        &quot;tags&quot;: [
+            &quot;gossip&quot;,
+            &quot;columbia/music with a twist&quot;,
+            &quot;alternative&quot;
+        ],
+        &quot;name&quot;: &quot;My video&quot;,
+        &quot;poster_url&quot;: &quot;http://brightcove.vo.llnwd.net/e1/pd/123/123_456_my-video.jpg?pubId=123&quot;,
+        &quot;reference_id&quot;: &quot;myfirstvideo&quot;,
+        &quot;state&quot;: &quot;ACTIVE&quot;,
+        &quot;sources&quot;: [
+            {
+                &quot;app_name&quot;: &quot;rtmp://brightcove.fcod.llnwd.net/a500/e1/uds/rtmp/ondemand&quot;,
+                &quot;codec&quot;: &quot;ON2&quot;,
+                &quot;container&quot;: &quot;FLV&quot;,
+                &quot;duration&quot;: 189359,
+                &quot;encoding_rate&quot;: 280000,
+                &quot;id&quot;: &quot;51ae5c41e4b098453c73af66&quot;,
+                &quot;stream_name&quot;: &quot;123/123_456_00000000000014425916-flv-type72-a48-v252-2c-vbr-28646382001&amp;1371826800000&amp;a0101f4dabeb993414dc50b38a7eab68&quot;
+            }
+        ],
+        &quot;thumbnail_url&quot;: &quot;http://brightcove.vo.llnwd.net/e1/pd/123/123_456_my-video-thumb.jpg?pubId=123&quot;,
+        &quot;updated_at&quot;: &quot;2009-07-31T20:25:50.744+0000&quot;
+    }
+]
+</code></pre></li>
+</ul></li>
+</ul>
+
+<h1>Group Search</h1>
+
+<div class="erato-range"><a data-range="7411,7638" name="7411,7638"></a></div><p>Search for account’s videos that match the given search string. (If a search parameter (<code>q</code>) is not provided, a <a href="#list">list</a> is returned.)<br>
+See the <a href="#searchSyntax">search syntax</a> section for more details on the search syntax.</p>
+
+<div class="erato-range"><a data-range="7638,7704" name="7638,7704"></a></div><h2>Endpoint [/accounts/{accountId}/videos{?q&amp;limit&amp;offset&amp;sort}]</h2>
+
+<div class="erato-range"><a data-range="7704,7713" name="7704,7713"></a></div><h2>GET</h2>
+
+<div class="erato-range"><a data-range="7713,7727" name="7713,7727"></a></div><ul>
+<li><p>Parameters</p>
+
+<div class="erato-range"><a data-range="7727,8346" name="7727,8346"></a></div><ul>
+<li>q (optional, string, <code>%2Bname:gossip</code>) ... The query string. See <a href="#searchSyntax">above</a> for the supported syntax.<br></li>
+<li>limit (optional, number, <code>50</code>) ... Limits the number of videos returned. Must be between 1 and 100.<br></li>
+<li>offset (optional, number, <code>20</code>) ... Number of videos to skip in the returned set. Must be a positive number.<br></li>
+<li>sort (optional, string, <code>name</code>) ... Specifies the field to sort by. Start with <code>-</code> to sort descending.<br>
+
+<ul>
+<li>Values<br>
+
+<ul>
+<li><code>name</code><br></li>
+<li><code>id</code><br></li>
+<li><code>reference_id</code><br></li>
+<li><code>description</code><br></li>
+<li><code>updated_at</code><br></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="8346,8359" name="8346,8359"></a></div><ul>
+<li><p>Request </p>
+
+<div class="erato-range"><a data-range="8359,8374" name="8359,8374"></a></div><ul>
+<li><p>Headers</p>
+
+<div class="erato-range"><a data-range="8374,8495" name="8374,8495"></a></div><pre><code class="txt">Authorization: Bearer {token}
+</code></pre></li>
+<li><p>Body</p>
+
+<pre><code class="txt">
+</code></pre></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="8495,8556" name="8495,8556"></a></div><ul>
+<li><p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li><p>Body</p>
+
+<div class="erato-range"><a data-range="8556,9878" name="8556,9878"></a></div><pre><code class="txt">[
+    {
+        &quot;id&quot;: &quot;51c33adee4b0ce670af6006b&quot;,
+        &quot;description&quot;: &quot;This is my video&quot;,
+        &quot;tags&quot;: [
+            &quot;gossip&quot;,
+            &quot;columbia/music with a twist&quot;,
+            &quot;alternative&quot;
+        ],
+        &quot;name&quot;: &quot;My video&quot;,
+        &quot;poster_url&quot;: &quot;http://brightcove.vo.llnwd.net/e1/pd/123/123_456_my-video.jpg?pubId=123&quot;,
+        &quot;reference_id&quot;: &quot;myfirstvideo&quot;,
+        &quot;state&quot;: &quot;ACTIVE&quot;,
+        &quot;sources&quot;: [
+            {
+                &quot;app_name&quot;: &quot;rtmp://brightcove.fcod.llnwd.net/a500/e1/uds/rtmp/ondemand&quot;,
+                &quot;codec&quot;: &quot;ON2&quot;,
+                &quot;container&quot;: &quot;FLV&quot;,
+                &quot;duration&quot;: 189359,
+                &quot;encoding_rate&quot;: 280000,
+                &quot;id&quot;: &quot;51ae5c41e4b098453c73af66&quot;,
+                &quot;stream_name&quot;: &quot;123/123_456_00000000000014425916-flv-type72-a48-v252-2c-vbr-28646382001&amp;1371826800000&amp;a0101f4dabeb993414dc50b38a7eab68&quot;
+            }
+        ],
+        &quot;thumbnail_url&quot;: &quot;http://brightcove.vo.llnwd.net/e1/pd/123/123_456_my-video-thumb.jpg?pubId=123&quot;,
+        &quot;updated_at&quot;: &quot;2009-07-31T20:25:50.744+0000&quot;
+    }
+]
+</code></pre></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="9878,9898" name="9878,9898"></a></div><h1>Group Get by ID</h1>
+
+<div class="erato-range"><a data-range="9898,9959" name="9898,9959"></a></div><p>If you know the id of the video you can access it directly.</p>
+
+<div class="erato-range"><a data-range="9959,10013" name="9959,10013"></a></div><h2>Endpoint [/accounts/{accountId}/videos/{videoId}]</h2>
+
+<div class="erato-range"><a data-range="10013,10022" name="10013,10022"></a></div><h2>GET</h2>
+
+<div class="erato-range"><a data-range="10022,10034" name="10022,10034"></a></div><ul>
+<li><p>Request </p>
+
+<div class="erato-range"><a data-range="10034,10049" name="10034,10049"></a></div><ul>
+<li><p>Headers</p>
+
+<div class="erato-range"><a data-range="10049,10170" name="10049,10170"></a></div><pre><code class="txt">Authorization: Bearer {token}
+</code></pre></li>
+<li><p>Body</p>
+
+<pre><code class="txt">
+</code></pre></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="10170,10230" name="10170,10230"></a></div><ul>
+<li><p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li><p>Body</p>
+
+<div class="erato-range"><a data-range="10230,11387" name="10230,11387"></a></div><pre><code class="txt">{
+    &quot;account_id&quot;: &quot;1079334812001&quot;,
+    &quot;description&quot;: &quot;Litchmon,Moonlight&quot;,
+    &quot;id&quot;: &quot;51c79b73e4b01a8dd726c371&quot;,
+    &quot;tags&quot;: [
+        &quot;_pass&quot;,
+        &quot;_entertainment&quot;,
+        &quot;_3dzone&quot;
+    ],
+    &quot;name&quot;: &quot;Lichtmond - Moonlight&quot;,
+    &quot;poster&quot;: {
+        &quot;id&quot;: &quot;51b63072e4b0b78eceac0853&quot;,
+        &quot;src&quot;: &quot;http://lge.brightcove.edgesuite.net/pmd/1079334812001/1079334812001_1701453377001_Litchmond---------250X357-.jpg?pubId=1079334812001&quot;
+    },
+    &quot;reference_id&quot;: &quot;entertainment065&quot;,
+    &quot;sources_url&quot;: &quot;https://catalog.api.brightcove.com/v1alpha2/accounts/1079334812001/videos/51c79b73e4b01a8dd726c371/sources&quot;,
+    &quot;state&quot;: &quot;ACTIVE&quot;,
+    &quot;thumbnail&quot;: {
+        &quot;id&quot;: &quot;51b63072e4b0b78eceac0856&quot;,
+        &quot;src&quot;: &quot;http://lge.brightcove.edgesuite.net/pmd/1079334812001/1079334812001_1701453380001_Litchmond---------134X191-.jpg?pubId=1079334812001&quot;
+    },
+    &quot;updated_at&quot;: &quot;2012-08-08T06:45:29.912+0000&quot;
+}
+</code></pre></li>
+</ul></li>
+</ul>
+
+<h1>Group Video sources by ID</h1>
+
+<div class="erato-range"><a data-range="11387,11433" name="11387,11433"></a></div><p>Returns the video sources for a video by ID.</p>
+
+<div class="erato-range"><a data-range="11433,11495" name="11433,11495"></a></div><h2>Endpoint [/accounts/{accountId}/videos/{videoId}/sources]</h2>
+
+<div class="erato-range"><a data-range="11495,11504" name="11495,11504"></a></div><h2>GET</h2>
+
+<div class="erato-range"><a data-range="11504,11516" name="11504,11516"></a></div><ul>
+<li><p>Request </p>
+
+<div class="erato-range"><a data-range="11516,11531" name="11516,11531"></a></div><ul>
+<li><p>Headers</p>
+
+<div class="erato-range"><a data-range="11531,11652" name="11531,11652"></a></div><pre><code class="txt">Authorization: Bearer {token}
+</code></pre></li>
+<li><p>Body</p>
+
+<pre><code class="txt">
+</code></pre></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="11652,11712" name="11652,11712"></a></div><ul>
+<li><p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li><p>Body</p>
+
+<div class="erato-range"><a data-range="11712,12865" name="11712,12865"></a></div><pre><code class="txt">[
+    {
+        &quot;app_name&quot;: &quot;rtmp://cp168818.edgefcs.net/ondemand&quot;,
+        &quot;codec&quot;: &quot;H264&quot;,
+        &quot;container&quot;: &quot;MP4&quot;,
+        &quot;duration&quot;: 2923416,
+        &quot;encoding_rate&quot;: 1840210,
+        &quot;height&quot;: 720,
+        &quot;id&quot;: &quot;51b6220ae4b0b78ecea3d207&quot;,
+        &quot;stream_name&quot;: &quot;mp4:videos/1079334812001/1079334812001_1697342108001_Litchmon-Moonlight.mp4&quot;,
+        &quot;width&quot;: 1280
+    },
+    {
+        &quot;codec&quot;: &quot;H264&quot;,
+        &quot;container&quot;: &quot;MP4&quot;,
+        &quot;duration&quot;: 2923416,
+        &quot;encoding_rate&quot;: 1840210,
+        &quot;height&quot;: 720,
+        &quot;id&quot;: &quot;51b6220ae4b0b78ecea3d207&quot;,
+        &quot;src&quot;: &quot;http://lge.brightcove.edgesuite.net/rtmp_uds/1079334812001/1079334812001_1697342108001_Litchmon-Moonlight.mp4&quot;,
+        &quot;width&quot;: 1280
+    },
+    {
+        &quot;codec&quot;: &quot;H264&quot;,
+        &quot;container&quot;: &quot;M2TS&quot;,
+        &quot;src&quot;: &quot;http://c.brightcove.com/services/mobile/streaming/index/master.m3u8?videoId=1696188343001&quot;
+    }
+]
+</code></pre></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="12865,12905" name="12865,12905"></a></div><h1>Group Video sources by reference ID</h1>
+
+<div class="erato-range"><a data-range="12905,12976" name="12905,12976"></a></div><p>If you know the reference id of the video you can access it directly.</p>
+
+<div class="erato-range"><a data-range="12976,13039" name="12976,13039"></a></div><h2>Endpoint  [/accounts/{accountId}/videos/ref:{referenceId}]</h2>
+
+<div class="erato-range"><a data-range="13039,13048" name="13039,13048"></a></div><h2>GET</h2>
+
+<div class="erato-range"><a data-range="13048,13061" name="13048,13061"></a></div><ul>
+<li><p>Request </p>
+
+<div class="erato-range"><a data-range="13061,13201" name="13061,13201"></a></div><ul>
+<li><p>Headers</p>
+
+<pre><code class="txt">Authorization: Bearer {token}
+</code></pre></li>
+<li><p>Body</p>
+
+<pre><code class="txt">
+</code></pre></li>
+</ul></li>
+</ul>
+
+<div class="erato-range"><a data-range="13201,13261" name="13201,13261"></a></div><ul>
+<li><p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li><p>Body</p>
+
+<div class="erato-range"><a data-range="13261,14459" name="13261,14459"></a></div><pre><code class="txt">{
+    &quot;id&quot;: &quot;51c33adee4b0ce670af6006b&quot;,
+    &quot;description&quot;: &quot;This is my video&quot;,
+    &quot;tags&quot;: [
+        &quot;gossip&quot;,
+        &quot;columbia/music with a twist&quot;,
+        &quot;alternative&quot;
+    ],
+    &quot;name&quot;: &quot;My video&quot;,
+    &quot;poster_url&quot;: &quot;http://brightcove.vo.llnwd.net/e1/pd/123/123_456_my-video.jpg?pubId=123&quot;,
+    &quot;reference_id&quot;: &quot;myfirstvideo&quot;,
+    &quot;state&quot;: &quot;ACTIVE&quot;,
+    &quot;sources&quot;: [
+        {
+            &quot;app_name&quot;: &quot;rtmp://brightcove.fcod.llnwd.net/a500/e1/uds/rtmp/ondemand&quot;,
+            &quot;codec&quot;: &quot;ON2&quot;,
+            &quot;container&quot;: &quot;FLV&quot;,
+            &quot;duration&quot;: 189359,
+            &quot;encoding_rate&quot;: 280000,
+            &quot;id&quot;: &quot;51ae5c41e4b098453c73af66&quot;,
+            &quot;stream_name&quot;: &quot;123/123_456_00000000000014425916-flv-type72-a48-v252-2c-vbr-28646382001&amp;1371826800000&amp;a0101f4dabeb993414dc50b38a7eab68&quot;
+        }
+    ],
+    &quot;thumbnail_url&quot;: &quot;http://brightcove.vo.llnwd.net/e1/pd/123/123_456_my-video-thumb.jpg?pubId=123&quot;,
+    &quot;updated_at&quot;: &quot;2009-07-31T20:25:50.744+0000&quot;
+}
+</code></pre></li>
+</ul></li>
+</ul>
+<script>hljs.initHighlightingOnLoad();</script><div style="text-align:center">
+    
+</div>
+
+<br><br>
+
+</body></html>

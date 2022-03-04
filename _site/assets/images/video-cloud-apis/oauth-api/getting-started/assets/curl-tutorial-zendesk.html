@@ -1,0 +1,168 @@
+<div class="inner-container padded-container">
+      <header class="article-header clearfix">
+        <h1 class="article-title">Installing and using cURL</h1>
+        <div class="article-metadata">
+          <div class="article-avatar"><img src="https://support.zendesk.com//system/photos/5733/2316/profile300.jpg" alt="Avatar">
+</div>
+          <div class="article-author">Charles Nadeau</div>
+          <div class="article-updated">Created: <time data-datetime="calendar" datetime="2014-07-24T00:27:02Z" title="2014-07-23 19:27">July 23, 2014 19:27</time>  -  Updated: <time data-datetime="calendar" datetime="2015-02-05T23:26:40Z" title="2015-02-05 18:26">Last Thursday at 18:26</time></div>
+        </div>
+
+
+      </header>
+      <article class="main-column">
+
+        <div class="article-body markdown">
+          <p>All the examples in the <a href="http://developer.zendesk.com/documentation/rest_api/introduction.html">Zendesk REST API docs</a> consist of cURL statements. You can run the statements in a command-line interface to try out various API requests.</p>
+<p>cURL is a lightweight, command-line tool for making HTTP requests (among other protocols) without a web browser. The web server's response is displayed directly in your command-line interface. For example, you can request a web page from the command line by typing <code>curl</code> followed by the site's URL:</p>
+<div><img src="https://zen-marketing-documentation.s3.amazonaws.com/docs/en/curl_request.png" alt="curl_request"></div>
+<p>cURL displays the page source returned from Google in the command-line interface. The page source is what a browser normally sees.</p>
+<div><img src="https://zen-marketing-documentation.s3.amazonaws.com/docs/en/curl_response.png" alt="curl_response"></div>
+<p>This article covers the following topics:</p>
+<ul>
+<li><a href="#use">Using cURL</a></li>
+<li><a href="#install">Installing cURL</a></li>
+<li><a href="#test">Testing your cURL installation</a></li>
+<li><a href="#flags">Common cURL flags</a></li>
+</ul>
+<p>Related topic</p>
+<ul>
+<li><a href="http://curl.haxx.se/docs/">cURL documentation</a></li>
+</ul>
+<h3><span id="use">Using cURL</span></h3>
+<p>You can use cURL to inspect and test different Zendesk API requests without having to build a functioning web application. For example, the following cURL statement makes an HTTP request to the <a href="http://developer.zendesk.com/documentation/rest_api/groups.html#list-groups">List Groups</a> endpoint in the Zendesk API:</p>
+<pre><code>curl https://mysubdomain.zendesk.com/api/v2/groups.json \
+  -v -u myemail@example.com:mypassword
+</code></pre>
+<p>Zendesk returns a JSON object that lists the groups in your Zendesk:</p>
+<pre><code>Status: 200 OK
+
+{
+  "groups": [
+    {
+      "name":       "DJs",
+      "created_at": "2009-05-13T00:07:08Z",
+      "updated_at": "2011-07-22T00:11:12Z",
+      "id":         211
+    },
+    {
+      "name":       "MCs",
+      "created_at": "2009-08-26T00:07:08Z",
+      "updated_at": "2010-05-13T00:07:08Z",
+      "id":         122
+    }
+  ]
+}
+</code></pre>
+<p>JSON (JavaScript Object Notation) is a lightweight data-interchange format. It's designed to be easy for humans to read and write, and for machines to parse and generate. Learn more at <a href="http://json.org/">JSON.org</a>.</p>
+<h3><span id="install">Installing cURL</span></h3>
+<h4>Mac</h4>
+<p>cURL is installed by default on MacOS X. To try it out, see <a href="#test">Testing your cURL installation</a> below.</p>
+<!--1. In a browser, visit <http://curl.haxx.se/download.html>, scroll to the **Mac OS X** section, and look for the latest **Mac OS X i386** version that's a binary (not source) with SSL support. Click the version number to start the download.-->
+<h4>Windows</h4>
+<p>If you have Windows, you can download and install cURL as follows.</p>
+<ol>
+<li>
+<p>In Windows, create a new folder called <strong>curl</strong> in your C: drive.</p>
+<p><tt>C:\curl</tt></p>
+</li>
+<li>
+<p>Go to <a href="http://curl.haxx.se/download.html">http://curl.haxx.se/download.html</a> and download one of the following zip files:</p>
+<ul>
+<li>
+<p>If you have a Windows 64 system, scroll to the <strong>Win64 - Generic</strong> section and look for the latest <strong>Win64 ia64 zip</strong> version with SSL support. It's normally second in the list. Click the version number to start the download.</p>
+</li>
+<li>
+<p>If you have a Windows 32 system, scroll to the <strong>Win32 - Generic</strong> section and look for the latest <strong>Win32 zip</strong> version with SSL support. It's normally second in the list. Click the version number to start the download.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Unzip the downloaded file and move the <strong>curl.exe</strong> file to your <tt>C:\curl</tt> folder.</p>
+</li>
+<li>
+<p>Go to <a href="http://curl.haxx.se/docs/caextract.html">http://curl.haxx.se/docs/caextract.html</a> and download the digital certificate file named <strong>ca-bundle.crt</strong>.</p>
+<p>The CRT file contains a bundle of valid digital certificates. The certificates are used to verify the authenticity of secure websites. They're distributed by certificate authority (CA) companies such as GlobalSign and VeriSign. The CRT file allows cURL to connect securely to Zendesk using the Secure Sockets Layer (SSL) protocol.</p>
+</li>
+<li>
+<p>Move the <strong>ca-bundle.crt</strong> file to your <tt>C:\curl</tt> folder and rename it <strong>curl-ca-bundle.crt</strong>.</p>
+</li>
+<li>
+<p>Add the curl folder path to your Windows PATH environment variable so that the curl command is available from any location at the command prompt. In Windows 7, you update the variable as follows:</p>
+<ol>
+<li>
+<p>In the <strong>Start</strong> menu, right-click <strong>Computer</strong> and select <strong>Properties</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Advanced System Settings</strong>.</p>
+</li>
+<li>
+<p>In the <strong>Advanced</strong> tab, click the <strong>Environment Variables</strong> button.</p>
+</li>
+<li>
+<p>Select the "Path" variable in <strong>System Variables</strong>, and click <strong>Edit</strong>.</p>
+</li>
+<li>
+<p>In the <strong>Variable Value</strong> textbox, append a semicolon to the value, followed by the path to the <strong>curl.exe</strong> file. Example: <tt>;C:\curl</tt></p>
+<div><img src="https://zen-marketing-documentation.s3.amazonaws.com/docs/en/win_env_path.png" alt="path_var"></div>
+</li>
+<li>
+<p>Keep clicking OK to accept the change and close the dialog box.</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3><span id="test">Testing your cURL installation</span></h3>
+<p>You can test your cURL installation by making a request to the Zendesk API. The test retrieves your Zendesk user information. The API endpoint that accomplishes the task is documented <a href="http://developer.zendesk.com/documentation/rest_api/users.html#show-the-currently-authenticated-user">here</a>.</p>
+<p><strong>To test cURL</strong></p>
+<ol>
+<li>
+<p>Paste the following cURL statement into your favorite text editor:</p>
+<pre><code> curl https://{subdomain}.zendesk.com/api/v2/users/me.json \
+       -v -u {email_address}:{password}
+</code></pre>
+</li>
+<li>
+<p>Replace the placeholders in curly brackets with the information you use to sign in to Zendesk. Example:</p>
+<pre><code> curl https://obscura.zendesk.com/api/v2/users/me.json \
+   -v -u myemail@example.com:mypassword
+</code></pre>
+</li>
+<li>
+<p>Launch your command-line interface.</p>
+<ul>
+<li>
+<p>In Windows, open the Start menu, type <strong>cmd</strong> in the search box, and press <strong>Enter</strong>.</p>
+</li>
+<li>
+<p>On the Mac, double-click the Terminal application in your Applications/Utilities folder.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Copy the cURL statement from your text file and paste it at the command prompt.</p>
+<p>Windows: After copying it to the Clipboard, select <strong>Edit</strong> &gt; <strong>Paste</strong> from the context menu in the upper left corner of the window:</p>
+<div><img src="https://zen-marketing-documentation.s3.amazonaws.com/docs/en/win_cmd_paste.png" alt="image"></div>
+</li>
+<li>
+<p>Press <strong>Enter</strong> to run the cURL statement.</p>
+<p>The console should display your Zendesk user information formatted as a JSON object.</p>
+<div><img src="https://zen-marketing-documentation.s3.amazonaws.com/docs/en/curl_user_example.png" alt="image"></div>
+<p><strong>Tip</strong>: Paste the response in a text editor to inspect the data more closely.</p>
+</li>
+</ol>
+<h3><span id="flags">Common cURL flags</span></h3>
+<p>You'll see the following cURL flags in the examples in the <a href="http://developer.zendesk.com/documentation/rest_api/introduction.html">Zendesk REST API docs</a>.</p>
+<p><strong>-H</strong></p>
+<p>Specifies any extra header content to include in the HTTP request. API requests that submit data to our servers typically include the data's content type. Example:</p>
+<p>Example: <code>-H "Content-Type: application/json"</code>.</p>
+<p><strong>-u</strong></p>
+<p>Specifies the user name and password to use for server authentication. The user name and password are separated by a colon.</p>
+<p>Example: <code>-u myemail@example.com:mypassword</code></p>
+<p><strong>-v</strong></p>
+<p>Makes the response more verbose.</p>
+<p><strong>-X</strong></p>
+<p>Specifies the request method to use when communicating with the HTTP server. Example: <code>PUT</code> or <code>POST</code>.</p>
+<div class="note note"><span class="notetitle">Note: </span><tt>GET</tt> is the default method so you don't need to specify it.</div>
+<p>Example: <code>-X PUT</code></p>
+        </div>

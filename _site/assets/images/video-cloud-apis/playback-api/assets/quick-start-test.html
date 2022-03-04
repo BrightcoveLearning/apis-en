@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <style>
+            body {
+              margin: 2em;
+              font-family: sans-serif;
+            }
+            h2 {
+              font-size: 1.1em;
+            }
+            img {
+              border: 1px solid #999;
+              float: left;
+              margin-right: 1em;
+              height: 72px;
+              width: 122px;
+            }
+            button {
+              padding: .5em;
+            }
+            pre {
+              background-color: #F1EFEE;
+              border-left: .5em solid #636363;
+              box-shadow: 5px 5px 10px rgba(192, 192, 192, 1.000);
+              font-family: monospace;
+              padding: 1em;
+            }
+            .video-item {
+                border: 1px solid #999;
+                margin: 0;
+                padding: 0;
+                height: 74px;
+                width: 480px;
+                overflow: scroll;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Playback API Tester: Video</h1>
+        <h2>Inputs</h2>
+        <p>Account id:
+          <input id="account_id" type="text" value="57838016001">
+        </p>
+        <p>Policy key:
+          <input id="policy_key" type="text" size="80" value="BCpkADawqM0NK0Rq8n6sEQyWykemrqeSmIQqqVt3XBrdpl8TYlvqN3hwKphBJRnkPgx6WAbozCW_VgTOBCNf1AQRh8KnmXSXfveQalRc5-pyNlSod5XzP99If2U">
+        </p>
+        <p>Video id:
+          <input id="video_id" value="4084164751001">
+        </p>
+        <p>Playlist id:
+          <input id="playlist_id" value="749117323001">
+        </p>
+        <p><button id="videoButton">Get a video</button> <button id="playlistButton">Get a playlist</button></p>
+        <h2>API request:</h2>
+        <pre><code id="apiRequest"></code></pre>
+        <h2>Generated content</h2>
+        <div id="generatedContent"></div>
+        <h2>Response data</h2>
+<pre id="responseData"></pre>
+        <script>
+            var BCLS = ( function (window, document) {
+                var apiBaseURL          = 'https://edge.api.brightcove.com/playback/v1',
+                    // element references
+                    account_id          = document.getElementById('account_id'),
+                    policy_key          = document.getElementById('policy_key'),
+                    video_id            = document.getElementById('video_id'),
+                    playlist_id         = document.getElementById('playlist_id'),
+                    videoButton         = document.getElementById('videoButton'),
+                    playlistButton      = document.getElementById('playlistButton'),
+                    apiRequest          = document.getElementById('apiRequest'),
+                    generatedContent    = document.getElementById('generatedContent'),
+                    responseData        = document.getElementById('responseData'),
+                    // functions
+                    makeVideoDisplay,
+                    makePlaylistDisplay,
+                    getMediaData;
+
+                makeVideoDisplay = function(videoData) {
+                    var videoEl,
+                        imgEl,
+                        titleEl,
+                        descriptionEl,
+                        dataEl;
+                    // clear the display
+                    generatedContent.innerHTML = "";
+                    // generate an HTML display of the video item
+                    videoEl = document.createElement('div');
+                    imgEl = document.createElement('img');
+                    titleEl = document.createElement('h2');
+                    descriptionEl = document.createElement('p');
+                    videoEl.setAttribute('class', 'video-item');
+                    videoEl.appendChild(imgEl);
+                    videoEl.appendChild(titleEl);
+                    videoEl.appendChild(descriptionEl);
+                    if (videoData.thumbnail_sources) {
+                        imgEl.setAttribute("src", videoData.thumbnail_sources[0].src);
+                    } else {
+                        imgEl.setAttribute("src", videoData.thumbnail);
+                    }
+                    titleEl.appendChild(document.createTextNode(videoData.name));
+                    descriptionEl.appendChild(document.createTextNode(videoData.description));
+                    generatedContent.appendChild(videoEl);
+                    // display the video data
+                    responseData.innerHTML = JSON.stringify(videoData, null, '  ');
+                };
+
+                makePlaylistDisplay = function(playlistData) {
+                    var videoEl,
+                        imgEl,
+                        titleEl,
+                        descriptionEl,
+                        dataEl,
+                        i,
+                        iMax;
+                    // clear the display
+                    generatedContent.innerHTML = "";
+                    // generate an HTML display of the video items
+                    iMax = playlistData.videos.length;
+                    for (i = 0; i < iMax; i++) {
+                        videoData = playlistData.videos[i];
+                        videoEl = document.createElement('div');
+                        imgEl = document.createElement('img');
+                        titleEl = document.createElement('h2');
+                        descriptionEl = document.createElement('p');
+                        videoEl.setAttribute('class', 'video-item');
+                        videoEl.appendChild(imgEl);
+                        videoEl.appendChild(titleEl);
+                        videoEl.appendChild(descriptionEl);
+                        if (videoData.thumbnail_sources) {
+                            imgEl.setAttribute("src", videoData.thumbnail_sources[0].src);
+                        } else {
+                            imgEl.setAttribute("src", videoData.thumbnail);
+                        }
+                        titleEl.appendChild(document.createTextNode(videoData.name));
+                        descriptionEl.appendChild(document.createTextNode(videoData.description));
+                        generatedContent.appendChild(videoEl);
+                    }
+                    // display the video data
+                    responseData.innerHTML = JSON.stringify(playlistData, null, '  ');
+
+                };
+
+                getMediaData = function(mediaType, requestURL) {
+                    var httpRequest = new XMLHttpRequest(),
+                        responseData,
+                        parsedData,
+                        // response handler
+                        getResponse = function() {
+                            try {
+                                if (httpRequest.readyState === 4) {
+                                  if (httpRequest.status === 200) {
+                                    responseData = httpRequest.responseText;
+                                    parsedData = JSON.parse(responseData);
+                                    switch (mediaType) {
+                                        case 'video':
+                                            makeVideoDisplay(parsedData);
+                                        break;
+                                        case 'playlist':
+                                            makePlaylistDisplay(parsedData);
+                                        break;
+                                    }
+                                  } else {
+                                    alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                                  }
+                                }
+                              }
+                              catch(e) {
+                                alert('Caught Exception: ' + e);
+                              }
+                        };
+                    // set response handler
+                    httpRequest.onreadystatechange = getResponse;
+                    // open the request
+                    httpRequest.open('GET', requestURL);
+                    // set headers
+                    httpRequest.setRequestHeader('Accept', 'application/json;pk=' + policy_key.value);
+                    // open and send request
+                    httpRequest.send();
+                };
+
+                // event listeners
+                videoButton.addEventListener('click', function() {
+                    var mediaType = 'video',
+                        requestURL = apiBaseURL + '/accounts/' + account_id.value + '/videos/' + video_id.value;
+                        apiRequest.innerHTML = requestURL;
+                        getMediaData(mediaType, requestURL);
+                });
+                playlistButton.addEventListener('click', function() {
+                    var mediaType = 'playlist',
+                        requestURL = apiBaseURL + '/accounts/' + account_id.value + '/playlists/' + playlist_id.value;
+                        apiRequest.innerHTML = requestURL;
+                        getMediaData(mediaType, requestURL);
+                });
+
+            })(window, document);
+        </script>
+    <div style="text-align:center">
+    
+</div>
+<div class="bcls-footer text-center"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+<script>
+var feedbackMail = document.getElementById("feedbackMail");
+feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+</script>
+</body>
+</html>
