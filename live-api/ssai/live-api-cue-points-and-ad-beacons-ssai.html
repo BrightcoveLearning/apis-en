@@ -391,13 +391,16 @@ grandparent: Live API
     </tbody>
   </table>
   
-  <h3>SCTE-35 ad variables</h3>
+  <h3>SCTE-35 ad variables</h3> 
   
-  <p>The <a href="https://www.scte.org/">Society of Cable Telecommunications Engineers (SCTE)</a> defines a standard for dynamic ad insertion for live streams. The following table summarizes the SCTE-35 ad configuration variables.</p>
+  <p>The <a href="https://www.scte.org/">Society of Cable Telecommunications Engineers (SCTE)</a> defines a standard for dynamic ad insertion for live streams.</p>
+  <!-- <p>The following table summarizes the SCTE-35 ad configuration variables.</p> -->
   
   <aside class="bcls-aside bcls-aside--information">
   <p>The SCTE-35 ad parameters are currently supported with both Real-time Transport Protocol (RTP) with or without Forward Error Correction (FEC) and Secure Reliable Transport (SRT) input sources which are based on Transport Stream (TS). Note that FEC is highly recommended for RTP.</p>
   These ad parameters are not available with input streams using the Real-Time Messaging Protocol (RTMP).</aside>
+
+  <p>If parsed from SCTE-35, the following configuration variables can be applied to your ad tags:</p>
   
   <table class="bcls-table">
     <caption class="bcls-caption--table">SCTE-35 Ad Configuration Variables</caption>
@@ -411,37 +414,40 @@ grandparent: Live API
     </thead>
     <tbody class="bcls-table__body">
       <tr>
-        <td style="width:20%"><code translate="No">scte35_eventID</code></td>
+        <td style="width:20%"><code translate="No">{{scte35_eventID}}</code></td>
         <td style="text-align:left;width:60%;">
         <div style="word-wrap:break-word;">an unique event id passed with an SCTE35 message.</div>
         </td>
       </tr>
       <tr>
-        <td style="width:20%"><code translate="No">scte35_programID</code></td>
+        <td style="width:20%"><code translate="No">{{scte35_programID}}</code></td>
         <td style="text-align:left;width:60%;">
         <div style="word-wrap:break-word;">A unique program id passed with an SCTE35 message.</div>
         </td>
       </tr>
       <tr>
-        <td style="width:20%"><code translate="No">scte35_availNum</code></td>
+        <td style="width:20%"><code translate="No">{{scte35_availNum}}</code></td>
         <td style="text-align:left;width:60%;">
         <div style="word-wrap:break-word;">An id for a specific splice time available for ads, send via a SCTE35 message.</div>
         </td>
       </tr>
       <tr>
-        <td style="width:20%"><code translate="No">scte35_breakDuration</code></td>
+        <td style="width:20%"><code translate="No">{{scte35_breakDuration}}</code></td>
         <td style="text-align:left;width:60%;">
         <div style="word-wrap:break-word;">Break duration for the ad break, in terms of ticks of the program’s 90 kHz clock, passed with a SCTE35 message.</div>
         </td>
       </tr>
       <tr>
-        <td style="width:20%"><code translate="No">scte35_spliceTime</code></td>
+        <td style="width:20%"><code translate="No">{{scte35_spliceTime}}</code></td>
         <td style="text-align:left;width:60%;">
         <div style="word-wrap:break-word;">Splice time for an ad break, in terms of ticks of the program’s 90 kHz clock, passed with a SCTE35 message.</div>
         </td>
       </tr>
     </tbody>
   </table>
+  <p>As part of the HLS manifests, the SCTE-35 messages are also base64 with the variables in JSON. For example:</p>
+  <pre>
+<code class="language-json" translate="No">{&quot;scte35_eventID&quot;: somevalue, &quot;scte35_programID&quot;: somevalue}</code></pre>
   </section>
   
   <section class="bcls-section">
@@ -452,7 +458,7 @@ grandparent: Live API
   <p>To add a beacon set to a Live job, first create the beacon set, and then include the id when you create the job, like this:</p>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">{
+<code class="language-json" translate="No">{
   "live_stream": true,
   "region": "us-west-2",
   "reconnect_time": 30,
@@ -483,7 +489,7 @@ grandparent: Live API
   <h4>Sample request body</h4>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">{
+<code class="language-json" translate="No">{
     "account_id": "<span class="bcls-input">User's Account ID [Optional]</span>",
     "beacon_urls": [
       {
@@ -502,7 +508,7 @@ grandparent: Live API
   <h4>Sample response</h4>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">{
+<code class="language-json" translate="No">{
     "beacon_set": {
       "beacon_urls": [{
       "beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/load?position=load&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
@@ -542,7 +548,7 @@ grandparent: Live API
   <h4>Sample request body</h4>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">{
+<code class="language-json" translate="No">{
     "account_id": "<span class="bcls-input">User's Account ID [Optional]</span>",
     "beacon_urls": [
       {
@@ -561,7 +567,7 @@ grandparent: Live API
   <h4>Sample response</h4>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">{
+<code class="language-json" translate="No">{
     "beacon_set": {
       "account_id": "User's Account ID",
       "beacon_set_id": "Beacon set ID",
@@ -614,7 +620,7 @@ grandparent: Live API
   <h4>Sample response</h4>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">[{
+<code class="language-json" translate="No">[{
       "account_id": "User's Account ID",
       "beacon_set_id": "Beacon set ID1",
       "beacon_urls": [{
@@ -659,7 +665,7 @@ grandparent: Live API
   <h4>Sample response</h4>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">[{
+<code class="language-json" translate="No">[{
       "account_id": "User's Account ID",
       "beacon_set_id": "Beacon set ID1",
       "beacon_urls": [{
@@ -704,7 +710,7 @@ grandparent: Live API
   <h4>Sample response</h4>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">{
+<code class="language-json" translate="No">{
       "account_id": "User account ID",
       "beacon_set_id": "Beacon set ID",
       "beacon_urls": [{
@@ -743,7 +749,7 @@ grandparent: Live API
   <p>The response will look like this:</p>
   
   <pre class="line-numbers">
-  <code class="language-json" translate="No">{
+<code class="language-json" translate="No">{
     "beacon_set_id": "Beacon set ID",
     "deleted": true
   }</code></pre>
