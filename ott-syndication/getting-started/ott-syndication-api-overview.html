@@ -230,84 +230,109 @@ layout: staging
   
         <p>If any API requests fails, an error message will be returned. Error responses will look like the following:</p>
   
-        <pre class="line-numbers">
-    <code class="language-json" translate="No">[
-      {
-        "error_code" : "Application error code 1",
-        "message" : "Application error message 1"
-      }, {
-        "error_code" : "Application error code 2",
-        "message" : "Application error message 2"
-      }
-    ]</code></pre>
+<pre class="line-numbers"><code class="language-json" translate="No">[
+  {
+    "error_code" : "Application error code 1",
+    "message" : "Application error message 1"
+  }, {
+    "error_code" : "Application error code 2",
+    "message" : "Application error message 2"
+  }
+]</code></pre>
         <aside class="bcls-aside bcls-aside--information">Note that if you include a request body in a GET request, the request will fail and an error will be returned.</aside>
       </section>
   
       <section class="bcls-subsection">
-        <h3 id="Create_a_syndication">Create a syndication</h3>
+        <h3 id="Create_a_syndication">Create a syndication configuration</h3>
   
         <p>Method: <code translate="No">POST</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications</code></p>
+        <p>Endpoint: <code translate="No">/v1/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications</code></p>
   
         <p>Sample request body:</p>
   
-        <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-      "name": "my mp4 feed",
-      "type": "mp4"
-    }</code></pre>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "name": "Syndication for AppleTV Universal Search",
+  "type": "umcAvailabilityCsv"
+}</code></pre>
   
         <p>Note that the <code translate="No">name</code> and <code translate="No">type</code> fields are required. Others are optional.</p>
       </section>
   
       <section class="bcls-subsection">
-        <h3 id="Get_all_syndications_for_an_account">Get all syndications for an account</h3>
+        <h3 id="Get_all_syndications_for_an_account">Get all syndication configurations for an account</h3>
   
         <p>Method: <code translate="No">GET</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications</code></p>
+        <p>Endpoint: <code translate="No">/v1/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications</code></p>
       </section>
   
       <section class="bcls-subsection">
-        <h3 id="Update_a_syndication">Update a syndication</h3>
+        <h3 id="Update_a_syndication">Update a syndication configuration</h3>
+
+        <p>There are two kinds of update operations:</p>
+        <ul>
+          <li><code translate="no">PATCH</code> updates only the fields included in the request body.</li>
+          <li><code translate="no">PUT</code> updates all updatable fields in the configuration, and so the request body must include all fields, even if some are not being updated, unless they are set to default values.</li>
+        </ul>
+
+        <aside class="bcls-aside bcls-aside--warning language-editable">
+          Remember that the <code translate="No">type</code> cannot be updated.This means that:
+          <ul>
+            <li>For <code translate="No">PATCH</code> updates, you <strong>must not</strong> include the <code translate="No">type</code> field.</li>
+            <li>For <code translate="No">PUT</code> updates, you <strong>must</strong> the <code translate="No">type</code> field, and <strong>its value must match the existing value</strong>.</li>
+          </ul>
+        </aside>
+
+        <h4>PATCH updates</h4>
   
         <p>Method: <code translate="No">PATCH</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications/{syndication_id}</code></p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span></code></p>
   
         <p>Sample request body:</p>
   
-        <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-      "name": "my new name"
-    }</code></pre>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "name": "my new name"
+}</code></pre>
+
+        <h4>PUT updates</h4>
+        <p>Method: <code translate="No">PATCH</code></p>
   
-        <p>Note that the request body for PATCH requests must <strong>not</strong> include the fields (<code translate="No">type</code>, <code translate="No">id</code> and <code translate="No">syndication_url</code>).</p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span></code></p>
+  
+        <p>Sample request body:</p>
+  
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "name": "my new name",
+  "type": "umcAvailabilityCsv"
+}</code></pre>
+
+        <aside class="bcls-aside bcls-aside--information language-editable">Note again that the <code translate="No">type</code> value here must match the type already set in the configuration.</aside>
       </section>
   
       <section class="bcls-subsection">
-        <h3 id="Delete_a_syndication">Delete a syndication</h3>
+        <h3 id="Delete_a_syndication">Delete a syndication configuration</h3>
   
         <p>Method: <code translate="No">DELETE</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications/{syndication_id}</code></p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span></code></p>
       </section>
   
       <section class="bcls-subsection">
-        <h3 id="Get_a_specific_syndication">Get a specific syndication</h3>
+        <h3 id="Get_a_specific_syndication">Get a specific syndication configuration</h3>
   
         <p>Method: <code translate="No">GET</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications/{syndication_id}</code></p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span></code></p>
       </section>
   
       <section class="bcls-subsection">
-        <h3 id="create_a_new_ott_async_job_request">Set the template for a universal syndication</h3>
+        <h3 id="create_a_new_ott_async_job_request">Create a new OTT async job request</h3>
   
-        <p>Method: <code translate="No">PUT</code></p>
+        <p>Method: <code translate="No">POST</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications/{syndication_id}/template</code></p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span>/template</code></p>
   
         <p>Sample request body:</p>
   
@@ -335,11 +360,11 @@ layout: staging
       </section>
   
       <section class="bcls-subsection">
-        <h3 id="create_a_new_ott_async_job_request">Get the template for a universal syndication</h3>
+        <h3 id="create_a_new_ott_async_job_request">Get all OTT Syndications</h3>
   
         <p>Method: <code translate="No">GET</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications/{syndication_id}/template</code></p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span>/template</code></p>
       </section>
   
       <section class="bcls-subsection">
@@ -349,7 +374,7 @@ layout: staging
   
         <p>Method: <code translate="No">GET</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications/{syndication_id}/feed</code></p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span>/feed</code></p>
       </section>
     </section>
 
@@ -364,8 +389,8 @@ layout: staging
       <p>The following actions are supported:</p>
       <h3>Templates for custom OTT feeds</h3>
       <ul>
-        <li><a href="upload_a_custom_ott_feed_template">Upload a custom OTT feed template</a></li>
-        <li><a href="get_a_custom_ott_feed_template">Get a custom OTT feed template</a></li>
+        <li><a href="#upload_a_custom_ott_feed_template">Upload a custom OTT feed template</a></li>
+        <li><a href="#get_a_custom_ott_feed_template">Get a custom OTT feed template</a></li>
       </ul>
 
       <section class="bcls-subsection">
@@ -375,7 +400,7 @@ layout: staging
   
         <p>Method: <code translate="No">GET</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications/{syndication_id}/feed</code></p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span>/feed</code></p>
       </section>
 
       <section class="bcls-subsection">
@@ -385,7 +410,7 @@ layout: staging
   
         <p>Method: <code translate="No">GET</code></p>
   
-        <p>Endpoint: <code translate="No">/accounts/{account_id}/mrss/syndications/{syndication_id}/feed</code></p>
+        <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span>/feed</code></p>
       </section>
 
     </section>
@@ -402,48 +427,12 @@ layout: staging
       <section class="bcls-subsection">
         <h3 id="Top_level_properties">Top level properties</h3>
   
-        <h4>Derived from Syndication fields</h4>
-  
-        <ul>
-          <li><code translate="No">album_art_url</code></li>
-          <li><code translate="No">author</code></li>
-          <li><code translate="No">category</code></li>
-          <li><code translate="No">description</code></li>
-          <li><code translate="No">destination_url</code></li>
-          <li><code translate="No">explicit</code></li>
-          <li><code translate="No">keywords</code></li>
-          <li><code translate="No">name</code></li>
-          <li><code translate="No">owner_name</code></li>
-          <li><code translate="No">owner_email</code></li>
-          <li><code translate="No">subtitle</code></li>
-          <li><code translate="No">syndication_id</code></li>
-          <li><code translate="No">syndication_url</code></li>
-          <li><code translate="No">title</code></li>
-        </ul>
-  
         <h4>Video Cloud account id</h4>
   
         <ul>
           <li><code translate="No">account_id</code></li>
         </ul>
-  
-        <h4>VideoCloud default player page url prefix</h4>
-  
-        <p>Use like this:</p>
-  
-        <pre>
-    <code class="language-xml" translate="No">&lt;media:player url="{{player_url}}/{{account_id}}/default_default/index.html?videoId={{asset.id}}"&gt;</code></pre>
-  
-        <ul>
-          <li><code translate="No">player_url</code></li>
-        </ul>
-  
-        <h4>URL of the feed's next page</h4>
-  
-        <ul>
-          <li><code translate="No">next_page</code></li>
-        </ul>
-  
+    
         <h4>Collection of video assets retrieved from the catalog (see below for details)</h4>
   
         <ul>
