@@ -14,13 +14,17 @@ servers:
   - url: 'https://social.api.brightcove.com/v1'
     variables: {}
 tags:
+  - name: OTT Syndication Configuration
+    description: Operations creating and managing OTT syndication configurations.
   - name: OTT Syndications
     description: Operations creating and managing OTT syndications.
+  - name: OTT Syndication Templates
+    description: Operations adding and managing templates for OTT syndications.
 paths:
   '/accounts/{account_id}/mrss/ott-syndications':
     post:
       tags:
-        - OTT Syndications
+        - OTT Syndication Configuration
       summary: Create a new OTT syndication configuration
       description: >-
         Creates a new OTT syndication configurations.
@@ -68,7 +72,7 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     get:
       tags:
-        - OTT Syndications
+        - OTT Syndication Configuration
       summary: Get all OTT syndication configurations
       description: >-
         Gets a list of all OTT syndications currently configured for the account.
@@ -100,7 +104,7 @@ paths:
   '/accounts/{account_id}/mrss/ott-syndications/{syndication_id}':
     put:
       tags:
-        - OTT Syndications
+        - OTT Syndication Configuration
       summary: Update an OTT syndication configuration.
       description: >-
         Updates the configuration data for a syndication.  A fully populated OTT Syndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
@@ -143,7 +147,7 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     patch:
       tags:
-        - OTT Syndications
+        - OTT Syndication Configuration
       summary: Update an OTT syndication configuration.
       description: >-
         Updates the configuration data for a syndication.  An OTT Syndication object specifying non-null values for writable fields to be updated should be passed as the request body.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
@@ -186,7 +190,7 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     delete:
       tags:
-        - OTT Syndications
+        - OTT Syndication Configuration
       summary: Delete an OTT syndication configuration
       description: >-
         Deletes an OTT syndication configuration.
@@ -220,7 +224,7 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     get:
       tags:
-        - OTT Syndications
+        - OTT Syndication Configuration
       summary: Get an OTT syndication configuration
       description: >-
         Gets the configuration data for an OTT syndication.
@@ -259,7 +263,7 @@ paths:
   '/accounts/{account_id}/mrss/ott-syndications/{syndication_id}/template':
     put:
       tags:
-        - OTT Templates
+        - OTT Syndication Templates
       summary: Upload a custom OTT feed template
       description: >-
         Uploads a custom OTT feed template to a universal syndication.
@@ -300,7 +304,7 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     get:
       tags:
-        - OTT Templates
+        - OTT Syndication Templates
       summary: Get a custom OTT feed template
       description: >-
         Gets a universal syndication's custom OTT feed template.
@@ -560,25 +564,29 @@ components:
           items: {
             type: string
           }
-          description: A list of OTT syndications to be processed.  The resulting feeds will be generated and packaged into a single zipped results file.
+          description: A list of IDs for OTT syndications to be processed.  The resulting feeds will be generated and packaged into a single zipped results file.
         results:
           type: array
           items: {
             type: string
           }
           description: A list of URLs pointing to results files.  Currently this will always contain just a single URL pointing to a zipped results file if the job was processed successfully.  The URLs expire after 3 hours.
+          readOnly: true
         errors:
           type: array
           items: {
             type: string
           }
           description: A list of errors that occurred if a job failed to complete successfully.
+          readOnly: true
         created_at:
           type: string
           description: Job creation timestamp, in UTC format.
+          readOnly: true
         updated_at:
           type: string
           description: Last job update timestamp, in UTC format.
+          readOnly: true
     OTTAsyncJobList:
       type: array
       items:
