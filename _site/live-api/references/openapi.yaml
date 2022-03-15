@@ -1090,6 +1090,50 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
+  /redundantgroups/{redundant_group_id}/playback-token:
+    post:
+      tags:
+        - Redundant Groups
+      summary: Create playback token for a redundant group
+      description: |-
+        Redundant groups created via the Live module in Studio (or by specifying `videocloud.video` when creating a redundant group directly through the API) automatically create a special Video Cloud video that, when used in a Brightcove player, makes use of the `ad_config_id` property to select the specific source desired (i.e. SSAI source, DVR/no DVR, BYOCDN). Redundant groups which have SSAI enabled must always provide an `ad_config_id` in the player, even if the source desired is non-SSAI (this prevents an end user from omitting the `ad_config_id` and receiving a clear stream). **This applies only to live Video Cloud videos created via the Live module or Live API - manually created Video Cloud remote assets have no such restriction.**
+
+        The request returns a generated `playback_token`.
+
+        This behavior is handled automatically when you publish a live video from the Live module publishing screen, but may be useful if you have a custom workflow
+      operationId: CreatePlaybackTokenRedundantGroup
+      parameters:
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/XAPIKEY'
+        - $ref: '#/components/parameters/redundant_group_id'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedundantGroupCreatePlaybackTokenResponse'
+        '400':
+          description: >-
+            BAD_REQUEST: Invalid input value - see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for
+            more details
+        '401':
+          description: >-
+            UNAUTHORIZED: Unauthorized - see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more
+            details
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you
+            requested - see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more details
+        '500':
+          description: 'INTERNAL_SERVER_ERROR: see [Live API Error Messages](/live-api/references/live-api-error-messages.html) for more details'
+      deprecated: false
+      security: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
   /scheduler/jobstartstop:
     post:
       tags:
@@ -5953,6 +5997,14 @@ components:
           ]
         }
       title: Redundant Group Cuepoint Insertion Response
+      type: object
+    RedundantGroupCreatePlaybackTokenResponse:
+      properties:
+        playback_token:
+          type: string
+          description: The playback token
+          example: live.6cGp7MDhWW4wXw0FKlTM_kruqzN4QO2eklBJhrXt8tBnSCKyuwwBReptfp91K5bBUdfRALYlnu-QXhb9xGEJYR9UCkmGdfwqJqKhx7gngzIg43L9ByQmEMUc"
+      title: Redundant Group Playback Token Response
       type: object
     Notification:
       properties:
