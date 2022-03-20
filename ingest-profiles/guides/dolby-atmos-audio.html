@@ -1,0 +1,76 @@
+---
+title: Dolby Atmos Audio
+description: This topic explains how you can retain Dolby Atmos audio in your video renditions in Video Cloud.
+parent: Guides
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>Dolby Atmos is a surround sound technology developed by Dolby Laboratories. It expands on existing surround sound systems by adding height channels, allowing sounds to be interpreted as three-dimensional objects.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Prerequisites">Prerequisites</h2>
+    <p>The following are required to retain Dolby Atmos in (some) renditions:</p>
+    <ul>
+      <li>The account must be enabled for <a href="/dynamic-ingest/ingest-guides/implementing-multiple-audio-tracks-using-apis.html">multiple audio tracks</a> by Brightcove Support.</li>
+      <li>You must also request that the Dolby Atmos audio rendition be enabled for your account.</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="implementing_dolby_atmos_passthrough">Implementing Dolby Atmos passthrough</h2>
+    <p>Before starting, note the following:</p>
+    <ul>
+      <li>Dolby Atmos pass-through works only when the source contains a Dolby Atmos rendition.</li>
+      <li>Video Cloud will copy the Dolby Atmos rendition without any modifications or encoding.</li>
+    </ul>
+    <p>To implement Dolby Atmos passthrough, you must add the new rendition to an Ingestion Profile. Create a new profile add all the video and audio renditions you want, then in the Advance Editor, look for the <code translate="No">dynamic_origin.renditions</code> and add <code translate="No">default/dolby_atmos</code>:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">"renditions": 0,
+  "packages": 0,
+  "dynamic_origin": {
+    "renditions": [
+      <span class="bcls-highlight">"default/dolby_atmos",</span>
+      "default/video450",
+      "default/video1200",
+      "default/audio128",
+      "default/video700",
+      "default/video2000",
+      "default/video3500"
+    ]
+    "images": [
+      {
+        "label": "thumbnail",
+        "height": 90,
+        "width": 160
+      }...</code></pre>
+
+      <p>To know if a video has Dolby Atmos audio, you can use a an app such as <a href="https://mediaarea.net/en/MediaInfo">MediaInfo</a>. The output should look something like this:</p>
+<pre class="line-numbers"><code class="language-bash" translate="No">Audio
+  Format &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : E-AC-3 JOC
+  Format/Info&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Enhanced AC-3 with Joint Object Coding
+  Commercial name&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : <span class="bcls-highlight">Dolby Digital Plus with Dolby Atmos</span>
+  Codec ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : A_EAC3
+  Bit rate mode&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Constant
+  Channel(s) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : 6 channels
+  ...</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="best_practices">Best practices</h2>
+    <p>If you using Dolby Atmos passthrough renditions, we recommend the following:</p>
+    <ul>
+      <li>Be sure you archive the master in case you want to retranscode the video later.</li>
+      <li>To have audio playback on devices that do not support Dolby Atmos, add a regular audio rendition to the Ingestion Profile.</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="limitations">Limitations</h2>
+    <ul>
+      <li>Clipping - Atmos is not supported at the moment.</li>
+      <li>EAC3 is the only valid codec supported with Atmos as pass-through.</li>
+      <li>True-HD with Atmos cannot be converted to EAC3 at the moment.</li>
+      <li>True-HD codec is not a supported codec for MP4 formats.</li>        
+    </ul>
+  </section>
+</article>
