@@ -14,7 +14,7 @@ layout: staging
   
   <p>You can receive notifications when <code translate="No">video-change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <span translate="No">HTTP</span> <code translate="No">POST</code> requests.</p>
 
-  <aside class="bcls-aside bcls-aside--tip language-editable"><strong>Coming in April 2022</strong>: for shared videos, affiliate accounts will be able get notifications when assets of the video in the master account are modified. Details will be available when this feature is released.</aside>
+  <aside class="bcls-aside bcls-aside--tip language-editable">Starting on March 17th of 2022, users have the possibility to receive notifications for <code translate="No">master-video-change</code> events, also sent to the URL you specify, pointing to an application cable of handling HTTP <code translate="No">POST</code> requests. The notifications for this event are exclusively related with <a href="/cms/managing-videos/media-sharing-cms-api.html">Media Sharing</a> and occur when a Dynamic Delivery Master Video updates its assets; this change is automatically reflected in their affiliate videos but in the past did not to trigger notifications to subscribers in affiliate’s accounts. Keep reading to know more about this new feature and go to the media sharing section to get a better understanding of how sharing works.</aside>
 
   <aside class="bcls-aside bcls-aside--information language-editable">Note that two new fields, <code translate="No">action</code> and <code translate="No">updated_by</code> are added to notifications as of February 2022. If you have an app in place to handle notifications, <strong>these are non-breaking changes and will not affect your current app</strong>. The changes are noted below.</aside>
   
@@ -24,27 +24,33 @@ layout: staging
   
   <h3>Setup</h3>
   
-  <p>You can specify up to 10 endpoints to receive notifications by making a <code translate="No">POST</code> request to <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/{account_id}/subscriptions</code> and including JSON in the request body like this:</p>
+  <p>To create a new subscription, submit a <code translate="No">POST</code> request to <code translate="No">https://cms.api.brightcove.com/v1/accounts/{account_id}/subscriptions</code> with a request body including the endpoint that you want notifications delivered to and <code translate="No">video-change</code> or <code translate="No">master-video-change</code> as the single item in an events array. You can specify up to 10 endpoints per event to receive notifications.</p>
+
+  <p>The available events for <code translate="No">video-change</code> are for your video library, and now, events for <code translate="No">master-video-change</code> are for changes in the assets of a dynamic delivery master video that will eventually be reflected in your shared video.</p>
+
+  <h4>For <code translate="No">video-change</code> events</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "endpoint":"http://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
+  "events":["video-change"]
+}</code></pre>
   
-  <pre class="line-numbers">
-        <code class="language-json" translate="No">{
-        "endpoint":"http://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
-        "events":["video-change"]
-        }
-        </code>
-        </pre>
+  <h4>For <code translate="No">master-video-change</code> events</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "endpoint":"http://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
+  "events":["master-video-change"]
+}</code></pre>
   
-  <p>Notifications are sent in JSON format. Here's an example:</p>
+  <p>Notifications are sent in JSON format. Here's an example for <code translate="No">video-change</code> events:</p>
   
-  <pre class="line-numbers"><code class="language-json" translate="No">{"timestamp":1423840514446, 
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "timestamp":1423840514446, 
   "account_id":"775205503001", 
   "event":"video-change", 
   "video":"4020894387001", 
   "version":26,
   <span class="bcls-highlight">“action”:”UPDATE”,</span>
   <span class="bcls-highlight">“updated_by”:{ "email": "string", "id": "string", "type": "user" }</span>
-}</code>
-        </pre>
+}</code></pre>
   
   <aside class="bcls-aside bcls-aside--information">
     Notes:
@@ -53,6 +59,22 @@ layout: staging
       <li>There is currently no other way to subscribe to notifications except through the API.</li>
     </ul>
   </aside>
+
+  <p>And an example for <code translate="No">master-video-change</code> looks like this:</p>
+
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "timestamp":1423840514446,
+  "account_id":"775205503001",
+  "event":"video-change",
+  "video":"4020894387001", 
+  "version":26, 
+  "action":"UPDATE", 
+  "updated_by":{ "email": "string", "id": "string", "type": "user" },
+  "master_account_id":"784205904003",
+  "master_video_id":"6200985429005"
+}</code></pre>
+
+<aside class="bcls-aside bcls-aside--information language-editable">Notice that, for <code translate="No">master-video-change</code>, <code translate="No">master_account_id</code> and <code translate="No">master_video_id</code> values are included in the response, this is to provide an easiest way to know about the master video who performs the changes reflected in the affiliate video.</aside>
   
   <h3>Notification fields</h3>
   
@@ -71,6 +93,14 @@ layout: staging
       <tr>
         <td ><code translate="No">account_id</code></td>
         <td >the <span translate="No">Video Cloud</span> account id</td>
+      </tr>
+      <tr>
+        <td ><code translate="No">master_account_id</code></td>
+        <td >the <span translate="No"><strong>Only for master-video-change events</strong>: The <code translate="No">id</code> of the master video who made the update in the assets shared with the affiliate video.</td>
+      </tr>
+      <tr>
+        <td ><code translate="No">master_video_id</code></td>
+        <td >the <span translate="No"><strong>Only for master-video-change events</strong>: The id of the Video Cloud master account for the master video.</td>
       </tr>
       <tr>
         <td ><code translate="No">event</code></td>
@@ -130,6 +160,7 @@ layout: staging
   <ul>
     <li><code translate="No">video-change</code> events are triggered by automated system processes as well as user actions, so these events will not always corresponds to changes you made to video properties in Studio or via the APIs.</li>
     <li>Notification handlers on servers built on HTTP2 are not currently supported. Notifications sent to HTTP2 servers may fail to be delivered without returning any error.</li>
+    <li><code translate="No">master-video-change</code> events are triggered by automated system processes after a master video updates its assets. These events can not be triggered manually.</li>
   </ul>
   </aside>
   
@@ -144,18 +175,11 @@ layout: staging
         </code>
         </pre>
   
-  <h3 id="createSubscription">Create a new subscription</h3>
-  
-  <p>To create a new subscription, submit a <code translate="No">POST</code> request with a request body including the endpoint that you want notifications delivered to and <code translate="No">video-change</code> as the single item in an <code translate="No">events</code> array:</p>
-  
-  <pre class="line-numbers">
-        <code class="language-json" translate="No">{ "endpoint": "http://solutions.brightcove.com:9002", "events": [ "video-change" ] }
-        </code>
-        </pre>
-  
   <h3 id="getSubscriptions">Get a list of your subscriptions</h3>
   
-  <p>To get a list of all your subscriptions, send a <code translate="No">GET</code> request to the subscriptions endpoint.</p>
+  <p>To get a list of all your subscriptions, send a <code translate="No">GET</code> request to the subscriptions endpoint:.</p>
+
+  <pre class="line-numbers"><code class="language-http" translate="No">/accounts/{account_id}/subscriptions</code></pre>
   
   <h3 id="getSubscription">Get or Delete a single subscription</h3>
   
@@ -163,10 +187,7 @@ layout: staging
   
   <h4>Endpoint</h4>
   
-  <pre class="line-numbers">
-        <code class="language-http" translate="No">/accounts/{account_id}/subscriptions/{subscription_id}
-        </code>
-        </pre>
+  <pre class="line-numbers"><code class="language-http" translate="No">/accounts/{account_id}/subscriptions/{subscription_id}</code></pre>
   
   <p>A <code translate="No">GET</code> request will retrieve the subscription. A <code translate="No">DELETE</code> request will delete the subscription. You cannot update a subscription at this time. If you want to modify a subscription, you will need to delete it and create a new one.</p>
   </section>
@@ -188,6 +209,14 @@ layout: staging
     <li>A video is activated or deactivated</li>
     <li>A video is deleted</li>
     <li>Video metadata is changed (by the system or a user)</li>
+    <li>
+      <code translate="No">master-video-change</code> events are triggered by updates in the assets of a master video, which makes them only available for sharing.
+      <p>Changes that will trigger this event include:</p>
+      <ul>
+        <li>Ingested assets are added to the master video</li>
+        <li>Ingested assets are replaced/retranscoded in the master video</li>
+      </ul>
+    </li>
   </ul>
   
   <h3>Notes</h3>
@@ -197,6 +226,8 @@ layout: staging
   <p>There are system events that occur after a video is deleted, so you will receive notifications about a video after deleting it.</p>
   
   <p>What will <strong>not</strong> trigger a <code translate="No">video-change</code> event is a change to a video asset that does not change the video metadata. For example, if you replace a remote text track file or image, but the URL recorded in the video metadata remains the same, no <code translate="No">video-change</code> event will occur, and no notification will be sent.</p>
+
+  <p>Deletion of assets in a master video will not trigger a <code translate="No">master-video-change</code> event. When assets are removed in a video it’s because the video is being deleted, and sharing already handles the deletion process for affiliate videos.</p>
   </section>
   </article>
   
