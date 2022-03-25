@@ -17,15 +17,22 @@ parent: Guides
     <ul>
       <li>The account must be enabled for <a href="/dynamic-ingest/ingest-guides/implementing-multiple-audio-tracks-using-apis.html">multiple audio tracks</a> by Brightcove Support.</li>
       <li>You must also request that the Dolby Atmos audio rendition be enabled for your account.</li>
+      <li>Dolby Atmos pass-through works only when the source contains a Dolby Atmos rendition.</li>
     </ul>
+
+    <p>To know if a video has Dolby Atmos audio, you can use a an app such as <a href="https://mediaarea.net/en/MediaInfo">MediaInfo</a>. The output should look something like this:</p>
+<pre class="line-numbers"><code class="language-bash" translate="No">Audio
+Format &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : E-AC-3 JOC
+Format/Info&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Enhanced AC-3 with Joint Object Coding
+Commercial name&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : <span class="bcls-highlight">Dolby Digital Plus with Dolby Atmos</span>
+Codec ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : A_EAC3
+Bit rate mode&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Constant
+Channel(s) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : 6 channels
+...</code></pre>
   </section>
   <section class="bcls-section">
     <h2 id="implementing_dolby_atmos_passthrough">Implementing Dolby Atmos passthrough</h2>
-    <p>Before starting, note the following:</p>
-    <ul>
-      <li>Dolby Atmos pass-through works only when the source contains a Dolby Atmos rendition.</li>
-      <li>Video Cloud will copy the Dolby Atmos rendition without any modifications or encoding.</li>
-    </ul>
+    <p>Before starting, note that Video Cloud will copy the Dolby Atmos rendition without any modifications or encoding.</p>
     <p>To implement Dolby Atmos passthrough, you must add the new rendition to an Ingestion Profile. Create a new profile add all the video and audio renditions you want, then in the Advance Editor, look for the <code translate="No">dynamic_origin.renditions</code> and add <code translate="No">default/dolby_atmos</code>:</p>
 <pre class="line-numbers"><code class="language-json" translate="No">"renditions": 0,
   "packages": 0,
@@ -46,15 +53,6 @@ parent: Guides
         "width": 160
       }...</code></pre>
 
-      <p>To know if a video has Dolby Atmos audio, you can use a an app such as <a href="https://mediaarea.net/en/MediaInfo">MediaInfo</a>. The output should look something like this:</p>
-<pre class="line-numbers"><code class="language-bash" translate="No">Audio
-  Format &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : E-AC-3 JOC
-  Format/Info&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Enhanced AC-3 with Joint Object Coding
-  Commercial name&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : <span class="bcls-highlight">Dolby Digital Plus with Dolby Atmos</span>
-  Codec ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : A_EAC3
-  Bit rate mode&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Constant
-  Channel(s) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : 6 channels
-  ...</code></pre>
   </section>
   <section class="bcls-section">
     <h2 id="best_practices">Best practices</h2>
