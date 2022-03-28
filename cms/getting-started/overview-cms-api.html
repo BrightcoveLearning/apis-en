@@ -375,11 +375,12 @@ grandparent: CMS API
   <section class="bcls-section">
   <h2 id="Notifications">Notifications</h2>
   
-  <p>You can receive notifications when <code translate="No">video_change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <code translate="No">HTTP POST</code> requests.</p>
+  <p>You can receive notifications when <code translate="No">video-change</code> events occur in your video library or <code translate="No">master-video-change</code> notifications when a shared video updates its assets automatically after the master video updates it. Notifications will be sent to the URL you specify, which should point to an application capable of handling HTTP POST requests.</p>
   
   <aside class="bcls-aside bcls-aside--information">Notes:
   <ul>
-    <li>Any change in video metadata will trigger a <code translate="No">video_change</code> event. Changes to assets used by the video will <strong>not</strong> trigger change events.</li>
+    <li>Any change in video metadata will trigger a <code translate="No">video-change</code> event. Changes to assets used by the video will <strong>not</strong> trigger change events.</li>
+    <li><code translate="No">master-video-change</code> event is exclusive for sharing Dynamic Delivery videos and can only be triggered automatically for a retranscode process.</li>
     <li>In addition to notifications, there are <a href="/cms/references/reference.html#api-videoGroup-Get_Status_of_Ingest_Jobs">status APIs</a> that allow you to get the status of ingest (ingesting, replacing, or retranscoding) jobs associated with a video.</li>
   </ul>
   </aside>
@@ -388,7 +389,7 @@ grandparent: CMS API
   
   <p>The notification system treats any 4xx or 5xx return from the customer server as a retriable failure. Failing callbacks will be retried up to 20 times, with an exponentially increasing delay between subsequent callbacks. The first few retries will happen within minutes of the initial callback attempt. If the callback continues failing, and we get all the way out to the 20th retry, the retry delay will be a few days.</p>
   
-  <aside class="bcls-aside bcls-aside--information"><code translate="No">video_change</code> events are triggered by automated system processes as well as user actions, so these events will not always corresponds to changes you made to video properties in Studio or via the APIs.</aside>
+  <aside class="bcls-aside bcls-aside--information"><code translate="No">video-change</code> events are triggered by automated system processes as well as user actions, so these events will not always corresponds to changes you made to video properties in Studio or via the APIs.</aside>
   
   <h3>Firewalls</h3>
   
