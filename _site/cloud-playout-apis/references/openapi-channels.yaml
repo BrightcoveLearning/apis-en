@@ -14,6 +14,28 @@ servers:
   - url: 'https://cm.cloudplayout.brightcove.com'
     description: Production server
     variables: {}
+tags:
+  - name: Engagement Report
+    description: 'Detailed engagement reports by account, video or player. Detailed engagement is available only for the most recent 32 days.'
+  - name: Channels
+    description: >-
+      Create and manage Cloud Playout channels.
+  - name: Assets
+    description: Create and manage static and dynamic overlay assets.
+#  - name: Slates
+#    description: Add and manage slate assets.
+  - name: PLay Now
+    description: Skip to a particular item in a running channel.
+  - name: Channel Static Overlays
+    description: Operations related to associating a static overlay with a channel.
+  - name: Channel Dynamic Overlays
+    description: Operations related to associating a dynamic overlay with a channel.
+  - name: Credentials
+    description: Operations for creating and managing S3 credentials.
+  - name: Profiles
+    description: Get the live profiles that a channel can use.
+  - name: BC Live channels
+    description: Get the Brightcove Live channels (SEP jobs) that a channel can use.
 paths:
   '/accounts/{account_id}/cp_channels':
     post:
@@ -272,6 +294,81 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/cloud-playout/all
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  '/accounts/{account_id}/cp_channels/{channel_id}/schedules':
+    patch:
+      tags:
+        - Channels
+      summary: Update schedule of a channel
+      description: 'Update the schedule (start, stop and hard start time) of a cloud playout channel'
+      operationId: UpdateChannelSchedule
+      parameters:
+        - $ref: 'https://openapi.brightcove.com/openapi.yaml#/components/parameters/AccountId'
+        - $ref: 'https://openapi.brightcove.com/openapi.yaml#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/ChannelId'
+      requestBody:
+        description: Update a cloudplayout channel schedule
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChannelSchedule'
+            examples:
+              Update Hard Start:
+                $ref: '#/components/examples/upsertChannelHardStartSchedule'
+              Delete Hard Start:
+                $ref: '#/components/examples/deleteChannelHardStartSchedule'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HardStartChannelTopLevel'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+              examples:
+                Invalid Hard Start Time Format:
+                  $ref: '#/components/examples/invalidHardStartFormat'
+                Ond of Hard Start Time or Slate Id Missing:
+                  $ref: '#/components/examples/oneOfHardStartOrSlateMissing'
+                Hard Start Time Create/Update Error with Draft Channel Start Time:
+                  $ref: '#/components/examples/hardStartAndChannelStartError'
+                Hard Start Time Create/Update Error with Draft Channel Stop Time:
+                  $ref: '#/components/examples/hardStartAndChannelStopError'
+                Invalid Slate Id:
+                  $ref: '#/components/examples/invalidSlateId'
+                Running Channel And Hard Start Create Error:
+                  $ref: '#/components/examples/hardStartCreateError'
+                Running Channel And Slate Update Error:
+                  $ref: '#/components/examples/slateUpdateError'
+                Running Channel And Hard Start Update Error:
+                  $ref: '#/components/examples/hardStartUpdateError'
+                Playlist Started And Hard Start Update Error:
+                  $ref: '#/components/examples/hardStartCreateChannelRunningError'
+                Slate Started And Slate Update Error:
+                  $ref: '#/components/examples/slateUpdateChannelRunningError'
+                Channel Start Time Update Error with Hard Start Time:
+                  $ref: '#/components/examples/channelStartTimeUpdateAndhardStartError'
+                Channel Stop Time Update Error with Hard Start Time:
+                  $ref: '#/components/examples/channelStoptTimeUpdateAndhardStartError'
+        '401':
+          $ref: 'https://openapi.brightcove.com/openapi.yaml#/components/responses/401'
+        '403':
+          $ref: 'https://openapi.brightcove.com/openapi.yaml#/components/responses/403'
+        '404':
+          $ref: 'https://openapi.brightcove.com/openapi.yaml#/components/responses/404'
       deprecated: false
       security:
         - BC_OAuth2:
@@ -549,6 +646,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/AssetType'
+        - $ref: '#/components/parameters/Type'
       responses:
         '200':
           description: '200'
@@ -2219,6 +2317,52 @@ components:
         start_time: "2021-07-14T08:02:30.344Z"
         duration: 4200
         asset_id: "https://app.singular.live/output/5EoxJK8A3ehK6zOUxm2NNk/Default?aspect=16:9"
+    upsertChannelHardStartSchedule:
+      value:
+        "start_time": "2020-08-06 22:00:00 +0530"
+        "stop_time": "2020-08-07 22:00:00 +0530"
+        "loop_on_completion": true
+        "hard_start_time": "2020-08-06 22:30:00 +0530"
+        "slate_id": "30a1b08cdb84c60b4a0158f4749eb48"
+    deleteChannelHardStartSchedule:
+      value:
+        "hard_start_time": null
+    invalidHardStartFormat:
+      value:
+        message: "Hard Start Time is not in Standard Time Format"
+    oneOfHardStartOrSlateMissing:
+      value:
+        message: "Please provide value for both hard start time and slate"
+    hardStartAndChannelStartError:
+      value:
+        message: "Cannot update Hard Start Time. Minimum 10 minute duration gap between channel start time"
+    hardStartAndChannelStopError:
+      value:
+        message: "Cannot update Hard Start Time. Hard start time should be less than channel stop time"
+    invalidSlateId:
+      value:
+        message: "No slate exists with public_id ID"
+    hardStartCreateError:
+      value:
+        message: "Cannot create/update Hard Start Time. Channel already playing playlist"
+    slateUpdateError:
+      value:
+        message: "Slate already started. Cannot delete Hard Start Time now"
+    hardStartUpdateError:
+      value:
+        message: "Cannot update Hard Start Time. Hard start time should be less than channel stop time"
+    hardStartCreateChannelRunningError:
+      value:
+        message: "Cannot update Hard Start Time. Channel would have started playlist"
+    slateUpdateChannelRunningError:
+      value:
+        message: "Slate already started. Cannot change slate"
+    channelStartTimeUpdateAndhardStartError:
+      value:
+        message: "Channel start time and hard start time validation failed, 10 minute duration gap between channel start time and hard start time"
+    channelStoptTimeUpdateAndhardStartError:
+      value:
+        message: "Channel stop time and hard start time validation failed. Minimum channel stop time must be greater than hard start time"
   schemas:
     AssetType:
       type: string
@@ -2312,7 +2456,7 @@ components:
                   - rtmp
               input_id:
                 type: string
-                description: Applicable only in slate input_type. Denotes a http URL for the slate MP4
+                description: Applicable only in slate input_type. Should be an existing slate asset id. See [Get Assets](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/GetAssets) to list all the available slate id's.
                 default: "https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4"
               loop_on_completion:
                 type: boolean
@@ -2404,7 +2548,8 @@ components:
             "channel_created_at": "2020-12-16 03:41:22 UTC",
             "channel_updated_at": "2020-12-17 04:53:30 UTC",
             "channel_created_by": "abc@xyz.com",
-            "channel_updated_by": "abc@xyz.com"
+            "channel_updated_by": "abc@xyz.com",
+            "hard_start": null
           }
         ]
       }
@@ -2423,10 +2568,19 @@ components:
         loop_on_completion:
           type: boolean
           description: channel looped/non-looped
+        hard_start_time:
+          type: string
+          format: date-time
+          description: hard start time of channel
+        slate_id:
+          type: string
+          description: id of the slate asset. See [Get Assets](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/GetAssets) to list all the available slate id's.
       example: {
-        "start_time":"2020-08-06 22:00:00 +0530",
-        "stop_time":"2020-08-07 22:00:00 +0530",
-        "loop_on_completion": true
+        "start_time": "2020-08-06 22:00:00 +0530",
+        "stop_time": "2020-08-07 22:00:00 +0530",
+        "loop_on_completion": true,
+        "hard_start_time": "2020-08-06 22:30:00 +0530",
+        "slate_id": "30a1b08cdb84c60b4a0158f4749eb48"
       }
     GetChannel:
       title: GetChannel
@@ -2649,6 +2803,26 @@ components:
         channel_updated_by:
           description: User email that last updated the channel.
           type: string
+        hard_start:
+          description: Hard Start details of the channel.
+          type: object
+          properties:
+            start_time:
+              description: Hard start time of the channel.
+              type: string
+            asset_details:
+              description: Details of the slate asset.
+              type: object
+              properties:
+                asset_url:
+                  description: Public URL of the asset.
+                  type: string
+                id:
+                  description: Id of the slate asset.
+                  type: string
+                name:
+                  description: name of the asset.
+                  type: string
       example:
         public_id: "7ba0ab27e1ba4c69bfbb7e2b6958a3e5"
         name: "testChannel"
@@ -2676,6 +2850,49 @@ components:
         channel_updated_at: "2021-05-26 07:40:40 UTC"
         channel_created_by: "user@example.com"
         channel_updated_by: "user@example.com"
+        hard_start: null
+    HardStartChannelTopLevel:
+      title: HardStartChannelTopLevel
+      type: object
+      properties:
+        channel:
+          $ref: '#/components/schemas/ChannelTopLevel'
+      example: {
+        "public_id": "7ba0ab27e1ba4c69bfbb7e2b6958a3e5",
+        "name": "testChannel",
+        "description": "testChannel",
+        "account_id": "6062814566001",
+        "state": "DRAFT",
+        "status": null,
+        "start_time": "2021-10-10 16:30:00 UTC",
+        "stop_time": "2021-10-20 04:30:00 UTC",
+        "input_groups": "playlist:slate:rtmp",
+        "output_groups": "rtmp",
+        "loop_playlist": true,
+        "playlist_id": "1700806648849757071",
+        "channel_class": "single-pipeline",
+        "ssai_enabled": null,
+        "aws_region": "us-east-1",
+        "message": null,
+        "created_at": "2021-05-26 07:40:40 UTC",
+        "updated_at": "2021-05-26 07:40:40 UTC",
+        "image_url": "https://picsum.photos/200/300",
+        "output_destinations": [
+          "Brightcove Live"
+        ],
+        "channel_created_at": "2021-05-26 07:40:40 UTC",
+        "channel_updated_at": "2021-05-26 07:40:40 UTC",
+        "channel_created_by": "user@example.com",
+        "channel_updated_by": "user@example.com",
+        "hard_start": {
+          "start_time": "2021-10-10 17:00:00 UTC",
+          "asset_details": {
+            "asset_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/cloudplayout-slate-v2.mp4",
+            "id": "30a1b08cdb84c60b4a0158f4749eb48",
+            "name": "countdownslate"
+          }
+        }
+      }
     GetAsRunEvent:
       title: As run logs event
       type: object
@@ -2883,7 +3100,7 @@ components:
                       redundancy:
                         type: boolean
                         description: BC Live redundancy true/false, in case BC Live is the destination
-                        default: false
+                        required: false
                       destination:
                         type: string
                         enum:
@@ -2909,9 +3126,11 @@ components:
                             location:
                               type: string
                               description: BC Live job name, in case BC Live is the destination
+                              required: false
                             location_id:
                               type: string
                               description: BC Live job ID, in case BC Live is the destination
+                              required: false
                             destination_url:
                               type: string
                               description: Output destination URL
@@ -3143,6 +3362,9 @@ components:
           type: string
         updated_at:
           type: string
+        default:
+          type: boolean
+          description: Denotes the default asset. Only supported for slates.
     GetAssetsResponse:
       title: Get all Assets
       type: object
@@ -3511,9 +3733,9 @@ components:
         $ref: "#/components/schemas/AssetType"
     Type:
       name: type
-      in: path
+      in: query
       description: Cloud Playout Overlay Asset Type
-      required: true
+      required: false
       style: simple
       explode: false
       schema:
