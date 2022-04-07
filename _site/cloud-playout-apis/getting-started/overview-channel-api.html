@@ -2276,13 +2276,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h4>Headers</h4>
 <pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
 Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-    <h4>Request body</h4>
+    <h4>Request body - general example</h4>
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "name": "channel name",
   "start_time": "2021-06-29T08:30:50.344Z",
   "input_group": [
     {
-      "input_type": "playlist or rtmp or slate",
+      "input_type": "playlist (or rtmp or slate)",
       "input_id": "dummy",
       "loop_on_completion": false
     }
@@ -2309,6 +2309,30 @@ Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
     }
   ],
   "region": "aws region"
+}</code></pre>
+  <h4>Request body - example using the default slate</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "input_group": [
+    {
+      "input_type": "slate"
+    },
+    {
+      "input_type": "rtmp"
+    }
+  ]
+}</code></pre>
+
+<h4 id="custom_slate">Request body - example using a custom slate</h4>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "input_group": [
+    {
+      "input_type": "slate",
+      "input_id": "slate_asset_id OR https_slate_mp4_url"
+    },
+    {
+      "input_type": "rtmp"
+    }
+  ]
 }</code></pre>
 <details>
   <summary>Sample response</summary>
@@ -2811,6 +2835,13 @@ Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
       </li>
     </ol>
 
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="">Add/Manage custom slates</h2>
+    <p>Slates are used to fill in dead time in channel playback that might result from ad content not completely filling the duration of an ad break, or video assets not being ready at the time of a hard start time. Brightcove provides a default slate than can be used for any channel, but you can provide a default slate in the form of an MP4 video that will be automatically looped as necessary.</p>
+    <p>A custom slate can be added as an asset (which makes it reusable for any channel) or specified as a URL when creating the channel (see the <a href="#custom_slate">sample request body</a> above).</p>
+    <p>See the <a href="/cloud-playout-apis/references/reference-channels-stage.html#tag/Assets">API reference</a> for details on adding a custom slate as an account asset.</p>
   </section>
   <section class="bcls-section">
     <h2 id="get-channel">Get Channel</h2>
