@@ -404,7 +404,8 @@ components:
           description: URL for a WebVTT file
         srclang:
           type: string
-          description: ISO 639 2-letter (alpha-2) language code for the text tracks
+          description: >-
+            BCP 47 language code for the text tracks. Both two letter language codes like `es` (Spanish) and language+region codes like `es-MX` (Mexican Spanish) are valid
         kind:
           type: string
           description: how the vtt file is meant to be used
@@ -436,7 +437,7 @@ components:
       example: [
           {
             "url": "https://support.brightcove.com/test-assets/captions/herons.vtt",
-            "srclang": "en",
+            "srclang": "en-US",
             "kind": "captions",
             "label": "EN",
             "default": true,
@@ -461,6 +462,10 @@ components:
               **Note:**
                 - If `autodetect` is set to `true`, `srclang` must **not** be present
                 - If `autodetect` is set to `false`, and `srclang` is not present, the request will fail
+          srclang:
+            type: string
+            description: >-
+              BCP 47 language code for the text tracks. Both two letter language codes like `es` (Spanish) and language+region codes like `es-MX` (Mexican Spanish) are valid. **`srclang` must not be included if `autodetect` is `true`.**
           default:
             type: boolean
             description: If true, srclang should be ignored and we will get captions for main audio, and the language will be determined from audio.
