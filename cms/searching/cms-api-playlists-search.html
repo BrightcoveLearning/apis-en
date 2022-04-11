@@ -8,7 +8,7 @@ grandparent: CMS API
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
 
     <p>Playlists for an account can be searched by providing a <code translate="No">q</code> parameter to the above call similarly to the provided Video Search functionality. Be aware, however, that <a href="#fields">a much smaller number of fields can be searched</a>, and that only the playlist properties are searched, not properties of the videos contained in the playlist.</p>
@@ -26,17 +26,19 @@ grandparent: CMS API
     <aside class="bcls-aside bcls-aside--information">Requests to the <span translate="No">CMS API</span> require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</aside>
 
     <p>As implied above multiple terms provided are <code translate="No">OR</code>'ed together, and strings containing one or more of the provided terms will be returned. Provided values are <a href="#stemming">stemmed</a>, so variations on the words will be matched. Prefix matching is <strong>not</strong> currently supported. So for instance a search for <code translate="No">p*</code> will not return results starting with "p" nor will a search for <code translate="No">play*</code> return results containing "playlist".</p>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Ignored_words">Ignored words</h2>
 
     <p>Certain words are ignored in search strings because they are so common that they are likely to return many results unrelated to what you are actually searching for. Below is a list of words that are ignored by search:</p>
 
     <p>"a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with"</p>
-    </section>
 
-    <section class="bcls-section">
+    <p>In addition, non-alphanumeric characters such as hyphens, underscores, line-breaks, "$", "&", "*", etc. are treated as word delimiters. For example, a search string like <code translate="No">small-town</code> will be treated as <code translate="No">small town</code>.</p>
+  </section>
+
+  <section class="bcls-section">
     <h2 id="fields">Fields</h2>
 
     <p>Specific fields can be queried by using the <code translate="No">{field:}{value}</code> syntax such as <code translate="No">?q=news+2016+type:EXPLICIT</code>. Fields provided this way must match exactly. Like other terms these will be <code translate="No">OR</code>'ed.</p>
@@ -51,39 +53,39 @@ grandparent: CMS API
     </ul>
 
     <aside class="bcls-aside bcls-aside--information">For an explanation of the fields, see the <a href="/cms/references/cms-api-playlist-fields-reference.html">Playlist Fields Reference</a>.</aside>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="required_terms">Required terms</h2>
 
     <p>You can require terms by prefixing them with a URI-encoded <code translate="No">+</code> sign (%2B) - example: <code translate="No">q=name:%2Bnews+%2B2016</code> (which would return only playlists with names including both "news" and "2016").</p>
 
     <aside class="bcls-aside bcls-aside--warning">You cannot combine optional and required terms - if you search on <code translate="No">q=name:news+%2B2016</code>, the <code translate="No">%2B</code> in front of "2016" will be ignored, and all playlists with names containing "news" OR "2016" will be returned.</aside>
-    </section>
+  </section>
 
-    <section id="excluded_terms" class="bcls-section">
+  <section id="excluded_terms" class="bcls-section">
     <h2>Excluded terms</h2>
 
     <p>Prefix terms with a URI-encoded <code translate="No">-</code> sign to exclude playlists with that term. For example: <code translate="No">q=name:%2Bnews+%2D2016</code> will return videos that have names containing "news" but <strong>not</strong> containing "2016".</p>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="stemming">Stemming</h2>
 
     <p><em>Stemming</em> refers to storing and searching for the roots of words. What this means is that the terms "play", "playing", "plays", "played"... will all be stored as "play" and when a search is done for any of those terms the search will accordingly be translated to search for "play". Stem only applies to the root of the word, and not a string that begins or is part of the word. Therefore, a search on <code translate="No">name:play</code> will returned videos with names containing "play", "played", "playing", and "playable", but will not return videos with names that contain "display" or "playlist".</p>
-    </section>
+  </section>
 
-    <section class="bcls-section">
-      <h2 id="and_or">AND/OR</h2>
-      <p>You can combine search conditions with <code translate="No">AND</code> and <code translate="No">OR</code> logical operators. To avoid ambiguity (is <code translate="No">AND</code> an operator or part of the search string?), you need to put terms that precede logical operators in parentheses like this:</p>
+  <section class="bcls-section">
+    <h2 id="and_or">AND/OR</h2>
+    <p>You can combine search conditions with <code translate="No">AND</code> and <code translate="No">OR</code> logical operators. To avoid ambiguity (is <code translate="No">AND</code> an operator or part of the search string?), you need to put terms that precede logical operators in parentheses like this:</p>
     <pre><code class="language-http" translate="No">q=(Really Short Videos) AND type:EXPLICIT</code></pre>
 
-      <p>Encoded, this search request would look like this:</p>
+    <p>Encoded, this search request would look like this:</p>
 
     <pre><code class="language-http" translate="No">q=name:%28Really%20Short%20Videos%29%20type:EXPLICIT</code></pre>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Full_examples">Full examples</h2>
 
     <h3>Search by type</h3>
@@ -95,5 +97,5 @@ grandparent: CMS API
 
     <pre class="line-numbers">
     <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/playlists?q=%2Bname=morningnews+%2Ddecription=weekend</code></pre>
-    </section>
-    </article>
+  </section>
+</article>
