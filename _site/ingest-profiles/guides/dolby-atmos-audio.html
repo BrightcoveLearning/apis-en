@@ -2265,26 +2265,63 @@ Channel(s) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <section class="bcls-section">
     <h2 id="implementing_dolby_atmos_passthrough">Implementing Dolby Atmos passthrough</h2>
     <p>Before starting, note that Video Cloud will copy the Dolby Atmos rendition without any modifications or encoding.</p>
-    <p>To implement Dolby Atmos passthrough, you must add the new rendition to an Ingestion Profile. Create a new profile add all the video and audio renditions you want, then in the Advance Editor, look for the <code translate="No">dynamic_origin.renditions</code> and add <code translate="No">default/dolby_atmos</code>:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">"renditions": 0,
-  "packages": 0,
+    <p>To implement Dolby Atmos passthrough, you must add the new rendition to an Ingestion Profile.
+    <h3>Steps</h3>
+    <ol class="bcls-tasklist-restart">
+      <li>
+        Login to Studio and click the Admin icon in the lower left corner:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="/assets/images/ingest-profiles/guides/admin-icon.png" alt="Admin Icon">
+          <figcaption class="bcls-caption--image">Admin Icon</figcaption>
+        </figure>
+      </li>
+      <li>
+        Select Ingest Profiles from the Admin pages menu:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="/assets/images/ingest-profiles/guides/admin-pages-menu.png" alt="Admin Pages Menu">
+          <figcaption class="bcls-caption--image">Admin Pages Menu</figcaption>
+        </figure>
+      </li>
+      <li>
+        In the ingest profiles list, click the name of the one that generally best fits your need to open it:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="/assets/images/ingest-profiles/guides/ingest-profiles-list.png" alt="Ingest Profiles List">
+          <figcaption class="bcls-caption--image">Ingest Profiles List</figcaption>
+        </figure>
+      </li>
+      <li>
+        Click <span class="button-blue">Duplicate</span>.
+      </li>
+      <li>
+        A copy of the ingest profile opens up. Edit the name if you want to, and then click Advanced Editor:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="/assets/images/ingest-profiles/guides/ingest-profile-copy.png" alt="Click Advanced Editor">
+          <figcaption class="bcls-caption--image">Click Advanced Editor</figcaption>
+        </figure>
+      </li>
+      <li>
+        In the <code translate="No">renditions</code> array, add <code translate="No">"default/dolby_atmos"</code> as shown below:
+<pre class="line-numbers"><code class="language-json" translate="No">{
   "dynamic_origin": {
     "renditions": [
-      <span class="bcls-highlight">"default/dolby_atmos",</span>
+      <span class="bcls-highlight">"default/dolby_atmos"</span>,
       "default/video450",
       "default/video1200",
       "default/audio128",
+      "default/progressive2000",
       "default/video700",
       "default/video2000",
+      "default/video1700",
+      "default/audio64",
+      "default/audio96",
+      "default/audio192",
+      "default/video900",
       "default/video3500"
-    ]
-    "images": [
-      {
-        "label": "thumbnail",
-        "height": 90,
-        "width": 160
-      }...</code></pre>
-
+    ],
+    "images": [ ...</code></pre>
+      </li>
+      <li>Click <span class="button-blue">Save</span></li>
+    </ol>
   </section>
   <section class="bcls-section">
     <h2 id="best_practices">Best practices</h2>
