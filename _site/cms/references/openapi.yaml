@@ -2070,7 +2070,7 @@ paths:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Limit'
         - $ref: '#/components/parameters/Offset'
-        - $ref: '#/components/parameters/PlaylistSort'
+        - $ref: '#/components/parameters/GetPlaylistSort'
         - $ref: '#/components/parameters/SearchPlaylists'
       responses:
         '200':
@@ -6061,7 +6061,7 @@ components:
         type: string
       style: simple
     PlaylistSort:
-      description: 'Field to sort results by - if absent and there is a search string, results are sorted by relevance or if there is no search string, results are sorted by `-updated_at` - note: to sort in descending order, preface the field name with a minus(`-`) sign'
+      description: 'Field to sort results by - if absent and there is a search string, results are sorted by relevance or if there is no search string, results are sorted by `-updated_at` - note: to sort in descending order, preface the field name with a minus(`-`) sign. If the `q=` param is missing, the sort param will be ignored. Also if sort is set to an unsupported field, the quest will fail with an error'
       explode: true
       in: query
       name: sort
@@ -6089,6 +6089,28 @@ components:
           - plays_trailing_week
           - -plays_trailing_week
         example: created_at
+        type: string
+        x-enum-elements:
+          - description: The playlist name
+            name: name
+          - description: Date playlist was last updated (by a user or the system)
+            name: updated_at
+      style: form
+    GetPlaylistSort:
+      description: 'Field to sort results by - if absent and there is a search string, results are sorted by relevance or if there is no search string, results are sorted by `-updated_at` - note: to sort in descending order, preface the field name with a minus(`-`) sign. If the `q=` param is missing, the `sort` param will be ignored. Also if `sort` is set to an unsupported field, the request will fail with an error'
+      explode: true
+      in: query
+      name: sort
+      schema:
+        default: '-updated_at'
+        enum:
+          - name
+          - -name
+          - updated_at
+          - -updated_at
+          - sort_name
+          - -sort_name
+        example: name
         type: string
         x-enum-elements:
           - description: The playlist name
