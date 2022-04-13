@@ -1,0 +1,68 @@
+{%- comment -%}
+Google Video Sitemap (XML)
+{%- endcomment -%}
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"&gt;
+{%- for asset in assets %}
+
+  {%- if asset.images.size &gt; 0 and asset.images[0].thumbnail %}
+    {%- assign thumbnail = asset.images[0].thumbnail | xmlEscape %}
+  {%- endif %}
+  
+  {%- assign title = asset.original_title | xmlEscape | truncate: 100 %}
+  
+  {%- if asset.textual.size &gt; 0 and asset.textual[0].description %}
+    {%- assign description = asset.textual[0].description | xmlEscape | truncate: 2048 %}
+  {%- endif %}
+  
+  {%- comment %} Skip assets that don't have all required fields {%- endcomment %}
+  {%- unless thumbnail and title and description and asset.asset_id and locator_prefix %}
+    {%- continue %}
+  {%- endunless %}
+ 
+  {%- comment %} Use first valid filtered rights object {% endcomment %}
+  {%- assign bestRight = nil %}
+  {%- if asset.filtered_rights.size &gt; 0 %}
+      {%- assign bestRight = asset.filtered_rights[0] %}    
+  {%- endif %} 
+  &lt;url&gt;
+    &lt;loc&gt;{{- locator_prefix | xmlEscape}}/details/{{asset.asset_id}}&lt;/loc&gt;
+    &lt;video:video&gt;
+      &lt;video:thumbnail_loc&gt;{{thumbnail}}&lt;/video:thumbnail_loc&gt;
+      &lt;video:title&gt;{{title}}&lt;/video:title&gt;
+      &lt;video:description&gt;{{description}}&lt;/video:description&gt;
+      &lt;video:player_loc&gt;{{locator_prefix | xmlEscape}}/player/{{asset.asset_id}}/stream&lt;/video:player_loc&gt;
+        
+      {%- if asset.length_full %}
+      &lt;video:duration&gt;{{asset.length_full | toSeconds}}&lt;/video:duration&gt;
+      {%- endif %}
+    
+      {%- if bestRight.end_date %}
+      &lt;video:expiration_date&gt;{{bestRight.end_date}}&lt;/video:expiration_date&gt;
+      {%- endif %}        
+    
+      {%- comment %}Max of 32 tags{%- endcomment %}   
+      {%- if asset.tags %} 
+        {%- assign tagCount = 0 %}
+        {%- for tag in asset.tags %}
+      &lt;video:tag&gt;{{tag.name | xmlEscape}}&lt;/video:tag&gt;
+          {%- assign tagCount = tagCount | plus: 1 %}
+          {%- if tagCount &gt; 31 %}{% break %}{% endif %}
+        {%- endfor %} 
+      {%- endif %}      
+      
+      {%- if bestRight.permitted_locations.size &gt; 0 and bestRight.permitted_locations[0].name != "World" %}
+        {%- assign permittedLocNames = bestRight.permitted_locations | map: "name" %}
+      &lt;video:restriction relationship="allow"&gt;{{permittedLocNames | join: " "}}&lt;/video:restriction&gt;
+      {%- elsif bestRight.denied_locations.size &gt; 0 %}
+        {%- assign deniedLocNames = bestRight.denied_locations | map: "name" %}
+      &lt;video:restriction relationship="deny"&gt;{{deniedLocNames | join: " "}}&lt;/video:restriction&gt;
+      {%- endif %}
+      
+      {%- if bestRight.type == "SVOD" %}
+      &lt;video:requires_subscription&gt;yes&lt;/video:requires_subscription&gt;
+      {%- endif %}      
+    &lt;/video:video&gt;
+  &lt;/url&gt;  
+{%- endfor %}
+&lt;/urlset&gt;
