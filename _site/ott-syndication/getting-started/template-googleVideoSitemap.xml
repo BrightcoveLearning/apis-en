@@ -1,23 +1,4 @@
----
-title: OTT Syndication Templates
-description: This topic contains templates used for OTT syndication, meant to be used as a reference and models for building custom templates.
-parent: OTT Syndication API
-layout: staging
----
-
-<h1>{{ page.title }}</h1>
-<article class="bcls-article">
-  <summary>{{ page.description }}</summary>
-  <section class="bcls-section">
-    <h2 id="introduction">Introduction</h2>
-    <p>The OTT Syndication API is primarly intended to help OTT app creators to provide datasets needed by OTT platforms for universal search, but it is a flexible system that can be used for other syndication purposes. The templates provided below can be used as models for building templates you need.</p>
-  </section>
-
-  {% raw %}
-  <section class="bcls-section">
-    <h2 id="google">Google</h2>
-    <p>Below is a sample template for generating a Google sitemap in XML.</p>
-<pre class="line-numbers"><code class="language-xml">{%- comment -%}
+{%- comment -%}
 Google Video Sitemap (XML)
 {%- endcomment -%}
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -38,7 +19,7 @@ Google Video Sitemap (XML)
   {%- unless thumbnail and title and description and asset.asset_id and locator_prefix %}
     {%- continue %}
   {%- endunless %}
-  
+ 
   {%- comment %} Use first valid filtered rights object {% endcomment %}
   {%- assign bestRight = nil %}
   {%- if asset.filtered_rights.size &gt; 0 %}
@@ -84,8 +65,4 @@ Google Video Sitemap (XML)
     &lt;/video:video&gt;
   &lt;/url&gt;  
 {%- endfor %}
-&lt;/urlset&gt;</code></pre>
-
-  </section>
-  {% endraw %}
-</article>
+&lt;/urlset&gt;
