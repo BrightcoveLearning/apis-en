@@ -20,13 +20,15 @@ grandparent: Dynamic Ingest API
     <p>Below are rules and guidelines for Dynamic Ingest.</p>
     
     <ul>
+      <li>The <code translate="No">profile</code> field for ingest requests is <strong>optional</strong>. Avoid hard-coding the <code translate="No">profile </code> in apps and integrations - instead, set the most commonly used profile as the <strong>default</strong> for the account, and omit the field, or <a href="/ingest-profiles/references/reference.html#api-Profile-Get_All_Ingest_Profiles">fetch the available profiles for the account</a> and force the user to choose one.</li>
+      <li>No more than 10 requests per minute on the same video are allowed.</li>
       <li>You should <strong>not</strong> have duplicate jobs processing for the same video, though ingesting other assets such as images and text tracks along with the video in the same job is fine. 
         <aside class="bcls-aside bcls-aside--warning"><strong>If you ingest images, text tracks or other assets for the video <em>before</em> the video has finished processing, they will <em>not</em> be added to the video.</strong></aside>
 				<p>if you are using an automated process for creating ingestion jobs that could potentially create multiple jobs on the same video ID, you need to check <a href="/dynamic-ingest/general/notifications-dynamic-delivery-video-cloud.html">notifications</a> to ensure that there are no other jobs processing on the same video before creating a new one.</p>
-		</li>
-		<li>The <code translate="No">profile</code> field for ingest requests is <strong>optional</strong>. Avoid hard-coding the <code translate="No">profile </code> in apps and integrations - instead, set the most commonly used profile as the <strong>default</strong> for the account, and omit the field, or <a href="/ingest-profiles/references/reference.html#api-Profile-Get_All_Ingest_Profiles">fetch the available profiles for the account</a> and force the user to choose one.</li>
+      </li>
       <li>A 20 request-per-second limit on each account for total requests across <span translate="No">Dynamic Ingest</span> and the <span translate="No">CMS API</span>.</li>
       <li>There is a limit of 100 concurrent normal priority DI jobs per account</li>
+      <li>There is a limit of 1000 pending <a href="/dynamic-ingest/ingest-guides/dynamic-delivery-ingest-priority-queueing.html">low priority</a> jobs.</li>
       <li>If you are ingesting large batches of files, consider using the <a href="/dynamic-ingest/ingest-guides/dynamic-delivery-ingest-priority-queueing.html">Low Priority queue</a> which will allow you to queue more than 100 jobs.</li>
       <li>Ingest content is normally limited to 100GBs per file (if you need to ingest larger files please contact your Account Manager).</li>
       <li>If you are ingesting files in batches, limit concurrent normal priority jobs to 100 and wait for one job to complete processing before adding another - see <a href="/dynamic-ingest/general/fallback-retry-strategy.html">Fallback / Retry Strategy</a> for more information. Alternatively, you can set the <a href="/dynamic-ingest/ingest-guides/dynamic-delivery-ingest-priority-queueing.html"><code translate="no">"priority": "low"</code></a> - using low priority, you do not have to worry about the size of your ingest queue, though processing may take a little longer.</li>
