@@ -2808,7 +2808,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         <li><code translate="No">variant</code></li>
       </ul>
     </section>
-
+    
     <section class="bcls-subsection">
       <h3 id="Extensions_to_Liquid">Extensions to Liquid</h3>
 
@@ -2817,7 +2817,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <p>We have extended our Liquid parser to support a toUTC filter which will parse most standard ISO-8601 datetime string formats and transform them into standard UTC datetime strings. This format is acceptable to Liquid's date filter, which can then be used to reformat the timestamps into datetime strings in any desired format. For example:</p>
 
       <pre class="line-numbers">
-  <code class="language-xml" translate="No">&lt;pubDate&gt;&lt;/pubDate&gt;</code></pre>
+  <code class="language-xml" translate="No">&lt;pubDate&gt;{{asset.published_at | toUTC | date: "%a, %d %b %Y %H:%M:%S %Z"}}&lt;/pubDate&gt;</code></pre>
 
       <p>This produces an output like the following if asset.published_at has a value of 2019-08-09T13:32:52.031Z::</p>
 
@@ -2829,9 +2829,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <p>The Liquid parser we use does not support the "%s" token in date filters for converting dates to Unix epoch timestamps. To address this, a toEpoch custom filter is provided that can be used to convert valid date specifications to the epoch format. The filter returns a numeric data value representing milliseconds since the epoch that is suitable for input to mathematical filters. For example:</p>
 
       <pre class="line-numbers">
-  <code class="language-html" translate="No">&lt;toEpochMillis&gt;now&lt;/toEpochMillis&gt;
-  &lt;toEpochSeconds&gt;0&lt;/toEpochSeconds&gt;
-  &lt;thirtyDaysAgo&gt;-2592000000&lt;/thirtyDaysAgo&gt;</code></pre>
+  <code class="language-html" translate="No">&lt;toEpochMillis&gt;{{"now" | toEpoch }}&lt;/toEpochMillis&gt;
+  &lt;toEpochSeconds&gt;{{"now" | toEpoch | divided_by : 1000 }}&lt;/toEpochSeconds&gt;
+  &lt;thirtyDaysAgo&gt;{{'now' | toEpoch | minus:2592000000 | fromEpoch }}&lt;/thirtyDaysAgo&gt;</code></pre>
 
       <p>produces an output like the following:</p>
 
@@ -2848,8 +2848,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
       <pre class="line-numbers">
   <code class="language-html" translate="No">
-  &lt;fromEpochMillis&gt;now&lt;/fromEpochMillis&gt;
-  &lt;thirtyDaysAgoAltFormat&gt;52067-04-10&lt;/thirtyDaysAgo&gt;
+  &lt;fromEpochMillis&gt;{{"now" | toEpoch | fromEpoch }}&lt;/fromEpochMillis&gt;
+  &lt;thirtyDaysAgoAltFormat&gt;{{1580917253024 | fromEpoch | date:"%Y-%m-%d" }}&lt;/thirtyDaysAgo&gt;
   </code></pre>
 
       <p>produces an output like the following:</p>
@@ -2859,6 +2859,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   &lt;fromEpochMillis&gt;2020-02-05T16:09:37.809Z&lt;/fromEpochMillis&gt;
   &lt;thirtyDaysAgoAltFormat&gt;2020-02-05&lt;/thirtyDaysAgo&gt;</code></pre>
     </section>
+    
+
   </section>
 </article>
 <!-- complete bootstrap layout -->
@@ -2876,7 +2878,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 19 Jun 2021
+  Page last updated on 13 Apr 2022
 </div>
 
 <div class="footer-container">
