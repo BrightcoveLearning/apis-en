@@ -58,15 +58,13 @@ grandparent: Policy API
     
     <p>The base URL for the Policy API is:</p>
     
-    <pre>
-    <code class="language-http" translate="No">https://policy.api.brightcove.com/v1</code></pre>
+    <pre><code class="language-http" translate="No">https://policy.api.brightcove.com/v1</code></pre>
     
     <h3>Account path</h3>
     
     <p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add <code translate="No">/accounts/ </code> followed by your account id to the base URL:</p>
     
-    <pre>
-    <code class="language-http" translate="No">https://policy.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
+    <pre><code class="language-http" translate="No">https://policy.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
     </section>
     
     <section class="bcls-section">
@@ -74,8 +72,7 @@ grandparent: Policy API
     
     <p>Requests are authenticated by an access token passed in an <code translate="No">Authorization </code> header:</p>
     
-    <pre>
-    <code class="language-json" translate="No">Authorization: Bearer {access_token}</code></pre>
+    <pre><code class="language-json" translate="No">Authorization: Bearer {access_token}</code></pre>
     
     <p>To get access tokens, follow these steps:</p>
     
@@ -85,7 +82,7 @@ grandparent: Policy API
     
       <p>For access tokens that can be used with policy key create requests, your client credentials are required to have the following permissions in Studio: <strong>Players Read and Read/Write</strong></p>
     
-      <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Authentication permissions" src="//assets/images/video-cloud-apis/policy-api/overview/authentication-permissions.png" />
+      <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Authentication permissions" src="/assets/images/video-cloud-apis/policy-api/overview/authentication-permissions.png" />
       <figcaption class="bcls-caption--image">Authentication permissions</figcaption>
       </figure>
     
@@ -100,8 +97,7 @@ grandparent: Policy API
     
     <p>In addition to the <code translate="No">Authorization</code> header discussed in the previous section, requests must also have a <code translate="No">Content-Type</code> header:</p>
     
-    <pre class="line-numbers">
-    <code class="language-bash" translate="No">Content-Type: application/json</code></pre>
+    <pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json</code></pre>
     </section>
     
     <section class="bcls-section">
@@ -109,15 +105,13 @@ grandparent: Policy API
     
     <p>To create a new policy key, make a POST request to:</p>
     
-    <pre>
-    <code class="language-http" translate="No">https://policy.api.brightcove.com/v1/accounts/{account_id}/policy_keys</code></pre>
+    <pre><code class="language-http" translate="No">https://policy.api.brightcove.com/v1/accounts/{account_id}/policy_keys</code></pre>
     
     <h3>Request body</h3>
     
     <p>In the request body, include the JSON for the policy:</p>
     
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
+    <pre class="line-numbers"><code class="language-json" translate="No">{
       "key-data": {
         "account-id": "{account_id}"
       }
@@ -131,8 +125,7 @@ grandparent: Policy API
     
     <p>In addition to limiting access to the account, you can also limit access to specific domains by adding the <code translate="No">allowed-domains </code> key:</p>
     
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
+    <pre class="line-numbers"><code class="language-json" translate="No">{
       "key-data": {
         "account-id": "123456789001",
         "allowed-domains": [
@@ -170,8 +163,7 @@ grandparent: Policy API
     
     <p>Here is an example whitelist policy set that only allows playback from the US and US territories and military bases:</p>
     
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{"account-id": "8523232323",
+    <pre class="line-numbers"><code class="language-json" translate="No">{"account-id": "8523232323",
       "geo": {
         "countries": ["us", "usmil", "pr", "gu", "vi", "as", "mp"],
         "exclude_countries": false
@@ -190,8 +182,7 @@ grandparent: Policy API
     
     <p>Here is an example:</p>
     
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
+    <pre class="line-numbers"><code class="language-json" translate="No">{
       "key-data": {
         "account-id": "1752604059001",
         "require-ad-config": true
@@ -206,8 +197,7 @@ grandparent: Policy API
     
     <p>When performing a video search request, you must use a Policy Key that is search-enabled. To create a search-enabled Policy Key, the request body of the call must include the following:</p>
     
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
+    <pre class="line-numbers"><code class="language-json" translate="No">{
       "key-data": {
         "account-id": "57838016001",
         "apis": ["search"]
@@ -222,8 +212,7 @@ grandparent: Policy API
     
     <p>The response to policy create requests will be JSON that includes the encrypted <code translate="No">key-string </code> that you can use to authenticate requests to the Playback API, as well as the policy associated with the key:</p>
     
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
+    <pre class="line-numbers"><code class="language-json" translate="No">{
       "key-data": {
         "account-id": "57838016001"
       },
@@ -236,13 +225,11 @@ grandparent: Policy API
     
     <p>To retrieve the policy object associated with a <code translate="No">key-string </code>, make a GET request to:</p>
     
-    <pre>
-    <code class="language-json" translate="No">/accounts/v1/{account_id}/policy_keys/{key_string}</code></pre>
+    <pre><code class="language-json" translate="No">/accounts/v1/{account_id}/policy_keys/{key_string}</code></pre>
     
     <p>The response will be JSON representation of the key-string and policy:</p>
     
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
+    <pre class="line-numbers"><code class="language-json" translate="No">{
       "key-data": {
         "account-id": "57838016001"
       },
