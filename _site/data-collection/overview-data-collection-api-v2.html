@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Language audio tracks in your source videos can be preserved in your Video Cloud video renditions. Ingestion of multi-language audio tracks is supported through the Dynamic Ingest API only,">
+  <meta name="description" content="In this topic, you will get an overview of the Analytics Data Collection API v2, which allows you to add events to your Video Cloud Analytics data in situations where Brightcove cannot track the events directly.">
   
-  <title>Ingesting Videos with Multi-Language Audio Tracks</title>
+  <title>Overview: Data Collection API v2</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -70,15 +70,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
     
       
-        <li class="breadcrumb-item"><a href="/dynamic-ingest/">Dynamic ingest</a></li>
+        <li class="breadcrumb-item"><a href="/data-collection/">Data collection</a></li>
       
     
       
-        <li class="breadcrumb-item"><a href="/dynamic-ingest/ingest-guides/">Ingest guides</a></li>
-      
-    
-      
-        <li class="breadcrumb-item active" aria-current="page">Ingesting Videos with Multi-Language Audio Tracks</li>
+        <li class="breadcrumb-item active" aria-current="page">Overview: Data Collection API v2</li>
       
     
   </nav>
@@ -2236,189 +2232,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>Ingesting Videos with Multi-Language Audio Tracks</h1>
-<article class="bcls-article">
-  <summary>Language audio tracks in your source videos can be preserved in your Video Cloud video renditions. Ingestion of multi-language audio tracks is supported through the Dynamic Ingest API only,</summary>
-  <article class="bcls-article">
-    <aside class="bcls-aside bcls-aside--information language-editable">Note: adding multiple audio tracks must be enabled for your account by Support. Contact your account manager if you are interested in using multiple audio tracks for videos.</aside>
-  <section class="bcls-section">
-    <h2 id="Introduction">Introduction</h2>
-    <p>Language audio tracks in your source videos can be preserved in your Video Cloud video renditions. Ingestion of multi-language audio tracks is supported through the <a href="https://support.brightcove.com/dynamic-ingest-api">Dynamic Ingest API</a> <strong>only</strong>,</p>
-
-    <p>For general information on how to ingest videos using the API, please see the <a href="https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery">Overview of the Dynamic Ingest API</a>.</p>
-
-    <h4>Notes and Limitations</h4>
-    <ul>
-      <li>You must input only <a href="https://www.loc.gov/standards/iso639-2/php/code_list.php">ISO 639-2 three letter codes</a>, using only Terminology and not <strong>Bibliography</strong> codes.</li>
-      <li>When no supplied language codes are matched with the source audio, we will process the default language and tag it with supplied language code</li>
-      <li>If you do specify a Bibliography language code and it matches a source track, we will attach the language code to that track, but you should <strong><em>always</em></strong> use <strong>Terminology</strong> language codes.</li>
-      <li>When multiple tracks are specified as <code>default</code> we will use the first one found in the source (if any) or the first one ingested as the default</li>
-      <li>If you specify a non-English track as default, but no <code translate="No">language</code> is supplied for the track, we will tag it as "eng".</li>
-      <li>There is limit of 100 jobs that can be in the processing queue (unless you specify <a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-ingesting-low-priority-videos-dynamic-delivery.html">Low Priority</a> processing). If you are adding a large number of audio tracks, you may hit this limit, and requests will fail until the processing queue falls below 100. See <a href="/dynamic-ingest/general/fallback-retry-strategy.html">Fallback/Retry Strategy</a> for more details.</li>
-      <li>
-        Not all audio service types are supported: only the following types may be used:
-        <ul>
-          <li><code>main</code></li>
-          <li><code>alternate</code></li>
-          <li><code>commentary</code></li>
-          <li><code>dub</code></li>
-          <li><code>descriptive</code></li>
-        </ul>
-      </li>
-      <li>When you add eng &gt; main and eng &gt; commentary tracks during ingestion and the source contains eng with no audio service type, the source audio will be missing in the output renditions.</li>
-      <li>If you include two tracks with the same language code, and specify one as <code>variant</code> and provide no service type for the other, the ingest will fail.</li>
-      <li>When a video with a single audio track is replaced by a video with multiple language audio tracks, the track for the original single language will also be included in the renditions, with its original language identifier.</li>
-      <li>Both multiple audio tracks within the source video and additional separate audio files can be used for multiple audio tracks. Video Cloud does not store audio masters, however - separate audio files used as alternate audio tracks must be hosted on public URLs.</li>
-      <li>By default, external audio tracks will be merged with those contained in the video. If instead you want to replace the audio tracks contained in the video, you can set the <code><a href="#merge_with_existing">merge_with_existing</a></code> flag to <code>false</code>.</li>
-      <li>Ingest will <strong>not</strong> fail the job for any master track that is not part of the media info and that track will be skipped.</li>
-      <li>For the master audio tracks input, any one of the languages or the variants can be passed in the <code translate="No">master.audio_tracks</code> object as well. In that case we will look for that in media info and skip it if not present.</li>
-      <li>Where the language or variant for a track is not specified in the request, we will default to <code>eng</code> for the language, and <code>main</code> for the variant.</li>
-    </ul>
-  </section>
-
-    
-  <section class="bcls-section">
-      <h2 id="using_dynamic_ingest_api">Using the Dynamic Ingest API</h2>
-      <p>There are two steps to ingesting a video using the Dynamic Ingest API</p>
-      <ol>
-        <li><a href="#create_video">Create a video object</a> in Video Cloud using the CMS API</li>
-        <li><a href="#ingest_video">Ingest the video</a> using the Dynamic Ingest API</li>
-      </ol>
-      <section class="bcls-subsection">
-        <h3 id="create_video">Create the video object</h3>
-        <p>To create a new video object in your Video Cloud video library, make <code>POST</code> request to:</p>
-<pre class=" language-http"><code class=" language-http"><span class="token header-name keyword">https:</span>//cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos</code></pre>
-        <p>You must include a request body that contains at least the video <code>name</code>:</p>
-<pre class="line-numbers language-json"><code class=" language-json"><span class="token punctuation">{</span>
-<span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My Video Title"</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-        <p>You can also include additional video metadata (see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/CreateVideo">CMS API Reference</a>), but these can also be added later in Studio or via the CMS API.</p>
-        <p>The response will be a JSON object containing many video properties. The first one will be the video <code>id</code>, and you will need this value to make the ingest request.</p>
-      </section>
-      <section class="bcls-subsection">
-        <h3 id="ingest_video">Ingest the video</h3>
-        <p>After you create the video object and retrieve its <code>id</code>, you can ingest the video to Video Cloud by sending a <code>POST</code> request to:</p>
-<pre class=" language-http"><code class=" language-http"><span class="token header-name keyword">https:</span>//ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/ingest-requests</code></pre>
-        <h4>Request body</h4>
-        <p>First let's look at a simple example of a video that contains three audio tracks. The request body will look something like this:</p>
-
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "master": {
-    "url": "<span class="bcls-input">{source_url}</span>",
-    "audio_tracks": [
-      {
-        "language": "eng",
-        "variant": "main"
-      },
-      {
-        "language": "spa",
-        "variant": "main"
-      }
-    ]
-  },
-  "profile": "multi-platform-extended-static-with-mp4"
-}</code></pre>
-
-<p>Now let's look at a more complex example, where the video contains multiple audio tracks, and we are adding some additional audio tracks that are in separate files:</p>
-
-<pre class="line-numbers language-json"><code class=" language-json">{
-  "master": {
-    "url": "<span class="bcls-input">{source_url}</span>",
-    "audio_tracks": [
-      {
-        "language": "eng",
-        "variant": "main"
-      },
-      {
-        "language": "fra",
-        "variant": "main"
-      },
-      {
-        "language": "spa",
-        "variant": "main"
-      }
-    ]
-  },
-  "profile": "Multiplatform Extended with MP4",
-  "audio_tracks": 
-    {
-      "merge_with_existing": true,
-      "masters": [
-        {
-          "url": "http://some.site.com/audio/alternate-en.m4a",
-          "language": "eng",
-          "variant": "alternate"
-        },
-        {
-          "url": "http://some.site.com/audio/commentary-es.m4a",
-          "language": "spa",
-          "variant": "commentary"
-        }
-    }
-  ]
-}</code></pre>
-      <p>In this example:</p>
-      <ul>
-        <li>The <code>master</code> &gt; <code>url</code> is the location of the source video file</li>
-        <li>The <code>master</code> &gt; <code>audio_tracks</code> provide information about the audio tracks embedded in the video</li>
-        <li>Note that the language codes should come from <a href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a></li>
-        <li>The <code>profile</code> is the name of the ingest profile to use - if you omit this, the default profile for the account will be used</li>
-        <li>The additional <code>audio_tracks</code> array contains information about separate, externally hosted audio files to be used as additional audio tracks</li>
-        <li id="merge_with_existing"><code>merge_with_existing</code> means "use the remote audio tracks in addition to the embedded ones" if <code>true</code> (or replace the embedded tracks with the remote ones if <code>false</code>)</li>
-        <li>
-          <p>The <code translate="No">variant</code> field describes the kind of audio track. The possible values, with standard meanings are:</p>
-          <ul>
-            <li><code translate="No">main</code> - the main track, usually the one muxed into the video file</li>
-            <li><code translate="No">alternate</code> - an alternate audio track</li>
-            <li><code translate="No">commentary</code> - an audio track that provides commentary on the video track</li>
-            <li><code translate="No">dub</code> - a track containing a dubbed version of spoken words in a different language</li>
-            <li><code translate="No">descriptive</code> - track is descriptive of the video content in some way</li>
-          </ul>
-          <aside class="bcls-aside bcls-aside--warning language-editable">Note that the <code translate="No">variant</code> field is optional.
-            <p><strong>Known limitation:</strong></p>
-            <p>If the actual audience tracks don't have <code translate="No">variant</code> in their own metadata, <strong>do not use it</strong> in the request. If it is present in the request, but not in the audio track metadata, the track will be skipped. When you are not sure, first try to ingest the file without <code translate="No">variant</code> as the system might be able to identify the tracks with the language-code you provide.</p>
-          </aside>
-        </li>
-      </ul>
-      <p>Additional notes:</p>
-      <ul>
-        <li>There are additional (all optional) fields for the ingest request, such as adding images and text tracks. See the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#operation/AccountsVideosIngestRequestsByAccountIdAndVideoIdPost">Dynamic Ingest API Reference</a> for full details.</li>
-        <li>You do not have to ingest all video assets at once. For instance, in the example above, you could just ingest the video with its embedded audio tracks first, and then submit a separate request to add the additional remote audio tracks.</li>
-      </ul>
-    </section>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Multiple_audio_tracks_in_player">Multiple audio tracks in the Brightcove Player</h2>
-    <p>When you embed a video with multiple audio tracks in a Brightcove Player,the tracks will be available from a selector in the player control bar:</p>
-    <figure class="bcls-figure">
-      <img class="bcls-image" src="/assets/images/dynamic-ingest/ingest-guides/sample_player_audio_tracks.png" alt="Audio Track Selector">
-      <figcaption class="bcls-caption--image">Audio Track Selector</figcaption>
-    </figure>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Setting_the_default_audio_track">Setting the default audio track</h2>
-    <p>You cannot set the default audio track during ingestion (the first audio track encountered in processing will be set as the default). You can change the default track either in Studio or using the CMS API, however.</p>
-    <h3>In Studio</h3>
-    <p>For instructions on setting the default audio track in Studio, see <a href="https://studio.support.brightcove.com/media/adding-audio-tracks-videos-using-media-module.html#defaulttrack">Setting the default audio track</a>.</p>
-    <h3>Using the CMS API</h3>
-    <p>For instructions on setting the default audio track using the CMS API, see <a href="/cms/managing-videos/managing-audio-tracks.html#Updating_audio_tracks">Updating audio tracks</a>.</p>
-  </section>
-  <section class="bcls-section">
-      <h2 id="Audio_service_type">Audio service type</h2>
-      <p>Dolby audio codecs (ac-3 and eac-3) support including audio service type metadata. (AAC audio <strong>cannot</strong> contain service type metadata.)</p>
-      <p>The following service types can be specified for supported Dolby tracks:</p>
-      <ul>
-        <li><code>main</code></li>
-        <li><code>music_and_effects</code></li>
-        <li><code>visually_impaired</code></li>
-        <li><code>hearing_impaired</code></li>
-        <li><code>dialogue</code></li>
-        <li><code>commentary</code></li>
-        <li><code>emergency</code></li>
-        <li><code>voice_over</code></li>
-      </ul>
-    </section>
-</article>
+<h1>This page has moved - you will be directed to the <a href="/data-collection/getting-started/overview-data-collection-api-v2.html">new location</a> in 3 seconds. Please update your bookmarks!</h1>
+<script type="text/javascript">
+var t = setTimeout(function() {
+    window.location.href = '/data-collection/getting-started/overview-data-collection-api-v2.html';
+}, 10);
+</script>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -2434,7 +2253,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 19 Apr 2022
+  Page last updated on 09 Jul 2021
 </div>
 
 <div class="footer-container">
