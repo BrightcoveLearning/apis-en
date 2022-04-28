@@ -92,20 +92,29 @@ grandparent: Playback Restrictions
     <ol class="bcls-tasklist-restart">
       <li>If you wish to change the heartbeat frequency from the default (1 minute) <a href="https://supportportal.brightcove.com/">contact Support</a>.</li>
       <li>
-        <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Create a JWT</a> for playback restrictions. (Only the <code translate="No">climit</code>, <code translate="No">sid</code>, and <code translate="No">uid</code> claims are required.)
+        <p><a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Create a JWT</a> for playback restrictions.</p> 
+        <p>The following claims are required:</p>
         <ul>
-        <li>You <strong>must</strong> set the concurrency limit (<code translate="No">climit</code>) and viewer identifier (<code translate="No">uid</code>)</li>
-        <li>
-          You must also include a <a href="#correlator_identifier">correlator identifier</a> (<code translate="No">sid</code>) that defines the streaming locations for a viewer. The correlator identifier is typically a device name, possibly combined with a client app name, such as:
-          <ul>
-            <li>Chrome MAC (Cadmium) HTML 5</li>
-            <li>Apple iPad 7th Gen 10.2 (Wi-Fi)</li>
-            <li>Apple Apple TV TBD Apple TV</li>
-            <li>Android DefaultWidevineL3Phone Android Phone</li>
-            <li>Firefox MAC (Cadmium) HTML 5</li>
-            <li>Google Chromecast streaming stick</li>
-          </ul>
-        </li>
+          <li>
+            <code translate="No">climit</code> - The concurrency limit claim indicates how many watchers or streams can play at the same time
+          </li>
+          <li>
+            <code translate="No">uid</code> - The viewer identifier is used to correlate multiple sessions to enforce Stream Concurrency
+          </li>
+          <li>
+            <p><code translate="No">sid</code> - <a href="#correlator_identifier">Correlator identifier</a> defines the streaming locations for a viewer.</p> 
+            <aside class="bcls-aside bcls-aside--information">The <code translate="No">sid</code> value can be a combination of User-Agent + a unique random value or string in order to create new sessions for each device (for the case of the viewer id using two iPhone devices). </aside>
+            Examples:
+            <!-- <p>The correlator identifier is typically a device name, possibly combined with a client app name, such as:</p> -->
+            <ul>
+              <li>Chrome MAC (Cadmium) HTML 5</li>
+              <li>Apple iPad 7th Gen 10.2 (Wi-Fi)</li>
+              <li>Apple Apple TV TBD Apple TV</li>
+              <li>Android DefaultWidevineL3Phone Android Phone</li>
+              <li>Firefox MAC (Cadmium) HTML 5</li>
+              <li>Google Chromecast streaming stick</li>
+            </ul>
+          </li>
         </ul>
       </li>
       <li>Register the public key for the JWT with Brightcove. See <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Using Authentication APIs</a> for details.</li>
