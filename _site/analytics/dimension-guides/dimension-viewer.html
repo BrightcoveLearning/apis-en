@@ -2346,11 +2346,16 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>The following fields can be returned for the dimension.</p>
 
     <ul id="fields">
-      <li><code translate="No">viewer<sup><strong><a href="#note1">[1]</a></strong></sup></code> - Event viewer (SSO ID or device id or unique string based on user-agent and IP)</li>
-      <!-- <li><code translate="No">application</code> - the value returned will be the  <code translate="No">account_id</code></li> -->
-      <li><code translate="No">video_view</code> - the number of times viewer playback began</li>
-      <li><code translate="No">time</code> - the epoch time of the video view in milliseconds</li>
+      <li><code translate="No">application</code> - the virtual event experience id. If not passed, will be null</li>
       <li><code translate="No">engagement_score</code> - <a href="https://studio.support.brightcove.com/analytics/calculating-video-engagement-score.html">engagement score</a></li>
+      <li><code translate="No">video_engagement_1</code> - video engagement at 1% of the duration</li>
+      <li><code translate="No">video_engagement_25</code> - video engagement at 25% of the duration</li>
+      <li><code translate="No">video_engagement_50</code> - video engagement at 50% of the duration</li>
+      <li><code translate="No">video_engagement_75</code> - video engagement at 75% of the duration</li>
+      <li><code translate="No">video_engagement_100</code> - video engagement at 100% of the duration</li>
+      <li><code translate="No">time</code> - the epoch time of the last event received</li>
+      <li><code translate="No">video_view</code> - the number of times viewer playback began</li>
+      <li><code translate="No">viewer<sup><strong><a href="#note1">[1]</a></strong></sup></code> - Event viewer (SSO ID or device id or unique string based on user-agent and IP)</li>
     </ul>
 
     <aside class="bcls-aside bcls-aside--information language-editable">
@@ -2359,6 +2364,17 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         <li id="note1" style="list-style: none;"><sup><strong>[1]</strong></sup> You must provide a <a href="#Setting_the_viewer_id">viewer id to the analytics system</a></li>
       </ol>
     </aside>
+
+    <p>Additional fields are available if the query also includes the relevant dimension(s):</p>
+    <ul id="additional_fields">
+      <li><code translate="No">city</code> - the city the viewer was in (requires the <code translate="No">city</code> dimension)</li>
+      <li><code translate="No">country</code> - the country (code) the viewer was in (requires the <code translate="No">country</code> dimension)</li>
+      <li><code translate="No">country_name</code> - the country name the viewer was in (requires the <code translate="No">country</code> dimension)</li>
+      <li><code translate="No">region</code> - the region (code) the viewer was in (requires the <code translate="No">region</code> dimension)</li>
+      <li><code translate="No">region_name</code> - the region name the viewer was in (requires the <code translate="No">region</code> dimension)</li>
+      <li><code translate="No">rebuffering_seconds</code> - the total time that the players spent rebuffering (requires that the <code translate="No">country</code> or <code translate="No">region</code> be included)</li>
+      <li><code translate="No">device_type</code> - the device type the viewer was using (requires the <code translate="No">device_type</code> dimension)</li>
+    </ul>
     </section>
     <section class="bcls-section">
       <h2 id="Setting_the_viewer_id">Setting the viewer id</h2>
@@ -2401,6 +2417,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                   <code translate="No">video_engagement_100</code><br>
                   <code translate="No">video_percent_viewed</code><br>
                   <code translate="No">video_seconds_viewed</code><br>
+                  <code translate="No">video_view</code><br>
                   <code translate="No">video.tags</code><br>
                   <code translate="No">video.reference_id</code><br>
                   <code translate="No">video.name</code><br>
