@@ -657,6 +657,28 @@ var aapi_model = {
   "viewer"
 ]
     },
+    account__viewer__country: {
+      dimensions: ['account', 'viewer', 'country'],
+      from: '2011-01-01',
+      fields: [
+  "account",
+  "account.name",
+  "application",
+  "country",
+  "country_name",
+  "engagement_score",
+  "rebuffering_seconds",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
+    },
     account__viewer__video__country__date: {
       dimensions: ['account', 'viewer', 'video', 'country', 'date'],
       from: '2011-01-01',
@@ -727,6 +749,27 @@ var aapi_model = {
   "viewer"
 ]
     },
+    account__viewer__region: {
+      dimensions: ['account', 'viewer', 'region'],
+      from: '2011-01-01',
+      fields: [
+  "account",
+  "account.name",
+  "application",
+  "engagement_score",
+  "region",
+  "region_name",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
+    },
     account__viewer__video__region__date: {
       dimensions: ['account', 'viewer', 'video', 'region', 'date'],
       from: '2011-01-01',
@@ -785,6 +828,26 @@ var aapi_model = {
   "city",
   "engagement_score",
   "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
+    },
+    account__viewer__city: {
+      dimensions: ['account', 'viewer', 'city'],
+      from: '2011-01-01',
+      fields: [
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "engagement_score",
   "video_engagement_1",
   "video_engagement_100",
   "video_engagement_25",
