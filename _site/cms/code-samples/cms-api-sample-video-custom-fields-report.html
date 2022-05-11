@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="The OTT Syndication API is intended primarily to created data sets that can be submitted to OTT platforms such as Apple TV, Roku, and Fire TV for universal search.">
+  <meta name="description" content="This sample uses the CMS API to generate a report on custom field values for some or all the videos in your account in CSV format. It fetches the video data in batches of 25, so if there is an API timeout or some other error, you will still have some of the data.">
   
-  <title>OTT Syndication API</title>
+  <title>Video Custom Fields Report</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -70,7 +70,15 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
     
       
-        <li class="breadcrumb-item active" aria-current="page">OTT Syndication API</li>
+        <li class="breadcrumb-item"><a href="/cms/">Cms</a></li>
+      
+    
+      
+        <li class="breadcrumb-item"><a href="/cms/code-samples/">Code samples</a></li>
+      
+    
+      
+        <li class="breadcrumb-item active" aria-current="page">Video Custom Fields Report</li>
       
     
   </nav>
@@ -2232,21 +2240,100 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<h1>OTT Syndication API</h1>
+<h1>Video Custom Fields Report</h1>
 <article class="bcls-article">
-  <summary>The OTT Syndication API is intended primarily to created data sets that can be submitted to OTT platforms such as Apple TV, Roku, and Fire TV for universal search.</summary>
-  <section class="bcls-section">
-    <h2 id="Topics">Topics</h2>
-    <ul>
-      <li><a href="/ott-syndication/getting-started/ott-syndication-api-overview.html">Overview: OTT Syndication API</a></li>
-      <li><a href="/ott-syndication/getting-started/templates.html">OTT Syndication Templates</a></li>
-      <li><a href="/ott-syndication/references/reference.html">OTT Syndication API Reference</a></li>
-    </ul>
+  <summary>This sample uses the <span translate="No">CMS API</span> to generate a report on custom field values for some or all the videos in your account in CSV format. It fetches the video data in batches of 25, so if there is an API timeout or some other error, you will still have some of the data.</summary>
+  <section class="bcls-section" id="workingSample">
+    <aside class="bcls-aside bcls-aside--warning language-editable">Note that custom fields are not assigned to videos unless they are given a value for that video. Empty values in the report indicate that the video does <em>not</em> have that custom field in its metadata</aside>
+    <h2>Video report generator</h2>
+    <h3>Source code</h3>
+    <p>
+      Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/video-custom-fields-report">GitHub repository</a>.
+    </p>
+    <h3>Sample app</h3>
+    <p class="codepen" data-height="1200" data-default-tab="html,result" data-slug-hash="ExQaMrW" data-user="rcrooks1969" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+      <span>See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/ExQaMrW">
+      Video Custom Fields Report</a> by Brightcove Learning Services (<a href="https://codepen.io/team/rcrooks1969">@rcrooks1969</a>)
+      on <a href="https://codepen.io">CodePen</a>.</span>
+    </p>
+    <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
   </section>
+
+
+  <section class="bcls-section">
+    <h2 id="limitations">Limitations</h2>
+
+    <aside class="bcls-aside bcls-aside--information">Notes:
+      <li>This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</li>
+      <li>Dynamic Delivery videos not <strong>not</strong> include <code translate="No">size</code> in the rendition metadata. Therefore, the calculation of total rendition size has been removed from this sample, and also the request to get the video's digital master, as that was only used in the calculation of the total size of renditions.</li>
+    </aside>
+  </section>
+
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="getCredentials">Get credentials</h2>
+      </summary>
+      <p>To use the <span translate="No">CMS API</span> you will need proper credentials.</p>
+
+      <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all <span translate="No">CMS API</span> operation:</p>
+
+      <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="/assets/images/cms/cms-permissions.png" />
+        <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+      </figure>
+
+      <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+
+      <pre class="line-numbers">
+            <code class="language-json" translate="No">"operations": [
+              "video-cloud/video/all",
+              "video-cloud/playlist/all",
+              "video-cloud/sharing-relationships/all",
+              "video-cloud/notifications/all"
+            ]</code></pre>
+
+      <ul>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">OAuth: Get Client Credentials Using Postman</a></li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="Using_the_CodePen">Using the CodePen</h2>
+      </summary>
+      <p>Here are some tips to effectively use the above CodePen:</p>
+
+      <ul>
+        <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+        <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+        <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+      </ul>
+    </details>
+
+  </section>
+
+    <section class="bcls-section">
+    <details>
+      <summary>
+        <h2 id="proxy">Proxy code</h2>
+      </summary>
+
+      <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/getting-started/learning-guide-using-rest-apis.html">Using the REST APIs</a>.</p>
+    </details>
+  </section>
+
 </article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
+      
+      <nav class="right-side-nav" id="right_side_nav">
+        <h6 class="toc">Page Contents</h6>
+        <ul id="in_page_nav" class="list-none"></ul>
+      </nav>
       
     </div>
   </div>
@@ -2254,7 +2341,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 13 Apr 2022
+  Page last updated on 11 May 2022
 </div>
 
 <div class="footer-container">
