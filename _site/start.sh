@@ -1,2 +1,3 @@
+zsh install-submodules.sh
 cd s-scripts
-zsh start.sh
+zsh pull-all.sh
