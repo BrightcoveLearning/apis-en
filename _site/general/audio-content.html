@@ -2236,7 +2236,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 
 
-<link rel="stylesheet" href="/assets/css/audio-content.css" />
+<!-- <link rel="stylesheet" href="/assets/css/audio-content.css" /> -->
 
 <h1>Audio Content</h1>
 <article class="bcls-article">
@@ -2246,7 +2246,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
     <p>To add audio file to your Video Cloud account, use the <a href="/dynamic-ingest/index.html">Dynamic Ingest API</a> or the <a href="https://studio.support.brightcove.com/media/uploading-videos-using-upload-module.html">Upload module</a>. Your source file can be in MP3, M4A, or WAV format. The ingest process requires two requests:</p>
 
-    <ol>
+    <ol class="bcls-tasklist">
       <li>A create request to the <span translate="No">CMS API</span> to create the item in your Video Cloud catalog</li>
       <li>An ingest request to the Ingest API to ingest and transcode the file</li>
     </ol>
@@ -2264,7 +2264,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <section class="bcls-section">
     <h2 id="Renditions">Renditions</h2>
 
-    <p>The renditions created in Video Cloud for your audio item will be in MP4 and HLS format, with an audio track only. The item can be played in a Brightcove Player just like a video, as explained <a href="#Audio_Player">below</a>.</p>
+    <p>The renditions created in Video Cloud for your audio item will be in MP4 and HLS format, with an audio track only. The item can be played in a Brightcove Player just like a video, as explained <a href="#Creating_a_custom_audio_player">below</a>.</p>
 
     <p class="BCL-aside">Note: In order to maximize coverage of playback on multiple platforms/browsers, we recommend that audio files be transcoded into MP4 and HLS renditions with audio tracks only - <strong>you cannot specify MP3 as the output format</strong>.</p>
     </section>
@@ -2278,13 +2278,37 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </section>
 
     <section class="bcls-section">
-    <h2 id="Audio_player">Audio player</h2>
-
-    <p>Your audio items will play in any <a href="https://player.support.brightcove.com/getting-started/overview-brightcove-player.html">Brightcove player</a>. For best results, however, use the <a href="https://player.support.brightcove.com/playback/audio-only-player.html">Audio Only with Brightcove Player</a>.</p>
-
-    <p>Below is a sample audio player. <a href="https://player.support.brightcove.com/code-samples/brightcove-player-sample-audio-player-simulated.html">Instructions for creating this player</a>.</p>
-    <iframe src="https://players.brightcove.net/1752604059001/rkgpS9K_default/index.html?videoId=4841158458001" allowfullscreen="" allow="encrypted-media" width="480" height="80"></iframe>
+      <h2 id="Creating_a_custom_audio_player">Creating a custom audio player</h2>
+      <p>It is also possible to create a custom audio player. A sample audio player is displayed below. For information on creating a custom audio player, see the following: .</p>
+      <ul>
+        <li><a href="https://player.support.brightcove.com/playback/audio-only-player.html">Audio Only with Brightcove Player</a></li>
+        <li><a href="https://sdks.support.brightcove.com/features/audio-only-with-sdks.html">Audio Only with the Native SDKs</a></li>
+      </ul>
+  
+      <div style="max-width: 640px;">
+        <video-js 
+          id="myPlayerID"
+          data-account="1752604059001" 
+          data-player="GjkNfCUHx" 
+          data-embed="default" 
+          controls="" 
+          data-video-id="1730750848976252324" 
+          data-playlist-id="" 
+          data-application-id="" 
+          class="vjs-fluid">
+        </video-js>
+      </div>
+      <script src="https://players.brightcove.net/1752604059001/GjkNfCUHx_default/index.min.js"></script>
+  
+      <script translate="no">
+        videojs.getPlayer('myPlayerID').ready(function() {
+          var myPlayer = this;
+          myPlayer.audioOnlyMode(true);
+          // myPlayer.audioPosterMode(true);
+        });
+      </script>
     </section>
+
     </article>
 <!-- complete bootstrap layout -->
     </div>
