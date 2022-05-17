@@ -3586,48 +3586,92 @@ components:
       title: Create_Live_JobBody
       type: object
       example: {
-            "live_dvr_sliding_window_duration": 1,
-            "notifications": [
-                "http://solutions.brightcove.com/bcls/live/live-callbacks.php",
+        "add_cdns": [],
+        "live_stream": true,
+        "pass_through": {
+          "dvr": false,
+          "stream_to_social_media": false
+        },
+        "audio_only": false,
+        "low_latency": false,
+        "protocol": "rtmp",
+        "region": "eu-west-1",
+        "reconnect_time": 600,
+        "ad_insertion": false,
+        "outputs": [
+          {
+            "media_type": "video",
+            "format": "ts",
+            "segment_seconds": 6,
+            "label": "hls540p",
+            "live_stream": true,
+            "video_codec": "h264",
+            "video_bitrate": 1700,
+            "keyframe_interval": 60,
+            "width": 960,
+            "height": 540,
+            "h264_profile": "main",
+            "low_latency": false
+          },
+          {
+            "media_type": "video",
+            "format": "ts",
+            "segment_seconds": 6,
+            "label": "hls360p",
+            "live_stream": true,
+            "video_codec": "h264",
+            "video_bitrate": 900,
+            "keyframe_interval": 60,
+            "width": 640,
+            "height": 360,
+            "h264_profile": "main",
+            "low_latency": false
+          },
+          {
+            "media_type": "video",
+            "format": "ts",
+            "segment_seconds": 6,
+            "label": "hls270p",
+            "live_stream": true,
+            "video_codec": "h264",
+            "video_bitrate": 450,
+            "keyframe_interval": 60,
+            "width": 480,
+            "height": 270,
+            "h264_profile": "baseline",
+            "low_latency": false
+          }
+        ],
+        "videocloud": {
+          "video": {
+            "name": "Example",
+            "description": "",
+            "long_description": "",
+            "tags": [
+              "tag_1",
+              "tag_2"
             ],
-            "outputs": [{
-                    "height": 720,
-                    "video_bitrate": 2100,
-                    "segment_seconds": 4,
-                    "keyframe_interval": 60,
-                    "width": 1280,
-                    "video_codec": "h264",
-                    "label": "hls720p",
-                    "h264_profile": "high",
-                    "live_stream": true
-                },
-                {
-                    "height": 540,
-                    "video_bitrate": 1500,
-                    "segment_seconds": 4,
-                    "keyframe_interval": 60,
-                    "width": 960,
-                    "video_codec": "h264",
-                    "label": "hls540p",
-                    "h264_profile": "main",
-                    "live_stream": true
-                },
-                {
-                    "height": 360,
-                    "video_bitrate": 800,
-                    "segment_seconds": 4,
-                    "keyframe_interval": 60,
-                    "width": 640,
-                    "video_codec": "h264",
-                    "label": "hls360p",
-                    "h264_profile": "main",
-                    "live_stream": true
-                }
-            ],
-            "region": "us-west-2",
-            "reconnect_time": 1800,
-            "live_stream": true
-        }
+            "reference_id": "",
+            "link": {
+              "url": "",
+              "text": ""
+            },
+            "schedule": {
+              "starts_at": null,
+              "ends_at": null
+            },
+            "custom_fields": {
+              "custom_field_1": "Entry 1",
+              "custom_field_2": "Entry 2"
+            },
+            "state": "ACTIVE"
+          },
+          "live_to_vod": true
+        },
+        "notifications": [],
+        "static": false,
+        "credentials": null
+      }
     CreateLiveJobRequestBody.addCdns:
       properties:
         label:
@@ -3970,6 +4014,10 @@ components:
           description: >-
             An object whose properties are `field_name`:`value` pairs - be sure to the *internal* name of the field
           type: object
+          example: {
+            "custom_field_1": "Entry 1",
+            "custom_field_2": "Entry 2"
+          }
         description:
           description: Video short description
           type: string
