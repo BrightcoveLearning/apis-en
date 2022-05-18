@@ -53,7 +53,8 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             'search_terms': 'dimension-searchterms',
             'social_platform': 'dimension-socialplatform',
             'source_type': 'dimension-sourcetype',
-            'video': 'dimension-video'
+            'video': 'dimension-video',
+            'viewer': 'dimension-viewer'
         },
         i,
         iMax;
