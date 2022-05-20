@@ -1,3 +1,5 @@
+echo "Enter your ${bold}COMMIT MESSAGE${normal}:"
+read COMMITMESSAGE 
 cd ..
 git pull
 bundle update
@@ -6,8 +8,6 @@ setopt localoptions rmstarsilent
 rm -f _site/feed.xml
 bold=`tput bold`
 normal=`tput sgr0`
-echo "Enter your ${bold}COMMIT MESSAGE${normal}:"
-read COMMITMESSAGE 
 git pull
 git add .
 git commit -m $COMMITMESSAGE
