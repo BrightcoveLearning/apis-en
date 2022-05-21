@@ -2212,7 +2212,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <div class="col-lg-7" style="background-color: white;color: #333333;margin-top: -1em;margin-bottom: -1em;padding-bottom:1em;">
   <!-- bootstrap layout -->
 
-<p id="bc_veggie_burger_wrapper" style="display: none;"><img id="bc_veggie_burger" src="/assets/images/feather/menu.svg" alt="Navigation Menu"></p>
+<p id="bc_veggie_burger_wrapper" style="display: none;"><img id="bc_veggie_burger" src="/assets/images/s-feather-img/menu.svg" alt="Navigation Menu"></p>
 
 <!-- search bar -->
 <div id="nav-search-box" style="margin-top: 1rem;"></div>
@@ -2223,7 +2223,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <ul id="centered_in_page_toc" class="list-none"></ul>
 </details>
 <!-- open in new tab/window -->
-<a id="open_new_tab" href="#" target="_blank" style="display: none;"><img src="/assets/images/feather/external-link.svg" alt="open in new tab" style="margin-top:4em;width: 1.5em;"></a>
+<a id="open_new_tab" href="#" target="_blank" style="display: none;"><img src="/assets/images/s-feather-img/external-link.svg" alt="open in new tab" style="margin-top:4em;width: 1.5em;"></a>
 
 
 
@@ -2251,6 +2251,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li><a href="#player">Brightcove Player</a></li>
       <li><a href="#player_plugins">Brightcove Player Plugins</a></li>
       <li><a href="#brightcoveLive">Brightcove Live</a></li>
+      <li><a href="#audience_insights">Brightcove Audience Insights</a></li>
+    </ul>
+    <ul>
     </ul>
     <ul>
       <li><a href="#analytics_api">Analytics API</a></li>
@@ -2313,6 +2316,29 @@ if(!isLive && duration !== 0){myPlayer.pause();myModal.open();</code></pre>
       </dd>
       <dt>Brightcove Player counting video views for finished live events</dt>
       <dd>The Brightcove player accounts for video_view every time a remote asset is loaded, even if it's a finished live event with an empty or no longer retrievable HLS playlist. <strong>Workaround:</strong> deactivate, unschedule, or delete the video.</dd>
+    </dl>
+  </section>
+  <section class="bcls-section">
+    <h2 id="audience_insights">Audience Insights</h2>
+    <dl>
+      <dt>Server-Side Ad Insertion (SSAI) - preroll ads</dt>
+      <dd>
+        <h3>Issue</h3>
+
+        <p>When seeking playback to the beginning of a video with a pre-roll ad, the <code translate="No">ads-ad-ended</code> and <code translate="No">ads-pod-ended</code> events will fire.</p>
+
+        <h3>Work-around</h3>
+
+        <p>A possible work-around would be to use</p>
+
+<pre>
+<code class="language-javascript" translate="No">player.currentTime(0.1)</code></pre>
+
+        <p>instead of this</p>
+
+<pre>
+<code class="language-javascript" translate="No">player.currentTime(0)</code></pre>
+      </dd>
     </dl>
   </section>
   <section class="bcls-section">&nbsp;</section>
