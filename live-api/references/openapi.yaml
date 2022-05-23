@@ -3368,6 +3368,17 @@ components:
           items:
             $ref: '#/components/schemas/CreateLiveJobRequestBody.addCdns'
           type: array
+        alternate_audio:
+          description: >-
+            An object of multiple language audio tracks.
+          type: object 
+          properties:
+            tracks: 
+              description: >-
+                An array for multiple language audio tracks
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateLiveJobRequestBody.audio_tracks'
         audio_only:
           default: false
           description: >-
@@ -3746,7 +3757,45 @@ components:
           format: int32
           type: integer
       title: Create_Live_Job_Request_Body.add_cdns.token_auth.media
-      type: object
+      type: object     
+
+    CreateLiveJobRequestBody.audio_tracks:
+      "type": object
+      description: Object containing audio track properties
+      properties:
+        label:
+          description: >-
+           'A text description to be used for the track, preferred to be used by the player where possible. Defaults to the language with an ID for each track e.g. en-0 if not specified.'
+          type: string
+        language:
+          description: >-
+            The code for the language to be used. At present this is flexible and could be in any of the various language formats required/supported by the specs, specifically RFC5456/BCP47 which also covers ISO-639 as per the requirements.
+          type: string
+        variant:
+          description: >-
+            Maps to the DASH Role Schema values: main, alternate, commentary, supplementary, dub. Used in DASH Role urn:mpeg:dash:role:2011.
+          type: string
+          default: main 
+        video_pid:
+          description: >-
+            The Packet Identifier (PID) from the MPEG-TS input stream for the video track
+          type: integer
+        pid: 
+          description: >-
+            The Packet Identifier (PID) from the MPEG-TS input stream for a specific audio track
+          type: integer
+        default: 
+          description: >-
+            Which audio track should be marked as DEFAULT in the EXT-X-MEDIA as well as which to be muxed into video stream. If multiple playlists are defined with different defaults, the top level default track is the muxed one.
+          type: boolean
+          default: false 
+        streams: 
+          description: >-
+            If not present copy use only the default audio settings. This mimics the streams field of playlist output type.
+          type: array 
+          
+        
+        
     CreateLiveJobRequestBody.encryption:
       properties:
         check_playback_rights:
