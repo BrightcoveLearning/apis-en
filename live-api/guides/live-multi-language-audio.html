@@ -10,13 +10,37 @@ layout: staging
   <summary>{{ page.description }}</summary>
 
   <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>This feature allows ingesting multiple audio languages, descriptive or ambient audio experience tracks to be available for live playback. You can follow the steps here using the Live API. You can also use Video Cloud Studio. For details, see the <a href="/live-module/multi-language-audio.html">Multi Language Audio with the Live Module</a> document.</p>
+    <aside class="bcls-aside bcls-aside--information">Currently, the input formats supported include Real-Time Transport Protocol (RTP) and Secure Reliable Transport (SRT).</aside>
+  </section>
+
+  <section class="bcls-section">
     <h2 id="Requirements">Requirements</h2>
+
+    <p>There are a few requirements for multiple language audio tracks.</p>
+    
+    <h3>Enable your account</h3>
     <ul>
-      <li>An account set up for the Live API with multi-language audio feature enabled (contact your Account Manager for details)</li>
-      <li>An API key for the Live API (provided to you when the account is set up)</li>
-      <li>An encoder that supports RTP protocol. Multi-language audio support is limited to <code translate="No">rtp</code> or <code translate="No">rtp-fec</code> protocol.</li>
-      <li>The PID of each audio track must be known when creating the Job.</li>
+      <li>Contact customer support to enable the Live API with the multi-language audio feature</li>
+      <li>Make sure that you have an API key for the Live API (provided to you when the account is set up)</li>
     </ul>
+    
+    <h3>Setup your encoder</h3>
+    <ul>
+      <li>Use an encoder that supports RTP protocol. Multi-language audio support is limited to <code translate="No">rtp</code> or <code translate="No">rtp-fec</code> protocol.</li>
+    </ul>
+    <ul>
+      <li>
+        Get the following values from your encoder: For details, refer to your encoder documentation.
+        <ul>
+            <li>Define the <strong>PID (Packet Identifier)</strong> for each audio track in your encoder</li>
+            <li>Define the <strong>Video PID</strong> asscociated with the video in your encoder</li>
+        </ul>
+        <p>If you don't know the PID values from your encoder, see the <a href="#Configure_your_encoder">Configure your encoder</a> section.</p>
+      </li>
+    </ul>
+  
   </section>
   <section class="bcls-section">
     <h2 id="Create_your_Live_Job">Create your Live Job</h2>
@@ -44,10 +68,6 @@ layout: staging
       </thead>
       <tbody class="bcls-table__body">
           <tr>
-              <td><code translate="No">pid</code></td>
-              <td><strong>Required</strong>. The PID to pick from the incoming TS.</td>
-          </tr>
-          <tr>
               <td><code translate="No">language</code></td>
               <td>
                 <strong>Required</strong>. The code for the language to be used. At present this is flexible and could be in any of the various language formats required/supported by the specs, specifically RFC5456/BCP47 which also covers ISO-639 as per the requirements. <a href="https://tools.ietf.org/html/rfc5646">https://tools.ietf.org/html/rfc5646</a>
@@ -56,30 +76,38 @@ layout: staging
               </td>
           </tr>
           <tr>
-              <td><code translate="No">variant</code></td>
-              <td>
-                <strong>Optional</strong>. Maps to the DASH Role Schema values: main, alternate, commentary, supplementary, dub. Used in DASH Role <code translate="No">urn:mpeg:dash:role:2011</code>. Defaults to <code translate="No">main</code>.
-                <p>HLS &gt; CHARACTERISTICS see <a href="https://tools.ietf.org/html/rfc8216#section-4.3.4.1">https://tools.ietf.org/html/rfc8216#section-4.3.4.1</a></p>
-              </td>
-          </tr>
+            <td><code translate="No">default</code></td>
+            <td>
+              <strong>Required except where default</strong>. Which audio track should be marked as <code translate="No">DEFAULT</code> in the <code translate="No">EXT-X-MEDIA</code> as well as which to be muxed into video stream *
+              <p>If not present first one is default.</p>
+              <p>* if multiple playlists are defined with different defaults, the top level default track is the muxed one</p>
+            </td>
+        </tr>
+        <tr>
+          <td><code translate="No">video_pid</code></td>
+          <td><strong>Required</strong>. The Packet Identifier (PID) from the MPEG-TS input stream for the video track</td>
+        </tr>
+        <tr>
+          <td><code translate="No">pid</code></td>
+          <td><strong>Required</strong>. The Packet Identifier (PID) from the MPEG-TS input stream for a specific audio track</td>
+        </tr>
           <tr>
               <td><code translate="No">label</code></td>
               <td><strong>Optional</strong>. A text description to be used for the track, preferred to be used by the player where possible. Used in: HLS &gt; <code translate="No">NAME</code> field. Defaults to the <code translate="No">language</code> with an ID for each track e.g. <code translate="No">en-0</code> if not specified.</td>
           </tr>
+          <tr>
+            <td><code translate="No">variant</code></td>
+            <td>
+              <strong>Optional</strong>. Maps to the DASH Role Schema values: main, alternate, commentary, supplementary, dub. Used in DASH Role <code translate="No">urn:mpeg:dash:role:2011</code>. Defaults to <code translate="No">main</code>.
+              <p>HLS &gt; CHARACTERISTICS see <a href="https://tools.ietf.org/html/rfc8216#section-4.3.4.1">https://tools.ietf.org/html/rfc8216#section-4.3.4.1</a></p>
+            </td>
+        </tr>
           <tr>
               <td><code translate="No">streams</code> []</td>
               <td>
                 <strong>Optional</strong>. If not present copy use only the default audio settings. 
                 <p>HLS &gt; <code translate="No">GROUP-ID</code>. (Object)</p>
                 <p>Example: <code translate="No">{ “source”: “720p” }</code> - match label of output source.</p> <p>This mimics the <code translate="No">streams</code> field of playlist output type.</p>
-              </td>
-          </tr>
-          <tr>
-              <td><code translate="No">default</code></td>
-              <td>
-                <strong>Required except where default</strong>. Which audio track should be marked as <code translate="No">DEFAULT</code> in the <code translate="No">EXT-X-MEDIA</code> as well as which to be muxed into video stream *
-                <p>If not present first one is default.</p>
-                <p>* if multiple playlists are defined with different defaults, the top level default track is the muxed one</p>
               </td>
           </tr>
       </tbody>
@@ -93,49 +121,53 @@ layout: staging
   Content-Type: application/json
   X-API-KEY: <span class="bcls-input">your_API_key</span></code></pre>
     <h3>Request body</h3>
-<pre class="line-numbers"><code class="language-json" translate="No>{
-  "live_stream": true,
-  "region": "us-west-2",
-  "protocol": "rtp",
-  "cidr_whitelist": [
-    "0.0.0.0/0"
+
+    <pre class="line-numbers"><code class="language-java" translate="No">{
+  &quot;live_stream&quot;: true,
+  &quot;region&quot;: &quot;us-west-2&quot;,
+  &quot;protocol&quot;: &quot;rtp&quot;,
+  &quot;cidr_whitelist&quot;: [
+    &quot;0.0.0.0/0&quot;
   ],
-  "outputs": [
+  &quot;outputs&quot;: [
     {
-      "label": "hls720p",
-      "live_stream": true,
-      "height": 720,
-      "video_bitrate": 2400,
-      "segment_seconds": 6,
-      "keyframe_interval": 90
+      &quot;label&quot;: &quot;hls720p&quot;,
+      &quot;live_stream&quot;: true,
+      &quot;height&quot;: 720,
+      &quot;video_bitrate&quot;: 2400,
+      &quot;segment_seconds&quot;: 6,
+      &quot;keyframe_interval&quot;: 90
     },
     {
-      "label": "hls540p",
-      "live_stream": true,
-      "height": 540,
-      "video_bitrate": 1200,
-      "segment_seconds": 6,
-      "keyframe_interval": 90
+      &quot;label&quot;: &quot;hls540p&quot;,
+      &quot;live_stream&quot;: true,
+      &quot;height&quot;: 540,
+      &quot;video_bitrate&quot;: 1200,
+      &quot;segment_seconds&quot;: 6,
+      &quot;keyframe_interval&quot;: 90
     }
   ],
-  <span class="bcls-highlight">"alternate_audio": {
-    "tracks": [
+  &quot;alternate_audio&quot;: {
+    &quot;tracks&quot;: [
       {
-        "label": "English",
-        "language": "en",
-        "variant": "main",
-        "pid": 257,
-        "default": true
+        &quot;label&quot;: &quot;English&quot;,
+        &quot;language&quot;: &quot;en&quot;,
+        &quot;variant&quot;: &quot;main&quot;,
+        &quot;video_pid&quot;: 256,
+        &quot;pid&quot;: 257,
+        &quot;default&quot;: true
       },
       {
-        "label": "Spanish",
-        "language": "es",
-        "variant": "main",
-        "pid": 258
+        &quot;label&quot;: &quot;Spanish&quot;,
+        &quot;language&quot;: &quot;es&quot;,
+        &quot;variant&quot;: &quot;main&quot;,
+        &quot;video_pid&quot;: 256,
+        &quot;pid&quot;: 258
       }
     ]
-  }</span>
+  }
 }</code></pre>
+
     <details>
       <summary><h2>Sample response</h2></summary>
 <pre class="line-numbers"><code class="language-json" translate="No">{
@@ -167,6 +199,7 @@ layout: staging
                       "label": "English",
                       "language": "en",
                       "name": "Alt0",
+                      <!-- "video_pid": 256, -->
                       "pid": 257,
                       "playlistDefault": true,
                       "default": true,
@@ -179,6 +212,7 @@ layout: staging
                       "label": "Spanish",
                       "language": "es",
                       "name": "Alt1",
+                      <!-- "video_pid": 256, -->
                       "pid": 258,
                       "playlistDefault": false,
                       "default": false,
@@ -231,6 +265,36 @@ layout: staging
   <section class="bcls-section">
     <h2 id="Configure_your_encoder">Configure your encoder</h2>
     <p>Configure your encoder to deliver MPEG-TS over RTP to the stream_url from the create response. Make sure that the audio tracks provided in the request body are configured with the correct PID in your encoder.</p>
+    <h3>Example with ffprobe</h3>
+      <p>If you don't know the PIDs from your encoder, you can use a tool such as ffprobe (included with ffmpeg) to inspect the PIDs in the stream.</p>
+      <pre class="line-numbers" data-start="1"><code class="language-http" translate="No">ffprobe /tmp/ma.ts
+ffprobe version 5.0.1 Copyright (c) 2007-2022 the FFmpeg developers
+  built with Apple clang version 13.0.0 (clang-1300.0.29.3)
+  configuration: --prefix=/usr/local/Cellar/ffmpeg/5.0.1-with-options_1 --enable-shared --cc=clang --host-cflags= --host-ldflags= --enable-gpl --enable-libaom --enable-libdav1d --enable-libmp3lame --enable-libopus --enable-libsnappy --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-demuxer=dash --enable-opencl --enable-audiotoolbox --enable-videotoolbox --disable-htmlpages --enable-libvmaf --enable-version3
+  libavutil      57. 17.100 / 57. 17.100
+  libavcodec     59. 18.100 / 59. 18.100
+  libavformat    59. 16.100 / 59. 16.100
+  libavdevice    59.  4.100 / 59.  4.100
+  libavfilter     8. 24.100 /  8. 24.100
+  libswscale      6.  4.100 /  6.  4.100
+  libswresample   4.  3.100 /  4.  3.100
+  libpostproc    56.  3.100 / 56.  3.100
+Input #0, mpegts, from &apos;/tmp/ma.ts&apos;:
+  Duration: 00:00:04.86, start: 1.400000, bitrate: 502 kb/s
+  Program 1
+    Metadata:
+      service_name    : Service01
+      service_provider: FFmpeg
+  Stream #0:0[0xff]: Video: h264 (Constrained Baseline) ([27][0][0][0] / 0x001B), yuv420p(progressive), 360x240 [SAR 1:1 DAR 3:2], 30 fps, 30 tbr, 90k tbn
+  Stream #0:1[0x100]: Audio: aac (LC) ([15][0][0][0] / 0x000F), 44100 Hz, mono, fltp, 98 kb/s
+  Stream #0:2[0x102]: Audio: aac (LC) ([15][0][0][0] / 0x000F), 44100 Hz, mono, fltp, 98 kb/s
+</code></pre>
+      <p>The hex number after the stream will indicate the PID. For example:</p>
+      <ul>
+        <li><code translate="No">0xff == 255</code></li>
+        <li><code translate="No">0x100 == 256</code></li>
+        <li><code translate="No">0x101 == 257</code></li>
+      </ul>
   </section>
   <section class="bcls-section">
     <h2 id="Test_Playback">Test Playback</h2>
