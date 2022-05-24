@@ -62,53 +62,80 @@ grandparent: Live API
       <thead class="bcls-table__head">
           <tr>
               <th>Field</th>
+              <th>Type</th>
+              <th>Required</th>
               <th>Description</th>
           </tr>
       </thead>
       <tbody class="bcls-table__body">
-          <tr>
-              <td><code translate="No">language</code></td>
-              <td>
-                <strong>Required</strong>. The code for the language to be used. At present this is flexible and could be in any of the various language formats required/supported by the specs, specifically RFC5456/BCP47 which also covers ISO-639 as per the requirements. <a href="https://tools.ietf.org/html/rfc5646">https://tools.ietf.org/html/rfc5646</a>
-                <p>HLS &gt; <code translate="No">LANGUAGE</code> field</p>
-                <p>DASH &gt; <code translate="No">AdaptationSet:lang</code> field</p>
-              </td>
-          </tr>
-          <tr>
-            <td><code translate="No">default</code></td>
-            <td>
-              <strong>Required except where default</strong>. Which audio track should be marked as <code translate="No">DEFAULT</code> in the <code translate="No">EXT-X-MEDIA</code> as well as which to be muxed into video stream *
-              <p>If not present first one is default.</p>
-              <p>* if multiple playlists are defined with different defaults, the top level default track is the muxed one</p>
-            </td>
+        <tr>
+          <td><code translate="No">language</code></td>
+          <td>string</td>
+          <td>Yes</td>
+          <td>
+            <p>The code for the language to be used. At present this is flexible and could be in any of the various language formats required/supported by the specs, specifically <a href="https://tools.ietf.org/html/rfc5646">RFC5456/BCP47</a> which also covers ISO-639 as per the requirements.</p> 
+            <p>HLS &gt; <code translate="No">LANGUAGE</code> field</p>
+            <p>DASH &gt; <code translate="No">AdaptationSet:lang</code> field</p>
+          </td>
         </tr>
         <tr>
           <td><code translate="No">video_pid</code></td>
-          <td><strong>Required</strong>. The Packet Identifier (PID) from the MPEG-TS input stream for the video track</td>
+          <td>integer</td>
+          <td>Yes</td>
+          <td>The Packet Identifier (PID) from the MPEG-TS input stream for the video track.</td>
         </tr>
         <tr>
           <td><code translate="No">pid</code></td>
-          <td><strong>Required</strong>. The Packet Identifier (PID) from the MPEG-TS input stream for a specific audio track</td>
+          <td>integer</td>
+          <td>Yes</td>
+          <td>The Packet Identifier (PID) from the MPEG-TS input stream for a specific audio track.</td>
         </tr>
-          <tr>
-              <td><code translate="No">label</code></td>
-              <td><strong>Optional</strong>. A text description to be used for the track, preferred to be used by the player where possible. Used in: HLS &gt; <code translate="No">NAME</code> field. Defaults to the <code translate="No">language</code> with an ID for each track e.g. <code translate="No">en-0</code> if not specified.</td>
-          </tr>
-          <tr>
-            <td><code translate="No">variant</code></td>
-            <td>
-              <strong>Optional</strong>. Maps to the DASH Role Schema values: main, alternate, commentary, supplementary, dub. Used in DASH Role <code translate="No">urn:mpeg:dash:role:2011</code>. Defaults to <code translate="No">main</code>.
-              <p>HLS &gt; CHARACTERISTICS see <a href="https://tools.ietf.org/html/rfc8216#section-4.3.4.1">https://tools.ietf.org/html/rfc8216#section-4.3.4.1</a></p>
-            </td>
+        <tr>
+          <td><code translate="No">default</code></td>
+          <td>boolean</td>
+          <td>Yes (for the default track)</td>
+          <td>
+            The audio track marked as <code translate="No">DEFAULT</code> in the <code translate="No">EXT-X-MEDIA</code> as well as the track to be muxed into video stream.
+            <p>If not present, the first track is the default.</p>
+            <p>If multiple playlists are defined with different defaults, the top level default track is the muxed one.</p>
+          </td>
         </tr>
-          <tr>
-              <td><code translate="No">streams</code> []</td>
-              <td>
-                <strong>Optional</strong>. If not present copy use only the default audio settings. 
-                <p>HLS &gt; <code translate="No">GROUP-ID</code>. (Object)</p>
-                <p>Example: <code translate="No">{ “source”: “720p” }</code> - match label of output source.</p> <p>This mimics the <code translate="No">streams</code> field of playlist output type.</p>
-              </td>
-          </tr>
+        <tr>
+          <td><code translate="No">label</code></td>
+          <td>string</td>
+          <td></td>
+          <td>A text description to be used for the track, preferred to be used by the player where possible. Used in: HLS &gt; <code translate="No">NAME</code> field.
+            <p>Default: the <code translate="No">language</code> with an ID for each track e.g. <code translate="No">en-0</code> if not specified.</p>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">variant</code></td>
+          <td>enum</td>
+          <td></td>
+          <td>
+            Maps to the DASH Role Schema values: 
+            <ul>
+              <li><code translate="No">main</code></li>
+              <li><code translate="No">alternate</code></li>
+              <li><code translate="No">commentary</code></li>
+              <li><code translate="No">supplementary</code></li>
+              <li><code translate="No">dub</code></li>    
+            </ul>
+            <p>HLS &gt; <a href="https://tools.ietf.org/html/rfc8216#section-4.3.4.1">CHARACTERISTICS</a></p>
+            <p>DASH &gt; Role <code translate="No">urn:mpeg:dash:role:2011</code>.</p>
+            <p>Default: <code translate="No">main</code></p>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">streams</code> []</td>
+          <td>array</td>
+          <td></td>
+          <td>
+            <p>This mimics the <code translate="No">streams</code> field of the playlist output type. Example: <code translate="No">{ “source”: “720p” }</code> - matches the label of the output source.</p>
+            <p>If not present, uses the default audio settings.</p> 
+            <p>HLS &gt; <code translate="No">GROUP-ID</code>. (Object)</p>
+          </td>
+        </tr>
       </tbody>
   </table>
   </section>
