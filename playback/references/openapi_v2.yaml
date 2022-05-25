@@ -899,10 +899,16 @@ components:
             $ref: '#/components/schemas/video.sources'
           readOnly: true
         text_tracks:
-          type: object
+          type: array
           description: 'array of text track maps '
-          $ref: '#/components/schemas/video.text_tracks'
+          items:
+            $ref: '#/components/schemas/video.text_tracks'
           readOnly: true
+        transcripts:
+          description: 'array of transcription objects - can only be added on update, not creation'
+          items:
+            $ref: '#/components/schemas/Transcription'
+          type: array
         updated_at:
           type: string
           description: 'when the video was last modified '
@@ -1245,6 +1251,26 @@ components:
             this array is included in case there are multiple protocols
             available, such as http and https)
           readOnly: true
+    video.transcription:
+      properties:
+        id:
+          description: System id for the text track
+          readOnly: true
+          type: string
+        label:
+          description: label for the track
+          type: string
+        mime_type:
+          description: mime-type for the track - should be `text/plain`
+          type: string
+        src:
+          description: URL for the transcription file
+          type: string
+        lang:
+          description: '2-letter language code, such as "en" or "ko"'
+          type: string
+      title: transcription
+      type: object
     video.variant:
       description: Object containing language-specific metadata for a video
       properties:

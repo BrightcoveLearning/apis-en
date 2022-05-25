@@ -7349,10 +7349,28 @@ components:
           type: string
         status:
           description: Indicates the actual situation of the track, if it is `published`, `draft`, or `null` for pre-existing text tracks. Draft tracks will not be displayed in the player.
+    Transcription:
+      properties:
+        id:
+          description: System id for the text track
+          readOnly: true
+          type: string
+        label:
+          description: label for the track
+          type: string
+        mime_type:
+          description: mime-type for the track - should be `text/plain`
+          type: string
+        src:
+          description: URL for the transcription file
+          type: string
+        lang:
+          description: '2-letter language code, such as "en" or "ko"'
+          type: string
       required:
         - src
-        - srclang
-      title: text_track
+        - lang
+      title: transcription
       type: object
     User:
       description: 'information about who created or modified a video, if available'
@@ -7602,6 +7620,11 @@ components:
           description: 'array of text tracks - can only be added on update, not creation'
           items:
             $ref: '#/components/schemas/TextTrack'
+          type: array
+        transcripts:
+          description: 'array of transcription objects - can only be added on update, not creation'
+          items:
+            $ref: '#/components/schemas/Transcription'
           type: array
         updated_at:
           description: when the video was last modified
