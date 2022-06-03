@@ -2246,6 +2246,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <h1 data-dimension="referrer_domain">Dimension: <code translate="No">referrer_domain</code></h1>
 <article class="bcls-article">
   <summary>In this topic, you will learn about the <span translate="No">Analytics API</span> <code translate="No">referrer_domain</code> dimension. The <code translate="No">referrer_domain</code> dimension is the top private domain of the referrer URL (the URL for the page the viewer was on just before coming to the page where the video was viewed) on a page where events are collected for analytics.</summary>
+
   <section class="bcls-section">
   <h2 id="urlParams">URL parameters</h2>
   
@@ -2342,8 +2343,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </tr>
     </tbody>
   </table>
-  <aside class="bcls-aside bcls-aside--information">Note: The iframe will be able to access the parent page's full URL as long as the parent page has the header <code translate="No">referrer-policy: no-referrer-when-downgrade</code>. This means that the header <code translate="No">referrer</code> will be sent to the iframe with the full parent page's URL because both protocols match.</aside>
-  </section>
+ </section>
   
   <section class="bcls-section">
   <h2 id="fieldValues">Fields available</h2>
@@ -2378,7 +2378,27 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   
   <p>To see what dimensions this on can be combined with, and what fields are available for the combination, see <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Dimension and Fields</a>.</p>
   </section>
+
+  <section class="bcls-section">
+    <h2 id="Referrer_policy_header">Referrer policy header</h2>
+    
+    <p>HTTP requests sometimes include the optional <code translate="no">referer</code> header, which indicates the origin or URL of the web page from which the request was made. The <code translate="no">referrer-policy</code> header defines what data is available in the referrer header. To learn more about this, see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">here.</a></p>
+    
+    <h3>Syntax</h3>
   
+  <ul id="Syntax">
+    <li><code translate="No">Referrer-Policy: no-referrer</code></li>
+    <li><code translate="No">Referrer-Policy: no-referrer-when-downgrade</code></li>
+    <li><code translate="No">Referrer-Policy: origin</code></li>
+    <li><code translate="No">Referrer-Policy: origin-when-cross-origin</code></li>
+    <li><code translate="No">Referrer-Policy: same-origin</code></li>
+    <li><code translate="No">Referrer-Policy: strict-origin</code></li>
+    <li><code translate="No">Referrer-Policy: strict-origin-when-cross-origin</code></li>
+    <li><code translate="No">Referrer-Policy: unsafe-url</code></li>
+  </ul>
+  <aside class="bcls-aside bcls-aside--information">Note that with the <code>referrer-policy</code> header, the player iframe embed code will be able to access the full URL of the parent page as long as the parent page has the specific header <code>referrer-policy: no-referrer-when-downgrade</code>. This means that the <code>referer</code> header will be sent to the player iframe with the full parent page's URL as long as both protocols match (the parent page and the iframe content must be loaded via HTTPS).</aside>
+  </section>
+
   <section class="bcls-section">
   <h2 id="examples">Request Examples</h2>
   
@@ -2446,7 +2466,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 }</code></pre>
   </details>
 </section>
-  </article>
+
+</article>
 
 <!-- complete bootstrap layout -->
     </div>
@@ -2463,7 +2484,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 30 May 2022
+  Page last updated on 01 Jun 2022
 </div>
 
 
