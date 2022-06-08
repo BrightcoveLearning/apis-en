@@ -2249,16 +2249,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
 
-    <p>Brightcove provides a solution for delivering video to China from outside the country. The solution is comprised of two parts:</p>
-    <ul>
-      <li>A proxy server hosted within China</li>
-      <li>A connected China-specific CDN</li>
-    </ul>
-
-    <p>The proxy routes non-video traffic (Playback API requests, Analytics beacons, and the web player itself) to and from viewers in China to Brightcove infrastructure located outside.</p>
-
-    <p>The CDN is connected to the proxy and handles the video and image content.</p>
-
+    <p>In the media playback workflow, the player calls the Playback API (or Edge Auth API) to retrieve available manifests to start playback. The player provides a Policy Key or Jason Web Token (JWT) for authentication. For increased availability and scalability, these APIs have a caching layer that stores the responses from the signed manifest URL. Since signed manifests are cached, the time to live (TTL) needs to be long enough to be valid for the time it will be in the cache, plus a buffer to be usable by the player.</p>
+    <p>Using short manifest TTLs with long media TTLs provides a solution that prevents easy URL sharing while allowing viewers to continue unimpeded playback.</p>
   </section>
 
   <section class="bcls-section">
