@@ -13,318 +13,43 @@ layout: staging
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
 
-    <p>In the media playback workflow, the player calls the Playback API (or Edge Auth API) to retrieve available manifests to start playback. The player provides a Policy Key or Jason Web Token (JWT) for authentication. For increased availability and scalability, these APIs have a caching layer that stores the responses from the signed manifest URL. Since signed manifests are cached, the time to live (TTL) needs to be long enough to be valid for the time it will be in the cache, plus a buffer to be usable by the player.</p>
-    <p>Using short manifest TTLs with long media TTLs provides a solution that prevents easy URL sharing while allowing viewers to continue unimpeded playback.</p>
+    <p>In the media playback workflow, the player calls the Playback API (or Edge Auth API) to retrieve available manifests to start playback. The player provides a Policy Key or Jason Web Token (JWT) for authentication. For increased availability and scalability, these APIs have a caching layer that stores the responses from the signed manifest URL.</p>
+    <p>Since signed manifests are cached, the time to live (TTL) needs to be long enough to be valid for the time it will be in the cache, plus a buffer to be usable by the player. Using short manifest TTLs with long media TTLs provides a solution that prevents easy URL sharing while allowing viewers to continue unimpeded playback.</p>
+    <aside class="bcls-aside bcls-aside--information">Sort manifest TTL is only supported with video-on-demand (VOD) content, but can be used with DASH or HLS manifests.</aside>
   </section>
 
   <section class="bcls-section">
     <h2 id="Requirements">Requirements</h2>
-    <p>The following requirements are needed to support Brightcove China Delivery:</p>
-    <h3>Setup</h3>
+    <p>The following players are supported with this feature:</p>
     <ul>
-      <li>
-        There are setup requirements in addition to configuring your player
-        <p>For details, see <a href="https://studio.support.brightcove.com/general/china-delivery-overview.html">Overview: China Delivery</a></p>
-      </li>
+      <li><strong>Brightcove Player</strong> (web) - version 6.65.1 and newer</li>
+      <li><strong>Native SDK for Android</strong> - version 6.18.5 and newer</li>
+      <li><strong>Native SDK for iOS</strong> - version 6.10.6 and newer</li>
     </ul>
-    <h3>Brightcove Player</h3>
-    <ul>
-      <li>Brightcove Player version 6.44+ required; latest version recommended</li>
-    </ul>
-
   </section>
 
 
   <section class="bcls-section">
-    <h2 id="Requirements">Requirements</h2>
+    <h2 id="Managing_manifest_TTLs">Managing manifest TTLs</h2>
     <p>
-      The following requirements are needed for static URLs:
+      Manifest TTLs can be manged as follows:
     </p>
     <ul>
-      <li>Brightcove Playback API v2</li>
-      <li>Your assets are ingested for Dynamic Delivery</li>
+      <li>Every account can be set to a specific TTL for manifest URLs</li>
+      <li>By default, the TTL is 6 hours</li>
+      <li>TTL is enabled by account</li>
+      <li>Manifest TTL can be set per account from 1 min up to 6 hours</li>
+      <li>Media URLs TTL remains at 6 hours and can't be modified</li>
     </ul>
-    <!-- <h3>Account setup</h3>
-      <p>
-        To sign the <span translate="No">JSON Web Token</span> (JWT), your Brightcove account needs to be enabled for Playback Authorization Service. Contact your account manager to have this done.
-      </p> -->
-    <h3>Analytics registration </h3>
-    <p>With static URLs, you are integrating with the Playback API without using the Brightcove Player. While the Brightcove Player automatically sends analytics data to Brightcove, you will use the Data Collection API to do this.</p>
-    <p>
-      If you are not familiar with the Data Collection API, review the <a href="https://apis.support.brightcove.com/data-collection/getting-started/overview-data-collection-api-v2.html">Overview: Data Collection API</a> document.
-    </p>
-    <p>
-      For details about sending information to the Data Collector, see the <a href="https://apis.support.brightcove.com/data-collection/getting-started/data-collection-api-sample.html">Data Collection API Sample</a>.
-    </p>
+    
   </section>
 
   <section class="bcls-section">
-    <h2 id="Video_Cloud">Video Cloud</h2>
-    <p>
-      Today, every playback through VideoCloud requires 2 API calls to start video playback. With the use of static URLs, you can reduce the number of API calls to just one.
-    </p>
-
-    <p>The following diagram shows the API calls for video playback WITHOUT static URLs.</p>
-    <figure class="bcls-figure">
-      <img class="bcls-image--no-border" width="800" src="/assets/images/playback/guides/current-playback-calls.png" alt="Video Cloud playback">
-      <figcaption class="bcls-caption--image">Video Cloud playback</figcaption>
-    </figure>
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Static_URLs">Static URLs</h2>
-    <p>
-      With Brightcove's Playback API v2, static URLs are now available.
-    </p>
-
-    <h3>Features</h3>
-    <p>
-      Here are the features associated with static URLs:
-    </p>
-    <table class="bcls-table">
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Feature</th>
-          <th>Comment</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td>Authorization</td>
-          <td>JSON Web Token (JWT)</td>
-        </tr>
-        <tr>
-          <td>BYO CDN</td>
-          <td>
-            Brightcove’s CDN will continue to deliver the manifest and sub-manifests.
-            <p>Customer's CDN will deliver only the video segments.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>Closed Captions</td>
-          <td>Only in-manifest captions are currently supported.</td>
-        </tr>
-        <tr>
-          <td>Delivery Rules</td>
-          <td>VOD only </td>
-        </tr>
-        <tr>
-          <td>DRM</td>
-          <td>VOD only </td>
-        </tr>
-        <tr>
-          <td>Live streams</td>
-          <td>Supported formats via Dynamic Delivery:
-            <ul>
-              <li>
-                HLS
-              </li>
-              <li>
-                HLS VMAP
-              </li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>Playback Rights Service (EPA)</td>
-          <td>Contact your account manager for details.</td>
-        </tr>
-        <tr>
-          <td>Server-Side Ad Insertion (SSAI)</td>
-          <td>VOD and Live </td>
-        </tr>
-        <tr>
-          <td>Video-On-Demand (VOD)</td>
-          <td>Supported video formats via Dynamic Delivery:
-            <ul>
-              <li>
-                HLS
-              </li>
-              <li>
-                DASH
-              </li>
-              <li>
-                HLS VMAP
-              </li>
-              <li>
-                DASH VMAP
-              </li>
-              <li>
-                MP4
-              </li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>VOD assets</td>
-          <td>Thumbnails and poster images</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Implementing_Static_URLs">Implementing Static URLs</h2>
-
-    <p>Static URLs include the following:</p>
-    <ul>
-      <li>
-        Account ID
-      </li>
-      <li>
-        Video ID (or reference)
-      </li>
-      <li>
-        Delivery Type (HLS, Dash)
-      </li>
-      <li>
-        Configuration options (SSAI, DRM, CDN, etc.)
-      </li>
-    </ul>
-    <p>
-      Static URLs are secured using a customer-generated and signed <span translate="No">JSON Web Token</span> (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a <span translate="No">JSON Web Token</span></a> section.
-    </p>
-    <!-- <p>
-      For manifests & VMAPs, the response will be returned directly. For MP4s it will 302 to the right CDN URL. DRM is not necessary to include here. This is controlled by flags on the account & video themselves. You  can use a claim in the JWT, if necessary, to switch between DRM types on the fly.
-    </p> -->
-    <h3>Domain</h3>
-    <p>
-      The domain used for Static URLs is the Playback API v2 (PAPIv2) URL:
-    </p>
-    <pre><code class="language-html" translate="No">https://edge.api.brightcove.com/playback/v1/</code></pre>
-
-    <h3>Query params</h3>
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">Query Params</caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Query Param</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td><code translate="No">bcov_auth</code></td>
-          <td>JWT see <a href="#Creating_a_JSON_Web_Token">below</a></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>Video-On-Demand (VOD) Endpoints</h3>
-    <p>
-      Static URL examples for each Delivery Type:
-    </p>
-    <dl>
-      <dt>HLS Master Manifest</dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/master.m3u8?bcov_auth={jwt}</code></pre>
-      </dd>
-      <dt>DASH Manifest</dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/manifest.mpd?bcov_auth={jwt}</code></pre>
-      </dd>
-      <dt>HLS VMAP <sup><a href="#note1">[1]</a></sup></dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/hls.vmap?bcov_auth={jwt}</code></pre>
-      </dd>
-      <dt>DASH VMAP <sup><a href="#note1">[1]</a></sup></dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/dash.vmap?bcov_auth={jwt}</code></pre>
-      </dd>
-      <dt>Highest Bitrate MP4 <sup><a href="#note2">[2]</a></sup></dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/high.mp4?bcov_auth={jwt}</code></pre>
-      </dd>
-      <dt>Lowest Bitrate MP4 <sup><a href="#note2">[2]</a></sup></dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/low.mp4?bcov_auth={jwt}</code></pre>
-      </dd>
-      <dt>Thumbnail images</dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/thumbnail.jpg?bcov_auth={jwt}</code></pre>
-      </dd>
-      <dt>Poster images</dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/poster.jpg?bcov_auth={jwt}</code></pre>
-      </dd>
-    </dl>
-    <h4>Notes</h4>
-    <ul>
-      <li id="note1"><sup>[1]</sup> HLS and DASH VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you <a href="#Creating_a_JSON_Web_Token">create the JWT</a>.</li>
-      <li id="note2"><sup>[2]</sup> When using the <code translate="No">high.mp4</code> and <code translate="No">low.mp4</code> endpoints, your videos must include MP4 renditions or you will get the following error:
-      <pre><code class="language-html" translate="No">404 (NO RESOURCE)</code></pre>
-    </li>
-    </ul>
-
-    <h3>Live Endpoints</h3>
-    <p>
-      Static URL examples for Live streams:
-    </p>
-    <dl>
-      <dt>HLS Master Manifest</dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/master.m3u8?bcov_auth={jwt}</code></pre>
-      </dd>
-      <dt>HLS VMAP <sup><a href="#note1">[1]</a></sup></dt>
-      <dd>
-        <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/hls.vmap?bcov_auth={jwt}</code></pre>
-      </dd>
-    </dl>
-    <h4>Notes</h4>
-    <ul>
-      <li id="note1"><sup>[1]</sup> HLS VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you <a href="#Creating_a_JSON_Web_Token">create the JWT</a>.</li>
-    </li>
-    </ul>
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Creating_a_JSON_Web_Token">Creating a <span translate="No">JSON Web Token</span></h2>
-    <p>To create a token to use when communicating with Brightcove's Playback API, see the <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Creating a <span translate="No">JSON Web Token</span> (JWT)</a> document. You will find the claims that can be used for static URL delivery there.</p>
-
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Using_Content_protection_DRM">Using Content protection (DRM)</h2>
-    <p>You can include the <code translate="No">pro</code> claim, as defined above, to specify a protection type.</p>
-
-    <p>
-      For license requests, the JWT does not need any payload, but it has to be signed using the same RSA key as the manifest request JWT.
-    </p>
-    <h3>Widevine license request</h3>
-    <p>
-      You can use the following endpoint to get the DRM license for Widevine:
-    </p>
-    <pre><code class="language-html" translate="No">/accounts/{account_id}/videos/{video_id}/licenses/cenc/widevine?bcov_auth={JWT}</code></pre>
-    <h3>FairPlay app cert</h3>
-    <p>
-      For FairPlay app certificates, the endpoint is:
-    </p>
-    <pre><code class="language-http" translate="No">/accounts/{account_id}/fairplay_app_cert</code></pre>
-    <h3>PlayReady endpoint</h3>
-    <p>For PlayReady, the endpoint for the licence request is:</p>
-    <pre><code class="language-http" translate="No">/accounts/{account_id}/videos/{video_id}/licenses/cenc/playready?bcov_auth={JWT}</code></pre>
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Notes">Notes</h2>
-    <p>The following notes apply to Static URL Delivery:</p>
-    <ul>
-      <li>
-        In-Manifest captions are supported. Out-of-band sidecar captions will be supported in a future release.
-      </li>
-      <li>
-        The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest and sub-manifests.
-      </li>
-      <li>
-        Brightcove supports using a JWT that does not expire. To do this, exclude the <code translate="No">exp</code> claim when creating your token.
-      </li>
-    </ul>
-  </section>
-
-  <!-- <section class="bcls-section">
     <h2 id="Limitations">Limitations</h2>
-    <p>The following limitations apply to Static URL Delivery.</p>
+    <p>The following limitations apply to this feature:</p>
     <ul>
+      <li>Live content is not supported with short manifest TTL</li>
+      <li>When using Forensic Watermarking, short manifest TTL is not supported</li>
     </ul>
-  </section> -->
+  </section>
 </article>
