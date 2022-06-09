@@ -560,6 +560,16 @@ components:
         - max_renditions
       type: object
       properties:
+        deinterlace:
+          type: string
+          description: >-
+            Determines whether or not to apply a deinterlacing filter. Default is `detect` – if the input file is detected as interlaced, it will be deinterlaced. Set this to `on` to force deinterlacing (which will reduce quality if the input is not interlaced), or `off` to avoid deinterlacing.
+          default: detect
+        deinterlace_mode:
+          type: string
+          description: >-
+            If not included or set to `frame-to-frame`, Video Cloud outputs will match the framerate of the input file. If set to `field-to-frame`, Video Cloud will double the framerate of the input file for the output. If you manually set framerate to double the framerate of the input file, Video Cloud will automatically set `deinterlace_mode` to `field-to-frame` and double the framerate for the output.
+          default: frame-to-frame
         min_renditions:
           type: integer
           description: Minimum number of renditions to create for **CAE profiles only**
