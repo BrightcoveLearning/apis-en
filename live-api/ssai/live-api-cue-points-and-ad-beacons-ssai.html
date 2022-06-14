@@ -54,7 +54,15 @@ grandparent: Live API
   <h4>Notes:</h4>
   
   <ul>
-    <li>Since timecodes are expressed in HHMMSS then there is not a notion of the day</li>
+    <li>
+      Since timecodes are expressed in HH:MM:SS, there is no notion of what day is meant. This can lead to problems such as sending cuepoint at 23:55:00 for an ad break to start at 00:01:00 and having the server interpret that as almost 24 hours ago. Brightcove has implemented a fix for this as follows: for cuepoints arriving between 23:50:00 and 00:00:00 <strong>only</strong>, we will assume you are scheduling an ad break for the following day.
+    </li>
+    <li>
+      Up to 128 cue points can be stacked in a single request, but given the rules around "rollover" explained above, cue points cannot be sent in this manner for the following day.
+    </li>
+    <li>
+      Since SMPTE timecodes are associated with the stream, it is possible that a cue could arrive after the scheduled time in the stream. Brightcove will allow up to a 5 seconds tolerance after the cue to still insert a Cue point.
+    </li>
     <li>Only <code translate="No">avail_in</code> and <code translate="No">avail_out</code> type cue points are currently supported in RTMP input.</li>
     <li>SCTE-35 cue points are supported in RTP and SRT inputs.</li>
   </ul>
