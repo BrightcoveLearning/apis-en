@@ -2269,8 +2269,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <h1>Page Search Results</h1>
 <article class="bcls-article">
   <summary>In this topic, you will learn how to implement paging for results of <span translate="No">CMS API</span> requests, when the request matches more items than you can return at one time. This allows you to handle large result sets in smaller groups, which improves performance. A maximum of 100 records will be returned from a single request to the CMS API, but for large result sets, we recommend fetching 25 items per request for better performance.</summary>
-  <section id="Procedure" class="bcls-section">
-    <h2>Procedure</h2>
+  <section class="bcls-section">
+    <h2 id="Procedure">Procedure</h2>
     
     <p>To handle data paging, you will follow these steps:</p>
     
@@ -2283,8 +2283,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <aside class="bcls-aside bcls-aside--information">Requests to the <span translate="No">CMS API</span> require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</aside>
     </section>
     
-    <section class="bcls-section" id="getrecordcount">
-    <h2>Get the record count</h2>
+    <section class="bcls-section" >
+    <h2 id="getrecordcount">Get the record count</h2>
     
     <p>First, you need to know the total number of videos in your result set. The response in the result set will vary depending on your search criteria. Use the <code translate="No">counts</code> resource to return a total count of records in your result set.</p>
     
@@ -2315,8 +2315,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     }</code></pre>
     </section>
     
-    <section class="bcls-section" id="calculatepages">
-    <h2>Calculate pages</h2>
+    <section class="bcls-section" >
+    <h2 id="calculatepages">Calculate pages</h2>
     
     <p>To calculate the number of pages, take the total number of records in your result set and divide it by the number of records per page (page size).</p>
     
@@ -2328,8 +2328,8 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <code class="language-javascript" translate="No">var numberOfPages = Math.ceil(jsonData.count / pageSize);</code></pre>
     </section>
     
-    <section class="bcls-section" id="retrievepages">
-    <h2>Retrieve pages</h2>
+    <section class="bcls-section" >
+    <h2 id="retrievepages">Retrieve pages</h2>
     
     <p>Loop through the number of pages that you calculated in the previous step and call the <span translate="No">CMS API</span> with the <code translate="No">limit</code> and <code translate="No">offset</code> parameters to retrieve successive subsets of data.</p>
     
@@ -2344,6 +2344,17 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <pre class="line-numbers">
     <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:wildlife&amp;limit=2&amp;offset=4</code></pre>
+    </section>
+    <section class="bcls-section">
+      <h2 id="Known Issues">Known issues</h2>
+  
+      <ul>
+        <li><strong>Duplicate results:</strong> in certain cases, some items in the search results may appear more than once.
+  
+        <p><strong>Workaround:</strong> to prevent duplicate search results, always use a <code translate="No">sort</code> parameter in your search requests.</p>
+        </li>
+      </ul>
+      <aside class="bcls-aside bcls-aside--information">Note that the default sort order is <code translate="No">updated_at</code>, which can cause the miss of added or updated videos while the app is running. If you want to avoid that, use the sort <code translate="No">created_at</code> instead.</aside>
     </section>
     </article>
     
