@@ -47,5 +47,5 @@ echo Raw response:
 echo $RESPONSE
 echo --------------------------
 echo Pretty-printed response:
-echo $RESPONSE | python -m json.tool
+echo json_pp $RESPONSE
 echo
