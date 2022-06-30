@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="This topic provides details of the metadata manifest that can be optionally included with videos and assets ingested via Aspera to Video Cloud. Note that there is a limit of 100 videos per manifest file.">
+  <meta name="description" content="In this topic, you will learn how to use the CMS API to update WebVTT transcripts of your videos.">
   
-  <title>Manifest/Metadata Reference</title>
+  <title>Managing Transcripts Using the CMS API</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/s-site-assets-favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/s-site-assets-favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/s-site-assets-favicons/favicon-16x16.png">
@@ -63,9 +63,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       
       
-      <li class="breadcrumb-item"><a href="/aspera/">Aspera</a></li>
+      <li class="breadcrumb-item"><a href="/cms/managing-videos/">Managing Videos/Assets</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">Manifest/Metadata Reference</li>
+      <li class="breadcrumb-item active" aria-current="page">Managing Transcripts Using the CMS API</li>
     </ol>
   </nav>
 </header>
@@ -2266,155 +2266,302 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
-<h1>Manifest/Metadata Reference</h1>
+<h1>Managing Transcripts Using the CMS API</h1>
 <article class="bcls-article">
-  <summary>This topic provides details of the metadata manifest that can be optionally included with videos and assets ingested via Aspera to Video Cloud. Note that there is a limit of 100 videos per manifest file.</summary>
+  <summary>In this topic, you will learn how to use the CMS API to update WebVTT transcripts of your videos.</summary>
   <section class="bcls-section">
-    <h2 id="Manifest_tags">Manifest tags</h2>
-    <p>Below are the tags that can be used in the XML manifest. You can find additional detail on the metadata fields in the <a href="/cms/references/cms-api-video-fields-reference.html">CMS API Video Fields Reference</a> Note that the overall manifest should be constructed as an RSS feed, with the Video Cloud metadata includes as <code translate="No">channel</code> <code translate="No">item</code>s. In other words, the overall manifest should be structured like this:</p>
-<pre class="line-numbers"><code class="language-xml">&lt;rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:fh="http://purl.org/syndication/history/1.0" xmlns:brightcove="http://www.brightcove.com/mrss/" version="2.0"&gt;
-  &lt;channel&gt;
-    &lt;item&gt;
-
-    &lt;!-- items included here are constructed using the tags detailed below --&gt;
-
-    &lt;/item&gt;
-  &lt;/channel&gt;
-&lt;/rss&gt;</code></pre>
-
-    <h3>Tag reference</h3>
-
-    <dl>
-      <dt><code translate="No" style="font-weight:bold;">&lt;profile&gt; id/name &lt;/profile&gt;</code></dt>
-      <dd>The name or id of the ingest profile to use. Applicable only to videos. If omitted, the default profile for the account will be used.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;name&gt;&lt;/name&gt;</code></dt>
-      <dd>The title for the video.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;master url=”string” useMaster=”boolean”/&gt;</code></dt>
-      <dd>For a retranscoding request. You can either indicate that a stored master should be used (<code translate="No">useMaster="true"</code>), <strong>or</strong> provide a URL for a master that was not stored. If you include both <code translate="No">url</code> and <code translate="No">useMaster</code>, the request will fail.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;description long=”string” short=”string”/&gt;</code></dt>
-      <dd>A short description for the video.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;images&gt; array of &lt;image&gt;</code></dt>
-      <dd>Contains a collection of images associated with the video - see the following tag.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;image url=”string/required” language=”string” variant=”string/required” label=”string” height=”number” width=”number”/&gt;</code></dt>
-      <dd>
-        Details for an image (see <a href="https://apis.support.brightcove.com/dynamic-ingest/references/dynamic-ingest-ingest-fields.html">Dynamic Ingest Fields Reference</a> for more detail). Briefly:
-        <ul>
-          <li><code translate="No">language</code> is a two-letter language code from the <a href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">Language Subtag Registry</a>.</li>
-          <li><code translate="No">variant</code> is <code translate="No">poster | thumbnail | portrait | square | wide | ultra-wide</code>.</li>
-          <li><code translate="No">height</code> and <code translate="No">width</code> are pixel values.</li>
-        </ul>
-        </dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;texttracks&gt; array of &lt;texttrack&gt;</code></dt>
-      <dd>Contains a collection of text-tracks associated with the video - see the following tag.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;texttrack url=”string/required” srclang=”string/required” kind=”string” label=”string” default=”boolean”/&gt;</code></dt>
-      <dd>
-        See the <a href="https://apis.support.brightcove.com/dynamic-ingest/references/dynamic-ingest-ingest-fields.html">Dynamic Ingest Fields Reference</a> for details. Briefly:
-        <ul>
-          <li><code translate="No">srclang</code> - ISO 639 2-letter (alpha-2) language code for the text tracks</li>
-          <li><code translate="No">kind</code> - <code translate="No">captions | subtitles | chapters | metadata | transcriptions</code></li>
-          <li><code translate="No">label</code> - user-readable label</li>
-          <li><code translate="No">default</code> - whether these text-tracks are the default for the video</li>
-        </ul>
-      </dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;audiotracks&gt; array of &lt;audiotrack&gt;</code></dt>
-      <dd>Contains a collection of audio tracks associated with the video - see the following tag.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;audiotrack url=”string” language=”string” variant=”string”/&gt;</code></dt>
-      <dd>
-        See the <a href="https://apis.support.brightcove.com/dynamic-ingest/references/dynamic-ingest-ingest-fields.html">Dynamic Ingest Fields Reference</a> for details. Briefly:
-        <ul>
-          <li><code translate="No">language</code> - <a href="https://www.loc.gov/standards/iso639-2/php/code_list.php">ISO 639-2 3-letter language code</a></li>
-          <li><code translate="No">variant</code> - <code translate="No">main | alternate | commentary | dub | descriptive</code></li>
-        </ul>
-      </dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;customField name=&quot;string/required&quot;&gt;value&lt;/customField&gt;</code></dt>
-      <dd>The <code translate="No">value</code> is the value assigned to custom field for this video.</dd>
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;labels&gt; separated by comma &lt;/labels&gt;</code></dt>
-      <dd>See <a href="/cms/managing-videos/working-with-labels.html">Working with Labels</a>.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;tags&gt; separated by comma &lt;/tags&gt;</code></dt>
-      <dd>A list of tags. Tags can be used to select videos for <a href="/cms/managing-videos/managing-playlists-using-cms-api.html">smart playlists</a>, among other things.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;referenceId&gt;&lt;/referenceId&gt;</code></dt>
-      <dd>A unique reference id for the video. Reference ids can be used to associate the video with an entity in your systems, and you can also publish videos using the reference id rather than the video id.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;videoId&gt;&lt;/videoId&gt;</code></dt>
-      <dd>The video id. Do <strong>not</strong> include this if you ingesting a new video. To be used only for replacing or retranscoding or adding media assets to an existing video.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;remoteasset url=”string/required” name=”string” durationInMs=”number” encodingRate=”number” frameHeight=”number” frameWidth=”number” size=”number” videoCodec=”string” videoContainer=”number” progressiveDownload=”boolean”/&gt;</code></dt>
-      <dd>For adding a remote asset video. Note that if you include both the <code translate="No">&lt;master&gt;</code> and <code translate="No">&lt;remoteasset</code> tags, the request will fail.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;schedule endsAt=”” startsAt=””/&gt;</code></td>
-      <dd>For scheduling when a video becomes available for playback, and (optionally) when it becomes unavailable again. Times in ISO-8601 date format such as <code translate="No">2022-09-20T20:41:07.689Z</code> or just <code translate="No">2022-09-20</code>.</dd>
-  
-  
-      <dt><code translate="No" style="font-weight:bold;">&lt;link&gt; value &lt;/link&gt;</code></dt>
-      <dd>URL for a related link.</dd>
-    </dl>
+    <h2 id="Introduction">Introduction</h2>
+    <p>Whether the transcripts are ingested or remote, you can use a
+      <code translate="no">PATCH</code> request to update the metadata associated with the transcripts.
+    </p>
+    <h3>Notes</h3>
+    <ul>
+      <li>The methods explained in this document are for updating WebVTT files added to your videos. You can ingest WebVTT files to Video Cloud using the
+        <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Dynamic Ingest API</a> or
+        <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">add remote WebVTT files</a> to your videos using the CMS API.
+      </li>
+    </ul>
   </section>
-  <section class="bcls-section">
-    <h2 id="Sample_manifest">Sample manifest</h2>
-    <p>Below is a sample manifest for a video ingest.</p>
-<div style="overflow-x: scroll;">
-  <pre class="line-numbers"><code class="language-xml">&lt;rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:fh="http://purl.org/syndication/history/1.0" xmlns:brightcove="http://www.brightcove.com/mrss/" version="2.0"&gt;
-    &lt;channel&gt;
-      &lt;item&gt;
-  
-        &lt;brightcove&gt;
-          &lt;master url=""/&gt;
-            &lt;profile&gt;multi-platform-standard-dynamic-with-mp4&lt;/profile&gt;
-            &lt;name&gt;Title OIS V1-MRSS-04042016_00008 MC&lt;/name&gt;
-            &lt;status&gt;ACTIVE&lt;/status&gt;
-            &lt;description short="desc" long="Desc OIS V1-MRSS-04042016_00008 MC" /&gt;
-            &lt;labels&gt;/nihanth1/dara1,/harsha1/kanna1&lt;/labels&gt;
-            &lt;tags&gt;birds,sea&lt;/tags&gt;
-            &lt;referenceId&gt;asdf1234&lt;/referenceId&gt;
-            &lt;videoId&gt;734462567001&lt;/videoId&gt;
-            &lt;remoteasset url="//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4
-  "&gt;&lt; /remoteasset&gt;
-            &lt;schedule startsAt="2021-05-01T18:00:00.000+08" endsAt="2021-05-08T18:00:00.000+08"/&gt;
-            &lt;link&gt;http://mysite.com/videos/sports/real_sports.html&lt;/link&gt;
-            &lt;images&gt;
-              &lt;image url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/images/big_buck_bunny_1.png" variant="thumbnail" language="es" label="thumbnail" height="480" width="640"/&gt;
-            &lt;/images&gt;
-            &lt;texttracks&gt;
-              &lt;texttrack url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/SubTitles/cc_030152016-2.vtt" srclang="en-US" kind="captions" label="English"/&gt;
-            &lt;/texttracks&gt;
-            &lt;audiotracks&gt;
-              &lt;audiotrack url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/audio/cc_030152016-2.m4f" language="en" variant="main"/&gt;
-            &lt;/audiotracks&gt;
-        &lt;/brightcove&gt;
-      &lt;/item&gt;
-    &lt;/channel&gt;
-  &lt;/rss&gt;</code></pre>
-</div>
+  <section class="section">
+    <h2 id="authorization">Authorization</h2>
+    <p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the
+      <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
+    </p>
+    <p>The operations you will need to update video metadata are
+      <code translate="No">video-cloud/video/update</code> or
+      <code translate="No">video-cloud/video/all</code>.
+    </p>
+  </section>
+  <section class="section">
+    <h2 id="syntax">Syntax</h2>
+    <aside class="bcls-aside bcls-aside--warning">The
+      <strong>entire array must be patched</strong>, not just the track or the field that is changing.
+    </aside>
+    <p>We recommend making the following request first to get the complete array:</p>
+<pre>
+<code class="language-http" translate="No">
+GET
+https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
+</code>
+</pre>
+    <h3>Updating Transcripts</h3>
+    <p>When updating Transcripts, some fields in
+      <a href="/cms/references/cms-api-video-fields-reference-stage.html#text_tracks">Transcripts Fields</a> can be treated differently according to its type.
+    </p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Text Track Fields</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Remote Transcripts</th>
+          <th>Static Ingested Transcripts</th>
+          <th>Dynamic Ingested Transcripts</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>
+            <code translate="no">id</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">READ-ONLY value. Required to identify the TT that needs to be updated.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">account_id</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">src</code>
+          </td>
+          <td>String</td>
+          <td>Required and limited to 255 characters.</td>
+          <td colspan="2">Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">srclang</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">Limited to 32 characters.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">label</code>
+          </td>
+          <td>String</td>
+          <td colspan="3">Limited to 255 characters.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">kind</code>
+          </td>
+          <td>Enum</td>
+          <td colspan="3">
+            Valid values are:
+            <ul>
+              <li>
+                <code translate="no">subtitles</code>
+              </li>
+              <li>
+                <code translate="no">captions</code>
+              </li>
+              <li>
+                <code translate="no">descriptions</code>
+              </li>
+              <li>
+                <code translate="no">chapters</code>
+              </li>
+              <li>
+                <code translate="no">metadata</code>
+              </li>
+              <li>
+                <code translate="No">transcripts</code>
+              </li>
+            </ul>
+            <aside class="bcls-aside bcls-aside--information language-editable">
+              Notes:
+              <ol>
+                <li>All values are case sensitive.</li>
+                <li>The
+                  <code translate="No">transcripts</code> kind is not available for static delivery - dynamic delivery only.
+                </li>
+              </ol>
+            </aside>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="no">status</code></td>
+          <td>enum</td>
+          <td colspan="3">
+            Valid values (case-sensitive):
+            <ul>
+              <li><code translate="no">published</code> - transcripts will be available to viewers</li>
+              <li><code translate="no">draft</code> - transcripts will not be available to viewers</li>
+              <li><code translate="no">null</code> - (default) transcripts will be available to viewers</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">mime_type</code>
+          </td>
+          <td>String</td>
+          <td colspan="2">Limited to 32 characters.</td>
+          <td>Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">asset_id</code>
+          </td>
+          <td>String</td>
+          <td colspan="2">READ-ONLY value.</td>
+          <td>Field not applicable for this type. Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">in_band_metadata_track_dispatch_type</code>
+          </td>
+          <td>String</td>
+          <td colspan="2">Field not applicable for this type.</td>
+          <td>Updates on this field will be ignored.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">sources</code>
+          </td>
+          <td>Array</td>
+          <td colspan="3">READ-ONLY value.</td>
+        </tr>
+        <tr>
+          <td>
+            <code translate="no">default</code>
+          </td>
+          <td>Boolean</td>
+          <td colspan="2">
+            <code translate="no">true</code> or
+            <code translate="no">false</code>. You cannot add multiple
+            <code translate="no">default=true</code> to transcripts with different
+            <code translate="no">srclang</code>.
+          </td>
+          <td>Updates on this field will be ignored.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Request</h3>
+    <p>Applicable to Remote, Static and Dynamic Transcripts.</p>
+<pre>
+<code class="language-http" translate="No">
+PATCH
+https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
+</code>
+</pre>
+    <h3>Request body examples</h3>
+    <details>
+      <summary>Remote transcripts</summary>
+      <p>The request body will be a JSON object containing an array of transcripts:</p>
+      <pre class="line-numbers">
+        <code class="language-json" translate="No">
+          {
+	"text_tracks" : 
+	[ 
+		{ 
+			"id" : "1234-1234-1234"
+			"src" :     "http://some.site.com/captions/bc_smart_ja.vtt",
+			"srclang" : "ja", 
+			"label" : "日本人", 
+			"kind" : "captions", 
+			"mime_type" : null, 
+			"default" : true,
+      "status": "published"
+		}, 
+		{ 
+			"id" : "5678-5678-5678"
+			"src" : "http://some.site.com/captions/bc_smart_es.vtt",  
+			"srclang" : "es", 
+			"label" : "español", 
+			"kind" : "descriptions",
+			"mime_type" : null,
+			"default" : false,
+      "status": "published"
+		} 
+	] 
+}
+        </code>
+      </pre>
+    </details>
+    <details>
+      <summary>Static transcripts</summary>
+      <p>The request body will be a JSON object containing an array of transcripts:</p>
+      <pre class="line-numbers">
+        <code class="language-json" translate="No">
+          {
+	"text_tracks" : 
+	[ 
+		{ 
+			"id" : "1234-1234-1234"
+			"srclang" : "ja", 
+			"label" : "日本人", 
+			"kind" : "captions", 
+			"mime_type" : null, 
+			"default" : true,
+      "status": "published"
+		}, 
+		{ 
+			"id" : "5678-5678-5678"  
+			"srclang" : "es", 
+			"label" : "español", 
+			"kind" : "descriptions",
+			"mime_type" : null,
+			"default" : false,
+      "status": "published"
+		} 
+	] 
+}
+        </code>
+      </pre>
+    </details>
+    <details>
+      <summary>Dynamic transcripts</summary>
+      <p>The request body will be a JSON object containing an array of transcripts:</p>
+      <pre class="line-numbers">
+        <code class="language-json" translate="No">
+          {
+	"text_tracks" : 
+	[ 
+		{ 
+			"id" : "1234-1234-1234"
+			"srclang" : "ja", 
+			"label" : "日本人", 
+			"kind" : "captions", 
+			"mime_type" : null, 
+			"default" : true,
+      "status": "published" 
+		}, 
+		{ 
+			"id" : "5678-5678-5678"  
+			"srclang" : "es", 
+			"label" : "español", 
+			"kind" : "descriptions",
+			"mime_type" : null,
+			"default" : false,
+      "status": "published" 
+		} 
+	] 
+}
+        </code>
+      </pre>
+    </details>
+    <aside class="bcls-aside--information">Note to delete transcripts, simply leave them of the array you submit on the update request. To delete all transcripts, send an update containing
+      <code translate="no">"text_tracks"=[]</code>.
+    </aside>
   </section>
 </article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -2430,7 +2577,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 29 Jun 2022
+  Page last updated on 30 Jun 2022
 </div>
 
 
