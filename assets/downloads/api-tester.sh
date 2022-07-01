@@ -39,7 +39,7 @@ echo 'Enter data to be submitted in the request body:'
 read DATA
 echo Your call verb: $DATA
 echo --------------------------
-TOKEN=$(curl -s --data "grant_type=client_credentials" https://oauth.brightcove.com/v3/access_token --header "Content-Type: application/x-www-form-urlencoded" --user "$CLIENT_ID:$CLIENT_SECRET" | sed -E 's/.*access_token\"\:\"([^\"]+)\".*/\1/');
+TOKEN=$(curl -s --data "grant_type=client_credentials" https://oauth.brightcove.com/v4/access_token --header "Content-Type: application/x-www-form-urlencoded" --user "$CLIENT_ID:$CLIENT_SECRET" | sed -E 's/.*access_token\"\:\"([^\"]+)\".*/\1/');
 echo Your token: $TOKEN
 echo --------------------------
 RESPONSE=$(curl -s -v -X $VERB "$API_CALL" -d "$DATA" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json")

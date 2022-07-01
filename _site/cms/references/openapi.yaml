@@ -7349,27 +7349,44 @@ components:
           type: string
         status:
           description: Indicates the actual situation of the track, if it is `published`, `draft`, or `null` for pre-existing text tracks. Draft tracks will not be displayed in the player.
-    Transcription:
+    Transcript:
       properties:
         id:
           description: System id for the text track
           readOnly: true
           type: string
+        account_id:
+          description: The account id
+          readOnly: true
+          type: string
+        default:
+          description: Whether the transcript is the default - note that if there are multi-language transcripts, there can be a default per language
+          readOnly: true
+          type: boolean
         label:
           description: label for the track
           type: string
-        mime_type:
-          description: mime-type for the track - should be `text/plain`
-          type: string
+        sources:
+          description: sources for a client to retrieve the transcription
+          type: array
+          items:
+            type: string
+            description: URLs where the transcript can be retrieved - there will an http and https URL for each transcript
         src:
           description: URL for the transcription file
           type: string
-        lang:
-          description: '2-letter language code, such as "en" or "ko"'
+        srclang:
+          description: '2-letter or 4-letter language code, such as `es` or `es-MX`'
           type: string
+        status:
+          description: 'Either `draft` (unavailable to viewers) or `published`'
+          type: string
+          enum:
+            - draft
+            - published
       required:
         - src
-        - lang
+        - srclang
       title: transcription
       type: object
     User:
@@ -7624,7 +7641,7 @@ components:
         transcripts:
           description: 'array of transcription objects - can only be added on update, not creation'
           items:
-            $ref: '#/components/schemas/Transcription'
+            $ref: '#/components/schemas/Transcript'
           type: array
         updated_at:
           description: when the video was last modified

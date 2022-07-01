@@ -1,6 +1,6 @@
 ---
 title: Managing Transcripts Using the CMS API
-description: 'In this topic, you will learn how to use the CMS API to update WebVTT transcripts of your videos.'
+description: 'In this topic, you will learn how to use the CMS API to update transcripts of your videos.'
 parent: Managing Videos/Assets
 grandparent: CMS API
 ---
@@ -9,14 +9,13 @@ grandparent: CMS API
   <summary>{{ page.description }}</summary>
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    <p>Whether the transcripts are ingested or remote, you can use a
+    <p>You can use a
       <code translate="no">PATCH</code> request to update the metadata associated with the transcripts.
     </p>
     <h3>Notes</h3>
     <ul>
-      <li>The methods explained in this document are for updating WebVTT files added to your videos. You can ingest WebVTT files to Video Cloud using the
-        <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Dynamic Ingest API</a> or
-        <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">add remote WebVTT files</a> to your videos using the CMS API.
+      <li>The methods explained in this document are for updating transcript files added to your videos. Currently you can have Brightcove 
+        <a href="/dynamic-ingest/ingest-guides/requesting-auto-captions.html">generate a  transcript file (along with captions)</a> during ingestion. Ingesting your own transcript files will be supported in a future release.
       </li>
     </ul>
   </section>
@@ -33,7 +32,7 @@ grandparent: CMS API
   <section class="section">
     <h2 id="syntax">Syntax</h2>
     <aside class="bcls-aside bcls-aside--warning">The
-      <strong>entire array must be patched</strong>, not just the track or the field that is changing.
+      <strong>entire array must be patched</strong>, not just the transcript metadata that is changing.
     </aside>
     <p>We recommend making the following request first to get the complete array:</p>
 <pre>
@@ -44,7 +43,7 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
 </pre>
     <h3>Updating Transcripts</h3>
     <p>When updating Transcripts, some fields in
-      <a href="/cms/references/cms-api-video-fields-reference-stage.html#text_tracks">Transcripts Fields</a> can be treated differently according to its type.
+      <a href="/cms/references/cms-api-video-fields-reference-stage.html#transcripts">Transcripts Fields</a> can be treated differently according to its type.
     </p>
     <table class="bcls-table">
       <caption class="bcls-caption--table">Text Track Fields</caption>
@@ -52,9 +51,7 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
         <tr>
           <th>Field</th>
           <th>Type</th>
-          <th>Remote Transcripts</th>
-          <th>Static Ingested Transcripts</th>
-          <th>Dynamic Ingested Transcripts</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody class="bcls-table__body">
@@ -63,117 +60,53 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
             <code translate="no">id</code>
           </td>
           <td>String</td>
-          <td colspan="3">READ-ONLY value. Required to identify the TT that needs to be updated.</td>
+          <td>READ-ONLY value. System-generated id required to identify the TT that needs to be updated.</td>
         </tr>
         <tr>
           <td>
             <code translate="no">account_id</code>
           </td>
           <td>String</td>
-          <td colspan="3">Updates on this field will be ignored.</td>
+          <td>READ-ONLY value. Updates on this field will be ignored.</td>
         </tr>
         <tr>
           <td>
             <code translate="no">src</code>
           </td>
           <td>String</td>
-          <td>Required and limited to 255 characters.</td>
-          <td colspan="2">Updates on this field will be ignored.</td>
+          <td>READ-ONLY. Location of the transcript file.</td>
         </tr>
         <tr>
           <td>
             <code translate="no">srclang</code>
           </td>
           <td>String</td>
-          <td colspan="3">Limited to 32 characters.</td>
+          <td>2 or 4 letter language code, such as <code translate="No">es</code> or <code translate="No">es-MX</code></td>
         </tr>
         <tr>
           <td>
             <code translate="no">label</code>
           </td>
           <td>String</td>
-          <td colspan="3">Limited to 255 characters.</td>
-        </tr>
-        <tr>
-          <td>
-            <code translate="no">kind</code>
-          </td>
-          <td>Enum</td>
-          <td colspan="3">
-            Valid values are:
-            <ul>
-              <li>
-                <code translate="no">subtitles</code>
-              </li>
-              <li>
-                <code translate="no">captions</code>
-              </li>
-              <li>
-                <code translate="no">descriptions</code>
-              </li>
-              <li>
-                <code translate="no">chapters</code>
-              </li>
-              <li>
-                <code translate="no">metadata</code>
-              </li>
-              <li>
-                <code translate="No">transcripts</code>
-              </li>
-            </ul>
-            <aside class="bcls-aside bcls-aside--information language-editable">
-              Notes:
-              <ol>
-                <li>All values are case sensitive.</li>
-                <li>The
-                  <code translate="No">transcripts</code> kind is not available for static delivery - dynamic delivery only.
-                </li>
-              </ol>
-            </aside>
-          </td>
+          <td>Human-readable label. Limited to 255 characters.</td>
         </tr>
         <tr>
           <td><code translate="no">status</code></td>
           <td>enum</td>
-          <td colspan="3">
+          <td">
             Valid values (case-sensitive):
             <ul>
               <li><code translate="no">published</code> - transcripts will be available to viewers</li>
               <li><code translate="no">draft</code> - transcripts will not be available to viewers</li>
-              <li><code translate="no">null</code> - (default) transcripts will be available to viewers</li>
             </ul>
           </td>
-        </tr>
-        <tr>
-          <td>
-            <code translate="no">mime_type</code>
-          </td>
-          <td>String</td>
-          <td colspan="2">Limited to 32 characters.</td>
-          <td>Updates on this field will be ignored.</td>
-        </tr>
-        <tr>
-          <td>
-            <code translate="no">asset_id</code>
-          </td>
-          <td>String</td>
-          <td colspan="2">READ-ONLY value.</td>
-          <td>Field not applicable for this type. Updates on this field will be ignored.</td>
-        </tr>
-        <tr>
-          <td>
-            <code translate="no">in_band_metadata_track_dispatch_type</code>
-          </td>
-          <td>String</td>
-          <td colspan="2">Field not applicable for this type.</td>
-          <td>Updates on this field will be ignored.</td>
         </tr>
         <tr>
           <td>
             <code translate="no">sources</code>
           </td>
           <td>Array</td>
-          <td colspan="3">READ-ONLY value.</td>
+          <td>READ-ONLY value. <code translate="No">http</code> and <code translate="No">https</code> URLs for the transcript.</td>
         </tr>
         <tr>
           <td>
@@ -191,111 +124,45 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
       </tbody>
     </table>
     <h3>Request</h3>
-    <p>Applicable to Remote, Static and Dynamic Transcripts.</p>
-<pre>
-<code class="language-http" translate="No">
-PATCH
-https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}
-</code>
-</pre>
-    <h3>Request body examples</h3>
+<pre><code class="language-http" translate="No">PATCH https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_ID}</code> </pre>
     <details>
-      <summary>Remote transcripts</summary>
+      <summary><h3>Request body example</h3></summary>
       <p>The request body will be a JSON object containing an array of transcripts:</p>
-      <pre class="line-numbers">
-        <code class="language-json" translate="No">
-          {
-	"text_tracks" : 
-	[ 
-		{ 
-			"id" : "1234-1234-1234"
-			"src" :     "http://some.site.com/captions/bc_smart_ja.vtt",
-			"srclang" : "ja", 
-			"label" : "日本人", 
-			"kind" : "captions", 
-			"mime_type" : null, 
-			"default" : true,
-      "status": "published"
-		}, 
-		{ 
-			"id" : "5678-5678-5678"
-			"src" : "http://some.site.com/captions/bc_smart_es.vtt",  
-			"srclang" : "es", 
-			"label" : "español", 
-			"kind" : "descriptions",
-			"mime_type" : null,
-			"default" : false,
-      "status": "published"
-		} 
-	] 
-}
-        </code>
-      </pre>
+<pre class="line-numbers"><code class="language-json" translate="No">"transcripts": [
+  {
+      "id": "d5967d03-1de1-a2de-47db-73486c7474c1",
+      "account_id": "12345678910",
+      "src": "http://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt*~hmac=101a93fa0e0d247194de3c128460d457d4eea7a27d270a1f8509c2c00205af10",
+      "srclang": "en-IE",
+      "label": "Irish English",
+      "status": "draft",
+      "sources": [
+          "http://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt*~hmac=101a93fa0e0d247194de3c128460d457d4eea7a27d270a1f8509c2c00205af10",
+          "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt*~hmac=101a93fa0e0d247194de3c128460d457d4eea7a27d270a1f8509c2c00205af10"
+      ],
+      "default": false
+  },
+  {
+      "id": "2d0cb632-8753-a68a-4143-aea0429eac7f",
+      "account_id": "12345678910",
+      "src": "http://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt*~hmac=8ae7069ac9717559e9439f5112ee133d955ec18a09563e7a3e2a48a83637c108",
+      "srclang": "en-US",
+      "label": "American English",
+      "status": "draft",
+      "sources": [
+          "http://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt*~hmac=8ae7069ac9717559e9439f5112ee133d955ec18a09563e7a3e2a48a83637c108",
+          "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt*~hmac=8ae7069ac9717559e9439f5112ee133d955ec18a09563e7a3e2a48a83637c108"
+      ],
+      "default": false
+  }
+]</code></pre>
     </details>
-    <details>
-      <summary>Static transcripts</summary>
-      <p>The request body will be a JSON object containing an array of transcripts:</p>
-      <pre class="line-numbers">
-        <code class="language-json" translate="No">
-          {
-	"text_tracks" : 
-	[ 
-		{ 
-			"id" : "1234-1234-1234"
-			"srclang" : "ja", 
-			"label" : "日本人", 
-			"kind" : "captions", 
-			"mime_type" : null, 
-			"default" : true,
-      "status": "published"
-		}, 
-		{ 
-			"id" : "5678-5678-5678"  
-			"srclang" : "es", 
-			"label" : "español", 
-			"kind" : "descriptions",
-			"mime_type" : null,
-			"default" : false,
-      "status": "published"
-		} 
-	] 
-}
-        </code>
-      </pre>
-    </details>
-    <details>
-      <summary>Dynamic transcripts</summary>
-      <p>The request body will be a JSON object containing an array of transcripts:</p>
-      <pre class="line-numbers">
-        <code class="language-json" translate="No">
-          {
-	"text_tracks" : 
-	[ 
-		{ 
-			"id" : "1234-1234-1234"
-			"srclang" : "ja", 
-			"label" : "日本人", 
-			"kind" : "captions", 
-			"mime_type" : null, 
-			"default" : true,
-      "status": "published" 
-		}, 
-		{ 
-			"id" : "5678-5678-5678"  
-			"srclang" : "es", 
-			"label" : "español", 
-			"kind" : "descriptions",
-			"mime_type" : null,
-			"default" : false,
-      "status": "published" 
-		} 
-	] 
-}
-        </code>
-      </pre>
-    </details>
-    <aside class="bcls-aside--information">Note to delete transcripts, simply leave them of the array you submit on the update request. To delete all transcripts, send an update containing
-      <code translate="no">"text_tracks"=[]</code>.
+    <aside class="bcls-aside--information">
+      <p>
+        Note to delete transcripts, simply leave them out of the array you submit on the update request. To delete all transcripts, send an update containing
+        <code translate="no">"transcripts"=[]</code>.
+      </p>
+      <!-- <p>To replace transcripts, first delete the existing ones by sending the update with <code translate="no">"transcripts"=[]</code>. Then <a href="/dynamic-ingest/ingest-guides/ingesting-transcripts.html">ingest the new transcripts</a>.</p> -->
     </aside>
   </section>
 </article>
