@@ -2268,15 +2268,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <h1>XML Manifest for Ingestion via MRSS</h1>
 <article class="bcls-article">
   <summary>This topic explains the structure of the XML used by MRSS ingestion to upload videos to Video Cloud.</summary>
-
   <section class="bcls-section">
     <h2 id="Manifest_tags">Manifest tags</h2>
-    <p>The ingest manifest is using to add video metadata to a video. The manifest may contain both <strong>Brightcove</strong> tags and <strong>Ooyala</strong> tags (for compatibility with the old Ooyala ingest manifests).</p>
+    <p>The ingest manifest is using to add video metadata to a video.</p>
   </section>
 
   <section class="bcls-section">
-    <h2 id="Brightcove_tags">Brightcove tags</h2>
-    <p>The tags detailed below must be enclosed in a <code translate="No">&lt;brightcove&gt;&lt;/brightcove&gt;</code> tag.</p>
+      <h2 id="Brightcove_tags">Brightcove tags</h2>
     <h3>Notes:</h3>
     <ul>
       <li>All special characters must be escaped.</li>
@@ -2296,7 +2294,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   &lt;/channel&gt;
 &lt;/rss&gt;</code></pre>
 
-    <h3>Brightcove tag reference</h3>
+    <h3>Tag reference</h3>
 
     <dl>
       <dt><code translate="No" style="font-weight:bold;">&lt;profile&gt; id/name &lt;/profile&gt;</code></dt>
@@ -2308,7 +2306,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   
   
       <dt><code translate="No" style="font-weight:bold;">&lt;master url=”string” useMaster=”boolean”/&gt;</code></dt>
-      <dd>For a retranscoding request. You can either indicate that a stored master should be used (<code translate="No">useMaster="true"</code>), <strong>or</strong> provide a URL for a master that was not stored. If you include both <code translate="No">url</code> and <code translate="No">useMaster</code>, the request will fail.</dd>
+      <dd>
+        For a retranscoding request. You can either indicate that a stored master should be used (<code translate="No">useMaster="true"</code>), <strong>or</strong> provide a URL for a master that was not stored. If you include both <code translate="No">url</code> and <code translate="No">useMaster</code>, the request will fail.
+        <p>Note:</p>
+        <ul>
+          <li>For ingestion via <strong>MRSS</strong>, the <code translate="No">url</code> must be publicly accessible.</li>
+          <li>For ingestion via <strong>Aspera</strong>, the <code translate="No">url</code> must the path to the file on the Aspera server where you uploaded it.</li>
+        </ul>
+      </dd>
   
   
       <dt><code translate="No" style="font-weight:bold;">&lt;description long=”string” short=”string”/&gt;</code></dt>
@@ -2319,7 +2324,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <dd>Contains a collection of images associated with the video - see the following tag.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;image url=”string/required” language=”string” variant=”string/required” label=”string” height=”number” width=”number”/&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;image url=”string/required”
+  language=”string”
+  variant=”string/required”
+  label=”string”
+  height=”number”
+  width=”number”/&gt;</code></pre>
+      </dt>
       <dd>
         Details for an image (see <a href="https://apis.support.brightcove.com/dynamic-ingest/references/dynamic-ingest-ingest-fields.html">Dynamic Ingest Fields Reference</a> for more detail). Briefly:
         <ul>
@@ -2334,7 +2346,14 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <dd>Contains a collection of text-tracks associated with the video - see the following tag.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;texttrack url=”string/required” srclang=”string/required” kind=”string” label=”string” default=”boolean”/&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;texttrack 
+  url=”string/required” 
+  srclang=”string/required” 
+  kind=”string” 
+  label=”string” 
+  default=”boolean”/&gt;</code></pre>
+      </dt>
       <dd>
         See the <a href="https://apis.support.brightcove.com/dynamic-ingest/references/dynamic-ingest-ingest-fields.html">Dynamic Ingest Fields Reference</a> for details. Briefly:
         <ul>
@@ -2350,7 +2369,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <dd>Contains a collection of audio tracks associated with the video - see the following tag.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;audiotrack url=”string” language=”string” variant=”string”/&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;audiotrack 
+  url=”string” 
+  language=”string” 
+  variant=”string”/&gt;</code></pre>
+      </dt>
       <dd>
         See the <a href="https://apis.support.brightcove.com/dynamic-ingest/references/dynamic-ingest-ingest-fields.html">Dynamic Ingest Fields Reference</a> for details. Briefly:
         <ul>
@@ -2390,11 +2414,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <dt><code translate="No" style="font-weight:bold;">&lt;link&gt; value &lt;/link&gt;</code></dt>
       <dd>URL for a related link.</dd>
     </dl>
- </section>
-
- <section class="bcls-section">
-    <h2 id="Sample_manifest_Brightcove_schema">Sample manifest (Brightcove schema)</h2>
-    <p>Below is a sample manifest for a video ingest. Note that if you are only using Brightcove tags, you should the <code translate="No">xmlns:brightcove</code> attribute (highlighted - compare the later sample that uses Ooyala tags).</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Sample_manifest_brightcove">Sample manifest</h2>
 <div style="overflow-x: scroll;">
   <pre class="line-numbers"><code class="language-xml">&lt;rss xmlns:media=&quot;http://search.yahoo.com/mrss/&quot; 
     xmlns:dcterms=&quot;http://purl.org/dc/terms/&quot; 
@@ -2433,90 +2455,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     &lt;/channel&gt;
   &lt;/rss&gt;</code></pre>
 </div>
-</section>
-
-<section class="bcls-section">
-    <h2 id="Ooyala_tags">Ooyala tags</h2>
-    <p>The tags detailed below are compatible with the old Ooyala ingest manifest and are intended for former Ooyala customers to enable them to use existing manifests.</p>
-    <h3>Notes:</h3>
-    <ul>
-      <li>Retro-compatible with Ooyala XML (we use the Ooyala schema if it’s a Ooyala header)</li>
-      <li>Ooyala MRSS supports only one <code translate="No">Subtitle</code></li>
-      <li>Ooyala MRSS does not support audio tracks</li>
-      <li>Brightcove MRSS will support multiple subtitles</li>
-      <li>Brightcove MRSS will support multiple audio tracks</li>
-      <li>Brightcove MRSS: all the tags required will be inside a parent tag <code translate="No">&lt;brightcove&gt;&lt;/brightcove&gt;</code></li>
-    </ul>
-    <h3>Ooyala tag reference</h3>
-    <aside class="bcls-aside bcls-aside--information language-editable">Note that <a href="#Brightcove_tags">Brightcove tags</a> can also be included with Ooyala tags but must be enclosed in a &lt;brightcove&gt;&lt;/brightcove&gt; block.</aside>
-    <dl>
-      <dt><code translate="no">&lt;ooyala:profileguid&gt;</code></dt>
-      <dd>Specifies a Video Cloud ingest profile to use for processing the video. If you do not want to use the account default profile, you must specify the one you want to use instead. See <a href="https://studio.support.brightcove.com/admin/managing-ingest-profiles.html">Managing Ingest Profiles</a>.</dd>
-      <dt><code translate="no">&lt;media:title&gt;&lt;</code></dt>
-      <dd>The video title.</dd>
-      <dt><code translate="no">&lt;media:content url=””&gt;</code></dt>
-      <dd>URL is for the video file to be ingested</dd>
-      <dt><code translate="no">&lt;media:description&gt;</code></dt>
-      <dd>Short description for the video</dd>
-      <dt><code translate="no">&lt;media:thumbnail url=””&gt;</code></dt>
-      <dd>URL for video thumbnail image</dd>
-      <dt><code translate="no">&lt;media:subTitle href=””&gt;</code></dt>
-      <dd>The <code translate="No">href</code> value is the URL for a captions file for the video</dd>
-      <dt><code translate="no">&lt;ooyala:labels&gt; separated by commas &lt;/ooyala:labels&gt;</code></dt>
-      <dd>Labels for video, comma-separated - you can also use the Brightcove <code translate="No">&lt;labels&gt;&lt;/labels&gt;</code> tag</dd>
-      <dt><code translate="no">&lt;media:keywords&gt; separated by commas &lt;/media:keywords&gt;</code></dt>
-      <dd>Video tags, separated by commas - you can also use the Brightcove <code translate="No">&lt;tags&gt;&lt;/tags&gt;</code></dd>
-      
-        <dt><code translate="no">&lt;ooyala:embedcode&gt;video id&lt;/ooyala:embedcode&gt;</code></dt>
-      <dd>The Video Cloud video id - required if you are updating an existing video</dd>
-      <dt><code translate="no">&lt;ooyala:metadata name=”key”&gt; value &lt;/ooyala:metadata&gt;</code></dt>
-      <dd>Set a value for the custom field identified by the <code translate="No">key</code></dd>
-      <dt><code translate="no">&lt;ooyala:remoteasset durationInMs=”” url=””&gt;</code></dt>
-      <dd>For creating remote asset videos - if <code translate="No">remoteasset</code> and <code translate="No">media:content</code> are both provided, the request will fail</dd>
-      <dt><code translate="no">&lt;dcterms:valid&gt;</code></dt>
-      <dd>Flight times representing the start and end times when the asset can be played. Example:
-<pre class="line-numbers"><code class="language-xml">&lt;dcterms:valid&gt;
-  start=2011-06-28T15:15:00-07:00;
-  end=2022-12-01T16:00:00-07:00;scheme=W3C-DTF
-  &lt;/dcterms:valid&gt;</code></pre>
-        </dd>
-      <dt><code translate="no">&lt;<link>&gt;</code></dt>
-      <dd>Creates a related link - in the old Ooyala system, this field was used to store the URL where the video was embedded and can still be used for that purpose if you wish</dd>
-      <dt><code translate="no">&lt;ooyala:metadata name=&quot;video_ID&quot;&gt;71&lt;/ooyala:metadata&gt;</code></dt>
-      <dd>Can be used instead of <code translate="No">&lt;ooyala:embedcode&gt;</code> to identify an existing video you are adding/updating metadata for</dd>
-      <dt><code translate="no">&lt;ooyala:metadata name=&quot;reference_ID&quot;&gt;71&lt;/ooyala:metadata&gt;</code></dt>
-      <dd>Can be used instead of <code translate="No">&lt;ooyala:embedcode&gt;</code> to identify an existing video you are adding/updating metadata for</dd>
-    </dl>
-    
-</section>
-
-<section class="bcls-section">
-    <h2 id="Sample_manifest_Ooyala_schema">Sample manifest (Ooyala schema)</h2>
-    <pre class="line-numbers"><code class="language-xml">&lt;rss xmlns:media="http://search.yahoo.com/mrss/" 
-        xmlns:dcterms="http://purl.org/dc/terms/" 
-        xmlns:fh="http://purl.org/syndication/history/1.0" 
-        <span class="bcls-highlight">xmlns:ooyala="http://www.ooyala.com/mrss/"</span> 
-        version="2.0"&gt;
-        &lt;channel&gt;
-          &lt;item&gt;
-            &lt;media:content    url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/videos/TestXMLAsset03012016-23.mp4"/&gt;
-            &lt;media:thumbnail url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/images/big_buck_bunny_1.png"/&gt;
-            &lt;media:subTitle href="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/SubTitles/cc_030152016-2.vtt" /&gt;
-            &lt;media:title&gt;Title OIS V1-MRSS-04042016_00008 MC&lt;/media:title&gt;
-            &lt;media:description&gt;Desc OIS V1-MRSS-04042016_00008 MC&lt;/media:description&gt;
-            &lt;ooyala:labels&gt;/nihanth1/dara1,/harsha1/kanna1&lt;/ooyala:labels&gt;
-            &lt;link&gt;http://mysite.com/videos/sports/real_sports.html&lt;/link&gt;
-            &lt;ooyala:metadata name="video_ID"&gt;71&lt;/ooyala:metadata&gt;
-            &lt;ooyala:metadata name="season_number"&gt;1&lt;/ooyala:metadata&gt;
-            &lt;guid isPermaLink="false"&gt;OIS V1-MRSS-04042016_00008 MC&lt;/guid&gt;
-            &lt;brightcove&gt;
-              &lt;!-- additional Brightcove tags here --&gt;
-            &lt;/brightcove&gt;
-          &lt;/item&gt;
-        &lt;/channel&gt;
-      &lt;/rss&gt;</code></pre>
   </section>
-</article>
+
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
