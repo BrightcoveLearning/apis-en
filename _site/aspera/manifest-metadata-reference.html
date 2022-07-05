@@ -2294,30 +2294,40 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h3>Tag reference</h3>
 
     <dl>
-      <dt><code translate="No" style="font-weight:bold;">&lt;profile&gt; id/name &lt;/profile&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;profile&gt; id/name &lt;/profile&gt;</code></pre>
+      </dt>
       <dd>The name or id of the ingest profile to use. Applicable only to videos. If omitted, the default profile for the account will be used.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;name&gt;&lt;/name&gt;</code></dt>
+      <dt>
+  <pre><code translate="No" style="font-weight:bold;">&lt;name&gt;&lt;/name&gt;</code></pre>
+      </dt>
       <dd>The title for the video.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;master url=”string” useMaster=”boolean”/&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;master url=”string” useMaster=”boolean”/&gt;</code></pre>
+      </dt>
       <dd>
         For a retranscoding request. You can either indicate that a stored master should be used (<code translate="No">useMaster="true"</code>), <strong>or</strong> provide a URL for a master that was not stored. If you include both <code translate="No">url</code> and <code translate="No">useMaster</code>, the request will fail.
         <p>Note:</p>
         <ul>
           <li>For ingestion via <strong>MRSS</strong>, the <code translate="No">url</code> must be publicly accessible.</li>
-          <li>For ingestion via <strong>Aspera</strong>, the <code translate="No">url</code> must the path to the file on the Aspera server where you uploaded it.</li>
+          <li>For ingestion via <strong>Aspera</strong>, the <code translate="No">url</code> must be the path to the file on the Aspera server where you uploaded it.</li>
         </ul>
       </dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;description long=”string” short=”string”/&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;description long=”string” short=”string”/&gt;</code></pre>
+      </dt>
       <dd>A short description for the video.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;images&gt; array of &lt;image&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;images&gt; array of &lt;image&gt;</code></pre>
+      </dt>
       <dd>Contains a collection of images associated with the video - see the following tag.</dd>
   
   
@@ -2381,71 +2391,97 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       </dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;customField name=&quot;string/required&quot;&gt;value&lt;/customField&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;customField name="string/required"&gt;value&lt;/customField&gt;</code></pre>
+      </dt>
       <dd>The <code translate="No">value</code> will be assigned to the custom field with the given name for this video.</dd>
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;labels&gt; separated by comma &lt;/labels&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;labels&gt; separated by comma &lt;/labels&gt;</code></pre>
+      </dt>
       <dd>See <a href="/cms/managing-videos/working-with-labels.html">Working with Labels</a>.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;tags&gt; separated by comma &lt;/tags&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;tags&gt; separated by comma &lt;/tags&gt;</code></pre>
+      </dt>
       <dd>A list of tags. Tags can be used to select videos for <a href="/cms/managing-videos/managing-playlists-using-cms-api.html">smart playlists</a>, among other things.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;referenceId&gt;&lt;/referenceId&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;referenceId&gt;&lt;/referenceId&gt;</code></pre>
+      </dt>
       <dd>A unique reference id for the video. Reference ids can be used to associate the video with an entity in your systems, and you can also publish videos using the reference id rather than the video id.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;videoId&gt;&lt;/videoId&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;videoId&gt;&lt;/videoId&gt;</code></pre>
+      </dt>
       <dd>The video id. Do <strong>not</strong> include this if you ingesting a new video. To be used only for replacing or retranscoding or adding media assets to an existing video.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;remoteasset url=”string/required” name=”string” durationInMs=”number” encodingRate=”number” frameHeight=”number” frameWidth=”number” size=”number” videoCodec=”string” videoContainer=”number” progressiveDownload=”boolean”/&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;remoteasset 
+  url=”string/required” 
+  name=”string” 
+  durationInMs=”number” 
+  encodingRate=”number” 
+  frameHeight=”number” 
+  frameWidth=”number” 
+  size=”number” 
+  videoCodec=”string” 
+  videoContainer=”number” 
+  progressiveDownload=”boolean”/&gt;</code></pre>
+      </dt>
       <dd>For adding a remote asset video. Note that if you include both the <code translate="No">&lt;master&gt;</code> and <code translate="No">&lt;remoteasset</code> tags, the request will fail.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;schedule endsAt=”” startsAt=””/&gt;</code></td>
+      <dt>
+  <pre><code translate="No" style="font-weight:bold;">&lt;schedule endsAt=”” startsAt=””/&gt;</code></pre>
+      </dt>
       <dd>For scheduling when a video becomes available for playback, and (optionally) when it becomes unavailable again. Times in ISO-8601 date format such as <code translate="No">2022-09-20T20:41:07.689Z</code> or just <code translate="No">2022-09-20</code>.</dd>
   
   
-      <dt><code translate="No" style="font-weight:bold;">&lt;link&gt; value &lt;/link&gt;</code></dt>
+      <dt>
+<pre><code translate="No" style="font-weight:bold;">&lt;link&gt; value &lt;/link&gt;</code></pre>
+      </dt>
       <dd>URL for a related link.</dd>
     </dl>
   </section>
   <section class="bcls-section">
     <h2 id="Sample_manifest_brightcove">Sample manifest</h2>
 <div style="overflow-x: scroll;">
-  <pre class="line-numbers"><code class="language-xml">&lt;rss xmlns:media=&quot;http://search.yahoo.com/mrss/&quot; 
-    xmlns:dcterms=&quot;http://purl.org/dc/terms/&quot; 
-    xmlns:fh=&quot;http://purl.org/syndication/history/1.0&quot; 
-    <span class="bcls-highlight">xmlns:brightcove=&quot;http://www.brightcove.com/mrss/&quot;</span> 
-    version=&quot;2.0&quot;&gt;
+  <pre class="line-numbers"><code class="language-xml">&lt;rss xmlns:media="http://search.yahoo.com/mrss/" 
+    xmlns:dcterms="http://purl.org/dc/terms/" 
+    xmlns:fh="http://purl.org/syndication/history/1.0" 
+    <span class="bcls-highlight">xmlns:brightcove="http://www.brightcove.com/mrss/"</span> 
+    version="2.0"&gt;
     &lt;channel&gt;
       &lt;item&gt;
   
         &lt;brightcove&gt;
-          &lt;master url=&quot;&quot;/&gt;
+          &lt;master url=""/&gt;
            &lt;profile&gt;multi-platform-standard-dynamic-with-mp4&lt;/profile&gt;
            &lt;name&gt;Title OIS V1-MRSS-04042016_00008 MC&lt;/name&gt;
            &lt;status&gt;ACTIVE&lt;/status&gt;
-           &lt;description short=&quot;desc&quot; long=&quot;Desc OIS V1-MRSS-04042016_00008 MC&quot; /&gt;
+           &lt;description short="desc" long="Desc OIS V1-MRSS-04042016_00008 MC" /&gt;
            &lt;labels&gt;/nihanth1/dara1,/harsha1/kanna1&lt;/labels&gt;
            &lt;tags&gt;birds,sea&lt;/tags&gt;
            &lt;referenceId&gt;asdf1234&lt;/referenceId&gt;
            &lt;videoId&gt;73446256700bol1&lt;/videoId&gt;
            &lt;customField name=”season_number”&gt;1&lt;/customField&gt;
-           &lt;remoteasset url=&quot;//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4
-  &quot;&gt;&lt;/remoteasset&gt;
-           &lt;schedule startsAt=&quot;2021-05-01T18:00:00.000+08&quot; endsAt=&quot;2021-05-08T18:00:00.000+08&quot;/&gt;
+           &lt;remoteasset url="//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4
+  "&gt;&lt;/remoteasset&gt;
+           &lt;schedule startsAt="2021-05-01T18:00:00.000+08" endsAt="2021-05-08T18:00:00.000+08"/&gt;
            &lt;link&gt;http://mysite.com/videos/sports/real_sports.html&lt;/link&gt;
            &lt;images&gt;
-             &lt;image url=&quot;http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/images/big_buck_bunny_1.png&quot; variant=&quot;thumbnail&quot; language=&quot;es&quot; label=&quot;thumbnail&quot; height=&quot;480&quot; width=&quot;640&quot;/&gt;
+             &lt;image url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/images/big_buck_bunny_1.png" variant="thumbnail" language="es" label="thumbnail" height="480" width="640"/&gt;
            &lt;/images&gt;
            &lt;texttracks&gt;
-             &lt;texttrack url=&quot;http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/SubTitles/cc_030152016-2.vtt&quot; srclang=&quot;en-US&quot; kind=&quot;captions&quot; label=&quot;English&quot;/&gt;
+             &lt;texttrack url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/SubTitles/cc_030152016-2.vtt" srclang="en-US" kind="captions" label="English"/&gt;
            &lt;/texttracks&gt;
            &lt;audiotracks&gt;
-             &lt;audiotrack url=&quot;http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/audio/cc_030152016-2.m4f&quot; language=&quot;en&quot; variant=&quot;main&quot;/&gt;
+             &lt;audiotrack url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/audio/cc_030152016-2.m4f" language="en" variant="main"/&gt;
            &lt;/audiotracks&gt;
         &lt;/brightcove&gt;
       &lt;/item&gt;
