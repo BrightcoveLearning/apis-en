@@ -1,0 +1,115 @@
+---
+title: 'Ingesting Transcript Files'
+description: 'Dynamic Ingest can be used to ingest Transcript files with your video, or separately, after the video has been ingested.'
+parent: 'Ingest Guides'
+grandparent: Dynamic Ingest API
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+
+    <section class="bcls-section">
+    <h2 id="setup">Setup</h2>
+    
+    <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a Transcript file, or all of these. For full details of the request body fields, see the <a href="/dynamic-ingest/references/reference.html#tag/Ingest">API Reference</a>.</p>
+    
+    <dl>
+      <dt>Request URL</dt>
+      <dd>
+      <pre>
+        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
+      </dd>
+      <dt>Authentication</dt>
+      <dd>Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code translate="No">Authorization</code> header:
+      <pre>
+        <code class="language-bash" translate="No">Authorization: Bearer {access_token}</code></pre>
+      </dd>
+    </dl>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="s3">Note on S3</h2>
+    
+    <p>If your Transcript will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow Video Cloud to access the files. See <a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html#setPolicy">Using Dynamic Ingest with S3</a> for details.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="ingestTranscript">Ingest Transcript files</h2>
+    
+    <p>You can also add Transcript transcript to your video or upload them for an existing video using Dynamic Ingest:</p>
+    
+    <h3>Add transcripts during video ingestion</h3>
+    
+    <h4>Request URL</h4>
+    
+    <pre>
+        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
+    
+    <h4>Method</h4>
+    
+    <p><code translate="No">POST</code></p>
+    
+    <h4>Sample request body</h4>
+    
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "master": {
+    "url": "https://support.brightcove.com/test-assets/videos/Great_Blue_Heron.mp4"
+  },
+  "transcripts": [
+    {
+      "src": "https://support.brightcove.com/test-assets/transcript/herons-transcript.txt",
+      "srclang": "en",
+      "label": "English",
+      "default": true,
+      "status" : "published"
+    }
+  ]
+}</code></pre>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="add_to_existing_video">Add transcripts existing videos</h2>
+    
+    <p>Adding transcripts to existing videos is exactly the same, except that you do not need any of the video information or the profile in the request body. <strong>unless you are requesting closed transcript to be added to MP4 renditions - in that case, you will need to replace the video</strong></p>
+    
+    <h4>Request URL</h4>
+    
+    <pre>
+        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
+    
+    <h4>Method</h4>
+    
+    <p><code translate="No">POST</code></p>
+    
+    <h4>Sample request body</h4>
+    
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "transcripts": [
+    {
+      "src": "https://support.brightcove.com/test-assets/transcript/herons-transcript.txt",
+      "srclang": "en",
+      "label": "English",
+      "default": true,
+      "status" : "published"
+    }
+  ]
+}</code></pre>
+    <aside class="bcls-aside bcls-aside--information">
+    <p>Notes:</p>
+    
+    <ol>
+      <li>Transcript file names should only include letters (upper or lower case), numbers, dashes (-) and underscores (_).</li>
+      <li>The text of the transcript must be encoded UTF-8 to display properly for double-byte languages such as Japanese and Korean.</li>
+      <li>The default value is not per transcript, but set to true for all transcripts of the same language (<code translate="No">srclang</code>).</li>
+      <li>For transcripts, only public HTTP or HTTPS URLs or signed URLs for AWS S3 or Google Cloud Storage are supported.</li>
+      <li>You use the <a href="/cms/managing-videos/managing-transcripts.html">CMS API</a> to manage transcripts (update/delete).</li>
+      <li>Dynamic Ingest accepts up to 100 transcripts at a time.</li>
+      <!-- <li>Existing transcripts have <code translate="no">“status”: null</code>, which won’t hide transcripts in players.</li> -->
+    </ol>
+    </aside>
+    
+    </section>
+    </article>
+    

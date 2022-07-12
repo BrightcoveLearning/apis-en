@@ -1343,6 +1343,21 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
             
           
             
+              <h5 class="submenu-header"><a href="/mrss-ingestion/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;Ingestion via MRSS</a></h5>
+              <ul class="sidenav-submenu" style="display:none;">
+                
+                  
+                    <li><a href="/mrss-ingestion/getting-started/ingesting_from_a_remotely_hosted_mrss_feed.html">Ingesting via an MRSS Feed</a></li>
+                  
+                
+                  
+                    <li><a href="/mrss-ingestion/getting-started/xml-manifest-for-ingestion-via-mrss.html">XML Manifest for Ingestion via MRSS</a></li>
+                  
+                
+              </ul>
+            
+          
+            
               <h5 class="submenu-header"><a href="/ipx/index.html"><span style="color:#8E9093">+</span>&nbsp;&nbsp;In-Page Experience API</a></h5>
               <ul class="sidenav-submenu" style="display:none;">
                 
@@ -2268,10 +2283,37 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <h1>Overview: Using Aspera for Ingestion to Video Cloud</h1>
 <article class="bcls-article">
-  <summary><a href="ibm.com/products/aspera" target="_blank">IBM Aspera</a> is a popular solution for reliable high-speed file transfers. Brightcove offers a simple and flexible solution for adding videos and media assets to Video Cloud using Aspera. The topics in this section explain the details.</summary>
+  <summary><a href="https://ibm.com/products/aspera" target="_blank">IBM Aspera</a> is a popular solution for reliable high-speed file transfers. Brightcove offers a simple and flexible solution for adding videos and media assets to Video Cloud using Aspera. The topics in this section explain the details.</summary>
+  
   <section class="bcls-section">
     <h2 id="Using_Aspera_with_Brightcove">Using Aspera with Brightcove</h2>
-    <p>The basic workflow for using Aspera to transfer your files to Video Cloud is as follows:</p>
+    <aside class="bcls-aside bcls-aside--information language-editable">
+      Notes: 
+      <ul>
+        <li>Files put on the Aspera server are kept for up to 10 days; after that they are deleted.</li>
+        <li>
+          If an user has access to more than one Video Cloud account and tries to ingest content using Aspera, the content will be ingested to the first Video Cloud account the system finds for that user. To avoid this, the user must have specific credentials for each one of the Video Cloud accounts to which he/she should be able to upload content using this service. 
+          <p>One workaround: You can create a new email alias using a <code translate="No">+</code> character if your email provider supports it (e.g. Gmail) Example:</p>
+          <ul>
+            <li>Normal email address: mary@mycompany.com</li>
+            <li>
+              Alias email addresses:
+              <ul>
+                <li>mary+sports_upload@mycompany.com</li>
+                <li>mary+news_upload@mycompany.com</li>
+                <li>mary+prod_upload@mycompany.com</li>
+                <li>mary+dev_upload@mycompany.com</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+    <p>The basic workflow for using Aspera to transfer your files to Video Cloud is as follows are shown below. Note that you will need to install the IBM Aspera Connect extension for your browser. The first time you login to Aspera, the dialog below will appear and guide you through the steps - see <a href="https://www.ibm.com/docs/en/aspera-on-cloud?topic=installation-installing-aspera-connect">Installing Aspera Connect</a> for more information.</p>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/aspera/aspera-pop-up.png" alt="Aspera Dialog">
+      <figcaption class="bcls-caption--image">Aspera Dialog</figcaption>
+    </figure>
     <ol class="bcls-tasklist-restart">
       <li>Go to <a href="https://ingest-transfer.brightcove.com/">https://ingest-transfer.brightcove.com/</a> and log in using you Video Cloud credentials with the proper permissions (see <a href="#Credentials">Credentials</a> below).</li>
       <li>Upload the files you want to ingest into Video Cloud.</li>
@@ -2279,6 +2321,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <li>Monitor the rest of the ingestion in Video Cloud using <a href="https://studio.support.brightcove.com/media/index.html">Studio</a> or the <a href="/cms/index.html">CMS API</a>.</li>
     </ol>
   </section>
+
   <section class="bcls-section">
     <h2 id="Credentials">Credentials</h2>
     <p>There are two kinds of credentials for using Aspera for ingestion:</p>
@@ -2289,7 +2332,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
         <aside class="bcls-aside bcls-aside--information language-editable">Simple upload requires special permissions - submit a <a href="https://supportportal.brightcove.com/">Support Request</a> to obtain these permissions.</aside>
       </li>
       <li>
-        <strong>Upload with Metadata</strong> - in this case, file transfer will start when the manifest file providing metadata information is uploaded. This operation can be used to add metadata to a video on upload, to add assets to a video already ingested or to re-transcode a video in Video Cloud. See the <a href="/aspera/manifest-metadata-reference.html">Manifest Reference</a> for details of this XML file. Note that there is a limit of 100 videos per manifest file.
+        <strong>Upload with Metadata</strong> - in this case, file transfer will start when the manifest file providing metadata information is uploaded. This operation can be used to add metadata and assets to a video on upload, to update existing metadata, to add assets to a video already ingested or to re-transcode or source replacement to a video in Video Cloud. See the <a href="/aspera/manifest-metadata-reference.html">Manifest Reference</a> for details of this XML file. Note that there is a limit of 100 videos per manifest file.
 
         <aside class="bcls-aside bcls-aside--information language-editable">Upload with metadata requires special permissions - submit a <a href="https://supportportal.brightcove.com/">Support Request</a> to obtain these permissions.</aside>
       </li>
@@ -2311,7 +2354,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 21 Jun 2022
+  Page last updated on 05 Jul 2022
 </div>
 
 
