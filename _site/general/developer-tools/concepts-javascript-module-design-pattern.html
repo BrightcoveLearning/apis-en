@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
+  <meta name="description" content="In this topic, you will learn how to use the JavaScript Module Design Pattern to reduce the chance that your code will conflict with other scripts on your web page.">
   
-  <title>String Encoder</title>
+  <title>Concepts: The JavaScript Module Design Pattern</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/s-site-assets-favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/s-site-assets-favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/s-site-assets-favicons/favicon-16x16.png">
@@ -65,7 +65,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       <li class="breadcrumb-item"><a href="/general/developer-tools/">Developer Tools</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">String Encoder</li>
+      <li class="breadcrumb-item active" aria-current="page">Concepts: The JavaScript Module Design Pattern</li>
     </ol>
   </nav>
 </header>
@@ -2289,52 +2289,238 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
+<h1>Concepts: The JavaScript Module Design Pattern</h1>
 <article class="bcls-article">
-    <h1>String Encoder</h1>
-    <summary></summary>
-    <section class="bcls-section">
-      <p>Utilty to URI-encode strings 3 ways.</p>
-      <p>Add the method names suggest, these are generally useful when you need to include some string in a URL. Which one is appropriate depends on the situation. Below are some examples of how we find them useful.</p>
-      <ul>
-        <li><code translate="No">escape</code> is the oldest method, and does the least; we have not had occasion to use it in our apps</li>
-        <li><code translate="No">encodeURI</code> is generally adequate for strings that will be passed as the values for URL parameters</li>
-        <li><code translate="No">encodeURIComponent</code> is most thorough encoder, but generally you only need it for strings that will be used as part of a URL domain/path, or if you need to pass a URL as a parameter (we do this frequently in passing API requests to proxies via AJAX)</li>
-      </ul>
-      </header>
-      <p>String to encode:</p>
-      <p>
-        <textarea id="str" cols="100" rows="5" class="bcls-code"></textarea>
-      </p>
-      <p><span id="btn" class="bcls-button">Encode it!</span></p>
-      <hr />
-      <h2>Results</h2>
-      <p>encodeURI</p>
-      <pre id="results_encodeURI" class="bcls-code">&nbsp;
-  
-  </pre>
-      <p>encodeURIComponent</p>
-      <pre id="results_encodeURIComponent" class="bcls-code">&nbsp;
-  
-  </pre>
-      <p>escape</p>
-      <pre id="results_escape" class="bcls-code">&nbsp;
-  
-  </pre>
-      <script translate="no">
-      var BCLS = ( function () {
-          var str,
-          btn = document.getElementById('btn');
-          btn.addEventListener("click", function (evt) {
-              str = document.getElementById("str").value;
-              document.getElementById("results_encodeURI").textContent = encodeURI(str);
-              document.getElementById("results_encodeURIComponent").textContent = encodeURIComponent(str);
-              document.getElementById("results_escape").textContent = escape(str);
-          })
-      })();
-      </script> 
-    </section>
-  </article>
-  
+  <summary>In this topic, you will learn how to use the JavaScript Module Design Pattern to reduce the chance that your code will conflict with other scripts on your web page.</summary>
+
+  <section class="bcls-section">
+    <h2 id="Using_JavaScript_variables">Using JavaScript variables</h2>
+    <p> Before ES2015(ES6) release, JavaScript variables used to be declared using the <code>var</code> keyword. But,
+      with the introduction of ES6, <code>let</code> and <code>const</code> were added as a new way to declare
+      variables. This frequently raises questions about which keyword should be used and when.</p>
+
+    <p>Here is a short explanation of the different ways to declare a variable in JavaScript.</p>
+
+    <h3>Using var</h3>
+    <p>Using <code>var</code> is the oldest method of variable declaration in JavaScript. When defined within a
+      function, any <code>var</code> is restricted to that function, but a <code>var</code> is global when defined
+      outside of a function.</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">// Global Declaration
+var variable = value;
+
+const varExampleFunction = () => {
+    // Local Declaration
+    var variable = value;
+}</code></pre>
+    <aside class="bcls-aside bcls-aside--information">Please note that <code>var</code> is not block-scoped, so when you
+      declare a variable within a code block, using curly braces <code>{ }</code>, its scope flows outside the block.
+    </aside>
+    <h3>Using let</h3>
+    <p>The <code>let</code> declaration was introduced with ES6, this type of declaration is block-scoped, which means
+      that the variables declared with <code>let</code> can be only accessed in the block or function in which it is
+      defined. </p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">const letExampleFunction = () => {
+    let variable = value;
+}</code></pre>
+    <h3>Using const</h3>
+    <p>As <code>let</code>, <code>const</code> was also introduced with ES6. This is why both declarations are very
+      similar. The main difference is that <code>const</code> points to data in memory that holds constant values, and
+      <code>const</code> reference variables cannot be reassigned to a different object in memory.</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No"> const constExampleFunction = () => {
+    const variable = value;
+}</code></pre>
+    <aside class="bcls-aside bcls-aside--information">Please note that <code>const</code> is also block-scoped. It is
+      limited to the block defined by curly braces, which could be a function or a block. The main distinction is that
+      they cannot be updated or re-declared, implying that the value remains constant within the scope.</aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Scope_conflicts">Scope conflicts</h2>
+    <p>In JavaScript, when you define a variable using the <code translate="No">var</code>, <code translate="No">let</code> or <code translate="No">const</code> element, it is scoped within
+      the function that it is defined. Global variables are vulnerable to collisions with other scripts on
+      your page.</p>
+    <p>Let's look at a code example. In the following code, the function and the variables exist within the scope of the
+      page.</p>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">// script 1
+const incrementCount = () => {
+    count++;
+}
+
+const myButton = document.getElementById('buttonId');
+let count = 0;
+
+myButton.onclick = incrementCount;</code></pre>
+    <p>Now, let's say there is a function outside of your script that also modifies the global <code
+        translate="No">count</code> variable. This collision of scripts can cause unexpected results.</p>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">// script 2
+const countVideos = videoList => {
+    count = videoList.length;
+}</code></pre>
+    <p>Results:</p>
+    <ol>
+      <li>User selects the <code translate="No">myButton</code> button two times, incrementing the <code
+          translate="No">count</code> variable in <code translate="No">script 1</code>.
+        <ul>
+          <li><code translate="No">count</code> = <strong>2</strong></li>
+        </ul>
+      </li>
+      <li>The <code translate="No">countvideos</code> function is called which exists in <code
+          translate="No">Script 2</code>, but also on your web page. Let's say that the <code
+          translate="No">videoList</code> contains 10 items. Now, the <code translate="No">count</code> global variable
+        has a value of <strong>10</strong>.
+        <ul>
+          <li><code translate="No">count</code> = <strong>10</strong></li>
+        </ul>
+      </li>
+      <li>The next time the user selects the <code translate="No">myButton</code> button, the <code
+          translate="No">count</code> variable will return unexpected results.
+        <ul>
+          <li>Expected: <code translate="No">count</code> = <strong>3</strong></li>
+          <li>Actual: <code translate="No">count</code> = <strong>11</strong></li>
+        </ul>
+      </li>
+    </ol>
+    <p>You may try to avoid conflicts in your scripts, but there is no guarantee that third-party scripts included in
+      your page will not use similar function and variable names.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Anonymous_functions">Anonymous functions</h2>
+    <p>One solution is to wrap your code in an anonymous function (also called a closure), that gets executed
+      immediately. Your code within a closure is not accessible by other scripts. So, this gives you a way to create
+      private functions and variables.</p>
+    <p>Here is the syntax for an anonymous function:</p>
+    <ul>
+      <li>Line 3: includes an additional set of parentheses, which tells JavaScript to execute the function immediately
+        after it has been parsed, instead of waiting for some other code to call the function.</li>
+    </ul>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">( () => {
+    // your code
+}<span class="bcls-highlight">()</span>);</code></pre>
+<p>Another syntax example:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">var res = function( [arguments] ) { ... }</code></pre>
+    <p>Closures can be powerful, as they provide privacy and state throughout the lifetime of the application. For the
+      code inside the closure, all variables and functions are in the closure scope only. But, your code inside the
+      closure can still access any global variables or functions.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Globals">Globals</h2>
+    <p>Although JavaScript has a feature known as implied globals, it may make your code hard to manage, as it is not
+      easy to determine which variables are global. To determine if a variable is global, the interpreter has to walk
+      backwards through the scope chain looking for a <code translate="No">var</code> statement that matches in name. If
+      none is found, the variable is assumed to be global.</p>
+    <h3>Pass in globals</h3>
+    <p>With the anonymous function, you can explicitly pass in global parameters. This is called importing parameters
+      into your code.</p>
+    <p>Here is an example:</p>
+    <ul>
+      <li>Line 1: defines the name of the parameters being passed into the function. Notice that they do not have to
+        match the names in line 3. Here, the <code translate="No">window</code> object is passed into a parameter named
+        <code translate="No">window1</code>.
+      </li>
+      <li>Line 3: passes the <code translate="No">window</code> object into the function.</li>
+    </ul>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">( ( window1, undefined ) => {
+    ...
+})(window);</code></pre>
+    <p>Since there is only 1 object being passed in, but there are two parameters, the value of <code
+        translate="No">undefined</code> will be undefined.</p>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">typeof undefined == "undefined"</code></pre>
+    <p>This can be handy if you want an easy way to check if other variables are defined.</p>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">if(variable1 === undefined)</code></pre>
+    <h3>Export globals</h3>
+    <p>You may also want to pass variables and functions outside of your anonymous function. You can do this by using
+      the <code translate="No">return</code> value.</p>
+    <p>Here is an example:</p>
+    <ul>
+      <li>Line 1: assigns our anonymous function to <code translate="No">BCLS</code>. This value can be anything you
+        choose. In this example, we are using BCLS (Brightcove Learning Services).</li>
+    </ul>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">const BCLS = ( ( window1, undefined ) => {
+    var object1 = {};
+    object1.count = 1;
+    object1.method = function () {
+        ...
+    }
+    <span class="bcls-highlight">return object1;</span>
+})(window);</code></pre>
+    <p>The <code translate="No">object1</code> object is now available globally with two public properties, a variable
+      named <code translate="No">count</code> and a function named <code translate="No">method</code>. They can be
+      accessed outside of our anonymous function as:</p>
+    <ul>
+      <li><code translate="No">BCLS.object1.count</code></li>
+      <li><code translate="No">BCLS.object1.method</code></li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Complete_examples">Complete examples</h2>
+    <p>Here are some complete examples of the JavaScript Module Design Pattern.</p>
+    <h3>Example 1</h3>
+    <p>This example shows how to create private and public variables and functions using the Module Pattern.</p>
+    <ul>
+      <li>Private variables: <code translate="No">myvar</code>, <code translate="No">myvar2</code></li>
+      <li>Private functions: <code translate="No">fname</code>, <code translate="No">fname2</code></li>
+      <li>Public variable: <code translate="No">myvar3</code></li>
+      <li>Public function: <code translate="No">fname3</code></li>
+    </ul>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">const BCLS = ( () => {
+   var myvar = value,
+       myvar2 = value;
+
+   fname = () =>  {
+        ...
+   };
+   fname2 = () =>  {
+        ...
+   };
+
+   return {
+        fname3 : () =>  {
+             ...
+        },
+        myvar3 = value;
+   };
+}());</code></pre>
+    <h3>Example 2</h3>
+    <p>This example passes in global objects and exposes a public function.</p>
+    <pre class="line-numbers">
+<code class="language-javascript" translate="No">const BCLS = ( ( window, document, videojs ) => {
+  var myvar = value;
+
+  // use a global object passed into the anonymous function
+  videojs.registerPlugin('overlay');
+
+  fname = () => {
+      ...
+  }
+  return {
+    fname2 : () => {
+          ...
+      }
+  }
+})(window, document, videojs);
+
+// call the public function fname2
+var newvar = BCLS.fname2();</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Code_samples">Code samples</h2>
+    <p>Some of our code examples use the JavaScript Module Design Pattern, and you can review them for ideas on how to
+      implement this pattern.</p>
+    <ul>
+      <li><a
+          href="https://player.support.brightcove.com/code-samples/brightcove-player-sample-floating-player.html">Floating
+          Player</a></li>
+    </ul>
+  </section>
+</article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">

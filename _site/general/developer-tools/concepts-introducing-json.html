@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
+  <meta name="description" content="In this topic, you learn about JSON files and methods used for manipulating this data.">
   
-  <title>String Encoder</title>
+  <title>Introducing JSON</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/s-site-assets-favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/s-site-assets-favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/s-site-assets-favicons/favicon-16x16.png">
@@ -65,7 +65,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       <li class="breadcrumb-item"><a href="/general/developer-tools/">Developer Tools</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">String Encoder</li>
+      <li class="breadcrumb-item active" aria-current="page">Introducing JSON</li>
     </ol>
   </nav>
 </header>
@@ -2289,52 +2289,119 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
+<h1>Introducing JSON</h1>
 <article class="bcls-article">
-    <h1>String Encoder</h1>
-    <summary></summary>
-    <section class="bcls-section">
-      <p>Utilty to URI-encode strings 3 ways.</p>
-      <p>Add the method names suggest, these are generally useful when you need to include some string in a URL. Which one is appropriate depends on the situation. Below are some examples of how we find them useful.</p>
-      <ul>
-        <li><code translate="No">escape</code> is the oldest method, and does the least; we have not had occasion to use it in our apps</li>
-        <li><code translate="No">encodeURI</code> is generally adequate for strings that will be passed as the values for URL parameters</li>
-        <li><code translate="No">encodeURIComponent</code> is most thorough encoder, but generally you only need it for strings that will be used as part of a URL domain/path, or if you need to pass a URL as a parameter (we do this frequently in passing API requests to proxies via AJAX)</li>
-      </ul>
-      </header>
-      <p>String to encode:</p>
-      <p>
-        <textarea id="str" cols="100" rows="5" class="bcls-code"></textarea>
-      </p>
-      <p><span id="btn" class="bcls-button">Encode it!</span></p>
-      <hr />
-      <h2>Results</h2>
-      <p>encodeURI</p>
-      <pre id="results_encodeURI" class="bcls-code">&nbsp;
-  
-  </pre>
-      <p>encodeURIComponent</p>
-      <pre id="results_encodeURIComponent" class="bcls-code">&nbsp;
-  
-  </pre>
-      <p>escape</p>
-      <pre id="results_escape" class="bcls-code">&nbsp;
-  
-  </pre>
-      <script translate="no">
-      var BCLS = ( function () {
-          var str,
-          btn = document.getElementById('btn');
-          btn.addEventListener("click", function (evt) {
-              str = document.getElementById("str").value;
-              document.getElementById("results_encodeURI").textContent = encodeURI(str);
-              document.getElementById("results_encodeURIComponent").textContent = encodeURIComponent(str);
-              document.getElementById("results_escape").textContent = escape(str);
-          })
-      })();
-      </script> 
-    </section>
-  </article>
-  
+  <summary>In this topic, you learn about JSON files and methods used for manipulating this data.</summary>
+  <section class="bcls-section">
+    <h2 id="whatsCovered">JSON topics</h2>
+    <p>What's covered in this guide:</p>
+    <ul>
+      <li>Get started with JSON files</li>
+      <li>Use methods to manipulate JSON data</li>
+      <li>Use tools for creating JSON text</li>
+      <li>Validate JSON data</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="startingWithJSON">Starting with JSON</h2>
+
+    <p>The JavaScript Object Notation (JSON) file format is a text-based, open standard format which is used to serialize and transmit structured data between a server and web application. The JSON format is easy for humans to read and write. It is also easy for machines to parse and generate. Although it is based on a subset of the JavaScript programming language, it is completely language independent. The JSON format is smaller, faster and easier to parse than XML. Because of these properties, the JSON format is the ideal data-interchange language.</p>
+    <p>Data types in the JSON format include:</p>
+    <ul>
+      <li><strong>Number</strong> - Double precision floating point in JavaScript</li>
+      <li><strong>String</strong> - Double quoted Unicode with backslash escaping</li>
+      <li><strong>Boolean</strong> - true or false</li>
+      <li><strong>Array</strong> - An ordered sequence of comma-separated values enclosed in square brackets</li>
+      <li><strong>Object</strong> - An unordered collection of key:value pairs, with the colon ":" separating the key and value. It is a comma-separated list enclosed in curly braces.</li>
+      <li><strong>null</strong> - null value</li>
+    </ul>
+    <p>The following example describes a person's contact information in JSON format:</p>
+    <pre class="line-numbers">
+<code class="language-json" translate="No">{
+    "firstName": "John",
+    "lastName": "Smith",
+    "age": 25,
+    "address": {
+        "streetAddress": "21 2nd Street",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": 10021
+    },
+    "phoneNumbers": [
+        {
+            "type": "home",
+            "number": "212 555-1234"
+        },
+        {
+            "type": "fax",
+            "number": "646 555-4567"
+        }
+    ]
+}</code></pre>
+    <p>To learn more about the JSON format, refer to the <a href="//www.json.org/">Introducing JSON</a> and the <a href="http://javascript.crockford.com/">JSON in JavaScript</a> documents.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="usingJSONMethods">Using JSON methods</h2>
+    <p>Since the JSON format is very closely related to the JavaScript language (the characters U+2028 and U+2029 are handled differently in the two languages), it can be used in the language with little effort. The JSON text format uses the same syntax as the code used to create a JavaScript object. The JSON object contains methods for converting values to JSON format and for converting JSON format to values.</p>
+    <p>The JSON object has several methods which include:</p>
+    <ul>
+      <li>The <code translate="No">parse()</code> method for converting a JSON string to a JavaScript object or array.
+        <pre class="line-numbers">
+<code class="language-javascript" translate="No">var jsonstring = '{"firstName":"John","lastName":"Smith","phone":["555-0100","555-0120"]}';
+var contact = JSON.parse(jsonstring);
+console.log(contact.lastName + ", " + contact.firstName);
+//Output: Smith, John</code></pre>
+        <p>For details, refer to the <a href="//msdn.microsoft.com/en-us/library/ie/cc836466%28v=vs.94%29.aspx">JSON.parse Function (JavaScript)</a> document.</p>
+      </li>
+      <li>The <code translate="No">stringify()</code> method for converting a JavaScript value, usually an object or array, to a JSON string.
+        <p>Example 1:</p>
+        <pre class="line-numbers">
+<code class="language-javascript" translate="No">var contact = new Object();
+contact.firstName = "John";
+contact.lastName = "Smith";
+contact.phone = ["555-0100","555-0120"];
+var jsonstring = JSON.stringify(contact);
+console.log(jsonstring);
+//Output: { "firstName":"John","lastName":"Smith","phone":["555-0100","555-0120"] }</code></pre>
+        <p>Example 2: (Notice that escape characters are used for internal strings)</p>
+        <pre class="line-numbers">
+<code class="language-javascript" translate="No">var foo = new Object();
+foo.template = '&lt;p class="bar"&gt;Hello&lt;/p&gt;';
+var jsonstring = JSON.stringify(foo);
+console.log(jsonstring);
+//Output: {"template":"&lt;p class=\"bar\"&gt;Hello&lt;/p&gt;"}</code></pre>
+        <p>For details, refer to the <a href="//msdn.microsoft.com/en-us/library/ie/cc836459%28v=vs.94%29.aspx">JSON.stringify Function (JavaScript)</a> document.</p>
+      </li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="createJSONText">Create JSON text</h2>
+    <p>If you are using and creating a lot of JSON formatted text files, you can use a JSON editor to help view, edit and format them.</p>
+    <p>Here are some downloadable JSON editors:</p>
+    <ul>
+      <li><a href="//tickplant.com/" translate="No">Power JSON Editor</a></li>
+      <li><a href="//sourceforge.net/projects/eclipsejsonedit/" translate="No">Eclipse JSON Editor Plugin</a></li>
+      <li><a href="//chrome.google.com/webstore/detail/json-handle/iahnhfdhidomcpggpaimmmahffihkfnj?hl=en-US" translate="No">Chrome Web Store JSON Editor</a></li>
+    </ul>
+    <p>There are also online JSON editors:</p>
+    <ul>
+      <li><a href="//www.jsoneditoronline.org/" translate="No">JSON Editor Online</a></li>
+      <li><a href="//jsonmate.com/" translate="No">JSONmate</a></li>
+      <li><a href="http://json.parser.online.fr" translate="No">JSON Parser Online</a></li>
+    </ul>
+    <p>There are plenty of free tools to help you work with JSON formatted files. Use your browser to search for other applications.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="validateJSONData">Validate JSON data</h2>
+    <p>The <a href="//json-schema.org/" translate="No">JSON schema</a> defines the structure of JSON data and is used to validate your JSON data to ensure that is conforms to the standards defined by <a href="//json.org/">json.org</a>. There are online tools to validate your JSON files.</p>
+    <p>Here are some JSON validators:</p>
+    <ul>
+      <li><a href="//jsonlint.com" translate="No">JSONLint</a></li>
+      <li><a href="//jsonformatter.curiousconcept.com/" translate="No">JSON Formatter &amp; Validator</a></li>
+    </ul>
+  </section>
+</article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">

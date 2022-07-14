@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
+  <meta name="description" content="In this topic, you will learn how to use JavaScript Promises, which are returned by some Brightcove Player methods.">
   
-  <title>String Encoder</title>
+  <title>Concepts: Using JavaScript Promises</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/s-site-assets-favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/s-site-assets-favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/s-site-assets-favicons/favicon-16x16.png">
@@ -65,7 +65,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       <li class="breadcrumb-item"><a href="/general/developer-tools/">Developer Tools</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">String Encoder</li>
+      <li class="breadcrumb-item active" aria-current="page">Concepts: Using JavaScript Promises</li>
     </ol>
   </nav>
 </header>
@@ -2289,52 +2289,77 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
+<h1>Concepts: Using JavaScript Promises</h1>
 <article class="bcls-article">
-    <h1>String Encoder</h1>
-    <summary></summary>
-    <section class="bcls-section">
-      <p>Utilty to URI-encode strings 3 ways.</p>
-      <p>Add the method names suggest, these are generally useful when you need to include some string in a URL. Which one is appropriate depends on the situation. Below are some examples of how we find them useful.</p>
-      <ul>
-        <li><code translate="No">escape</code> is the oldest method, and does the least; we have not had occasion to use it in our apps</li>
-        <li><code translate="No">encodeURI</code> is generally adequate for strings that will be passed as the values for URL parameters</li>
-        <li><code translate="No">encodeURIComponent</code> is most thorough encoder, but generally you only need it for strings that will be used as part of a URL domain/path, or if you need to pass a URL as a parameter (we do this frequently in passing API requests to proxies via AJAX)</li>
-      </ul>
-      </header>
-      <p>String to encode:</p>
-      <p>
-        <textarea id="str" cols="100" rows="5" class="bcls-code"></textarea>
-      </p>
-      <p><span id="btn" class="bcls-button">Encode it!</span></p>
-      <hr />
-      <h2>Results</h2>
-      <p>encodeURI</p>
-      <pre id="results_encodeURI" class="bcls-code">&nbsp;
-  
-  </pre>
-      <p>encodeURIComponent</p>
-      <pre id="results_encodeURIComponent" class="bcls-code">&nbsp;
-  
-  </pre>
-      <p>escape</p>
-      <pre id="results_escape" class="bcls-code">&nbsp;
-  
-  </pre>
-      <script translate="no">
-      var BCLS = ( function () {
-          var str,
-          btn = document.getElementById('btn');
-          btn.addEventListener("click", function (evt) {
-              str = document.getElementById("str").value;
-              document.getElementById("results_encodeURI").textContent = encodeURI(str);
-              document.getElementById("results_encodeURIComponent").textContent = encodeURIComponent(str);
-              document.getElementById("results_escape").textContent = escape(str);
-          })
-      })();
-      </script> 
-    </section>
-  </article>
-  
+<summary>In this topic, you will learn how to use JavaScript Promises, which are returned by some Brightcove Player methods.</summary>
+<section class="bcls-section">
+    <h2 id="Simple_Promise">Simple Promise</h2>
+    <!-- <aside class="bcls-aside bcls-aside--information">Note: <strong translate="No">Promises</strong> do not work in IE11. Use the polyfill of the <a translate="No" href="https://www.npmjs.com/package/es6-promise">ES6-Promise</a> to add this functionality to IE11.</aside> -->
+    <p>Although it is NOT the purpose of this document to teach you how to write a JavaScript <code translate="No">Promise</code>, to understand how to use them it is instructive to see how a simple <code translate="No">Promise</code> is coded.</p>
+    <p>In the following, a <code translate="No">Promise</code> is created that returns a string that states whether a task was completed or not. The key point is that either the <code translate="No">Promise.resolve()</code> or <code translate="No">Promise.reject()</code> method is called. In this case a simple string is passed by both methods, but this could be an object.</p>
+    <aside class="bcls-aside bcls-aside--information">Note: Although NOT demonstrated in this simple example, the <code translate="No">Promise</code> object represents the <strong>eventual completion</strong> (or failure) of an <strong>asynchronous operation</strong>, and its resulting value. In this way a <code translate="No">Promise</code> is similar in concept to a callback function.</aside>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">let promiseToFinishTask = new Promise(function(resolve, reject) {        
+  //Business logic to set taskComplete boolean
+  let taskComplete = true;
+  if (taskComplete) {
+    resolve('Yea, I am done');
+  } else {
+    reject('Not quite done');
+  }
+});</code></pre>
+    <p>Now you will see how to deal with the returned <code translate="No">Promise</code> information, which is what you will do with some Brightcove Player API method calls. The basic handling of a follows:</p>
+    follows:
+    <pre class="line-numbers"><code class="language-javascript" translate="No">promiseName.then(
+  // Function call for promise resolved
+).catch(
+  // Function call for promise rejected
+)</code></pre>
+    <p>Handling the simple example above would appear as shown here:</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">promiseToFinishTask.then(function(fromResolve) {
+  console.log(fromResolve);
+}).catch(function(fromReject) {
+  console.log(fromReject);
+});</code></pre>
+    <p>If the <code translate="No">Promise</code> is resolved the <code translate="No">then</code> code is executed, and if the <code translate="No">Promise</code> is rejected the <code translate="No">catch</code> code is executed. For the example, one of the strings <strong translate="No">Yea, I am done</strong> or <strong translate="No">Not quite done</strong> would appear based on the business logic that set the <code translate="No">taskComplete</code> variable's value.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Brightcove_example">Brightcove example</h2>
+    <p>The Brightcove Player's <code translate="No">play()</code> method may return a Promise that can be used to check if the player could autoplay the video currently in the player. The code that deals with the <code translate="No">Promise</code> is highlighted:</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">var myPlayer = videojs.getPlayer('myPlayerID');
+myPlayer.on('loadedmetadata',function() {
+  var promise = myPlayer.play();
+  if (promise !== undefined) {
+    <span class="bcls-highlight">promise.then(function() {
+      // Autoplay started!
+    }).catch(function(error) {
+      // Autoplay was prevented.
+    });</span>
+  }
+});</code></pre>
+    <p>Based on this you can then code behaviors if the video autoplayed or not. For a specific use case playing the video, with audio when possible, see the <a href="https://player.support.brightcove.com/playback/autoplay-considerations.html#Specific_use_case">Specific use case</a> section of the <strong>Autoplay Considerations</strong> document.</p>
+    <p>For complete information on JavaScript Promises see the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">MDN Promise</a> document.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Promise_versus_callback"><code translate="No">Promise</code> versus callback</h2>
+    <p>In this section the Catalog's <code translate="No">get()</code> method is used to demonstrate the syntax difference between using a <code translate="No">Promise</code> versus a callback function. The <code translate="No">get()</code> method can be used with either approach.</p>
+    <h3>Promise syntax</h3>
+    <p>The following is a snippet of code showing the call to the <code translate="No">get()</code> method, handling the response as a <code translate="No">Promise</code>:</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">myPlayer.catalog.get(catalogParams).then(function(videosReturned){
+  console.log('videosReturned',videosReturned);
+  myPlayer.playlist(videosReturned);
+}).catch(function(errorObj){
+  console.log('errorObj',errorObj);
+});</code></pre>
+    <h3>Callback function syntax</h3>
+    <p>The following is a snippet of code showing the call to the <code translate="No">get()</code> method, handling the response with a callback function:</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">myPlayer.catalog.get(catalogParams,function(errorObj,videosReturned){
+  console.log('errorObj',errorObj);
+  console.log('videosReturned',videosReturned);
+  myPlayer.playlist(videosReturned);
+});</code></pre>
+  </section>
+</article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">

@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
+  <meta name="description" content="In this topic, you will learn about CORS and constraints built into the Web regarding cross-origin referencing of assets such as videos, images, and scripts.">
   
-  <title>String Encoder</title>
+  <title>Understanding CORS</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/s-site-assets-favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/s-site-assets-favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/s-site-assets-favicons/favicon-16x16.png">
@@ -65,7 +65,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
       <li class="breadcrumb-item"><a href="/general/developer-tools/">Developer Tools</a></li>
       
-      <li class="breadcrumb-item active" aria-current="page">String Encoder</li>
+      <li class="breadcrumb-item active" aria-current="page">Understanding CORS</li>
     </ol>
   </nav>
 </header>
@@ -2289,52 +2289,87 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
+<h1>Understanding CORS</h1>
 <article class="bcls-article">
-    <h1>String Encoder</h1>
-    <summary></summary>
-    <section class="bcls-section">
-      <p>Utilty to URI-encode strings 3 ways.</p>
-      <p>Add the method names suggest, these are generally useful when you need to include some string in a URL. Which one is appropriate depends on the situation. Below are some examples of how we find them useful.</p>
-      <ul>
-        <li><code translate="No">escape</code> is the oldest method, and does the least; we have not had occasion to use it in our apps</li>
-        <li><code translate="No">encodeURI</code> is generally adequate for strings that will be passed as the values for URL parameters</li>
-        <li><code translate="No">encodeURIComponent</code> is most thorough encoder, but generally you only need it for strings that will be used as part of a URL domain/path, or if you need to pass a URL as a parameter (we do this frequently in passing API requests to proxies via AJAX)</li>
-      </ul>
-      </header>
-      <p>String to encode:</p>
-      <p>
-        <textarea id="str" cols="100" rows="5" class="bcls-code"></textarea>
-      </p>
-      <p><span id="btn" class="bcls-button">Encode it!</span></p>
-      <hr />
-      <h2>Results</h2>
-      <p>encodeURI</p>
-      <pre id="results_encodeURI" class="bcls-code">&nbsp;
-  
-  </pre>
-      <p>encodeURIComponent</p>
-      <pre id="results_encodeURIComponent" class="bcls-code">&nbsp;
-  
-  </pre>
-      <p>escape</p>
-      <pre id="results_escape" class="bcls-code">&nbsp;
-  
-  </pre>
-      <script translate="no">
-      var BCLS = ( function () {
-          var str,
-          btn = document.getElementById('btn');
-          btn.addEventListener("click", function (evt) {
-              str = document.getElementById("str").value;
-              document.getElementById("results_encodeURI").textContent = encodeURI(str);
-              document.getElementById("results_encodeURIComponent").textContent = encodeURIComponent(str);
-              document.getElementById("results_escape").textContent = escape(str);
-          })
-      })();
-      </script> 
-    </section>
-  </article>
-  
+  <summary>In this topic, you will learn about CORS and constraints built into the Web regarding cross-origin referencing of assets such as videos, images, and scripts.</summary>
+  <section class="bcls-section">
+    <h2 id="Overview">Overview</h2>
+    <p>Cross-origin resource sharing (CORS) is a mechanism that allows a web page to make requests to another domain other than the one from which the page was served. Normally cross-domain requests would otherwise be forbidden by web browsers. CORS defines a way domains can interact to determine whether or not to allow a cross-origin requests.</p>
+    <aside class="bcls-aside bcls-aside--information">Note that CORS is <strong>not</strong> enabled by or related to crossdomain.xml, which a mechanism for enabling cross-domain requests for Flash applications.</aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="corsandbc">CORS and Brightcove</h2>
+    <p>There are three instances when CORS must be used with Brightcove services/products:</p>
+    <ol>
+      <li><strong>Captions for videos</strong>: The file that contains captions for a video can be stored on a non-Brightcove domain. Since the video itself will be served from a Brightcove domain, this will cause cross-domain issues.</li>
+      <li><strong>Brightcove Player and HLS</strong>: The <span class="video-cloud-only" translate="No">Brightcove Player's </span>HLS plugin uses AJAX requests to retrieve the HLS video's manifest and individual segments. Since these HLS resources can be stored on any Internet accessible domain, it is likely these resources will be served from a different server (typically a CDN domain) than from the Brightcove domain that served the player. This will again cause cross-domain issues.</li>
+      <li><strong>Video Still and Thumbnail Images</strong>: for <a href="https://studio.support.brightcove.com/media/capturing-poster-and-thumbnail-images.html">capturing video still and thumbnail images in Studio</a>, the video rendition must be served with CORS headers (which should be enabled on most of Brightcove's house CDNs by default); if you have a custom CDN, or one we haven't updated yet, image capture will not work</li>
+    </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="solution">Solutions</h2>
+    <p>The solution that Brightcove is using at this time involves configuring an <code translate="No">Access-Control-Allow-Origin</code> header in the CDN origin server’s configuration file. It’s important to note that since different CDN partners use different server solutions to deliver their content, the header information below is offered as an example, and not as a drop-in code snippet.</p>
+    <p>Brightcove has had success with the following header directive for in-house CDN server's properties:</p>
+    <pre class="line-numbers">
+<code class="language-apache" translate="No">&lt;FilesMatch ".(vtt|xml)$"&gt;
+              Header set Access-Control-Allow-Headers: X-Requested-With
+              Header add Access-Control-Allow-Origin: http://admin.brightcove.com
+          &lt;/FilesMatch&gt;</code></pre>
+    <p>The following provides brief explanations of the directive:</p>
+    <ul>
+      <li><code translate="No">&lt;FilesMatch ".(vtt|xml)$"&gt;</code>: This conditional sets the <code translate="No">Access-Control-Allow-Origin</code> header only on vtt or xml files. Testing has confirmed that this header is not sent with images or other http-delivered content.</li>
+      <li><code translate="No">Header set Access-Control-Allow-Headers: X-Requested-With</code>: This header is required for the <code translate="No">Access-Control-Allow-Origin</code> header to work, since the request the player is making is an XmlHttpRequest.</li>
+      <li><code translate="No">Header add Access-Control-Allow-Origin: http://admin.brightcove.com</code>: This is the access control header itself to allow content from the indicated domain.</li>
+    </ul>
+    <h3>Enabling CORS on Apache</h3>
+    <p>You can set a header in the configuration of Apache servers to enable CORS. Place the following in the appropriate <code translate="No">.conf</code> file:</p>
+    <pre class="line-numbers">
+<code class="language-bash" translate="No">Header set Access-Control-Allow-Origin "*"</code></pre>
+    <p>In the example above the asterisks acts as a wild card and allows access to all domains. The wildcard can also be replaced by <strong>one</strong> specific domain. That generally won't work for Brightcove players, because in many cases assets will reside on multiple domains. You can implement other solutions to limit access to a specific whitelist of acceptable domains.</p>
+    <h3>BYO CDN</h3>
+    <p>If you are a customer with a BYO CDN and having cross-domain issues, you should contact your CDN for help in configuring CORS for your account. Here are the settings we recommend:</p>
+    <ul>
+      <li>Access-Control-Allow-Headers: X-Requested-With</li>
+      <li>Access-Control-Allow-Origin: *</li>
+      <li>file formats: m3u8 m3u ts xml dfxp vtt mpd m4f mp4 jpg png</li>
+    </ul>
+    <h3>Token authorization requirements</h3>
+    <p>In the case where token authorization is required alterations need to be made to the solution above. In the case of token authorization, the CORS security model specifically disallows the use of the <code translate="No">*</code> character as a value for the <code translate="No">Access-Control-Allow-Origin</code> response header. In addition, the <code translate="No">Access-Control-Allow-Credentials</code> response header is required, and must be set to true.</p>
+    <p>An updated header directive for token authorization is:</p>
+    <pre class="line-numbers">
+<code class="language-apache" translate="No">&lt;FilesMatch ".(m3u8 | m3u | ts)$"&gt;
+        # with AJAX withCredentials=true (cookies sent, SSL allowed...)
+        SetEnvIfNoCase ORIGIN (.*) ORIGIN=$1
+        Header set Access-Control-Allow-Origin "%{ORIGIN}e"
+        Header set Access-Control-Allow-Credentials "true"
+        RewriteEngine On
+        RewriteCond %{REQUEST_METHOD} OPTIONS
+        RewriteRule ^(.*)$ $1 [R=200,L,E=HTTP_ORIGIN:%{HTTP:ORIGIN}]
+  &lt;/FilesMatch&gt;</code></pre>
+    <p>The following points detail the differences from the earlier solution:</p>
+    <ul>
+      <li>The directive queries the incoming request for the presence of an Origin header, and if that header is present (it usually is), sets its value to a variable called <code translate="No">ORIGIN</code>: <code translate="No">SetEnvIfNoCase ORIGIN (.*) ORIGIN=$1</code></li>
+      <li>The <code translate="No">Access-Control-Allow-Origin</code> response header value is set to the value of the <code translate="No">ORIGIN</code> variable just created: <code translate="No">Header set Access-Control-Allow-Origin "%{ORIGIN}e"</code>
+        <aside class="bcls-aside bcls-aside--information">The <code translate="No">e</code> is required, to denote that this is an environment variable.</aside>
+      </li>
+      <li>The <code translate="No">Access-Control-Allow-Credentials</code> header must be set to <code translate="No">true</code>: <code translate="No">Header set Access-Control-Allow-Credentials "true"</code></li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="hls">HLS and CORS</h2>
+    <p>In some environments (such as Amazon S3) you can specify a CORS configuration for HLS. The following configures CORS to allow HLS playback.</p>
+    <pre class="line-numbers">
+<code class="language-apache" translate="No">&lt;CORSConfiguration&gt;
+      &lt;CORSRule&gt;
+      &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;
+      &lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;
+      &lt;/CORSRule&gt;
+&lt;/CORSConfiguration&gt;</code></pre>
+    <p>For further information specific to Amazon S3 see <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors">Enabling Cross-Origin Resource Sharing</a>.</p>
+    <p>Although tangential to CORS, the client browser needs to accept all session cookies for Token Authorized HLS content delivery to work properly. While some client browsers, such as Google Chrome and Mozilla Firefox, accept session cookies by default, other browsers, such as Internet Explorer, do not so this option must be enabled by the user.</p>
+  </section>
+</article>
+
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
