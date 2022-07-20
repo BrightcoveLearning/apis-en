@@ -1,5 +1,7 @@
 bold=`tput bold`
 normal=`tput sgr0`
+echo "Enter your ${bold}COMMIT MESSAGE${normal}:"
+read COMMITMESSAGE 
 cd ..
 git pull
 bundle update
