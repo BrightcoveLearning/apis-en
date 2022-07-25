@@ -84,9 +84,11 @@ paths:
       tags:
         - Live Jobs
       summary: List Live Jobs
-      description: >-
+      description: |-
         'List live jobs - for additional useful information on the search filters, see [Getting a List of Live or VOD
-        Jobs](/live-api/guides/getting-list-live-or-vod-jobs.html)'
+        Jobs](/live-api/guides/getting-list-live-or-vod-jobs.html).'
+
+        **Note: if a job was created in the Live Module and updated there as well, the API will return the *original* metadata, not the updated metadata.**
       operationId: ListLiveJobs
       parameters:
         - $ref: '#/components/parameters/ContentType'
@@ -134,7 +136,10 @@ paths:
       tags:
         - Live Jobs
       summary: Get Live Job Details
-      description: Get Live Job Details
+      description: |-
+        Get Live Job Details.
+
+        **Note: if a job was created in the Live Module and updated there as well, the API will return the *original* metadata, not the updated metadata.**
       operationId: GetLiveJobDetails
       parameters:
         - $ref: '#/components/parameters/JobId'
@@ -1311,7 +1316,8 @@ paths:
       tags:
         - Live Job Clip
       summary: Create VOD Clip
-      description: 'Create VOD clips from a Live Stream. '
+      description: >-
+        'Create VOD clips from a Live Stream. **Note: VOD clips are incompatible with Context Aware Encoding (CAE) ingest profiles. Clips are automatically processed using the account default ingest profile, so if the default is a CAE profile, the clip creation will fail.**'
       operationId: CreateVodClip
       parameters:
         - $ref: '#/components/parameters/ContentType'
