@@ -1,322 +1,192 @@
 ---
-title: Addon API Reference
+title: Brightcove Interactivity Addon API
 description: Brightcove Interactivity Addon API reference.
-parent: Brightcove Interactivity
+parent: Brightcove Interactivity APIs
 ---
-<!-- <html lang="en"><head> -->
-  <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css"> -->
-  <!-- <link type="text/css" rel="stylesheet" href="/assets/s-site-assets-stylesheets/jquery.tocify.css"> -->
-  <!-- <style>
-      .highlight .hll { background-color: #ffffcc }
-.highlight  { background: #ffffff; }
-.highlight .c { color: #aaaaaa; font-style: italic } /* Comment */
-.highlight .err { color: #FF0000; background-color: #FFAAAA } /* Error */
-.highlight .k { color: #0000aa } /* Keyword */
-.highlight .cm { color: #aaaaaa; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #4c8317 } /* Comment.Preproc */
-.highlight .c1 { color: #aaaaaa; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #0000aa; font-style: italic } /* Comment.Special */
-.highlight .gd { color: #aa0000 } /* Generic.Deleted */
-.highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #aa0000 } /* Generic.Error */
-.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00aa00 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
-.highlight .gp { color: #555555 } /* Generic.Prompt */
-.highlight .gs { font-weight: bold } /* Generic.Strong */
-.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
-.highlight .gt { color: #aa0000 } /* Generic.Traceback */
-.highlight .kc { color: #0000aa } /* Keyword.Constant */
-.highlight .kd { color: #0000aa } /* Keyword.Declaration */
-.highlight .kn { color: #0000aa } /* Keyword.Namespace */
-.highlight .kp { color: #0000aa } /* Keyword.Pseudo */
-.highlight .kr { color: #0000aa } /* Keyword.Reserved */
-.highlight .kt { color: #00aaaa } /* Keyword.Type */
-.highlight .m { color: #009999 } /* Literal.Number */
-.highlight .s { color: #aa5500 } /* Literal.String */
-.highlight .na { color: #1e90ff } /* Name.Attribute */
-.highlight .nb { color: #00aaaa } /* Name.Builtin */
-.highlight .nc { color: #00aa00; text-decoration: underline } /* Name.Class */
-.highlight .no { color: #aa0000 } /* Name.Constant */
-.highlight .nd { color: #888888 } /* Name.Decorator */
-.highlight .ni { color: #880000; font-weight: bold } /* Name.Entity */
-.highlight .nf { color: #00aa00 } /* Name.Function */
-.highlight .nn { color: #00aaaa; text-decoration: underline } /* Name.Namespace */
-.highlight .nt { color: #1e90ff; font-weight: bold } /* Name.Tag */
-.highlight .nv { color: #aa0000 } /* Name.Variable */
-.highlight .ow { color: #0000aa } /* Operator.Word */
-.highlight .w { color: #bbbbbb } /* Text.Whitespace */
-.highlight .mf { color: #009999 } /* Literal.Number.Float */
-.highlight .mh { color: #009999 } /* Literal.Number.Hex */
-.highlight .mi { color: #009999 } /* Literal.Number.Integer */
-.highlight .mo { color: #009999 } /* Literal.Number.Oct */
-.highlight .sb { color: #aa5500 } /* Literal.String.Backtick */
-.highlight .sc { color: #aa5500 } /* Literal.String.Char */
-.highlight .sd { color: #aa5500 } /* Literal.String.Doc */
-.highlight .s2 { color: #aa5500 } /* Literal.String.Double */
-.highlight .se { color: #aa5500 } /* Literal.String.Escape */
-.highlight .sh { color: #aa5500 } /* Literal.String.Heredoc */
-.highlight .si { color: #aa5500 } /* Literal.String.Interpol */
-.highlight .sx { color: #aa5500 } /* Literal.String.Other */
-.highlight .sr { color: #009999 } /* Literal.String.Regex */
-.highlight .s1 { color: #aa5500 } /* Literal.String.Single */
-.highlight .ss { color: #0000aa } /* Literal.String.Symbol */
-.highlight .bp { color: #00aaaa } /* Name.Builtin.Pseudo */
-.highlight .vc { color: #aa0000 } /* Name.Variable.Class */
-.highlight .vg { color: #aa0000 } /* Name.Variable.Global */
-.highlight .vi { color: #aa0000 } /* Name.Variable.Instance */
-.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+      <h1>{{ page.title }}</h1>
+      <article class="bcls-article">
+        <summary>{{ page.description }}</summary>
+        <section class="bcls-section">
+          <h2 id="introduction">Introduction</h2>
+  <p>Brightcove Interactivity Addons are invoked from annotations within the video frame to manipulate on-page elements and data outside of the video frame.</p>
+  <p>For example, a video can contain a call-to-action that says "Click here to load the diagram." When clicked, the call-to-action can invoke a Brightcove Interactivity Addon that will load the diagram onto the page, outside of the video frame.</p>
+  <p>Another example, a video can contain an OnTime annotation that will invoke a Brightcove Interactivity Addon to load a Twitter Feed widget onto the page, outside of the video frame, when the video reaches 30 seconds in the video.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Basic_use">Addon: Basic use</h2>
+    <p>The Brightcove Interactivity Addon API is used by developers to write custom javascript that will live on your webpages. The developer of the Addon will define the behavior, design, look and feel.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.addon(name, {
+  init: function () {
+  }
+});</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+    <h2 id="Argumemnts">Arguments</h2>
+    <p>The <code>hapyak.addon</code> call accepts two mandatory arguments - <code>name</code> and <code>actions</code>. They are described as follows:</p>
+    <h3>name</h3>
+    <p><em>string</em> - <strong>mandatory</strong></p>
+    <p>The namespace for all events triggered on the addon.</p>
+    <div name="actions" data-unique="actions"></div><h3>actions</h3>
+    <p><em>JSON</em> - <strong>mandatory</strong></p>
+    <p>Each property and its value should adhere to the following:</p>
+    <ul>
+    <li>
+    <p><strong>key</strong> - <em>string</em></p>
+    <p>The name of the event to be triggered.</p>
+    </li>
+    <li>
+    <p><strong>value</strong> - <em>function</em></p>
+    <p>The callback function to be called when the event is triggered. The function accepts a single argument which contains the related JSON data.</p>
+    </li>
+    </ul>
+    <p>The return value for a <code>hapyak.addon</code> call will be a reference to the created instance.</p>
+    <h3 id="Events">Events</h3>
+    <p>The context for all events (both user-created and otherwise) will have a context where <code>this</code> will be a reference to the addon instance.</p>
+    <h4><code>init</code></h4>
+    <p>The <code>init</code> event is automatically triggered once the addon has been setup within Brightcove Interactivity. Setting up a handler for this event is optional.</p>
+    <h4>Methods</h4>
+    <p>These methods are attached to the instance returned by the <code>hapyak.addon</code> call</p>
+    <h3><code>destroy()</code></h3>
+    <p>Cleans up all event listeners setup for the addon instance. The <code>actions</code> property on the instance is also cleared out. <code>destroy</code> accepts no arguments.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Message">Message</h2>
+    <p>The Brightcove Interactivity Message API is used internally by the Brightcove Interactivity Addon API and enables communication to and from Brightcove Interactivity components. In addition to invoking Brightcove Interactivity Addons this API may be used to pass messages to and from custom annotations built with the Extension API.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.message.addEventListener(name, callback, context);
 
-      body {
-          /* padding-top: 80px; */
-      }
+hapyak.message.removeEventListener(name, callback);
 
-      #toc {
-          background-color: #f7f5fa;
-          /* font-family: "Roboto"; */
-      }
+hapyak.message.send(frame, event, data);</code></pre>
+    
+    <p><code>hapyak.message</code> provides a way for users to setup and manage handlers to communicate with addons. This communication can be done on the same page or with an iframe on the parent page.</p>
+  <hr>
+  <h3>Methods</h3>
+  <h4><code>addEventListener(name, callback, context)</code></h4>
+  <p>Register a handler to be called when an event of the specified <code>name</code> is triggered.</p>
 
-      h1, h2, h3, h4 {
-          /* font-family: "Roboto"; */
-      }
-  </style> -->
-<!-- </head>
-<body> -->
+<pre class="line-numbers"><code class="language-javascript" translate="No">function myFunc(data) {
+  console.log('test fired', data);
+}
 
-<!-- <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"><img src="/css/images/hapyak_logo_complete.svg" width="120px"></a>
-      </div>
-      <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-              <li><a href="/docs/hapyak-embed-api/">Embed API</a></li>
-              <li><a href="/docs/hapyak-crud-api/">Annotation CRUD API</a></li>
-              <li><a href="/docs/hapyak-iframe-api/">Extension API</a></li>
-              <li><a href="/docs/hapyak-playlist-api/">Playlist API</a></li>
-              <li><a href="/docs/hapyak-responsive-api/">Responsive API</a></li>
-              <li class="active"><a href="/docs/hapyak-addon-api/">Addon API</a></li>
-          </ul>
-      </div>
-  </div>
-</div> -->
+hapyak.message.addEventListener('test', myFunc, 'hapyak');</code></pre>
+    
+  <p><strong>name</strong> - <em>string</em> - <strong>mandatory</strong></p>
+  <p>The name of the event to be triggered</p>
+  <p><strong>callback</strong> - <em>function</em> - <strong>mandatory</strong></p>
+  <p>A callback function to be run after the event has fired</p>
+  <p><strong>context</strong> - <em>string</em> - <strong>optional</strong></p>
+  <p>Can be used to provide an additional level of specification for the event. Any message that is triggered must contain a context that matches the handlers (if one exists).</p>
+  
+  <h4><code>removeEventListener(name, callback)</code></h4>
+  <p>Remove a registered event handler with a specified name and function reference</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.message.removeEventListener('test', myFunc);</code></pre>
+  
+  <p><strong>name</strong> - <em>string</em> - <strong>mandatory</strong></p>
+  <p>The name of the event to be removed</p>
+  <p><strong>callback</strong> - <em>function</em> - <strong>mandatory</strong></p>
+  <p>A reference to the callback function used</p>
+  
+  <h4><code>send(frame, event, data)</code></h4>
+  <p>Allows a user to trigger an event handler for a given <code>event</code> on either the current page or an iframe.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.message.send(window, 'test', {
+  'foo': 'bar'
+});</code></pre>
+  
+  <p><strong>frame</strong> - <em>window object</em> - <strong>mandatory</strong></p>
+  <p>A reference to either the current window or a reference to an iframes contentWindow</p>
+  <p><strong>event</strong> - <em>string</em> - <strong>mandatory</strong></p>
+  <p>The name of the event to fire</p>
+  <p><strong>data</strong> - <em>JSON</em> - <strong>optional</strong></p>
+  <p>An optional JSON blob to pass data with</p>
+</section>
 
-<!-- <div class="container">
-  <div class="row"> -->
-       <!-- <div class="col-md-2 hidden-sm">
-         <div id="toc" class="tocify">
-          <ul id="tocify-header0" class="tocify-header nav nav-pills nav-stacked"><li class="tocify-item active" data-unique="HapYakAddonAPI"><a>HapYak Addon API</a></li></ul><ul id="tocify-header1" class="tocify-header nav nav-pills nav-stacked"><li class="tocify-item" data-unique="Addon"><a>Addon</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="2"><li class="tocify-item" data-unique="Arguments"><a>Arguments</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="3"><li class="tocify-item" data-unique="name"><a>name</a></li><li class="tocify-item" data-unique="actions"><a>actions</a></li></ul><li class="tocify-item" data-unique="Events"><a>Events</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="3"><li class="tocify-item" data-unique="init"><a>init</a></li></ul><li class="tocify-item" data-unique="Methods"><a>Methods</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="3"><li class="tocify-item" data-unique="destroy()"><a>destroy()</a></li></ul></ul></ul><ul id="tocify-header2" class="tocify-header nav nav-pills nav-stacked"><li class="tocify-item" data-unique="Message"><a>Message</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="2"><li class="tocify-item" data-unique="Methods10"><a>Methods</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="3"><li class="tocify-item" data-unique="addEventListener(name,callback,context)"><a>addEventListener(name, callback, context)</a></li><li class="tocify-item" data-unique="removeEventListener(name,callback)"><a>removeEventListener(name, callback)</a></li><li class="tocify-item" data-unique="send(frame,event,data)"><a>send(frame, event, data)</a></li></ul></ul></ul><ul id="tocify-header3" class="tocify-header nav nav-pills nav-stacked"><li class="tocify-item" data-unique="Example"><a>Example</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="2"><li class="tocify-item" data-unique="Addon15"><a>Addon</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="3"><li class="tocify-item" data-unique="Parentpagecode"><a>Parent page code</a></li><li class="tocify-item" data-unique="Iframecode"><a>Iframe code</a></li></ul><li class="tocify-item" data-unique="Message18"><a>Message</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="3"><li class="tocify-item" data-unique="Parentpagecode19"><a>Parent page code</a></li><li class="tocify-item" data-unique="Iframecode20"><a>Iframe code</a></li></ul></ul></ul></div>
-      </div> -->
-      <h1>HapYak Addon API</h1>
-      <section class="bcls-section">
-        <h2 id="introduction">Introduction</h2>
-<p>HapYak Addons are invoked from annotations within the video frame to manipulate on-page elements and data outside of the video frame.</p>
-<p>For example, a video can contain a call-to-action that says "Click here to load the diagram." When clicked, the call-to-action can invoke a HapYak Addon that will load the diagram onto the page, outside of the video frame.</p>
-<p>Another example, a video can contain an OnTime annotation that will invoke a HapYak Addon to load a Twitter Feed widget onto the page, outside of the video frame, when the video reaches 30 seconds in the video.</p>
-<p>The HapYak Addon API is used by developers to write custom javascript that will live on your webpages. The developer of the Addon will define the behavior, design, look and feel.</p>
-<div name="Addon" data-unique="Addon"></div><h1>Addon</h1>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">addon</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
+<section class="bcls-section">
+  <h2 id="Example">Example</h2>
+  <h3>Addon</h3>
+  <p>The following example shows how we can communicate with an iframe from the main parent page using our addon to register event handlers.</p>
+  <h4>Parent page code</h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">document.addEventListener("DOMContentLoaded", function () {
+  var span = document.getElementById("span");
 
-
-<div name="Arguments" data-unique="Arguments"></div><h2>Arguments</h2>
-<p>The <code>hapyak.addon</code> call accepts two mandatory arguments - <code>name</code> and <code>actions</code>. They are described as follows:</p>
-<div name="name" data-unique="name"></div><h3>name</h3>
-<p><em>string</em> - <strong>mandatory</strong></p>
-<p>The namespace for all events triggered on the addon.</p>
-<div name="actions" data-unique="actions"></div><h3>actions</h3>
-<p><em>JSON</em> - <strong>mandatory</strong></p>
-<p>Each property and its value should adhere to the following:</p>
-<ul>
-<li>
-<p><strong>key</strong> - <em>string</em></p>
-<p>The name of the event to be triggered.</p>
-</li>
-<li>
-<p><strong>value</strong> - <em>function</em></p>
-<p>The callback function to be called when the event is triggered. The function accepts a single argument which contains the related JSON data.</p>
-</li>
-</ul>
-<p>The return value for a <code>hapyak.addon</code> call will be a reference to the created instance.</p>
-<hr>
-<div name="Events" data-unique="Events"></div><h2>Events</h2>
-<p>The context for all events (both user-created and otherwise) will have a context where <code>this</code> will be a reference to the addon instace.</p>
-<div name="init" data-unique="init"></div><h3>init</h3>
-<p>The <code>init</code> event is automatically triggered once the addon has been setup within HapYak. Setting up a handler for this event is optional.</p>
-<hr>
-<div name="Methods" data-unique="Methods"></div><h2>Methods</h2>
-<p>These methods are attached to the instance returned by the <code>hapyak.addon</code> call</p>
-<div name="destroy()" data-unique="destroy()"></div><h3>destroy()</h3>
-<p>Cleans up all event listeners setup for the addon instance. The <code>actions</code> property on the instance is also cleared out. <code>destroy</code> accepts no arguments.</p>
-<hr>
-<div name="Message" data-unique="Message"></div><h1>Message</h1>
-<p>The HapYak Message API is used internally by the HapYak Addon API and enables communication to and from HapYak components. In addition to invoking HapYak Addons this API may be used to pass messages to and from custom annotations built with the Extension API.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">context</span><span class="p">);</span>
-
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
-
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">frame</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
-</pre></div>
-
-
-<p><code>hapyak.message</code> provides a way for users to setup and manage handlers to communicate with addons. This communication can be done on the same page or with an iframe on the parent page.</p>
-<hr>
-<div name="Methods10" data-unique="Methods10"></div><h2>Methods</h2>
-<div name="addEventListener(name,callback,context)" data-unique="addEventListener(name,callback,context)"></div><h3>addEventListener(name, callback, context)</h3>
-<p>Register a handler to be called when an event of the specified <code>name</code> is triggered.</p>
-<div class="highlight"><pre><span class="kd">function</span> <span class="nx">myFunc</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'test fired'</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">myFunc</span><span class="p">,</span> <span class="s1">'hapyak'</span><span class="p">);</span>
-</pre></div>
-
-
-<p><strong>name</strong> - <em>string</em> - <strong>mandatory</strong></p>
-<p>The name of the event to be triggered</p>
-<p><strong>callback</strong> - <em>function</em> - <strong>mandatory</strong></p>
-<p>A callback function to be run after the event has fired</p>
-<p><strong>context</strong> - <em>string</em> - <strong>optional</strong></p>
-<p>Can be used to provide an additional level of specification for the event. Any message that is triggered must contain a context that matches the handlers (if one exists).</p>
-<div name="removeEventListener(name,callback)" data-unique="removeEventListener(name,callback)"></div><h3>removeEventListener(name, callback)</h3>
-<p>Remove a registered event handler with a specified name and function reference</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">myFunc</span><span class="p">);</span>
-</pre></div>
-
-
-<p><strong>name</strong> - <em>string</em> - <strong>mandatory</strong></p>
-<p>The name of the event to be removed</p>
-<p><strong>callback</strong> - <em>function</em> - <strong>mandatory</strong></p>
-<p>A reference to the callback function used</p>
-<div name="send(frame,event,data)" data-unique="send(frame,event,data)"></div><h3>send(frame, event, data)</h3>
-<p>Allows a user to trigger an event handler for a given <code>event</code> on either the current page or an iframe.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="s1">'test'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="s1">'foo'</span><span class="o">:</span> <span class="s1">'bar'</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p><strong>frame</strong> - <em>window object</em> - <strong>mandatory</strong></p>
-<p>A reference to either the current window or a reference to an iframes contentWindow</p>
-<p><strong>event</strong> - <em>string</em> - <strong>mandatory</strong></p>
-<p>The name of the event to fire</p>
-<p><strong>data</strong> - <em>JSON</em> - <strong>optional</strong></p>
-<p>An optional JSON blob to pass data with</p>
-<div name="Example" data-unique="Example"></div><h1>Example</h1>
-<div name="Addon15" data-unique="Addon15"></div><h2>Addon</h2>
-<p>The following example shows how we can communicate with an iframe from the main parent page using our addon to register event handlers.</p>
-<div name="Parentpagecode" data-unique="Parentpagecode"></div><h3>Parent page code</h3>
-<div class="highlight"><pre><span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"DOMContentLoaded"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-<span class="kd">var</span> <span class="nx">span</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"span"</span><span class="p">);</span>
-
-<span class="c1">// Setup an addon to listen for events from the iframe annotation</span>
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">addon</span><span class="p">(</span><span class="s2">"color-change-listener"</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"This is a message from init. Perform any setup needed here."</span><span class="p">);</span>
-  <span class="p">},</span>
-  <span class="s2">"notify-color"</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">span</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">"Iframe background is "</span> <span class="o">+</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">color</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-
-<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"button"</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// Broadcast a message to all iframes on the page</span>
-  <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">forEach</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s2">"iframe"</span><span class="p">),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">iframe</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Send a message to the iframe annotation telling it to change its color to red</span>
-    <span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">iframe</span><span class="p">.</span><span class="nx">contentWindow</span><span class="p">,</span> <span class="s2">"change-color"</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"color"</span><span class="o">:</span> <span class="s2">"red"</span>
-    <span class="p">});</span>
-    <span class="nx">span</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">"Iframe background is red"</span><span class="p">;</span>
-  <span class="p">});</span>
-<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-</pre></div>
-
-
-<div name="Iframecode" data-unique="Iframecode"></div><h3>Iframe code</h3>
-<div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'blue'</span><span class="p">;</span>
-      <span class="c1">// We need to pass a custom context so only addons we with the name `color-change-listener` act on the event</span>
-      <span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">parent</span><span class="p">,</span> <span class="s1">'notify-color'</span><span class="p">,</span> <span class="p">{</span>
-          <span class="nx">customerContext</span><span class="o">:</span> <span class="s1">'color-change-listener'</span><span class="p">,</span>
-          <span class="nx">color</span><span class="o">:</span> <span class="s1">'blue'</span>
-      <span class="p">});</span>
-  <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-  <span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'change-color'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">color</span><span class="p">;</span>
-  <span class="p">});</span>
-<span class="p">}());</span>
-</pre></div>
-
-
-<p><a href="http://www.hapyak.com/examples/addon.html">Example</a></p>
-<div name="Message18" data-unique="Message18"></div><h2>Message</h2>
-<p>This example is the same as Addon above, except that we're registering all of the message handlers ourself using <code>hapyak.message</code> methods.</p>
-<div name="Parentpagecode19" data-unique="Parentpagecode19"></div><h3>Parent page code</h3>
-<div class="highlight"><pre><span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"DOMContentLoaded"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-<span class="kd">var</span> <span class="nx">span</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"span"</span><span class="p">);</span>
-
-<span class="c1">// Add an event listener for the notify-color event from our iframe annotation</span>
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"notify-color"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">span</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">"Iframe background is "</span> <span class="o">+</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">color</span><span class="p">;</span>
-<span class="p">})</span>
-
-<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"button"</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// Broadcast a message to all iframes on the page</span>
-  <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">forEach</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s2">"iframe"</span><span class="p">),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">iframe</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Send a message to the iframe annotation telling it to change its color to red</span>
-    <span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">iframe</span><span class="p">.</span><span class="nx">contentWindow</span><span class="p">,</span> <span class="s2">"change-color"</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"color"</span><span class="o">:</span> <span class="s2">"red"</span>
-    <span class="p">});</span>
-    <span class="nx">span</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">"Iframe background is red"</span><span class="p">;</span>
-  <span class="p">});</span>
-<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-</pre></div>
-
-
-<div name="Iframecode20" data-unique="Iframecode20"></div><h3>Iframe code</h3>
-<div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'blue'</span><span class="p">;</span>
-      <span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">parent</span><span class="p">,</span> <span class="s1">'notify-color'</span><span class="p">,</span> <span class="p">{</span>
-          <span class="nx">color</span><span class="o">:</span> <span class="s1">'blue'</span>
-      <span class="p">});</span>
-  <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
-  <span class="nx">hapyak</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'change-color'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">color</span><span class="p">;</span>
-  <span class="p">});</span>
-<span class="p">}());</span>
-</pre></div>
-
-
-<p><a href="http://www.hapyak.com/examples/message.html">Example</a></p>
-      </section>
-  <!-- </div>
-</div> -->
-
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script src="/assets/s-site-assets-scripts/jquery-ui-1.9.1.custom.min.js"></script>
-<script src="/assets/s-site-assets-scripts/jquery.tocify.min.js"></script>
-
-<script>
-  $(function () {
-      //Calls the tocify method on your HTML div.
-      $("#toc").tocify();
+  // Setup an addon to listen for events from the iframe annotation
+  hapyak.addon("color-change-listener", {
+    init: function () {
+      console.log("This is a message from init. Perform any setup needed here.");
+    },
+    "notify-color": function (e) {
+      span.innerHTML = "Iframe background is " + e.data.color;
+    }
   });
-</script>
 
+  document.getElementById("button").addEventListener("click", function () {
+    // Broadcast a message to all iframes on the page
+    Array.prototype.forEach.call(document.querySelectorAll("iframe"), function (iframe) {
+      // Send a message to the iframe annotation telling it to change its color to red
+      hapyak.message.send(iframe.contentWindow, "change-color", {
+        "color": "red"
+      });
+      span.innerHTML = "Iframe background is red";
+    });
+  }, false);
+}, false);</code></pre>
+  
+  <h4>Iframe code</h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">(function () {
+  document.addEventListener('click', function () {
+      document.body.style.backgroundColor = 'blue';
+      // We need to pass a custom context so only addons we with the name `color-change-listener` act on the event
+      hapyak.message.send(window.parent, 'notify-color', {
+          customerContext: 'color-change-listener',
+          color: 'blue'
+      });
+  }, false);
+  hapyak.message.addEventListener('change-color', function (e) {
+      document.body.style.backgroundColor = e.data.color;
+  });
+}());</code></pre>
+  
+  <p><a href="/interactivity/addon-api/addon.html">Example</a></p>
 
-<div style="position: static !important;"></div>
+  <h3>Message</h3>
+  <p>This example is the same as Addon above, except that we're registering all of the message handlers ourself using <code>hapyak.message</code> methods.</p>
+  <h4>Parent page code</h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">document.addEventListener("DOMContentLoaded", function () {
+  var span = document.getElementById("span");
+
+  // Add an event listener for the notify-color event from our iframe annotation
+  hapyak.message.addEventListener("notify-color", function (e) {
+    span.innerHTML = "Iframe background is " + e.data.color;
+  })
+
+  document.getElementById("button").addEventListener("click", function () {
+    // Broadcast a message to all iframes on the page
+    Array.prototype.forEach.call(document.querySelectorAll("iframe"), function (iframe) {
+      // Send a message to the iframe annotation telling it to change its color to red
+      hapyak.message.send(iframe.contentWindow, "change-color", {
+        "color": "red"
+      });
+      span.innerHTML = "Iframe background is red";
+    });
+  }, false);
+}, false);</code></pre>
+  
+  
+  
+  <h4>Iframe code</h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">(function () {
+  document.addEventListener('click', function () {
+      document.body.style.backgroundColor = 'blue';
+      hapyak.message.send(window.parent, 'notify-color', {
+          color: 'blue'
+      });
+  }, false);
+  hapyak.message.addEventListener('change-color', function (e) {
+      document.body.style.backgroundColor = e.data.color;
+  });
+}());</code></pre>
+  
+  <p><a href="/interactivity/addon-api/message.html">Example</a></p>
+</section>
+      </article>
+  <!-- </div>

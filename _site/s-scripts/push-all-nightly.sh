@@ -1,6 +1,6 @@
 bold=`tput bold`
 normal=`tput sgr0`
-COMMITMESSAG='Nightly Build'
+COMMITMESSAGE='Nightly Build'
 cd ..
 git pull
 bundle update
