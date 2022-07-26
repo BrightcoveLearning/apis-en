@@ -2378,74 +2378,63 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>Include the following javascript reference in your project. If embedding into an HTTP page, not HTTPS, use.</p>
 <pre class="line-numbers"><code class="language-html" translate="No"><script src="//d2qrdklrsxowl2.cloudfront.net/js/hapyak.js"></script></code></pre>
   </section>
+  <section class="bcls-section">
+    <h2 id="global_options">Global Options</h1>
+    <p><strong>apiKey</strong></p>
+    <p>If you have a Brightcove Interactivity API key, pass it in to each API call with this parameter. Brightcove Interactivity typically issues a read API key, and a write API key. The read key should be passed to <strong>.viewer</strong>, and the write key to <strong>.editor</strong>.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Viewer API">Viewer API</h2>
+    <p>The Brightcove Interactivity annotation viewer supports viewing annotations for an existing video element on a page. The existing video javascript object, iframe, html element, etc is passed into the viewer API method call.</p>
+    <h3>Example</h3>
+<pre class="line-numbers"><code class="language-javascript" translate="No">ytPlayer = new YT.Player('video', {
+  height: '390',
+  width: '640',
+  videoId: 'u1zgFlCw8Aw',
+  playerVars: {
+    html: 1,
+    wmode: 'opaque'
+  }
+});
+
+hapyak.viewer({
+    apiKey: readKey,
+    player: ytPlayer,
+    playerType: "youtube",
+    css: "http://modernizr.com/i/css/modernizr-2.1.1.css?v=1",
+    width: 640,
+    height: 360,
+    trackId: 640,
+    autoplay: true
+});</code></pre>
+    <h3>Options</h3>
+    <p><code>player</code></p>
+    <p>Reference to the player DOM node, Javascript object, Flash file.</p>
+    <p><code>playerType</code></p>
+    <p>Tells Brightcove Interactivity what sort of <em>player</em> was passed in. Valid values are "videojs", "youtube", "vimeo", "html5", "jplayer", "wistia", "dailymotion", "brightcove"</p>
+    <p><code>width (optional)</code></p>
+    <p>Tells Brightcove Interactivity the width of the player object. Optional, but the viewer may not always be able to figure out the right sizing.</p>
+    <p><code>height</code> (optional)</p>
+    <p>Tells Brightcove Interactivity the height of the player object. Optional, but the viewer may not always be able to figure out the right sizing.</p>
+    <p><code>css</code> (optional)</p>
+    <p>The location of a CSS file to load.</p>
+    <p><code>trackId</code></p>
+    <p>The ID of the Brightcove Interactivity commentary track to load. A Brightcove Interactivity "track" is the container for popup, drawing, audio, etc, commentary.</p>
+    <p><code>autoplay</code> (optional)</p>
+    <p>If set to true, the video with commentary will start to play once the video is loaded, and the track has been downloaded from www.hapyak.com.</p>
+    <p><code>minWidth</code> (optional)</p>
+    <p>Minimum width of player in pixels to show annotations. If the player width is below this value, all annotations will be hidden.  Optional, defaults to 300px.</p>
+    <p><code>minHeight</code> (optional)</p>
+    <p>Minimum height of player in pixels to show annotations. If the player height is below this value, all annotations will be hidden.  Optional, defaults to 200px.</p>
+    <p><strong>onLoad (optional)</strong></p>
+    <p>A function to be called when the viewer has loaded. Will be passed one argument, a <code>HapyakViewer</code> object (see below).</p>
+    <p><strong>onLoadAnnotations (optional)</strong></p>
+    <p>A function to be called when all annotations have been loaded.</p>
+    <p><code>resetVariables</code> (optional)</p>
+    <p>If set to true, all track variables set by quizzes, clicks or iframe scripts will be cleared before loading.</p>
+  </section>
 </article>
 
-
-<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//d2qrdklrsxowl2.cloudfront.net/js/hapyak.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-</pre></div>
-
-
-<div name="GlobalOptions" data-unique="GlobalOptions"></div><h1>Global Options</h1>
-<p><strong>apiKey</strong></p>
-<p>If you have a Brightcove Interactivity API key, pass it in to each API call with this parameter. Brightcove Interactivity typically issues
-a read API key, and a write API key. The read key should be passed to .viewer, and the write key to .editor.</p>
-<div name="ViewerAPI" data-unique="ViewerAPI"></div><h1>Viewer API</h1>
-<p>The Brightcove Interactivity annotation viewer supports viewing annotations for an existing video
-element on a page. The existing video javascript object, iframe, html element, etc
-is passed into the viewer API method call.</p>
-<div name="Example" data-unique="Example"></div><h2>Example</h2>
-<div class="highlight"><pre><span class="nx">ytPlayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">YT</span><span class="p">.</span><span class="nx">Player</span><span class="p">(</span><span class="s1">'video'</span><span class="p">,</span> <span class="p">{</span>
-<span class="nx">height</span><span class="o">:</span> <span class="s1">'390'</span><span class="p">,</span>
-<span class="nx">width</span><span class="o">:</span> <span class="s1">'640'</span><span class="p">,</span>
-<span class="nx">videoId</span><span class="o">:</span> <span class="s1">'u1zgFlCw8Aw'</span><span class="p">,</span>
-<span class="nx">playerVars</span><span class="o">:</span> <span class="p">{</span>
-  <span class="nx">html</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nx">wmode</span><span class="o">:</span> <span class="s1">'opaque'</span>
-<span class="p">}</span>
-<span class="p">});</span>
-
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="nx">apiKey</span><span class="o">:</span> <span class="nx">readKey</span><span class="p">,</span>
-  <span class="nx">player</span><span class="o">:</span> <span class="nx">ytPlayer</span><span class="p">,</span>
-  <span class="nx">playerType</span><span class="o">:</span> <span class="s2">"youtube"</span><span class="p">,</span>
-  <span class="nx">css</span><span class="o">:</span> <span class="s2">"http://modernizr.com/i/css/modernizr-2.1.1.css?v=1"</span><span class="p">,</span>
-  <span class="nx">width</span><span class="o">:</span> <span class="mi">640</span><span class="p">,</span>
-  <span class="nx">height</span><span class="o">:</span> <span class="mi">360</span><span class="p">,</span>
-  <span class="nx">trackId</span><span class="o">:</span> <span class="mi">640</span><span class="p">,</span>
-  <span class="nx">autoplay</span><span class="o">:</span> <span class="kc">true</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<div name="Options" data-unique="Options"></div><h2>Options</h2>
-<p><strong>player</strong></p>
-<p>Reference to the player DOM node, Javascript object, Flash file.</p>
-<p><strong>playerType</strong></p>
-<p>Tells Brightcove Interactivity what sort of <em>player</em> was passed in. Valid values are "videojs", "youtube", "vimeo", "html5", "jplayer", "wistia", "dailymotion", "brightcove"</p>
-<p><strong>width (optional)</strong></p>
-<p>Tells Brightcove Interactivity the width of the player object. Optional, but the viewer may not always be
-able to figure out the right sizing.</p>
-<p><strong>height (optional)</strong></p>
-<p>Tells Brightcove Interactivity the height of the player object. Optional, but the viewer may not always be
-able to figure out the right sizing.</p>
-<p><strong>css (optional)</strong></p>
-<p>The location of a CSS file to load.</p>
-<p><strong>trackId</strong></p>
-<p>The ID of the Brightcove Interactivity commentary track to load. A Brightcove Interactivity "track" is the container
-for popup, drawing, audio, etc, commentary.</p>
-<p><strong>autoplay (optional)</strong></p>
-<p>If set to true, the video with commentary will start to play once the video is loaded, and the track
-has been downloaded from www.hapyak.com.</p>
-<p><strong>minWidth (optional)</strong></p>
-<p>Minimum width of player in pixels to show annotations. If the player width is below this value, all annotatinos will be hidden.  Optional, defaults to 300px.</p>
-<p><strong>minHeight (optional)</strong></p>
-<p>Minimum height of player in pixels to show annotations. If the player height is below this value, all annotatinos will be hidden.  Optional, defaults to 200px.</p>
-<p><strong>onLoad (optional)</strong></p>
-<p>A function to be called when the viewer has loaded. Will be passed one argument, a <code>HapyakViewer</code> object (see below).</p>
-<p><strong>onLoadAnnotations (optional)</strong></p>
-<p>A function to be called when all annotations have been loaded.</p>
-<p><strong>resetVariables (optional)</strong></p>
-<p>If set to true, all track variables set by quizzes, clicks or iframe scripts will be cleared before loading.</p>
 <div name="AdvancedOptions" data-unique="AdvancedOptions"></div><h2>Advanced Options</h2>
 <p><strong>userId (optional)</strong></p>
 <p>You can optionally pass in a userId for tracking purposes.</p>
