@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Dynamic Ingest can be used to ingest WebVTT files (for captions, subtitles, chapters, etc.) with your video, or separately, after the video has been ingested. For Dynamic Delivery videos, you can also ingest SRT, DFXP, or SCC captions. This topic explains the details of adding text tracks files to your videos using the Dynamic Ingest API.">
+  <meta name="description" content="">
   
-  <title>Ingesting WebVTT Files</title>
+  <title>Brightcove Interactivity APIs</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/s-site-assets-favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/s-site-assets-favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/s-site-assets-favicons/favicon-16x16.png">
@@ -59,13 +59,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb arr-right">
       
-      <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
       
       
-      
-      <li class="breadcrumb-item"><a href="/dynamic-ingest/ingest-guides/">Ingest Guides</a></li>
-      
-      <li class="breadcrumb-item active" aria-current="page">Ingesting WebVTT Files</li>
+      <li class="breadcrumb-item active" aria-current="page">Brightcove Interactivity APIs</li>
     </ol>
   </nav>
 </header>
@@ -2370,208 +2366,17 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
-<h1>Ingesting WebVTT Files</h1>
+<h1>Brightcove Interactivity APIs</h1>
 <article class="bcls-article">
-  <summary>Dynamic Ingest can be used to ingest WebVTT files (for captions, subtitles, chapters, etc.) with your video, or separately, after the video has been ingested. For Dynamic Delivery videos, you can also ingest SRT, DFXP, or SCC captions. This topic explains the details of adding text tracks files to your videos using the Dynamic Ingest API.</summary>
-
+  <summary></summary>
   <section class="bcls-section">
-    <h2 id="Adding_closed_captions_to_MP4_renditions">Adding closed captions to MP4 renditions</h2>
-    <p>In addition to adding text tracks to your HLS and/or DASH renditions, you can add 608/708 closed captions to progressive MP4 renditions by including the <code translate="No">"embed_closed_caption": true</code> flag in your WebVTT ingest request.</p>
-
-    <p>To embed closed captions for a video you are ingesting, be sure to use an ingest profile that includes one or more MP4 renditions. If you are adding text tracks/closed captions to an existing video, be sure it has at least one MP4 rendition, or re-transcode with an ingest profile that will include MP4.</p>
-
-    <p>If you are using Cloud Playout, note that you can now <a href="https://studio.support.brightcove.com/cloud-playout/import-captions.html">import these closed captions</a> into your channel to provide them to your viewers.</p>
-
-    <h3>Notes</h3>
-    <ul>
-      <li>For embedded captions <strong>only</strong>, only European (Latin) characters are supported. This does <strong>not</strong> apply if you are only adding WebVTT text tracks.</li>
-      <li>If the source file already contains 608 closed captions, those will <strong>not</strong> be retained in any MP4 renditions.instead new closed captions will be embedded using the contents of the ingested captions.</code> however.</li>
-      <li>Closed captions currently <strong>cannot</strong> be added while you are retranscoding video - you must be ingesting or replacing the video. Retranscode jobs will support this feature in a future release.</li>
-      <li>This feature <strong>cannot</strong> be used when you are <a href="/dynamic-ingest/ingest-guides/requesting-auto-captions.html">requesting auto captions</a>.</li>
-      <li>If your account is enabled for Cloud Playout, you can verify that the closed captions were added by including the video in a channel (Cloud Playout channels always use MP4 renditions).</li>
-    </ul>
-
-    <!-- <h3>Verifying that closed captions were added</h3>
-    <p>Currently there is no API flag to indicate that closed captions were added to MP4 renditions. To verify that they are there, you can use the sample app below to test. </p>
-
-    <p class="codepen" data-height="1000" data-default-tab="result" data-slug-hash="jOGgYWQ" data-user="rcrooks1969" style="height: 1000px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-      <span>See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/jOGgYWQ">
-      Test for Closed Captions</a> by Brightcove Learning Services (<a href="https://codepen.io/team/rcrooks1969">@rcrooks1969</a>)
-      on <a href="https://codepen.io">CodePen</a>.</span>
-    </p>
-    <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script> -->
+    <h2 id=""></h2>
+    <p></p>
   </section>
-
-    <section class="bcls-section">
-    <h2 id="setup">Setup</h2>
-    
-    <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a WebVTT file, or all of these. For full details of the request body fields, see the <a href="/dynamic-ingest/references/reference.html#tag/Ingest">API Reference</a>.</p>
-    
-    <dl>
-      <dt>Request URL</dt>
-      <dd>
-      <pre>
-        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
-      </dd>
-      <dt>Authentication</dt>
-      <dd>Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code translate="No">Authorization</code> header:
-      <pre>
-        <code class="language-bash" translate="No">Authorization: Bearer {access_token}</code></pre>
-      </dd>
-    </dl>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="s3">Note on S3</h2>
-    
-    <p>If your WebVTT will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow Video Cloud to access the files. See <a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html#setPolicy">Using Dynamic Ingest with S3</a> for details.</p>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="ingestWebVTT">Ingest WebVTT files</h2>
-    
-    <p>You can also add WebVTT captions to your video or upload them for an existing video using Dynamic Ingest:</p>
-    
-    <h3>Add text tracks during video ingestion</h3>
-    
-    <h4>Request URL</h4>
-    
-    <pre>
-        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
-    
-    <h4>Method</h4>
-    
-    <p><code translate="No">POST</code></p>
-    
-    <h4>Sample request body</h4>
-    
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "master": {
-      "url": "https://support.brightcove.com/test-assets/videos/Great_Blue_Heron.mp4"
-  },
-  "text_tracks": [
-      {
-          "url": "https://support.brightcove.com/test-assets/captions/herons.vtt",
-          "srclang": "en",
-          "kind": "captions",
-          "label": "EN",
-          "default": true,
-          "status" : "published",
-          "embed_closed_caption": true
-      }
-  ]
-}</code></pre>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="adding_srt_dfxp">Adding/converting SRT or DFXP</h2>
-    
-    <p>For <strong>Dynamic Delivery videos only</strong>, you can ingest SRT or DFXP files in the same way. The Video Cloud ingest system will automatically convert them to WebVTT format and add them to the video.</p>
-    
-    <aside class="bcls-aside bcls-aside--information">Note that:
-    <ul>
-      <li>The language set in the DFXP file <code translate="No">xml:lang</code> must match the value in the ingest call for <code translate="No">srclang</code>. For example, if the <code translate="No">srclang</code> value in the ingest request is <code translate="No">en</code>, then the DFXP file must contain <code translate="No">xml:lang="en"</code>.</li>
-      <li>Custom formatting in SRT files (such as fading) is stripped from the track when it is converted to WebVTT.</li>
-    </ul>
-    </aside>
-    
-<pre class="line-numbers">
-<code class="language-json" translate="No">{
-  "text_tracks": [
-    {
-      "url": "http://media.brightcove.com/captions/Water.dfxp",
-      "srclang": "fr",
-      "kind": "captions",
-      "label": "français",
-      "default": true,
-      "status" : "published",
-      "embed_closed_caption": true
-    }
-  ]
-}</code></pre>
-      <aside class="bcls-aside bcls-aside--information language-editable">Note: set <code translate="No">embed_closed_captions</code> to <code translate="No">true</code> to add 608/708 captions to MP4 renditions.</aside>
-    </section>
-    
-    <section class="bcls-section">
-    <h2 id="add_to_existing_video">Add text tracks existing videos</h2>
-    
-    <p>Adding text tracks to existing videos is exactly the same, except that you do not need any of the video information or the profile in the request body. <strong>unless you are requesting closed captions to be added to MP4 renditions - in that case, you will need to replace the video</strong></p>
-    
-    <h4>Request URL</h4>
-    
-    <pre>
-        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
-    
-    <h4>Method</h4>
-    
-    <p><code translate="No">POST</code></p>
-    
-    <h4>Sample request body - no closed captions requested</h4>
-    
-<pre class="line-numbers">
-<code class="language-json" translate="No">{
-  "text_tracks": [
-    {
-      "url": "http://some.site.com/captions/for_video/Water-in-Motion.vtt",
-      "srclang": "es",
-      "kind": "captions",
-      "label": "Español",
-      "default": true,
-      "status" : "published",
-      "embed_closed_caption": false
-    }
-  ]
-}</code></pre>
-    
-    <h4>Sample request body - closed captions requested</h4>
-    
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "master": {
-      "url": "https://support.brightcove.com/test-assets/videos/Great_Blue_Heron.mp4"
-  },
-  "text_tracks": [
-      {
-          "url": "https://support.brightcove.com/test-assets/captions/herons.vtt",
-          "srclang": "en",
-          "kind": "captions",
-          "label": "EN",
-          "default": true,
-          "status" : "published",
-          "embed_closed_caption": true
-      }
-  ]
-}</code></pre>
-        
-    <aside class="bcls-aside bcls-aside--information">
-    <p>Notes:</p>
-    
-    <ol>
-      <li>Caption file names should only include letters (upper or lower case), numbers, dashes (-) and underscores (_).</li>
-      <li>The <code translate="No">label</code> for the captions is used by the Brightcove player for the captions language menu. Best practice is to use the appropriate language for the label. For example: <code translate="No">français</code> for <code translate="No">French</code> and so forth.</li>
-      <li>The text of the captions must be encoded UTF-8 to display properly for double-byte languages such as Japanese and Korean.</li>
-      <li>The default value is not per track, but set to true for all tracks of the same language (<code translate="No">srclang</code>).</li>
-      <li>For images and text tracks, only public HTTP or HTTPS URLs or signed URLs for AWS S3 or Google Cloud Storage are supported.</li>
-      <li>for text tracks, Dynamic Ingest adds/appends them to the video’s vtt list even if it is a re-encode request. You should use the <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">CMS API</a> to manage them (update/delete).</li>
-      <li>Dynamic Ingest accepts up to 100 text tracks at a time.</li>
-      <li>Although <code translate="No">"mime_type": "text/vtt"</code> is generally supported for WebVTT, Dynamic Ingest does <strong>not</strong> currently allow that field for ingestion of text tracks.</li>
-      <!-- <li>Existing text tracks have <code translate="no">“status”: null</code>, which won’t hide text tracks in players.</li> -->
-    </ol>
-    </aside>
-    
-    <h3>Adding text tracks to a remote asset video</h3>
-    
-    <p>See <a href="/cms/managing-videos/using-cms-api-remote-assets.html#addTextTracks">Adding Text Tracks to Remote Asset Videos</a>.</p>
-    </section>
-    </article>
-    
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
-      
-      <nav class="right-side-nav" id="right_side_nav">
-        <h6 class="toc">Page Contents</h6>
-        <ul id="in_page_nav" class="list-none"></ul>
-      </nav>
       
     </div>
   </div>

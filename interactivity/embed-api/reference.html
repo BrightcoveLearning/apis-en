@@ -245,176 +245,134 @@ editor.save(function() {
 <p>If the first argument is <code>null</code> or if there is one parameter that is an object, that object is used as a hash of multiple variable values to be set.</p>
 <p>If set to true, all track variables set by quizzes, clicks or iframe scripts will be cleared before loading.</p>
 <p>Note that on <code>HapyakEditor</code>, this method is asynchronous, so values that are set will not be  reflected by <code>getData</code> until the <code>data</code> event is triggered.</p>
+    <h3 id="editor_api_advanced_options">Advanced Options</h3>
+    <p><code>userId</code> (optional, requires api key)</p>
+    <p>When using an api key, you can optionally pass in a userId. The userId should be some string identifier for the user currently editing the video.</p>
+    <p><code>groupId</code> (optional, requires api key)</p>
+    <p>When using an api key, you can optionally pass in a groupId. The groupId should represent some subgroup of your end users.</p>
+    <p><code>minWidth</code> (optional)</p>
+    <p>Minimum width of player in pixels to show annotations. If the player width is below this value, all annotations will be hidden.  Optional, defaults to 300px.</p>
+    <p><code>minHeight</code> (optional)</p>
+    <p>Minimum height of player in pixels to show annotations. If the player height is below this value, all annotations will be hidden.  Optional, defaults to 200px.</p>
+    <p><code>onTrackingEvent</code> (optional)</p>
+    <p>Used to intercept playback statistics. Can be used, for example, to track playback statistics in MixPanel.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+  onTrackingEvent: function(data) {
+      console.log('HapYak / ' + data.event, data.properties);
+  }
+});</code></pre>
+    <p>There is a built in MixPanel tracking event function that will push the tracking events into your MixPanel instance.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+  onTrackingEvent: hapyak.mixpanelTrackingEventListener({mixpanel: window.mixpanel})
+});</code></pre>
+    <p><code>environment</code> (optional, for debugging)</p>
+    <p>Valid values are "production", "staging" or "feature". Only used when attempting to test against a specific environment.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.editor({
+  environment: 'production'
+});</code></pre>
+
+    <h3 id="editor_api_event_callbacks">Event callbacks</h3>
+    <p>The editor API triggers a number of event callbacks related to both video and data. An event callback may be registered by passing the event name to <code>addEventListener</code> (see below) or including the event callback as an option, with the name of the event preceeded by <code>on</code> as the key.</p>
+    <p>For example, the <code>play</code> event, which fires whenever the video starts playing may be registered as an option:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.editor({
+  /* ...other options here... */
+  onplay: function() {
+      console.log('video started playing');
+  }
+});</code></pre>
+    <p>Another way to accomplish the same thing:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">var editor = hapyak.editor({
+  /* ...other options here... */
+});
+
+editor.addEventListener('play', function () {
+  console.log('video started playing');
+});</code></pre>
+    <p>The advantages of using <code>addEventListener</code> are that multiple callback functions can be registered and that a listener can be removed with the <code>removeEventListener</code> method.</p>
+    <p>The following events are available:</p>
+    <p><code>load</code></p>
+    <p>The <code>load</code> event fires when the editor has loaded. The callback function receives one argument, which is the IFRAME element.</p>
+    <p><code>loadannotations</code></p>
+    <p>This event fires when all annotations have been loaded</p>
+    <p><code>durationchange</code></p>
+    <p>This event fires when the duration of the video is available to the API.</p>
+    <p><code>loadedmetadata</code></p>
+    <p>This event fires when the dimensions (height and width) and duration of the video are available to the API.</p>
+    <p><code>pause</code></p>
+    <p>This event fires when the video pauses.</p>
+    <p><code>play</code></p>
+    <p>This event fires when the video plays.</p>
+    <p><code>data</code></p>
+    <p>This event fires every time a data variable is changed. The callback function receives two arguments: an object hash of all data variables, and an object hash of all data variables that have changed since the last time the event fired.</p>
+
+    <h3 id="editor_api_hapyakeditor">HapyakEditor</h3>
+    <p>hapyak.editor({}) will return a new editor object.</p>
+    <h4>Methods</h4>
+    <p><code>element()</code></p>
+    <p>Returns Brightcove Interactivity DOM element (e.g. IFRAME)</p>
+    <p><code>save(callback)</code></p>
+    <p>Tells the editor to commit the changes the user has made. Takes an optional callback argument which will be passed the trackId that was saved.</p>
+    <p><code>newTrack(callback)</code> (premium feature)</p>
+    <p>Creates a new track for the current video. Takes an optional callback argument which will be passed the trackId that was saved.</p>
+    <p><code>copyTrack(callback)</code> (premium feature)</p>
+    <p>Copies the current track. Takes an optional callback argument which will be passed the trackId that was saved.</p>
+    <p><code>editTrack(data, callback)</code> (premium feature)</p>
+    <p>Can be used to change the title or description of the current track. The <code>data</code> argument is an object with properties <code>title</code> and <code>description</code>. Also takes an optional callback argument which will be passed the trackId of the track that was modified.</p>
+    <p><code>resize(width, height)</code></p>
+    <p>Resizes the player to the desired <code>height</code> and <code>width</code>.</p>
+    <p><code>play()</code></p>
+    <p>Plays the video.</p>
+    <p><code>pause()</code></p>
+    <p>Pauses the video.</p>
+    <p><code>resetVariables()</code></p>
+    <p>Reset all track variables set by quizzes, clicks or iframe scripts.</p>
+    <p><code>destroy()</code></p>
+    <p>Tells the editor to shutdown and cleanup.</p>
+
+    <h4>Properties</h4>
+    <p><code>duration</code></p>
+    <p>The duration in seconds of the video. This value will be <code>NaN</code> until the <code>onlaodedmetadata</code> event has fired. This property is read-only.</p>
+    <p><code>currentTime</code></p>
+    <p>The current time in the video of the play head, in seconds. This property can be set to cause the video to seek. If <code>currentTime</code> is set to a negative number or is greater than the <code>duration</code>, seeking will not happen.</p>
+    <p><code>paused</code></p>
+    <p>A boolean value indicating the play/pause state of the video. A video may not be playing even though <code>paused</code> is false if the video is stalled while loading from the network. This property is read-only.</p>
+
+    <h4>Definitions</h4>
+    <p><strong>video</strong></p>
+    <p>A reference to the video to be annotated. It might reference a YouTube video, an html5 video, or a video behind a partners firewall. Tracks are attached to the video object. Any one video may have any number of tracks attached.</p>
+    <p><strong>track</strong></p>
+    <p>A Brightcove Interactivity track is the container that holds a set of video annotations. A track also may contain metadata about the annotation content such as language data, security restrictions, and basic statistics about the annotations.</p>
+    <p><strong>annotation</strong></p>
+    <p>An annotation is a single drawing, popup comment, image, etc, added to a video track. It has the annotation data, as well as video time synchronization information.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="templates">Templates</h2>
+    <p>Brightcove Interactivity supports the concept of template tracks. A template track can be applied to any video, whether it already has a project/track associated or not. To apply a template track to your video, pass in a "project" search parameter.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+  project: {
+      template: {
+          tags: [arrayOfTags]
+          // OR
+          id: templateProjectId,
+          // OR
+          ids: [arrayOfProjectIds]
+      }
+  }
+});</code></pre>
+        
+    <p>If there were existing annotations for the video, they will be combined with the annotations from the template. If there are no existing annotations, only the template track annotations will be shown.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="faq">FAQ</h2>
+    <dl>
+      <dt class="bcls-question"><strong>Do you host and serve videos?</strong></dt>
+      <dd class="bcls-answer">No, we integrate with your existing solutions or partner to provide a complete solution as needed.</dd>
+      <dt class="bcls-question"><strong>Will this work behind a firewall?</strong></dt>
+      <dd class="bcls-answer">As long as the firewall can allow access to our HTTPS cloud service, yes.</dd>
+      <dt class="bcls-question"><strong>How can I customize the look and feel of the player and annotations?</strong></dt>
+      <dd class="bcls-answer">All styles can be controlled via CSS giving you absolute power over styling.</dd>
+      <dt class="bcls-question"><strong>Does this work on mobile?</strong></dt>
+      <dd class="bcls-answer">Annotations will work in any browser that allows HTML to be overlaid on video.  Android and iOS devices are generally able to view annotations using our solution.</dd>
+    </dl>
   </section>
 </article>
-
-
-
-<div name="AdvancedOptions12" data-unique="AdvancedOptions12"></div><h2>Advanced Options</h2>
-<p><strong>userId (optional, requires api key)</strong></p>
-<p>When using an api key, you can optionally pass in a userId. The userId should be some
-string identifier for the user currently editing the video.</p>
-<p><strong>groupId (optional, requires api key)</strong></p>
-<p>When using an api key, you can optionally pass in a groupId. The groupId should
-represent some subgroup of your end users.</p>
-<p><strong>minWidth (optional)</strong></p>
-<p>Minimum width of player in pixels to show annotations. If the player width is below this value, all annotatinos will be hidden.  Optional, defaults to 300px.</p>
-<p><strong>minHeight (optional)</strong></p>
-<p>Minimum height of player in pixels to show annotations. If the player height is below this value, all annotatinos will be hidden.  Optional, defaults to 200px.</p>
-<p><strong>onTrackingEvent (optional)</strong></p>
-<p>Used to intercept playback statistics. Can be used, for example, to track playback statistics in MixPanel.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="nx">onTrackingEvent</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Brightcove Interactivity / '</span> <span class="o">+</span> <span class="nx">data</span><span class="p">.</span><span class="nx">event</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">properties</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>There is a built in MixPanel tracking event function that will push the tracking events into your MixPanel instance.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="nx">onTrackingEvent</span><span class="o">:</span> <span class="nx">hapyak</span><span class="p">.</span><span class="nx">mixpanelTrackingEventListener</span><span class="p">({</span><span class="nx">mixpanel</span><span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">mixpanel</span><span class="p">})</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p><strong>environment (optional, for debugging)</strong></p>
-<p>Valid values are "production", "staging" or "feature". Only used when attempting to test against a specific environment.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">editor</span><span class="p">({</span>
-  <span class="nx">environment</span><span class="o">:</span> <span class="s1">'production'</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<div name="Eventcallbacks13" data-unique="Eventcallbacks13"></div><h2>Event callbacks</h2>
-<p>The editor API triggers a number of event callbacks related to both video and data. An event callback may be registered by passing the event name to <code>addEventListener</code> (see below) or including the event callback as an option, with the name of the event preceeded by <code>on</code> as the key.</p>
-<p>For example, the <code>play</code> event, which fires whenever the video starts playing may be registered as an option:</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">editor</span><span class="p">({</span>
-  <span class="cm">/* ...other options here... */</span>
-  <span class="nx">onplay</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'video started playing'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>Another way to accomplish the same thing:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">editor</span> <span class="o">=</span> <span class="nx">hapyak</span><span class="p">.</span><span class="nx">editor</span><span class="p">({</span>
-  <span class="cm">/* ...other options here... */</span>
-<span class="p">});</span>
-
-<span class="nx">editor</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'play'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'video started playing'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>The advantages of using <code>addEventListener</code> are that multiple callback functions can be registered and that a listener can be removed with the <code>removeEventListener</code> method.</p>
-<p>The following events are available:</p>
-<p><strong>load</strong></p>
-<p>The <code>load</code> event fires when the editor has loaded. The callback function receives one argument, which is the IFRAME element.</p>
-<p><strong>loadannotations</strong></p>
-<p>This event fires when all annotations have been loaded</p>
-<p><strong>durationchange</strong></p>
-<p>This event fires when the duration of the video is available to the API.</p>
-<p><strong>loadedmetadata</strong></p>
-<p>This event fires when the dimensions (height and width) and duration of the video are available to the API.</p>
-<p><strong>pause</strong></p>
-<p>This event fires when the video pauses.</p>
-<p><strong>play</strong></p>
-<p>This event fires when the video plays.</p>
-<p><strong>data</strong></p>
-<p>This event fires every time a data variable is changed. The callback function receives two arguments: an object hash of all data variables, and an object hash of all data variables that have changed since the last time the event fired.</p>
-<div name="HapyakEditor" data-unique="HapyakEditor"></div><h2>HapyakEditor</h2>
-<p>hapyak.editor({}) will return a new editor object.</p>
-<h4>Methods</h4>
-<p><strong>element()</strong></p>
-<p>Returns Brightcove Interactivity DOM element (e.g. IFRAME)</p>
-<p><strong>save(callback)</strong></p>
-<p>Tells the editor to commit the changes the user has made. Takes an optional callback
-argument which will be passed the trackId that was saved.</p>
-<p><strong>newTrack(callback)</strong> (premium feature)</p>
-<p>Creates a new track for the current video. Takes an optional callback
-argument which will be passed the trackId that was saved.</p>
-<p><strong>copyTrack(callback)</strong> (premium feature)</p>
-<p>Copies the current track. Takes an optional callback
-argument which will be passed the trackId that was saved.</p>
-<p><strong>editTrack(data, callback)</strong> (premium feature)</p>
-<p>Can be used to change the title or description of the current track. The <code>data</code> argument
-is an object with properties <code>title</code> and <code>description</code>. Also takes an optional callback
-argument which will be passed the trackId of the track that was modified.</p>
-<p><strong>resize(width, height)</strong></p>
-<p>Resizes the player to the desired <code>height</code> and <code>width</code>.</p>
-<p><strong>play()</strong></p>
-<p>Plays the video.</p>
-<p><strong>pause()</strong></p>
-<p>Pauses the video.</p>
-<p><strong>resetVariables()</strong></p>
-<p>Reset all track variables set by quizzes, clicks or iframe scripts.</p>
-<p><strong>destroy()</strong></p>
-<p>Tells the editor to shutdown and cleanup.</p>
-<h4>Properties</h4>
-<p><strong>duration</strong></p>
-<p>The duration in seconds of the video. This value will be <code>NaN</code> until the <code>onlaodedmetadata</code> event has fired. This property is read-only.</p>
-<p><strong>currentTime</strong></p>
-<p>The current time in the video of the play head, in seconds. This property can be set to cause the video to seek. If <code>currentTime</code> is set to a negative number or is greater than the <code>duration</code>, seeking will not happen.</p>
-<p><strong>paused</strong></p>
-<p>A boolean value indicating the play/pause state of the video. A video may not be playing even though <code>paused</code> is false if the video is stalled while loading from the network. This property is read-only.</p>
-<h4>Definitions</h4>
-<p><strong>video</strong></p>
-<p>A reference to the video to be annotated. It might reference a YouTube video, an html5 video,
-or a video behind a partners firewall. Tracks are attached to the video object. Any one video
-may have any number of tracks attached.</p>
-<p><strong>track</strong></p>
-<p>A Brightcove Interactivity track is the container that holds a set of video annotations. A track also
-may contain metadata about the annotation content such as language data,
-security restrictions, and basic statistics about the annotations.</p>
-<p><strong>annotation</strong></p>
-<p>An annotation is a single drawing, popup comment, image, etc, added to a video track.
-It has the annotation data, as well as video time synchronization information.</p>
-<div name="Templates" data-unique="Templates"></div><h1>Templates</h1>
-<p>Brightcove Interactivity supports the concept of template tracks. A template track can be applied to any video, whether it already has a project/track associated or not. To apply a template track to your video, pass in a "project" search parameter.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="nx">project</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">template</span><span class="o">:</span> <span class="p">{</span>
-          <span class="nx">tags</span><span class="o">:</span> <span class="p">[</span><span class="nx">arrayOfTags</span><span class="p">]</span>
-          <span class="c1">// OR</span>
-          <span class="nx">id</span><span class="o">:</span> <span class="nx">templateProjectId</span><span class="p">,</span>
-          <span class="c1">// OR</span>
-          <span class="nx">ids</span><span class="o">:</span> <span class="p">[</span><span class="nx">arrayOfProjectIds</span><span class="p">]</span>
-      <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>If there were existing annotations for the video, they will be combined with the annotations from the template. If there are no existing annotations, only the template track annotations will be shown.</p>
-<div name="FAQ" data-unique="FAQ"></div><h1>FAQ</h1>
-<p><strong>Do you host and serve videos?</strong></p>
-<p>No, we integrate with your existing solutions or partner to provide a complete solution as needed.</p>
-<p><strong>Will this work behind a ﬁrewall?</strong></p>
-<p>As long as the ﬁrewall can allow access to our HTTPS cloud service, yes.</p>
-<p><strong>How can I customize the look and feel of the player and annotations?</strong></p>
-<p>All styles can be controlled via CSS giving you absolute power over styling.</p>
-<p><strong>Does this work on mobile?</strong></p>
-<p>Annotations will work in any browser that allows HTML to be overlaid on video.  Android and iOS devices are generally able to view annotations using our solution.</p>
-<div name="Examples" data-unique="Examples"></div><h1>Examples</h1>
-<p>For Embedded viewer and editor examples, contact <a href="mailto:success@hapyak.com">success@hapyak.com</a>.</p>
-      </div>
-  </div>
-</div>
-
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script src="/assets/s-site-assets-scripts/jquery-ui-1.9.1.custom.min.js"></script>
-<script src="/assets/s-site-assets-scripts/jquery.tocify.min.js"></script>
-
-<script>
-  $(function () {
-      //Calls the tocify method on your HTML div.
-      $("#toc").tocify();
-  });
-</script>
-
-
-<div style="position: static !important;"></div></body></html>
