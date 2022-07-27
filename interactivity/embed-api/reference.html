@@ -20,7 +20,7 @@ parent: Brightcove Interactivity APIs
   <section class="bcls-section">
     <h2 id="Viewer API">Viewer API</h2>
     <p>The Brightcove Interactivity annotation viewer supports viewing annotations for an existing video element on a page. The existing video javascript object, iframe, html element, etc is passed into the viewer API method call.</p>
-    <h3>Example</h3>
+    <h3 id="viewer_api_example">Example</h3>
 <pre class="line-numbers"><code class="language-javascript" translate="No">ytPlayer = new YT.Player('video', {
   height: '390',
   width: '640',
@@ -41,7 +41,8 @@ hapyak.viewer({
     trackId: 640,
     autoplay: true
 });</code></pre>
-    <h3>Options</h3>
+
+    <h3 id="viewer_api_options">Options</h3>
     <p><code>player</code></p>
     <p>Reference to the player DOM node, Javascript object, Flash file.</p>
     <p><code>playerType</code></p>
@@ -66,204 +67,189 @@ hapyak.viewer({
     <p>A function to be called when all annotations have been loaded.</p>
     <p><code>resetVariables</code> (optional)</p>
     <p>If set to true, all track variables set by quizzes, clicks or iframe scripts will be cleared before loading.</p>
-  </section>
-</article>
 
-<div name="AdvancedOptions" data-unique="AdvancedOptions"></div><h2>Advanced Options</h2>
-<p><strong>userId (optional)</strong></p>
-<p>You can optionally pass in a userId for tracking purposes.</p>
-<p><strong>username (optional)</strong></p>
-<p>You can optionally pass in a username for tracking purposes.</p>
-<p><strong>groupId (optional, requires api key)</strong></p>
-<p>When using an api key, you can optionally pass in a groupId. The groupId should
-represent some subgroup of your end users.</p>
-<p><strong>variables</strong></p>
-<p>Dictionary of variables to be made available to dynamic annotations.</p>
-<div class="highlight"><pre><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="nx">variables</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">courseName</span><span class="o">:</span> <span class="s2">"Math 101"</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
+    <h3 id="viewer_api_advanced_options">Advanced Options</h3>
+    <p><code>userId (optional)</code></p>
+    <p>You can optionally pass in a userId for tracking purposes.</p>
+    <p><code>username (optional)</code></p>
+    <p>You can optionally pass in a username for tracking purposes.</p>
+    <p><code>groupId (optional, requires api key)</code></p>
+    <p>When using an api key, you can optionally pass in a groupId. The groupId should
+    represent some subgroup of your end users.</p>
+    <p><code>variables</code></p>
+    <p>Dictionary of variables to be made available to dynamic annotations.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">.viewer({
+  variables: {
+      courseName: "Math 101"
+  }
+});</code></pre>
+    <p><code>environment</code> (optional, for debugging)</p>
+    <p>Valid values are "production", "staging" or "feature". Only used when attempting to test against a specific environment.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+  environment: 'production'
+});</code></pre>
 
+    <h3 id="viewer_api_event_callbacks"></h3>
+    <p>The viewer API triggers a number of event callbacks related to both video and data. An event callback may be registered by passing the event name to <code>addEventListener</code> (see below) or including the event callback as an option, with the name of the event preceeded by <code>on</code> as the key.</p>
+    <p>For example, the <code>play</code> event, which fires whenever the video starts playing may be registered as an option:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+  /* ...other options here... */
+  onplay: function() {
+      console.log('video started playing');
+  }
+});</code></pre>
+    
+    <p>Another way to accomplish the same thing:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+  /* ...other options here... */
+  onload: function(viewer) {
+      viewer.addEventListener('play', function () {
+          console.log('video started playing');
+      });
+  }
+});</code></pre>
+    
+    <p>The advantages of using <code>addEventListener</code> are that multiple callback functions can be registered and that a listener can be removed with the <code>removeEventListener</code> method.</p>
+    <p>The following events are available:</p>
+    <p><strong>load</strong></p>
+    <p>The <code>load</code> event fires when the viewer has loaded. The callback function receives one argument, which is the <code>HapyakViewer</code> object. (This event cannot be registered on with <code>addEventListener</code>.)</p>
+    <p><code>loadannotations</code></p>
+    <p>This event fires when all annotations have been loaded</p>
+    <p><strong>durationchange</strong></p>
+    <p>This event fires when the duration of the video is available to the API.</p>
+    <p><code>loadedmetadata</code></p>
+    <p>This event fires when the dimensions (height and width) and duration of the video are available to the API.</p>
+    <p><code>pause</code></p>
+    <p>This event fires when the video pauses.</p>
+    <p><code>play</code></p>
+    <p>This event fires when the video plays.</p>
+    <p><code>data</code></p>
+    <p>This event fires every time a data variable is changed. The callback function receives two arguments: an object hash of all data variables, and an object hash of all data variables that have changed since the last time the event fired.</p>
+    <p><code>authchange</code></p>
+    <p>This event fires every time user authorization data is changed. The callback function receives one argument: an object hash of all user auth properties.</p>
+    <p><code>customtrackingevent</code></p>
+    <p>This event fires every time an event that is tracked by analytics occurs. This includes video actions, such as pause, play, and seek, as well as annotation views and annotation actions. The callback function receives one argument: an object hash describing the event and all its properties.</p>
 
-<p><strong>environment (optional, for debugging)</strong></p>
-<p>Valid values are "production", "staging" or "feature". Only used when attempting to test against a specific environment.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="nx">environment</span><span class="o">:</span> <span class="s1">'production'</span>
-<span class="p">});</span>
-</pre></div>
+    <h3 id="viewer_api_hapyakviewer">HapyakViewer</h3>
+    <p>A HapyakViewer object will be passed to the <code>onLoad</code> callback and supports the following methods and properties.</p>
 
+    <h4>Methods</h4>
+    <p><code>getTrackId()</code></p>
+    <p>Returns the id (an integer) of the currently loaded track.</p>
+    <p><code>resize(width, height)</code></p>
+    <p>Resizes the player to the desired <code>height</code> and <code>width</code>.</p>
+    <p><code>play()</code></p>
+    <p>Plays the video.</p>
+    <p><code>pause()</code></p>
+    <p>Pauses the video.</p>
+    <p><code>resetVariables()</code></p>
+    <p>Reset all track variables set by quizzes, clicks or iframe scripts.</p>
+    <p><code>getData(name)</code></p>
+    <p>Returns the value of the variable by <code>name</code>. If the method is called without any argument, it returns an object hash of all variable values.</p>
+    <p><code>setData(name, value)</code></p>
+    <p>Sets the value of the variable by <code>name</code>. If the second argument is omitted, the key value is cleared.</p>
+    <p>If the first argument is <code>null</code> or if there is one parameter that is an object, that object is used as a hash of multiple variable values to be set.</p>
+    <p><code>destroy()</code></p>
+    <p>Tells the editor to shutdown and cleanup.</p>
+    <h4>Properties</h4>
+    <p><code>duration</code></p>
+    <p>The duration in seconds of the video. This value will be <code>NaN</code> until the <code>onlaodedmetadata</code> event has fired. This property is read-only.</p>
+    <p><code>currentTime</code></p>
+    <p>The current time in the video of the play head, in seconds. This property can be set to cause the video to seek. If <code>currentTime</code> is set to a negative number or is greater than the <code>duration</code>, seeking will not happen.</p>
+    <p><code>paused</code></p>
+    <p>A boolean value indicating the play/pause state of the video. A video may not be playing even though <code>paused</code> is false if the video is stalled while loading from the network. This property is read-only.</p>
 
-<div name="Eventcallbacks" data-unique="Eventcallbacks"></div><h2>Event callbacks</h2>
-<p>The viewer API triggers a number of event callbacks related to both video and data. An event callback may be registered by passing the event name to <code>addEventListener</code> (see below) or including the event callback as an option, with the name of the event preceeded by <code>on</code> as the key.</p>
-<p>For example, the <code>play</code> event, which fires whenever the video starts playing may be registered as an option:</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="cm">/* ...other options here... */</span>
-  <span class="nx">onplay</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'video started playing'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
+    <!-- <h3 id="viewer_api_custom_cdn_support">Custom CDN support</h3>
+    <p>Brightcove Interactivity supports an optional configuration directive to turn on a custom CDN prefix for serving assets, or api
+    responses.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+  plugins: {
+      cdn: {
+          api: {
+              prefix: [urlprefix]
+          }
+          assets: {
+              prefix: [urlprefix]
+          }
+      }
+  }
+});</code></pre>
+    <p>Reference <a href="https://docs.google.com/document/d/1WVxaxQd1LzYpR-ew-Gd8qMIzJqAXD1vXEgzsGLRUffI/edit?usp=sharing">this document</a>
+    for complete details.</p> -->
+      </section>
+  <section class="bcls-section">
+    <h2 id="editor_api">Editor API</h2>
+    <p>The Brightcove Interactivity annotation editor will drop an IFRAME based embedded editor into the page, under the element passed in with elementId.</p>
+    <h3 id="editor_api_example">Example</h3>
+<pre class="line-numbers"><code class="language-javascript" translate="No">var editor = hapyak.editor({
+  apiKey: <span class="bcls-input">writeKey</span>,
+  elementId: 'hapyak-editor-test',
+  width: 560,
+  css: 'http://modernizr.com/i/css/modernizr-2.1.1.css?v=1',
+  videoType: 'html5',
+  videoUrl: 'http://cloudfront.net/videos/video.mp4',
+  onNewTrack: function (trackId) {
+      console.log('hapyak.editor.onNewTrack reported to parent page [' + trackId + ']');
+  },
+  onSave: function (trackId) {
+      console.log('hapyak.editor.onSave reported to parent page [' + trackId + ']');
+  }
+});
 
+editor.save(function() {
+  console.log('saved');
+})</code></pre>
 
-<p>Another way to accomplish the same thing:</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="cm">/* ...other options here... */</span>
-  <span class="nx">onload</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">viewer</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">viewer</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'play'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'video started playing'</span><span class="p">);</span>
-      <span class="p">});</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
+<h3 id="editor_api_options">Options</h3>
 
-
-<p>The advantages of using <code>addEventListener</code> are that multiple callback functions can be registered and that a listener can be removed with the <code>removeEventListener</code> method.</p>
-<p>The following events are available:</p>
-<p><strong>load</strong></p>
-<p>The <code>load</code> event fires when the viewer has loaded. The callback function receives one argument, which is the <code>HapyakViewer</code> object. (This event cannot be registered on with <code>addEventListener</code>.)</p>
-<p><strong>loadannotations</strong></p>
-<p>This event fires when all annotations have been loaded</p>
-<p><strong>durationchange</strong></p>
-<p>This event fires when the duration of the video is available to the API.</p>
-<p><strong>loadedmetadata</strong></p>
-<p>This event fires when the dimensions (height and width) and duration of the video are available to the API.</p>
-<p><strong>pause</strong></p>
-<p>This event fires when the video pauses.</p>
-<p><strong>play</strong></p>
-<p>This event fires when the video plays.</p>
-<p><strong>data</strong></p>
-<p>This event fires every time a data variable is changed. The callback function receives two arguments: an object hash of all data variables, and an object hash of all data variables that have changed since the last time the event fired.</p>
-<p><strong>authchange</strong></p>
-<p>This event fires every time user authorization data is changed. The callback function receives one argument: an object hash of all user auth properties.</p>
-<p><strong>customtrackingevent</strong></p>
-<p>This event fires every time an event that is tracked by analytics occurs. This includes video actions, such as pause, play, and seek, as well as annotation views and annotation actions. The callback function receives one argument: an object hash describing the event and all its properties.</p>
-<div name="HapyakViewer" data-unique="HapyakViewer"></div><h2>HapyakViewer</h2>
-<p>A HapyakViewer object will be passed to the <code>onLoad</code> callback and supports the following methods and properties.</p>
-<h4>Methods</h4>
-<p><strong>getTrackId()</strong></p>
-<p>Returns the id (an integer) of the currently loaded track.</p>
-<p><strong>resize(width, height)</strong></p>
-<p>Resizes the player to the desired <code>height</code> and <code>width</code>.</p>
-<p><strong>play()</strong></p>
-<p>Plays the video.</p>
-<p><strong>pause()</strong></p>
-<p>Pauses the video.</p>
-<p><strong>resetVariables()</strong></p>
-<p>Reset all track variables set by quizzes, clicks or iframe scripts.</p>
-<p><strong>getData(name)</strong></p>
-<p>Returns the value of the variable by <code>name</code>. If the method is called without any argument, it returns an object hash of all variable values.</p>
-<p><strong>setData(name, value)</strong></p>
-<p>Sets the value of the variable by <code>name</code>. If the second argument is omitted, the key value is cleared.</p>
-<p>If the first argument is <code>null</code> or if there is one parameter that is an object, that object is used as a hash of multiple variable values to be set.</p>
-<p><strong>destroy()</strong></p>
-<p>Tells the editor to shutdown and cleanup.</p>
-<h4>Properties</h4>
-<p><strong>duration</strong></p>
-<p>The duration in seconds of the video. This value will be <code>NaN</code> until the <code>onlaodedmetadata</code> event has fired. This property is read-only.</p>
-<p><strong>currentTime</strong></p>
-<p>The current time in the video of the play head, in seconds. This property can be set to cause the video to seek. If <code>currentTime</code> is set to a negative number or is greater than the <code>duration</code>, seeking will not happen.</p>
-<p><strong>paused</strong></p>
-<p>A boolean value indicating the play/pause state of the video. A video may not be playing even though <code>paused</code> is false if the video is stalled while loading from the network. This property is read-only.</p>
-<div name="CustomCDNsupport" data-unique="CustomCDNsupport"></div><h2>Custom CDN support</h2>
-<p>Brightcove Interactivity supports an optional configuration directive to turn on a custom CDN prefix for serving assets, or api
-responses.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">viewer</span><span class="p">({</span>
-  <span class="nx">plugins</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">cdn</span><span class="o">:</span> <span class="p">{</span>
-          <span class="nx">api</span><span class="o">:</span> <span class="p">{</span>
-              <span class="nx">prefix</span><span class="o">:</span> <span class="p">[</span><span class="nx">urlprefix</span><span class="p">]</span>
-          <span class="p">}</span>
-          <span class="nx">assets</span><span class="o">:</span> <span class="p">{</span>
-              <span class="nx">prefix</span><span class="o">:</span> <span class="p">[</span><span class="nx">urlprefix</span><span class="p">]</span>
-          <span class="p">}</span>
-      <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>Reference <a href="https://docs.google.com/document/d/1WVxaxQd1LzYpR-ew-Gd8qMIzJqAXD1vXEgzsGLRUffI/edit?usp=sharing">this document</a>
-for complete details.</p>
-<div name="EditorAPI" data-unique="EditorAPI"></div><h1>Editor API</h1>
-<p>The Brightcove Interactivity annotation editor will drop an IFRAME based embedded editor into
-the page, under the element passed in with elementId.</p>
-<div name="Example10" data-unique="Example10"></div><h2>Example</h2>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">editor</span> <span class="o">=</span> <span class="nx">hapyak</span><span class="p">.</span><span class="nx">editor</span><span class="p">({</span>
-  <span class="nx">apiKey</span><span class="o">:</span> <span class="nx">writeKey</span><span class="p">,</span>
-  <span class="nx">elementId</span><span class="o">:</span> <span class="s1">'hapyak-editor-test'</span><span class="p">,</span>
-  <span class="nx">width</span><span class="o">:</span> <span class="mi">560</span><span class="p">,</span>
-  <span class="nx">css</span><span class="o">:</span> <span class="s1">'http://modernizr.com/i/css/modernizr-2.1.1.css?v=1'</span><span class="p">,</span>
-  <span class="nx">videoType</span><span class="o">:</span> <span class="s1">'html5'</span><span class="p">,</span>
-  <span class="nx">videoUrl</span><span class="o">:</span> <span class="s1">'http://cloudfront.net/videos/video.mp4'</span><span class="p">,</span>
-  <span class="nx">onNewTrack</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">trackId</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'hapyak.editor.onNewTrack reported to parent page ['</span> <span class="o">+</span> <span class="nx">trackId</span> <span class="o">+</span> <span class="s1">']'</span><span class="p">);</span>
-  <span class="p">},</span>
-  <span class="nx">onSave</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">trackId</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'hapyak.editor.onSave reported to parent page ['</span> <span class="o">+</span> <span class="nx">trackId</span> <span class="o">+</span> <span class="s1">']'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-
-<span class="nx">editor</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'saved'</span><span class="p">);</span>
-<span class="p">})</span>
-</pre></div>
-
-
-<div name="Options11" data-unique="Options11"></div><h2>Options</h2>
-<p><strong>elementId</strong></p>
+<p><code>elementId</code></p>
 <p>The ID of the element to drop the Brightcove Interactivity editor iframe into.</p>
-<p><strong>element</strong></p>
-<p>The DOM element to drop the Brightcove Interactivity editor iframe into. This can be used instead
-of passing <em>elementId</em>.</p>
-<p><strong>width (optional)</strong></p>
+<p><code>element</code></p>
+<p>The DOM element to drop the Brightcove Interactivity editor iframe into. This can be used instead of passing <code>elementId</code>.</p>
+<p><code>width (optional)</code></p>
 <p>The width of the IFRAME editor element to create.</p>
-<p><strong>css (optional)</strong></p>
+<p><code>css</code> (optional)</p>
 <p>The location of a CSS file to load.</p>
-<p><strong>videoType</strong></p>
+<p><code>videoType</code></p>
 <p>The type of video to load. Valid values can be "youtube", "vimeo", "html5", "jplayer", "wistia", "dailymotion"</p>
-<p><strong>videoId</strong></p>
-<p>The ID of the video to load. If <em>videoType</em> is set to "youtube" for example,
-this parameter would be the YouTube video id.</p>
-<p><strong>videoUrl</strong></p>
-<p>The URL of the video to load. If <em>videoType</em> is set to "html5", this would be
-the URL to the video.</p>
-<p><strong>videoWidth (optional)</strong></p>
+<p><code>videoId</code></p>
+<p>The ID of the video to load. If <em>videoType</em> is set to "youtube" for example, this parameter would be the YouTube video id.</p>
+<p><code>videoUrl</code></p>
+<p>The URL of the video to load. If <em>videoType</em> is set to "html5", this would be the URL to the video.</p>
+<p><code>videoWidth</code> (optional)</p>
 <p>The actual width of the video passed in. Used to compute aspect ratio.</p>
-<p><strong>videoHeight (optional)</strong></p>
+<p><code>videoHeight</code> (optional)</p>
 <p>The actual height of the video passed in. Used to compute aspect ratio.</p>
-<p><strong>videoParameters</strong></p>
-<p>Additional parameters passed through to the specific player based on videoType.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">editor</span><span class="p">({</span>
-  <span class="nx">videoType</span><span class="o">:</span> <span class="s1">'brightcove'</span><span class="p">,</span>
-  <span class="nx">videoId</span><span class="o">:</span> <span class="s1">'bctitleid'</span>
-  <span class="nx">videoParameters</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">bcpid</span><span class="o">:</span> <span class="s1">'bcpid'</span><span class="p">,</span>
-      <span class="nx">bckey</span><span class="o">:</span> <span class="s1">'bckey'</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
+<p><code>videoParameters</code></p>
+<p>Additional parameters passed through to the specific player based on <code>videoType</code>.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.editor({
+  videoType: 'brightcove',
+  videoId: '<span class="bcls-input">bctitleid</span>'
+  videoParameters: {
+      bcpid: '<span class="bcls-input">bcpid</span>',
+      bckey: '<span class="bcls-input">bckey</span>'
+  }
+});</code></pre>
 
-
-<p><strong>trackId (optional)</strong></p>
-<p>The ID of the Brightcove Interactivity commentary track to edit. A Brightcove Interactivity "track" is the container
-for popup, drawing, audio, etc, commentary. If you do not pass in a track id, a new
-track will be created, and the onNewTrack callback is fired. Developers can then
-save that track id to be passed in in the future.</p>
-<p><strong>onSave (optional)</strong></p>
+<p><code>trackId</code> (optional)</p>
+<p>The ID of the Brightcove Interactivity commentary track to edit. A Brightcove Interactivity "track" is the container for popup, drawing, audio, etc, commentary. If you do not pass in a track id, a new track will be created, and the onNewTrack callback is fired. Developers can then save that track id to be passed in in the future.</p>
+<p><code>onSave</code> (optional)</p>
 <p>When a save successfully finishes, this callback is called.</p>
-<p><strong>onNewTrack (optional)</strong></p>
-<p>If a new track is created by the editor, this callback will be passed the new trackId.
-This allows you to store this trackId and use it with <em>.viewer</em> API calls.</p>
-<p><strong>resetVariables (optional)</strong></p>
-<p><strong>getData(name)</strong></p>
+<p><code>onNewTrack</code> (optional)</p>
+<p>If a new track is created by the editor, this callback will be passed the new trackId. This allows you to store this trackId and use it with <em>.viewer</em> API calls.</p>
+<p><code>resetVariables</code> (optional)</p>
+<p><code>getData(name)</code></p>
 <p>Returns the value of the variable by <code>name</code>. If the method is called without any argument, it returns an object hash of all variable values.</p>
-<p><strong>setData(name, value)</strong></p>
+<p><code>setData(name, value)</code></p>
 <p>Sets the value of the variable by <code>name</code>. If the second argument is omitted, the key value is cleared.</p>
 <p>If the first argument is <code>null</code> or if there is one parameter that is an object, that object is used as a hash of multiple variable values to be set.</p>
 <p>If set to true, all track variables set by quizzes, clicks or iframe scripts will be cleared before loading.</p>
 <p>Note that on <code>HapyakEditor</code>, this method is asynchronous, so values that are set will not be  reflected by <code>getData</code> until the <code>data</code> event is triggered.</p>
+  </section>
+</article>
+
+
+
 <div name="AdvancedOptions12" data-unique="AdvancedOptions12"></div><h2>Advanced Options</h2>
 <p><strong>userId (optional, requires api key)</strong></p>
 <p>When using an api key, you can optionally pass in a userId. The userId should be some
