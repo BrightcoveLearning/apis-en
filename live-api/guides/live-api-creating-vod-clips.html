@@ -12,8 +12,6 @@ grandparent: Live API
 
 <p>Clips are videos extracted from a live stream. They can be sent to an S3 bucket, an FTP site, or a <span translate="No">Video Cloud</span> account. The clip is created as an MP4 video, and that is what is sent to the destination in all cases. In the case of <span translate="No">Video Cloud</span>, the MP4 will be transcoded by the ingest system, and what kinds of renditions are created for the video will depend on the ingest profile used.</p>
 
-<aside class="bcls-aside bcls-aside--warning language-editable">Note: VOD clips are incompatible with Context Aware Encoding (CAE) ingest profiles. Clips are automatically processed using the account default ingest profile, so if the default is a CAE profile, the clip creation will fail.</aside>
-
 <p>Definitions for clips are created using the <code translate="No">/vods</code> endpoint.</p>
 
 <p>Clips can be created in several ways:</p>
@@ -165,7 +163,8 @@ grandparent: Live API
         "tags": ["live", "clip"]
         },
         "ingest": {
-        "capture-images": true
+        "capture-images": true,
+        "profile": "<span class="bcls-input">valid-ingest-profile-name</span>"
         }
       }
     }
@@ -173,6 +172,11 @@ grandparent: Live API
 }
 </code>
 </pre>
+
+<aside class="bcls-aside bcls-aside--information">
+  Note that the <code translate="No">profile</code> field is optional. If you do not specify a profile, the default profile for the account will be used.
+  <p><strong>However, CAE profiles may not be used</strong>, so the if the default profile for the account is CAE, you must specify a different one.</p>
+</aside>
 
 <p>In this example, we are creating a clip of one-minute duration starting 5 minutes after the start of the live stream.</p>
 
