@@ -3175,6 +3175,10 @@ components:
       type: object
     CreateAdConfigurationbody.applicationAdConfiguration:
       properties:
+        ad_configuration_client_sdk_enabled:
+          description: This setting enables client-side player enhancements for Live SSAI.
+          type: boolean
+          default: false
         ad_configuration_compensation_disable:
           description: This setting will override ad timing compensation, a setting that reduces timing drift when ads that get returned are longer than expected. This is normally achieved by shortening the next ad break. When set to true, all ad break durations will  be called as-is, and compensation will not happen.
           type: boolean
@@ -3182,6 +3186,10 @@ components:
         ad_configuration_description:
           description: Human readable description of the configuration.
           type: string
+        ad_configuration_escape_vast_wrapper_url:
+          description: Certain ad providers return unescaped VASTAdTagURI values, and setting this applies URI encoding for all values.
+          type: boolean
+          default: false
         ad_configuration_expected_response_type:
           description: The expected response type based on your ad server
           type: string
@@ -3219,6 +3227,19 @@ components:
           minimum: 0
           maximum: 100
           default: 0
+        client_options:
+          $ref: '#/components/schemas/CreateAdConfigurationbody.applicationAdConfiguration.clientOptions'
+        enable_regional_ads:
+          description: This setting indicates that server-side ad requests will be sent from the live job processing region.
+          type: boolean
+          default: false
+        enable_roku_workarounds:
+          description: >-
+            This setting, when combined with ad_configuration_client_sdk_enabled, 
+            enables client-side player enhancements for Live SSAI specific to the
+            Roku streaming platform.
+          type: boolean
+          default: false
       required:
         - ad_configuration_description
         - ad_configuration_expected_response_type
@@ -3240,6 +3261,26 @@ components:
     #   title: >-
     #     Create_Ad_ConfigurationBody.application_ad_configuration.ad_configuration_transforms
     #   type: object
+    CreateAdConfigurationbody.applicationAdConfiguration.clientOptions:
+      properties:
+        client_only_tracking:
+          description: Disable server-side tracking events (impressions/quartiles)
+          type: boolean
+          default: false
+        show_ad_break_remaining_time:
+          description: Display time remaining for an ad break
+          type: boolean
+          default: false
+        show_ad_remaining_time:
+          description: Display time remaining for an ad
+          type: boolean
+          default: false
+        show_number_of_remaining_ads:
+          description: Display the number of ads remaining in the ad break
+          type: boolean
+          default: false
+      title: Create_Ad_ConfigurationBody.application_ad_configuration.client_options
+      type: object
     CreateBeaconSetResponse:
       properties:
         account_id:
