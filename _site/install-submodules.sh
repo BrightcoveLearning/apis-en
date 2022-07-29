@@ -7,6 +7,7 @@ git submodule add https://github.com/BrightcoveLearning/s-general
 git submodule add https://github.com/BrightcoveLearning/s-media
 git submodule add https://github.com/BrightcoveLearning/s-support
 git submodule add https://github.com/BrightcoveLearning/s-misc
+git submodule add https://github.com/BrightcoveLearning/s-brightcove-interactivity
 cd ..
 cd assets/images
 git submodule add https://github.com/BrightcoveLearning/s-admin-img
@@ -16,6 +17,7 @@ git submodule add https://github.com/BrightcoveLearning/s-media-img
 git submodule add https://github.com/BrightcoveLearning/s-support-img
 git submodule add https://github.com/BrightcoveLearning/s-feather-img
 git submodule add https://github.com/BrightcoveLearning/s-misc-img
+git submodule add https://github.com/BrightcoveLearning/s-brightcove-interactivity-img
 cd ..
 git submodule add https://github.com/BrightcoveLearning/s-site-assets-favicons
 git submodule add https://github.com/BrightcoveLearning/s-site-assets-stylesheets
