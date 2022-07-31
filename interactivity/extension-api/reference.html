@@ -12,187 +12,153 @@ parent: Brightcove Interactivity APIs
 <p><strong>Steps to use Extension API</strong></p>
 <ol>
 <li>
-<p>Located in the project editor view, click on the <img alt="alt text" src="https://hapyak-documentation.s3.amazonaws.com/extension-api/content/images/Screen+Shot+2019-06-04+at+3.40.46+PM.png"> icon to open the widget library menu.
-<img alt="alt text" src="https://hapyak-documentation.s3.amazonaws.com/extension-api/content/images/extension-api-4.png"></p>
+<p>Located in the project editor view, click on the <img alt="alt text" src="/assets/images/s-brightcove-interactivity-img/developers/widget-icon.png"> icon to open the widget library menu.
+<img alt="alt text" src="/assets/images/s-brightcove-interactivity-img/developers/extension-api-4.png"></p>
 </li>
 <li>
 <p>From here, click the HTML tab. This block of code contains all of the necessary scripts to get started. Editing the raw HTMLboiler-plate code gives you the freedom to build a custom extension or annotation tailored to your needs. <br>
-<img alt="alt text" src="https://hapyak-documentation.s3.amazonaws.com/extension-api/content/images/extension-api-5.png"></p>
+<img alt="alt text" src="/assets/images/s-brightcove-interactivity-img/developers/extension-api-5.png"></p>
 </li>
 </ol>
 <p>This example represents a good starting point:</p>
-<div class="highlight"><pre>  <span class="cp">&lt;!doctype html&gt;</span>
-<span class="nt">&lt;html&gt;</span>
-  <span class="nt">&lt;head&gt;</span>
-      <span class="nt">&lt;title&gt;&lt;/title&gt;</span>
-      <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;style</span> <span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+<pre class="line-numbers"><code class="language-html" translate="No">&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+      &lt;title&gt;&lt;/title&gt;
+      &lt;meta charset=&quot;utf-8&quot;/&gt;
+      &lt;style type=&quot;text/css&quot;&gt;
           html, body { margin: 0; padding: 0 }
-      <span class="nt">&lt;/style&gt;</span>
-  <span class="nt">&lt;/head&gt;</span>
-  <span class="nt">&lt;body&gt;</span>
-      <span class="c">&lt;!-- HTML code goes here --&gt;</span>
+      &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      &lt;!-- HTML code goes here --&gt;
 
-      <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"//d2qrdklrsxowl2.cloudfront.net/js/hapyak-iframe.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-      <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"//d2qrdklrsxowl2.cloudfront.net/js/hapyak.api.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-      <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+      &lt;script type=&quot;text/javascript&quot; src=&quot;//d2qrdklrsxowl2.cloudfront.net/js/hapyak-iframe.js&quot;&gt;&lt;/script&gt;
+      &lt;script type=&quot;text/javascript&quot; src=&quot;//d2qrdklrsxowl2.cloudfront.net/js/hapyak.api.js&quot;&gt;&lt;/script&gt;
+      &lt;script type=&quot;text/javascript&quot;&gt;
           (function () {
               /*
               Write your script code here
               */
 
-              hapyak.context.addEventListener('data', function (variables) {
+              hapyak.context.addEventListener(&#39;data&#39;, function (variables) {
                   /*
                   Access Environment variables here
                   */
               });
           }());
-      <span class="nt">&lt;/script&gt;</span>
-  <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
-</pre></div>
+      &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
 
+<section class="bcls-section">
+  <h2 id="Player_object">Player object</h2>
+  <h4>Object: <code>hapyak.context.player</code></h4>
+  <h3 id="player_methods">Methods</h3>
+  <h4><code translate="no">play()</code></h4>
+  <p><code>hapyak.context.player.play()</code></p>
+  <p>Plays the video.</p>
+  <h4><code>pause()</code></h4>
+  <p><code>hapyak.context.player.pause()</code></p>
+  <p>Pauses the video.</p>
+  <h4><code>mute()</code></h4>
+  <p><code>hapyak.context.player.mute()</code></p>
+  <p>Mutes the video.</p>
+  <h4><code>unmute()</code></h4>
+  <p><code>hapyak.context.player.unmute()</code></p>
+  <p>Unmutes the video.</p>
+  <h4><code>volume()</code></h4>
+  <p><code>hapyak.context.player.volume()</code></p>
+  <p>Passing no arguments to this function returns a number between 0 to 1 representing the current volume.</p>
+  <p><code>hapyak.context.player.volume(0.5)</code></p>
+  <p>Passing a number between 0-1 will set the volume of the player to that value.</p>
+  <h4><code>addClass(classNames, selector)</code></h4>
+  <p><code>hapyak.context.player.</code></p>
+  <p>Add CSS classes on the IFRAME annotation where:</p>
+  <ul>
+    <li><code>classNames</code> (string or array) can be a single class e.g <code>myAwesomeClass</code> or an array of classes <code>['class1', 'class2']</code></li>
+    <li><code>selector</code>  (optional) is used to target an existing class, id, or DOM element on the player element and add the class(es) to that element. If a selector is not passed in, the class will be added to the parent div within the iframe.</li>
+  </ul>
+  <h5>Example</h5>
+<pre><code class="language-javascript" translate="No">hapyak.context.player.addClass('myClass', 'div#wrapper &gt; h1)</code></pre>
+  <h4><code>removeClass(classNames, selector)</code></h4>
+  <p><code>hapyak.context.player.</code></p>
+  <p>Remove CSS classes on the IFRAME annotation where:</p>
+  <ul>
+    <li><code>classNames</code> (string or array) can be a single class e.g <code>myAwesomeClass</code> or an array of classes <code>['class1', 'class2']</code></li>
+    <li><code>selector</code>  (optional) is used to target an existing class, id, or DOM element on the player element and add the class(es) to that element. If a selector is not passed in, the class will be added to the parent div within the iframe.</li>
+  </ul>
+  <h5>Example</h5>
+<pre><code class="language-javascript" translate="No">hapyak.context.player.removeClass('myClass', 'div#wrapper &gt; .video-title')</code></pre>
+  <H3>Properties</H3>
+  <H4><code>paused</Code></H4>
+  <p><em>READ ONLY</em></p>
+  <p><code>let playerPaused = hapyak.context.player.paused</code></p>
+  <p>Get whether video is paused or not.</p>
+  <H4><code>duration</Code></H4>
+  <p><em>READ ONLY</em></p>
+  <p><code>const videoLength = hapyak.context.player.duration //duration in seconds</code></p>
+  <p>Returns video duration (unit: seconds).</p>
+  <H4><code>currentTime</Code></H4>
+  <p><em>READ / WRITE</em></p>
+  <p><code>let currentTime = hapyak.context.player.currentTime //returns time in seconds</code></p>
+  <p>Can be used to Get current video time (unit: seconds).</p>
+  <p><code>hapyak.context.player.currentTime = 20 //will jump to 20 seconds</code></p>
+  <p>Can also be used to set the current time of the video (jump to time).</p>
+  <H4><code>isEditMode</Code></H4>
+  <p><em>READ ONLY</em></p>
+  <p><code>hapyak.context.player.isEditMode</code></p>
+  <p>Returns true if the IFRAME is being displayed inside a Brightcove Interactivity editor.</p>
+  <H4><code>isEditing</Code></H4>
+  <p><em>READ ONLY</em></p>
+  <p><code>hapyak.context.player.isEditing</code></p>
+  <p>Returns true if the IFRAME is currently being edited.</p>
+</section>
+<section class="bcls-section">
+  <h2 id="Annotation_object">Annotation object</h2>
+  <aside class="bcls-aside bcls-aside--information language-editable">
+    <h3>IMPORTANT NOTE</h3>
+    <p>In order to set properties, the iFrame must be visible. The following example is one recommended way to ensure that the iframe is shown prior to attempting a resize.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener('iframeshow', function () {
+  hapyak.context.width = document.body.querySelector('.hapyak-iframe-container').offsetWidth;
+});</code></pre>
+</aside>
+  <h3>Methods</h3>
+  <h4><code>hapyak.context.releaseGate()</code></h4>
+  <p>A gate restricts the progress of a viewer in the video, requiring that they interact with an annotation prior to continuing on. In the extension api, you must explicitly state when a gate is to be relased.
+  To set a gate, toggle the respective option in the edit tab on the annotation to <code>y</code> as seen in these screenshots:</p>
+  <figure><img alt="edit" src="/assets/images/s-brightcove-interactivity-img/developers/edit.png"></figure>
+  <figure><img alt="gate" src="/assets/images/s-brightcove-interactivity-img/developers/gate.png"></figure>
+  <ul>
+  <li>If the IFRAME is set to be gated, calling this method will release that gate.</li>
+  </ul>
+  <h3>Properties</h3>
+  <h4><code>annotationData</code></h4>
+  <p><em>READ ONLY</em></p>
+  <p><code>hapyak.context.annotationData</code></p>
+  <p>Returns list of current annotation's properties. From here we can gain access to group and project configuration elements, including group and project level css. It is good practice to maintain styling by adding your group and project level CSS to the extension. In order to return this object, you must wait for the annotation to load:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener('annotationload', function(){
+  console.log("annotation Data", hapyak.context.annotationData)
+});</code></pre>
+  <h4><code>width</code></h4>
+  <p><em>READ / WRITE</em></p>
+  <p><code>hapyak.context.width = pixels</code></p>
+  <p>Sets or gets the width of the IFRAME element.</p>
+  <h4><code>height</code></h4>
+  <p><em>READ / WRITE</em></p>
+  <p><code>hapyak.context.height = pixels</code></p>
+  <p>Sets or gets the height of the IFRAME element.</p>
 
-<div name="Player" data-unique="Player"></div><h2>Player</h2>
-<h4>Object: hapyak.context.player</h4>
-<div name="METHOD:play()" data-unique="METHOD:play()"></div><h3><strong>METHOD: play()</strong></h3>
-<p><code>hapyak.context.player.play()</code></p>
-<ul>
-<li>Plays the video</li>
-</ul>
-<div name="METHOD:pause()" data-unique="METHOD:pause()"></div><h3><strong>METHOD: pause()</strong></h3>
-<p><code>hapyak.context.player.pause()</code></p>
-<ul>
-<li>Pauses the video</li>
-</ul>
-<div name="METHOD:mute()" data-unique="METHOD:mute()"></div><h3><strong>METHOD: mute()</strong></h3>
-<p><code>hapyak.context.player.mute()</code></p>
-<ul>
-<li>Mutes the video</li>
-</ul>
-<div name="METHOD:unmute()" data-unique="METHOD:unmute()"></div><h3><strong>METHOD: unmute()</strong></h3>
-<p><code>hapyak.context.player.pause()</code></p>
-<ul>
-<li>unmutes the video</li>
-</ul>
-<div name="METHOD:volume()" data-unique="METHOD:volume()"></div><h3><strong>METHOD: volume()</strong></h3>
-<p><code>hapyak.context.player.volume()</code></p>
-<ul>
-<li>Passing no arguments to this function returns a number between 0 to 1 representing the current volume.</li>
-</ul>
-<p><code>hapyak.context.player.volume(0.5)</code></p>
-<ul>
-<li>Passing a number between 0-1 will set the volume of the player to that value.</li>
-</ul>
-<div name="METHOD:addClass,removeClass" data-unique="METHOD:addClass,removeClass"></div><h3><strong>METHOD: addClass, removeClass</strong></h3>
-<p><code>addClass(classNames, selector) and removeClass(classNames, selector)</code></p>
-<p>Set or remove CSS classes on the IFRAME annotation where: <br></p>
-<ul>
-<li><code>classNames</code> (string or array) <br>
-<code>classNames</code> can be a single class e.g <code>myAwesomeClass</code> or an array of classes <code>['class1', 'class2']</code> <br></li>
-<li><code>selector</code> (optional) <br>
- is used to target an existing class, id, or DOM element on the player element and add the class(es) to that element. If a selector is not passed in, the class will be added to the parent div within the iframe. <br></li>
-</ul>
-<p><code>selector</code> (optional) is used to target an existing class, id, or DOM element on the player element and add the class(es) to that element. <br></p>
-<p><strong>examples:</strong> <br></p>
-<ul>
-<li><code>hapyak.context.player.addClass('myClass', 'div#wrapper &gt; h1)</code></li>
-<li><code>hapyak.context.player.removeClass('myClass', 'div#wrapper &gt; .exampleElement')</code></li>
-</ul>
-<p><br></p>
-<div name="PROPERTY:paused" data-unique="PROPERTY:paused"></div><h3><strong>PROPERTY: paused</strong><br></h3>
-<p><em>READ ONLY</em></p>
-<p><code>var playerPaused = hapyak.context.player.paused</code></p>
-<ul>
-<li>Get whether video is paused or not</li>
-</ul>
-<div name="PROPERTY:duration" data-unique="PROPERTY:duration"></div><h3><strong>PROPERTY: duration</strong><br></h3>
-<p><em>READ ONLY</em></p>
-<p><code>var videoLength = hapyak.context.player.paused //duration in seconds</code></p>
-<ul>
-<li>returns video duration (unit: seconds)</li>
-</ul>
-<div name="PROPERTY:currentTime" data-unique="PROPERTY:currentTime"></div><h3><strong>PROPERTY: currentTime</strong><br></h3>
-<p><em>READ / WRITE</em></p>
-<p><code>var currentTime = hapyak.context.player.currentTime //returns time in seconds</code></p>
-<ul>
-<li>can be used to Get current video time (unit: seconds)</li>
-</ul>
-<p><code>hapyak.context.player.currentTime = 20 //will jump to 20 seconds</code></p>
-<ul>
-<li>can also be used to set the current time of the video (jump to time)</li>
-</ul>
-<div name="PROPERTY:isEditMode" data-unique="PROPERTY:isEditMode"></div><h3><strong>PROPERTY: isEditMode</strong><br></h3>
-<p><em>READ ONLY</em></p>
-<p><code>hapyak.context.player.isEditMode</code></p>
-<ul>
-<li>Returns true if the IFRAME is being displayed inside a HapYak editor</li>
-</ul>
-<div name="PROPERTY:isEditing" data-unique="PROPERTY:isEditing"></div><h3><strong>PROPERTY: isEditing</strong><br></h3>
-<p><em>READ ONLY</em></p>
-<p><code>hapyak.context.player.isEditing</code></p>
-<ul>
-<li>Returns true if the IFRAME is currently being edited</li>
-</ul>
-<p><br></p>
-<div name="Object:Annotation" data-unique="Object:Annotation"></div><h2>Object: Annotation</h2>
-<div name="IMPORTANTNOTE" data-unique="IMPORTANTNOTE"></div><h3>IMPORTANT NOTE</h3>
-<p>In order to set properties, the iFrame must be visible. The following example is one recommended way to ensure that the iframe is shown prior to attempting a resize.</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'iframeshow'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'.hapyak-iframe-container'</span><span class="p">).</span><span class="nx">offsetWidth</span><span class="p">;</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<div name="METHOD:releaseGate()" data-unique="METHOD:releaseGate()"></div><h3><strong>METHOD: releaseGate()</strong></h3>
-<p><code>hapyak.context.releaseGate()</code></p>
-<p>A gate restricts the progress of a viewer in the video, requiring that they interact with an annotation prior to continuing on. In the extension api, you must explicitly state when a gate is to be relased.
-To set a gate, toggle the respective option in the edit tab on the annotation to <code>y</code> as seen in this screenshot:</p>
-<p><img alt="alt text" src="https://hapyak-documentation.s3.amazonaws.com/extension-api/content/images/gate.png"></p>
-<ul>
-<li>If the IFRAME is set to be gated, calling this method will release that gate.</li>
-</ul>
-<div name="PROPERTY:annotationData" data-unique="PROPERTY:annotationData"></div><h3><strong>PROPERTY: annotationData</strong></h3>
-<p><br>
-<em>READ ONLY</em></p>
-<p><code>hapyak.context.annotationData</code></p>
-<ul>
-<li>Returns list of current annotation's properties. From here we can gain access to group and project configuration elements, including group and project level css. It is good practice to maintain styling by adding your group and project level CSS to the extension. In order to return this object, you must wait for the annotation to load:</li>
-</ul>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'annotationload'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"annotation Data"</span><span class="p">,</span> <span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">annotationData</span><span class="p">)</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<div name="PROPERTY:width" data-unique="PROPERTY:width"></div><h3><strong>PROPERTY: width</strong><br></h3>
-<p><em>READ / WRITE</em></p>
-<p><code>hapyak.context.width = pixels</code></p>
-<ul>
-<li>Sets or gets the width of the IFRAME element.</li>
-</ul>
-<div name="PROPERTY:height" data-unique="PROPERTY:height"></div><h3><strong>PROPERTY: height</strong> <br></h3>
-<p><em>READ / WRITE</em></p>
-<p><code>hapyak.context.height = pixels</code></p>
-<ul>
-<li>Sets or gets the IFRAME element.</li>
-</ul>
-<div name="Events" data-unique="Events"></div><h2>Events</h2>
-<p>Events are accessed through event listeners on the hapyak.context object:</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"event"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="c1">//do something here</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p><br></p>
-<div name="annotationload" data-unique="annotationload"></div><h3><strong>annotationload</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"annotationload"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
-<span class="p">});</span>
-</pre></div>
-
-
+  <h3>Events</h3>
+  <h4><code></code></h4>
+  <p>Events are accessed through event listeners on the hapyak.context object:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("event", function () {
+  //do something here
+});</code></pre>
+  <h4><code>annotationload</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("annotationload", function (data) {
+  console.log(data)
+});</code></pre>
 <ul>
 <li>
 <p>Emitted when the current annotation loads.   </p>
@@ -201,194 +167,138 @@ To set a gate, toggle the respective option in the edit tab on the annotation to
 <p>The object emitted by this event contains data related to the annotation, as well as group, and project configuration data.</p>
 </li>
 </ul>
-<div class="highlight"><pre><span class="p">{</span>
-<span class="nl">top:</span> <span class="s">"19.999999999999993%"</span><span class="p">,</span>
-<span class="nl">left:</span> <span class="s">"20%"</span><span class="p">,</span>
-<span class="nl">width:</span> <span class="s">"60%"</span><span class="p">,</span>
-<span class="nl">height:</span> <span class="s">"60%"</span><span class="p">,</span>
-<span class="nl">duration:</span> <span class="mi">3</span><span class="p">,</span>
-<span class="nl">durationFormat:</span> <span class="s">"seconds"</span>
-<span class="nl">durationValue:</span> <span class="mi">3</span>
-<span class="nl">end:</span> <span class="mf">6.2256</span>
-<span class="nl">groupConfig:</span> <span class="p">{</span><span class="n">gates</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span> <span class="n">minWidth</span><span class="o">:</span> <span class="s">"0"</span><span class="p">,</span> <span class="n">iframeTimeout</span><span class="o">:</span> <span class="mi">30000</span><span class="p">}</span>
-<span class="nl">height:</span> <span class="s">"60%"</span>
-<span class="nl">id:</span> <span class="s">"iframe1560519550307"</span>
-<span class="nl">left:</span> <span class="s">"20%"</span>
-<span class="nl">projectConfig:</span> <span class="p">{</span><span class="n">css</span><span class="o">:</span> <span class="s">""</span><span class="p">,</span> <span class="n">title</span><span class="o">:</span> <span class="s">"Extension API example"</span><span class="p">},</span>
-<span class="nl">projectId:</span> <span class="mi">284539</span>
-<span class="nl">projectTrackId:</span> <span class="mi">575497</span>
-<span class="nl">start:</span> <span class="mf">3.2256</span>
-<span class="nl">startTimeFormat:</span> <span class="s">"seconds"</span>
-<span class="nl">startTimeValue:</span> <span class="mf">3.2256</span>
-<span class="p">}</span>
-</pre></div>
+<pre class="line-numbers"><code class="language-javascript" translate="No">{
+  top: "19.999999999999993%",
+  left: "20%",
+  width: "60%",
+  height: "60%",
+  duration: 3,
+  durationFormat: "seconds"
+  durationValue: 3
+  end: 6.2256
+  groupConfig: {gates: true, minWidth: "0", iframeTimeout: 30000}
+  height: "60%"
+  id: "iframe1560519550307"
+  left: "20%"
+  projectConfig: {css: "", title: "Extension API example"},
+  projectId: 284539
+  projectTrackId: 575497
+  start: 3.2256
+  startTimeFormat: "seconds"
+  startTimeValue: 3.2256
+}</code></pre>
+  <h4><code>loadedmetadata</code></h4>
+  <pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("loadedmetadata", function (data) {
+    console.log(data)
+});</code></pre>
+  <p>Emitted when the Brightcove Interactivity metadata has finished loading.</p>
+  <h4><code>data</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("data", function (data) {
+  console.log(data);
+});</code></pre>
+  <p>The 'data' event will fire anytime there is a change in the environment variables. This happens often. Below is an example of the object that is returned.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">{
+  annotationIds: {1457229: true, 1457445: true, 1457474: true, 1457475: true}
+  annotationsLoaded: true
+  configuration: {gates: true, minWidth: "0", iframeTimeout: 30000,}
+  projectAnnotations: {1457229: {}, 1457445: {}, 1457474: {}, 1457475: {}}
+  projectConfig: {css: "", title: "Extension API example"}
+  projectId: 284539
+  projectName: "Extension API example"
+}</code></pre>
 
+<h4><code>iframeshow</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("iframeshow", function () {
+  console.log('Iframe has appeared');
+});</code></pre>
+<p>Emitted when the IFRAME annotation enters its start time and is shown.</p>
+<h4><code>iframehide</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("iframehide", function () {
+  console.log('Iframe annotation is no longer visible');
+});</code></pre>
+<p>Emitted when the IFRAME annotation passes its end time and is hidden.</p>
+<h4><code>timeupdate</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("timeupdate", function () {
+  // prints current time of video to the console
+  console.log(hapyak.context.player.currentTime);
+});</code></pre>
+<p>Emitted when the current video time changes, and at a regular interval while the video is playing.</p>
+<h4><code>resized</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("resized", function () {
+  console.log('Player is becoming smaller');
+});</code></pre>
+<p>Emitted when the player is resized relative to the window.</p>
+<h4><code>play</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("play", function () {
+  console.log("Video is currently playing");
+});</code></pre>
+<p>Emitted when the video begins playing.</p>
+<h4><code>pause</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("pause", function () {
+  console.log("Player has been paused");
+});</code></pre>
+<p>Emitted when the video becomes paused.</p>
+<h4><code>editModeChange</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("pause", function () {
+  console.log('Player has been paused');
+});</code></pre>
+<p>Emitted when the edit mode is changed within the Brightcove Interactivity editor.</p>
+<h4><code>playerHover</code></h4>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("playerHover", function () {
+  console.log('Mouse is being hovered within the player');
+});</code></pre>
+<p>Emitted when a hover event occurs over the player. This event as a returned value of true or false for hovering or not hovering respectively.</p>
+</section>
 
-<p><br></p>
-<div name="loadedmetadata" data-unique="loadedmetadata"></div><h3><strong>loadedmetadata</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"loadedmetadata"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when the HapYak metadata has finished loading.</li>
-</ul>
-<p><br></p>
-<div name="data" data-unique="data"></div><h3><strong>data</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>The 'data' event will fire anytime there is a change in the environment variables. This happens often. Below is an example of the object that is returned.</li>
-</ul>
-<div class="highlight"><pre><span class="p">{</span>
-<span class="nl">annotationIds:</span> <span class="p">{</span><span class="mi">1457229</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span> <span class="mi">1457445</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span> <span class="mi">1457474</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span> <span class="mi">1457475</span><span class="o">:</span> <span class="nb">true</span><span class="p">}</span>
-<span class="nl">annotationsLoaded:</span> <span class="nb">true</span>
-<span class="nl">configuration:</span> <span class="p">{</span><span class="n">gates</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span> <span class="n">minWidth</span><span class="o">:</span> <span class="s">"0"</span><span class="p">,</span> <span class="n">iframeTimeout</span><span class="o">:</span> <span class="mi">30000</span><span class="p">,}</span>
-<span class="nl">projectAnnotations:</span> <span class="p">{</span><span class="mi">1457229</span><span class="o">:</span> <span class="p">{},</span> <span class="mi">1457445</span><span class="o">:</span> <span class="p">{},</span> <span class="mi">1457474</span><span class="o">:</span> <span class="p">{},</span> <span class="mi">1457475</span><span class="o">:</span> <span class="p">{}}</span>
-<span class="nl">projectConfig:</span> <span class="p">{</span><span class="n">css</span><span class="o">:</span> <span class="s">""</span><span class="p">,</span> <span class="n">title</span><span class="o">:</span> <span class="s">"Extension API example"</span><span class="p">}</span>
-<span class="nl">projectId:</span> <span class="mi">284539</span>
-<span class="nl">projectName:</span> <span class="s">"Extension API example"</span>
-<span class="p">}</span>
-</pre></div>
-
-
-<p><br></p>
-<div name="iframeshow" data-unique="iframeshow"></div><h3><strong>iframeshow</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"iframeshow"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Iframe has appeared'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when the IFRAME annotation enters its start time &amp; is shown</li>
-</ul>
-<div name="timeupdate" data-unique="timeupdate"></div><h3><strong>timeupdate</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"timeupdate"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// prints current time of video to the console</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">currentTime</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when the current video time changes, and at a regular interval while the video is playing</li>
-</ul>
-<div name="resized" data-unique="resized"></div><h3><strong>resized</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"resized"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Player is becoming smaller'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when the player is resized relative to the window</li>
-</ul>
-<div name="play" data-unique="play"></div><h3><strong>play</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"play"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Video is currently playing"</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when the video begins playing</li>
-</ul>
-<div name="pause" data-unique="pause"></div><h3><strong>pause</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"pause"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Player has been paused'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when the video becomes paused</li>
-</ul>
-<div name="iframehide" data-unique="iframehide"></div><h3><strong>iframehide</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"iframehide"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Iframe annotation is no longer visible'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when the IFRAME annotation passes its end time &amp; is hidden</li>
-</ul>
-<div name="editModeChange" data-unique="editModeChange"></div><h3><strong>editModeChange</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"editModeChange"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Video is currently being edited'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when the edit mode is changed within the HapYak editor.</li>
-</ul>
-<div name="playerHover" data-unique="playerHover"></div><h3><strong>playerHover</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"playerHover"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Mouse is being hovered within the player'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<ul>
-<li>Emitted when a hover event occurs over the player. This event as a returned value of true or false for hovering or not hovering respectively.</li>
-</ul>
-<div name="Object:Tracking" data-unique="Object:Tracking"></div><h2>Object: Tracking</h2>
-<p><strong>hapyak.context.tracking.widgetAction(action, properties)</strong></p>
-<p>Allows partners to track custom analytics.</p>
-<div class="highlight"><pre><span class="nx">trackButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">tracking</span><span class="p">.</span><span class="nx">widgetAction</span><span class="p">(</span><span class="s1">'Follow'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'username'</span><span class="o">:</span> <span class="s1">'foobar123'</span><span class="p">});</span>
-<span class="p">});</span>
-</pre></div>
-
+<section class="bcls-section">
+  <h2 id="tracking_object">Tracking object</h2>
+  <p><code>hapyak.context.tracking.widgetAction(action, properties)</code></p>
+  <p>Allows partners to track custom analytics.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">trackButton.addEventListener( "click", function () {
+  hapyak.context.tracking.widgetAction('Follow', {'username': 'foobar123'});
+});</code></pre>
 
 <ul>
 <li>Action: The name of the action being tracked. This can be any string.</li>
 <li>Properties: Object of properties you wish to attach to this tracked action. The properties you wish to track is entirely up to you, but must be in true JSON format.</li>
 <li>using the VideoJS4 Embed type provided in the share modal, you can add options to the viewer object that will allow you to see, and track your own analytics as seen below:</li>
 </ul>
-<div class="highlight"><pre>    <span class="nt">&lt;video</span> <span class="na">id=</span><span class="s">"hapyak-player-157199-8825"</span>  <span class="na">class=</span><span class="s">"video-js vjs-default-skin"</span> <span class="na">width=</span><span class="s">"720"</span> <span class="na">height=</span><span class="s">"405"</span> <span class="na">playsinline=</span><span class="s">"playsinline"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">"https://sample.hapyak-hosted.com/group_uploads/23/16673/videos/862f7e32a9b94974b98f004ae49fa9ef/Sample-Video-with-sound.mp4"</span> <span class="na">type=</span><span class="s">"video/mp4"</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;/video&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"//vjs.zencdn.net/4.8/video-js.css"</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"//vjs.zencdn.net/4.8/video.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 
-  <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"//d2qrdklrsxowl2.cloudfront.net/js/hapyak.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-  <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
-      (function () {
-          var vjs = videojs('hapyak-player-157199-8825');
+<pre class="line-numbers"><code class="language-html" translate="No">&lt;video id=&quot;hapyak-player-157199-8825&quot;  class=&quot;video-js vjs-default-skin&quot; width=&quot;720&quot; height=&quot;405&quot; playsinline=&quot;playsinline&quot;&gt;
+  &lt;source src=&quot;https://sample.hapyak-hosted.com/group_uploads/23/16673/videos/862f7e32a9b94974b98f004ae49fa9ef/Sample-Video-with-sound.mp4&quot; type=&quot;video/mp4&quot;/&gt;
+&lt;/video&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;//vjs.zencdn.net/4.8/video-js.css&quot;&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;//vjs.zencdn.net/4.8/video.js&quot;&gt;&lt;/script&gt;
 
-          hapyak.viewer({
-              apiKey: "12345678910111213",
-              projectId: 286041,
-              resetVariables: true,
-              player: vjs,
-              videoType: "html5",
-              playerType: "videojs4",
-              autoplay: false,
-              oncustomtrackingevent: function(data) {
-                console.log("custom Data", data)
-              }
-          });
-      })();
-  <span class="nt">&lt;/script&gt;</span>
-</pre></div>
+&lt;script type=&quot;text/javascript&quot; src=&quot;//d2qrdklrsxowl2.cloudfront.net/js/hapyak.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+  (function () {
+      var vjs = videojs(&#39;hapyak-player-157199-8825&#39;);
 
+      hapyak.viewer({
+          apiKey: &quot;12345678910111213&quot;,
+          projectId: 286041,
+          resetVariables: true,
+          player: vjs,
+          videoType: &quot;html5&quot;,
+          playerType: &quot;videojs4&quot;,
+          autoplay: false,
+          oncustomtrackingevent: function(data) {
+            console.log(&quot;custom Data&quot;, data)
+          }
+      });
+  })();
+&lt;/script&gt;</code></pre>
+<p>For more information on the viewer object check out <a href="/interactivity/embed-api/reference.html#viewer_api">this document</a>.</p>
+</section>
 
-<ul>
-<li>for more information on the viewer object check out <a href="http://dev.hapyak.com/docs/hapyak-embed-api/#ViewerAPI">these docs</a></li>
-</ul>
-<div name="SessionVariables" data-unique="SessionVariables"></div><h2>Session Variables</h2>
-<p>These variables only exists during the session…
-Setting variables via the Extension API is functionally equivalent to passing in a "variables" object on the Viewer.</p>
-<p>OBJECT: <code>hapyak.context.env</code></p>
+<section class="bcls-section">
+  <h2 id="session_variables">Session variables</h2>
+  <p>These variables only exists during the session. Setting variables via the Extension API is functionally equivalent to passing in a "variables" object on the Viewer.</p>
+  <p>OBJECT: <code>hapyak.context.env</code></p>
+
+</section>
+<div name="SessionVariables" data-unique="SessionVariables"></div><h2></h2>
 <div name="METHOD:set(name,value,temp,scope)" data-unique="METHOD:set(name,value,temp,scope)"></div><h3><strong>METHOD: set(name, value, temp, scope)</strong></h3>
 <div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'obj'</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"Andrew"</span><span class="p">,</span> <span class="nx">anotherName</span><span class="o">:</span> <span class="s2">"Homer J Simpson"</span><span class="p">},</span> <span class="kc">false</span><span class="p">,</span> <span class="s1">'track'</span><span class="p">);</span>
 </pre></div>
