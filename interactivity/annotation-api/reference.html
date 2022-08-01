@@ -1,325 +1,198 @@
-<html lang="en"><head>
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
-  <link href="/assets/s-site-assets-stylesheets/roboto.css" rel="stylesheet">
-  <link type="text/css" rel="stylesheet" href="/assets/s-site-assets-stylesheets/jquery.tocify.css">
-  <style>
-      .highlight .hll { background-color: #ffffcc }
-.highlight  { background: #ffffff; }
-.highlight .c { color: #aaaaaa; font-style: italic } /* Comment */
-.highlight .err { color: #FF0000; background-color: #FFAAAA } /* Error */
-.highlight .k { color: #0000aa } /* Keyword */
-.highlight .cm { color: #aaaaaa; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #4c8317 } /* Comment.Preproc */
-.highlight .c1 { color: #aaaaaa; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #0000aa; font-style: italic } /* Comment.Special */
-.highlight .gd { color: #aa0000 } /* Generic.Deleted */
-.highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #aa0000 } /* Generic.Error */
-.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00aa00 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
-.highlight .gp { color: #555555 } /* Generic.Prompt */
-.highlight .gs { font-weight: bold } /* Generic.Strong */
-.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
-.highlight .gt { color: #aa0000 } /* Generic.Traceback */
-.highlight .kc { color: #0000aa } /* Keyword.Constant */
-.highlight .kd { color: #0000aa } /* Keyword.Declaration */
-.highlight .kn { color: #0000aa } /* Keyword.Namespace */
-.highlight .kp { color: #0000aa } /* Keyword.Pseudo */
-.highlight .kr { color: #0000aa } /* Keyword.Reserved */
-.highlight .kt { color: #00aaaa } /* Keyword.Type */
-.highlight .m { color: #009999 } /* Literal.Number */
-.highlight .s { color: #aa5500 } /* Literal.String */
-.highlight .na { color: #1e90ff } /* Name.Attribute */
-.highlight .nb { color: #00aaaa } /* Name.Builtin */
-.highlight .nc { color: #00aa00; text-decoration: underline } /* Name.Class */
-.highlight .no { color: #aa0000 } /* Name.Constant */
-.highlight .nd { color: #888888 } /* Name.Decorator */
-.highlight .ni { color: #880000; font-weight: bold } /* Name.Entity */
-.highlight .nf { color: #00aa00 } /* Name.Function */
-.highlight .nn { color: #00aaaa; text-decoration: underline } /* Name.Namespace */
-.highlight .nt { color: #1e90ff; font-weight: bold } /* Name.Tag */
-.highlight .nv { color: #aa0000 } /* Name.Variable */
-.highlight .ow { color: #0000aa } /* Operator.Word */
-.highlight .w { color: #bbbbbb } /* Text.Whitespace */
-.highlight .mf { color: #009999 } /* Literal.Number.Float */
-.highlight .mh { color: #009999 } /* Literal.Number.Hex */
-.highlight .mi { color: #009999 } /* Literal.Number.Integer */
-.highlight .mo { color: #009999 } /* Literal.Number.Oct */
-.highlight .sb { color: #aa5500 } /* Literal.String.Backtick */
-.highlight .sc { color: #aa5500 } /* Literal.String.Char */
-.highlight .sd { color: #aa5500 } /* Literal.String.Doc */
-.highlight .s2 { color: #aa5500 } /* Literal.String.Double */
-.highlight .se { color: #aa5500 } /* Literal.String.Escape */
-.highlight .sh { color: #aa5500 } /* Literal.String.Heredoc */
-.highlight .si { color: #aa5500 } /* Literal.String.Interpol */
-.highlight .sx { color: #aa5500 } /* Literal.String.Other */
-.highlight .sr { color: #009999 } /* Literal.String.Regex */
-.highlight .s1 { color: #aa5500 } /* Literal.String.Single */
-.highlight .ss { color: #0000aa } /* Literal.String.Symbol */
-.highlight .bp { color: #00aaaa } /* Name.Builtin.Pseudo */
-.highlight .vc { color: #aa0000 } /* Name.Variable.Class */
-.highlight .vg { color: #aa0000 } /* Name.Variable.Global */
-.highlight .vi { color: #aa0000 } /* Name.Variable.Instance */
-.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+---
+title: Annotations Client CRUD API
+description: 'The Brightcove Interactivity Editor API object has methods for <a href="http://en.wikipedia.org/wiki/CRUD">creating, reading, updating and deleting</a> annotations.'
+parent: Brightcove Interactivity API
+---
 
-      body {
-          padding-top: 80px;
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="Setup">Setup</h2>
+    <p>First, create a hapyak editor object. Annotations will not be accessible until they are loaded, so it's best to wait until the <code>loadannotations</code> event has fired.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">let editor = hapyak.editor({
+  //fill in apiKey, video, track, etc
+  onLoadAnnotations: function () {
+      /*
+      use CRUD methods here
+      editor.annotations.get(...)
+      editor.annotations.all(...)
+      editor.annotations.create(...)
+      editor.annotations.update(...)
+      editor.annotations.remove(...)
+      */
+  }
+});</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="calling_crud_methods">Calling CRUD methods</h2>
+    <p>All the CRUD methods run asynchronously and accept an optional callback function as the last parameter, which will run when the operation has succeeded and finished saving or has failed. The callback function receives two arguments:</p>
+    <ol>
+      <li>The result of a successful operation, or <code>null</code> if the operation failed.</li>
+      <li>The error message in case of an error, or <code>null</code> if the operation succeeded.</li>
+    </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="annotation_types">Annotation types</h2>
+    <p>The API will provide a list of available annotation types with the <code>types</code> method, which takes no parameters other than the callback function. The callback function recieves a hash of objects representing information about each annotation type. The following fields are provided:</p>
+    <ul>
+    <li><code>id</code> - string used to identify the type</li>
+    <li><code>title</code> - text title of the annotation type</li>
+    <li><code>enabled</code> - boolean value describing whether new annotations of this type can be created</li>
+    <li><code>icon</code> - a string that can be used to render an icon representing this type</li>
+    <li><code>defaults</code> - a hash of default properties</li>
+    </ul>
+<pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.types(function (types, errr) {
+  if (err) {
+      console.log('Error retrieving annotation types: ' + err);
+      return;
+  }
+
+  console.log('Annotation types', annotation);
+});</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="retrieving_a_single_annotation">Retrieving a single annotation</h2>
+    <p>Individual annotations can be retrieved by numerical id using the <code>get</code> method.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.get(1234, function (annotation, err) {
+  if (err) {
+      console.log('Error retrieving annotation: ' + err);
+      return;
+  }
+
+  ///annotations is an array
+  console.log('Loaded annotation', annotation);
+});</code></pre>
+    <p>The retrieved object will contain the following fields:</p>
+    <ul>
+    <li><code>annotationId</code> - permanent unique id for this annotation</li>
+    <li><code>trackId</code> - id of the track to which this annotation is attached</li>
+    <li><code>type</code> - a string representing the type of the annotation (e.g. "pop", "hotlink", "image", "quiz")</li>
+    <li><code>created</code> - numerical unix time stamp of the annotations' creation time (i.e. seconds since midnight UTC 1/1/1970)</li>
+    <li><code>modified</code> - time that the annotation was last modified (also numeric time stamp)</li>
+    <li><code>writable</code> - a boolean value indicating whether this annotation can be modified</li>
+    <li><code>properties</code> - plugin-specific properties for this annotation, including <code>start</code> time</li>
+    </ul>
+    <p>Sample retrieved annotation object:</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">{
+  "annotationId": 19702,
+  "trackId": 1630,
+  "type": "pop",
+  "created": 1389302540413,
+  "modified": 1389302540426,
+  "writable": true,
+  "properties": {
+      "text": "Hello World",
+      "_duration": 5,
+      "start": 0,
+      "mode": "pop",
+      "top": "80%",
+      "left": "5%"
+  },
+  "customConfig": {
+      "Lorem": "Ipsum"
+  }
+}</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="listing_annotations">Listing Annotations</h2>
+    <p>The <code>all</code> method will return all annotations currently loaded, sorted by start and end time. There is one optional parameter, which is a string representing the annotation type by which to filter the results. The callback function receives an array of annotation objects in the same format as those returned by <code>get</code>.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">//retrieve all annotations
+  editor.annotations.all(function (annotations, err) {
+      if (err) {
+          console.log('Error retrieving annotations: ' + err);
+          return;
       }
-
-      #toc {
-          background-color: #f7f5fa;
-          font-family: "Roboto";
-      }
-
-      h1, h2, h3, h4 {
-          font-family: "Roboto";
-      }
-  </style>
-</head>
-<body>
-
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"><img src="/css/images/hapyak_logo_complete.svg" width="120px"></a>
-      </div>
-      <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-              <li><a href="/docs/hapyak-embed-api/">Embed API</a></li>
-              <li class="active"><a href="/docs/hapyak-crud-api/">Annotation CRUD API</a></li>
-              <li><a href="/docs/hapyak-iframe-api/">Extension API</a></li>
-              <li><a href="/docs/hapyak-playlist-api/">Playlist API</a></li>
-              <li><a href="/docs/hapyak-responsive-api/">Responsive API</a></li>
-              <li><a href="/docs/hapyak-addon-api/">Addon API</a></li>
-          </ul>
-      </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row">
-      <div class="col-md-4 hidden-sm">
-          <div id="toc" class="tocify">
-          <ul id="tocify-header0" class="tocify-header nav nav-pills nav-stacked"><li class="tocify-item active" data-unique="AnnotationsClientCRUDAPI"><a>Annotations Client CRUD API</a></li></ul><ul id="tocify-header1" class="tocify-header nav nav-pills nav-stacked"><li class="tocify-item" data-unique="Setup"><a>Setup</a></li></ul><ul id="tocify-header2" class="tocify-header nav nav-pills nav-stacked"><li class="tocify-item" data-unique="CallingCRUDmethods"><a>Calling CRUD methods</a></li><ul class="tocify-subheader nav nav-pills nav-stacked" data-tag="2"><li class="tocify-item" data-unique="Annotationtypes"><a>Annotation types</a></li><li class="tocify-item" data-unique="Retrievingasingleannotation"><a>Retrieving a single annotation</a></li><li class="tocify-item" data-unique="ListingAnnotations"><a>Listing Annotations</a></li><li class="tocify-item" data-unique="Create"><a>Create</a></li><li class="tocify-item" data-unique="Update"><a>Update</a></li><li class="tocify-item" data-unique="Delete"><a>Delete</a></li></ul></ul><ul id="tocify-header3" class="tocify-header nav nav-pills nav-stacked"><li class="tocify-item" data-unique="CRUDAPIevents"><a>CRUD API events</a></li></ul></div>
-      </div>
-      <div class="col-md-8">
-          <div name="AnnotationsClientCRUDAPI" data-unique="AnnotationsClientCRUDAPI"></div><h1>Annotations Client CRUD API</h1>
-<p>The HapYak Editor API object has methods for <a href="http://en.wikipedia.org/wiki/CRUD">creating, reading, updating and deleting</a> annotations.</p>
-<div name="Setup" data-unique="Setup"></div><h1>Setup</h1>
-<p>First, create a hapyak editor object. Annotations will not be accessible until they are loaded, so it's best to wait until the 'loadannotations' event has fired.</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">editor</span> <span class="o">=</span> <span class="nx">hapyak</span><span class="p">.</span><span class="nx">editor</span><span class="p">({</span>
-  <span class="c1">//fill in apiKey, video, track, etc</span>
-  <span class="nx">onLoadAnnotations</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="cm">/*</span>
-<span class="cm">        use CRUD methods here</span>
-<span class="cm">        editor.annotations.get(...)</span>
-<span class="cm">        editor.annotations.all(...)</span>
-<span class="cm">        editor.annotations.create(...)</span>
-<span class="cm">        editor.annotations.update(...)</span>
-<span class="cm">        editor.annotations.remove(...)</span>
-<span class="cm">        */</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<div name="CallingCRUDmethods" data-unique="CallingCRUDmethods"></div><h1>Calling CRUD methods</h1>
-<p>All the CRUD methods run asynchronously and accept an optional callback function as the last parameter, which will run when the operation has succeeded and finished saving or has failed. The callback function receives two arguments:
-1. The result of a successful operation, or <code>null</code> if the operation failed.
-2. The error message in case of an error, or <code>null</code> if the operation succeeded.</p>
-<div name="Annotationtypes" data-unique="Annotationtypes"></div><h2>Annotation types</h2>
-<p>The API will provide a list of available annotation types with the <code>types</code> method, which takes no parameters other than the callback function. The callback function recieves a hash of objects representing information about each annotation type. The following fields are provided:</p>
-<ul>
-<li><code>id</code> - string used to identify the type</li>
-<li><code>title</code> - text title of the annotation type</li>
-<li><code>enabled</code> - boolean value describing whether new annotations of this type can be created</li>
-<li><code>icon</code> - a string that can be used to render an icon representing this type</li>
-<li><code>defaults</code> - a hash of default properties</li>
-</ul>
-<div class="highlight"><pre><span class="nx">editor</span><span class="p">.</span><span class="nx">annotations</span><span class="p">.</span><span class="nx">types</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">types</span><span class="p">,</span> <span class="nx">errr</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error retrieving annotation types: '</span> <span class="o">+</span> <span class="nx">err</span><span class="p">);</span>
-      <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Annotation types'</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<div name="Retrievingasingleannotation" data-unique="Retrievingasingleannotation"></div><h2>Retrieving a single annotation</h2>
-<p>Individual annotations can be retrieved by numerical id using the <code>get</code> method.</p>
-<div class="highlight"><pre><span class="nx">editor</span><span class="p">.</span><span class="nx">annotations</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">1234</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">annotation</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error retrieving annotation: '</span> <span class="o">+</span> <span class="nx">err</span><span class="p">);</span>
-      <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="c1">///annotations is an array</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Loaded annotation'</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>The retrieved object will contain the following fields:</p>
-<ul>
-<li><code>annotationId</code> - permanent unique id for this annotation</li>
-<li><code>trackId</code> - id of the track to which this annotation is attached</li>
-<li><code>type</code> - a string representing the type of the annotation (e.g. "pop", "hotlink", "image", "quiz")</li>
-<li><code>created</code> - numerical unix time stamp of the annotations' creation time (i.e. seconds since midnight UTC 1/1/1970)</li>
-<li><code>modified</code> - time that the annotation was last modified (also numeric time stamp)</li>
-<li><code>writable</code> - a boolean value indicating whether this annotation can be modified</li>
-<li><code>properties</code> - plugin-specific properties for this annotation, including <code>start</code> time</li>
-</ul>
-<p>Sample retrieved annotation object:</p>
-<div class="highlight"><pre><span class="p">{</span>
-  <span class="s">"annotationId"</span><span class="o">:</span> <span class="mi">19702</span><span class="p">,</span>
-  <span class="s">"trackId"</span><span class="o">:</span> <span class="mi">1630</span><span class="p">,</span>
-  <span class="s">"type"</span><span class="o">:</span> <span class="s">"pop"</span><span class="p">,</span>
-  <span class="s">"created"</span><span class="o">:</span> <span class="mi">1389302540413</span><span class="p">,</span>
-  <span class="s">"modified"</span><span class="o">:</span> <span class="mi">1389302540426</span><span class="p">,</span>
-  <span class="s">"writable"</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span>
-  <span class="s">"properties"</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s">"text"</span><span class="o">:</span> <span class="s">"Hello World"</span><span class="p">,</span>
-      <span class="s">"_duration"</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
-      <span class="s">"start"</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="s">"mode"</span><span class="o">:</span> <span class="s">"pop"</span><span class="p">,</span>
-      <span class="s">"top"</span><span class="o">:</span> <span class="s">"80%"</span><span class="p">,</span>
-      <span class="s">"left"</span><span class="o">:</span> <span class="s">"5%"</span>
-  <span class="p">},</span>
-  <span class="s">"customConfig"</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s">"Lorem"</span><span class="o">:</span> <span class="s">"Ipsum"</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
-
-<div name="ListingAnnotations" data-unique="ListingAnnotations"></div><h2>Listing Annotations</h2>
-<p>The <code>all</code> method will return all annotations currently loaded, sorted by start and end time. There is one optional parameter, which is a string representing the annotation type by which to filter the results. The callback function receives an array of annotation objects in the same format as those returned by <code>get</code>.</p>
-<div class="highlight"><pre><span class="c1">//retrieve all annotations</span>
-<span class="n">editor</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">all</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="n">annotations</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">('</span><span class="n">Error</span> <span class="n">retrieving</span> <span class="nl">annotations:</span> <span class="p">'</span> <span class="o">+</span> <span class="n">err</span><span class="p">);</span>
-      <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="c1">///annotations is an array</span>
-  <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">('</span><span class="n">All</span> <span class="n">annotations</span><span class="p">',</span> <span class="n">annotations</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="c1">//retrieve only quiz annotations</span>
-<span class="n">editor</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">all</span><span class="p">('</span><span class="n">quiz</span><span class="p">',</span> <span class="k">function</span> <span class="p">(</span><span class="n">annotations</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">('</span><span class="n">Error</span> <span class="n">retrieving</span> <span class="nl">annotations:</span> <span class="p">'</span> <span class="o">+</span> <span class="n">err</span><span class="p">);</span>
-      <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">('</span><span class="n">All</span> <span class="n">quiz</span> <span class="n">annotations</span><span class="p">',</span> <span class="n">annotations</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<div name="Create" data-unique="Create"></div><h2>Create</h2>
-<p>To create a new annotation, all the <code>create</code> method, passing the annotation type and an object representing the plugin-specific properties.</p>
-<div class="highlight"><pre><span class="nx">editor</span><span class="p">.</span><span class="nx">annotations</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'pop'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nx">start</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="c1">//start at 5 seconds into the video</span>
-  <span class="nx">end</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span> <span class="c1">//show until 10 seconds</span>
-  <span class="nx">text</span><span class="o">:</span> <span class="s1">'Hello World'</span><span class="p">,</span>
-  <span class="nx">mode</span><span class="o">:</span> <span class="s1">'thought'</span> <span class="c1">//thought bubble</span>
-<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">annotation</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error creating annotation: '</span> <span class="o">+</span> <span class="nx">err</span><span class="p">);</span>
-      <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Annotation successfully created'</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">);</span>
-  <span class="c1">//Add the annotation object (or at least the annotationId) to your local list in memory here</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>Any properties not provided will be set to the default value. If <code>start</code> is omitted, the annotation will start at the current time of the video.</p>
-<div name="Update" data-unique="Update"></div><h2>Update</h2>
-<p>An annotation can be updated by calling the <code>update</code> method with the id of the annotation and the properties object.</p>
-<div class="highlight"><pre><span class="nx">editor</span><span class="p">.</span><span class="nx">annotations</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="mi">1234</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nx">text</span><span class="o">:</span> <span class="s1">'Goodbye World'</span>
-<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">annotation</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error updating annotation: '</span> <span class="o">+</span> <span class="nx">err</span><span class="p">);</span>
-      <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Annotation successfully updated'</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>Only provided properties will be modified. Any properties omitted will retain their previous values.</p>
-<div name="Delete" data-unique="Delete"></div><h2>Delete</h2>
-<p>Delete an annotation by calling the <code>remove</code> method with the annotation id. <strong>Warning</strong>: Deletion will happen immediately without any confirmation prompt and cannot be undone, so please be careful.</p>
-<div class="highlight"><pre><span class="nx">editor</span><span class="p">.</span><span class="nx">annotations</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="mi">1234</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">annotationId</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error remove annotation: '</span> <span class="o">+</span> <span class="nx">err</span><span class="p">);</span>
-      <span class="k">return</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Annotation successfully remove'</span><span class="p">,</span> <span class="nx">annotationId</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<div name="CRUDAPIevents" data-unique="CRUDAPIevents"></div><h1>CRUD API events</h1>
-<p>Notifications events are provided for all creation, modification and deletion of annotations, whether the operation was initiated with the CRUD API or with the user interface. This is useful for keeping your local data model updated incrementally without having to periodically poll for a complete list of annotations.</p>
-<p>The following events are available (names are case-insensitive):
-- onAnnotationCreated
-- onAnnotationUpdated
-- onAnnotationRemoved</p>
-<p>There are two ways to listen for notification events. The editor object has <code>addEventListener</code> and <code>removeEventListener</code> methods for adding and removing callback functions for these events.</p>
-<div class="highlight"><pre><span class="nx">editor</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'annotationcreated'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">annotation</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'new annotation created'</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>Or, event listeners can be registered when creating the editor object.</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">editor</span> <span class="o">=</span> <span class="nx">hapyak</span><span class="p">.</span><span class="nx">editor</span><span class="p">({</span>
-  <span class="c1">//fill in apiKey, video, track, etc</span>
-  <span class="nx">onLoadAnnotations</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="p">},</span>
-  <span class="nx">onAnnotationCreated</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">annotation</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'new annotation created'</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">);</span>
-  <span class="p">},</span>
-  <span class="nx">onAnnotationUpdated</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">annotation</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'annotation updated'</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">);</span>
-  <span class="p">},</span>
-  <span class="nx">onAnnotationRemoved</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">annotationId</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'annotation removed'</span><span class="p">,</span> <span class="nx">annotationId</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-      </div>
-  </div>
-</div>
-
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script src="/assets/s-site-assets-scripts/jquery-ui-1.9.1.custom.min.js"></script>
-<script src="/assets/s-site-assets-scripts/jquery.tocify.min.js"></script>
-
-<script>
-  $(function () {
-      //Calls the tocify method on your HTML div.
-      $("#toc").tocify();
+  
+      ///annotations is an array
+      console.log('All annotations', annotations);
   });
-</script>
+  
+  //retrieve only quiz annotations
+  editor.annotations.all('quiz', function (annotations) {
+      if (err) {
+          console.log('Error retrieving annotations: ' + err);
+          return;
+      }
+  
+      console.log('All quiz annotations', annotations);
+  });</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Create">create</h2>
+    <p>To create a new annotation, all the <code>create</code> method, passing the annotation type and an object representing the plugin-specific properties.</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.create('pop', {
+      start: 5, //start at 5 seconds into the video
+      end: 10, //show until 10 seconds
+      text: 'Hello World',
+      mode: 'thought' //thought bubble
+  }, function (annotation, err) {
+      if (err) {
+          console.log('Error creating annotation: ' + err);
+          return;
+      }
+  
+      console.log('Annotation successfully created', annotation);
+      //Add the annotation object (or at least the annotationId) to your local list in memory here
+  });</code></pre>
+  <p>Any properties not provided will be set to the default value. If <code>start</code> is omitted, the annotation will start at the current time of the video.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="update">Update</h2>
+    <p>An annotation can be updated by calling the <code>update</code> method with the id of the annotation and the properties object.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.update(1234, {
+  text: 'Goodbye World'
+}, function (annotation, err) {
+  if (err) {
+      console.log('Error updating annotation: ' + err);
+      return;
+  }
 
+  console.log('Annotation successfully updated', annotation);
+});</code></pre>
+    <p>Only provided properties will be modified. Any properties omitted will retain their previous values.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="delete">Delete</h2>
+    <p>Delete an annotation by calling the <code>remove</code> method with the annotation id. <strong>Warning</strong>: Deletion will happen immediately without any confirmation prompt and cannot be undone, so please be careful.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.remove(1234, function (annotationId, err) {
+  if (err) {
+      console.log('Error remove annotation: ' + err);
+      return;
+  }
 
-<div style="position: static !important;"></div></body></html>
+  console.log('Annotation successfully remove', annotationId);
+});</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="crud_api_events">CRUD API events</h2>
+    <p>Notifications events are provided for all creation, modification and deletion of annotations, whether the operation was initiated with the CRUD API or with the user interface. This is useful for keeping your local data model updated incrementally without having to periodically poll for a complete list of annotations.</p>
+    <p>The following events are available (names are case-insensitive):
+      <ul>
+        <li><code>onAnnotationCreated</code></li>
+        <li><code>onAnnotationUpdated</code></li>
+        <li><code>onAnnotationRemoved</code></li>
+      </ul>
+    </p>
+    <p>There are two ways to listen for notification events. The editor object has <code>addEventListener</code> and <code>removeEventListener</code> methods for adding and removing callback functions for these events.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">editor.addEventListener('annotationcreated', function (annotation) {
+  console.log('new annotation created', annotation);
+});</code></pre>
+    <p>Or, event listeners can be registered when creating the editor object.</p>
+<pre class="line-numbers"><code class="language-javascript" translate="No">var editor = hapyak.editor({
+  //fill in apiKey, video, track, etc
+  onLoadAnnotations: function () {
+  },
+  onAnnotationCreated: function (annotation) {
+      console.log('new annotation created', annotation);
+  },
+  onAnnotationUpdated: function (annotation) {
+      console.log('annotation updated', annotation);
+  },
+  onAnnotationRemoved: function (annotationId) {
+      console.log('annotation removed', annotationId);
+  }
+});
+</code></pre>
+  </section>
+</article>

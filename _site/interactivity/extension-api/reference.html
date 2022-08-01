@@ -2683,48 +2683,26 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <p>Based on the example above, if we wanted to access the data from the the variable <code>obj</code> we could do so in a text annotation like this:</p>
   <p><img alt="alt text" src="/assets/images/s-brightcove-interactivity-img/developers/OBJ.name+pic.png"></p>
   <p>The variable would resolve after the function is called:
-  <img alt="alt text" src="/assets/images/s-brightcove-interactivity-img/developers/resolved+variable.png></p>
-</section>
-
-<div name="METHOD:get(name)" data-unique="METHOD:get(name)"></div><h3><strong>METHOD: get(name)</strong></h3>
-<div class="highlight"><pre>  <span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span>
-</pre></div>
-
-
-<ul>
-<li>
-<p>Returns the value of the variable by <code>name</code>.</p>
-</li>
-<li>
-<p><code>set</code> sets data asynchronously, so if you call <code>get</code> immediately after <code>set</code> and before
-the <code>data</code> event fires, the values may be different.</p>
-</li>
-</ul>
+  <img alt="alt text" src="/assets/images/s-brightcove-interactivity-img/developers/resolved+variable.png"></p>
+  <h4><code>get(name)</code></h4>
+  <pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.env.get('name')</code></pre>
+  <p>Returns the value of the variable by <code>name</code>.</p>
+  <aside class="bcls-aside bcls-aside--information language-editable">Note that <code>set</code> sets data asynchronously, so if you call <code>get</code> immediately after <code>set</code> and before
+the <code>data</code> event fires, the values may be different.</aside>
 <p>To return annotation data in current project:</p>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//wait for data event to fire</span>
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'projectAnnotations'</span><span class="p">)</span>
-<span class="p">})</span>
-</pre></div>
-
-
-<div name="METHOD:clear(name)" data-unique="METHOD:clear(name)"></div><h3><strong>METHOD: clear(name)</strong></h3>
-<div class="highlight"><pre>  <span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span>
-</pre></div>
-
-
-<ul>
-<li>Clears the value of a single variable by <code>name</code>.</li>
-</ul>
-<div name="NOTES:" data-unique="NOTES:"></div><h2>NOTES:</h2>
+<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.addEventListener("data", function() { //wait for data event to fire
+  hapyak.context.env.get('projectAnnotations')
+})</code></pre>
+<p>Clears the value of a single variable by <code>name</code>.</p>
+<h3>NOTES:</h3>
 <p>Any variables set with env.set are changed asynchronously because they need time to be communicated to the parent window. The new value will not be returned by env.get until the next "data" event fires, which should occur within a few milliseconds.</p>
-<div class="highlight"><pre><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'myData'</span><span class="p">));</span> <span class="c1">//foo</span>
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'myData'</span><span class="p">,</span> <span class="s1">'bar'</span><span class="p">);</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'myData'</span><span class="p">));</span> <span class="c1">//foo</span>
-<span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'myData'</span><span class="p">));</span> <span class="c1">//bar</span>
-<span class="p">});</span>
-</pre></div>
-
+<pre class="line-numbers"><code class="language-javascript" translate="No">console.log(hapyak.context.env.get('myData')); //foo
+  hapyak.context.env.set('myData', 'bar');
+  console.log(hapyak.context.env.get('myData')); //foo
+  hapyak.context.addEventListener('data', function () {
+      console.log(hapyak.context.env.get('myData')); //bar
+  });</code></pre>
+</section>
 </article>
 <!-- complete bootstrap layout -->
     </div>
