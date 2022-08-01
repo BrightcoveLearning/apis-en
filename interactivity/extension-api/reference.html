@@ -296,24 +296,21 @@ parent: Brightcove Interactivity APIs
   <h2 id="session_variables">Session variables</h2>
   <p>These variables only exists during the session. Setting variables via the Extension API is functionally equivalent to passing in a "variables" object on the Viewer.</p>
   <p>OBJECT: <code>hapyak.context.env</code></p>
-
+  <h3>Methods</h3>
+  <h4><code>set(name, value, temp, scope)</code></h4>
+  <pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.context.env.set('obj', {name: "Andrew", anotherName: "Homer J Simpson"}, false, 'track');</code></pre>
+  <p>Sets the value of the variable by name.</p>
+  <ul>
+  <li><code>temp</code> if true, the value will not be captured to the browser local storage. (default: false)</li>
+  <li><code>scope</code> should be set to track to make the data available to other annotations. (default: annotation scope)</li>
+  <li>Variables where <code>scope</code> is <code>annotation scope</code>, there is no limitation to the data types that can be used.</li>
+  </ul>
+  <p>Based on the example above, if we wanted to access the data from the the variable <code>obj</code> we could do so in a text annotation like this:</p>
+  <p><img alt="alt text" src="/assets/images/s-brightcove-interactivity-img/developers/OBJ.name+pic.png"></p>
+  <p>The variable would resolve after the function is called:
+  <img alt="alt text" src="/assets/images/s-brightcove-interactivity-img/developers/resolved+variable.png></p>
 </section>
-<div name="SessionVariables" data-unique="SessionVariables"></div><h2></h2>
-<div name="METHOD:set(name,value,temp,scope)" data-unique="METHOD:set(name,value,temp,scope)"></div><h3><strong>METHOD: set(name, value, temp, scope)</strong></h3>
-<div class="highlight"><pre><span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'obj'</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"Andrew"</span><span class="p">,</span> <span class="nx">anotherName</span><span class="o">:</span> <span class="s2">"Homer J Simpson"</span><span class="p">},</span> <span class="kc">false</span><span class="p">,</span> <span class="s1">'track'</span><span class="p">);</span>
-</pre></div>
 
-
-<p>Sets the value of the variable by name.</p>
-<ul>
-<li><code>temp</code> if true, the value will not be captured to the browser local storage. (default: false)</li>
-<li><code>scope</code> should be set to track to make the data available to other annotations. (default: annotation scope)</li>
-<li>Variables where <code>scope</code> is <code>annotation scope</code>, there is no limitation to the data types that can be used.</li>
-</ul>
-<p>Based on the example above, if we wanted to access the data from the the variable <code>obj</code> we could do so in a text annotation like this:</p>
-<p><img alt="alt text" src="https://hapyak-documentation.s3.amazonaws.com/extension-api/content/images/OBJ.name+pic.png"></p>
-<p>The variable would resolve after the function is called:
-<img alt="alt text" src="https://hapyak-documentation.s3.amazonaws.com/extension-api/content/images/resolved+variable.png"></p>
 <div name="METHOD:get(name)" data-unique="METHOD:get(name)"></div><h3><strong>METHOD: get(name)</strong></h3>
 <div class="highlight"><pre>  <span class="nx">hapyak</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span>
 </pre></div>
