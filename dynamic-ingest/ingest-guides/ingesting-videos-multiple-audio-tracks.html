@@ -20,27 +20,27 @@ parent:
       <li>You must input only <a href="https://www.loc.gov/standards/iso639-2/php/code_list.php">ISO 639-2 three letter codes</a>, using only Terminology and not <strong>Bibliography</strong> codes.</li>
       <li>When no supplied language codes are matched with the source audio, we will process the default language and tag it with supplied language code</li>
       <li>If you do specify a Bibliography language code and it matches a source track, we will attach the language code to that track, but you should <strong><em>always</em></strong> use <strong>Terminology</strong> language codes.</li>
-      <li>When multiple tracks are specified as <code>default</code> we will use the first one found in the source (if any) or the first one ingested as the default</li>
+      <li>When multiple tracks are specified as <code translate="no">default</code> we will use the first one found in the source (if any) or the first one ingested as the default</li>
       <li>If you specify a non-English track as default, but no <code translate="No">language</code> is supplied for the track, we will tag it as "eng".</li>
       <li>There is limit of 100 jobs that can be in the processing queue (unless you specify <a href="/dynamic-ingest/code-samples/dynamic-ingest-api-sample-ingesting-low-priority-videos-dynamic-delivery.html">Low Priority</a> processing). If you are adding a large number of audio tracks, you may hit this limit, and requests will fail until the processing queue falls below 100. See <a href="/dynamic-ingest/general/fallback-retry-strategy.html">Fallback/Retry Strategy</a> for more details.</li>
       <li>
         Not all audio service types are supported: only the following types may be used:
         <ul>
-          <li><code>main</code></li>
-          <li><code>alternate</code></li>
-          <li><code>commentary</code></li>
-          <li><code>dub</code></li>
-          <li><code>descriptive</code></li>
+          <li><code translate="no">main</code></li>
+          <li><code translate="no">alternate</code></li>
+          <li><code translate="no">commentary</code></li>
+          <li><code translate="no">dub</code></li>
+          <li><code translate="no">descriptive</code></li>
         </ul>
       </li>
       <li>When you add eng &gt; main and eng &gt; commentary tracks during ingestion and the source contains eng with no audio service type, the source audio will be missing in the output renditions.</li>
-      <li>If you include two tracks with the same language code, and specify one as <code>variant</code> and provide no service type for the other, the ingest will fail.</li>
+      <li>If you include two tracks with the same language code, and specify one as <code translate="no">variant</code> and provide no service type for the other, the ingest will fail.</li>
       <li>When a video with a single audio track is replaced by a video with multiple language audio tracks, the track for the original single language will also be included in the renditions, with its original language identifier.</li>
       <li>Both multiple audio tracks within the source video and additional separate audio files can be used for multiple audio tracks. Video Cloud does not store audio masters, however - separate audio files used as alternate audio tracks must be hosted on public URLs.</li>
-      <li>By default, external audio tracks will be merged with those contained in the video. If instead you want to replace the audio tracks contained in the video, you can set the <code><a href="#merge_with_existing">merge_with_existing</a></code> flag to <code>false</code>.</li>
+      <li>By default, external audio tracks will be merged with those contained in the video. If instead you want to replace the audio tracks contained in the video, you can set the <code translate="no"><a href="#merge_with_existing">merge_with_existing</a></code> flag to <code translate="no">false</code>.</li>
       <li>Ingest will <strong>not</strong> fail the job for any master track that is not part of the media info and that track will be skipped.</li>
       <li>For the master audio tracks input, any one of the languages or the variants can be passed in the <code translate="No">master.audio_tracks</code> object as well. In that case we will look for that in media info and skip it if not present.</li>
-      <li>Where the language or variant for a track is not specified in the request, we will default to <code>eng</code> for the language, and <code>main</code> for the variant.</li>
+      <li>Where the language or variant for a track is not specified in the request, we will default to <code translate="no">eng</code> for the language, and <code translate="no">main</code> for the variant.</li>
     </ul>
   </section>
 
@@ -54,18 +54,18 @@ parent:
       </ol>
       <section class="bcls-subsection">
         <h3 id="create_video">Create the video object</h3>
-        <p>To create a new video object in your Video Cloud video library, make <code>POST</code> request to:</p>
+        <p>To create a new video object in your Video Cloud video library, make <code translate="no">POST</code> request to:</p>
 <pre class=" language-http"><code class=" language-http"><span class="token header-name keyword">https:</span>//cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos</code></pre>
-        <p>You must include a request body that contains at least the video <code>name</code>:</p>
+        <p>You must include a request body that contains at least the video <code translate="no">name</code>:</p>
 <pre class="line-numbers language-json"><code class=" language-json"><span class="token punctuation">{</span>
 <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My Video Title"</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
         <p>You can also include additional video metadata (see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/CreateVideo">CMS API Reference</a>), but these can also be added later in Studio or via the CMS API.</p>
-        <p>The response will be a JSON object containing many video properties. The first one will be the video <code>id</code>, and you will need this value to make the ingest request.</p>
+        <p>The response will be a JSON object containing many video properties. The first one will be the video <code translate="no">id</code>, and you will need this value to make the ingest request.</p>
       </section>
       <section class="bcls-subsection">
         <h3 id="ingest_video">Ingest the video</h3>
-        <p>After you create the video object and retrieve its <code>id</code>, you can ingest the video to Video Cloud by sending a <code>POST</code> request to:</p>
+        <p>After you create the video object and retrieve its <code translate="no">id</code>, you can ingest the video to Video Cloud by sending a <code translate="no">POST</code> request to:</p>
 <pre class=" language-http"><code class=" language-http"><span class="token header-name keyword">https:</span>//ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/ingest-requests</code></pre>
         <h4>Request body</h4>
         <p>First let's look at a simple example of a video that contains three audio tracks. The request body will look something like this:</p>
@@ -127,12 +127,12 @@ parent:
 }</code></pre>
       <p>In this example:</p>
       <ul>
-        <li>The <code>master</code> &gt; <code>url</code> is the location of the source video file</li>
-        <li>The <code>master</code> &gt; <code>audio_tracks</code> provide information about the audio tracks embedded in the video</li>
+        <li>The <code translate="no">master</code> &gt; <code translate="no">url</code> is the location of the source video file</li>
+        <li>The <code translate="no">master</code> &gt; <code translate="no">audio_tracks</code> provide information about the audio tracks embedded in the video</li>
         <li>Note that the language codes should come from <a href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a></li>
-        <li>The <code>profile</code> is the name of the ingest profile to use - if you omit this, the default profile for the account will be used</li>
-        <li>The additional <code>audio_tracks</code> array contains information about separate, externally hosted audio files to be used as additional audio tracks</li>
-        <li id="merge_with_existing"><code>merge_with_existing</code> means "use the remote audio tracks in addition to the embedded ones" if <code>true</code> (or replace the embedded tracks with the remote ones if <code>false</code>)</li>
+        <li>The <code translate="no">profile</code> is the name of the ingest profile to use - if you omit this, the default profile for the account will be used</li>
+        <li>The additional <code translate="no">audio_tracks</code> array contains information about separate, externally hosted audio files to be used as additional audio tracks</li>
+        <li id="merge_with_existing"><code translate="no">merge_with_existing</code> means "use the remote audio tracks in addition to the embedded ones" if <code translate="no">true</code> (or replace the embedded tracks with the remote ones if <code translate="no">false</code>)</li>
         <li>
           <p>The <code translate="No">variant</code> field describes the kind of audio track. The possible values, with standard meanings are:</p>
           <ul>
@@ -176,14 +176,14 @@ parent:
       <p>Dolby audio codecs (ac-3 and eac-3) support including audio service type metadata. (AAC audio <strong>cannot</strong> contain service type metadata.)</p>
       <p>The following service types can be specified for supported Dolby tracks:</p>
       <ul>
-        <li><code>main</code></li>
-        <li><code>music_and_effects</code></li>
-        <li><code>visually_impaired</code></li>
-        <li><code>hearing_impaired</code></li>
-        <li><code>dialogue</code></li>
-        <li><code>commentary</code></li>
-        <li><code>emergency</code></li>
-        <li><code>voice_over</code></li>
+        <li><code translate="no">main</code></li>
+        <li><code translate="no">music_and_effects</code></li>
+        <li><code translate="no">visually_impaired</code></li>
+        <li><code translate="no">hearing_impaired</code></li>
+        <li><code translate="no">dialogue</code></li>
+        <li><code translate="no">commentary</code></li>
+        <li><code translate="no">emergency</code></li>
+        <li><code translate="no">voice_over</code></li>
       </ul>
     </section>
 </article>

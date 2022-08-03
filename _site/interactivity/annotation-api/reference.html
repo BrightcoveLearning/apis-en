@@ -2384,7 +2384,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <summary>The Brightcove Interactivity Editor API object has methods for <a href="http://en.wikipedia.org/wiki/CRUD">creating, reading, updating and deleting</a> annotations.</summary>
   <section class="bcls-section">
     <h2 id="Setup">Setup</h2>
-    <p>First, create a hapyak editor object. Annotations will not be accessible until they are loaded, so it's best to wait until the <code>loadannotations</code> event has fired.</p>
+    <p>First, create a hapyak editor object. Annotations will not be accessible until they are loaded, so it's best to wait until the <code translate="no">loadannotations</code> event has fired.</p>
 <pre class="line-numbers"><code class="language-javascript" translate="No">let editor = hapyak.editor({
   //fill in apiKey, video, track, etc
   onLoadAnnotations: function () {
@@ -2403,19 +2403,19 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <h2 id="calling_crud_methods">Calling CRUD methods</h2>
     <p>All the CRUD methods run asynchronously and accept an optional callback function as the last parameter, which will run when the operation has succeeded and finished saving or has failed. The callback function receives two arguments:</p>
     <ol>
-      <li>The result of a successful operation, or <code>null</code> if the operation failed.</li>
-      <li>The error message in case of an error, or <code>null</code> if the operation succeeded.</li>
+      <li>The result of a successful operation, or <code translate="no">null</code> if the operation failed.</li>
+      <li>The error message in case of an error, or <code translate="no">null</code> if the operation succeeded.</li>
     </ol>
   </section>
   <section class="bcls-section">
     <h2 id="annotation_types">Annotation types</h2>
-    <p>The API will provide a list of available annotation types with the <code>types</code> method, which takes no parameters other than the callback function. The callback function recieves a hash of objects representing information about each annotation type. The following fields are provided:</p>
+    <p>The API will provide a list of available annotation types with the <code translate="no">types</code> method, which takes no parameters other than the callback function. The callback function recieves a hash of objects representing information about each annotation type. The following fields are provided:</p>
     <ul>
-    <li><code>id</code> - string used to identify the type</li>
-    <li><code>title</code> - text title of the annotation type</li>
-    <li><code>enabled</code> - boolean value describing whether new annotations of this type can be created</li>
-    <li><code>icon</code> - a string that can be used to render an icon representing this type</li>
-    <li><code>defaults</code> - a hash of default properties</li>
+    <li><code translate="no">id</code> - string used to identify the type</li>
+    <li><code translate="no">title</code> - text title of the annotation type</li>
+    <li><code translate="no">enabled</code> - boolean value describing whether new annotations of this type can be created</li>
+    <li><code translate="no">icon</code> - a string that can be used to render an icon representing this type</li>
+    <li><code translate="no">defaults</code> - a hash of default properties</li>
     </ul>
 <pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.types(function (types, errr) {
   if (err) {
@@ -2428,7 +2428,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </section>
   <section class="bcls-section">
     <h2 id="retrieving_a_single_annotation">Retrieving a single annotation</h2>
-    <p>Individual annotations can be retrieved by numerical id using the <code>get</code> method.</p>
+    <p>Individual annotations can be retrieved by numerical id using the <code translate="no">get</code> method.</p>
 <pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.get(1234, function (annotation, err) {
   if (err) {
       console.log('Error retrieving annotation: ' + err);
@@ -2440,13 +2440,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 });</code></pre>
     <p>The retrieved object will contain the following fields:</p>
     <ul>
-    <li><code>annotationId</code> - permanent unique id for this annotation</li>
-    <li><code>trackId</code> - id of the track to which this annotation is attached</li>
-    <li><code>type</code> - a string representing the type of the annotation (e.g. "pop", "hotlink", "image", "quiz")</li>
-    <li><code>created</code> - numerical unix time stamp of the annotations' creation time (i.e. seconds since midnight UTC 1/1/1970)</li>
-    <li><code>modified</code> - time that the annotation was last modified (also numeric time stamp)</li>
-    <li><code>writable</code> - a boolean value indicating whether this annotation can be modified</li>
-    <li><code>properties</code> - plugin-specific properties for this annotation, including <code>start</code> time</li>
+    <li><code translate="no">annotationId</code> - permanent unique id for this annotation</li>
+    <li><code translate="no">trackId</code> - id of the track to which this annotation is attached</li>
+    <li><code translate="no">type</code> - a string representing the type of the annotation (e.g. "pop", "hotlink", "image", "quiz")</li>
+    <li><code translate="no">created</code> - numerical unix time stamp of the annotations' creation time (i.e. seconds since midnight UTC 1/1/1970)</li>
+    <li><code translate="no">modified</code> - time that the annotation was last modified (also numeric time stamp)</li>
+    <li><code translate="no">writable</code> - a boolean value indicating whether this annotation can be modified</li>
+    <li><code translate="no">properties</code> - plugin-specific properties for this annotation, including <code translate="no">start</code> time</li>
     </ul>
     <p>Sample retrieved annotation object:</p>
 <pre class="line-numbers"><code class="language-javascript" translate="No">{
@@ -2471,7 +2471,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </section>
   <section class="bcls-section">
     <h2 id="listing_annotations">Listing Annotations</h2>
-    <p>The <code>all</code> method will return all annotations currently loaded, sorted by start and end time. There is one optional parameter, which is a string representing the annotation type by which to filter the results. The callback function receives an array of annotation objects in the same format as those returned by <code>get</code>.</p>
+    <p>The <code translate="no">all</code> method will return all annotations currently loaded, sorted by start and end time. There is one optional parameter, which is a string representing the annotation type by which to filter the results. The callback function receives an array of annotation objects in the same format as those returned by <code translate="no">get</code>.</p>
 <pre class="line-numbers"><code class="language-javascript" translate="No">//retrieve all annotations
   editor.annotations.all(function (annotations, err) {
       if (err) {
@@ -2495,7 +2495,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </section>
   <section class="bcls-section">
     <h2 id="Create">create</h2>
-    <p>To create a new annotation, all the <code>create</code> method, passing the annotation type and an object representing the plugin-specific properties.</p>
+    <p>To create a new annotation, all the <code translate="no">create</code> method, passing the annotation type and an object representing the plugin-specific properties.</p>
     <pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.create('pop', {
       start: 5, //start at 5 seconds into the video
       end: 10, //show until 10 seconds
@@ -2510,11 +2510,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       console.log('Annotation successfully created', annotation);
       //Add the annotation object (or at least the annotationId) to your local list in memory here
   });</code></pre>
-  <p>Any properties not provided will be set to the default value. If <code>start</code> is omitted, the annotation will start at the current time of the video.</p>
+  <p>Any properties not provided will be set to the default value. If <code translate="no">start</code> is omitted, the annotation will start at the current time of the video.</p>
   </section>
   <section class="bcls-section">
     <h2 id="update">Update</h2>
-    <p>An annotation can be updated by calling the <code>update</code> method with the id of the annotation and the properties object.</p>
+    <p>An annotation can be updated by calling the <code translate="no">update</code> method with the id of the annotation and the properties object.</p>
 <pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.update(1234, {
   text: 'Goodbye World'
 }, function (annotation, err) {
@@ -2529,7 +2529,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   </section>
   <section class="bcls-section">
     <h2 id="delete">Delete</h2>
-    <p>Delete an annotation by calling the <code>remove</code> method with the annotation id. <strong>Warning</strong>: Deletion will happen immediately without any confirmation prompt and cannot be undone, so please be careful.</p>
+    <p>Delete an annotation by calling the <code translate="no">remove</code> method with the annotation id. <strong>Warning</strong>: Deletion will happen immediately without any confirmation prompt and cannot be undone, so please be careful.</p>
 <pre class="line-numbers"><code class="language-javascript" translate="No">editor.annotations.remove(1234, function (annotationId, err) {
   if (err) {
       console.log('Error remove annotation: ' + err);
@@ -2544,12 +2544,12 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <p>Notifications events are provided for all creation, modification and deletion of annotations, whether the operation was initiated with the CRUD API or with the user interface. This is useful for keeping your local data model updated incrementally without having to periodically poll for a complete list of annotations.</p>
     <p>The following events are available (names are case-insensitive):
       <ul>
-        <li><code>onAnnotationCreated</code></li>
-        <li><code>onAnnotationUpdated</code></li>
-        <li><code>onAnnotationRemoved</code></li>
+        <li><code translate="no">onAnnotationCreated</code></li>
+        <li><code translate="no">onAnnotationUpdated</code></li>
+        <li><code translate="no">onAnnotationRemoved</code></li>
       </ul>
     </p>
-    <p>There are two ways to listen for notification events. The editor object has <code>addEventListener</code> and <code>removeEventListener</code> methods for adding and removing callback functions for these events.</p>
+    <p>There are two ways to listen for notification events. The editor object has <code translate="no">addEventListener</code> and <code translate="no">removeEventListener</code> methods for adding and removing callback functions for these events.</p>
 <pre class="line-numbers"><code class="language-javascript" translate="No">editor.addEventListener('annotationcreated', function (annotation) {
   console.log('new annotation created', annotation);
 });</code></pre>
@@ -2587,7 +2587,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 01 Aug 2022
+  Page last updated on 02 Aug 2022
 </div>
 
 
