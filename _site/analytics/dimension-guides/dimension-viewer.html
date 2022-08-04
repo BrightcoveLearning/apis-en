@@ -2383,114 +2383,127 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <article class="bcls-article">
   <summary>In this topic, you will learn about the <span translate="No">Analytics API</span> <code translate="No">viewer</code> dimension. The <code translate="No">viewer</code> dimension provides analytics by viewer.</summary>
   <aside class="bcls-aside bcls-aside--information">Viewer level analytics are not available to all accounts. If you are interested in having this feature turned on for your account, contact your Account Manager.</aside>
-    <section class="bcls-section">
-    <h2 id="urlParams">URL parameters</h2>
 
-    <p>Analytics API reports support the following URL parameters.</p>
-
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">URL Parameters</caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Parameter</th>
-          <th>Description</th>
-          <th>Required</th>
-          <th>Values</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body" id="paramTableBody">
-        <tr>
-          <td><code translate="No">account</code></td>
-          <td>The accounts you want to report on</td>
-          <td>yes</td>
-          <td>one or more account ids as a comma-delimited list</td>
-          <td>none</td>
-        </tr>
-        <tr>
-          <td><code translate="No">dimensions</code></td>
-          <td>The dimension(s) to report on</td>
-          <td>yes</td>
-          <td>
-            one or more dimensions as a comma-delimited list - <code translate="No">viewer</code> can be combined with the following dimensions:
-            <ul>
-              <li><code translate="no">account</code></li>
-              <li><code translate="no">date</code></li>
-              <li><code translate="no">date_hour</code></li>
-              <li><code translate="no">country</code></li>
-              <li><code translate="no">region</code></li>
-              <li><code translate="no">city</code></li>
-              <li><code translate="no">video</code></li>
-            </ul>
-          </td>
-          <td>none</td>
-        </tr>
-        <tr>
-          <td><code translate="No">where</code></td>
-          <td>Used to specify filters for reports</td>
-          <td>no</td>
-          <td>{dimension}=={value} - one or more as a semi-colon-delimited list</td>
-          <td>none</td>
-        </tr>
-        <tr>
-          <td><code translate="No">limit</code></td>
-          <td>Number of items to return</td>
-          <td>no</td>
-          <td>positive integer</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td><code translate="No">offset</code></td>
-          <td>Number of items to skip</td>
-          <td>no</td>
-          <td>positive integer</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td><code translate="No">sort</code></td>
-          <td>Field to sort items on</td>
-          <td>no</td>
-          <td>a valid field for the request</td>
-          <td>viewer_view</td>
-        </tr>
-        <tr>
-          <td><code translate="No">fields</code></td>
-          <td>Fields to return</td>
-          <td>no</td>
-          <td>varies according to the dimension you are reporting on - see <a href="#fields">fields</a> below for fields available.</td>
-          <td>viewer_view</td>
-        </tr>
-        <tr>
-          <td><code translate="No">format</code></td>
-          <td>Format to return results in</td>
-          <td>no</td>
-          <td>json | csv | xlxs</td>
-          <td>json</td>
-        </tr>
-        <!-- <tr>
-          <td><code translate="No">reconciled</code></td>
-          <td>If included, will limit results to either historical or realtime data</td>
-          <td>no</td>
-          <td>true | false</td>
-          <td>true</td>
-        </tr> -->
-        <tr>
-          <td><code translate="No">from</code></td>
-          <td>The beginning of the date range for the request</td>
-          <td>no</td>
-          <td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string alltime, or relative date (-1m); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
-          <td>30 days prior to now</td>
-        </tr>
-        <tr>
-          <td><code translate="No">to</code></td>
-          <td>The end of the date range for the request</td>
-          <td>no</td>
-          <td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
-          <td>now</td>
-        </tr>
-      </tbody>
-    </table>
-    </section>
+  <section class="bcls-section">
+    <h2 id="introducion">Introduction</h2>
+    <p>The <code translate="No">viewer</code> dimension allows you to look at analytics by viewer. If viewer ids are not sent to the analytics data collector from the player, we will try to construct construct a viewer id from the viewer's IP address and user-agent - this method is prone to error, however. Viewer analytics are most useful if you have logged in viewers and therefore can identify them reliably.</p>
+  </section>
+    
+  <section class="bcls-section">
+  <h2 id="urlParams">URL parameters</h2>
+  
+  <p>Analytics API reports support the following URL parameters.</p>
+  
+  <table class="bcls-table">
+    <caption class="bcls-caption--table">URL Parameters</caption>
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Parameter</th>
+        <th>Description</th>
+        <th>Required</th>
+        <th>Values</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body" id="paramTableBody">
+      <tr>
+        <td><code translate="No">account</code></td>
+        <td>The accounts you want to report on</td>
+        <td>yes</td>
+        <td>one or more account ids as a comma-delimited list</td>
+        <td>none</td>
+      </tr>
+      <tr>
+        <td><code translate="No">dimensions</code></td>
+        <td>The dimension(s) to report on</td>
+        <td>yes</td>
+        <td>one or more dimensions as a comma-delimited list (some combinations are not valid - use <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#metrics">the interactive tool here</a> to determine if a combination is valie)</td>
+        <td>none</td>
+      </tr>
+      <tr>
+        <td><code translate="No">where</code></td>
+        <td>Used to specify filters for reports</td>
+        <td>no</td>
+        <td>{dimension}=={value} - one or more as a semi-colon-delimited list. The value will be one or more values for the primary metric of that dimension. For example: <code translate="No">video==video_id</code>, <code translate="No">country=country-code</code>, or <code translate="No">viewer=viewer_id</code> (in the last case, the form of the viewer_id will vary depending on whether you are capturing and sending some kind of viewer_id yourself or depending on the value generated by the analytics system).</td>
+        <td>none</td>
+      </tr>
+      <tr>
+        <td><code translate="No">limit</code></td>
+        <td>Number of items to return</td>
+        <td>no</td>
+        <td>positive integer</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td><code translate="No">offset</code></td>
+        <td>Number of items to skip</td>
+        <td>no</td>
+        <td>positive integer</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td><code translate="No">sort</code></td>
+        <td>Field to sort items on</td>
+        <td>no</td>
+        <td>any field that is being returned by the request</td>
+        <td>video_view</td>
+      </tr>
+      <tr>
+        <td><code translate="No">fields</code></td>
+        <td>Fields to return</td>
+        <td>no</td>
+        <td>varies according to the dimension you are reporting on</td>
+        <td>video,video_view</td>
+      </tr>
+      <tr>
+        <td><code translate="No">format</code></td>
+        <td>Format to return results in</td>
+        <td>no</td>
+        <td>json (default) | csv | xlxs</td>
+        <td>json</td>
+      </tr>
+      <tr>
+        <td><code translate="No">reconciled</code></td>
+        <td>If included, will limit results to either historical or realtime data. Analytics data is derived from multiple sources: some is sent by the player, but other data is collected from CDNs and the Video Cloud system. In order to deliver analytics as quickly as possible, we start delivering "real-time" data as soon as it is available, and then adjust the analytics later when data from all sources has been collected and processed. The fully processed data is called reconciled</td>
+        <td>no</td>
+        <td>true | false</td>
+        <td>true</td>
+      </tr>
+      <tr>
+        <td><code translate="No">from</code></td>
+        <td>The beginning of the date range for the request</td>
+        <td>no</td>
+        <td>
+          One of the following:
+          <ul>
+            <li>An ISO 8601 date (YYYY-MM-DD)</li>
+            <li>Epoch time in milliseconds (example: 1659641316719 [= Thursday, August 4, 2022 7:28:36.719 PM GMT]). See the <a href="https://www.epochconverter.com/">Epoch time converter.</a></li>
+            <li>A string: <code translate="no">from=alltime</code></li>
+            <li>+/- relative dates in days (d), weeks (w), or months (m) - example: <code translate="no">from=-6m&to=%2B2w</code> (the period from 6 months ago to 2 weeks after that -- note that the + sign needs to be URI encoded as <code translate="no">%2B</code>)</li>
+          </ul>
+          <p>Only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</p>
+        </td>
+        <td>-30d</td>
+      </tr>
+      <tr>
+        <td><code translate="No">to</code></td>
+        <td>The end of the date range for the request</td>
+        <td>no</td>
+        <td>
+          One of the following:
+          <ul>
+            <li>An ISO 8601 date (YYYY-MM-DD)</li>
+            <li>Epoch time in milliseconds (example: 1659641316719 [= Thursday, August 4, 2022 7:28:36.719 PM GMT]). See the <a href="https://www.epochconverter.com/">Epoch time converter.</a></li>
+            <li>A string: <code translate="no">to=now</code></li>
+            <li>+/- relative dates in days (d), weeks (w), or months (m) - example: <code translate="no">from=-6m&to=%2B2w</code> (the period from 6 months ago to 2 weeks after that -- note that the + sign needs to be URI encoded as <code translate="no">%2B</code>)</li>
+          </ul>
+          <p>Only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</p>
+        </td>
+        <td>now</td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
 
     <section class="bcls-section">
     <h2 id="fieldValues">Fields available</h2>
@@ -2529,7 +2542,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </ul>
     </section>
     <section class="bcls-section">
-      <h2 id="Setting_the_viewer_id">Setting the viewer id</h2>
+      <h2 id="Setting_the_viewer_id">Sending the viewer id</h2>
       <p>To send a viewer id to to the analytics system, you must create the logic to construct a unique id that will identify the viewer at runtime and then send it to the analytics data collector from the player. The logic to construct the id will depend on how viewers authenticate to see your content.The Brightcove web player and both the iOS and Android SDK players can send the user id to analytics. See the following documents for details:</p>
       <ul>
         <li>Brightcove web player: <a href="https://player.support.brightcove.com/playback/xdr-with-bcplayer.html#Set_the_user_identifier">Set the user identifier</a></li>
