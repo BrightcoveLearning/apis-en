@@ -495,7 +495,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     }
 
     function init() {
-        buildParamTable();
+        // buildParamTable();
         buildFilterValueTable();
         // create dimensions list
         buildDimensionsList();
