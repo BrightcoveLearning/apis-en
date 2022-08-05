@@ -2543,14 +2543,99 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </section>
     <section class="bcls-section">
       <h2 id="Setting_the_viewer_id">Sending the viewer id</h2>
-      <p>To send a viewer id to to the analytics system, you must create the logic to construct a unique id that will identify the viewer at runtime and then send it to the analytics data collector from the player. The logic to construct the id will depend on how viewers authenticate to see your content.The Brightcove web player and both the iOS and Android SDK players can send the user id to analytics. See the following documents for details:</p>
-      <ul>
-        <li>Brightcove web player: <a href="https://player.support.brightcove.com/playback/xdr-with-bcplayer.html#Set_the_user_identifier">Set the user identifier</a></li>
-        <li>iOS: <a href="https://sdks.support.brightcove.com/features/cross-device-resume-sdks.html#iOS_Implementation">iOS Implementation</a></li>
-        <li>Android: <a href="https://sdks.support.brightcove.com/features/cross-device-resume-sdks.html#Android_Implementation">Android Implementation</a></li>
-      </ul>
+      <p>To send a viewer id to to the analytics system, you must create the logic to construct a unique id that will identify the viewer at runtime and then send it to the analytics data collector from the player. The logic to construct the id will depend on how viewers authenticate to see your content.The Brightcove web player and both the iOS and Android SDK players can send the user id to analytics. the following sections show you how to do this for the web and SDK players.</p>
       <aside class="bcls-aside bcls-aside--information language-editable">Note that if no viewer id is shared by the player, the analytics will try to generate an id based on the User Agent and IP address. The IP address is not stored.</aside>
     </section>
+
+    <section class="bcls-section">
+  <h2 id="Send_viewer_id_web_player">Send viewer id - Brightcove player</h2>
+
+  <p>First, you need to set the user identifier to store their viewing activity.</p>
+  <h3>Brightcove Player</h3>
+  <p>
+    If you are using Brightcove Player, follow these steps:
+  </p>
+
+  <ol class="bcls-tasklist-restart">
+    <li>
+      <p>
+        Even though viewer data is sent to Brightcove analytics automatically, you need to set the user identifier. To do this, use the <code translate="No">setUser()</code> method. For example:
+      </p>
+      <pre class="line-numbers"><code class="language-javascript" translate="No">myPlayer.bcAnalytics.client.setUser('<span class="bcls-input">viewer id</span>');</code></pre>
+      <p>On your websites that host Brightcove Player, you can use an authentication gateway or some identity management solution to keep track of viewers. Use this viewer id as the viewer identifier to pass to Brightcove analytics.</p>
+      <aside class="bcls-aside bcls-aside--warning">The <span class="bcls-input">viewer id</span> value must be a unique string. An invalid value, such as a number, will be ignored. </aside>
+    </li>
+    <li>
+      <p>
+        It is important to set the viewer id before any source is set on the player. It should be called immediately after initializing the player.
+      </p>
+      <pre class="line-numbers"><code class="language-javascript" translate="No">&lt;video-js
+  id=&quot;myPlayerID&quot;
+  data-account=&quot;1752604059001&quot;
+  data-player=&quot;hyQW6GByl&quot;
+  data-embed=&quot;default&quot;
+  controls=&quot;&quot;
+  data-video-id=&quot;6156696074001&quot;
+  data-playlist-id=&quot;&quot;
+  data-application-id=&quot;&quot;
+  width=&quot;640&quot; height=&quot;360&quot;&gt;&lt;/video-js&gt;
+&lt;script src=&quot;https://players.brightcove.net/1752604059001/hyQW6GByl_default/index.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this;
+
+    // Set the viewer id for Brightcove analytics
+    myPlayer.bcAnalytics.client.setUser('<span class="bcls-input">viewer id</span>');
+  });
+&lt;/script&gt;</code></pre>
+    </li>
+    <li>When the <code translate="No">setUser()</code> method is used, the value is not hashed and will be sent in the clear with all subsequent beacons.
+      <p>
+        Note that the <code translate="No">player_init</code> event will not include the <code translate="No">user</code> field in this case, but all <code translate="No">video_*</code> events should include it.
+      </p>
+    </li>
+  </ol>
+  <h3>Custom web player</h3>
+  <p>
+    If you are building a custom implementation that does not use Brightcove Player, add the <code translate="No">user</code> parameter to your Data Collection API requests. For details, see the <a href="https://apis.support.brightcove.com/data-collection/overview-data-collection-api-v2.html#all-event-parameters">Overview: Data Collection API v2</a> document.
+  </p>
+  <p>On your websites that host your player, you can use an authentication gateway or some identity management solution to keep track viewers. Use this viewer id as the viewer identifier to pass to Brightcove analytics.</p>
+  
+</section>
+
+    <section class="bcls-section">
+      <h2 id="send-viewer-id-sdk-players"></h2>
+      <p>For the Brightcove Native SDK players, you also need to send a viewer id unless you are depending on the one generated by Brightcove.</p>
+
+      <h3>Android</h3>
+      <p>For the Android player, add this code:</p>
+<pre><code class="language-java" translate="No">HashMap&lt;String, String&gt; baseParams = new HashMap&lt;&gt;();
+  baseParams.put(Analytics.Fields.USER, &quot;<span class="bcls-input">viewer id</span>&quot;);
+  baseParams.put(Analytics.Fields.APPLICATION_ID, &quot;<span class="bcls-input">application id</span>&quot;);
+  
+  HashMap&lt;String, Object&gt; eventParams = new HashMap&lt;&gt;();
+  eventParams.put(Analytics.Fields.BASE_PARAMS, baseParams);
+  eventEmitter.emit(EventType.ADD_ANALYTICS_BASE_PARAMS, eventParams);
+  </code></pre>
+
+        <h3>iOS</h3>
+        <p>For iOS or tvOS, add the following code:</p>
+<pre><code class="language-objectivec" translate="No">@try
+  {
+    [BCOVGlobalConfiguration.sharedConfig setValue:@{
+      @&quot;privateUser&quot;: self.<span class="bcls-input">viewer id</span>,
+      @&quot;privateApplication&quot;: @&quot;<span class="bcls-input">application id</span>&quot;
+    }
+    forKey:@&quot;privateSessionAnalytics&quot;];
+  }
+  @catch (NSException *e)
+  {
+    NSLog(@&quot;%@&quot;, e.description);
+  }
+</code></pre>
+            </section>
+
     <section class="bcls-section">
     <h2 id="filterValues">Filter values</h2>
 
@@ -2908,7 +2993,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 30 May 2022
+  Page last updated on 04 Aug 2022
 </div>
 
 
