@@ -489,11 +489,38 @@ var aapi_model = {
       from: '2011-01-01',
       fields: ['account.name', 'engagement_score', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'date']
     },
+    viewer__date: {
+      dimensions: ['viewer', 'date'],
+      from: '2011-01-01',
+      fields: ['engagement_score', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'date']
+    },
     account__viewer__date_hour: {
       dimensions: ['account', 'viewer', 'date_hour'],
       from: '2011-01-01',
       fields: [
   "account.name",
+  "application",
+  "date_hour",
+  "engagement_score",
+  "engagement_score",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "video_view",
+  "viewer"
+]
+    },
+    viewer__date_hour: {
+      dimensions: ['viewer', 'date_hour'],
+      from: '2011-01-01',
+      fields: [
   "application",
   "date_hour",
   "engagement_score",
@@ -779,7 +806,6 @@ var aapi_model = {
   "application",
   "date",
   "engagement_score",
-  
   "region",
   "region_name",
   "video",
