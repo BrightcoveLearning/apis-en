@@ -2379,69 +2379,49 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
-<h1>Reducing Latency for Live Streams</h1>
 <article class="bcls-article">
-  <summary>This topic explains how you can reduce latency for your Brightcove Live streams.</summary>
+  <h1>Reducing Latency for Live Streams</h1>
+  <summary>This topic explains how you can reduce latency for you Brightcove Live streams.</summary>
   <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>Latency is the time lag between the when something is recorded in real life and when it is seen in a video player. There is, of course, some real time required to transmit a signal from the source through the internet to a viewers player. Latency is aggravated by the fact that online video is transmitted in discreet chunks, called segments.</p>
 
+    <p>Latency can be reduced by shortening the length of the video segments, and the following sections will detail how you can do this. </p>
+    <p>Be aware, however, that there is a tradeoff: to insure uninterrupted playback, the player downloads a few video segments ahead of the current playback position (this is called buffering), so that they are ready when needed.</p>
+    <p>If you shorten the length of segments, keep the following in mind:</p>
+    <ul>
+      <li>The player will be pre-fetching less video data, and chances of playback pausing while the player buffers additional segments will be increased</li>
+      <li>The customer's CDN will see increased request traffic</li>
+    </ul>
+  </section>
 
-<h2 id="Introduction">Introduction</h2>
+  <section class="bcls-section">
+    <h2 id="Requirements">Requirements</h2>
+    <p>The following player versions support Low Latency HLS with live streams:</p>
 
-<p>Latency is the time lag between the when something is recorded in real life and when it is seen in a video player. There is, of course, some real time required to transmit a signal from the source through the internet to a viewers player. Latency is aggravated by the fact that online video is transmitted in discreet chunks, called segments.</p>
+    <ul>
+      <li>Brightcove Player (web) release 6.62.0 and newer</li>
+      <li>Native SDK for iOS release 6.10.3 and newer</li>
+      <li>Native SDK for Android release 7.0.1 and newer</li>
+    </ul>
+  </section>
 
-<p>Latency can be reduced by shortening the length of the video segments, and the following sections will detail how you can do this. </p>
-<p>Be aware, however, that there is a tradeoff: to insure uninterrupted playback, the player downloads a few video segments ahead of the current playback position (this is called buffering), so that they are ready when needed.</p> 
-<p>If you shorten the length of segments, keep the following in mind:</p>
-<ul>
-  <li>The player will be pre-fetching less video data, and chances of playback pausing while the player buffers additional segments will be increased</li>
-  <li>The customer's CDN will see increased request traffic</li>
-</ul>
-
-<h3>Requirements</h3>
-
-<p>The following player versions support Low Latency HLS with live streams:</p>
-
-<ul>
-	<li>Brightcove Player (web) release 6.62.0 and newer</li>
-  <li>Native SDK for iOS release 6.10.3 and newer</li>
-  <li>Native SDK for Android release 7.0.1 and newer</li>
-</ul>
-
-<h3>Additional limitations</h3>
-
-<p>The following limitations apply to Live streams using reduced latency:</p>
-
-<ul>
-	<li>SSAI is <strong>not</strong> supported</li>
-	<li>DRM is <strong>not</strong> supported</li>
-	<li>The DVR window must be less than <strong>5 minutes</strong></li>
-	<li>No more than <strong>4</strong> renditions</li>
-</ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="Creating_Reduced_Latency_Live_Profile">Creating Reduced Latency Live Profile</h2>
-
-<p>To reduce latency, you will need to create a custom Live profile. Follow the steps below:</p>
-
-<ol class="bcls-tasklist-restart">
-	<li>Login to Studio</li>
-	<li>Go to <strong>Admin</strong> &gt; <strong>Ingest Profiles</strong>:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Go to Ingest Profiles" src="/assets/images/s-apis-general-img/18954/go-to-ingest-profiles.png" />
-	<figcaption class="bcls-caption--image">Go to Ingest Profiles</figcaption>
-	</figure>
-	</li>
-	<li>Select one of the <strong>Live</strong> ingest profiles with no more than <strong>4</strong> renditions:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Select a Live Profile" src="/assets/images/s-apis-general-img/18954/select_ingest_profile.png" />
-	<figcaption class="bcls-caption--image">Select a Live Profile</figcaption>
-	</figure>
-	</li>
-	<li>Click on the link to open the profile</li>
-	<li>Click on the <strong>Duplicate</strong> button to create a new profile based on this one</li>
-	<li>In the new profile, change the <code translate="No">name</code> to "Low Latency Profile" (or whatever you want to call it)</li>
-	<li>For each of the <code translate="No">renditions</code>, change the <code translate="No">segment_seconds</code> to <code translate="No">2</code> to reduce the length of the segments to 2 seconds</li>
-	<li>Your whole profile should look something like this:
-	<pre class="line-numbers">
+  <section class="bcls-section">
+    <h2 id="Creating_Reduced_Latency_Live_Profile">Creating Reduced Latency Live Profile</h2>
+    <p>To reduce latency, you will need to create a custom Live profile. Follow the steps below:</p>
+    <ol class="bcls-tasklist-restart">
+      <li>Login to Studio.</li>
+      <li>Open the <strong>Admin</strong> module.</li>
+      <li>In the left navigation, click <strong>Ingest Profiles</strong>.</li>
+      <li>Select one of the <strong>Live</strong> ingest profiles with no more than <strong>4</strong> renditions.
+        <figure class="bcls-figure"><img class="bcls-image" alt="Select a Live Profile" src="/assets/images/s-live-img/general/select_ingest_profile.png" /> </figure>
+      </li>
+      <li>Click on the link to open the profile.</li>
+      <li>Click <span class="button-blue">Duplicate</span> to create a new profile based on the selected one.</li>
+      <li>In the new profile, change the <code translate="No">name</code> to "Low Latency Profile" (or another meaningful name).</li>
+      <li>For each of the <code translate="No">renditions</code>, change the <code translate="No">segment_seconds</code> to <code translate="No">2</code> to reduce the length of the segments to 2 seconds.</li>
+      <li>The profile should look similar to this:
+        <pre class="line-numbers">
 <code class="language-json" translate="No">{
   "model_version": 1,
   "name": "<span class="bcls-highlight">Low Latency Profile</span>",
@@ -2503,21 +2483,34 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   ],
   "packages": []
 }</code></pre>
-	</li>
-	<li>To use this profile, select when you create a new Live Event in the Live module:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Create Live Event" src="/assets/images/s-apis-general-img/18954/create-live-event.png" />
-	<figcaption class="bcls-caption--image">Create Live Event</figcaption>
-	</figure>
-	</li>
-</ol>
-</section>
+      </li>
+      <li>To use the profile, select it when creating a new Live Event in the Live module.
+        <figure class="bcls-figure"><img class="bcls-image" alt="Create Live Event" src="/assets/images/s-live-img/general/create-live-event.png" /> </figure>
+      </li>
+    </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Using_the_Live_API">Using the Live API</h2>
+    <p>If you want reduced latency, and you use the Live API to create your live jobs, just create the job as you normally do, but include <strong>no more than 4 renditions</strong>, and set <code translate="No">segment_seconds</code> for each rendition to <code translate="No">2</code>. Make sure you observe the <a href="#Limitations">listed limitations</a> for this feature.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Limitations">Limitations</h2>
+    <p>The following limitations are <strong>NOT</strong> supported with Live streams using reduced latency:</p>
+    <ul>
+      <li>SSAI</li>
+      <li>DRM</li>
+      <li>Multi-language audio tracks</li>
+      <li>Redundancy</li>
+    </ul>
 
-<section class="bcls-section">
-<h2 id="Using_the_Live_API">Using the Live API</h2>
-
-<p>If you want reduced latency, and you use the Live API to create your live jobs, just create the job as you normally do, but include <strong>no more than 4 renditions</strong>, and set <code translate="No">segment_seconds</code> for each rendition to <code translate="No">2</code>. Also, make sure that observe the other limitations listed in the <a href="#Introduction">Introduction</a>.</p>
-</section>
+    <p>Additional limitations include:</p>
+    <ul>
+      <li>The DVR window must be less than <strong>5 minutes</strong></li>
+      <li>No more than <strong>4</strong> renditions</li>
+    </ul>
+  </section>
 </article>
+
 
 <!-- complete bootstrap layout -->
     </div>
@@ -2534,7 +2527,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 04 Aug 2022
+  Page last updated on 10 Aug 2022
 </div>
 
 
