@@ -11,7 +11,7 @@
   } else {
     lang = 'en-us';
   }
-  site_domain = lang_prefix + 'apis.support.brightcove.com';
+  site_domain = 'apis.support.brightcove.com';
   filter = "domain='" + site_domain +  "'";
   lang_filter = "lang='" + lang + "'";
   console.log('filter', filter);

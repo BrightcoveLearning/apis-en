@@ -15,7 +15,7 @@ layout: null
   } else {
     lang = 'en-us';
   }
-  site_domain = lang_prefix + '{{ site.site_domain }}';
+  site_domain = '{{ site.site_domain }}';
   filter = "domain='" + site_domain +  "'";
   lang_filter = "lang='" + lang + "'";
   console.log('filter', filter);
