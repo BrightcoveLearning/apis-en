@@ -109,7 +109,11 @@ paths:
       tags:
         - Videos
       summary: Get Video by ID or Reference ID
-      description: 'Gets a video object based on a video ID or reference ID.   '
+      description: |-
+        Gets a video object based on a video ID or reference ID. To get a video using the `reference_id`, use: https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/ref:{reference_id}`
+
+        Note that you can specify multiple video ids in a comma-delimited list, but only **one** `reference_id`.
+ 
       parameters:
         - $ref: '#/components/parameters/ad_config_id'
         - $ref: '#/components/parameters/config_id'
@@ -177,11 +181,11 @@ paths:
 
         Notes:
 
-        When performing a search, you need to use a search-enabled Policy Key. For information on getting policy keys, see the Policy API Overview or the Policy Keys documents.  In general, search-enabled Policy Keys should only be stored on a server and not in a browser player or mobile app, since they can be used to list all playable videos. For some accounts this may not be applicable if you do not care if all of your playable videos can be discovered.
+        - When performing a search, you need to use a search-enabled Policy Key. For information on getting policy keys, see the Policy API Overview or the Policy Keys documents.  In general, search-enabled Policy Keys should only be stored on a server and not in a browser player or mobile app, since they can be used to list all playable videos. For some accounts this may not be applicable if you do not care if all of your playable videos can be discovered.
 
-        The maximum number of videos (highest count value) returned is 1000, even if there are more matching videos in the account. The count value is an estimate and should not be relied on as the exact number to be returned. If all results are desired then keep paging until it no longer returns a full page, or use the CMS api.
+        - The maximum number of videos (highest count value) returned is 1000, even if there are more matching videos in the account. The count value is an estimate and should not be relied on as the exact number to be returned. If all results are desired then keep paging until it no longer returns a full page, or use the CMS api.
 
-        Only currently playable videos are included in the results list. It is recommended to do a similar query with the CMS api to see why some videos are excluded.  Any geo-restricted videos that are denied for the particular requestor are omitted from the results. As long as some videos are allowed the request is considered successful. An errors field is added to the result with a summary explaining why videos were omitted.
+        - Only currently playable videos are included in the results list. It is recommended to do a similar query with the CMS api to see why some videos are excluded.  Any geo-restricted videos that are denied for the particular requestor are omitted from the results. As long as some videos are allowed the request is considered successful. An errors field is added to the result with a summary explaining why videos were omitted.
       parameters:
         - $ref: '#/components/parameters/q'
         - $ref: '#/components/parameters/limit'
