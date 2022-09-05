@@ -301,7 +301,7 @@ components:
         transcriptions:
           type: array
           items:
-            $ref: '#/components/schemas/IngestMediaAssetbody.captions'
+            $ref: '#/components/schemas/IngestMediaAssetbody.transcripts'
           description: array of auto captions to be generated
         audio_tracks:
           $ref: '#/components/schemas/IngestMediaAssetbody.audioTracks'
@@ -442,10 +442,10 @@ components:
             "embed_closed_caption": true
           }
         ]
-    IngestMediaAssetbody.captions:
-      title: Ingest Media Asset Body.captions
+    IngestMediaAssetbody.transcripts:
+      title: Ingest Media Asset Body.transcripts
       description: >-
-        array of auto captions to be generated - see [Requesting Auto Captions](/dynamic-ingest/ingest-guides/requesting-auto-captions.html)
+        array of auto captions/transcripts to be generated - see [Requesting Auto Captions](/dynamic-ingest/ingest-guides/requesting-auto-captions.html), or an array of transcript files to be ingested - see [Ingesting Transcript Files](/dynamic-ingest/ingest-guides/ingesting-transcriptions.html)
       type: array
       items:
         type: object
@@ -580,11 +580,14 @@ components:
                   - published
                   - draft
                 default: null
+              url:
+                type: string
+                description: The URL where a transcript file is located. Must be included in the `kind` is `transcripts`. Must <strong>not</strong> be included if the `kind` is `captions`.
       example: [
           {
-            "srclang": "en",
-            "kind": "captions",
-            "label": "EN",
+            "srclang": "en-US",
+            "kind": "transcripts",
+            "label": "en-US",
             "status": "published",
             "default": true
           }
