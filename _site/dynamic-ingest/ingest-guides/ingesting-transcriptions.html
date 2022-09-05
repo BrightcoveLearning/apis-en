@@ -1248,6 +1248,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                           
                         
                           
+                            <li><a href="/dynamic-ingest/ingest-guides/ingesting-transcriptions.html">Ingesting Transcript Files</a></li>
+                          
+                        
+                          
                             <li><a href="/dynamic-ingest/ingest-guides/requesting-auto-captions.html">Requesting Auto Captions</a></li>
                           
                         
@@ -2418,8 +2422,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
     <h4>Request URL</h4>
     
-    <pre>
-        <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
+<pre><code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/ingest-requests</code></pre>
     
     <h4>Method</h4>
     
@@ -2433,8 +2436,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   },
   "transcripts": [
     {
-      "src": "https://support.brightcove.com/test-assets/transcript/herons-transcript.txt",
-      "srclang": "en",
+      "url": "https://support.brightcove.com/test-assets/transcript/herons-transcript.txt",
+      "srclang": "en-US",
+      "kind": "transcripts"
       "label": "English",
       "default": true,
       "status" : "published"
@@ -2463,8 +2467,9 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 <code class="language-json" translate="No">{
   "transcripts": [
     {
-      "src": "https://support.brightcove.com/test-assets/transcript/herons-transcript.txt",
-      "srclang": "en",
+      "url": "https://support.brightcove.com/test-assets/transcript/herons-transcript.txt",
+      "srclang": "en-US",
+      "kind": "transcripts"
       "label": "English",
       "default": true,
       "status" : "published"
@@ -2485,6 +2490,105 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     </ol>
     </aside>
     
+    </section>
+    <section class="bcls-section">
+      <h2 id="ingest_fields">Ingest fields</h2>
+      <p>The following table details the fields used for ingesting transcripts or <a href="/dynamic-ingest/ingest-guides/requesting-auto-captions.html">requesting auto captions</a>.</p>
+      <table class="bcls-table">
+  <caption class="bcls-caption--table">Fields for Auto Captions and Transcripts</caption>
+  <thead class="bcls-table__head">
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+    <tr>
+      <td><code translate="No">autodetect</code></td>
+      <td>boolean</td>
+      <td>no</td>
+      <td>
+        <code translate="No">true</code> to auto-detect language from audio source. <code translate="No">false</code> to use <code translate="No">srclang</code> specifying the audio language.
+        <aside class="bcls-aside bcls-aside--warning language-editable">
+          Notes:
+          <ul>
+            <li>If <code translate="No">autodetect</code> is <code translate="No">true</code>, <code translate="No">srclang</code> must <strong>not</strong> be included.</li>
+            <li>If <code translate="No">autodetect</code> is <code translate="No">false</code>, and <code translate="No">srclang</code> is not included, the request will fail.</li>
+          </ul>
+        </aside>
+      </td>
+    </tr>
+    <tr>
+      <td><code translate="No">default</code></td>
+      <td>boolean</td>
+      <td>no</td>
+      <td>
+        If <code translate="No">true</code>, <code translate="No">srclang</code> will be ignored, and the main audio track will be used - language will be auto-detected.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#input_audio_track"><code translate="No">input_audio_track</code></a></td>
+      <td>object</td>
+      <td>no</td>
+      <td>
+        For multiple audio tracks, defines the audio to extract the captions from. It is composed by language and variant (both required).
+      </td>
+    </tr>
+    <tr>
+      <td><code translate="No">kind</code></td>
+      <td>string</td>
+      <td>no</td>
+      <td>
+        The kind of output to generate. Allowed values:
+        <ul>
+          <li><code>captions</code></li>
+          <li><code>transcripts</code></li>
+        </ul>
+        Notes:
+        <ol>
+          <li>If the <code>kind</code> is <code>transcripts</code>, <strong>and</strong> the <code>url</code> for the transcripts file is included, a transcript file will be ingested, and no auto captions will be generated. See <a href="/dynamic-ingest/ingest-guides/ingesting-transcriptions.html">Ingesting Transcriptions</a> for more details.</li>
+          <li>If the <code>kind</code> is <code>transcripts</code>, <strong>and</strong> the <code>url</code> for the transcripts file is <strong>not</strong> included, a transcript file and captions will be generated,</li>
+          <li>If the <code>kind</code> is <code>captions</code>, a captions will be generated, but not a transcript file.</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td><code translate="No">label</code></td>
+      <td>string</td>
+      <td>no</td>
+      <td>
+        Human readable label. Defaults to the BCP-47 style language code.
+      </td>
+    </tr>
+    <tr>
+      <td><code translate="No">srclang</code></td>
+      <td>string</td>
+      <td>no</td>
+      <td>
+        BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.); see <a href="#supported_languages">supported languages</a>
+      </td>
+    </tr>
+    <tr>
+      <td><code translate="No">status</code></td>
+      <td>string</td>
+      <td>no</td>
+      <td>
+        Indicates the actual situation of the caption, if it is <code translate="No">published</code>, <code translate="No">draft</code>.
+      </td>
+    </tr>
+    <tr>
+      <td><code translate="No">url</code></td>
+      <td>string</td>
+      <td>no</td>
+      <td>
+        The URL where a transcript file is located. Must be included in the <code>kind</code> is <code>transcripts</code>. Must <strong>not</strong> be included if the <code>kind</code> is <code>captions</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
     </section>
     </article>
     

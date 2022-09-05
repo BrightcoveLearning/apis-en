@@ -1248,6 +1248,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                           
                         
                           
+                            <li><a href="/dynamic-ingest/ingest-guides/ingesting-transcriptions.html">Ingesting Transcript Files</a></li>
+                          
+                        
+                          
                             <li><a href="/dynamic-ingest/ingest-guides/requesting-auto-captions.html">Requesting Auto Captions</a></li>
                           
                         
@@ -2569,8 +2573,18 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           <td><code translate="No">transcriptions.kind</code> <em>optional</em></td>
           <td>String</td>
           <td>
-            The kind of output to generate. Currently the only allowed value is <code translate="No">captions</code>
-          </td>
+            The kind of output to generate. Allowed values:
+            <ul>
+              <li><code>captions</code></li>
+              <li><code>transcripts</code></li>
+            </ul>
+            Notes:
+            <ol>
+              <li>If the <code>kind</code> is <code>transcripts</code>, <strong>and</strong> the <code>url</code> for the transcripts file is included, a transcript file will be ingested, and no auto captions will be generated. See <a href="/dynamic-ingest/ingest-guides/ingesting-transcriptions.html">Ingesting Transcriptions</a> for more details.</li>
+              <li>If the <code>kind</code> is <code>transcripts</code>, <strong>and</strong> the <code>url</code> for the transcripts file is <strong>not</strong> included, a transcript file and captions will be generated,</li>
+              <li>If the <code>kind</code> is <code>captions</code>, a captions will be generated, but not a transcript file.</li>
+            </ol>
+              </td>
         </tr>
         <tr>
           <td><code translate="No">transcriptions.label</code> <em>required</em></td>
@@ -2591,6 +2605,13 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
           <td>String</td>
           <td>
             The status of the text tracks, either <code translate="No">published</code> or <code translate="No">draft</code> (added but not available to users); use <code translate="No">draft</code> if the transcription needs to be reviewed before release, and update it to <code translate="No">published</code> using the <a href="/cms/index.html">CMS API</a>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">transcriptions.url</code> <em>optional</em></td>
+          <td>String</td>
+          <td>
+            The URL where a transcript file is located. Must be included in the <code>kind</code> is <code>transcripts</code>. Must <strong>not</strong> be included if the <code>kind</code> is <code>captions</code>.
           </td>
         </tr>
         <tr>
