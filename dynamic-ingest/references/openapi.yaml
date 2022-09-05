@@ -459,10 +459,6 @@ components:
               **Note:**
                 - If `autodetect` is set to `true`, `srclang` must **not** be present
                 - If `autodetect` is set to `false`, and `srclang` is not present, the request will fail
-          srclang:
-            type: string
-            description: >-
-              BCP 47 language code for the text tracks. Both two letter language codes like `es` (Spanish) and language+region codes like `es-MX` (Mexican Spanish) are valid. **`srclang` must not be included if `autodetect` is `true`.**
           default:
             type: boolean
             description: If true, srclang should be ignored and we will get captions for main audio, and the language will be determined from audio.
@@ -582,16 +578,17 @@ components:
             default: null
           url:
             type: string
-            description: The URL where a transcript file is located. Must be included in the `kind` is `transcripts`. Must <strong>not</strong> be included if the `kind` is `captions`.
+            description: >-
+              The URL where a transcript file is located. Must be included in the `kind` is `transcripts`. Must <strong>not</strong> be included if the `kind` is `captions`.
       example: [
-          {
-            "srclang": "en-US",
-            "kind": "transcripts",
-            "label": "en-US",
-            "status": "published",
-            "default": true
-          }
-        ]
+                  {
+                    "srclang": "en-US",
+                    "kind": "transcripts",
+                    "label": "en-US",
+                    "status": "published",
+                    "default": true
+                  }
+                ]
     IngestMediaAssetbody.audioTracks:
       title: Ingest Media Asset Body.audio_tracks
       type: object
@@ -607,20 +604,20 @@ components:
             $ref: '#/components/schemas/IngestMediaAssetbody.audioTracks.masters'
           description: array of audio track objects **Dynamic Delivery only**
       example: {
-        "merge_with_existing": true,
-        "masters": [
-            {
-              "url": "http://support.brightcove.com/test-assets/audio/celtic_lullaby.m4a",
-              "language": "en",
-              "variant": "alternate"
-            },
-            {
-              "url": "http://support.brightcove.com/test-assets/audio/audio1.m4a",
-              "language": "en",
-              "variant": "commentary"
-            }
-          ]
-        }
+                "merge_with_existing": true,
+                "masters": [
+                      {
+                        "url": "http://support.brightcove.com/test-assets/audio/celtic_lullaby.m4a",
+                        "language": "en",
+                        "variant": "alternate"
+                      },
+                      {
+                        "url": "http://support.brightcove.com/test-assets/audio/audio1.m4a",
+                        "language": "en",
+                        "variant": "commentary"
+                      }
+                    ]
+                  }
     IngestMediaAssetbody.audioTracks.masters:
       title: Ingest Media Asset Body.audio_tracks.masters
       description: >-
@@ -723,13 +720,13 @@ components:
           type: number
           description: pixel width of the image
       example: {
-            "media_type": "image",
-            "language": "es",
-            "format": "jpg",
-            "label": "poster",
-            "width": 1280,
-            "height": 720
-          }
+                  "media_type": "image",
+                  "language": "es",
+                  "format": "jpg",
+                  "label": "poster",
+                  "width": 1280,
+                  "height": 720
+                }
     IngestMediaAssetResponse:
       title: Ingest Media Asset Response
       required:
