@@ -2406,7 +2406,12 @@ components:
           default: "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png"
         live_profile:
           type: string
-          description: Live profile on the account that need to be associated with this channel. Use the [List Profiles](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListProfiles) API to get the profile id's.
+          description: |-
+            Live profile on the account that need to be associated with this channel. Use the [List Profiles](https://apis.support.brightcove.com/cloud-playout-apis/references/reference-channels.html#operation/ListProfiles) API to get the profile id's.
+
+            The Live job used for the channel destination should be in the same account as the channel. It is possible to use a live job from another account, but you will need to add `/alive` to the RTMP address - for example:
+
+            `rtmp://26bb68b0769682e7edbe6d4c55478818.sep.bcovlive.io:1935/26bb68b9682e7ec554dbe6d407678818/alive`
         channel_class:
           type: string
           default: single-pipeline
