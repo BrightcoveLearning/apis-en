@@ -269,7 +269,7 @@ console.log('nav_menu_collapsed', nav_menu_collapsed);
     bc_veggie_burger_wrapper.setAttribute('style', 'display:none');
   }
   // hide nav by default on landing pages
-  if (location.pathname.substring(location.pathname.lastIndexOf('/')) === '/index.html') {
+  if (location.pathname.substring(location.pathname.lastIndexOf('/')) === '/index.html' || location.pathname.substring(location.pathname.lastIndexOf('/')) === '/') {
     console.log('turning off nav menu');
     toggle_nav_menu();
   }
