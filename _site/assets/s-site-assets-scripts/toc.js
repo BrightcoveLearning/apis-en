@@ -179,12 +179,12 @@ var BCLS_toc = (function (window, document) {
    */
   function toggle_nav_menu () {
     if (nav_menu_collapsed) {
-      side_nav.setAttribute('style', 'margin-left: 1em;display: inline-block;border-right: 1px solid #ccc;padding-right: 1em;');
+      side_nav.setAttribute('style', 'margin-left: 1em;display: inline-block;border-right: 1px solid #e5e5e6;padding-right: 1em;');
       document.querySelector('#main_content').removeAttribute('style');
       nav_menu_collapsed = false;
       bc_veggie_burger.setAttribute('src', '/assets/images/s-feather-img/x.svg');
     } else {
-      side_nav.setAttribute('style', 'margin-left: -500px; margin-right: 6em;display: inline-block;border-right: 1px solid #ccc; padding-right: 1em;')
+      side_nav.setAttribute('style', 'margin-left: -500px; margin-right: 6em;display: inline-block;border-right: 1px solid #e5e5e6; padding-right: 1em;')
       nav_menu_collapsed = true;
       bc_veggie_burger.setAttribute('src', '/assets/images/s-feather-img/menu.svg');
       if (window.innerWidth > 800) {
