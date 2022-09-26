@@ -3365,7 +3365,10 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <dt>
 <pre><code translate="No" style="font-weight:bold;">&lt;customField name="string/required"&gt;value&lt;/customField&gt;</code></pre>
       </dt>
-      <dd>The <code translate="No">value</code> will be assigned to the custom field with the given name for this video.</dd>
+      <dd>
+        The <code translate="No">value</code> will be assigned to the custom field with the given name for this video.
+        <aside class="bcls-aside bcls-aside--information language-editable">Note that the custom field must exist in the account, on the ingest will fail.</aside>
+      </dd>
   
       <dt>
 <pre><code translate="No" style="font-weight:bold;">&lt;labels&gt; separated by comma &lt;/labels&gt;</code></pre>
@@ -3391,7 +3394,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       <dd>The video id. Do <strong>not</strong> include this if you ingesting a new video. To be used only for replacing or retranscoding or adding media assets to an existing video.</dd>
   
   
-      <dt>
+      <!-- <dt>
 <pre><code translate="No" style="font-weight:bold;">&lt;remoteasset 
   url="string/required" 
   name="string" 
@@ -3404,7 +3407,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   videoContainer="number" 
   progressiveDownload="boolean"/&gt;</code></pre>
       </dt>
-      <dd>For adding a remote asset video. Note that if you include both the <code translate="No">&lt;master&gt;</code> and <code translate="No">&lt;remoteasset</code> tags, the request will fail.</dd>
+      <dd>For adding a remote asset video. Note that if you include both the <code translate="No">&lt;master&gt;</code> and <code translate="No">&lt;remoteasset</code> tags, the request will fail.</dd> -->
   
   
       <dt>
@@ -3422,38 +3425,28 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
   <section class="bcls-section">
     <h2 id="Sample_manifest_brightcove">Sample manifest</h2>
 <div style="overflow-x: scroll;">
-  <pre class="line-numbers"><code class="language-xml">&lt;rss xmlns:media="http://search.yahoo.com/mrss/" 
-    xmlns:dcterms="http://purl.org/dc/terms/" 
-    xmlns:fh="http://purl.org/syndication/history/1.0" 
-    <span class="bcls-highlight">xmlns:brightcove="http://www.brightcove.com/mrss/"</span> 
-    version="2.0"&gt;
+  <pre class="line-numbers"><code class="language-xml">&lt;rss xmlns:media=&quot;http://search.yahoo.com/mrss/&quot; 
+    xmlns:dcterms=&quot;http://purl.org/dc/terms/&quot; 
+    xmlns:fh=&quot;http://purl.org/syndication/history/1.0&quot; 
+    xmlns:brightcove=&quot;http://www.brightcove.com/mrss/&quot; 
+    version=&quot;2.0&quot;&gt;
     &lt;channel&gt;
       &lt;item&gt;
-  
         &lt;brightcove&gt;
-          &lt;master url=""/&gt;
+          &lt;master url=&quot;countdown_10.mp4&quot;/&gt;
            &lt;profile&gt;multi-platform-standard-dynamic-with-mp4&lt;/profile&gt;
-           &lt;name&gt;Title OIS V1-MRSS-04042016_00008 MC&lt;/name&gt;
+           &lt;name&gt;Countdown 10&lt;/name&gt;
            &lt;status&gt;ACTIVE&lt;/status&gt;
-           &lt;description short="desc" long="Desc OIS V1-MRSS-04042016_00008 MC" /&gt;
-           &lt;labels&gt;/nihanth1/dara1,/harsha1/kanna1&lt;/labels&gt;
-           &lt;tags&gt;birds,sea&lt;/tags&gt;
-           &lt;referenceId&gt;asdf1234&lt;/referenceId&gt;
-           &lt;videoId&gt;73446256700bol1&lt;/videoId&gt;
-           &lt;customField name="season_number"&gt;1&lt;/customField&gt;
-           &lt;remoteasset url="//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4
-  "&gt;&lt;/remoteasset&gt;
-           &lt;schedule startsAt="2021-05-01T18:00:00.000+08" endsAt="2021-05-08T18:00:00.000+08"/&gt;
-           &lt;link&gt;http://mysite.com/videos/sports/real_sports.html&lt;/link&gt;
+           &lt;description short=&quot;countdown&quot; long=&quot;Countdown video #10&quot; /&gt;
+           &lt;labels&gt;&lt;/labels&gt;
+           &lt;tags&gt;samples, countdown&lt;/tags&gt;
+           &lt;referenceId&gt;count_1&lt;/referenceId&gt;
            &lt;images&gt;
-             &lt;image url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/images/big_buck_bunny_1.png" variant="thumbnail" language="es" label="thumbnail" height="480" width="640"/&gt;
+             &lt;image url=&quot;Countdown10.png&quot; variant=&quot;thumbnail&quot; language=&quot;es&quot; label=&quot;thumbnail&quot; height=&quot;480&quot; width=&quot;640&quot;/&gt;
            &lt;/images&gt;
            &lt;texttracks&gt;
-             &lt;texttrack url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/SubTitles/cc_030152016-2.vtt" srclang="en-US" kind="captions" label="English"/&gt;
+             &lt;texttrack url=&quot;WEBVTT-10.vtt&quot; srclang=&quot;en-US&quot; kind=&quot;captions&quot; label=&quot;English&quot;/&gt;
            &lt;/texttracks&gt;
-           &lt;audiotracks&gt;
-             &lt;audiotrack url="http://ots-testing.ooyala.com.s3.amazonaws.com/MRSS_103469/Assets_03012016/audio/cc_030152016-2.m4f" language="en" variant="main"/&gt;
-           &lt;/audiotracks&gt;
         &lt;/brightcove&gt;
       &lt;/item&gt;
     &lt;/channel&gt;
