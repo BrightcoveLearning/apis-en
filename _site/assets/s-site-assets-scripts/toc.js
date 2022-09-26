@@ -188,7 +188,7 @@ var BCLS_toc = (function (window, document) {
       nav_menu_collapsed = true;
       bc_veggie_burger.setAttribute('src', '/assets/images/s-feather-img/menu.svg');
       if (window.innerWidth > 800) {
-        document.querySelector('#main_content').setAttribute('style', 'margin-left: 10em;');
+        document.querySelector('#main_content').setAttribute('style', 'margin-left: 20em;');
       }
     }
 }
