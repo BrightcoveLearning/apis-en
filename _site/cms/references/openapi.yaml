@@ -5295,53 +5295,6 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-    delete:
-      tags:
-        - Legacy
-      summary: Delete Poster
-      description: >-
-        Deletes a poster file for a remote asset. Note that you can only add one
-        poster for a video. Note: you can use /videos/ref:reference_id instead
-        of /videos/video_id. **This request works for accounts on the legacy
-        ingest system only - not supported for Dynamic Delivery**
-      operationId: DeletePoster
-      parameters:
-        - $ref: '#/components/parameters/AccountId'
-        - $ref: '#/components/parameters/VideoId'
-        - $ref: '#/components/parameters/AssetId'
-        - $ref: '#/components/parameters/ContentType'
-        - $ref: '#/components/parameters/Authorization'
-      responses:
-        '204':
-          description: Item was deleted
-        '401':
-          description: >-
-            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
-        '403':
-          description: >-
-            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
-        '404':
-          description: >-
-            RESOURCE_NOT_FOUND: The api could not find the resource you requested
-        '405':
-          description: >-
-            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
-        '429':
-          description: >-
-            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
-        '500':
-          description: |-
-            UNKNOWN: Issue in Brightcove system; try again later.
-            TIMEOUT: Server likely too busy; try again later.
-      deprecated: false
-      security:
-        - BC_OAuth2:
-            - video-cloud/video/update
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
   '/v1/accounts/{account_id}/videos/{video_id}/assets/thumbnail':
     get:
       tags:
@@ -5559,53 +5512,6 @@ paths:
           description: 'REFERENCE_ID_IN_USE: The specified reference id is already in use '
         '422':
           description: 'VALIDATION_ERROR: remote_url'
-        '429':
-          description: >-
-            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
-        '500':
-          description: |-
-            UNKNOWN: Issue in Brightcove system; try again later.
-            TIMEOUT: Server likely too busy; try again later.
-      deprecated: false
-      security:
-        - BC_OAuth2:
-            - video-cloud/video/read
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-    delete:
-      tags:
-        - Legacy
-      summary: Delete Thumbnail
-      description: >-
-        Deletes a thumbnail file for a remote asset. Note that you can only add
-        one thumbnail for a video. Note: you can use `/videos/ref:reference_id`
-        instead of `/videos/video_id`. **This request works for accounts on the
-        legacy ingest system only - not supported for Dynamic Delivery**
-      operationId: DeleteThumbnail
-      parameters:
-        - $ref: '#/components/parameters/AccountId'
-        - $ref: '#/components/parameters/VideoId'
-        - $ref: '#/components/parameters/AssetId'
-        - $ref: '#/components/parameters/ContentType'
-        - $ref: '#/components/parameters/Authorization'
-      responses:
-        '204':
-          description: Item was deleted
-        '401':
-          description: >-
-            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
-        '403':
-          description: >-
-            NOT_AVAILABLE: The resource you are requesting is temporarily unavailable
-        '404':
-          description: >-
-            RESOURCE_NOT_FOUND: The api could not find the resource you requested
-        '405':
-          description: >-
-            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
         '429':
           description: >-
             TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
