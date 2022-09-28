@@ -431,6 +431,55 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
+  '/v1/accounts/{account_id}/videos/{video_id}/image_sources/{label}':
+    delete:
+      tags:
+        - Videos
+      summary: Delete video image
+      description: >-
+        Delete video image source by label. The label can be one of `poster`, `thumbnail`, `wide`, `ultra-wide`, `portrait`, `square`.
+      operationId: DeleteVideoImage
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Label'
+        - $ref: '#/components/parameters/ContentType'
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '204':
+          description: >-
+            NO CONTENT: image source was deleted successfully.
+        '400':
+          description: >-
+            AD_CONFIG_INACTIVE: Ad configuration specified in an SSAI request is inactive
+
+            AD_CONFIG_NOT_FOUND: Ad configuration specified in an SSAI request was not found
+        '401':
+          description: >-
+            UNAUTHORIZED: Authentication failed; check to make sure your client credentials were correct for the access token
+        '404':
+          description: >-
+            RESOURCE_NOT_FOUND: The api could not find the resource you requested
+        '405':
+          description: >-
+            METHOD_NOT_ALLOWED: The HTTP method specified is not allowed for this endpoint
+        '429':
+          description: >-
+            TOO_MANY_REQUESTS: You are submitting too many simultaneous requests or too many requests per second
+        '500':
+          description: >-
+            UNKNOWN: an unknown internal error occurred - this might be a temporary system issue, but if the problem persists, it is likely an uncaught error in the request - contact Support
+        '503':
+          description: 'TIMEOUT: Server likely too busy - try again later '
+      deprecated: false
+      security:
+        - BC_OAuth2:
+            - video-cloud/video/update
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
   '/v1/accounts/{account_id}/videos/{video_id}/variants':
     get:
       tags:
@@ -6144,6 +6193,22 @@ components:
       required: true
       schema:
         type: string
+      style: simple
+    Label:
+      description: 'Image type'
+      explode: false
+      in: path
+      name: label
+      required: true
+      schema:
+        type: string
+        enum:
+          - poster
+          - thumbnail
+          - wide
+          - ultra-wide
+          - portrait
+          - square
       style: simple
     VideoId:
       description: 'Video ID (specified as `/{video_id}`) or reference id (specified as `/ref:{reference_id}`). For GET or DELETE video by id, you can use a comma-delimited list of up to 10 video ids.'
