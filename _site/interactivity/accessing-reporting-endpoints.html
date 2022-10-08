@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="This topic shows a variety of sample requests using the HTTP GET method.">
+  <meta name="description" content="Brightcove Interactivity provides programmatic access to the reporting data shown in the Studio Reports user interface. This document provides details on how to access the API containing that data from a server-side process like Python or cURL.">
   
-  <title>Retrieve Video Data</title>
+  <title>Accessing Reporting Endpoints</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/s-site-assets-favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/s-site-assets-favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/s-site-assets-favicons/favicon-16x16.png">
@@ -155,15 +155,11 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     <li class="breadcrumb-item first-item"><a href="/">Home</a></li>
     
       
-        <li class="breadcrumb-item"><a href="/cms/">Cms</a></li>
+        <li class="breadcrumb-item"><a href="/interactivity/">Interactivity</a></li>
       
     
       
-        <li class="breadcrumb-item"><a href="/cms/managing-videos/">Managing videos</a></li>
-      
-    
-      
-        <li class="breadcrumb-item active" aria-current="page">Retrieve Video Data</li>
+        <li class="breadcrumb-item active" aria-current="page">Accessing Reporting Endpoints</li>
       
     
   </nav>
@@ -1103,7 +1099,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                         
                           
                             
-                            <li><a href="/cms/managing-videos/using-cms-api-retrieve-video-data.html" aria-current="page">Retrieve Video Data</a></li>
+                            <li><a href="/cms/managing-videos/using-cms-api-retrieve-video-data.html">Retrieve Video Data</a></li>
                             
                           
                         
@@ -2018,7 +2014,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                 
                   
                     
-                    <li><a href="/interactivity/accessing-reporting-endpoints.html">Accessing Reporting Endpoints</a></li>
+                    <li><a href="/interactivity/accessing-reporting-endpoints.html" aria-current="page">Accessing Reporting Endpoints</a></li>
                     
                   
                 
@@ -3282,315 +3278,197 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
-<h1>Retrieve Video Data</h1>
+<h1>Accessing Reporting Endpoints</h1>
 <article class="bcls-article">
-  <summary>This topic shows a variety of sample requests using the HTTP GET method.</summary>
-    <section id="intro" class="bcls-section">
-    <h2>Introduction</h2>
-    
-    <p>In this topic, you will learn how to retrieve various kinds of information about your Video Cloud videos, using <span translate="No">CMS API</span> requests. To create these requests, append the endpoints listed in this document to the base URL with your account id.</p>
-    
-    <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/{account_id}/{endpoint}
-    </code>
-    </pre>
-    
-    <p class="BCL-aside">Requests to the <span translate="No">CMS API</span> require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
+  <summary>Brightcove Interactivity provides programmatic access to the reporting data shown in the Studio Reports user interface. This document provides details on how to access the API containing that data from a server-side process like Python or cURL.</summary>
+  <section class="bcls-section">
+    <p>Brightcove Interactivity provides programmatic access to the reporting data shown in the Studio Reports user interface. This document provides details on how to access the API containing that data from a server-side process like Python or cURL.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="basics">The basics</h2>
+    <p>The reporting API requires that you pass a valid Brightcove Interactivity reporting API Key associated with your account.  API Keys must be passed in the request header <code>X-Hapyak-API-Key</code>. For example:</p>
+    <p><code>X-Hapyak-API-Key: 1e7bc263e32198e49c</code> </p>
+    <aside class="bcls-aside bcls-aside--information">Note: This is a made up example and will be rejected with an HTTP 403 error.</aside>
+    <p>You can find your own reporting API key on the integrations tab of the admin section of the Brightcove Interactivity Portal. 
+      Treat your reporting API key with the 
+      sensitivity of a password as anyone with it can use it to retrieve reporting data from your account.</p>
+    <p>Base URL for reporting requests:</p>
+    <p><code>https://www.hapyak.com/api/reports/v2/</code> </p>
+    <p>Example URL structure:</p>
+    <code>https://[base-url]/[report-name]?send_status=true&[parameters]</code> </section>
+  <section class="bcls-section">
+    <h2 id="api-request">API request construction</h2>
+    <p>The API is invoked via GET operation to the Base API URL. The request must contain a valid <code>X-Hapyak-API-Key</code> header. Specific reports are requested by appending the name of the report and valid parameters to the Base API URL.</p>
+    <p><strong>Results are not synchronously returned.</strong> The reporting API operation is asynchronous in that results may not be available when your request returns. In this case your request will be queued and you will need to poll, or try later, for results.</p>
+    <p>Requests must always include <code>send_status=true</code> which forces the API to return HTTP 202 status while the reporting request is processing and then HTTP 200 with results when it is complete.</p>
+    <p>To determine if you need to &quot;poll&quot; for results, examine the HTTP status code returned by the API. If it is &quot;202 Accepted&quot; your report is still being generated and you’ll need to repeat the request a little bit later to retrieve results. The results are returned with an HTTP 200 status code when they are complete. 
+      Once complete, reporting results are cached for one day and are returned immediately with each request.</p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="report-endpoints">Report endpoints</h2>
+    <p>The following reports are available via API.</p>
+    <div style="overflow-x: scroll;">
+      <table class="bcls-table">
+        <thead class="bcls-table__head">
+          <tr>
+            <th width="123">Name</th>
+            <th width="280">Description</th>
+            <th width="409">End Point</th>
+          </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+          <tr>
+            <td>Project Summary</td>
+            <td>One row per Project</td>
+            <td>project_engagement_summary_raw</td>
+          </tr>
+          <tr>
+            <td>User Summary </td>
+            <td>One row per User</td>
+            <td>user_engagement_summary_raw</td>
+          </tr>
+          <tr>
+            <td>Experience Summary</td>
+            <td>One row per Experience</td>
+            <td>experience_engagement_summary_raw</td>
+          </tr>
+          <tr>
+            <td>Poll Widget Summary</td>
+            <td><p>One row per Poll Widget instance, per 
+                poll_widget_summary
+                response value with count of response 
+                values.</p>
+              <p>Project IDs will contain a list of all projects 
+                where the poll appeared and was submitted. 
+                This is included to support templates where 
+                the same poll widget will appear with multiple 
+                projects.</p>
+              <p>Note: The Project IDs list is not de-duped. </p></td>
+            <td>poll_widget_summary</td>
+          </tr>
+          <tr>
+            <td>Sign In Widget 
+              Summary</td>
+            <td><p>One row per Sign In Widget instance with 
+                counts of various Sign In stats. 
+                Project IDs will contain a list of all projects 
+                where the Sign In appeared and was 
+                submitted. This is included to support 
+                templates where the same Sign In widget will 
+                appear with multiple projects. </p>
+              <p>Note: The Project IDs list is not de-duped.</p></td>
+            <td>signin_widget_summary</td>
+          </tr>
+          <tr>
+            <td>User Activity Stream</td>
+            <td><p>One row per Action, with User ID if known</p>
+              <p> *Includes "views" of bookmarks, user 
+                interactions with player controls, annotations 
+                and widgets. </p>
+              <p>**Excludes "progress" events. </p></td>
+            <td>user_stream_raw</td>
+          </tr>
+          <tr>
+            <td>Project Activity 
+              Stream</td>
+            <td><p>One row per Action</p>
+              <p>*Includes "views" of bookmarks, user 
+                interactions with player controls, annotations 
+                and widgets.</p>
+              <p> **Excludes "progress" events. </p></td>
+            <td>project_stream_raw</td>
+          </tr>
+          <tr>
+            <td>Experience Stream</td>
+            <td><p>One row per Action</p>
+              <p> *Includes "views" of bookmarks, user 
+                interactions with player controls, annotations 
+                and widgets.</p>
+              <p>**Excludes "progress" events. </p></td>
+            <td>experience_stream_raw</td>
+          </tr>
+          <tr>
+            <td>Poll Widget Detail</td>
+            <td>One row per poll submit event.</td>
+            <td>poll_widget_detail</td>
+          </tr>
+          <tr>
+            <td>Sign In Widget Detail</td>
+            <td>One row per Sign In submit event. Includes events where the user was silently 
+              signed-in (auto) because of a previous 
+              sign-in (manual).</td>
+            <td>signin_widget_detail </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+<section class="bcls-section">
+    <h2 id="report-params">Report parameters</h2>
+    <p>All report end_points accept the following parameters:</p>
+    <h3>start</h3>
+    <p>Start date for report results. Default value is 7 days before &quot;end&quot; date. Format for dates is YYYY-MM-DD. All times are UTC.</p>
+    <h3>end</h3>
+    <p>End date for report results. Default value is end of current day. For example if today is 2021-09-23, the default end date is 2021-09-23 23:59:59.999.</p>
+    <h3>format</h3>
+    <p>Output format for report results. Supported values are: csv and json.</p>
+    <h3>send_status</h3> 
+<p>For easier interaction with the API we suggest that you always include <code>send_status=true</code>. This forces the API to return HTTP 202 status while the reporting request is processing and then HTTP 200 with results when it is complete.</p>
+<aside class="bcls-aside bcls-aside--information">Note: Modifying any of the API parameters will modify the underlying report query and require the report to be re-processed.</aside>
     </section>
-    
-    <section class="section" id="GET_videos">
-    <h2>GET videos</h2>
-    
-    <p>Retrieve data for all of the videos in your Video Cloud account.</p>
-    
-    <p>Endpoint: <code translate="No">/videos </code></p>
-    
-    <h3>Request</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos
-    </code>
-    </pre>
-    
-    <h3>Response</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">[ {
-    "id" : "2114345471001",
-    "account_id" : "1507807800001",
-    "complete" : true,
-    "created_at" : "2013-01-23T19:06:16.328Z",
-    "cue_points" : [ {
-    "name" : "Flying Off",
-    "type" : "CODE",
-    "time" : 2.64,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Pre-roll",
-    "type" : "AD",
-    "time" : 0.0,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Bird Back",
-    "type" : "CODE",
-    "time" : 5.938,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Post-roll",
-    "type" : "AD",
-    "time" : 8.242,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    } ],
-    "custom_fields" : {
-    "customfield1" : "Approved",
-    "customfield2" : "Verified"
-    }, ...
-    ]
-    </code>
-    </pre>
+    <section class="bcls-section">
+    <h2 id="details">Important details: limits</h2>
+    <ul>
+      <li>      <strong>Maximum row count</strong> - The API limits the returned results to 500,000 rows of output. Output beyond this limit is omitted from the results.</li>
+      <li><strong>Maximum time range</strong> - The API limits the time range of data retrieved to six months.</li>
+      <li><strong>Rate limits</strong> - By default, the reporting API limits you to running 4 reports per minute; 20 per hour; and 100 per day. These limits apply to the number of unique reports you can execute, not the number of times you hit the reporting endpoint to retrieve results or check status on an already queued report.</li>
+    </ul>
     </section>
-    
-    <section class="section" id="GET_a_video">
-    <h2>GET a video</h2>
-    
-    <p>Retrieve data for a specific video, or multiple videos by id</p>
-    
-    <aside class="bcls-aside bcls-aside--information">Note that <strong>no more than 10 video ids</strong> can be included.</aside>
-    
-    <p>Endpoint: <code translate="No">/videos/{video_id}[,{video2_id},{video3_id}] </code></p>
-    
-    <h3>Request</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001
-    </code>
-    </pre>
-    
-    <h3>Response</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-    "id" : "2114345471001",
-    "account_id" : "1507807800001",
-    "complete" : true,
-    "created_at" : "2013-01-23T19:06:16.328Z",
-    "cue_points" : [ {
-    "name" : "Flying Off",
-    "type" : "CODE",
-    "time" : 2.64,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Pre-roll",
-    "type" : "AD",
-    "time" : 0.0,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Bird Back",
-    "type" : "CODE",
-    "time" : 5.938,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, ...
-    </code>
-    </pre>
-    </section>
-    
-    <section class="section" id="sourcesEndpoint">
-    <h2>GET sources</h2>
-    
-    <p>Retrieve the sources for a specific video.</p>
-    
-    <p>Endpoint: <code translate="No">/videos/{video_id}/sources </code></p>
-    
-    <h3>Request</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001/sources
-    </code>
-    </pre>
-    
-    <h3>Response</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">[
-    {
-    "asset_id": "5164827527001",
-    "remote": false,
-    "src": "http://brightcove.vo.llnwd.net/e2/hls/57838016001/57838016001_5164827527001_5164799982001.m3u8?pubId=57838016001&amp;videoId=5164799982001",
-    "type": "application/vnd.apple.mpegurl"
-    },
-    {
-    "asset_id": "5164827527001",
-    "remote": false,
-    "src": "https://brightcove.hs.llnwd.net/e2/hls/57838016001/57838016001_5164827527001_5164799982001.m3u8?pubId=57838016001&amp;videoId=5164799982001",
-    "type": "application/vnd.apple.mpegurl"
-    }, ...
-    ]
-    </code>
-    </pre>
-    </section>
-    
-    <section class="section" id="imagesEndpoint">
-    <h2>GET images</h2>
-    
-    <p>Retrieve the images for a specific video.</p>
-    
-    <p>Endpoint: <code translate="No">/videos/{video_id}/images </code></p>
-    
-    <h3>Request</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001/images
-    </code>
-    </pre>
-    
-    <h3>Response</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-    "thumbnail" : {
-    "id" : "3815806023001",
-    "src" : "http://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/2431/1507807800001_3815806023001_thumb.jpg?pubId=1507807800001"
-    },
-    "poster" : {
-    "id" : "3815782921001",
-    "src" : "http://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/273/1507807800001_3815782921001_still.jpg?pubId=1507807800001"
+<section class="bcls-section">
+    <h2 id="example">Python code example</h2>
+    <p>The example below illustrates how to invoke a report from Python using the popular Requests library.</p>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">import requests
+import sys
+import time
+
+TIMEOUT = 120 # consider a report &ldquo;timed out&rdquo; if running &gt; 2
+
+minutes processing = True
+
+url = "https://www.hapyak.com/api/reports/v2/project_engagement_summary_raw"
+
+# Reporting endpoint url
+
+querystring = {
+    "start": "2019-07-01", # begin date
+    "end": "2019-09-30", # end date
+    "format": "csv", # csv or JSON
+    "send_status":"true"
     }
+headers = {
+    'X-Hapyak-API-Key': "YOUR-KEY-HERE",
+    'cache-control': "no-cache",
     }
-    </code>
-    </pre>
+
+start_time = time.time()
+
+while processing:
+    if time.time() - start_time &gt; TIMEOUT:
+        print('Report timed-out') 
+        sys.exit(-1) 
+response = requests.request("GET", url, headers=headers, params=querystring) print('Result: {}'.format(response.status_code)) 
+if response.status_code == 200: 
+    processing = False 
+    print(response.text) 
+elif response.status_code == 202: 
+    print('sleep/recheck') 
+    time.sleep (10) 
+else: 
+    print('Something went wrong') 
+    sys.exit(-2)
+    </code></pre>
     </section>
-    
-    <section class="section" id="videoRefidEndpoint">
-    <h2>GET video by refid</h2>
-    
-    <p>Retrieve the data for a specific video using the reference id.</p>
-    
-    <p>Endpoint: <code translate="No">/videos/ref:{video_reference_id} </code></p>
-    
-    <h3>Request</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7
-    </code>
-    </pre>
-    
-    <h3>Response</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-    "id" : "2114345471001",
-    "account_id" : "1507807800001",
-    "complete" : true,
-    "created_at" : "2013-01-23T19:06:16.328Z",
-    "cue_points" : [ {
-    "name" : "Flying Off",
-    "type" : "CODE",
-    "time" : 2.64,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, ...
-    </code>
-    </pre>
-    </section>
-    
-    <section class="section" id="videoRefidSourcesEndpoint">
-    <h2>GET sources by refid</h2>
-    
-    <p>Retrieve the sources for a specific video using its reference id.</p>
-    
-    <aside class="bcls-aside bcls-aside--information">If you want a downloadable rendition, choose an <code translate="No">http </code> or <code translate="No">https </code> source with container <code translate="No">MP4 </code></aside>
-    
-    <p>Endpoint: <code translate="No">/videos/ref:{video_reference_id}/sources </code></p>
-    
-    <h3>Request</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7/sources
-    </code>
-    </pre>
-    
-    <h3>Response</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">[
-    {
-    "asset_id": "5192219618001",
-    "remote": false,
-    "src": "http://brightcove.vo.llnwd.net/v1/uds/pd/57838016001/201611/3753/57838016001_5192219618001_5192207668001.mp4?pubId=57838016001&amp;videoId=5192207668001",
-    "codec": "H264",
-    "container": "MP4",
-    "encoding_rate": 1823000,
-    "duration": 41237,
-    "height": 540,
-    "width": 960,
-    "size": 9417086,
-    "uploaded_at": "2016-11-01T09:37:37.336Z"
-    },
-    {
-    "asset_id": "5192219618001",
-    "remote": false,
-    "src": "https://brightcove.hs.llnwd.net/v1/uds/pd/57838016001/201611/3753/57838016001_5192219618001_5192207668001.mp4?pubId=57838016001&amp;videoId=5192207668001",
-    "codec": "H264",
-    "container": "MP4",
-    "encoding_rate": 1823000,
-    "duration": 41237,
-    "height": 540,
-    "width": 960,
-    "size": 9417086,
-    "uploaded_at": "2016-11-01T09:37:37.336Z"
-    }, ...
-    ]
-    </code>
-    </pre>
-    </section>
-    
-    <section class="section" id="videoRefidImagesEndpoint">
-    <h2>GET images by refid</h2>
-    
-    <p>Retrieve the images for a specific video using its reference id.</p>
-    
-    <p>Endpoint: <code translate="No">/videos/ref:{video_reference_id}/images </code></p>
-    
-    <h3>Request</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7/images
-    </code>
-    </pre>
-    
-    <h3>Response</h3>
-    
-    <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-    "thumbnail" : {
-    "id" : "3815806023001",
-    "src" : "http://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/2431/1507807800001_3815806023001_thumb.jpg?pubId=1507807800001"
-    },
-    "poster" : {
-    "id" : "3815782921001",
-    "src" : "http://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/273/1507807800001_3815782921001_still.jpg?pubId=1507807800001"
-    }
-    }
-    </code>
-    </pre>
-    </section>
-    </article>
-    
+</article>
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
@@ -3606,7 +3484,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
 
 <hr>
 <div class="last-updated">
-  Page last updated on 28 Sep 2020
+  Page last updated on 08 Oct 2022
 </div>
 
 
