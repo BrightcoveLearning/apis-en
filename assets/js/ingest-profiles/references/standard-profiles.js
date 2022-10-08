@@ -450,7 +450,7 @@ function sortArray(targetArray, objProperty) {
       }
       renditionListNote = createEl('p');
       renditionListNoteA = createEl('a', {
-        href: 'https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery#ingestProfile'
+        href: '/dynamic-ingest/getting-started/overview-dynamic-ingest-api-dynamic-delivery.html#ingestProfile'
       });
       text = document.createTextNode('Audio Rendition Details for Context Aware Encoding');
       renditionListNoteA.appendChild(text);

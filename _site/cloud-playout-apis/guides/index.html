@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="With the Channel Manager endpoints, you can create a Cloud Playout channel, add assets &amp; live events to the playlist, then activate, start, stop and delete the channel.">
+  <meta name="description" content="This section provides guides for working with the Cloud Playout APIs.">
   
-  <title>Overview: Channels API</title>
+  <title>Guides</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/s-site-assets-favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/s-site-assets-favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/s-site-assets-favicons/favicon-16x16.png">
@@ -159,11 +159,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
       
     
       
-        <li class="breadcrumb-item"><a href="/cloud-playout-apis/getting-started/">Getting started</a></li>
-      
-    
-      
-        <li class="breadcrumb-item active" aria-current="page">Overview: Channels API</li>
+        <li class="breadcrumb-item active" aria-current="page">Guides</li>
       
     
   </nav>
@@ -819,7 +815,7 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
                         
                           
                             
-                            <li><a href="/cloud-playout-apis/getting-started/overview-channel-api.html" aria-current="page">Overview: Channels API</a></li>
+                            <li><a href="/cloud-playout-apis/getting-started/overview-channel-api.html">Overview: Channels API</a></li>
                             
                           
                         
@@ -3282,885 +3278,89 @@ function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;i
     
 
 
-<h1>Overview: Channels API</h1>
+<h1>Guides</h1>
 <article class="bcls-article">
-  <summary>With the Channel Manager endpoints, you can create a Cloud Playout channel, add assets &amp; live events to the playlist, then activate, start, stop and delete the channel.</summary>
-  <section class="bcls-section">
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-      <li>A registered application with Cloud Playout API authentication scopes enabled in video-cloud. (<code translate="no">Studio UI -&gt; Admin -&gt; API Authentication</code>)</li>
-    </ul>
-    <aside class="bcls-aside bcls-aside--information language-editable">
-      Note that in addition to the Cloud Playout Channel Operations, you will need to use the CMS API also to manage that content, so we recommend getting all the necessary permissions for your client credentials:
-      <figure class="bcls-figure">
-        <img class="bcls-image" src="/assets/images/cloud-playout/permissions-channel-api.png" alt="Cloud Player and CMS API Permissions">
-        <figcaption class="bcls-caption--image">Cloud Player and CMS API Permissions</figcaption>
-      </figure>
-      <p>See <a href="/getting-started/authentication-brightcove-api-requests.html">Authentication for Brightcove API for more information.</a></p>
-    </aside>
-  </section>
-  <section class="bcls-section">
-    <h2 id="creating-a-cloudplayoutchannelmanager-workflow">Creating a CloudPlayoutChannelManager workflow</h2>
-    <p>Below is the typical Cloud Playout channel management workflow:</p>
-    <ul>
-    <li>Create channel</li>
-    <li>Add assets and Live events to the playlist</li>
-    <li>Activate the channel</li>
-    <li>Start the channel</li>
-    <li>Stop the channel</li>
-    <li>Delete the channel</li>
-    </ul>
-    <p>Apart from these, <strong>Get channel</strong> is helpful for checking the channel info &amp; state of the channel.</p>
-    </section>
-    <section class="bcls-section">
-      <h2 id="create-channel">Create channel</h2>
-      <p>To create a channel we need mandatory attributes like, name of the channel, start time, input &amp; output group, region and live_profile. DateTime values are preferred in ISO 8601 Date format (UTC or with time offset).</p>
-    <h3>Sample request</h3>
-    <h4>Request</h4>
-    <p>Make a <code translate="No">POST</code> request to:</p>
-<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bc-input">{account_id}</span>/cp_channels</code></pre>
-    <h4>Headers</h4>
-<pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
-Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-    <h4>Request body - general example</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "name": "channel name",
-  "start_time": "2021-06-29T08:30:50.344Z",
-  "input_group": [
-    {
-      "input_type": "playlist (or rtmp or slate)",
-      "input_id": "dummy",
-      "loop_on_completion": false
-    }
-  ],
-  "live_profile": "your live profile",
-  "output_group": [
-    {
-      "type": "rtmp or rtp",
-      "ingest_locations": [
-        {
-          "pipeline_id": 1,
-          "location": "bc_live or any live channel from your account"
-        }
-      ]
-    },
-    {
-      "type": "s3",
-      "ingest_locations": [
-        {
-          "pipeline_id": 1,
-          "location": "s3 credential id"
-        }
-      ]
-    }
-  ],
-  "region": "aws region"
-}</code></pre>
-  <h4>Request body - example using the default slate</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "input_group": [
-    {
-      "input_type": "slate"
-    },
-    {
-      "input_type": "rtmp"
-    }
-  ]
-}</code></pre>
 
-<h4 id="custom_slate">Request body - example using a custom slate</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "input_group": [
-    {
-      "input_type": "slate",
-      "input_id": "slate_asset_id OR https_slate_mp4_url"
-    },
-    {
-      "input_type": "rtmp"
-    }
-  ]
-}</code></pre>
-<details>
-  <summary>Sample response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "public_id": "79f0e7503fd64af3b7d2b0f825100f28",
-  "name": "channel name",
-  "description": "",
-  "account_id": "Your account id",
-  "state": "DRAFT",
-  "status": null,
-  "start_time": "2021-06-29 08:30:50 UTC",
-  "stop_time": null,
-  "input_groups": "playlist",
-  "output_groups": "rtmp:s3",
-  "loop_playlist": false,
-  "playlist_id": "1703814612527248093",
-  "channel_class": "single-pipeline",
-  "ssai_enabled": true,
-  "aws_region": "aws region",
-  "message": null,
-  "created_at": "2021-06-28 12:43:55 UTC",
-  "updated_at": "2021-06-28 12:43:55 UTC",
-  "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
-  "output_destinations": [
-    "Brightcove Live"
-  ],
-  "channel_created_at": "2021-06-28 12:43:55 UTC",
-  "channel_updated_at": "2021-06-28 12:43:55 UTC",
-  "channel_created_by": "username@brightcove.com",
-  "channel_updated_by": "username@brightcove.com"
-}</code></pre>
-</details>
-<p>In addition to mandatory fields, there are fields which can be set like <code translate="No">description</code>, <code translate="No">stop_time</code>, <code translate="No">ssai_enabled</code>, <code translate="No">image_id</code>, <code translate="No">mid_roll_import_enabled</code>, <code translate="No">mid_roll_slot_time</code>,  etc. Please refer the examples from the <a href="/cloud-playout-apis/references/reference-channels.html">Channels API Reference</a> for creating channels with different configurations.</p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="creating_a_channel_with_live_redundancy">Channel with Live redundancy</h2>
-    <h3>Creating a Brightcove Live redundant group in live module</h3>
-    <p>To create a Live redundant group, see <a href="https://live.support.brightcove.com/live-module/live-redundancy.html">Using Live Redundancy</a>. Once redundant groups are created using the above document you can use them in Cloud Playout.</p>
-    <h4>Redundant groups eligibility criteria</h4>
-    <p>To be available for use as a Cloud Playout channel destination, the redundant group must meet the following criteria:</p>
-    <ul>
-      <li>The redundant group should contain exactly 2 live jobs.</li>
-      <li>Both live jobs in the redundant group must be of <strong>Static Entry Point</strong> type.</li>
-      <li>The redundant group (and the jobs in it) must be in <strong>standby</strong> state.</li>
-      <li>If the Cloud Playout channel is SSAI-enabled then the redundant group must also be SSAI-enabled with <strong>RTP-FEC</strong> protocol.</li>
-    </ul>
-
-    <h4>Getting available Brightcove Live redundant groups</h4>
-    <p>To retrieve a list of available Brightcove Live redundant groups in your account, make a <code translate="No">GET</code> request to:</p>
-<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/bc_channels<span class="bcls-highlight">?redundancy=true</span></code></pre>
-    <p>To limit the results to redundant groups that are enabled for SSAI, add the <code translate="No">ssai=true</code> parameter:</p>
-<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/{account_id}/bc_channels<span class="bcls-highlight">?redundancy=true&ssai=true</span></code></pre>
-    <h3>Creating a channel with Live redundancy</h3>
-    <p>You can create a Brightcove Live redundancy enabled channel using the <code translate="No">output_group</code> field in the request body,</p>
-    <h4>Sample request body</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "name": "channel name",
-  "start_time": "2021-06-29T08:30:50.344Z",
-  "input_group": [
-    {
-      "input_type": "playlist or rtmp or slate",
-      "input_id": "dummy",
-      "loop_on_completion": false
-    }
-  ],
-  "live_profile": "your live profile",
-  "output_group": [
-    {
-      "type": "rtmp or rtp",
-      "ingest_locations": [
-        {
-          "pipeline_id": 1,
-          <span class="bcls-highlight">"redundancy": true,</span>
-          "location": "bc_live/<span class="bcls-input">{EXISTING_BC_REDUNDANT_GROUP_ID}</span>"
-        }
-      ]
-    }
-  ],
-  "region": "aws region"
-}</code></pre>
-    <details>
-      <summary><h4>Sample response</h4></summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "public_id": "79f0e7503fd64af3b7d2b0f825100f28",
-  "name": "channel name",
-  "description": "",
-  "account_id": "Your account id",
-  "state": "DRAFT",
-  "status": null,
-  "start_time": "2021-06-29 08:30:50 UTC",
-  "stop_time": null,
-  "input_groups": "playlist",
-  "output_groups": "rtmp",
-  "loop_playlist": false,
-  "playlist_id": "1703814612527248093",
-  "channel_class": "single-pipeline",
-  "ssai_enabled": true,
-  "aws_region": "aws region",
-  "message": null,
-  "created_at": "2021-06-28 12:43:55 UTC",
-  "updated_at": "2021-06-28 12:43:55 UTC",
-  "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
-  "output_destinations": [
-    "Brightcove Live with Redundancy"
-  ],
-  "channel_created_at": "2021-06-28 12:43:55 UTC",
-  "channel_updated_at": "2021-06-28 12:43:55 UTC",
-  "channel_created_by": "username@brightcove.com",
-  "channel_updated_by": "username@brightcove.com"
-}</code></pre>
-    </details>
-    <h3>Updating a channel to enable or disable Live redundancy</h3>
-    <p>You can also enable or disable redundancy for an existing channel. The key is the <code translate="No">redundancy</code> flag in the <code translate="No">ingest_locations</code> object. To enable redundancy you need to set it to <code translate="No">true</code>, while to disable redundancy for the channel you can either set it to <code translate="No">false</code> or omit it altogether, since <code translate="No">false</code> is the default value.</p>
-    <h4>Sample request body</h4>
-    <h5>Enable redundancy</h5>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "output_group": [
-    {
-      "type": "rtmp or rtp",
-      "ingest_locations": [
-        {
-          "pipeline_id": 1,
-          <span class="bcls-highlight">"redundancy": true,</span>
-          "location": "bc_live/<span class="bcls-input">{EXISTING_BC_REDUNDANT_GROUP_ID}</span>"
-        }
-      ]
-    }
-  ]
-}</code></pre>
-    <h5>Disable redundancy</h5>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "output_group": [
-    {
-      "type": "rtmp or rtp",
-      "ingest_locations": [
-        {
-          "pipeline_id": 1,
-          "location": "bc_live/<span class="bcls-input">{EXISTING_BC_REDUNDANT_GROUP_ID}</span>"
-        }
-      ]
-    }
-  ]
-}</code></pre>
-    <p>Note the missing <code translate="No">redundancy</code> above. Or:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "output_group": [
-    {
-      "type": "rtmp or rtp",
-      "ingest_locations": [
-        {
-          "pipeline_id": 1,
-          <span class="bcls-highlight">"redundancy": false,</span>
-          "location": "bc_live/<span class="bcls-input">{EXISTING_BC_REDUNDANT_GROUP_ID}</span>"
-        }
-      ]
-    }
-  ]
-}</code></pre>
-    <h3>Getting channel details</h3>
-    <p>To get channel details and verify that it is using redundancy, make a <code translate="No">GET</code> request to:</p>
-<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bcls-input">{account_id}</span>/cp_channels/<span class="bcls-input">{channel_id}</span></code></pre>
-    <details>
-      <summary><h4>Sample response (draft state)</h4></summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "public_id": "a7a58da9794a484a90a60c6c9b3a04a2",
-  "name": "redundancy",
-  "description": "test_cloudplayout_roebuck",
-  "account_id": "70701684277202",
-  "state": "DRAFT",
-  "status": "",
-  "start_time": "2022-02-17 12:53:48 UTC",
-  "stop_time": null,
-  "input_groups": "playlist",
-  "output_groups": "rtmp",
-  "loop_playlist": false,
-  "playlist_id": "1725014456212124545",
-  "channel_class": "single-pipeline",
-  "ssai_enabled": null,
-  "aws_region": "us-east-1",
-  "message": "",
-  "created_at": "2022-02-17 12:46:22 UTC",
-  "updated_at": "2022-02-17 13:01:55 UTC",
-  "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
-  "output_destinations": [
-      "Brightcove Live with Redundancy"
-  ],
-  "channel_created_at": "2022-02-17 12:46:22 UTC",
-  "channel_updated_at": "2022-02-17 12:46:22 UTC",
-  "channel_created_by": "user@brightcove.com",
-  "channel_updated_by": "user@brightcove.com",
-  "import_captions_enabled": true,
-  "live_profile": {
-      "display_name": "Premium Live HD 1080p - Tier 2",
-      "name": "premium-live-hd-1080p-tier-2",
-      "date_created": "2018-06-04 18:16:44 UTC",
-      "date_modified": "2018-06-04 18:16:44 UTC"
-  },
-  "channel_data": {
-      "input_group": [
-          {
-              "input_type": "playlist",
-              "value": "redundancy_testing_local",
-              "description": "cloudplayout",
-              "public_id": "1725014456212124545"
-          }
-      ],
-      "output_groups": [
-          {
-              "type": "rtmp",
-              <span class="bcls-highlight">"redundancy": true,</span>
-              "location": "bc_live/${Existing redundant group id}",
-              "destination": "Brightcove Live with Redundancy"
-          }
-      ]
-  }
-}</code></pre>
-    </details>
-    <details>
-      <summary><h4>Sample response (scheduled state)</h4></summary>
-      <p>Note the multiple destinations both in the <code translate="No">channel_data</code> and the <code translate="No">outputs</code>:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "public_id": "e2d38b8304c84601b27630ae05b764b8",
-  "name": "redundancy",
-  "description": "test_cloudplayout_roebuck",
-  "account_id": "70701684277202",
-  "state": "SCHEDULED",
-  "status": "Scheduled for start",
-  "start_time": "2022-02-10 05:57:10 UTC",
-  "stop_time": null,
-  "input_groups": "playlist",
-  "output_groups": "rtmp",
-  "loop_playlist": false,
-  "playlist_id": "1724281533777310596",
-  "channel_class": "single-pipeline",
-  "ssai_enabled": null,
-  "aws_region": "us-east-1",
-  "message": "",
-  "created_at": "2022-02-09 10:36:51 UTC",
-  "updated_at": "2022-02-09 10:49:03 UTC",
-  "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
-  "output_destinations": [
-      "Brightcove Live with Redundancy"
-  ],
-  "channel_created_at": "2022-02-09 10:36:51 UTC",
-  "channel_updated_at": "2022-02-09 10:36:51 UTC",
-  "channel_created_by": "Created by API",
-  "channel_updated_by": "Updated by API",
-  "import_captions_enabled": true,
-  "live_profile": {
-      "display_name": "Premium Live HD 1080p - Tier 2",
-      "name": "premium-live-hd-1080p-tier-2",
-      "date_created": "2018-06-04 18:16:44 UTC",
-      "date_modified": "2018-06-04 18:16:44 UTC"
-  },
-  "channel_data": {
-      "destinations": [
-          {
-              "id": "dest-rtmp-0",
-              "url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02",
-              "stream_name": "alive"
-          },
-          {
-              "id": "dest-rtmp-1",
-              "url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b",
-              "stream_name": "alive"
-          },
-          {
-              "id": "framecapture",
-              "url": "s3://cloudplayout-preview/framecapture/e2d38b8304c84601b27630ae05b764b8/image",
-              "stream_name": null
-          }
-      ],
-      "input_specification": {
-          "codec": "AVC",
-          "maximum_bitrate": "MAX_20_MBPS",
-          "resolution": "HD"
-      },
-      "output_groups": [
-          {
-              "type": "preview",
-              "destination_url": "s3://cloudplayout-preview/framecapture/e2d38b8304c84601b27630ae05b764b8/image",
-              "encoder_settings": [
-                  {
-                      "width": 640,
-                      "height": 360,
-                      "capture_interval": 5,
-                      "capture_interval_units": "SECONDS"
-                  }
-              ]
-          },
-          {
-              "type": "rtmp",
-              "location_id": "374d4846292042af82c4c573e58bba39",
-              "location": "redundancy_testing_local_group",
-              "destination": "Brightcove Live with Redundancy",
-              "playback_url": "https://playback-qa.a-live.io/r374d4846292042af82c4c573e58bba39/us-east-1/NA/playlist.m3u8",
-              "playback_url_dvr": "https://playback-qa.a-live.io/r374d4846292042af82c4c573e58bba39/us-east-1/NA/playlist_dvr.m3u8",
-              "outputs": [
-                  {
-                      "destination_url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02/alive",
-                      "location_id": "d42f9b597f9f4cff90f3d48ddc665a02",
-                      "location": "redundancy_testing_local_2",
-                      "encoder_settings": [
-                          {
-                              "width": 1920,
-                              "height": 1080,
-                              "bitrate": 4000000,
-                              "gop_size": 60.0,
-                              "gop_size_units": "FRAMES",
-                              "profile": "HIGH",
-                              "level": "H264_LEVEL_AUTO",
-                              "scan_type": "PROGRESSIVE",
-                              "framerate_control": "SPECIFIED"
-                          }
-                      ],
-                      "stream_url": "rtmp://d42f9b597f9f4cff90f3d48ddc665a02.sep-qa.a-live.io:1935/d42f9b597f9f4cff90f3d48ddc665a02/alive",
-                      "static": true,
-                      "playback_url": "https://playback-qa.a-live.io/d42f9b597f9f4cff90f3d48ddc665a02/us-west-2/NA/playlist.m3u8",
-                      "playback_url_dvr": "https://playback-qa.a-live.io/d42f9b597f9f4cff90f3d48ddc665a02/us-west-2/NA/playlist_dvr.m3u8"
-                  },
-                  {
-                      "destination_url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b/alive",
-                      "location_id": "2f84603cc5bf45babfc92e58f444eb0b",
-                      "location": "redundancy_testing_local_1",
-                      "encoder_settings": [
-                          {
-                              "width": 1920,
-                              "height": 1080,
-                              "bitrate": 4000000,
-                              "gop_size": 60.0,
-                              "gop_size_units": "FRAMES",
-                              "profile": "HIGH",
-                              "level": "H264_LEVEL_AUTO",
-                              "scan_type": "PROGRESSIVE",
-                              "framerate_control": "SPECIFIED"
-                          }
-                      ],
-                      "stream_url": "rtmp://2f84603cc5bf45babfc92e58f444eb0b.sep-qa.a-live.io:1935/2f84603cc5bf45babfc92e58f444eb0b/alive",
-                      "static": true,
-                      "playback_url": "https://playback-qa.a-live.io/2f84603cc5bf45babfc92e58f444eb0b/us-east-1/NA/playlist.m3u8",
-                      "playback_url_dvr": "https://playback-qa.a-live.io/2f84603cc5bf45babfc92e58f444eb0b/us-east-1/NA/playlist_dvr.m3u8"
-                  }
-              ]
-          }
-      ],
-      "input_group": [
-          {
-              "input_type": "playlist",
-              "value": "redundancy_testing_local_cc",
-              "description": "cloudplayout",
-              "public_id": "1724281533777310596"
-          }
-      ]
-  }
-}</code></pre>
-    </details>
-  </section>
-  <section class="bcls-section">
-    <h2 id="enabling_a_channel_for_ssai">Enabling a channel for SSAI</h2>
-    <p>To enable a channel for SSAI (server-side ad insertion), include <code translate="No">ssai_enabled: true</code> in the request body when you created the channel. If SSAI is enabled for your account, it can be used for channels that include VOD and/or Live streaming content.</p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Add_content">Add content to the playlist</h2>
-    <p>The next step is to add content to the channel content. For this you will use the <a href="/cloud-playout-apis/references/reference-cms-interactions.html">CMS API</a> (note that this is an abbreviated version of the whole <a href="/cms/references/reference.html">CMS API Reference</a> including just the operations relevant to Cloud Playout and with descriptions that are more appropriate to Cloud Playout).</p>
-    <p>Get the playlist_id of the channel (from the response to the create channel request or from a get channel request). This is the playlist in which we manage our assets for our Cloud Playout channel.</p>
-    <h3>Sample request</h3>
-    <h4>Request</h4>
-    <p>An update video request is used to add content. In the sample below, a collection of video ids are added to create a manual playlist, but note that you can also create smart playlists based on video tags, etc.</p>
-    <p>Make a <code translate="No">PATCH</code> request to:</p>
-<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bc-input">{account_id}</span>/playlists/<span class="bc-input">{playlist_id}</span></code></pre>
-    <h4>Headers</h4>
-<pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
-Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-    <h4>Request body</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "video_ids": [
-    "70702887566202",
-    "70702887586202",
-    "70702260704202",
-    "70702260706202"
-  ]
-}</code></pre>
-    <details>
-      <summary>Sample response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "id": "1701632459864392160",
-  "account_id": "Your account id",
-  "created_at": "2021-06-04T10:39:32.934Z",
-  "updated_at": "2021-06-04T12:29:06.793Z",
-  "description": "cloudplayout",
-  "favorite": false,
-  "name": "cloudplayout_dvfdb",
-  "reference_id": null,
-  "type": "EXPLICIT",
-  "video_ids": [
-    "70702887566202",
-    "70702887586202",
-    "70702260704202",
-    "70702260706202"
-  ],
-  "state": "READY"
-}</code></pre>
-    </details>
-  </section>
-  <section class="bcls-section">
-    <h2 id="add_live_event">Add live event</h2>
-    <p>To add a live event to a channel, you make a <strong>create video</strong> request to the CMS API, taking care to include some special tags that will identify it as a Cloud Playout live event.</p>
-    <h3>Sample request</h3>
-    <h4>Request</h4>
-    <p>Make a <code translate="No">POST</code> request to:</p>
-<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bc-input">{account_id}</span>/videos</code></pre>
-    <h4>Headers</h4>
-<pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
-Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-    <h4>Request body</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "name": "Name of the event",
-  <span class="bc-highlight">
-    "tags": [
-      "cp-live-placeholder",
-      "duration-00:40:00"
-    ]
-  </span>,
-  "description": "Description of the event"
-}</code></pre>
-    <details>
-      <summary>Sample response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "id": "70702834583294",
-  "account_id": "Your account id",
-  "ad_keys": null,
-  "clip_source_video_id": null,
-  "complete": false,
-  "created_at": "2021-06-04T11:00:48.551Z",
-  "created_by": {
-    "type": "user",
-    "id": "76072843583",
-    "email": "username@brightcove.com"
-  },
-  "cue_points": [
-  ],
-  "custom_fields": {
-  },
-  "delivery_type": "unknown",
-  "description": "test description",
-  "digital_master_id": null,
-  "duration": null,
-  "economics": "AD_SUPPORTED",
-  "folder_id": null,
-  "geo": null,
-  "has_digital_master": false,
-  "images": {
-  },
-  "link": null,
-  "long_description": null,
-  "name": "test live event",
-  "original_filename": null,
-  "projection": null,
-  "published_at": "2021-06-04T11:00:48.565Z",
-  "reference_id": null,
-  "schedule": null,
-  "sharing": null,
-  "state": "ACTIVE",
-  "tags": [
-    "cp-live-placeholder",
-    "duration-00:05:00"
-  ],
-  "text_tracks": [
-  ],
-  "updated_at": "2021-06-04T11:00:48.572Z",
-  "updated_by": {
-    "type": "user",
-    "id": "76076294383",
-    "email": "username@brightcove.com"
-  },
-  "playback_rights_id": "primary"
-}</code></pre>
-</details>
-    <p>Please refer the <a href="/cloud-playout-apis/references/reference-cms-interactions.html">CMS API Reference for Cloud Playout</a> for more examples related to managing assets in Cloud Playout.</p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Add-manage-overlays">Add/Manage Overlays</h2>
-    <p>Cloud Playout supports two kinds of overlays:</p>
-    <ul>
-      <li><a href="https://studio.support.brightcove.com/cloud-playout/static-image-overlays.html">static image overlays</a></li>
-      <li><a href="https://studio.support.brightcove.com/cloud-playout/dynamic-overlays.html">dynamic overlays</a></li>
-    </ul>
-    <p>For each type, the workflow is as follows:</p>
-    <ol class="bcls-tasklist-restart">
-      <li>
-        <a href="/cloud-playout-apis/references/reference-channels-stage.html#tag/Assets">Create an overlay asset</a>
-        <p>You will need to provide a public URL for the static or dynamic image. Be sure to include <code translate="No">"type": "dynamic"</code> if it is a dynamic overlay.</p>
-      </li>
-      <li>
-        Associate the overlay with a channel. Note that there are separate endpoints for associating static and dynamic overlays:
+  <summary>This section provides guides for working with the Cloud Playout APIs.</summary>
+  <section class="card-wrapper">
+    <section class="bcls-card">
+      <div class="card-content">
+        <h2 id="Topics_in_this_section">Topics in Guides</h2>
         <ul>
-          <li><a href="/cloud-playout-apis/references/reference-channels-stage.html#operation/AssociateOverlay">Associate static overlay</a></li>
-          <li><a href="/cloud-playout-apis/references/reference-channels-stage.html#operation/AssociateDynamicOverlay">Associate dynamic overlay</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
         </ul>
-      </li>
-    </ol>
-
+      </div>
+    </section>
   </section>
-
-  <section class="bcls-section">
-    <h2 id="">Add/Manage custom slates</h2>
-    <p>Slates are used to fill in dead time in channel playback that might result from ad content not completely filling the duration of an ad break or to fill time when a hard start time is set. Brightcove provides a default slate than can be used for any channel, but you can provide a default slate in the form of an MP4 video that will be automatically looped as necessary.</p>
-    <p>A custom slate can be added as an asset (which makes it reusable for any channel) or specified as a URL when creating the channel (see the <a href="#custom_slate">sample request body</a> above).</p>
-    <p>See the <a href="/cloud-playout-apis/references/reference-channels-stage.html#tag/Assets">API reference</a> for details on adding a custom slate as an account asset.</p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="get-channel">Get Channel</h2>
-    <p>We can use this endpoint for checking the channel details and state of the channel.</p>
-    <h3>Sample request</h3>
-    <h4>Request</h4>
-    <p>Make a <code translate="No">GET</code> request to:</p>
-<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bc-input">{account_id}</span>/cp_channels/<span class="bc-input">{channel_id}</span></code></pre>
-    <h4>Headers</h4>
-<pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
-Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-    <details>
-      <summary>Sample response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "public_id": "channel id",
-  "name": "channel name",
-  "description": "Channel created for testing Cloud Playout",
-  "account_id": "Your account id",
-  "state": "DRAFT",
-  "status": null,
-  "start_time": "2020-12-17 06:00:00 UTC",
-  "stop_time": "2020-12-17 07:00:00 UTC",
-  "input_groups": "playlist",
-  "output_groups": "rtmp",
-  "loop_playlist": true,
-  "playlist_id": "1686204667297382886",
-  "channel_class": "single-pipeline",
-  "ssai_enabled": false,
-  "aws_region": "us-east-1",
-  "message": null,
-  "created_at": "2020-12-16 03:41:22 UTC",
-  "updated_at": "2020-12-17 04:53:30 UTC",
-  "image_url": "https://bc-cloudplayout-prod.s3.amazonaws.com/default_channel_image.png",
-  "output_destinations": [
-    "Brightcove Live"
-  ],
-  "channel_created_at": "2020-12-16 03:41:22 UTC",
-  "channel_updated_at": "2020-12-17 04:53:30 UTC",
-  "channel_created_by": "username@brightcove.com",
-  "channel_updated_by": "username@brightcove.com",
-  "live_profile": {
-    "display_name": "Standard Live HD 720p - Tier 1",
-    "name": "standard-live-hd-720p-tier-1",
-    "date_created": "2018-06-04 18:16:44 UTC",
-    "date_modified": "2018-06-04 18:16:44 UTC"
-  },
-  "channel_data": {
-    "input_group": [
-      {
-        "input_type": "playlist",
-        "value": "cloudplayout_testChannel",
-        "description": "Playlist created for Cloud Playout",
-        "public_id": "1686204667297382886"
-      }
-    ],
-    "output_groups": [
-      {
-        "type": "rtmp",
-        "location": "bc_live",
-        "destination": "Brightcove Live"
-      }
-    ]
-  }
-}</code></pre>
-    </details>
-  </section>
-  <section class="bcls-section">
-    <h2 id="activate-channel">Activate a channel</h2>
-      <aside class="bcls-aside bcls-aside--warning language-editable">Note: make sure there is at-least one content asset added to the channel playlist before activating the channel!</aside>
-      <p>Activate a channel by making the below request. No request body is required.</p>
-      <h3>Sample request</h3>
-      <h4>Request</h4>
-      <p>Make a <code translate="No">POST</code> request to:</p>
-  <pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bc-input">{account_id}</span>/cp_channels/<span class="bc-input">{channel_id}</span>/create</code></pre>
-      <h4>Headers</h4>
-  <pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
-  Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-      <details>
-        <summary>Sample response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "message":"Channel activation initiated"
-}</code></pre>
-      </details>
-      <p>To check the state of the channel, see <a href="#get-channel">Get Channel section</a> above.</p>
-    </section>
-  <section class="bcls-section">
-    <h2 id="start-channel">Start a channel</h2>
-      <aside class="bcls-aside bcls-aside--warning language-editable">Note: make sure the channel is <strong>already activated</strong> and is in <strong>SCHEDULED</strong> state before starting the channel!</aside>
-      <p>Start a channel by making the below request. No request body is required.</p>
-      <h3>Sample request</h3>
-      <h4>Request</h4>
-      <p>Make a <code translate="No">POST</code> request to:</p>
-  <pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bc-input">{account_id}</span>/cp_channels/<span class="bc-input">{channel_id}</span>/start</code></pre>
-      <h4>Headers</h4>
-  <pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
-  Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-      <details>
-        <summary>Sample response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "message":"Channel start initiated"
-}</code></pre>
-      </details>
-      <p>To check the state of the channel, see <a href="#get-channel">Get Channel section</a> above.</p>
-    </section>
-  <section class="bcls-section">
-    <h2 id="stop-channel">Stop a channel</h2>
-      <aside class="bcls-aside bcls-aside--warning language-editable">Note: make sure the channel is in <strong>RUNNING</strong> state before stopping the channel!</aside>
-      <p>Stop a channel by making the below request. No request body is required.</p>
-      <h3>Sample request</h3>
-      <h4>Request</h4>
-      <p>Make a <code translate="No">POST</code> request to:</p>
-  <pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bc-input">{account_id}</span>/cp_channels/<span class="bc-input">{channel_id}</span>/stop</code></pre>
-      <h4>Headers</h4>
-  <pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
-  Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-      <details>
-        <summary>Sample response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "message":"Channel stop initiated"
-}</code></pre>
-      </details>
-      <p>To check the state of the channel, see <a href="#get-channel">Get Channel section</a> above. Once stopped the channel will be in DRAFT state.</p>
-    </section>
-  <section class="bcls-section">
-    <h2 id="delete-channel">Delete a channel</h2>
-      <aside class="bcls-aside bcls-aside--warning language-editable">Note: make sure the channel is not in either <strong>CREATING/STARTING</strong> state before deleting a channel!</aside>
-      <p>Delete a channel by making the below request. No request body is required.</p>
-      <h3>Sample request</h3>
-      <h4>Request</h4>
-      <p>Make a <code translate="No">DELETE</code> request to:</p>
-  <pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bc-input">{account_id}</span>/cp_channels/<span class="bc-input">{channel_id}</span></code></pre>
-      <h4>Headers</h4>
-  <pre class="line-numbers"><code class="language-bash" translate="No">Content-Type: application/json
-  Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
-      <details>
-        <summary>Sample response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "message":"Delete initiated"
-}</code></pre>
-      </details>
-      <p>To check the state of the channel, see <a href="#get-channel">Get Channel section</a> above. Once the channel has been deleted, you should no longer see the channel info from get channel by id request.</p>
-    </section>
-    <section class="bcls-section">
-      <h2 id="as_run_log">Get an As-Run log</h2>
-      <p>An <strong>as-run log</strong> provides a record of what content (including ads and bumpers) was actually transmitted by a Cloud Playout Channel during the previous day. As-run logs are useful for auditing purposes and record-keeping.</p>
-      </p>
-      <p>You can retrieve an as-run log for a channel in JSON, XML, or CSV format by sending a <code translate="No">GET</code> request to:</p>
-<pre><code class="language-http" translate="No">https://cm.cloudplayout.brightcove.com/accounts/<span class="bc-input">{account_id}</span>/cp_channels/<span class="bc-input">{channel_id}</span>/as_run_logs?format=<span class="bcls-input">{format}</span></code></pre>
-      <p>The value of <code translate="No">format</code> must be <code translate="No">json</code> (default), <code translate="No">xml</code>, or <code translate="No">csv</code></p>
-      <h3>Notes</h3>
-      <ul>
-        <li>The log is constructed regardless of the current state of the channel.</li>
-        <li>The log provides previous day(24 hrs) record. Eg. If current date is <code translate="No">2021-09-22 05:30:00 UTC</code>, then as-run logging provides playback data of the channel from <code translate="No">2021-09-21 00:00:00 UTC</code> to <code translate="No">2021-09-22 00:00:00 UTC</code>.</li>
-        <li>
-          An asset in which a mid-roll is played is split and shown in the data as follows:
-          <ol>
-            <li>VOD asset</li>
-            <li>Mid-roll asset (played, for example, at 45 second)</li>
-            <li>VOD asset with <code translate="No">playhead_start_time = 00:00:45</code>, the position from which it continues.</li>
-          </ol>
-        </li>
-      </ul>
-      <details>
-        <summary>Sample log: JSON</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "account_id": "Account ID",
-  "channel_id": "62713ed768434ffbac9ce2ff974c9cb9",
-  "channel_name": "TestChannelName",
-  "from": "Query start time (UTC)",
-  "to": "Query end time (UTC)",
-  "events": [
-    {
-      "name": "Video Cloud Asset name",
-      "id": "Video cloud video ID",
-      "type": "LIVE | AD | VIDEO | PRE_ROLL_BUMPER | POST_ROLL_BUMPER | MIDROLL",
-      "start_time": "2021-07-30 00:00:00.0 UTC",
-      "end_time": "2021-07-30 01:00:00.0 UTC"
-    },
-    {
-      "name": "AD Placeholder",
-      "id": "Video cloud video ID",
-      "type": "AD",
-      "start_time": "2021-07-30 01:00:00.0 UTC",
-      "end_time": "2021-07-30 01:05:00.0 UTC"
-    },
-    {
-      "name": "Asset with a Midroll AD",
-      "id": "6246656690001",
-      "type": "VIDEO",
-      "start_time": "2021-07-30 01:05:00.0 UTC",
-      "end_time": "2021-07-30 01:10:00.0 UTC"
-    },
-    {
-      "name": "Asset with a Midroll AD",
-      "id": "6246656690001",
-      "type": "MIDROLL",
-      "start_time": "2021-07-30 01:10:00.0 UTC",
-      "end_time": "2021-07-30 01:10:30.0 UTC"
-    },
-    {
-      "name": "Asset with a Midroll AD",
-      "id": "6246656690001",
-      "type": "VIDEO",
-      "start_time": "2021-07-30 01:10:30.0 UTC",
-      "end_time": "2021-07-30 01:20:00.0 UTC",
-      "playhead_start_time": "00:05:00"
-    }
-  ]
-}</code></pre>
-      </details>
-      <details>
-        <summary>Sample log: XML</summary>
-<pre class="line-numbers"><code class="language-xml" translate="No"><as_run_log>
-  <account_id> Account ID </account_id>
-  <channel_id>62713ed768434ffbac9ce2ff974c9cb9</channel_id>
-  <channel_name>TestChannelName</channel_name>
-  <from>Query start time (UTC)</from>
-  <to>Query end time (UTC)</to>
-<events>
-<event>
-  <name>Video Cloud Asset name</name>
-  <id>Video cloud video ID</id>
-  <type> LIVE | AD | VIDEO | PRE_ROLL_BUMPER | POST_ROLL_BUMPER | MIDROLL </type>
-  <start_time>2021-07-30 00:00:00.0 UTC</start_time>
-  <end_time>2021-07-30 01:00:00.0 UTC</end_time>
-</event>
-<event>
-  <name>AD Placeholder</name>
-  <id>Video cloud video ID</id>
-  <type>AD</type>
-  <start_time>2021-07-30 01:00:00.0 UTC</start_time>
-  <end_time>2021-07-30 01:05:00.0 UTC</end_time>
-</event>
-<event>
-  <name>Asset with a Midroll AD</name>
-  <id>6246656690001</id>
-  <type>VIDEO</type>
-  <start_time>2021-07-30 01:05:00.0 UTC</start_time>
-  <end_time>2021-07-30 01:10:00.0 UTC</end_time>
-</event>
-<event>
-  <name>Asset with a Midroll AD</name>
-  <id>6246656690001</id>
-  <type>MIDROLL</type>
-  <start_time>2021-07-30 01:10:00.0 UTC</start_time>
-  <end_time>2021-07-30 01:10:30.0 UTC</end_time>
-</event>
-<event>
-  <name>Asset with a Midroll AD</name>
-  <id>6246656690001</id>
-  <type>VIDEO</type>
-  <start_time>2021-07-30 01:10:30.0 UTC</start_time>
-  <end_time>2021-07-30 01:20:00.0 UTC</end_time>
-  <playhead_start_time>00:05:00</playhead_start_time>
-</event>
-</events>
-</as_run_log></code></pre>
-      </details>
-      <details>
-        <summary>Sample response: CSV</summary>
-<pre class="line-numbers">account_id, channel_id, channel_name, from, to, event:name, event:id, event:type, event:start_time, event:end_time, event:playhead_start_time<code class="language-csv"></code></pre>
-      </details>
-    </section>
 </article>
 
 <!-- complete bootstrap layout -->
     </div>
     <div class="col-sm-2 right-side-bar">
-      
-      <nav class="right-side-nav" id="right_side_nav">
-        <h6 class="toc">Page Contents</h6>
-        <ul id="in_page_nav" class="list-none"></ul>
-      </nav>
       
     </div>
   </div>
@@ -4168,7 +3368,7 @@ Authorization: Bearer <span class="bc-input">{token}</span></code></pre>
 
 <hr>
 <div class="last-updated">
-  Page last updated on 03 Aug 2022
+  Page last updated on 08 Oct 2022
 </div>
 
 
