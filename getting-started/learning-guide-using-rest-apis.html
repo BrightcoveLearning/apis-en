@@ -54,38 +54,35 @@ parent: Getting Started
     <ul>
       <li>Lines 11-21: Standard Brightcove Player code with the addition of an&nbsp;<code translate="No">id</code> attribute added.</li>
     </ul>
-    <pre class="line-numbers">
-	<code class="language-html" translate="No">&lt;!doctype html&gt;
-	&lt;html&gt;
-	
-	&lt;head&gt;
-		&lt;meta charset="UTF-8"&gt;
-		&lt;title&gt;Untitled Document&lt;/title&gt;
-	&lt;/head&gt;
-	
-	&lt;body&gt;
-	
-	&lt;video-js id="myPlayerID"
-		data-video-id="3851380732001"
-		data-account="1752604059001"
-		data-player="HkAzSmB0l"
-		data-embed="default"
-		data-application-id
-		class="video-js"
-		controls
-		width="640"
-		height="360"&gt;&lt;/video-js&gt;
-	&lt;script src="https://players.brightcove.net/1752604059001/HkAzSmB0l_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+<pre class="line-numbers"><code class="language-html" translate="No">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Untitled Document&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;video-js id="myPlayerID"
+  data-video-id="3851380732001"
+  data-account="1752604059001"
+  data-player="HkAzSmB0l"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  width="640"
+  height="360"&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1752604059001/HkAzSmB0l_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
     <h3>Preparing to make call</h3>
     <p>This code section initializes variables and gets ready to make the call to <code translate="No">makeRequest()</code>. Generally speaking, for a read request you will need to provide the following information:</p>
     <ol>
       <li>The URL to the proxy you will be using, for example (of course, this needs to be proxy under your control):
-        <pre class="line-numbers">
-	<code class="language-html" translate="No">https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php</code></pre>
+<pre><code class="language-html" translate="No">https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php</code></pre>
       </li>
       <li>The URL needed for the actual request, normally dynamically constructed:
-        <pre class="line-numbers">
-	<code class="language-html" translate="No">https://analytics.api.brightcove.com/v1/alltime/accounts/1752604059001/videos/4825279519001</code></pre>
+<pre><code class="language-html" translate="No">https://analytics.api.brightcove.com/v1/alltime/accounts/1752604059001/videos/4825279519001</code></pre>
       </li>
       <li>The HTTP method, for instance <code translate="No">GET</code>.</li>
     </ol>
@@ -96,20 +93,19 @@ parent: Getting Started
       <li>Lines 7-12: Wait for the <code translate="No">loadstart</code> event so the <code translate="No">mediainfo</code> object is populated. Assign variables to hold values needed for the <span translate="No">Analytics API</span> endpoint.</li>
       <li>Line 13: Set the HTTP method for the call.</li>
     </ul>
-    <pre class="line-numbers">
-	<code class="language-javascript" translate="No">videojs.getPlayer('myPlayerID').ready(function() {
-	&nbsp; var myPlayer = this,
-		accountId = myPlayer.bcinfo.accountId,
-		options = {};
-	
-		// +++ Wait for loadstart event so can use mediainfo object +++
-		myPlayer.on('loadstart', function() {
-			var videoId = myPlayer.mediainfo.id,
-			baseURL = 'https://analytics.api.brightcove.com/v1/alltime/accounts/',
-			endPoint = accountId + '/videos/' + videoId;
-			options.proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php";
-			options.url = baseURL + endPoint;
-			options.requestType = "GET";</code></pre>
+<pre class="line-numbers"><code class="language-javascript" translate="No">videojs.getPlayer('myPlayerID').ready(function() {
+  var myPlayer = this,
+  accountId = myPlayer.bcinfo.accountId,
+  options = {};
+
+  // +++ Wait for loadstart event so can use mediainfo object +++
+  myPlayer.on('loadstart', function() {
+  var videoId = myPlayer.mediainfo.id,
+  baseURL = 'https://analytics.api.brightcove.com/v1/alltime/accounts/',
+  endPoint = accountId + '/videos/' + videoId;
+  options.proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php";
+  options.url = baseURL + endPoint;
+  options.requestType = "GET";</code></pre>
     <aside class="bcls-aside bcls-aside--information">Note: Lines 9,10 and 12 could easily be placed into a single long line. The code was written as shown to avoid long lines that involve scrolling to view, and also to assist in code reusability.</aside>
     <h3>Call <code translate="No">makeRequest()</code></h3>
     <p>This code section makes the call to <code translate="No">makeRequest()</code> function. Note that two parameters are passed. The first being the options object that holds info for the endpoint, and the second is the callback function. Remember, this is an asynchronous call so the anonymously defined callback function won't be called until data has been returned by the REST API to the <code translate="No">makeRequest()</code> function.</p>
@@ -129,20 +125,19 @@ parent: Getting Started
     </ul>
     <p>The following screenshot from the console shows actual displayed data from the <code translate="No">console.log</code> statements:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="Processing of data in callback function" src="/assets/images/getting-started/proxy-API-call/console-data-process-callback-function.png" /></figure>
-    <pre class="line-numbers">
-	<code class="language-javascript" translate="No">// +++ Make the request to the <span translate="No">Analytics API</span> +++
-	// Extract views from data returned by Analytics API
-	makeRequest(options, <span class="bcls-highlight">function(viewsRaw) {
-	var viewsCount;
-	// Remove console.log command for production code
-	console.log('viewsRaw', viewsRaw);
-	viewsObject = JSON.parse(viewsRaw);
-	console.log('viewsObject', viewsObject);
-	viewsCount = viewsObject.alltime_video_views;
-	console.log('views', viewsCount);
-	// Call function to place data in controlbar
-	placeCountInControlbar(viewsCount);
-	}</span>);</code></pre>
+<pre class="line-numbers"><code class="language-javascript" translate="No">// +++ Make the request to the <span translate="No">Analytics API</span> +++
+// Extract views from data returned by Analytics API
+makeRequest(options, <span class="bcls-highlight">function(viewsRaw) {
+  var viewsCount;
+  // Remove console.log command for production code
+  console.log('viewsRaw', viewsRaw);
+  viewsObject = JSON.parse(viewsRaw);
+  console.log('viewsObject', viewsObject);
+  viewsCount = viewsObject.alltime_video_views;
+  console.log('views', viewsCount);
+  // Call function to place data in controlbar
+  placeCountInControlbar(viewsCount);
+}</span>);</code></pre>
     <h3>Actual <code translate="No">makeRequest()</code> function</h3>
     <p>This section of the document examines the code that actually defines the <code translate="No">makeRequest()</code> function. The code that defines the function is written in such a way that it need NOT be modified, but used repeatedly as is. You may find edge cases that this is not true, but for the vast majority of uses this code need NOT be modified.</p>
     <aside class="bcls-aside bcls-aside--tip">A key concept in understanding the <code translate="No">makeRequest()</code> function is gaining knowledge about how the <code translate="No">XMLHttpRequest</code> object behaves. The <code translate="No">XMLHttpRequest.onreadystatechange</code> is an event handler that is called whenever the <code translate="No">readyState</code> attribute changes. The value assigned to it is the event handler function code that you write. The following table shows the values the <code translate="No">readyState</code> attribute can have, and what each value means:
@@ -197,46 +192,45 @@ parent: Getting Started
       <li>Line 35: Initializes the request to the proxy.</li>
       <li>Line 38: Sends the request, which is asynchronous.</li>
     </ul>
-    <pre class="line-numbers">
-	<code class="language-javascript" translate="No">function makeRequest(options, callback) {
-	var httpRequest = new XMLHttpRequest(),
-	response,
-	requestParams,
-	dataString,
-	proxyURL = options.proxyURL,
-	// response handler
-	getResponse = function() {
-	try {
-		if (httpRequest.readyState === 4) {
-			if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
-				response = httpRequest.responseText;
-				// some API requests return '{null}' for empty responses - breaks JSON.parse
-				if (response === '{null}') {
-					response = null;
-				}
-				// return the response
-				callback(response);
-			} else {
-				alert('There was a problem with the request. Request returned ' + httpRequest.status);
-			}
-		}
-	} catch (e) {
-		alert('Caught Exception: ' + e);
-	}
-	};
-	/**
-	* set up request data
-	* the proxy used here takes the following request body:
-	* JSON.stringify(options)
-	*/
-	// set response handler
-	httpRequest.onreadystatechange = getResponse;
-	// open the request
-	httpRequest.open('POST', proxyURL);
-	// set headers if there is a set header line, remove it
-	// open and send request
-	httpRequest.send(JSON.stringify(options));
-	}</code></pre>
+<pre class="line-numbers"><code class="language-javascript" translate="No">function makeRequest(options, callback) {
+  var httpRequest = new XMLHttpRequest(),
+  response,
+  requestParams,
+  dataString,
+  proxyURL = options.proxyURL,
+  // response handler
+  getResponse = function() {
+  try {
+    if (httpRequest.readyState === 4) {
+      if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
+        response = httpRequest.responseText;
+        // some API requests return '{null}' for empty responses - breaks JSON.parse
+        if (response === '{null}') {
+          response = null;
+        }
+        // return the response
+        callback(response);
+      } else {
+        alert('There was a problem with the request. Request returned ' + httpRequest.status);
+      }
+    }
+  } catch (e) {
+    alert('Caught Exception: ' + e);
+  }
+  };
+  /**
+  * set up request data
+  * the proxy used here takes the following request body:
+  * JSON.stringify(options)
+  */
+  // set response handler
+  httpRequest.onreadystatechange = getResponse;
+  // open the request
+  httpRequest.open('POST', proxyURL);
+  // set headers if there is a set header line, remove it
+  // open and send request
+  httpRequest.send(JSON.stringify(options));
+}</code></pre>
     <h3>Display the returned data</h3>
     <p>This code shows how to place the returned data into the controlbar. This function is called at the end of the callback function, shown in <strong>Call makeRequest()</strong> section above.</p>
     <ul>
@@ -248,23 +242,22 @@ parent: Getting Started
       <li>Line 13: Style the <code translate="No">spacer</code> to display the total views right-justified and down 10px from the top of the <code translate="No">spacer</code>.</li>
       <li>Line 15: Add the newly created, populated and styled element to the <code translate="No">spacer</code>.</li>
     </ul>
-    <pre class="line-numbers">
-	<code class="language-javascript" translate="No">/**
-	* Dynamically build a div that is then
-	* placed in the controlbar's spacer element
-	*/
-	function placeCountInControlbar(viewsCount) {
-	var spacer,
-	newElement = document.createElement('div');
-	//Place data in div
-	newElement.innerHTML = "Total Views: " + viewsCount;
-	//Get the spacer in the controlbar
-	spacer = document.getElementsByClassName('vjs-spacer')[0];
-	//Right justify content in the spacer and add top margin
-	spacer.setAttribute('style', 'justify-content: flex-end; margin-top: 10px');
-	//Add the dynamically built div to the spacer in the controlbar
-	spacer.appendChild(newElement);
-	}</code></pre>
+<pre class="line-numbers"><code class="language-javascript" translate="No">/**
+* Dynamically build a div that is then
+* placed in the controlbar's spacer element
+*/
+function placeCountInControlbar(viewsCount) {
+  var spacer,
+  newElement = document.createElement('div');
+  //Place data in div
+  newElement.innerHTML = "Total Views: " + viewsCount;
+  //Get the spacer in the controlbar
+  spacer = document.getElementsByClassName('vjs-spacer')[0];
+  //Right justify content in the spacer and add top margin
+  spacer.setAttribute('style', 'justify-content: flex-end; margin-top: 10px');
+  //Add the dynamically built div to the spacer in the controlbar
+  spacer.appendChild(newElement);
+}</code></pre>
     <h3>Complete code listing</h3>
     <p>The complete, functioning code is located in this GitHub repository: <a href="https://github.com/BrightcoveLearning/learning-guide-using-rest-apis/blob/master/display-views-in-controlbar.html">display-views-in-controlbar.html</a>.</p>
   </section>
@@ -281,10 +274,9 @@ parent: Getting Started
       <li>The URL to the proxy, which will be dependent upon where you store your proxy.</li>
       <li>The HTTP method type, for example <code translate="No">GET</code>, <code translate="No">POST</code> or <code translate="No">PATCH</code>.</li>
       <li>The API endpoint URL used by the proxy to make the actual request from the API. For example:
-        <pre class="line-numbers">
-	<code class="language-html" translate="No">https://players.api.brightcove.com/v2/accounts/57838016001/players
-	https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5842800655001
-	https://analytics.api.brightcove.com/v1/alltime/accounts/1752604059001/videos/4093643993001</code></pre>
+<pre class="line-numbers"><code class="language-html" translate="No">https://players.api.brightcove.com/v2/accounts/57838016001/players
+https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5842800655001
+https://analytics.api.brightcove.com/v1/alltime/accounts/1752604059001/videos/4093643993001</code></pre>
       </li>
     </ul>
     <p>Other properties may be required in the options object depending on the API request. Here is an example of what you would see in the console when logging the options object for making a request for all the players in a specific account:</p>
@@ -300,13 +292,12 @@ parent: Getting Started
     <p>Here is the response after updating players, using the <code translate="No">PATCH</code> HTTP method:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on player patch" src="/assets/images/getting-started/proxy-API-call/debugging-response-on-player-patch.png" /></figure>
     <p>Here is a more nicely formatted view of the data in the first response:</p>
-    <pre class="line-numbers">
-	<code class="language-json" translate="No">{
-		"id": "1OHQdsTAr",
-		"preview_url": "http://preview-players.brightcove.net/v2/accounts/.../master/index.html",
-		"preview_embed_in_page": "http://preview-players.brightcove.net/v2/accounts/.../master/in_page.embed",
-		"preview_embed_code": "&lt;iframe src='//preview-players.brightcove.net/v2/accounts/.../master/index.html' ...&gt;&lt;/iframe&gt;"
-	}</code></pre>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "id": "1OHQdsTAr",
+  "preview_url": "http://preview-players.brightcove.net/v2/accounts/.../master/index.html",
+  "preview_embed_in_page": "http://preview-players.brightcove.net/v2/accounts/.../master/in_page.embed",
+  "preview_embed_code": "&lt;iframe src='//preview-players.brightcove.net/v2/accounts/.../master/index.html' ...&gt;&lt;/iframe&gt;"
+  }</code></pre>
     <p>And finally, here is a very valuable response from when an error occurred. In this case, an account was being used without proper credentials:</p>
     <figure class="bcls-figure"><img class="bcls-image" alt="debugging response on error" src="/assets/images/getting-started/proxy-API-call/debugging-response-on-error.png" /></figure>
   </section>
@@ -346,176 +337,175 @@ parent: Getting Started
       <li>Receive data back from API.</li>
       <li>Send data back to client.</li>
     </ol>
-    <pre class="line-numbers">
-	<code class="language-javascript" translate="No">&lt;?php
-	/**
-	 * proxy for Brightcove RESTful APIs
-	 * gets an access token, makes the request, and returns the response
-	 * Accessing:
-	 *     (note you should **always** access the proxy via HTTPS)
-	 *     Method: POST
-	 *     request body (accessed via php://input) is a JSON object with the following properties
-	 *
-	 * {string} url - the URL for the API request
-	 * {string} [requestType=GET] - HTTP method for the request
-	 * {string} [requestBody] - JSON data to be sent with write requests
-	 * {string} [client_id] - OAuth2 client id with sufficient permissions for the request
-	 * {string} [client_secret] - OAuth2 client secret with sufficient permissions for the request
-	 *
-	 * Example:
-	 * {
-	 *    "url": "https://cms.api.brightcove.com/v1/accounts/57838016001/video",
-	 *    "requestType": "PATCH",
-	 *    "client_id": "0072bebf-0616-442c-84de-7215bb176061",
-	 *    "client_secret": "7M0vMete8vP_Dmb9oIRdUN1S5lrqTvgtVvdfsasd",
-	 *    "requestBody": "{\"description\":\"Updated video description\"}"
-	 * }
-	 *
-	 * if client_id and client_secret are not included in the request, default values will be used
-	 *
-	 * @returns {string} $response - JSON response received from the API
-	 */
-	
-	// security checks
-	// if you want to do some basic security checks, such as checking the origin of the
-	// the request against some white list, this would be a good place to do it
-	// CORS enablement and other headers
-	header("Access-Control-Allow-Origin: *");
-	header("Content-type: application/json");
-	header("X-Content-Type-Options: nosniff");
-	header("X-XSS-Protection");
-	
-	// default account values
-	// if you work on one Brightcove account, put in the values below
-	// if you do not provide defaults, the client id, and client secret must
-	// be sent in the request body for each request
-	$default_client_id     = 'YOUR_CLIENT_ID';
-	$default_client_secret = 'YOUR_CLIENT_SECRET';
-	
-	// get request body
-	$requestData = json_decode(file_get_contents('php://input'));
-	
-	// set up access token request
-	// check to see if client id and secret were passed with the request
-	// and if so, use them instead of defaults
-	if (isset($requestData-&gt;client_id)) {
-			$client_id = $requestData-&gt;client_id;
-	}
-	
-	if (isset($requestData-&gt;client_secret)) {
-			$client_secret = $requestData-&gt;client_secret;
-	}
-	
-	$auth_string = "{$client_id}:{$client_secret}";
-	
-	// make the request to get an access token
-	$request = "https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials";
-	$curl          = curl_init($request);
-	curl_setopt($curl, CURLOPT_USERPWD, $auth_string);
-	curl_setopt($curl, CURLOPT_POST, TRUE);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-	curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-		'Content-type: application/x-www-form-urlencoded',
-	));
-	
-	$response = curl_exec($curl);
-	$curl_info = curl_getinfo($curl);
-	$php_log = array(
-		"php_error_info" =&gt; $curl_info
-	);
-	$curl_error = curl_error($curl);
-	
-	curl_close($curl);
-	
-	// Check for errors
-	// it's useful to log as much info as possible for debugging
-	if ($response === FALSE) {
-		log_error($php_log, $curl_error);
-	}
-	
-	// Decode the response and get access token
-	$responseData = json_decode($response, TRUE);
-	$access_token = $responseData["access_token"];
-	// get request type or default to GET
-	$method = "GET";
-	if ($requestData-&gt;requestType) {
-			$method = $requestData-&gt;requestType;
-	}
-	
-	// get the URL and authorization info from the form data
-	$request = $requestData-&gt;url;
-	// check for a request body sent with the request
-	if (isset($requestData-&gt;requestBody)) {
-		$data = $requestData-&gt;requestBody;
-	}
-		$curl = curl_init($request);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'Content-type: application/json',
-			"Authorization: Bearer {$access_token}"
-		));
-		switch ($method)
-			{
-				case "POST":
-					curl_setopt($curl, CURLOPT_POST, TRUE);
-					if ($requestData-&gt;requestBody) {
-						curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-					}
-					break;
-				case "PUT":
-					// don't use CURLOPT_PUT; it is not reliable
-					curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-					if ($requestData-&gt;requestBody) {
-						curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-					}
-					break;
-				case "PATCH":
-					curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-					if ($requestData-&gt;requestBody) {
-						curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-					}
-					break;
-				case "DELETE":
-					curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-					if ($requestData-&gt;requestBody) {
-						curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-					}
-					break;
-				default:
-					// GET request, nothing to do;
-			}
-		$response = curl_exec($curl);
-		$curl_info = curl_getinfo($curl);
-		$php_log = array(
-			"php_error_info" =&gt; $curl_info
-		);
-		$curl_error = curl_error($curl);
-		curl_close($curl);
-	
-	// Check for errors and log them if any
-	// note that logging will fail unless
-	// the file log.txt exists in the same
-	// directory as the proxy and is writable
-	
-	if ($response === FALSE) {
-		log_error($php_log, $curl_error);
-	}
-	
-	function log_error($php_log, $curl_error) {
-		$logEntry = "\nError:\n". "\n".date("Y-m-d H:i:s"). " UTC \n" .$curl_error. "\n".json_encode($php_log, JSON_PRETTY_PRINT);
-		$logFileLocation = "log.txt";
-		$fileHandle      = fopen($logFileLocation, 'a') or die("-1");
-		fwrite($fileHandle, $logEntry);
-		fclose($fileHandle);
-		echo "Error: there was a problem with your API call"+
-		die(json_encode($php_log, JSON_PRETTY_PRINT));
-	}
-	
-	// return the response to the AJAX caller
-	echo $response;
-	?&gt;</code></pre>
+<pre class="line-numbers"><code class="language-javascript" translate="No">&lt;?php
+/**
+  * proxy for Brightcove RESTful APIs
+  * gets an access token, makes the request, and returns the response
+  * Accessing:
+  *     (note you should **always** access the proxy via HTTPS)
+  *     Method: POST
+  *     request body (accessed via php://input) is a JSON object with the following properties
+  *
+  * {string} url - the URL for the API request
+  * {string} [requestType=GET] - HTTP method for the request
+  * {string} [requestBody] - JSON data to be sent with write requests
+  * {string} [client_id] - OAuth2 client id with sufficient permissions for the request
+  * {string} [client_secret] - OAuth2 client secret with sufficient permissions for the request
+  *
+  * Example:
+  * {
+  *    "url": "https://cms.api.brightcove.com/v1/accounts/57838016001/video",
+  *    "requestType": "PATCH",
+  *    "client_id": "0072bebf-0616-442c-84de-7215bb176061",
+  *    "client_secret": "7M0vMete8vP_Dmb9oIRdUN1S5lrqTvgtVvdfsasd",
+  *    "requestBody": "{\"description\":\"Updated video description\"}"
+  * }
+  *
+  * if client_id and client_secret are not included in the request, default values will be used
+  *
+  * @returns {string} $response - JSON response received from the API
+  */
+
+// security checks
+// if you want to do some basic security checks, such as checking the origin of the
+// the request against some white list, this would be a good place to do it
+// CORS enablement and other headers
+header("Access-Control-Allow-Origin: *");
+header("Content-type: application/json");
+header("X-Content-Type-Options: nosniff");
+header("X-XSS-Protection");
+
+// default account values
+// if you work on one Brightcove account, put in the values below
+// if you do not provide defaults, the client id, and client secret must
+// be sent in the request body for each request
+$default_client_id     = 'YOUR_CLIENT_ID';
+$default_client_secret = 'YOUR_CLIENT_SECRET';
+
+// get request body
+$requestData = json_decode(file_get_contents('php://input'));
+
+// set up access token request
+// check to see if client id and secret were passed with the request
+// and if so, use them instead of defaults
+if (isset($requestData-&gt;client_id)) {
+    $client_id = $requestData-&gt;client_id;
+}
+
+if (isset($requestData-&gt;client_secret)) {
+    $client_secret = $requestData-&gt;client_secret;
+}
+
+$auth_string = "{$client_id}:{$client_secret}";
+
+// make the request to get an access token
+$request = "https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials";
+$curl = curl_init($request);
+curl_setopt($curl, CURLOPT_USERPWD, $auth_string);
+curl_setopt($curl, CURLOPT_POST, TRUE);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+  'Content-type: application/x-www-form-urlencoded',
+));
+
+$response = curl_exec($curl);
+$curl_info = curl_getinfo($curl);
+$php_log = array(
+  "php_error_info" =&gt; $curl_info
+);
+$curl_error = curl_error($curl);
+
+curl_close($curl);
+
+// Check for errors
+// it's useful to log as much info as possible for debugging
+if ($response === FALSE) {
+  log_error($php_log, $curl_error);
+}
+
+// Decode the response and get access token
+$responseData = json_decode($response, TRUE);
+$access_token = $responseData["access_token"];
+// get request type or default to GET
+$method = "GET";
+if ($requestData-&gt;requestType) {
+    $method = $requestData-&gt;requestType;
+}
+
+// get the URL and authorization info from the form data
+$request = $requestData-&gt;url;
+// check for a request body sent with the request
+if (isset($requestData-&gt;requestBody)) {
+  $data = $requestData-&gt;requestBody;
+}
+  $curl = curl_init($request);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    'Content-type: application/json',
+    "Authorization: Bearer {$access_token}"
+  ));
+  switch ($method)
+    {
+      case "POST":
+        curl_setopt($curl, CURLOPT_POST, TRUE);
+        if ($requestData-&gt;requestBody) {
+          curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        break;
+      case "PUT":
+        // don't use CURLOPT_PUT; it is not reliable
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        if ($requestData-&gt;requestBody) {
+          curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        break;
+      case "PATCH":
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        if ($requestData-&gt;requestBody) {
+          curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        break;
+      case "DELETE":
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        if ($requestData-&gt;requestBody) {
+          curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        break;
+      default:
+        // GET request, nothing to do;
+    }
+  $response = curl_exec($curl);
+  $curl_info = curl_getinfo($curl);
+  $php_log = array(
+    "php_error_info" =&gt; $curl_info
+  );
+  $curl_error = curl_error($curl);
+  curl_close($curl);
+
+// Check for errors and log them if any
+// note that logging will fail unless
+// the file log.txt exists in the same
+// directory as the proxy and is writable
+
+if ($response === FALSE) {
+  log_error($php_log, $curl_error);
+}
+
+function log_error($php_log, $curl_error) {
+  $logEntry = "\nError:\n". "\n".date("Y-m-d H:i:s"). " UTC \n" .$curl_error. "\n".json_encode($php_log, JSON_PRETTY_PRINT);
+  $logFileLocation = "log.txt";
+  $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+  fwrite($fileHandle, $logEntry);
+  fclose($fileHandle);
+  echo "Error: there was a problem with your API call"+
+  die(json_encode($php_log, JSON_PRETTY_PRINT));
+}
+
+// return the response to the AJAX caller
+echo $response;
+?&gt;</code></pre>
     <p>Although the entire code for the proxy server is shown above, it is also located in the GitHub repository: <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">sample-proxy-apps</a> in the <strong>php</strong> folder.</p>
   </section>
   <section class="bcls-section">
@@ -538,20 +528,19 @@ parent: Getting Started
       <li>Lines 9-12: Call the <code translate="No">getVideoData</code> helper function that uses a callback function to populate the <code translate="No">videoObjects</code> array based on IDs passed.</li>
       <li>Line 11: Populate the playlist with the array of video objects.</li>
     </ul>
-    <pre class="line-numbers">
-	<code class="language-javascript" translate="No">// +++ Make the <span translate="No">CMS API</span> request to get matching video IDs +++
-	makeRequest(options, <span class="bcls-highlight">function(mostWatchedVideos) {
-		var JSONmostWatchedVideos;
-		// Convert response string into JSON
-		JSONmostWatchedVideos = JSON.parse(mostWatchedVideos);
-		// Extract the needed video IDs into an array
-		videoData = extractVideoData(JSONmostWatchedVideos);
-		// Get video objects based on array of video IDs
-		getVideoData(videoData, function(videoObjects) {
-			// Add the most watched videos list to the player as a playlist
-			myPlayer.playlist(videoObjects);
-		});</span>
-	});</code></pre>
+<pre class="line-numbers"><code class="language-javascript" translate="No">// +++ Make the <span translate="No">CMS API</span> request to get matching video IDs +++
+makeRequest(options, <span class="bcls-highlight">function(mostWatchedVideos) {
+  var JSONmostWatchedVideos;
+  // Convert response string into JSON
+  JSONmostWatchedVideos = JSON.parse(mostWatchedVideos);
+  // Extract the needed video IDs into an array
+  videoData = extractVideoData(JSONmostWatchedVideos);
+  // Get video objects based on array of video IDs
+  getVideoData(videoData, function(videoObjects) {
+    // Add the most watched videos list to the player as a playlist
+    myPlayer.playlist(videoObjects);
+  });</span>
+});</code></pre>
     <h3>Complete code listing</h3>
     <p>The complete, functioning example is located in this CodePen: <a href="https://codepen.io/team/rcrooks1969/pen/zRzZNG/">Most Watched Videos in a Playlist</a>.</p>
   </section>
