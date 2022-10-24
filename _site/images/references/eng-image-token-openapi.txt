@@ -1,0 +1,187 @@
+openapi: "3.0.0"
+x-bc-implicit-head: true
+x-bc-implicit-options: true
+x-bc-upstream: "https://backend_server"
+info:
+  description: |-
+    API for Brightcove Image Token Management Service
+
+    The Image Token Management API allows you to create, update and delete the tokens for the Image API.
+  version: 1.0.0
+  title: Brightcove Image Token Management API
+  x-bc-access: public
+servers:
+  - url: "https://image-tokens.api.brightcove.com"
+    variables: {}
+components:
+  parameters:
+    TokenId:
+      name: token_id
+      in: query
+      description: ID of the Token to query on
+      required: false
+      schema:
+        type: string
+      example: 0c9ae815-9fb9-4e81-a7d5-b7363d93b329
+
+  schemas:
+    Tokens:
+      type: array
+      items:
+        $ref: "#/components/schemas/Token"
+    Token:
+      title: Token
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the Token
+          example: "0c9ae815-9fb9-4e81-a7d5-b7363d93b329"
+        account_id:
+          type: string
+          description: ID of the Account
+          example: "1213650578001"
+        created_at:
+          type: string
+          description: Creation date of the Token
+          example: "2022-02-25T17:24:34.784978657Z"
+        updated_at:
+          type: string
+          description: Date of the last update to the Token
+          example: "2022-08-26T18:30:10.840341984Z"
+        allowed_domains:
+          type: array
+          description: List of allowed domains
+          items:
+            type: string
+          example: ["brightcove.com", "*bc.com", "test*mydomain.com"]
+    TokenUpdate:
+      title: Domains
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the Token
+          example: "0c9ae815-9fb9-4e81-a7d5-b7363d93b329"
+        allowed_domains:
+          type: array
+          description: List of allowed domains
+          items:
+            type: string
+          example: ["brightcove.com", "*bc.com", "test*mydomain.com"]
+
+paths:
+  "/account/{account_id}":
+    parameters:
+      - $ref: "https://openapi.brightcove.com/openapi.yaml#/components/parameters/AccountId"
+      - $ref: "#/components/parameters/TokenId"
+    post:
+      tags:
+        - Create Image Token
+      summary: Create a new Image Token for the account
+      description: |-
+        Create a new Image Tokens with the allowed domains defined for the account.
+      operationId: postImageTokens
+      security:
+        - BC_OAuth2:
+            - video-cloud/image-token-management/write
+      requestBody:
+        description: Domains to allow request for the new Image Token.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_id:
+                  type: string
+                  example: "1213650578001"
+                allowed_domains:
+                  type: array
+                  example: ["brightcove.com", "*bc.com", "test*mydomain.com"]
+
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+
+        "403":
+          description: Forbidden
+        "500":
+          description: Server error
+
+    get:
+      tags:
+        - Fetch Token
+      summary: Fetch the details of an specific Token
+      description: |-
+        List the Conditions defined for an account
+      operationId: getToken
+      security:
+        - BC_OAuth2:
+            - video-cloud/image-token-management/read
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+
+        "403":
+          description: Forbidden
+        "500":
+          description: Server error
+    put:
+      tags:
+        - Update Token
+      summary: Update the Allowed Domains for the Token.
+      description: |-
+        The included domains will replace any domain that the Token already has.
+      operationId: updateToken
+      security:
+        - BC_OAuth2:
+            - video-cloud/image-token-management/write
+      requestBody:
+        description: New domains to replace the existing ones.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TokenUpdate"
+
+        required: true
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+
+        "400":
+          description: Bad Request
+        "403":
+          description: Forbidden
+        "500":
+          description: Server error
+    delete:
+      tags:
+        - Delete Token
+      summary: Delete a Token
+      description: |-
+        Delete a Token
+      operationId: deleteToken
+      security:
+        - BC_OAuth2:
+            - video-cloud/image-token-management/write
+      responses:
+        "204":
+          description: Token deleted successfully
+        "403":
+          description: Forbidden
+        "404":
+          description: Token not found
+        "500":
+          description: Server error
