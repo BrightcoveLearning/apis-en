@@ -32,7 +32,8 @@ layout: staging
             <figcaption class="bcls-caption--image">String Encoder</figcaption>
           </figure>
         </li>
-        <li><a href="https://supportportal.brightcove.com/">Contact Support</a> to have an <code translate="No">image-token</code> generated for you account - you will need to specify the domains that requests will be made from when you request a token - additional domains can be added if needed.</li>
+        <li>To create an image token to authenticate requests for your account, you can use the <a href="/images/references/image-token-api-reference.html">Image Token API</a> or <a href="https://supportportal.brightcove.com/">Contact Support</a> to have an <code translate="No">image-token</code> generated for you account - <strong>you will need to specify the domains that requests will be made from when you request a token - additional domains can be added if needed.</strong></li>
+        <li>Note that there is a limit of 30 image tokens per account, and 50 domains per token.</li>
         <li>
           Best practices for keeping your <code translate="No">image-token</code> secure:
           <ul>
@@ -42,8 +43,8 @@ layout: staging
             <li>Do not publish code with <code translate="No">image-tokens</code>. Before each release double check, there are no <code translate="No">image-tokens</code>.</li>
             <li>Regenerate your <code translate="No">image-tokens</code> periodically. (We recommend doing this every 3 months).</li>
             <li>
-              If you do use an Image API request as the <code translate="no">src</code> value in an <code translate="no">img</code> tag, you will also need to include the <code translate="no"></code> attribute to avoid the cross-origin request from being blocked:
-<pre><code class="language-http" translate="No"><img crossorigin="include" src="https://images-qa.brightcovecdn.com/image/v1/123456789/0c9ae815-4e81-a7d5-b7363d93b329/url/https%3A%2F%2Fimages.gallerydev.net%2F%3Fimage%3Dhttps%3A%2F%2Fcf-images.us-east-1.qa.boltdns.net%2Fv1%2Fjit%2F70702486874202%2F972d0aa3-21ec-4c3c-a7639b40d%2Fmain%2F1280x720%2F5m17s283ms%2Fmatch%2Fimage.jpg%26width%3D656%26height%3D369?height=400&width=300" alt="Some image"></code></pre>
+              If you do use an Image API request as the <code translate="no">src</code> value in an <code translate="no">img</code> tag, you will also need to include the <code translate="no">crossorigin="anonymous"</code> attribute to avoid the cross-origin request from being blocked:
+<pre><code class="language-http" translate="No">&lt;img crossorigin="anonymous" src="https://images.brightcovecdn.com/image/v1/1752604059001/XXXXXXXXXX/url/https%3A%2F%2Fapis.support.brightcove.com%2Fassets%2Fimages%2Fimage-api%2Fleaf.jpg?resize=221x300&crop=570x660&rotate=-90 alt="Some image"&gt;</code></pre>
             </li>
           </ul>
         </li>
