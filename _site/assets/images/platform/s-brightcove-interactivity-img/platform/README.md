@@ -1,1 +1,0 @@
-# s-brightcove-interactivity-img
