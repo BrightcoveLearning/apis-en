@@ -13,35 +13,32 @@ info:
 servers:
   - url: 'https://social.api.brightcove.com/v1'
     variables: {}
-tags:
-  - name: OTT Syndications
-    description: Operations creating and managing ingest profiles.
 paths:
-  '/accounts/{account_id}/mrss/ott-syndications':
+  '/accounts/{account_id}/mrss/syndications':
     post:
       tags:
-        - OTT Syndications
-      summary: Create a new OTT syndication
+        - Syndications
+      summary: Create a new syndication
       description: >-
-        Creates a new OTT syndication.
-      operationId: postOTTSyndication
+        Creates a new syndication.
+      operationId: postSyndication
       security:
         - BC_OAuth2:
-            - video-cloud/social/mrss/write
+          - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OTTSyndication'
+              $ref: '#/components/schemas/Syndication'
       responses:
         '201':
           description: The newly created syndication.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OTTSyndication'
+                $ref: '#/components/schemas/Syndication'
         '400':
           description: Request body syntax error
           content:
@@ -68,23 +65,23 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     get:
       tags:
-        - OTT Syndications
-      summary: Get all OTT syndications
+        - Syndications
+      summary: Get all syndications
       description: >-
-        Gets a list of all OTT syndications currently configured for the account.
-      operationId: getOTTSyndications
+        Gets a list of all syndications currently configured for the account.
+      operationId: getSyndications
       security:
         - BC_OAuth2:
-            - video-cloud/social/mrss/read
+          - video-cloud/social/mrss/read
       parameters:
         - $ref: '#/components/parameters/AccountId'
       responses:
         '200':
-          description: A list of OTT syndications.
+          description: A list of syndications.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OTTSyndicationList'
+                $ref: '#/components/schemas/SyndicationList'
         '401':
           description: Insufficient permissions to access this API method
           content:
@@ -97,17 +94,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseErrorList'
-  '/accounts/{account_id}/mrss/ott-syndications/{syndication_id}':
+  '/accounts/{account_id}/mrss/syndications/{syndication_id}':
     put:
       tags:
-        - OTT Syndications
-      summary: Update an OTT syndication
+        - Syndications
+      summary: Update a syndication.
       description: >-
-        Updates the configuration data for a syndication.  A fully populated OTTSyndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
-      operationId: putOTTSyndication
+        Updates the configuration data for a syndication.  A fully populated Syndication object should be passed as the request body.  Read-only fields can be omitted, and will be ignored if they are included.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
+      operationId: putSyndication
       security:
         - BC_OAuth2:
-            - video-cloud/social/mrss/write
+          - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -115,14 +112,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OTTSyndication'
+              $ref: '#/components/schemas/Syndication'
       responses:
         '200':
           description: The updated syndication.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OTTSyndication'
+                $ref: '#/components/schemas/Syndication'
         '401':
           description: Insufficient permissions to access this API method
           content:
@@ -143,14 +140,14 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     patch:
       tags:
-        - OTT Syndications
-      summary: Update an OTT syndication
+        - Syndications
+      summary: Update a syndication.
       description: >-
-        Updates the configuration data for a syndication.  An OTTSyndication object specifying non-null values for writable fields to be updated should be passed as the request body.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
-      operationId: patchOTTSyndication
+        Updates the configuration data for a syndication.  A Syndication object specifying non-null values for writable fields to be updated should be passed as the request body.  Note that the *type* property cannot be changed from the value specified when the syndication was created.
+      operationId: patchSyndication
       security:
         - BC_OAuth2:
-            - video-cloud/social/mrss/write
+          - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -158,14 +155,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OTTSyndication'
+              $ref: '#/components/schemas/Syndication'
       responses:
         '200':
           description: The updated syndication.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OTTSyndication'
+                $ref: '#/components/schemas/Syndication'
         '401':
           description: Insufficient permissions to access this API method
           content:
@@ -186,14 +183,14 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     delete:
       tags:
-        - OTT Syndications
-      summary: Delete an OTT syndication
+        - Syndications
+      summary: Delete a syndication
       description: >-
-        Deletes an OTT syndication.
-      operationId: deleteOTTSyndication
+        Deletes a syndication.
+      operationId: deleteSyndication
       security:
         - BC_OAuth2:
-            - video-cloud/social/mrss/write
+          - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -220,14 +217,14 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     get:
       tags:
-        - OTT Syndications
-      summary: Get an OTT syndication
+        - Syndications
+      summary: Get a syndication
       description: >-
-        Gets the configuration data for an OTT syndication.
-      operationId: getOTTSyndication
+        Gets the configuration data for a syndication.
+      operationId: getSyndication
       security:
         - BC_OAuth2:
-            - video-cloud/social/mrss/read
+          - video-cloud/social/mrss/read
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -237,7 +234,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OTTSyndication'
+                $ref: '#/components/schemas/Syndication'
         '401':
           description: Insufficient permissions to access this API method
           content:
@@ -256,17 +253,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseErrorList'
-  '/accounts/{account_id}/mrss/ott-syndications/{syndication_id}/template':
+  '/accounts/{account_id}/mrss/syndications/{syndication_id}/template':
     put:
       tags:
-        - OTT Templates
-      summary: Upload a custom OTT feed template
+        - Templates
+      summary: Upload a custom feed template
       description: >-
-        Uploads a custom OTT feed template to a universal syndication.
-      operationId: putOTTTemplate
+        Uploads a custom feed template to a universal syndication.
+      operationId: putTemplate
       security:
         - BC_OAuth2:
-            - video-cloud/social/mrss/write
+          - video-cloud/social/mrss/write
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
@@ -300,20 +297,20 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
     get:
       tags:
-        - OTT Templates
-      summary: Get a custom OTT feed template
+        - Templates
+      summary: Get a custom feed template
       description: >-
-        Gets a universal syndication's custom OTT feed template.
-      operationId: getOTTTemplate
+        Gets a universal syndication's custom feed template.
+      operationId: getTemplate
       security:
         - BC_OAuth2:
-            - video-cloud/social/mrss/read
+          - video-cloud/social/mrss/read
       parameters:
         - $ref: '#/components/parameters/AccountId'
         - $ref: '#/components/parameters/SyndicationId'
       responses:
         '200':
-          description: The universal syndication's feed template.
+          description: The universal syndication's feed template.  If one has not yet been uploaded, a default empty template will be returned.
         '401':
           description: Insufficient permissions to access this API method
           content:
@@ -327,126 +324,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseErrorList'
         '404':
-          description: Template not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-  '/accounts/{account_id}/mrss/ott-async-jobs':
-    post:
-      tags:
-        - OTT Syndications
-      summary: Create a new OTT async job request
-      description: >-
-        Create a new job request for the asynchronous generation of feeds for one or more OTT Syndications.
-      operationId: postOTTAsyncJob
-      security:
-        - BC_OAuth2:
-            - video-cloud/social/mrss/write
-      parameters:
-        - $ref: '#/components/parameters/AccountId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OTTAsyncJob'
-      responses:
-        '201':
-          description: The newly created job.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OTTAsyncJob'
-        '400':
-          description: Request body syntax error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-        '401':
-          description: Insufficient permissions to access this API method
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-        '422':
-          description: Invalid request body fields or values
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-    get:
-      tags:
-        - OTT Syndications
-      summary: Get all OTT Syndications
-      description: >-
-        Gets a list of all recent OTT Syndications for the account.  Note that jobs expire after 24 hours and will no longer be returned by this method after that.
-      operationId: getOTTAsyncJobs
-      security:
-        - BC_OAuth2:
-            - video-cloud/social/mrss/read
-      parameters:
-        - $ref: '#/components/parameters/AccountId'
-      responses:
-        '200':
-          description: A list of recent jobs.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OTTAsyncJobList'
-        '401':
-          description: Insufficient permissions to access this API method
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-  '/accounts/{account_id}/mrss/ott-async-jobs/{job_id}':
-    get:
-      tags:
-        - OTT Syndications
-      summary: Get an OTT async job
-      description: >-
-        Gets the configuration data for an OTT async job.  Note that jobs expire after 24 hours and will no longer be returned by this method after that.
-      operationId: getOTTAsyncJob
-      security:
-        - BC_OAuth2:
-            - video-cloud/social/mrss/read
-      parameters:
-        - $ref: '#/components/parameters/AccountId'
-        - $ref: '#/components/parameters/JobId'
-      responses:
-        '200':
-          description: The specified job.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OTTAsyncJob'
-        '401':
-          description: Insufficient permissions to access this API method
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseErrorList'
-        '404':
-          description: Job not found
+          description: Syndication not found
           content:
             application/json:
               schema:
@@ -459,11 +337,11 @@ paths:
                 $ref: '#/components/schemas/ResponseErrorList'
 components:
   schemas:
-    OTTSyndication:
+    Syndication:
       type: object
       required:
-        - name
-        - type
+      - name
+      - type
       properties:
         id:
           type: string
@@ -475,114 +353,82 @@ components:
         type:
           type: string
           enum: [
-            "umcCatalogCsv",
-            "umcAvailabilityCsv",
+            "advanced",
+            "google",
+            "iphone",
+            "ipad",
+            "mp4",
+            "itunes",
+            "roku",
+            "source",
             "universal"
           ]
-          description: The syndication type.  Valid values are [umcCatalogCsv, umcAvailabilityCsv, universal].  Cannot be changed after syndication creation time.
-        asset_type_filter:
-          type: array
-          items: {
-            type: string,
-            enum: [
-              "movie",
-              "series",
-              "season",
-              "episode"
-            ]
-          }
-          description: Specifies which OTT asset types to include in the generated feed.  If unspecified, all types will be included. Valid values are [movie, series, season, episode].
-        filename:
-          type: string
-          description: The filename that should be used for the generated feed results for this syndication within zip results files.  Should be a flat filename (no paths) using valid zip filename characters.  Should not be the same as the filenames used for any other syndications that might have results included in the same zipped results.  If not specified, a unique filename will be generated.
-        locator_prefix:
-          type: string
-          description: An URL that can be used as the prefix for generated universal link locators.  Currently only used by syndications of type umcAvailabilityCsv.  Typically points to the root of the catalog website.
-        apple_location_filter:
-          type: string
-          description: Value should be an ISO-3166 country code.  If specified, assets will be excluded from the generated feed if their rights don't allow access from the specified location for at least one Apple device (iOS, appletv, web).  Typically should be set for syndications of type umcAvailabilityCsv.
-        fetch_unpublished:
+          description: The syndication type.  Valid values are [advanced, google, iphone, ipad, mp4, itunes, roku, source, universal].  Cannot be changed after syndication creation time.
+        include_all_content:
           type: boolean
-          default: false
-          description: Valid only for universal syndications. Specifies whether unpublished OTT assets should be included in set of assets used to generate the feed.
-        fetch_episodeless:
-          type: boolean
-          default: true
-          description: Valid only for universal syndications.  Specifies whether OTT series and season assets that have no descendant episodes should be included in set of assets used to generate the feed.
-        fetch_videos:
-          type: boolean
-          default: false
-          description: Valid only for universal syndications.  Specifies whether the CMS videos associated with OTT movie and episode assets should be fetched.  If true, the CMS video objects will be available to the feed template in a "video" field for each applicable asset.  Setting to true will result in slower feed generation times, only set if CMS video metadata is actually needed.
+          description: If true, all content is included in this syndication.  If false, a valid include_filter property must be specified for the syndication.
+        include_filter:
+          type: string
+          description: A CMS video search filter string used to select the subset of content included in this syndication.  The include_all_content field must be set to false if a value is specified for this property.
+        sort:
+          type: string
+          description: A CMS video sorting specifier indicating the desired feed results return order.  CMS-supported values like "name", "reference_id", "created_at", "published_at", "updated_at", "schedule.starts_at", "schedule.ends_at", "state", "plays_total", and "plays_trailing_week" can be specified.  To sort in descending order, preface the value with a minus (-) sign, i.e. "-created_at".  If no value is specified, the feed will be sorted by most recent updated_at date by default.
+        title:
+          type: string
+          description: The title of this feed. Will be included inside of the <channel> tag for some syndication types.
+        description:
+          type: string
+          description: The description of this feed. Will be included inside of the <channel> tag for some syndication types.
+        syndication_url:
+          type: string
+          readOnly: true
+          description: The URL of this syndication's feed.  Read-only.
+        destination_url:
+          type: string
+          description: The URL to be included inside of the <channel> tag in the feed.
+        keywords:
+            type: string
+            description: A comma-separated list of keywords for iTunes
+        author:
+            type: string
+            description: iTunes author specification
+        category:
+            type: string
+            description: iTunes category specification
+        album_art_url:
+            type: string
+            description: iTunes album art url.
+        explicit:
+            type: string
+            enum: ["yes", "no"]
+            description: iTunes explicit content indicator, accepts "yes" or "no" values.
+        owner_name:
+            type: string
+            description: iTunes owner name.
+        owner_email:
+            type: string
+            description: iTunes owner email.
+        language:
+            type: string
+            description: iTunes or Roku feed language field.
+        fetch_sources:
+            type: boolean
+            description: For universal feeds, specifies whether the feed service should fetch video source metadata and make it available to the template.  The default value is true.  If source metadata is not needed by the template, setting this to false can improve feed generation performance.
+        fetch_digital_master:
+            type: boolean
+            description: For universal feeds, specifies whether the feed service should fetch digital master metadata and make it available to the template.  The default value is false.  If digital master metadata is not needed by the template, keeping this setting as false can improve feed generation performance.
         fetch_dynamic_renditions:
-          type: boolean
-          default: false
-          description: Valid only for universal syndications that have fetch_videos set to true.  Specifies whether the dynamic rendition metadata for fetched CMS videos should also be fetched. If true, the dynamic rendition metadata be available to the feed template in a "video.dynamic_renditions" field for each applicable asset.  Setting to true will result in slower feed generation times, only set if CMS dynamic rendition metadata is actually needed.
-        fetch_audio_tracks:
-          type: boolean
-          default: false
-          description: Valid only for universal syndications that have fetch_videos set to true.  Specifies whether the audio track metadata for fetched CMS videos should also be fetched. If true, the audio track metadata be available to the feed template in a "video.audio_tracks" field for each applicable asset.  Setting to true will result in slower feed generation times, only set if CMS audio track metadata is actually needed.
-        asset_container_type:
-          type: string
-          enum: [
-            "list",
-            "typemap"
-          ]
-          default: "list"
-          description: Valid only for universal syndications.  Specifies whether the "assets" object that is accessible from the feed template should be a flat list of all fetched assets or a map of asset sublists keyed by OTT asset type.
-    OTTSyndicationList:
+            type: boolean
+            description: For universal feeds, specifies whether the feed service should fetch dynamic rendition metadata and make it available to the template.  The default value is false.  If dynamic rendition metadata is not needed by the template, keeping this setting as false can improve feed generation performance.
+        content_type_header:
+            type: string
+            description: >-
+              If set, overrides the Content-Type header returned by the feed server for this syndication's feed. Otherwise the feed defaults to a syndication type-specific header value
+            example: 'application/xml'
+    SyndicationList:
       type: array
       items:
-        $ref: '#/components/schemas/OTTSyndication'
-    OTTAsyncJob:
-      type: object
-      required:
-        - General Syndications
-      properties:
-        id:
-          type: string
-          description: Id of this job
-          readOnly: true
-        name:
-          type: string
-          description: Name of this job
-        state:
-          type: string
-          enum: [
-            "PENDING",
-            "PROCESSING",
-            "COMPLETED",
-            "ERROR"
-          ]
-          description: State of this job.  Job state starts out as PENDING when the job is submitted, moves to PROCESSING when the processing of the job begins, and move to either COMPLETED or ERROR state when job processing finishes.
-          readOnly: true
-        syndications:
-          type: array
-          items: {
-            type: string
-          }
-          description: A list of OTT syndications to be processed.  The resulting feeds will be generated and packaged into a single zipped results file.
-        results:
-          type: array
-          items: {
-            type: string
-          }
-          description: A list of URLs pointing to results files.  Currently this will always contain just a single URL pointing to a zipped results file if the job was processed successfully.  The URLs expire after 3 hours.
-        errors:
-          type: array
-          items: {
-            type: string
-          }
-          description: A list of errors that occurred if a job failed to complete successfully.
-        created_at:
-          type: string
-          description: Job creation timestamp, in UTC format.
-        updated_at:
-          type: string
-          description: Last job update timestamp, in UTC format.
-    OTTAsyncJobList:
-      type: array
-      items:
-        $ref: '#/components/schemas/OTTAsyncJob'
+        $ref: '#/components/schemas/Syndication'
     ResponseError:
       type: object
       properties:
@@ -610,13 +456,6 @@ components:
       name: syndication_id
       in: path
       description: ID of the syndication
-      required: true
-      schema:
-        type: string
-    JobId:
-      name: job_id
-      in: path
-      description: ID of the job
       required: true
       schema:
         type: string
