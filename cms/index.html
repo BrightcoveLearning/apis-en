@@ -17,8 +17,112 @@ description: '<br><br>
       <summary style="display: block;">{{ page.description }}</summary>
     </div>
   </div>
+</br>
 
-  <section class="bcls-section" id="page_wrapper">
+<!-- First example -->
+
+<!-- <nav>
+  {% for item in site.data.navigation %}
+    {% if item.name == page.title %}
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    {% for entry in item.docs %}
+        {% if entry.docs %}
+    <button class="nav-link" id="{{ entry.idTab }}" data-bs-toggle="tab" data-bs-target="#{{ entry.id }}" type="button" role="tab" aria-controls="{{ entry.id }}" aria-selected="false">{{ entry.name }}</button>
+    {% else %}
+    <button class="nav-link" id="{{ entry.idTab }}" data-bs-toggle="tab" data-bs-target="#{{ entry.id }}" type="button" role="tab" aria-controls="{{ entry.id }}" aria-selected="false">{{ entry.name }}</button>
+      {% endif %}
+      {% endfor %}
+  </div>
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="{{ entry.id }}" role="tabpanel" aria-labelledby="{{ entry.idTab }}" tabindex="0">
+    
+    <ul>
+      {% for entry in item.docs %}
+{% for subdoc in entry.docs %}
+    <li><a href="{{ subdoc.url }}">{{ subdoc.name }}</a></li> 
+    {% endfor %}
+{% endfor %}
+  </ul>
+  
+</div>
+</div>
+
+{% endif %}
+{% endfor %} -->
+
+<!-- Second example -->
+<!-- <div class="card card-hover shadow-sm text-center">
+  <div class="card-header">
+    {% for item in site.data.navigation %}
+    {% if item.name == page.title %}
+    <ul class="nav nav-tabs card-header-tabs">
+      {% for entry in item.docs %}
+        {% if entry.docs %}
+      <li class="nav-item">
+        <a class="nav-link" id="{{ entry.idTab }}" data-bs-toggle="tab" data-bs-target="#{{ entry.id }}" role="tab">{{ entry.name }}</a>
+      
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a lass="nav-link" id="{{ entry.id }}" data-bs-toggle="tab" data-bs-target="#{{ entry.id }}" role="tab">{{ entry.name }}</a>
+      </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+  </div>
+
+  <div class="tab-content" id="myTabContent" aria-labelledby="{{ entry.idTab }}">
+  <div class="card-body">
+    {% for entry in item.docs %}
+    <div id="{{ entry.id }}" role="tabpanel">
+    <ul>
+      {% for subdoc in entry.docs %}
+      <li><a href="{{ subdoc.url }}">{{ subdoc.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+   
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+   
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+</div> -->
+
+
+<div class="row">
+  {% for item in site.data.navigation %}
+  {% if item.name == page.title %}
+  {% for entry in item.docs %}
+  <div class="col-12 col-lg-4 py-3">
+    <div class="card shadow-sm" style="background: white">
+      <div class="card-body">
+        <div>
+          {% if entry.docs %}
+          <h5 class="card-title">{{ entry.name }}</h5>
+          <ul class="landing-page-item">
+            {% for subdoc in entry.docs %}
+            <li><a href="{{ subdoc.url }}">{{ subdoc.name }}</a></li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <h5 class="card-title">{{ entry.name }}</h5>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endfor %}
+</div>
+
+
+  <!-- <section class="bcls-section" id="page_wrapper">
     {% for item in site.data.navigation %}
     {% if item.name == page.title %}
     <section class="flex-container">
@@ -39,5 +143,5 @@ description: '<br><br>
     </section>
     {% endif %}
     {% endfor %}
-  </section>
+  </section> -->
 </article>
