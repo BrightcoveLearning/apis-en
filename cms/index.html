@@ -19,81 +19,6 @@ description: '<br><br>
   </div>
 </br>
 
-<!-- First example -->
-
-<!-- <nav>
-  {% for item in site.data.navigation %}
-    {% if item.name == page.title %}
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    {% for entry in item.docs %}
-        {% if entry.docs %}
-    <button class="nav-link" id="{{ entry.idTab }}" data-bs-toggle="tab" data-bs-target="#{{ entry.id }}" type="button" role="tab" aria-controls="{{ entry.id }}" aria-selected="false">{{ entry.name }}</button>
-    {% else %}
-    <button class="nav-link" id="{{ entry.idTab }}" data-bs-toggle="tab" data-bs-target="#{{ entry.id }}" type="button" role="tab" aria-controls="{{ entry.id }}" aria-selected="false">{{ entry.name }}</button>
-      {% endif %}
-      {% endfor %}
-  </div>
-</nav>
-
-<div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="{{ entry.id }}" role="tabpanel" aria-labelledby="{{ entry.idTab }}" tabindex="0">
-    
-    <ul>
-      {% for entry in item.docs %}
-{% for subdoc in entry.docs %}
-    <li><a href="{{ subdoc.url }}">{{ subdoc.name }}</a></li> 
-    {% endfor %}
-{% endfor %}
-  </ul>
-  
-</div>
-</div>
-
-{% endif %}
-{% endfor %} -->
-
-<!-- Second example -->
-<!-- <div class="card card-hover shadow-sm text-center">
-  <div class="card-header">
-    {% for item in site.data.navigation %}
-    {% if item.name == page.title %}
-    <ul class="nav nav-tabs card-header-tabs">
-      {% for entry in item.docs %}
-        {% if entry.docs %}
-      <li class="nav-item">
-        <a class="nav-link" id="{{ entry.idTab }}" data-bs-toggle="tab" data-bs-target="#{{ entry.id }}" role="tab">{{ entry.name }}</a>
-      
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a lass="nav-link" id="{{ entry.id }}" data-bs-toggle="tab" data-bs-target="#{{ entry.id }}" role="tab">{{ entry.name }}</a>
-      </li>
-        {% endif %}
-        {% endfor %}
-    </ul>
-  </div>
-
-  <div class="tab-content" id="myTabContent" aria-labelledby="{{ entry.idTab }}">
-  <div class="card-body">
-    {% for entry in item.docs %}
-    <div id="{{ entry.id }}" role="tabpanel">
-    <ul>
-      {% for subdoc in entry.docs %}
-      <li><a href="{{ subdoc.url }}">{{ subdoc.name }}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
-   
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-   
-    {% endfor %}
-    {% endif %}
-    {% endfor %}
-  </div>
-</div>
-</div> -->
-
-
 <div class="row">
   {% for item in site.data.navigation %}
   {% if item.name == page.title %}
@@ -103,16 +28,17 @@ description: '<br><br>
       <div class="card-body">
         <div>
           {% if entry.docs %}
-          <h5 class="card-title">{{ entry.name }}</h5>
-          <ul class="landing-page-item">
+          <h5 class="card-title text-center m-2">{{ entry.name }}</h5>
+          <ul class="list-group list-group-flush">
             {% for subdoc in entry.docs %}
-            <li><a href="{{ subdoc.url }}">{{ subdoc.name }}</a></li>
+            <li class="list-group-item"><a href="{{ subdoc.url }}" style="text-decoration: none;">{{ subdoc.name }}</a></li>
             {% endfor %}
           </ul>
           {% else %}
           <h5 class="card-title">{{ entry.name }}</h5>
           {% endif %}
       </div>
+      <a class="card-link-mask" href="{{ entry.name }}"></a>
     </div>
   </div>
   </div>
@@ -121,6 +47,7 @@ description: '<br><br>
   {% endfor %}
 </div>
 
+<!-- Original code -->
 
   <!-- <section class="bcls-section" id="page_wrapper">
     {% for item in site.data.navigation %}
@@ -144,4 +71,5 @@ description: '<br><br>
     {% endif %}
     {% endfor %}
   </section> -->
+
 </article>
