@@ -4,27 +4,29 @@ description: 'Brightcove offers a simple and flexible solution for adding videos
 icon: fa-regular fa-folder-arrow-up
 parent: Home
 ---
-<h1><i class="{{ page.icon }}"></i> {{ page.title }}</h1>
-<article class="bcls-article">
-  <summary>{{ page.description }}</summary>
 
-  <div class="col-12 col-lg-4 py-3">
-    <div class="card shadow-sm" style="background: white">
-      <div class="card-body">
-    {% for item in site.data.navigation %}
-    {% if item.name == page.title %}
-    <section class="flex-container">
-      <div>
-        <ul class="list-group list-group-flush">
-          {% for entry in item.docs %}
-          <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a></li>
-          {% endfor %}
-        </ul>
+<!-- Template for section that has just pages -->
+{% for item in site.data.navigation %}
+  {% if item.name == page.title %}
+  <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+  <article class="bcls-article">
+    <summary>{{ page.description }}</summary>
+
+    <div class="col-12 col-lg-4 py-3">
+      <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ item.url }}'">
+        <div class="card-body">
+          <section class="flex-container">
+            <div>
+              <ul class="list-group list-group-flush">
+                {% for entry in item.docs %}
+                <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
-  </div>
-  </div>
-    {% endif %}
-    {% endfor %}
-  </section>
+  {% endif %}
+{% endfor %}
 </article>

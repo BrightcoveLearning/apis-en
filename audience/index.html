@@ -4,56 +4,29 @@ parent: Home
 description: 'The Audience API allows you to retrieve viewing event and lead data. This API is aimed primarily at those working on marketing automation.'
 icon: fa-thin fa-screen-users
 ---
-<h1><i class="{{ page.icon }}"></i> {{ page.title }}</h1>
-<article class="bcls-article">
-  <summary style="display: block;">{{ page.description }}</summary>
-  <br/>
-  <aside class="bcls-aside bcls-aside--information">Note that only the documentation for the Audience API is located here. For general documentation for the Campaign module, go to <a href="https://studio.support.brightcove.com/campaign/index.html">Marketing Automation - The Campaign Module</a>.</aside>
-  
-  <div class="row">
-    {% for item in site.data.navigation %}
-    {% if item.name == page.title %}
-    {% for entry in item.docs %}
+
+<!-- Template for section that has just pages -->
+{% for item in site.data.navigation %}
+  {% if item.name == page.title %}
+  <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+  <article class="bcls-article">
+    <summary>{{ page.description }}</summary>
+
     <div class="col-12 col-lg-4 py-3">
-      <div class="card shadow-sm" style="background: white">
+      <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ item.url }}'">
         <div class="card-body">
-          <div>
-            {% if entry.docs %}
-            <h5 class="card-title text-center m-2">{{ entry.name }}</h5>
-            <ul class="list-group list-group-flush">
-              {% for subdoc in entry.docs %}
-              <li class="list-group-item"><a href="{{ subdoc.url }}" style="text-decoration: none;">{{ subdoc.name }}</a></li>
-              {% endfor %}
-            </ul>
-            {% else %}
-            <h5 class="card-title">{{ entry.name }}</h5>
-            {% endif %}
+          <section class="flex-container">
+            <div>
+              <ul class="list-group list-group-flush">
+                {% for entry in item.docs %}
+                <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </section>
         </div>
-        <!-- <a class="card-link-mask" href="{{entry.url}}"></a> -->
       </div>
     </div>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endfor %}
-  </div>
-
-  <!-- <section class="card-wrapper">
-    {% for item in site.data.navigation %}
-      {% if item.name == page.title %}
-        {% for subsection in item.docs %}
-            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
-              <div class="card-content">
-                <h2>{{ subsection.name }}</h2>
-                <ul>
-                  {% for doc in subsection.docs %}
-                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </section>
-        {% endfor %}
-      {% endif %}
-    {% endfor %}
-  </section> -->
+  {% endif %}
+{% endfor %}
 </article>

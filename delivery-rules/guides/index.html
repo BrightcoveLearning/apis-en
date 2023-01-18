@@ -4,19 +4,32 @@ parent: Delivery Rules API
 description: This section provides topics to help you get started with the Delivery Rules API.
 ---
 
+<!-- Template for sub-section that has just pages -->
+{% for item in site.data.navigation %}
+  {% if item.name == page.parent %}
+    {% for section in item.docs %}
+      {% if section.name == page.title %}
+      <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+      <article class="bcls-article">
+        <summary>{{ page.description }}</summary>
 
-<h1>{{ page.title }}</h1>
-<article class="bcls-article">
-
-  <summary>{{ page.description }}</summary>
-
-  <section class="bcls-card-small">
-      <div class="card-content">
-        <h2>Guides</h2>
-        <ul>
-         <li><a href="https://player.support.brightcove.com/playback/using-delivery-rules-with-bcp.html">Using Delivery Rules with Brightcove Player</a></li>
-         <li><a href=" https://sdks.support.brightcove.com/features/using-delivery-rules-with-sdks.html">Using Delivery Rules with the Native SDKs</a></li>
-        </ul>
-      </div>
-    </section>
+        <div class="col-12 col-lg-4 py-3">
+          <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ item.url }}'">
+            <div class="card-body">
+              <section class="flex-container">
+                <div>
+                  <ul class="list-group list-group-flush">
+                    {% for entry in section.docs %}
+                    <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
 </article>

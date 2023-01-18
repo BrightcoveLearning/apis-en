@@ -4,13 +4,32 @@ parent: Data Collection API
 description: This section provides references for the Data Collection API
 ---
 
-<article class="landing-page-wrapper">
-  <h1>{{ page.title }}</h1>
-  <section class="landing-page-header" id="landing_page_header">
-    <p>{{ page.description }}</p>
-  </section>
-  <section>
-    <h2>Topics</h2>
-    <p><a href="/data-collection/references/reference.html">Data Collection API Reference</a></p>
-  </section>
+<!-- Template for sub-section that has just pages -->
+{% for item in site.data.navigation %}
+  {% if item.name == page.parent %}
+    {% for section in item.docs %}
+      {% if section.name == page.title %}
+      <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+      <article class="bcls-article">
+        <summary>{{ page.description }}</summary>
+
+        <div class="col-12 col-lg-4 py-3">
+          <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ item.url }}'">
+            <div class="card-body">
+              <section class="flex-container">
+                <div>
+                  <ul class="list-group list-group-flush">
+                    {% for entry in section.docs %}
+                    <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
 </article>

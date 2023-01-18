@@ -6,35 +6,29 @@ to send analytics data to Brightcove. Note that you do not need to use this API
 unless you are using a non-Brightcove player.'
 icon: fa-regular fa-filter
 ---
-<h1><i class="{{ page.icon }}"></i> {{ page.title }}</h1>
-<article class="bcls-article">
 
-  <summary>{{ page.description }}</summary>
-  <br/>
-  
-  <section>
-    <h2 id="Topics_in_this_section">Topics in this section</h2>
+<!-- Template for section that has just pages -->
+{% for item in site.data.navigation %}
+  {% if item.name == page.title %}
+  <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+  <article class="bcls-article">
+    <summary>{{ page.description }}</summary>
+
     <div class="col-12 col-lg-4 py-3">
-      <div class="card shadow-sm" style="background: white">
+      <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ item.url }}'">
         <div class="card-body">
-          <ul class="list-group list-group-flush">
-            {% for item in site.data.navigation %}
-            {% if item.name == page.title %}
-            {% for entry in item.docs %}
-            <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a> {% if entry.docs
-              %}
-              <ul>
-                {% for subentry in entry.docs %}
-                <li><a href="{{ subentry.url }}">{{ subentry.name }}</a></li>
+          <section class="flex-container">
+            <div>
+              <ul class="list-group list-group-flush">
+                {% for entry in item.docs %}
+                <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a></li>
                 {% endfor %}
               </ul>
-              {% endif %} </li>
-            {% endfor %}
-            {% endif %}
-            {% endfor %}
-          </ul>
+            </div>
+          </section>
         </div>
       </div>
     </div>
-  </section>
+  {% endif %}
+{% endfor %}
 </article>

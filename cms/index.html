@@ -5,71 +5,35 @@ description: '<br><br><p>The CMS API provides uncached read access to all your m
 icon: fa-regular fa-folder-grid
 ---
 
-<h1><i class="{{ page.icon }}"></i> {{ page.title }}</h1>
-<article class="bcls-article">
-
-  <div style="width: 100%;">
-    <div style="width: 35%;vertical-align: top;display: inline-block;">
-      <div data-experience="5be4439bb5cd1c00106dc3f5"
-        data-video-ids="5996554435001">&nbsp;</div>
-      <script
-        src="https://players.brightcove.net/20318290001/experience_5be4439bb5cd1c00106dc3f5/live.js"></script>
-    </div>
-    <div style="display: inline-block; width: 55%;">
-      <summary style="display: block;">{{ page.description }}</summary>
-    </div>
-  </div>
-</br>
-<div class="row">
-  {% for item in site.data.navigation %}
+<!-- Template for section that just has sub-sections -->
+{% for item in site.data.navigation %}
   {% if item.name == page.title %}
-  {% for entry in item.docs %}
-  <div class="col-12 col-lg-4 py-3">
-    <div class="card shadow-sm" style="background: white">
-      <div class="card-body">
-        <div>
-          {% if entry.docs %}
-          <h5 class="card-title text-center m-2">{{ entry.name }}</h5>
-          <ul class="list-group list-group-flush">
-            {% for subdoc in entry.docs %}
-            <li class="list-group-item"><a href="{{ subdoc.url }}" style="text-decoration: none;">{{ subdoc.name }}</a></li>
-            {% endfor %}
-          </ul>
-          {% else %}
-          <h5 class="card-title">{{ entry.name }}</h5>
-          {% endif %}
-      </div>
-      <!-- <a class="card-link-mask" href="{{entry.url}}"></a> -->
-    </div>
-  </div>
-  </div>
-  {% endfor %}
-  {% endif %}
-  {% endfor %}
-</div>
-      <!-- Original code -->
-
-      <!-- <section class="bcls-section" id="page_wrapper">
-        {% for item in site.data.navigation %}
-        {% if item.name == page.title %}
-        <section class="flex-container">
-          {% for entry in item.docs %}
-          <div>
-            {% if entry.docs %}
-            <h3><a href="{{ entry.url }}">{{ entry.name }}</a></h3>
-            <ul class="landing-page-item">
-              {% for subdoc in entry.docs %}
-              <li><a href="{{ subdoc.url }}">{{ subdoc.name }}</a></li>
-              {% endfor %}
-            </ul>
-            {% else %}
-            <div><a href="{{ entry.url }}">{{ entry.name }}</a></div>
-            {% endif %}
+    <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+    <article class="bcls-article">
+    <summary>{{ page.description }}</summary>
+    <div class="row">
+      {% for entry in item.docs %}
+        <div class="col-12 col-lg-4 py-3">
+          <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ entry.url }}'">
+            <div class="card-body">
+              <div>
+                {% if entry.docs %}
+                <h5 class="card-title text-center m-2">{{ entry.name }}</h5>
+                <ul class="list-group list-group-flush">
+                  {% for subdoc in entry.docs %}
+                  <li class="list-group-item"><a href="{{ subdoc.url }}" style="text-decoration: none;">{{ subdoc.name }}</a></li>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                <h5 class="card-title">{{ entry.name }}</h5>
+                {% endif %}
+            </div>
+            <!-- <a class="card-link-mask" href="{{entry.url}}"></a> -->
           </div>
-          {% endfor %}
-        </section>
-        {% endif %}
-        {% endfor %}
-      </section> -->
-
-    </article>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </article>
+  {% endif %}
+{% endfor %}
