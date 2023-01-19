@@ -3,21 +3,32 @@ title: Authentication
 parent: Playback Restrictions
 description: This section provides authentication references for Playback Restrictions
 ---
-<h1>{{ page.title }}</h1>
-<article class="bcls-article">
-  <summary>{{ page.description }}</summary>
+<!-- Template for sub-section that has just pages -->
+{% for item in site.data.navigation %}
+  {% if item.name == page.parent %}
+    {% for section in item.docs %}
+      {% if section.name == page.title %}
+      <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+      <article class="bcls-article">
+        <summary>{{ page.description }}</summary>
 
-  <section class="bcls-card-small">
-    <div class="card-content">
-      <h2>Authentication</h2>
-      <ul>
-        <li><a href="/playback-restrictions/references/key-api/reference.html">Key API Reference</a></li>
-        <li><a href="/playback-restrictions/references/blacklist-api/reference.html">Blacklist API Reference</a></li>
-        <li><a href="/playback-restrictions/references/audit-api/reference.html">Audit API Reference</a></li>
-        
-      </ul>
-    </div>
-  </section>
-  
+        <div class="col-12 col-lg-4 py-3">
+          <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ item.url }}'">
+            <div class="card-body">
+              <section class="flex-container">
+                <div>
+                  <ul class="list-group list-group-flush">
+                    {% for entry in section.docs %}
+                    <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
 </article>
-

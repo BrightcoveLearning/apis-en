@@ -4,78 +4,35 @@ parent: Home
 description: "The cross-device resume (XDR) feature lets you start watching video on one device, like mobile, and switch to another device, like your home TV. When you switch, you willll continue watching where you left off. This provides a seamless viewing experience for a piece of content."
 ---
 
-<h1><i class="fa-regular fa-laptop-mobile"></i> {{ page.title }}</h1>
-<article class="bcls-article">
-
-  <summary style="display: block;">{{ page.description }}</summary>
-    
-  <!-- <section class="card-wrapper">
-    {% for item in site.data.navigation %}
-      {% if item.name == page.title %}
-        {% for subsection in item.docs %}
-            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
-              <div class="card-content">
-                <h2>{{ subsection.name }}</h2>
-                <ul>
-                  {% for doc in subsection.docs %}
-                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+<!-- Template for section that just has sub-sections -->
+{% for item in site.data.navigation %}
+  {% if item.name == page.title %}
+    <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+    <article class="bcls-article">
+    <summary>{{ page.description }}</summary>
+    <div class="row">
+      {% for entry in item.docs %}
+        <div class="col-12 col-lg-4 py-3">
+          <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ entry.url }}'">
+            <div class="card-body">
+              <div>
+                {% if entry.docs %}
+                <h5 class="card-title text-center m-2">{{ entry.name }}</h5>
+                <ul class="list-group list-group-flush">
+                  {% for subdoc in entry.docs %}
+                  <li class="list-group-item"><a href="{{ subdoc.url }}" style="text-decoration: none;">{{ subdoc.name }}</a></li>
                   {% endfor %}
                 </ul>
-              </div>
-            </section>
-        {% endfor %}
-      {% endif %}
-    {% endfor %} -->
-
-        <!-- remove sections below when this goes live -->
-        <!-- <section class="bcls-card-small">
-          <div class="card-content"> -->
-            <div class="row"> 
-            <div class="col-12 col-lg-4 py-3">
-              <div class="card shadow-sm" style="background: white">
-                <div class="card-body">
-            <h5 class="card-title text-center m-2">Getting Started</h5>
-            <ul class="list-group list-group-flush">
-             <li class="list-group-item"><a href="/xdr/getting-started/xdr-overview.html" style="text-decoration: none;">Overview: Cross Device Resume</a></li>
-             <li class="list-group-item"><a href="/xdr/getting-started/get-playback-position.html" style="text-decoration: none;">Getting Playback Position from XDR API</a></li>
-            </ul>
+                {% else %}
+                <h5 class="card-title">{{ entry.name }}</h5>
+                {% endif %}
+            </div>
+            <!-- <a class="card-link-mask" href="{{entry.url}}"></a> -->
           </div>
         </div>
       </div>
-          <!-- </div>
-        </section>
-        <section class="bcls-card-small">
-          <div class="card-content"> -->
-            <div class="col-12 col-lg-4 py-3">
-              <div class="card shadow-sm" style="background: white">
-                <div class="card-body">
-            <h5 class="card-title text-center m-2">Guides</h5>
-            <ul class="list-group list-group-flush">
-             <li class="list-group-item"><a href="https://player.support.brightcove.com/playback/xdr-with-bcplayer.html" style="text-decoration: none;">Cross-Device Resume with Brightcove Player</a></li>
-             <li class="list-group-item"><a href="https://sdks.support.brightcove.com/features/cross-device-resume-sdks.html" style="text-decoration: none;">Cross-Device Resume with the Native SDKs</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-          <!-- </div>
-        </section>
-        <section class="bcls-card-small">
-          <div class="card-content"> -->
-            <div class="col-12 col-lg-4 py-3">
-              <div class="card shadow-sm" style="background: white">
-                <div class="card-body">
-            <h5 class="card-title text-center m-2">References</h5>
-            <ul class="list-group list-group-flush">
-             <li class="list-group-item"><a href="/xdr/references/reference.html" style="text-decoration: none;">XDR API Reference</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
-          <!-- </div>
-        </section> -->
-        
-        <!-- end removal -->
-    
-  <!-- </section> -->
-</article>
+  </article>
+  {% endif %}
+{% endfor %}

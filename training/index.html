@@ -4,37 +4,28 @@ parent: Home
 description: Get training on Brightcove products
 icon: fa-regular fa-chalkboard-user
 ---
-<h1><i class="{{ page.icon }}"></i> {{ page.title }}</h1>
-<article class="bcls-article">
+<!-- Template for section that has just pages -->
+{% for item in site.data.navigation %}
+  {% if item.name == page.title %}
+  <h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
+  <article class="bcls-article">
+    <summary>{{ page.description }}</summary>
 
-  <summary>{{ page.description }}</summary>
-  <!-- <section class="card-wrapper">
-    <section class="bcls-card">
-      <div class="card-content"> -->
-        <br/>
-        <h2 id="Topics_in_this_section">Topics in this section</h2>
-        <div class="">
-          <div class="card shadow-sm" style="background: white">
-            <div class="card-body">
-        <ul class="list-group list-group-flush">
-          {% for item in site.data.navigation %}
-          {% if item.name == page.title %}
-          {% for entry in item.docs %}
-          <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a> {% if entry.docs %}
-            <ul class="list-group list-group-flush">
-              {% for subentry in entry.docs %}
-              <li class="list-group-item"><a href="{{ subentry.url }}" style="text-decoration: none;">{{ subentry.name }}</a></li>
-              {% endfor %}
-            </ul>
-            {% endif %} </li>
-          {% endfor %}
-          {% endif %}
-          {% endfor %}
-        </ul>
+    <div class="col-12 col-lg-4 py-3">
+      <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ item.url }}'">
+        <div class="card-body">
+          <section class="flex-container">
+            <div>
+              <ul class="list-group list-group-flush">
+                {% for entry in item.docs %}
+                <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
-  </div>
-      <!-- </div>
-    </section>
-  </section> -->
+  {% endif %}
+{% endfor %}
 </article>

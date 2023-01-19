@@ -6,58 +6,39 @@ description: '<p>Player Management refers to the creation, editing and managemen
 <p>Note that most of the operations that can be performed using the API can also be performed in <a href="https://studio.support.brightcove.com/players/getting-started-players-module.html">Studio</a>.</p>'
 icon: fa-regular fa-play
 ---
-<h1><i class="{{ page.icon }}"></i> {{ page.title }}</h1>
+<!-- Template for section that just has sub-sections -->
+{% for item in site.data.navigation %}
+{% if item.name == page.title %}
+<h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
 <article class="bcls-article">
-
   <div style="width: 100%;">
       <div style="width: 35%;vertical-align: top;display: inline-block;"><div data-experience="5be4439bb5cd1c00106dc3f5" data-video-ids="5996554436001">&nbsp;</div>
       <script src="https://players.brightcove.net/20318290001/experience_5be4439bb5cd1c00106dc3f5/live.js"></script></div>
       <div style="display: inline-block; width: 55%; margin-top: 50px;"><summary style="display: block;">{{ page.description }}</summary></div>
   </div>
-  <div class="row">
-    {% for item in site.data.navigation %}
-    {% if item.name == page.title %}
-    {% for entry in item.docs %}
-    <div class="col-12 col-lg-4 py-3">
-      <div class="card shadow-sm" style="background: white">
-        <div class="card-body">
-          <div>
-            {% if entry.docs %}
-            <h5 class="card-title text-center m-2">{{ entry.name }}</h5>
-            <ul class="list-group list-group-flush">
-              {% for subdoc in entry.docs %}
-              <li class="list-group-item"><a href="{{ subdoc.url }}"
-                  style="text-decoration: none;">{{ subdoc.name }}</a></li>
-              {% endfor %}
-            </ul>
-            {% else %}
-            <h5 class="card-title">{{ entry.name }}</h5>
-            {% endif %}
-          </div>
-          <!-- <a class="card-link-mask" href="{{entry.url}}"></a> -->
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endfor %}
-  </div>
-  <!-- <section class="card-wrapper">
-    {% for item in site.data.navigation %}
-      {% if item.name == page.title %}
-        {% for subsection in item.docs %}
-            <section class="bcls-card-small" onclick="window.location.href='{{subsection.url}}'">
-              <div class="card-content">
-                <h2>{{ subsection.name }}</h2>
-                <ul>
-                  {% for doc in subsection.docs %}
-                        <li><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+    <div class="row">
+      {% for entry in item.docs %}
+        <div class="col-12 col-lg-4 py-3">
+          <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ entry.url }}'">
+            <div class="card-body">
+              <div>
+                {% if entry.docs %}
+                <h5 class="card-title text-center m-2">{{ entry.name }}</h5>
+                <ul class="list-group list-group-flush">
+                  {% for subdoc in entry.docs %}
+                  <li class="list-group-item"><a href="{{ subdoc.url }}" style="text-decoration: none;">{{ subdoc.name }}</a></li>
                   {% endfor %}
                 </ul>
-              </div>
-            </section>
-        {% endfor %}
-      {% endif %}
-    {% endfor %}
-  </section> -->
-</article>
+                {% else %}
+                <h5 class="card-title">{{ entry.name }}</h5>
+                {% endif %}
+            </div>
+            <!-- <a class="card-link-mask" href="{{entry.url}}"></a> -->
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </article>
+  {% endif %}
+{% endfor %}
