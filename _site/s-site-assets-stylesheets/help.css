@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"> 
     <head>
-        <title>Dimension: viewer</title>
+        <title></title>
         
         <!-- Meta -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="In this topic, you will learn about the Analytics API viewer dimension. The viewer dimension provides analytics by viewer.">
+        <meta name="description" content="">
         
         <!-- Google Font -->
         <!-- <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet"> -->
@@ -694,7 +694,7 @@
                   
                   
                   
-                  <li class="nav-item section-doc"><a class="nav-link" href="/analytics/dimension-guides/dimension-viewer.html" aria-current="page">Dimension: <code translate="No">viewer</code></a></li>
+                  <li class="nav-item"><a class="nav-link" href="/analytics/dimension-guides/dimension-viewer.html">Dimension: <code translate="No">viewer</code></a></li>
                   
                   
                   
@@ -3547,15 +3547,11 @@
             <li class="breadcrumb-item"><a class="theme-link" href="/">Home</a></li>
             
             
-            <li class="breadcrumb-item"><a class="theme-link" href="/analytics/">Analytics</a></li>
+            <li class="breadcrumb-item"><a class="theme-link" href="/s-site-assets-stylesheets/">S site assets stylesheets</a></li>
             
             
             
-            <li class="breadcrumb-item"><a class="theme-link" href="/analytics/dimension-guides/">Dimension guides</a></li>
-            
-            
-            
-            <li class="breadcrumb-item active" aria-current="page">Dimension: <code translate="No">viewer</code></li>
+            <li class="breadcrumb-item active" aria-current="page"></li>
             
             
           </ol>
@@ -3576,604 +3572,449 @@
       <br>
       
       
-<h1 data-dimension="viewer">Dimension: <code translate="No">viewer</code></h1>
-<article class="bcls-article">
-  <summary>In this topic, you will learn about the <span translate="No">Analytics API</span> <code translate="No">viewer</code> dimension. The <code translate="No">viewer</code> dimension provides analytics by viewer.</summary>
-  <aside class="bcls-aside bcls-aside--information">Viewer level analytics are not available to all accounts. If you are interested in having this feature turned on for your account, contact your Customer Success Manager.</aside>
+--- 
+layout: null--- 
 
-  <section class="bcls-section">
-    <h2 id="introducion">Introduction</h2>
-    <p>The <code translate="No">viewer</code> dimension allows you to look at analytics by viewer. If viewer ids are not sent to the analytics data collector from the player, we will try to construct a viewer id from the viewer's IP address and user-agent - this method is prone to error, however. Viewer analytics are most useful if you have logged in viewers and therefore can identify them reliably.</p>
-  </section>
-    
-  <section class="bcls-section">
-  <h2 id="urlParams">URL parameters</h2>
-  
-  <p>Analytics API reports support the following URL parameters.</p>
-  
-  <table class="bcls-table">
-    <caption class="bcls-caption--table">URL Parameters</caption>
-    <thead class="bcls-table__head">
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        <th>Required</th>
-        <th>Values</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody class="bcls-table__body" id="paramTableBody">
-      <tr>
-        <td><code translate="No">account</code></td>
-        <td>The accounts you want to report on</td>
-        <td>yes</td>
-        <td>one or more account ids as a comma-delimited list</td>
-        <td>none</td>
-      </tr>
-      <tr>
-        <td><code translate="No">dimensions</code></td>
-        <td>The dimension(s) to report on</td>
-        <td>yes</td>
-        <td>one or more dimensions as a comma-delimited list (some combinations are not valid - use <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html#metrics">the interactive tool here</a> to determine if a combination is valie)</td>
-        <td>none</td>
-      </tr>
-      <tr>
-        <td><code translate="No">where</code></td>
-        <td>Used to specify filters for reports</td>
-        <td>no</td>
-        <td>{dimension}=={value} - one or more as a semi-colon-delimited list. The value will be one or more values for the primary metric of that dimension. For example: <code translate="No">video==video_id</code>, <code translate="No">country=country-code</code>, or <code translate="No">viewer=viewer_id</code> (in the last case, the form of the viewer_id will vary depending on whether you are capturing and sending some kind of viewer_id yourself or depending on the value generated by the analytics system).</td>
-        <td>none</td>
-      </tr>
-      <tr>
-        <td><code translate="No">limit</code></td>
-        <td>Number of items to return</td>
-        <td>no</td>
-        <td>positive integer</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td><code translate="No">offset</code></td>
-        <td>Number of items to skip</td>
-        <td>no</td>
-        <td>positive integer</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <td><code translate="No">sort</code></td>
-        <td>Field to sort items on</td>
-        <td>no</td>
-        <td>any field that is being returned by the request</td>
-        <td>video_view</td>
-      </tr>
-      <tr>
-        <td><code translate="No">fields</code></td>
-        <td>Fields to return</td>
-        <td>no</td>
-        <td>varies according to the dimension you are reporting on</td>
-        <td>video,video_view</td>
-      </tr>
-      <tr>
-        <td><code translate="No">format</code></td>
-        <td>Format to return results in</td>
-        <td>no</td>
-        <td>json (default) | csv | xlxs</td>
-        <td>json</td>
-      </tr>
-      <tr>
-        <td><code translate="No">reconciled</code></td>
-        <td>If included, will limit results to either historical or realtime data. Analytics data is derived from multiple sources: some is sent by the player, but other data is collected from CDNs and the Video Cloud system. In order to deliver analytics as quickly as possible, we start delivering "real-time" data as soon as it is available, and then adjust the analytics later when data from all sources has been collected and processed. The fully processed data is called reconciled</td>
-        <td>no</td>
-        <td>true | false</td>
-        <td>true</td>
-      </tr>
-      <tr>
-        <td><code translate="No">from</code></td>
-        <td>The beginning of the date range for the request</td>
-        <td>no</td>
-        <td>
-          One of the following:
-          <ul>
-            <li>An ISO 8601 date (YYYY-MM-DD)</li>
-            <li>Epoch time in milliseconds (example: 1659641316719 [= Thursday, August 4, 2022 7:28:36.719 PM GMT]). See the <a href="https://www.epochconverter.com/">Epoch time converter.</a></li>
-            <li>A string: <code translate="no">from=alltime</code></li>
-            <li>+/- relative dates in days (d), weeks (w), or months (m) - example: <code translate="no">from=-6m&to=%2B2w</code> (the period from 6 months ago to 2 weeks after that -- note that the + sign needs to be URI encoded as <code translate="no">%2B</code>)</li>
-          </ul>
-          <p>Only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</p>
-        </td>
-        <td>-30d</td>
-      </tr>
-      <tr>
-        <td><code translate="No">to</code></td>
-        <td>The end of the date range for the request</td>
-        <td>no</td>
-        <td>
-          One of the following:
-          <ul>
-            <li>An ISO 8601 date (YYYY-MM-DD)</li>
-            <li>Epoch time in milliseconds (example: 1659641316719 [= Thursday, August 4, 2022 7:28:36.719 PM GMT]). See the <a href="https://www.epochconverter.com/">Epoch time converter.</a></li>
-            <li>A string: <code translate="no">to=now</code></li>
-            <li>+/- relative dates in days (d), weeks (w), or months (m) - example: <code translate="no">from=-6m&to=%2B2w</code> (the period from 6 months ago to 2 weeks after that -- note that the + sign needs to be URI encoded as <code translate="no">%2B</code>)</li>
-          </ul>
-          <p>Only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</p>
-        </td>
-        <td>now</td>
-      </tr>
-    </tbody>
-  </table>
-  </section>
+@import url(https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400;1,500;1,700;1,800&display=swap);
 
-    <section class="bcls-section">
-    <h2 id="fieldValues">Fields available</h2>
+body, .body {
+	font-family: 'articulat-cf', sans-serif;
+	font-size: 14px;
+	counter-reset: figure 0 table 0 step 0;
+	background-color: white;
+	color: rgb(1, 5, 14);
+	margin: 16px 24px;
+	position: relative;
+}
 
-    <p>The following fields can be returned for the dimension.</p>
+h1 {
+	height: auto;
+	color: rgb(1, 5, 14);
+	font-size: 2.5rem;
+	font-weight: 800;
+	letter-spacing: -0.5px;
+	margin-top: 16px;
+	margin-bottom: 0;
+}
 
-    <ul id="fields">
-      <li><code translate="No">application</code> - the virtual event experience id. If not passed, will be null</li>
-      <li><code translate="No">engagement_score</code> - <a href="https://studio.support.brightcove.com/analytics/calculating-video-engagement-score.html">engagement score</a></li>
-      <li><code translate="No">video_engagement_1</code> - video engagement at 1% of the duration</li>
-      <li><code translate="No">video_engagement_25</code> - video engagement at 25% of the duration</li>
-      <li><code translate="No">video_engagement_50</code> - video engagement at 50% of the duration</li>
-      <li><code translate="No">video_engagement_75</code> - video engagement at 75% of the duration</li>
-      <li><code translate="No">video_engagement_100</code> - video engagement at 100% of the duration</li>
-      <li><code translate="No">time</code> - the epoch time of the last event received</li>
-      <li><code translate="No">video_view</code> - the number of times viewer playback began</li>
-      <li><code translate="No">viewer<sup><strong><a href="#note1">[1]</a></strong></sup></code> - Event viewer (SSO ID or device id or unique string based on user-agent and IP)</li>
-    </ul>
+h2 {
+	font-size: 1.7rem;
+}
 
-    <aside class="bcls-aside bcls-aside--information language-editable">
-      Note:
-      <ol>
-        <li id="note1" style="list-style: none;"><sup><strong>[1]</strong></sup> You must provide a <a href="#Setting_the_viewer_id">viewer id to the analytics system</a></li>
-      </ol>
-    </aside>
+h3 {
+	font-size: 1.2rem;
+}
 
-    <p>Additional fields are available if the query also includes the relevant dimension(s):</p>
-    <ul id="additional_fields">
-      <li><code translate="No">city</code> - the city the viewer was in (requires the <code translate="No">city</code> dimension)</li>
-      <li><code translate="No">country</code> - the country (code) the viewer was in (requires the <code translate="No">country</code> dimension)</li>
-      <li><code translate="No">country_name</code> - the country name the viewer was in (requires the <code translate="No">country</code> dimension)</li>
-      <li><code translate="No">region</code> - the region (code) the viewer was in (requires the <code translate="No">region</code> dimension)</li>
-      <li><code translate="No">region_name</code> - the region name the viewer was in (requires the <code translate="No">region</code> dimension)</li>
-      <li><code translate="No">rebuffering_seconds</code> - the total time that the players spent rebuffering (requires that the <code translate="No">country</code> or <code translate="No">region</code> be included)</li>
-      <li><code translate="No">device_type</code> - the device type the viewer was using (requires the <code translate="No">device_type</code> dimension)</li>
-    </ul>
-    </section>
-    <section class="bcls-section">
-      <h2 id="Setting_the_viewer_id">Sending the viewer id</h2>
-      <p>To send a viewer id to to the analytics system, you must create the logic to construct a unique id that will identify the viewer at runtime and then send it to the analytics data collector from the player. The logic to construct the id will depend on how viewers authenticate to see your content.The Brightcove web player and both the iOS and Android SDK players can send the user id to analytics. the following sections show you how to do this for the web and SDK players.</p>
-      <aside class="bcls-aside bcls-aside--information language-editable">Note that if no viewer id is shared by the player, the analytics will try to generate an id based on the User Agent and IP address. The IP address is not stored.</aside>
-    </section>
+summary {
+	display: block;
+}
 
-    <section class="bcls-section">
-  <h2 id="Send_viewer_id_web_player">Send viewer id - Brightcove player</h2>
+.breadcrumb {
+	padding: 0 1rem;
+	margin-left: 2px;
+}
 
-  <p>First, you need to set the user identifier to store their viewing activity.</p>
-  <h3>Brightcove Player</h3>
-  <p>
-    If you are using Brightcove Player, follow these steps:
-  </p>
+.breadcrumb-item, .breadcrumb-item.active {
+	font-size: 1em;
+	/* line-height: 16px; */
+	color: rgb(8, 8, 140);
+}
 
-  <ol class="bcls-tasklist-restart">
-    <li>
-      <p>
-        Even though viewer data is sent to Brightcove analytics automatically, you need to set the user identifier. To do this, use the <code translate="No">setUser()</code> method. For example:
-      </p>
-      <pre class="line-numbers"><code class="language-javascript" translate="No">myPlayer.bcAnalytics.client.setUser('<span class="bcls-input">viewer id</span>');</code></pre>
-      <p>On your websites that host Brightcove Player, you can use an authentication gateway or some identity management solution to keep track of viewers. Use this viewer id as the viewer identifier to pass to Brightcove analytics.</p>
-      <aside class="bcls-aside bcls-aside--warning">The <span class="bcls-input">viewer id</span> value must be a unique string. An invalid value, such as a number, will be ignored. </aside>
-    </li>
-    <li>
-      <p>
-        It is important to set the viewer id before any source is set on the player. It should be called immediately after initializing the player.
-      </p>
-      <pre class="line-numbers"><code class="language-javascript" translate="No">&lt;video-js
-  id=&quot;myPlayerID&quot;
-  data-account=&quot;1752604059001&quot;
-  data-player=&quot;hyQW6GByl&quot;
-  data-embed=&quot;default&quot;
-  controls=&quot;&quot;
-  data-video-id=&quot;6156696074001&quot;
-  data-playlist-id=&quot;&quot;
-  data-application-id=&quot;&quot;
-  width=&quot;640&quot; height=&quot;360&quot;&gt;&lt;/video-js&gt;
-&lt;script src=&quot;https://players.brightcove.net/1752604059001/hyQW6GByl_default/index.min.js&quot;&gt;&lt;/script&gt;
+.breadcrumb-item * {
+	color: rgb(8, 8, 140);
+}
 
-&lt;script&gt;
-  videojs.getPlayer('myPlayerID').ready(function() {
-    var myPlayer = this;
+.bcls-article {
+	font-size: 14px;
+}
 
-    // Set the viewer id for Brightcove analytics
-    myPlayer.bcAnalytics.client.setUser('<span class="bcls-input">viewer id</span>');
-  });
-&lt;/script&gt;</code></pre>
-    </li>
-    <li>When the <code translate="No">setUser()</code> method is used, the value is not hashed and will be sent in the clear with all subsequent beacons.
-      <p>
-        Note that the <code translate="No">player_init</code> event will not include the <code translate="No">user</code> field in this case, but all <code translate="No">video_*</code> events should include it.
-      </p>
-    </li>
-  </ol>
-  <h3>Custom web player</h3>
-  <p>
-    If you are building a custom implementation that does not use Brightcove Player, add the <code translate="No">user</code> parameter to your Data Collection API requests. For details, see the <a href="https://apis.support.brightcove.com/data-collection/overview-data-collection-api-v2.html#all-event-parameters">Overview: Data Collection API v2</a> document.
-  </p>
-  <p>On your websites that host your player, you can use an authentication gateway or some identity management solution to keep track viewers. Use this viewer id as the viewer identifier to pass to Brightcove analytics.</p>
-  
-</section>
+.bcls-section {
+	/*  padding-top: .5em; */
+}
 
-    <section class="bcls-section">
-      <h2 id="send-viewer-id-sdk-players"></h2>
-      <p>For the Brightcove Native SDK players, you also need to send a viewer id unless you are depending on the one generated by Brightcove.</p>
+.external-link-icon {
+	height: .9em;
+	margin-left: .2rem;
+	vertical-align: text-top;
+}
 
-      <h3>Android</h3>
-      <p>For the Android player, add this code:</p>
-<pre><code class="language-java" translate="No">HashMap&lt;String, String&gt; baseParams = new HashMap&lt;&gt;();
-  baseParams.put(Analytics.Fields.USER, &quot;<span class="bcls-input">viewer id</span>&quot;);
-  baseParams.put(Analytics.Fields.APPLICATION_ID, &quot;<span class="bcls-input">application id</span>&quot;);
-  
-  HashMap&lt;String, Object&gt; eventParams = new HashMap&lt;&gt;();
-  eventParams.put(Analytics.Fields.BASE_PARAMS, baseParams);
-  eventEmitter.emit(EventType.ADD_ANALYTICS_BASE_PARAMS, eventParams);
-  </code></pre>
+#breadcrumbs {
+	margin-left: -15px;
+	margin-right: 0;
+	margin-bottom: 0;
+}
 
-        <h3>iOS</h3>
-        <p>For iOS or tvOS, add the following code:</p>
-<pre><code class="language-objectivec" translate="No">@try
-  {
-    [BCOVGlobalConfiguration.sharedConfig setValue:@{
-      @&quot;privateUser&quot;: self.<span class="bcls-input">viewer id</span>,
-      @&quot;privateApplication&quot;: @&quot;<span class="bcls-input">application id</span>&quot;
-    }
-    forKey:@&quot;privateSessionAnalytics&quot;];
-  }
-  @catch (NSException *e)
-  {
-    NSLog(@&quot;%@&quot;, e.description);
-  }
-</code></pre>
-            </section>
+#breadcrumbs>ol {
+	background-color: rgb(255, 255, 255);
+	color: rgb(8, 8, 140);
+	z-index: 9999;
+}
 
-    <section class="bcls-section">
-    <h2 id="filterValues">Filter values</h2>
+article>summary {
+	margin-bottom: 16px;
+	font-size: 14px;
+	cursor: auto;
+}
 
-    <p>Used as a filter, a dimension allows you to narrow the results.</p>
+p, div, ul, ol {
+	margin-bottom: 1em !important;
+	font-size: 14px;
+}
 
-    <p id="filters">Filter values: viewer ids</p>
-    </section>
+a, section a {
+	color: rgb(8, 8, 140) !important;
+	text-decoration: none;
+	background-color: transparent
+}
 
-    <section class="bcls-section">
-    <h2 id="combinations">Combining dimensions</h2>
-      <p>The <code translate="No">viewer</code> dimension can be combined with several others, which add addition fields that can be retrieved. The details are in the table below. (<strong>Bold</strong> items are included in the response by default if the dimension is included.)</p>
-      <table class="bcls-table">
-        <caption class="bcls-caption--table">Supported Dimension Combinations</caption>
-        <thead class="bcls-table__head">
-            <tr>
-                <th>Dimension</th>
-                <th>Additional Fields</th>
-            </tr>
-        </thead>
-        <tbody class="bcls-table__body">
-            <tr>
-                <td><code translate="No">video</code></td>
-                <td>
-                  <strong><code translate="No">video</code></strong><br>
-                  <code translate="No">video_engagement_1</code><br>
-                  <code translate="No">video_engagement_25</code><br>
-                  <code translate="No">video_engagement_50</code><br>
-                  <code translate="No">video_engagement_75</code><br>
-                  <code translate="No">video_engagement_100</code><br>
-                  <code translate="No">video_percent_viewed</code><br>
-                  <code translate="No">video_seconds_viewed</code><br>
-                  <code translate="No">video_view</code><br>
-                  <code translate="No">video.tags</code><br>
-                  <code translate="No">video.reference_id</code><br>
-                  <code translate="No">video.name</code><br>
-                  <code translate="No">video.description</code><br>
-                  <code translate="No">video.long_description</code><br>
-                  <code translate="No">video.duration</code>
-                </td>
-            </tr>
-            <tr>
-                <td><code translate="No">country</code></td>
-                <td>
-                  <strong><code translate="No">country</code></strong><br>
-                  <code translate="No">country_name</code>
-                </td>
-            </tr>
-            <tr>
-                <td><code translate="No">region</code></td>
-                <td>
-                  <strong><code translate="No">region</code></strong><br>
-                  <code translate="No">region_name</code>
-                </td>
-            </tr>
-            <tr>
-                <td><code translate="No">city</code></td>
-                <td>
-                  <strong><code translate="No">city</code></strong><br>
-                  <code translate="No">dma</code>
-                </td>
-            </tr>
-            <tr>
-                <td><code translate="No">device_type</code></td>
-                <td>
-                  <strong><code translate="No">device_type</code></strong>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <!-- <p>To see what dimensions this on can be combined with, and what fields are available for the combination, see <a href="/analytics/getting-started/analytics-api-overview-dimensions-fields-and-parameters.html">Dimension and Fields</a>.</p> -->
-    </section>
+a, .a, a::visited, a::hover {
+	color: rgb(8, 8, 140)!important;
+}
 
-    <section class="bcls-section">
-    <h2 id="examples">Request Examples</h2>
+.bcls-section a, .bcls-section a::visited, .bcls-section a::hover {
+	color: rgb(8, 8, 140)!important;
+}
 
-    <h3>Dimension request sample</h3>
+a::hover {
+	text-decoration: underline;
+}
 
-    <pre class="line-numbers language-http code-toolbar">
-    <code class="language-http" id="dimensionRequest">https://analytics.api.brightcove.com/v1/data?accounts=3365624256001&dimensions=viewer&limit=10&fields=viewer,time,video_view,engagement_score</code></pre>
-    <!--  -->
-    <details>
-      <summary>Sample Response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "item_count": 8,
-  "items": [
-    {
-      "engagement_score": null,
-      "viewer": "6798840584846290049",
-      "time": 1623870475157,
-      "video_view": 0
-    },
-    {
-      "engagement_score": 100,
-      "viewer": "-1094565064376617663",
-      "time": 1623870472882,
-      "video_view": 1
-    },
-    {
-      "engagement_score": 100,
-      "viewer": "8997125557862445199",
-      "time": 1623870433989,
-      "video_view": 1
-    },
-    {
-      "engagement_score": 39.13,
-      "viewer": "-8839675754655082792",
-      "time": 1623872904633,
-      "video_view": 1
-    },
-    {
-      "engagement_score": 143.48,
-      "viewer": "-6771654281667224776",
-      "time": 1623869869930,
-      "video_view": 2
-    }
-  ],
-  "summary": {
-    "engagement_score": 110.51,
-    "time": 1623875119506,
-    "video_view": 12
-  }
-}</code></pre>
-    </details>
-    <h3>Multi-dimension request sample</h3>
+ul.doc-links {
+	list-style: none;
+	margin-left: -2em;
+}
 
-    <pre class="line-numbers language-http">
-    <code class="language-http" id="filterRequest">https://analytics.api.brightcove.com/v1/data?accounts=3365624256001&dimensions=viewer,country,region,city,video,device_type&limit=10&fields=viewer,time,video_view,engagement_score,video_percent_viewed,video_seconds_viewed,video_engagement_1,video_engagement_25,video_engagement_50,video_engagement_75,video_engagement_100,video.tags,video.reference_id,video.name,video.description,video.duration,video.long_description,dma,country_name,region_name</code></pre>
-    <!--  -->
+/* details */
 
-    <details>
-      <summary>Sample Response</summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "item_count": 8,
-  "items": [
-    {
-      "country": "MX",
-      "viewer": "6798840584846290049",
-      "video.name": "Bison",
-      "video_seconds_viewed": 23,
-      "video_engagement_75": 1,
-      "city": "Zapopan",
-      "device_type": "desktop",
-      "video": "5754204614001",
-      "video_engagement_50": 1,
-      "video.description": "Bison in Yellowstone National Park",
-      "video.reference_id": null,
-      "video_percent_viewed": 100,
-      "country_name": "Mexico",
-      "region_name": null,
-      "video_engagement_25": 1,
-      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
-      "video.duration": 23295,
-      "video_engagement_100": 1,
-      "engagement_score": null,
-      "video_engagement_1": 1,
-      "video.tags": [
-        "animals",
-        "simulive",
-        "yellowstone"
-      ],
-      "dma": "0",
-      "time": 1623870475157,
-      "video_view": 0,
-      "region": "MX-JAL"
-    },
-    {
-      "country": "US",
-      "viewer": "-8839675754655082792",
-      "video.name": "Bison",
-      "video_seconds_viewed": 9,
-      "video_engagement_75": 0,
-      "city": "Safety Harbor",
-      "device_type": "desktop",
-      "video": "5754204614001",
-      "video_engagement_50": 0,
-      "video.description": "Bison in Yellowstone National Park",
-      "video.reference_id": null,
-      "video_percent_viewed": 39.13,
-      "country_name": "United States",
-      "region_name": "Florida",
-      "video_engagement_25": 1,
-      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
-      "video.duration": 23295,
-      "video_engagement_100": 0,
-      "engagement_score": 39.13,
-      "video_engagement_1": 1,
-      "video.tags": [
-        "animals",
-        "simulive",
-        "yellowstone"
-      ],
-      "dma": "539",
-      "time": 1623872904633,
-      "video_view": 1,
-      "region": "US-FL"
-    },
-    {
-      "country": "US",
-      "viewer": "-1094565064376617663",
-      "video.name": "Bison",
-      "video_seconds_viewed": 23,
-      "video_engagement_75": 1,
-      "city": "Boulder",
-      "device_type": "desktop",
-      "video": "5754204614001",
-      "video_engagement_50": 1,
-      "video.description": "Bison in Yellowstone National Park",
-      "video.reference_id": null,
-      "video_percent_viewed": 100,
-      "country_name": "United States",
-      "region_name": "Colorado",
-      "video_engagement_25": 1,
-      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
-      "video.duration": 23295,
-      "video_engagement_100": 1,
-      "engagement_score": 100,
-      "video_engagement_1": 1,
-      "video.tags": [
-        "animals",
-        "simulive",
-        "yellowstone"
-      ],
-      "dma": "751",
-      "time": 1623870472882,
-      "video_view": 1,
-      "region": "US-CO"
-    },
-    {
-      "country": "US",
-      "viewer": "8997125557862445199",
-      "video.name": "Bison",
-      "video_seconds_viewed": 23,
-      "video_engagement_75": 1,
-      "city": "Boulder",
-      "device_type": "desktop",
-      "video": "5754204614001",
-      "video_engagement_50": 1,
-      "video.description": "Bison in Yellowstone National Park",
-      "video.reference_id": null,
-      "video_percent_viewed": 100,
-      "country_name": "United States",
-      "region_name": "Colorado",
-      "video_engagement_25": 1,
-      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
-      "video.duration": 23295,
-      "video_engagement_100": 1,
-      "engagement_score": 100,
-      "video_engagement_1": 1,
-      "video.tags": [
-        "animals",
-        "simulive",
-        "yellowstone"
-      ],
-      "dma": "751",
-      "time": 1623870433989,
-      "video_view": 1,
-      "region": "US-CO"
-    },
-    {
-      "country": "US",
-      "viewer": "-4530870087560842176",
-      "video.name": "Bison",
-      "video_seconds_viewed": 46,
-      "video_engagement_75": 2,
-      "city": "Newton Center",
-      "device_type": "desktop",
-      "video": "5754204614001",
-      "video_engagement_50": 2,
-      "video.description": "Bison in Yellowstone National Park",
-      "video.reference_id": null,
-      "video_percent_viewed": 200,
-      "country_name": "United States",
-      "region_name": "Massachusetts",
-      "video_engagement_25": 2,
-      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
-      "video.duration": 23295,
-      "video_engagement_100": 2,
-      "engagement_score": 100,
-      "video_engagement_1": 2,
-      "video.tags": [
-        "animals",
-        "simulive",
-        "yellowstone"
-      ],
-      "dma": "506",
-      "time": 1623875061754,
-      "video_view": 2,
-      "region": "US-MA"
-    },
-    {
-      "country": "MX",
-      "viewer": "-6771654281667224776",
-      "video.name": "Bison",
-      "video_seconds_viewed": 66,
-      "video_engagement_75": 1,
-      "city": "Zapopan",
-      "device_type": "desktop",
-      "video": "5754204614001",
-      "video_engagement_50": 1,
-      "video.description": "Bison in Yellowstone National Park",
-      "video.reference_id": null,
-      "video_percent_viewed": 286.96,
-      "country_name": "Mexico",
-      "region_name": null,
-      "video_engagement_25": 1,
-      "video.long_description": "Bison in Yellowstone National Park. This is the long description.  This was filmed in Yellowstone National Park.",
-      "video.duration": 23295,
-      "video_engagement_100": 1,
-      "engagement_score": 143.48,
-      "video_engagement_1": 1,
-      "video.tags": [
-        "animals",
-        "simulive",
-        "yellowstone"
-      ],
-      "dma": "0",
-      "time": 1623869869930,
-      "video_view": 2,
-      "region": "MX-JAL"
-    }
-  ],
-  "summary": {
-    "video_seconds_viewed": 305,
-    "video_engagement_75": 10,
-    "video_engagement_25": 11,
-    "video_engagement_50": 10,
-    "video_engagement_100": 10,
-    "engagement_score": 110.51,
-    "video_engagement_1": 11,
-    "video_percent_viewed": 1326.09,
-    "country_name": null,
-    "region_name": null,
-    "time": 1623875119506,
-    "video_view": 12,
-    "account": "3365624256001"
-  }
-}</code></pre>
-    </details>
+*, details::before, details::after {
+	box-sizing: border-box;
+}
 
-    </section>
-    </article>
+details {
+	background-color: rgb(255, 255, 255);
+	margin: 0 auto 0;
+	padding: 0;
+	width: 100%;
+	/* max-width: calc(100% - 48px); */
+	position: relative;
+	border-bottom: 1px solid rgb(229, 230, 230);
+	border-right: none;
+	border-left: none;
+	border-radius: 0;
+}
+
+details.details-section:first-of-type {
+	border-top: 1px solid rgb(229, 230, 230);
+}
+details.details-item:first-of-type {
+	border-top: 1px solid rgb(229, 230, 230);
+}
+
+details.details-nested:last-of-type {
+	border-bottom: none;
+}
+
+details::before {
+	width: 100%;
+	height: 100%;
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: .15;
+	pointer-events: none;
+	transition: opacity .2s;
+	z-index: -1;
+}
+
+details[open] {
+	/* background-color: whitesmoke; */
+}
+
+details[open]::before {
+	/* opacity: .6; */
+}
+
+details>summary {
+	padding: 16px .5em 20px .5em;
+	display: block;
+	position: relative;
+	font-size: 14px;
+	font-weight: normal;
+	cursor: pointer;
+	outline: none;
+	margin: 0 0 -8px 0;
+}
+
+details>summary::after {
+	float: right;
+	height: .5rem;
+	width: .5rem;
+	margin-right: 1rem;
+	content: url(https://support.brightcove.com/site-assets/images/site/aside-icons/chevron-down-blue.svg);
+}
+details>summary::-webkit-details-marker {
+	display: none;
+}
+
+details[open]>summary::after {
+	float: right;
+	height: .5rem;
+	width: .5rem;
+	content: url(https://support.brightcove.com/site-assets/images/site/aside-icons/chevron-up-blue.svg);
+}
+
+details[open]>summary {
+	border: none;
+	outline: none;
+}
+
+details.details-section>summary {
+	color: rgb(1, 5, 14);
+	font-weight: bold;
+}
+
+details.details-item>summary, details.details-item>summary {
+	color: rgb(8, 8, 140);
+}
+
+details>summary::before, details>summary::after {
+	/* width: .75em;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    content: '';
+    background-color: currentColor;
+    text-align: right; */
+	transform: translateY(-50%);
+	transition: transform .2s ease-in-out;
+}
+
+details.details-section[open]>summary {
+	background-color: rgb(249, 249, 249);
+}
+
+details.details-item[open]>summary  {
+	background-color: rgb(242, 244, 249);
+}
+
+details.details-nested[open]>summary  {
+	background-color: rgb(242, 244, 249);
+}
+
+details.details-item>summary {
+	color: rgb(8, 8, 140);
+}
+
+details.details-nested>summary {
+	color: rgb(8, 8, 140);
+}
+
+details section {
+	background-color: rgb(255, 255, 255);
+	border: none;
+	margin: 16px 0;
+	padding: 16px 0 8px 0;
+	padding-top: 0;
+}
+
+details section p {
+	margin-left: 1rem;
+}
+
+details::after {
+	transform: translateY(-50%) rotate(90deg);
+}
+
+details[open] {
+	/* transform: translateY(-50%) rotate(180deg); */
+}
+
+.-webkit-details-marker {
+	display: none;
+}
+
+/* task list for steps */
+
+.bcls-tasklist {
+	list-style: none;
+	list-style-type: none;
+	margin-left: 0;
+	padding-top: 24px;
+}
+
+.bcls-tasklist>li::before {
+	color: rgb(1, 5, 14);
+	content: counters(step, ".") " ";
+	font-size: 1.3em;
+	font-weight: bold;
+	left: -2em;
+	line-height: 1;
+	position: absolute;
+	text-align: right;
+	top: 0;
+	width: 1.5em;
+}
+
+.bcls-tasklist>li {
+	border-left: 4px solid rgb(229, 230, 230);
+	list-style: none;
+	margin-bottom: 16px;
+	margin-left: -1em;
+	min-height: 1.7em;
+	padding-left: 1em;
+	position: relative;
+	counter-increment: step;
+}
+
+.bcls-tasklist-restart {
+	list-style: none;
+	list-style-type: none;
+	margin-left: 0;
+	padding-top: 24px;
+	counter-reset: rstep calc(var(--s) - 1);
+}
+
+.bcls-tasklist-restart>li {
+	border-left: 4px solid rgb(229, 230, 230);
+	list-style: none;
+	margin-bottom: 16px;
+	margin-left: -1em;
+	min-height: 1.7em;
+	padding-left: 1em;
+	position: relative;
+	counter-increment: rstep;
+}
+
+.bcls-tasklist-restart>li::before {
+	color: rgb(1, 5, 14);
+	content: counters(rstep, ".") " ";
+	/* counter-increment: rstep; */
+	font-size: 1.3em;
+	font-weight: bold;
+	left: -2em;
+	line-height: 1;
+	position: absolute;
+	text-align: right;
+	top: 0;
+	width: 1.5em;
+}
+
+.bcls-tasklist-restart ul, .bcls-tasklist-restart ol {
+	margin-bottom: 1rem;
+	;
+}
+
+.bcl-highlight, .bcls-highlight {
+	background-color: rgb(255, 255, 201);
+	border: 1px rgb(255, 204, 52) solid;
+	padding: 1px;
+}
+
+.ui-image {
+	cursor: not-allowed;
+	width: auto;
+	vertical-align: middle;
+	height: 1.5em;
+}
+
+.imageWithText {
+	width: auto;
+	vertical-align: middle;
+	height: 1.5em;
+}
+
+/* in-app help text buttons */
+.button-blue, .button-blue-text, .button-blue-text-bordered, .button-red, .button-red-text, .button-gray {
+	/* font-family: 'articulat-cf'; */
+	font-weight: bold;
+	font-size: .9rem;
+	padding: .4rem;
+	white-space: nowrap;
+}
+.button-blue {
+	color: rgb(255, 255, 255);
+	background-color: rgb(9, 45, 189);
+}
+.button-blue-text {
+	color: rgb(8, 8, 140);
+	background-color: rgb(255, 255, 255);
+}
+.button-blue-text-bordered {
+	color: rgb(8, 8, 140);
+	background-color: rgb(255, 255, 255);
+  border: 1px rgb(229,230,230) solid;
+  border-radius: 1px;
+}
+.button-red {
+	color: rgb(255, 255, 255);
+	background-color: rgb(211, 61, 0);
+}
+.button-red-text {
+	color: rgb(211, 61, 0);
+	background-color: rgb(255, 255, 255);
+}
+.button-red-text-border {
+  color: rgb(211, 61, 0);
+  background-color: rgb(255, 255, 255);
+  border: 1px rgb(211, 61, 0) solid;
+  border-radius: 2px;
+	padding: 4px;;
+}
+.button-gray {
+	background-color: rgb(242, 244, 249);
+}
+.button-icon {
+	white-space: nowrap;
+  padding-right: .15rem;
+  height: 1rem;
+}
+
+/* info, tips, warnings */
+
+aside, .bcls-aside {
+  margin-bottom: 1em;
+  padding: 1em 2em 1em 3.5em;
+}
+
+.bcls-aside--information {
+  background-color: #f2f4f9;
+  border-left: 4px solid #092dbd;
+}
+
+.bcls-aside--information:before {
+  content: url(https://support.brightcove.com/site-assets/images/site/aside-icons/info-aqua.svg);
+  float: left;
+  margin-left: -2.5em;
+}
+
+
+.bcls-aside--tip {
+  background-color: #d7f6e6;
+  border-left: 4px solid #009e4f;
+}
+
+.bcls-aside--tip:before {
+  content: url(https://support.brightcove.com/site-assets/images/site/aside-icons/lightbulb-blue.svg);
+  float: left;
+  /* color: rgb(8, 8, 139);
+  height: 28px; */
+  margin-left: -2.5em;
+}
+
+
+.bcls-aside--warning {
+  background-color: #fffbf2;
+  border-left: 4px solid #ffba00;
+}
+
+.bcls-aside--warning:before {
+  content: url(https://support.brightcove.com/site-assets/images/site/aside-icons/alert-triangle-gray.svg);
+  float: left;
+  margin-left: -2.5em;
+}
+
 
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   
