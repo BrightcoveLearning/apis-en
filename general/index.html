@@ -4,47 +4,45 @@ description: These topics apply to most or all of the APIs.
 icon: fa-regular fa-circle-info
 parent: Home
 ---
-<h1><i class="{{ page.icon }}"></i> {{ page.title }}</h1>
+
+<!-- Template for sections that have both pages and sub-sections -->
+{% assign subfolders_array = "" | split: ',' %}
+
+{% for item in site.data.navigation %}
+  {% if item.name == page.title %}
+
+<h1><i class="{{ item.icon }}"></i> {{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
   <br/>
   <h2 id="Topics_in_this_section">Topics in this section</h2>
   <br/>
-  <!-- create new arrays from top-level pages and subfolders -->
-  {% assign pages_array = "" | split: ',' %}
-  {% assign subfolders_array = "" | split: ',' %}
-  <!-- sort items for the section into the proper arrays -->
-  {% for item in site.data.navigation %}
-    {% if item.name == page.title %}
-      {% for entry in item.docs %}
-        {% if entry.docs %}
-          {% assign subfolders_array = subfolders_array | push: entry %}
-        {% else %}
-          {% assign pages_array = pages_array | push: entry %}
-        {% endif %} 
-      {% endfor %}
-    {% endif %}
-  {% endfor %}
   <!-- create the cards -->
   <div class="row">
   <!-- create the pages card -->
-    <div class="col-12 col-lg-4 py-3">
-      <div class="card shadow-sm" style="background: white">
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            {% for entry in pages_array %}
-            <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a>
-            </li>
+  <div class="col-12 col-lg-4 py-3">
+    <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ item.url }}'">
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for entry in item.docs %}
+              {% if entry.docs %}
+                {% assign subfolders_array = subfolders_array | push: entry %}
+              {% else %}
+              <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;">{{ entry.name }}</a>
+              </li>
+              {% endif %} 
             {% endfor %}
           </ul>
         </div> <!-- end <div class="card-body"> -->
       </div> <!-- end <div class="card shadow-sm"> -->
     </div> <!-- end <div class="col-12 col-lg-4 py-3"> -->
+  {% endif %}
+{% endfor %}
 
-    <!-- create the subfolder cards -->
+  <!-- create the subfolder cards -->
     {% for entry in subfolders_array %}
       <div class="col-12 col-lg-4 py-3">
-        <div class="card shadow-sm" style="background: white">
+        <div class="card shadow-sm" style="background: white" onclick="window.location.href = '{{ entry.url }}'">
           <div class="card-body">
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><a href="{{ entry.url }}" style="text-decoration: none;"><strong>{{ entry.name }}</strong></a>
