@@ -365,6 +365,7 @@ API Requests</a>.</p>
 				<li><code translate="No">smart_xml</code></li>
 				<li><code translate="No">vast_3_0</code></li>
 			</ul>
+      For details, see the <a href="#Ad_response_types">Ad response types</a> section.
 			</td>
 		</tr>
 		<tr>
@@ -483,6 +484,36 @@ API Requests</a>.</p>
 <p id="n2"><sup>[2]</sup> Discontinuity tags indicate a change in frame rate encoding between content video and ad segments. They tell the system to reconstruct the rendering chain. For scalable SSAI, the video player needs to be able to play HLS with Discontinuity tags and MPEG DASH containing multiple periods.</p>
 </aside>
 </section>
+
+<section class="bcls-section">
+  <h2 id="Ad_response_types">Ad response types</h2>
+  
+  <p>Here is some additional information about working with <code translate="No">ad_config.expected_ad_response</code> types from the table above. Values:</p>
+  <ul>
+    <li><code translate="No">vast_3_0</code> - <a href="https://www.iab.com/guidelines/vast/">Digital Video Ad Serving Template (VAST)</a></li>
+    <li><code translate="No">dfp_vmap</code> - <a href="https://www.iab.com/guidelines/vmap/">Video Multiple Ad Playlist (VMAP)</a></li>
+    <li><code translate="No">dfp_ad_rules</code> - Proprietary format for Google DFP, which has been rebranded as Google Ad Manager(GAM)</li>
+    <li><code translate="No">smart_xml</code> - Proprietary format for FreeWheel</li> 
+  </ul>
+  <h3>Process flow</h3>
+  <figure class="bcls-figure">
+    <img class="bcls-image--no-border" src="/assets/images/ssai/vod-ssai-configurations.svg" alt="VOD SSAI Configurations">
+    <figcaption class="bcls-caption--image">VOD SSAI Configurations</figcaption>
+  </figure>
+  <p>When creating SSAI ad configurations, keep in mind the following process notes:</p>
+  <h4>VMAP</h4>
+  <p>If SSAI Config's Ad Response Type is DFP VMAP:</p>
+  <ul>
+    <li>Any cue points configured with a video will be ignored.</li>
+    <li>SSAI parses the VMAP XML file from the ad provider which contains all the ads with their defined positions.</li>
+  </ul>
+  <h4>VAST</h4>
+  <p>If SSAI Config's Ad Response Type is VAST 3.0:</p>
+  <ul>
+    <li>Define cue points in your video. SSAI will make requests for each cue point in the video to construct ad breaks.</li>
+    <li>If no cue point is configured with a video, a preroll ad is inserted by default.</li>
+  </ul>
+  </section>
 
 <section class="bcls-section">
 <h2 id="Ad_variables">Ad variables</h2>
@@ -717,10 +748,10 @@ API Requests</a>.</p>
 <p>VAST ad error beacons when using SSAI can be helpful for proactively finding and fixing problems with your ad workflow. For details, see the <a href="https://ssai.support.brightcove.com/vod/guides/ad-error-beacons-ssai.html">Ad Error Beacons with SSAI</a> document.</p>
 </section>
 
-<section class="bcls-section">
+<!-- <section class="bcls-section">
 	<h2 id="Considerations">Considerations</h2>
 	<p>Our system takes note of the cue points when using a VAST ad tag. Conversely, when using a VMAP ad tag, our system completely ignores cue points. This is because SSAI ignores the Video Cloud cue points when it requests ads using a playback config which is expecting a <strong>DFP VMAP</strong> response. It relies solely on the ad response data and title duration to set the positions of ad breaks.</p>
 	<p>The use of VMAP for this function is not supported, and the result is unexpected. Therefore we do not recommend its use.</p>
-	</section>
+</section> -->
 
 </article>
