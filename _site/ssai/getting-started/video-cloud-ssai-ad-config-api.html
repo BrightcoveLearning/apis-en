@@ -4181,13 +4181,18 @@ API Requests</a>.</p>
 </table>
 
 <h3 id="URL_variables">URL variables</h3>
-
 <p>Query Params provided on the entry point VMAP/Manifest are available under the <code translate="No">url</code> namespace. Unlike variables under other namespaces, these params are not url encoded when inserting into the template. If variable values need to be url encoded going to the ad provider, they will need to be double url encoded on the entry point url.</p>
 
 <p>URL variables are identified as: <code translate="No">{{url.*}}</code></p>
+<p>URL variables need to be replaced using custom integration as follows:</p>
+<ol class="bcls-tasklist">
+  <li>Write code to make a request to the Playback API.</li>
+  <li>Intercept the data returned from the API request.</li>
+  <li>Replace any <code translate="No">{{url.*}}</code> tokens in source URLs</li>
+  <li>Load the data/source into the player (Brightcove Player for web or the Native SDKs)</li>
+</ol>
 
 <h3 id="Metadata_variables">Metadata variables</h3>
-
 <p>Metadata variables are those that describe the content video, derived from both Video Cloud and Dynamic Delivery data sources. The values <strong>(except for <code translate="No">ad_keys</code>)</strong> are URL encoded before being inserted into the URL templates.</p>
 
 <aside class="bcls-aside bcls-aside--information language-editable"><code translate="No">ad_keys</code> is designed to be filled in with separate query parameters to be passed through to the ad server, so url encoding would break that.</aside>
