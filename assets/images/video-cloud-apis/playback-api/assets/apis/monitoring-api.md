@@ -110,7 +110,7 @@ The startup script uses `check=ready` to wait for all `init`,
 The [Wedge operator manual][opman] on Confluence includes guidelines
 on how to respond to various failure conditions.
 
-[opman]: http://confluence.vidmark.local/display/DEV/Operator+Manual+-+Wedge
+[opman]: https://confluence.vidmark.local/display/DEV/Operator+Manual+-+Wedge
 
 Add your own healthcheck with `wedge.util.Healthcheck` in wedge-base
 and document it on Confluence.

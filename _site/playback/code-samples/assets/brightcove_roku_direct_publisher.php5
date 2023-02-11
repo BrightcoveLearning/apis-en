@@ -24,7 +24,7 @@
 // This is the title of the Roku Feed itself.
 $title = "Brightcove Test Roku Direct Publisher Feed";
 // This is a link to where the podcast can be found.
-$link = "http://www.blacktreeproductions.com/brightcove_roku_direct_publisher.php5";
+$link = "https://www.blacktreeproductions.com/brightcove_roku_direct_publisher.php5";
 // This is a description of this Roku Direct Publisher Feed.
 $description= "Description of the Video Cloud Roku Direct Publisher Test Feed";
 
@@ -44,7 +44,7 @@ $baseURL = "https://edge.api.brightcove.com/playback/v1/accounts/";
 
 // Please DO NOT alter the code below;
 header('Content-Type: text/xml');
-print('<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">');
+print('<rss version="2.0" xmlns:media="https://search.yahoo.com/mrss/">');
 echo"\n";
 print('<channel>');
 echo"\n";

@@ -15,7 +15,7 @@ var BCLS = ( function (window, document) {
         profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
         name,
         video,
-        default_video          = 'http://support.brightcove.com/test-assets/videos/greatblueheron.mp4',
+        default_video          = 'https://support.brightcove.com/test-assets/videos/greatblueheron.mp4',
         fromPicker,
         toPicker,
         video_id,
@@ -104,7 +104,7 @@ var BCLS = ( function (window, document) {
             options.requestBody.master     = {};
             options.requestBody.master.url = video;
             options.requestBody.profile    = profile;
-            options.requestBody.callbacks  = ['http://solutions.brightcove.com/bcls/di-api/di-callbacks.php'];
+            options.requestBody.callbacks  = ['https://solutions.brightcove.com/bcls/di-api/di-callbacks.php'];
             di_url.textContent                     = JSON.stringify(options.requestBody, null, '  ');
 
 

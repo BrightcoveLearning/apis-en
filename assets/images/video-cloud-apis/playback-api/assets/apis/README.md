@@ -5,7 +5,7 @@ Here are links to the documents in this folder.
 See the [top parent README](../../README.md) for a description of the whole
 project.
 
-See here for information and links about [the apis built on Wedge](http://confluence.vidmark.local/display/DEV/Wedge+users).
+See here for information and links about [the apis built on Wedge](https://confluence.vidmark.local/display/DEV/Wedge+users).
 
 ## Player Catalog API
 

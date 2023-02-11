@@ -22,14 +22,14 @@
                 {
                     "video_name": "Forms of Water",
                     "id": 1716964408001,
-                    "src": "http://brightcove.vo.llnwd.net/e1/uds/pd/921483702001/921483702001_1717216134001_Water.mp4",
-                    "poster": "http://brightcove.vo.llnwd.net/e1/pd/921483702001/921483702001_1717217030001_vs-4ff1fdb256e7b0e42b8ede16-1592194013001.jpg?pubId=921483702001"
+                    "src": "https://brightcove.vo.llnwd.net/e1/uds/pd/921483702001/921483702001_1717216134001_Water.mp4",
+                    "poster": "https://brightcove.vo.llnwd.net/e1/pd/921483702001/921483702001_1717217030001_vs-4ff1fdb256e7b0e42b8ede16-1592194013001.jpg?pubId=921483702001"
                 },
                 {
                     "video_name": "Birds of a Feather",
                     "id": 1716964407001,
-                    "src": "http://brightcove.vo.llnwd.net/e1/uds/pd/921483702001/921483702001_1717220805001_BirdsOfAFeather.mp4",
-                    "poster": "http://brightcove.vo.llnwd.net/e1/pd/921483702001/921483702001_1717217180001_vs-4ff1fdbf56e7b0e4348ede16-806787294001.jpg?pubId=921483702001"
+                    "src": "https://brightcove.vo.llnwd.net/e1/uds/pd/921483702001/921483702001_1717220805001_BirdsOfAFeather.mp4",
+                    "poster": "https://brightcove.vo.llnwd.net/e1/pd/921483702001/921483702001_1717217180001_vs-4ff1fdbf56e7b0e4348ede16-806787294001.jpg?pubId=921483702001"
                 }
             ]
         },

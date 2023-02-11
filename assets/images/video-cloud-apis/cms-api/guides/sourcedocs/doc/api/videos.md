@@ -80,7 +80,7 @@ Cue points are not yet supported for the POST action.
 
 #### Example
 ```
-curl -H "Content-Type:application/json" -d '{"name":"New Video", "description":"cool content", "state":"ACTIVE"}' http://BASE_URL/account/:account_id/videos
+curl -H "Content-Type:application/json" -d '{"name":"New Video", "description":"cool content", "state":"ACTIVE"}' https://BASE_URL/account/:account_id/videos
 ```
 
 ### PATCH

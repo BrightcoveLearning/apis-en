@@ -3,10 +3,10 @@
 See the [TVE section](https://docs.google.com/a/brightcove.com/document/d/1XhFOE9QUft7gtvo_hFrzIcrRTnY1svrCIHevUZ3CpCU/edit#heading=h.fbig49kmuxas)
 of the Player Catalog api spec.
 
-See [this confluence page](http://confluence.vidmark.local/display/DEV/Enabling+TVE+for+a+publisher)
+See [this confluence page](https://confluence.vidmark.local/display/DEV/Enabling+TVE+for+a+publisher)
 for a description of setting up and testing TVE restrictions.
 
-Our public [TVE doc](http://docs.brightcove.com/en/video-cloud/tve/assets/index.html).
+Our public [TVE doc](https://docs.brightcove.com/en/video-cloud/tve/assets/index.html).
 
 ## TVE validation values
 
@@ -40,7 +40,7 @@ or else the account setting "tverequestorid".
 If a TVE resource id is calculated for a video, it will look like the following
 with the capitalized values replaced and with no newlines or indenting spaces.
 
-    <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    <rss version="2.0" xmlns:media="https://search.yahoo.com/mrss/">
       <channel>
         <title>REQUESTORID</title>
         <item>

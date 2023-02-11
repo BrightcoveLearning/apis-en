@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="https://www.w3.org/1999/XSL/Transform">
 
 	<!-- This causes the HTML doctype (<!doctype hmlt>) to be rendered. -->
 	<xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" />

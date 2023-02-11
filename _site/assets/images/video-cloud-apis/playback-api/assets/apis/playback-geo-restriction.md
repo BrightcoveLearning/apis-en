@@ -33,6 +33,6 @@ Also see the *"Calculating and testing IPs used for restrictions"* in the [Playb
 
 ## Other feature documentation
 
-* [Public doc about geo filtering in old studio](http://support.brightcove.com/en/video-cloud/docs/geo-filtering-your-videos)
-* [Public doc, geo filtering error display for older players](http://docs.brightcove.com/en/video-cloud/smart-player-api/samples/geo-filtering-video-error-display.html)
-* [CS/Quova and Geo-Restriction](http://confluence.vidmark.local/display/CS/Quova+and+Geo-Restriction)
+* [Public doc about geo filtering in old studio](https://support.brightcove.com/en/video-cloud/docs/geo-filtering-your-videos)
+* [Public doc, geo filtering error display for older players](https://docs.brightcove.com/en/video-cloud/smart-player-api/samples/geo-filtering-video-error-display.html)
+* [CS/Quova and Geo-Restriction](https://confluence.vidmark.local/display/CS/Quova+and+Geo-Restriction)

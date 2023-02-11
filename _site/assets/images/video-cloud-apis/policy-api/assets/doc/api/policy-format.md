@@ -100,13 +100,13 @@ of full format policies:
 
 ```json
 {"account-id": "8523",
- "allowed-domains": ["http://example.com"]}
+ "allowed-domains": ["https://example.com"]}
 ```
 
 ```json
 [{"pattern": {"!=": ["[request.params.account-id]", "8523"]},
   "effect": "deny"},
- {"pattern": {"not-contains?": [["http://example.com"], "[request.domain]"]},
+ {"pattern": {"not-contains?": [["https://example.com"], "[request.domain]"]},
   "effect": "deny"}]
 ```
 

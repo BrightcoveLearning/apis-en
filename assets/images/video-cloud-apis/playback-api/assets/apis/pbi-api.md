@@ -7,9 +7,9 @@ Exposes the following endpoint,
 Which takes a request body of the following form,
 
     {
-      "master": { "url": "http://host/master.mp4" },
+      "master": { "url": "https://host/master.mp4" },
       "profile": "balanced-high-definition",
-      "callbacks": [ "http://host/path" ]
+      "callbacks": [ "https://host/path" ]
     }
 
 * `master`: the source object for the digital master (required)
@@ -36,7 +36,7 @@ Which you can then use to make the PBI call,
 
     POST /v1/accounts/8523/videos/12345/ingest-requests
     {
-      "master": { "url": "http://host/master.mp4" },
+      "master": { "url": "https://host/master.mp4" },
       "profile": "balanced-high-definition"
     }
 
@@ -68,9 +68,9 @@ request,
 
     POST /v1/accounts/8523/videos/12345/ingest-requests
     {
-      "master": { "url": "http://host/master.mp4" },
+      "master": { "url": "https://host/master.mp4" },
       "profile": "balanced-high-definition",
-      "callbacks": [ "http://callback-host/path" ]
+      "callbacks": [ "https://callback-host/path" ]
     }
 
 ## Image Capture
@@ -92,7 +92,7 @@ the source filename. The newly minted `video_id` will be returned.
 
     POST /v1/accounts/8523/ingest-requests
     {
-      "master": { "url": "http://host/file.mp4" },
+      "master": { "url": "https://host/file.mp4" },
       "profile": "balanced-high-definition"
     }
 
@@ -105,18 +105,18 @@ You can add an image with an ingestion job with,
 
     POST /v1/accounts/8523/videos/12345/ingest-requests
     {
-      "master": { "url": "http://host/file.mp4" },
-      "thumbnail": { "url": "http://host/file.jpg" }
+      "master": { "url": "https://host/file.mp4" },
+      "thumbnail": { "url": "https://host/file.jpg" }
     }
 
 or,
 
     POST /v1/accounts/8523/videos/12345/ingest-requests
     {
-      "master": { "url": "http://host/file.mp4" },
-      "thumbnail": { "url": "http://host/thumb.jpg" },
-      "poster": { "url": "http://host/poster.jpg" },
-      "captions": [ { "url": 'http://host/file.ext", ... } ]
+      "master": { "url": "https://host/file.mp4" },
+      "thumbnail": { "url": "https://host/thumb.jpg" },
+      "poster": { "url": "https://host/poster.jpg" },
+      "captions": [ { "url": 'https://host/file.ext", ... } ]
     }
 
 This would result in PBI submitting a mannheim job to ingest and appropriately package/modify/transcode the files, and
@@ -128,9 +128,9 @@ e.g. you want to add a caption file to an existing video.
 
     POST //v1/accounts/8523/videos/12345/ingest-requests
     {
-      "thumbnail": { "url": "http://host/thumb.jpg" },
-      "poster": { "url": "http://host/poster.jpg" },
-      "captions": [ { "url": 'http://host/file.ext", ... } ]
+      "thumbnail": { "url": "https://host/thumb.jpg" },
+      "poster": { "url": "https://host/poster.jpg" },
+      "captions": [ { "url": 'https://host/file.ext", ... } ]
     }
 
 This creates a new request which sets the videos thumbnail, poster image and captions list to those produced by
@@ -143,8 +143,8 @@ If we want to replace the thumbnail, we'll create a new request (hence `POST` me
 
     POST /ingest/v1/accounts/8523/requests
     {
-      "master": { "url": "http://host/file.mp4" },
-      "thumbnail": { "url": "http://host/file.jpg" }
+      "master": { "url": "https://host/file.mp4" },
+      "thumbnail": { "url": "https://host/file.jpg" }
     }
 
 So this looks just like setting the thumbnail.
@@ -182,7 +182,7 @@ Returns,
 Make a call to the PBI API,
 
     POST /v1/accounts/8523/videos/12345/ingest-requests
-    { "master": { "url": "http://host/file.mp4" },
+    { "master": { "url": "https://host/file.mp4" },
       "profile": "balanced-high-definition" }
 
 Returns,
@@ -301,7 +301,7 @@ For cathy, you'll need to use the 'local' cthurlhu environment, and set up the f
 
     $ ssh -fNL 22849:bravoapp30:22849 login.qanet.local
 
-For other environments, consult [Where is Cathy?](http://confluence.vidmark.local/display/DEV/Cathy#Cathy-WhereisCathy%3F)
+For other environments, consult [Where is Cathy?](https://confluence.vidmark.local/display/DEV/Cathy#Cathy-WhereisCathy%3F)
 
 For roebuck (the host names of the actual servers change),
 
@@ -334,7 +334,7 @@ Then you can issue a request against it,
 If you need to make dramatic changes, or have a long-lived branch of a template, it might be a good idea to create a new template in OP, and work on that until you are ready to merge it with the extant copy. To do this, first create your new template, add it to the OP resources, do an OP deploy and update the OP configuration in chef to reference it (see this [change](https://bithub.brightcove.com/infrastructure/chef/pull/1688) for reference). Then, you can submit a PBI request with a request body including a `template` property,
 
     {
-      "master": { "url": "http://host/master.mp4" },
+      "master": { "url": "https://host/master.mp4" },
       "profile": "balanced-high-definition",
       "template": "my-test-template"
     }

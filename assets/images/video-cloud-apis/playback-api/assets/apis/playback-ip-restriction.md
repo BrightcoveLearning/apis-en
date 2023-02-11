@@ -85,8 +85,8 @@ see the [Gobbles config file here](https://bithub.brightcove.com/videocloud/gobb
 
 Confluence documentation for the restrictions as first implemented in the legacy players.
 
-* [Account-Player IP Restriction](http://confluence/display/DEV/Account-Player+IP+Restriction)
-* [Security Enhancements with IP Restrictions](http://confluence.vidmark.local/display/DEV/Security+Enhancements+with+IP+Restrictions)
+* [Account-Player IP Restriction](https://confluence/display/DEV/Account-Player+IP+Restriction)
+* [Security Enhancements with IP Restrictions](https://confluence.vidmark.local/display/DEV/Security+Enhancements+with+IP+Restrictions)
 
 There are also three flags: SimpleFeedEnabled, LinkedNetworkEnabled, HostedPlayerEnabled,
 that control older system features that are often entirely disabled for accounts that

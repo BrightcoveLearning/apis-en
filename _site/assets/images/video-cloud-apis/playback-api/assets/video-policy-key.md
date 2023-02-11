@@ -123,7 +123,7 @@ call unless the request domain lies in a list":
     "not-contains?": [
       "[request.domain]",
       [
-        "http://www.safaribooksonline.com",
+        "https://www.safaribooksonline.com",
         "https://secure.safaribooksonline.com"
       ]
     ]
@@ -152,7 +152,7 @@ the domains in question, which means you need to ask for a policy set like this 
     "pattern": {
       "not-contains?": [
         [
-          "http://www.safaribooksonline.com",
+          "https://www.safaribooksonline.com",
           "https://secure.safaribooksonline.com"
         ],
         "[request.domain]"
@@ -167,7 +167,7 @@ Using the shorter key-data format, this is:
 ```
 {"account-id": "8523",
  "allowed-domains" [
-  "http://www.safaribooksonline.com",
+  "https://www.safaribooksonline.com",
   "https://secure.safaribooksonline.com"]}
 ```
 

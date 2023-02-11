@@ -112,7 +112,7 @@ list":
 ```json
 [{"pattern": {
     "not-contains?": [
-      ["http://www.safaribooksonline.com",
+      ["https://www.safaribooksonline.com",
         "https://secure.safaribooksonline.com"
       ],
       "[request.domain]"
@@ -133,7 +133,7 @@ policy set like this on the key:
   "effect": "deny"},
  {"pattern": {
     "not-contains?": [
-      ["http://www.safaribooksonline.com", "https://secure.safaribooksonline.com"],
+      ["https://www.safaribooksonline.com", "https://secure.safaribooksonline.com"],
       "[request.domain]"
     ]
   },
@@ -144,7 +144,7 @@ Using the shorter key-data format, this is:
 ```
 {"account-id": "8523",
  "allowed-domains": [
-  "http://www.safaribooksonline.com",
+  "https://www.safaribooksonline.com",
   "https://secure.safaribooksonline.com"]}
 ```
 

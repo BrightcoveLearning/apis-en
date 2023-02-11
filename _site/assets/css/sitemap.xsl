@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet 
   version="1.0"
-  xmlns:sm="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0"
-  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
-  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-  xmlns:fo="http://www.w3.org/1999/XSL/Format"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  xmlns="http://www.w3.org/1999/xhtml">
+  xmlns:sm="https://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsl="https://www.w3.org/1999/XSL/Transform"
+  xmlns:mobile="https://www.google.com/schemas/sitemap-mobile/1.0"
+  xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:video="https://www.google.com/schemas/sitemap-video/1.1"
+  xmlns:news="https://www.google.com/schemas/sitemap-news/0.9"
+  xmlns:fo="https://www.w3.org/1999/XSL/Format"
+  xmlns:xhtml="https://www.w3.org/1999/xhtml"
+  xmlns="https://www.w3.org/1999/xhtml">
  
   <xsl:output method="html" indent="yes" encoding="UTF-8"/>
 

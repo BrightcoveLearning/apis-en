@@ -9,7 +9,7 @@ pub_id = "***ACCOUNT ID HERE****"
 client_id = "***CLIENT ID HERE****"
 client_secret = "***CLIENT SECRET HERE****"
 access_token_url = "https://oauth.brightcove.com/v3/access_token"
-profiles_base_url = "http://ingestion.api.brightcove.com/v1/accounts/{pubid}/profiles"
+profiles_base_url = "https://ingestion.api.brightcove.com/v1/accounts/{pubid}/profiles"
 
 def get_access_token():
     access_token = None

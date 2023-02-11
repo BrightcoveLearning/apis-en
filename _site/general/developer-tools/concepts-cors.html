@@ -3605,13 +3605,13 @@
     <pre class="line-numbers">
 <code class="language-apache" translate="No">&lt;FilesMatch ".(vtt|xml)$"&gt;
               Header set Access-Control-Allow-Headers: X-Requested-With
-              Header add Access-Control-Allow-Origin: http://admin.brightcove.com
+              Header add Access-Control-Allow-Origin: https://admin.brightcove.com
           &lt;/FilesMatch&gt;</code></pre>
     <p>The following provides brief explanations of the directive:</p>
     <ul>
       <li><code translate="No">&lt;FilesMatch ".(vtt|xml)$"&gt;</code>: This conditional sets the <code translate="No">Access-Control-Allow-Origin</code> header only on vtt or xml files. Testing has confirmed that this header is not sent with images or other http-delivered content.</li>
       <li><code translate="No">Header set Access-Control-Allow-Headers: X-Requested-With</code>: This header is required for the <code translate="No">Access-Control-Allow-Origin</code> header to work, since the request the player is making is an XmlHttpRequest.</li>
-      <li><code translate="No">Header add Access-Control-Allow-Origin: http://admin.brightcove.com</code>: This is the access control header itself to allow content from the indicated domain.</li>
+      <li><code translate="No">Header add Access-Control-Allow-Origin: https://admin.brightcove.com</code>: This is the access control header itself to allow content from the indicated domain.</li>
     </ul>
     <h3>Enabling CORS on Apache</h3>
     <p>You can set a header in the configuration of Apache servers to enable CORS. Place the following in the appropriate <code translate="No">.conf</code> file:</p>
@@ -3636,7 +3636,7 @@
         Header set Access-Control-Allow-Credentials "true"
         RewriteEngine On
         RewriteCond %{REQUEST_METHOD} OPTIONS
-        RewriteRule ^(.*)$ $1 [R=200,L,E=HTTP_ORIGIN:%{HTTP:ORIGIN}]
+        RewriteRule ^(.*)$ $1 [R=200,L,E=HTTP_ORIGIN:%{https:ORIGIN}]
   &lt;/FilesMatch&gt;</code></pre>
     <p>The following points detail the differences from the earlier solution:</p>
     <ul>

@@ -24,7 +24,7 @@
 // This is the title of the podcast itself.
 $title = "Brightcove Test Podcast";
 // This is a link to where the podcast can be found.
-$link = "http://www.carlrutman.com/php/brightcove_itunes.php";
+$link = "https://www.carlrutman.com/php/brightcove_itunes.php";
 // This is the language you display for this podcast.
 $lang = "en-us";
 // This is the copyright information.
@@ -44,7 +44,7 @@ $ownername = "Carl Rutman";
 // This is the owner's email address.
 $owneremail = "crutman@brightcove.com";
 // This is the podcast thumbnail image url.
-$imageurl = "http://www.carlrutman.com/php/logo.jpg";
+$imageurl = "https://www.carlrutman.com/php/logo.jpg";
 // This is the podcast category.
 $category = "TV &amp; Film";
 // This is a yes or no boolean if the podcast is explicit.
@@ -66,7 +66,7 @@ $baseURL = "https://edge.api.brightcove.com/playback/v1/accounts/";
 // Please DO NOT alter the code below;
 print('<?xml version="1.0" encoding="UTF-8"?>');
 echo"\n";
-print('<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">');
+print('<rss version="2.0" xmlns:itunes="https://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="https://www.w3.org/2005/Atom">');
 echo"\n";
 print('<channel>');
 echo"\n";

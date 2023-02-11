@@ -29,7 +29,7 @@ var util = require('util'),
     // error messages
     apiError = 'Your API call was unsuccessful; here is what the server returned: ',
     oauthError = 'There was a problem getting your access token: ',
-    originError = 'Your request cannot be processed; this proxy only handles requests originating from Brightcove servers. If you would like to build your own version of this proxy, see http://docs.brightcove.com/en/perform/oauth-api/guides/quick-start.html',
+    originError = 'Your request cannot be processed; this proxy only handles requests originating from Brightcove servers. If you would like to build your own version of this proxy, see https://docs.brightcove.com/en/perform/oauth-api/guides/quick-start.html',
     // client credentials and account info
     client_id = 'your_client_id_here',
     client_secret = 'your_client_secret_here',
@@ -52,7 +52,7 @@ var util = require('util'),
     offset = 0,
     sort = 'created_at',
     // doc generation
-    contentStr = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"></urlset>',
+    contentStr = '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="https://www.google.com/schemas/sitemap-video/1.1"></urlset>',
     doc;
 
 /**
@@ -115,7 +115,7 @@ function generateSitemap() {
         video_duration,
         video_gallery_loc,
         videoItem,
-        playerURL = 'http://players.brightcove.net/20318290001/df07da22-61f9-4b06-ae25-629f96fe2ff0_default/index.html?videoId=',
+        playerURL = 'https://players.brightcove.net/20318290001/df07da22-61f9-4b06-ae25-629f96fe2ff0_default/index.html?videoId=',
         i,
         iMax;
     doc = new DOMParser().parseFromString(contentStr);

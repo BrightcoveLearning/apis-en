@@ -4,7 +4,7 @@ import httplib, urllib, base64, json, sys
 # with your brightcove account ID, and a client ID and client secret for
 # an Oauth credential that has CMS API - Videos Read permission.
 # You can find instructions on how to generate Oauth credentials
-# http://docs.brightcove.com/en/video-cloud/cms-api/getting-started/quick-start-cms.html
+# https://docs.brightcove.com/en/video-cloud/cms-api/getting-started/quick-start-cms.html
 # This script demonstrates how to refresh the access token
 # in handling 401 - Unauthorized errors from the CMS API
 # Because the Oauth tokens have a 300 second time to live,

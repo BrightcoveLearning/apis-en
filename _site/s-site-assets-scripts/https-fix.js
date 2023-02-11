@@ -11,8 +11,8 @@ var BCLS = ( function (window, document) {
   console.log('prot', prot);
   
   
-  if (prot === 'http:' && p === '') {
-    h = h.replace('http:', 'https:');
+  if (prot === 'https:' && p === '') {
+    h = h.replace('https:', 'https:');
     console.log('h', h);
     
     window.location.href = h;

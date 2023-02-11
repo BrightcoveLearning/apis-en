@@ -122,23 +122,23 @@ is an array of ids from Roebuck, but the Playback api expands them to their fiel
       },
       "link": {
         "text": "Full Dvd at Amazon",
-        "url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
+        "url": "https://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
       },
       "tags": [
         "copied"
       ],
       "poster_sources": [
         {
-          "src": "http://brightcove04.o.brightcove.com/107767373001/107767373001_111728861001_vs-111727994001.jpg?pubId=107767373001&videoId=111723525001"
+          "src": "https://brightcove04.o.brightcove.com/107767373001/107767373001_111728861001_vs-111727994001.jpg?pubId=107767373001&videoId=111723525001"
         }
       ],
       "thumbnail_sources": [
         {
-          "src": "http://brightcove04.o.brightcove.com/107767373001/107767373001_111728862001_th-111727994001.jpg?pubId=107767373001&videoId=111723525001"
+          "src": "https://brightcove04.o.brightcove.com/107767373001/107767373001_111728862001_th-111727994001.jpg?pubId=107767373001&videoId=111723525001"
         }
       ],
-      "poster": "http://brightcove04.o.brightcove.com/107767373001/107767373001_111728861001_vs-111727994001.jpg?pubId=107767373001&videoId=111723525001",
-      "thumbnail": "http://brightcove04.o.brightcove.com/107767373001/107767373001_111728862001_th-111727994001.jpg?pubId=107767373001&videoId=111723525001",
+      "poster": "https://brightcove04.o.brightcove.com/107767373001/107767373001_111728861001_vs-111727994001.jpg?pubId=107767373001&videoId=111723525001",
+      "thumbnail": "https://brightcove04.o.brightcove.com/107767373001/107767373001_111728862001_th-111727994001.jpg?pubId=107767373001&videoId=111723525001",
       "sources": [
         {
           "avg_bitrate": 379000,
@@ -155,7 +155,7 @@ is an array of ids from Roebuck, but the Playback api expands them to their fiel
         {
           "avg_bitrate": 379000,
           "width": 320,
-          "src": "http://uds.ak.o.brightcove.com/107767373001/107767373001_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373001&videoId=111723525001",
+          "src": "https://uds.ak.o.brightcove.com/107767373001/107767373001_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373001&videoId=111723525001",
           "size": 28196307,
           "height": 180,
           "duration": 595560,
@@ -343,15 +343,15 @@ UPPER_SNAKE_CASE.
 The following commands can be used create a policy key for an account and request video data from Wedge and Nomic running on localhost or ssh port forwarded to it.
 
     ACCT=8523
-    NK=http://localhost:24680/v0/accounts/$ACCT/policy_keys
-    # to access via Wedge: NK=http://localhost:34380/nm/v0/accounts/$ACCT/policy_keys
+    NK=https://localhost:24680/v0/accounts/$ACCT/policy_keys
+    # to access via Wedge: NK=https://localhost:34380/nm/v0/accounts/$ACCT/policy_keys
 
     P='{"policy": {"pattern": {"=": ["[request.params.account-id]", "'$ACCT'"]}, "effect": "allow"}}'
     KEY=$(curl -sSD zhdr -H 'Content-Type: application/json' -d "$P" $NK | sed -e 's/^.*\(BCpk[^"]*\)".*$/\1/'); cat zhdr; rm -f zhdr; echo "key=$KEY"
 
 And then to use this key with player api requests.
 
-    WH="http://localhost:34380"
+    WH="https://localhost:34380"
     ID=1234
     curl -isS -H BCOV-Policy:$KEY "$WH/playback/v1/accounts/$ACCT/videos/$ID"
 
