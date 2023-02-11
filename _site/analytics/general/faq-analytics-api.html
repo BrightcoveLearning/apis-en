@@ -3589,15 +3589,17 @@
 
       <details>
         <summary>How do I get data for a specific day?</summary>
-        Set both the <code translate="No">from</code> and <code translate="No">to</code> values to that date. For example: <code translate="No">from=2013-05-12&amp;to=2013-05-12</code>. In addition, you can query by the <a href="/analytics/dimension-guides/dimension-date.html"><code translate="No">date</code> dimension</a>, which can be combined with other dimensions.
+        <blockquote>Set both the <code translate="No">from</code> and <code translate="No">to</code> values to that date. For example: <code translate="No">from=2013-05-12&amp;to=2013-05-12</code>. In addition, you can query by the <a href="/analytics/dimension-guides/dimension-date.html"><code translate="No">date</code> dimension</a>, which can be combined with other dimensions.</blockquote>
       </details>
       <details>
         <summary>Should the Analytics module and the <span translate="No">Analytics API</span> give me identical data for the same date range?</summary>
-        Yes, but they may be different if you are comparing data that is relatively recent, and you obtain data from Studio and the API at different times:
-        <ol>
-          <li>The data is less than 3 days old. Analytics data less than 3 days old is provisional and subject to change at any time.</li>
-          <li>Data for same period is looked at when it was less than 32 days old, and again after it is 32 days old. After 32 days, data is moved to a separate "historical" repository, and at that point we discard some data, especially detailed engagement data. This means calculated fields such as engagement score may change slightly, because the calculation is being made on less granular data.</li>
-        </ol>
+        <blockquote>
+          Yes, but they may be different if you are comparing data that is relatively recent, and you obtain data from Studio and the API at different times:
+          <ol>
+            <li>The data is less than 3 days old. Analytics data less than 3 days old is provisional and subject to change at any time.</li>
+            <li>Data for same period is looked at when it was less than 32 days old, and again after it is 32 days old. After 32 days, data is moved to a separate "historical" repository, and at that point we discard some data, especially detailed engagement data. This means calculated fields such as engagement score may change slightly, because the calculation is being made on less granular data.</li>
+          </ol>
+        </blockquote>
       </details>
 
     </section>
@@ -3607,21 +3609,22 @@
 
       <details>
         <summary>What is the granularity of recent Analytics data?</summary>
-        For the most recent 32 days (including the current day), the <span translate="No">Analytics API</span> reports an hour granularity, because it saves values into hourly buckets. However, the current hour is still being filled, so this can give the API the appearance of having more granularity than an hour when you ask for data that falls in the current hour.
-        <p>For example:</p>
-
-        <ol>
-          <li>If you ask for data from 3 hours ago for 9:15 and 9:20 you may get the same value if they fall in the same hour bucket; however, they may be different because all analytics data is provisional and subject to change until it is reconciled.</li>
-          <li>If you ask for data from 10 minutes ago, and then wait 5 minutes and ask again you may get a different value even if it is in the same bucket, because that bucket is still being updated.</li>
-        </ol>
+        <blockquote>
+          For the most recent 32 days (including the current day), the <span translate="No">Analytics API</span> reports an hour granularity, because it saves values into hourly buckets. However, the current hour is still being filled, so this can give the API the appearance of having more granularity than an hour when you ask for data that falls in the current hour.
+          <p>For example:</p>
+          <ol>
+            <li>If you ask for data from 3 hours ago for 9:15 and 9:20 you may get the same value if they fall in the same hour bucket; however, they may be different because all analytics data is provisional and subject to change until it is reconciled.</li>
+            <li>If you ask for data from 10 minutes ago, and then wait 5 minutes and ask again you may get a different value even if it is in the same bucket, because that bucket is still being updated.</li>
+          </ol>
+        </blockquote>
       </details>
       <details>
         <summary>What is the refresh interval for the analytics data?</summary>
-        The /data endpoint is currently cached for 5 minutes between queries, so for lists of videos with traffic in the last hour, 5 minute intervals is the smallest delay that will give you a delta to work from.
+        <blockquote>The /data endpoint is currently cached for 5 minutes between queries, so for lists of videos with traffic in the last hour, 5 minute intervals is the smallest delay that will give you a delta to work from.</blockquote>
       </details>
       <details>
         <summary>What is the granularity of historical Analytics data?</summary>
-        For dates earlier than the last 32 days, the <span translate="No">Analytics API</span> reports full day values. This means that if your requested <code translate="No">from=1368334306919&amp;to=1378446336919</code> (from Sun, 12 May 2013 04:51:46 GMT to Fri, 06 Sep 2013 05:45:36 GMT), you would get the same results that you would if you had requested <code translate="No">from=2013-05-12&amp;to=2013-09-06</code>
+        <blockquote>For dates earlier than the last 32 days, the <span translate="No">Analytics API</span> reports full day values. This means that if your requested <code translate="No">from=1368334306919&amp;to=1378446336919</code> (from Sun, 12 May 2013 04:51:46 GMT to Fri, 06 Sep 2013 05:45:36 GMT), you would get the same results that you would if you had requested <code translate="No">from=2013-05-12&amp;to=2013-09-06</code></blockquote>
       </details>
 
     </section>
@@ -3631,33 +3634,35 @@
 
       <details>
         <summary>What is the best way to tell how many stream starts there were in a period for one or more videos?</summary>
-        Just look at the <code translate="No">video_view</code> metric - this will always be equal to the stream starts. You can see this metric in all reports, and the summary will show you stream starts for all videos in the date range queried. To see stream starts for all videos in your account, you would just run this request:
+        <blockquote>Just look at the <code translate="No">video_view</code> metric - this will always be equal to the stream starts. You can see this metric in all reports, and the summary will show you stream starts for all videos in the date range queried. To see stream starts for all videos in your account, you would just run this request:</blockquote>
         <pre>
     <code translate="No">https://analytics.api.brightcove.com/v1/data?accounts={account_ids}&amp;dimensions=video&amp;limit=all&amp;offset=0&amp;fields=all</code></pre>
       </details>
       <details>
         <summary>How do I return all items in a <strong>Report</strong>?</summary>
-        Set the <code translate="No">limit</code> parameter for the <strong>Report</strong> equal to <code translate="No">all</code>.
+        <blockquote>Set the <code translate="No">limit</code> parameter for the <strong>Report</strong> equal to <code translate="No">all</code>.</blockquote>
       </details>
       <details>
         <summary>What data <code translate="No">fields</code> are returned for items by default?</summary>
-        By default, only <code translate="No">video_view</code> and the field corresponding to the dimension requested (e.g. <code translate="No">destination_domain</code>) are returned. To get additional fields, set <code translate="No">fields=field_name1,field_name2</code> to return selected fields.
+        <blockquote>By default, only <code translate="No">video_view</code> and the field corresponding to the dimension requested (e.g. <code translate="No">destination_domain</code>) are returned. To get additional fields, set <code translate="No">fields=field_name1,field_name2</code> to return selected fields.</blockquote>
       </details>
       <details>
         <summary>What does it mean if a field value is <code translate="No">null</code>?</summary>
-        A <code translate="No">null</code> value for a data field indicates that the data requested has not been processed. The most likely reasons are that:
-        <ul>
-          <li>The data you requested is very recent and has not been processed yet</li>
-          <li>The data you requested is very old and has not yet been imported into the current analytics system</li>
-        </ul>
+        <blockquote>
+          A <code translate="No">null</code> value for a data field indicates that the data requested has not been processed. The most likely reasons are that:
+          <ul>
+            <li>The data you requested is very recent and has not been processed yet</li>
+            <li>The data you requested is very old and has not yet been imported into the current analytics system</li>
+          </ul>
+        </blockquote>
       </details>
       <details>
         <summary>I changed the name of one of my videos - why do I see the old name in Analytics data?</summary>
-        The new name will be recorded for any new analytics events, but we do not change the name in historical data - the video name returned will be the name it had at the time it was viewed.
+        <blockquote>The new name will be recorded for any new analytics events, but we do not change the name in historical data - the video name returned will be the name it had at the time it was viewed.</blockquote>
       </details>
       <details>
         <summary>Why don't I always see integers for engagement values?</summary>
-        It is possible for engagement numbers to return with decimal points. The reason is because engagement is normalized which means that it's a ratio of "video_percent_viewed * (video_engagement_25 / video_engagement_sum)" so based on the time range selected for the query you may see floating point numbers in cases where they don’t divide exactly.
+        <blockquote>It is possible for engagement numbers to return with decimal points. The reason is because engagement is normalized which means that it's a ratio of "video_percent_viewed * (video_engagement_25 / video_engagement_sum)" so based on the time range selected for the query you may see floating point numbers in cases where they don’t divide exactly.</blockquote>
       </details>
       <details>
         <summary>How do I filter results by player?</summary>
@@ -3667,7 +3672,6 @@
 
           <ul>
             <li><strong>Brightcove Players</strong> - Enter the player URL in this format: <code translate="No">players.brightcove.com/account id/playerID<strong>_default</strong></code></li>
-            <li>Smart Players - Enter the Player ID</li>
           </ul>
         </aside>
       </details>
@@ -3679,7 +3683,7 @@
 
       <details>
         <summary>Why do I see 0 GB when I look at bandwidth used by a player?</summary>
-        In the past Brightcove has reported bandwidth by player, and so for customers that wanted to break things down by player they could use these metrics as a means of allocating bandwidth costs. However, as we move toward more manifest-driven delivery (HLS today and DASH in the future), the nature of segmented video will make tracking bandwidth by player inaccurate. Therefore, we will be deprecating the bandwidth by player dimension in the Utilization report. So going forward we recommend using seconds viewed by player in the Performance report to allocate costs by player.
+        <blockquote>In the past Brightcove has reported bandwidth by player, and so for customers that wanted to break things down by player they could use these metrics as a means of allocating bandwidth costs. However, as we move toward more manifest-driven delivery (HLS today and DASH in the future), the nature of segmented video will make tracking bandwidth by player inaccurate. Therefore, we will be deprecating the bandwidth by player dimension in the Utilization report. So going forward we recommend using seconds viewed by player in the Performance report to allocate costs by player.</blockquote>
       </details>
 
     </section>
@@ -3689,7 +3693,7 @@
 
       <details>
         <summary>Can I exclude employee views from analytics reports?</summary>
-        There is no easy way to do this, and for high-traffic videos, employee views are probably such a small percentage that their effect on analytics is negligible. However, for low traffic videos where you think it's important to do this, the simplest solution is to duplicate your production player(s) and have employees test/view videos on the copies. You can then use filters to create reports on your production player(s) only, using either the Custom Reports feature in the Analytics module or the Analytics API.
+        <blockquote>There is no easy way to do this, and for high-traffic videos, employee views are probably such a small percentage that their effect on analytics is negligible. However, for low traffic videos where you think it's important to do this, the simplest solution is to duplicate your production player(s) and have employees test/view videos on the copies. You can then use filters to create reports on your production player(s) only, using either the Custom Reports feature in the Analytics module or the Analytics API.</blockquote>
       </details>
 
     </section>
