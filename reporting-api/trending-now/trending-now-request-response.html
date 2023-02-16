@@ -1,0 +1,131 @@
+---
+title: Trending Now Reports
+description: This topic covers the Reporting API requests and responses for Trending Now reports.
+parent: 
+---
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  {% raw %}
+  <section class="bcls-section">
+    <h2 id="setup">Setup</h2>
+    <h3>Base URL</h3>
+    <p>The base URL for the Reporting API is:</p>
+<pre><code class="language-http" translate="No">https://data.api.brightcove.com/real-time/v1</code></pre>
+    <h3>Common rules</h3>
+    <ul>
+      <li>If the <code translate="No">stream_type</code> field is empty, then the request will return all the data for given account for last 1 hour.</li>
+      <li>If the <code translate="No">stream_type</code> field is either <code translate="No">VOD</code> or <code translate="No">LIVE</code>, then the request will return  the data for specified <code translate="No">stream_type</code>.</li>
+      <li>Data is refreshed every one minute. The data returned for all requests will be from beginning of the last completed minute at the time the request is received (example: 12:02:00) and one hour preceding that (example: 11:02:00)</li>
+    </ul>
+    <h3>Common Path Parameters</h3>
+    <div style="overflow-x: scroll;">
+      <table class="bcls-table">
+          <caption class="bcls-caption--table">Common Parameters</caption>
+          <thead class="bcls-table__head">
+              <tr>
+                  <th>Parameter</th>
+                  <th>Required</th>
+                  <th>Type</th>
+                  <th>Validation</th>
+              </tr>
+          </thead>
+          <tbody class="bcls-table__body">
+              <tr>
+                  <td><code translate="No">account_id</code></td>
+                  <td>Yes</td>
+                  <td>String</td>
+                  <td>Cannot be empty or null</td>
+              </tr>
+              <tr>
+                  <td><code translate="No">stream_type</code></td>
+                  <td>No</td>
+                  <td>Enum (string)</td>
+                  <td>Allowed values are <code translate="No">VOD</code> or <code translate="No">LIVE</code></td>
+              </tr>
+          </tbody>
+      </table>
+      </div>
+  </section>
+  <section class="bcls-section">
+    <h2 id="ccu_chart">CCU chard</h2>
+    <p>The CCU chart contains data for the last hour based on the time the request is received.</p>
+    <h3>Request</h3>
+<pre><code class="language-http" translate="No">{{base_url}}/account/{{account_id}}/timeseries/ccu/{{stream_type}}</code></pre>
+    <h3>Sample response</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "resultCode": "OK",
+  "resultSubCode": "",
+  "serviceTransactionId": "210f0b5684e8441a867b4206cf861864",
+  "data": [{
+      "timestamp": 1630206000000,
+      "value": 2.0
+    },
+    {
+      "timestamp": 1630206060000,
+      "value": 3.0
+    },
+    {
+      "timestamp": 1630206120000,
+      "value": 3.0
+    }
+  ]
+}</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="top_videos">Top videos</h2>
+    <p>The request returns up to 10 videos with the highest number of views over the past hour.</p>
+    <h3>Request</h3>
+<pre><code class="language-http" translate="No">{{base_url}}/account/{{account_id}}/top/ccu/{{stream_type}}</code></pre>
+    <h3>Sample response</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "resultCode": "OK",
+  "resultSubCode": "",
+  "serviceTransactionId": "210f0b5684e8441a867b4206cf861864",
+  "data": [{
+      "video": "1222414570002",
+      "value": 3.0,
+      "stream_type": "VOD",
+      "percentile": 25.00
+    },
+    {
+      "video": "1223424570001",
+      "value": 3.0,
+      "stream_type": "LIVE",
+      "percentile": 25.00
+    },
+    {
+      "video": "1223424570003",
+      "value": 6,
+      "stream_type": "VOD",
+      "percentile": 50.0
+    }
+  ]
+}</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="top_videos">Top countries</h2>
+    <p>The request returns up to 10 countries with the highest number of viewers over the past hour.</p>
+    <h3>Request</h3>
+<pre><code class="language-http" translate="No">{{base_url}}/account/{{account_id}}/country/ccu/{{stream_type}}</code></pre>
+    <h3>Sample response</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "resultCode": "OK",
+  "resultSubCode": "",
+  "serviceTransactionId": "210f0b5684e8441a867b4206cf861864",
+  "data": [{
+      "country": "MX",
+      "value": 3,
+      "percentile": 50.0
+    },
+    {
+      "country": "US",
+      "value": 3,
+      "percentile": 50.0
+    }
+  ]
+}</code></pre>
+  </section>
+  {% endraw %}
+</article>
