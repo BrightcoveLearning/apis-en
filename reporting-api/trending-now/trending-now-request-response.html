@@ -14,6 +14,31 @@ layout: doc_pages_staging
     <h3>Base URL</h3>
     <p>The base URL for the Reporting API is:</p>
 <pre><code class="language-http" translate="No">https://data.api.brightcove.com/real-time/v1</code></pre>
+    <h3>Authentication</h3>
+    <p>The <span translate="No">Analytics API</span> uses the Brightcove <a href="/oauth/getting-started/overview-oauth-api-v4.html">OAuth Service</a> to authenticate calls.</p>
+
+    <p>You will first need to obtain client credentials (a <code translate="No">client_id</code> and <code translate="No">client_secret</code>). This is a one-time operation that can be performed using the <a href="/general/managing-api-authentication-credentials.html">OAuth Credentials UI</a>. You can get client credentials directly from the Brightcove OAuth Service using <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html" translate="No">CURL</a>, <a href="/oauth/guides/oauth-create-client-credentials-using-postman.html" translate="No">Postman</a>, or <a href="/general/use-insomnia-api-requests.html" translate="No">Insomnia</a>.</p>
+
+    <p>You need both Analytics Read and Video Read permissions for client credentials:</p>
+
+    <figure class="bcls-figure"><img class="bcls-image" alt="Permissions for Credentials" src="/assets/images/analytiics/getting-started/analytics-permissions.png" />
+      <figcaption class="bcls-caption--image">Permissions for <span translate="No">Analytics API</span> Credentials</figcaption>
+    </figure>
+
+    <p>If you are creating your credentials directly through the OAuth API, the required permissions are:</p>
+
+    <pre class="line-numbers">
+  <code class="language-json" translate="No">[
+    "video-cloud/analytics/read"
+    "video-cloud/video/read"
+  ]</code></pre>
+
+    <p>You will also need an <code translate="No">access_token</code>, which is obtained using the <code translate="No">client_id</code> and <code translate="No">client_secret</code> and passed in an Authorization header with your API request:</p>
+
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+  <code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">{access_token}</span></code></pre>
+
+    <p>The <code translate="No">access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/oauth/guides/getting-access-tokens.html">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
     <h3>Common rules</h3>
     <ul>
       <li>If the <code translate="No">stream_type</code> field is empty, then the request will return all the data for given account for last 1 hour.</li>
