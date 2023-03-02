@@ -1,0 +1,276 @@
+---
+title: Live Automated Captions
+description: In this topic you will learn how to enable automated captions in your live stream.
+parent: Guides
+grandparent: Live API
+layout: staging
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>The automated captions feature allows you to enable automatic audio transcribing to create captions for your live stream.</p>
+    <p>This feature can also be enabled in Video Cloud Studio. For details, see the <a href="/live-module/multi-language-audio.html">Multi Language Audio with the Live Module</a> document.</p>
+    <!-- <aside class="bcls-aside bcls-aside--information">Currently, the input formats supported include Real-Time Transport Protocol (RTP) and Secure Reliable Transport (SRT).</aside> -->
+  </section>
+
+  <!-- <section class="bcls-section">
+    <h2 id="Requirements">Requirements</h2>
+
+    <p>There are a few requirements for multiple language audio tracks.</p>
+  
+  </section> -->
+
+  <section class="bcls-section">
+    <h2 id="Create_your_Live_Job">Create your Live Job</h2>
+
+    <p>In order to add multiple audio tracks to your job, a list of audio tracks must be provided in the request body when creating a Live Job:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "live_stream": true,
+  "region": "us-west-2",
+  "protocol": "rtp",
+  "cidr_whitelist": [ /* omitted… */ ],
+  "outputs": [ /* omitted… */ ],
+  <span class="bcls-highlight">"alternate_audio": {
+    "tracks": [ { Track Details } ]
+  }</span>
+}</code></pre>
+    <h3>Supported fields for the <code translate="No">Track</code> object</h3>
+    <p>The table below contains a full description of supported fields in the <code translate="No">track</code> object.</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Track Fields</caption>
+      <thead class="bcls-table__head">
+          <tr>
+              <th>Field</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Description</th>
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">language</code></td>
+          <td>string</td>
+          <td>Yes</td>
+          <td>
+            <p>The code for the language to be used; at present this is flexible and could be in any of the various language formats required/supported by the specs, specifically <a href="https://tools.ietf.org/html/rfc5646">RFC5456/BCP47</a> which also covers ISO-639 as per the requirements</p> 
+            <p>HLS &gt; <code translate="No">LANGUAGE</code> field</p>
+            <p>DASH &gt; <code translate="No">AdaptationSet:lang</code> field</p>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">video_pid</code></td>
+          <td>integer</td>
+          <td>Yes</td>
+          <td>The Packet Identifier (PID) from the MPEG-TS input stream for the video track</td>
+        </tr>
+        <tr>
+          <td><code translate="No">pid</code></td>
+          <td>integer</td>
+          <td>Yes</td>
+          <td>The Packet Identifier (PID) from the MPEG-TS input stream for a specific audio track</td>
+        </tr>
+        <tr>
+          <td><code translate="No">default</code></td>
+          <td>boolean</td>
+          <td>Yes (for the default track)</td>
+          <td>
+            The audio track marked as <code translate="No">DEFAULT</code> in the <code translate="No">EXT-X-MEDIA</code> as well as the track to be muxed into video stream
+            <p>If not present, the first track is the default.</p>
+            <p>If multiple playlists are defined with different defaults, the top level default track is the muxed one.</p>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">label</code></td>
+          <td>string</td>
+          <td></td>
+          <td>A text description to be used for the track, preferred to be used by the player where possible; used in: HLS &gt; <code translate="No">NAME</code> field
+            <p>Default: the <code translate="No">language</code> with an ID for each track e.g. <code translate="No">en-0</code> if not specified</p>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">variant</code></td>
+          <td>enum</td>
+          <td></td>
+          <td>
+            Maps to the DASH Role Schema values: 
+            <ul>
+              <li><code translate="No">main</code></li>
+              <li><code translate="No">alternate</code></li>
+              <li><code translate="No">commentary</code></li>
+              <li><code translate="No">supplementary</code></li>
+              <li><code translate="No">dub</code></li>    
+            </ul>
+            <p>HLS &gt; <a href="https://tools.ietf.org/html/rfc8216#section-4.3.4.1">CHARACTERISTICS</a></p>
+            <p>DASH &gt; Role <code translate="No">urn:mpeg:dash:role:2011</code>.</p>
+            <p>Default: <code translate="No">main</code></p>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">streams</code> []</td>
+          <td>array</td>
+          <td></td>
+          <td>
+            <p>This mimics the <code translate="No">streams</code> field of the playlist output type; example: <code translate="No">{ “source”: “720p” }</code> - matches the label of the output source</p>
+            <p>If not present, uses the default audio settings.</p> 
+            <p>HLS &gt; <code translate="No">GROUP-ID</code>. (Object)</p>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="example">Example</h2>
+    <p>This example body will create a Job with 2 audio tracks.</p>
+    <h3>Request</h3>
+<pre><code class="language-http" translate="No">POST https://api.bcovlive.io/v1/jobs
+  Content-Type: application/json
+  X-API-KEY: <span class="bcls-input">your_API_key</span></code></pre>
+    <h3>Request body</h3>
+
+    <pre class="line-numbers"><code class="language-java" translate="No">{
+  &quot;live_stream&quot;: true,
+  &quot;region&quot;: &quot;us-west-2&quot;,
+  &quot;protocol&quot;: &quot;rtp&quot;,
+  &quot;cidr_whitelist&quot;: [
+    &quot;0.0.0.0/0&quot;
+  ],
+  &quot;outputs&quot;: [
+    {
+      &quot;label&quot;: &quot;hls720p&quot;,
+      &quot;live_stream&quot;: true,
+      &quot;height&quot;: 720,
+      &quot;video_bitrate&quot;: 2400,
+      &quot;segment_seconds&quot;: 6,
+      &quot;keyframe_interval&quot;: 90
+    },
+    {
+      &quot;label&quot;: &quot;hls540p&quot;,
+      &quot;live_stream&quot;: true,
+      &quot;height&quot;: 540,
+      &quot;video_bitrate&quot;: 1200,
+      &quot;segment_seconds&quot;: 6,
+      &quot;keyframe_interval&quot;: 90
+    }
+  ],
+  &quot;alternate_audio&quot;: {
+    &quot;tracks&quot;: [
+      {
+        &quot;label&quot;: &quot;English&quot;,
+        &quot;language&quot;: &quot;en&quot;,
+        &quot;variant&quot;: &quot;main&quot;,
+        &quot;video_pid&quot;: 256,
+        &quot;pid&quot;: 257,
+        &quot;default&quot;: true
+      },
+      {
+        &quot;label&quot;: &quot;Spanish&quot;,
+        &quot;language&quot;: &quot;es&quot;,
+        &quot;variant&quot;: &quot;main&quot;,
+        &quot;video_pid&quot;: 256,
+        &quot;pid&quot;: 258
+      }
+    ]
+  }
+}</code></pre>
+
+    <details>
+      <summary><h2>Sample response</h2></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "id": "76f814fbcd7840e99ebf0e335c933730",
+  "outputs": [
+      {
+          "id": "0-76f814fbcd7840e99ebf0e335c933730",
+          "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist.m3u8",
+          "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist_dvr.m3u8",
+          "playback_url_vod": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist_vod.m3u8",
+          "playback_added_cdns": [],
+          "label": "hls720p"
+      },
+      {
+          "id": "1-76f814fbcd7840e99ebf0e335c933730",
+          "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist.m3u8",
+          "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist_dvr.m3u8",
+          "playback_url_vod": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist_vod.m3u8",
+          "playback_added_cdns": [],
+          "label": "hls540p"
+      },
+      {
+          "id": "2-76f814fbcd7840e99ebf0e335c933730",
+          "playlist_type": "defaultS3",
+          "type": "playlist",
+          "alternate_audio": {
+              "tracks": [
+                  {
+                      "label": "English",
+                      "language": "en",
+                      "name": "Alt0",
+                      <!-- "video_pid": 256, -->
+                      "pid": 257,
+                      "playlistDefault": true,
+                      "default": true,
+                      "variant": "main",
+                      "profile_sources": [
+                          "profile_0"
+                      ]
+                  },
+                  {
+                      "label": "Spanish",
+                      "language": "es",
+                      "name": "Alt1",
+                      <!-- "video_pid": 256, -->
+                      "pid": 258,
+                      "playlistDefault": false,
+                      "default": false,
+                      "variant": "main",
+                      "profile_sources": [
+                          "profile_0"
+                      ]
+                  }
+              ]
+          },
+          "filename": "playlist.m3u8",
+          "dvr_filename": "playlist_dvr.m3u8",
+          "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist.m3u8",
+          "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist_dvr.m3u8",
+          "playback_added_cdns": []
+      }
+  ],
+  <span class="bcls-highlight">"stream_url": "rtp://ep3-usw2.a-live.io:11780"</span>,
+  "stream_name": "76f814fbcd7840e99ebf0e335c933730.stream",
+  "static": false,
+  "alternate_audio": {
+      "tracks": [
+          {
+              "label": "English",
+              "language": "en",
+              "pid": 257,
+              "default": true,
+              "variant": "main",
+              "name": "Alt0"
+          },
+          {
+              "label": "Spanish",
+              "language": "es",
+              "pid": 258,
+              "default": false,
+              "variant": "main",
+              "name": "Alt1"
+          }
+      ]
+  },
+  "event_length": 93600,
+  "encryption": {},
+  <span class="bcls-highlight">"playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist.m3u8"</span>,
+  "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist_dvr.m3u8",
+  "playback_added_cdns": []
+}
+</code></pre>
+    </details>
+  </section>
+
+  
+</article>
