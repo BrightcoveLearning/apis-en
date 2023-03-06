@@ -3613,6 +3613,155 @@
 },
 &quot;transcribe_state&quot;: &quot;ON&quot;
 }</code></pre>  
+
+  <h3 id="example">Example</h3>
+  <p>This example body will create a live job with automated captions.</p>
+  <h4>Request</h4>
+<pre><code class="language-http" translate="No">POST https://api.bcovlive.io/v1/jobs
+Content-Type: application/json
+X-API-KEY: <span class="bcls-input">your_API_key</span></code></pre>
+
+  <h4>Request body</h4>
+  <pre class="line-numbers"><code class="language-json" translate="No">{
+  "live_stream": true,  
+  "region": "us-west-2",
+  "reconnect_time": 1800,
+  "live_sliding_window_duration": 1,
+<span class="bcls-highlight">  "manifest_api": {
+        "enabled": true
+  },
+  "transcribe_state": "ON",</span>
+  "outputs": [
+      {
+          "label": "hls1080p",
+          "live_stream": true,
+          "width": 1920,
+          "height": 1080,
+          "video_codec": "h264",
+          "h264_profile": "main",
+          "video_bitrate": 2400,
+          "segment_seconds": 6,
+          "keyframe_interval": 60
+      },
+      {
+          "label": "hls720p",
+          "live_stream": true,
+          "width": 1280,
+          "height": 720,
+          "video_codec": "h264",
+          "h264_profile": "main",
+          "video_bitrate": 1843,
+          "segment_seconds": 6,
+          "keyframe_interval": 60
+      },
+      {
+          "label": "hls480p",
+          "live_stream": true,
+          "width": 640,
+          "height": 360,
+          "video_codec": "h264",
+          "h264_profile": "main",
+          "video_bitrate": 819,
+          "segment_seconds": 6,
+          "keyframe_interval": 60
+      }
+  ]
+}</code></pre>
+
+  <!-- <details>
+    <summary><h4>Sample response</h4></summary>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+"id": "76f814fbcd7840e99ebf0e335c933730",
+"outputs": [
+    {
+        "id": "0-76f814fbcd7840e99ebf0e335c933730",
+        "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist.m3u8",
+        "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist_dvr.m3u8",
+        "playback_url_vod": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist_vod.m3u8",
+        "playback_added_cdns": [],
+        "label": "hls720p"
+    },
+    {
+        "id": "1-76f814fbcd7840e99ebf0e335c933730",
+        "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist.m3u8",
+        "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist_dvr.m3u8",
+        "playback_url_vod": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist_vod.m3u8",
+        "playback_added_cdns": [],
+        "label": "hls540p"
+    },
+    {
+        "id": "2-76f814fbcd7840e99ebf0e335c933730",
+        "playlist_type": "defaultS3",
+        "type": "playlist",
+        "alternate_audio": {
+            "tracks": [
+                {
+                    "label": "English",
+                    "language": "en",
+                    "name": "Alt0",
+                   
+                    "pid": 257,
+                    "playlistDefault": true,
+                    "default": true,
+                    "variant": "main",
+                    "profile_sources": [
+                        "profile_0"
+                    ]
+                },
+                {
+                    "label": "Spanish",
+                    "language": "es",
+                    "name": "Alt1",
+                    
+                    "pid": 258,
+                    "playlistDefault": false,
+                    "default": false,
+                    "variant": "main",
+                    "profile_sources": [
+                        "profile_0"
+                    ]
+                }
+            ]
+        },
+        "filename": "playlist.m3u8",
+        "dvr_filename": "playlist_dvr.m3u8",
+        "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist.m3u8",
+        "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist_dvr.m3u8",
+        "playback_added_cdns": []
+    }
+],
+<span class="bcls-highlight">"stream_url": "rtp://ep3-usw2.a-live.io:11780"</span>,
+"stream_name": "76f814fbcd7840e99ebf0e335c933730.stream",
+"static": false,
+"alternate_audio": {
+    "tracks": [
+        {
+            "label": "English",
+            "language": "en",
+            "pid": 257,
+            "default": true,
+            "variant": "main",
+            "name": "Alt0"
+        },
+        {
+            "label": "Spanish",
+            "language": "es",
+            "pid": 258,
+            "default": false,
+            "variant": "main",
+            "name": "Alt1"
+        }
+    ]
+},
+"event_length": 93600,
+"encryption": {},
+<span class="bcls-highlight">"playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist.m3u8"</span>,
+"playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist_dvr.m3u8",
+"playback_added_cdns": []
+}
+</code></pre>
+  </details> -->
+
   </section>
 
   <section class="bcls-section">
@@ -3691,159 +3840,6 @@
       <li>The maximum limit for audio file duration that can be sent to AWS for transcribing (both file / streaming) is capped at 4 hours. This seems to be a hard limit that can't be raised. This means that the connection will go down and be re-established automatically when the 4 hours streaming limit is exceeded, resulting in non availability of captions during that interval.</li>
     </ul>
   </section>
-
-
-
-  <!-- <section class="bcls-section">
-    <h2 id="example">Example</h2>
-    <p>This example body will create a Job with 2 audio tracks.</p>
-    <h3>Request</h3>
-<pre><code class="language-http" translate="No">POST https://api.bcovlive.io/v1/jobs
-  Content-Type: application/json
-  X-API-KEY: <span class="bcls-input">your_API_key</span></code></pre>
-    <h3>Request body</h3>
-
-    <pre class="line-numbers"><code class="language-java" translate="No">{
-  &quot;live_stream&quot;: true,
-  &quot;region&quot;: &quot;us-west-2&quot;,
-  &quot;protocol&quot;: &quot;rtp&quot;,
-  &quot;cidr_whitelist&quot;: [
-    &quot;0.0.0.0/0&quot;
-  ],
-  &quot;outputs&quot;: [
-    {
-      &quot;label&quot;: &quot;hls720p&quot;,
-      &quot;live_stream&quot;: true,
-      &quot;height&quot;: 720,
-      &quot;video_bitrate&quot;: 2400,
-      &quot;segment_seconds&quot;: 6,
-      &quot;keyframe_interval&quot;: 90
-    },
-    {
-      &quot;label&quot;: &quot;hls540p&quot;,
-      &quot;live_stream&quot;: true,
-      &quot;height&quot;: 540,
-      &quot;video_bitrate&quot;: 1200,
-      &quot;segment_seconds&quot;: 6,
-      &quot;keyframe_interval&quot;: 90
-    }
-  ],
-  &quot;alternate_audio&quot;: {
-    &quot;tracks&quot;: [
-      {
-        &quot;label&quot;: &quot;English&quot;,
-        &quot;language&quot;: &quot;en&quot;,
-        &quot;variant&quot;: &quot;main&quot;,
-        &quot;video_pid&quot;: 256,
-        &quot;pid&quot;: 257,
-        &quot;default&quot;: true
-      },
-      {
-        &quot;label&quot;: &quot;Spanish&quot;,
-        &quot;language&quot;: &quot;es&quot;,
-        &quot;variant&quot;: &quot;main&quot;,
-        &quot;video_pid&quot;: 256,
-        &quot;pid&quot;: 258
-      }
-    ]
-  }
-}</code></pre>
-
-    <details>
-      <summary><h2>Sample response</h2></summary>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "id": "76f814fbcd7840e99ebf0e335c933730",
-  "outputs": [
-      {
-          "id": "0-76f814fbcd7840e99ebf0e335c933730",
-          "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist.m3u8",
-          "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist_dvr.m3u8",
-          "playback_url_vod": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_0/chunklist_vod.m3u8",
-          "playback_added_cdns": [],
-          "label": "hls720p"
-      },
-      {
-          "id": "1-76f814fbcd7840e99ebf0e335c933730",
-          "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist.m3u8",
-          "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist_dvr.m3u8",
-          "playback_url_vod": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/profile_1/chunklist_vod.m3u8",
-          "playback_added_cdns": [],
-          "label": "hls540p"
-      },
-      {
-          "id": "2-76f814fbcd7840e99ebf0e335c933730",
-          "playlist_type": "defaultS3",
-          "type": "playlist",
-          "alternate_audio": {
-              "tracks": [
-                  {
-                      "label": "English",
-                      "language": "en",
-                      "name": "Alt0",
-                     
-                      "pid": 257,
-                      "playlistDefault": true,
-                      "default": true,
-                      "variant": "main",
-                      "profile_sources": [
-                          "profile_0"
-                      ]
-                  },
-                  {
-                      "label": "Spanish",
-                      "language": "es",
-                      "name": "Alt1",
-                      
-                      "pid": 258,
-                      "playlistDefault": false,
-                      "default": false,
-                      "variant": "main",
-                      "profile_sources": [
-                          "profile_0"
-                      ]
-                  }
-              ]
-          },
-          "filename": "playlist.m3u8",
-          "dvr_filename": "playlist_dvr.m3u8",
-          "playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist.m3u8",
-          "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist_dvr.m3u8",
-          "playback_added_cdns": []
-      }
-  ],
-  <span class="bcls-highlight">"stream_url": "rtp://ep3-usw2.a-live.io:11780"</span>,
-  "stream_name": "76f814fbcd7840e99ebf0e335c933730.stream",
-  "static": false,
-  "alternate_audio": {
-      "tracks": [
-          {
-              "label": "English",
-              "language": "en",
-              "pid": 257,
-              "default": true,
-              "variant": "main",
-              "name": "Alt0"
-          },
-          {
-              "label": "Spanish",
-              "language": "es",
-              "pid": 258,
-              "default": false,
-              "variant": "main",
-              "name": "Alt1"
-          }
-      ]
-  },
-  "event_length": 93600,
-  "encryption": {},
-  <span class="bcls-highlight">"playback_url": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist.m3u8"</span>,
-  "playback_url_dvr": "https://playback-qa.a-live.io/76f814fbcd7840e99ebf0e335c933730/us-west-2/NA/playlist_dvr.m3u8",
-  "playback_added_cdns": []
-}
-</code></pre>
-    </details>
-
-  </section> -->
 
   <section>
      <!-- <h3>Supported fields for the <code translate="No">Track</code> object</h3>
