@@ -1,6 +1,6 @@
 ---
-title: Live Automated Captions
-description: In this topic you will learn how to enable automated captions in your live stream.
+title: Automated Captions using the Live API
+description: In this topic you will learn how to use the Live API to enable automated captions in your live stream.
 parent: Guides
 grandparent: Live API
 layout: staging
@@ -12,9 +12,10 @@ layout: staging
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
     <p>The automated captions feature allows you to enable automatic audio transcribing to create captions for your live stream.</p>
-    <p>This feature can also be enabled in Video Cloud Studio. For details, see the <a href="/live-module/multi-language-audio.html">Multi Language Audio with the Live Module</a> document.</p>
     <p>If you are new to the Live API, review the <a href="/live-api/getting-started/quick-start-create-live-stream-using-brightcove-live-api.html">Create a Live Stream Using the Brightcove Live API</a> document.</p>
-   
+    <aside class="bcls-aside bcls-aside--tip">
+      <p>This feature can also be enabled in Video Cloud Studio. For details, see the <a href="https://live.support.brightcove.com/live-module/creating-and-managing-live-events-using-live-module.html#create">Creating and Managing Live Events</a> document.</p>
+     </aside>
   </section>
 
   <!-- <section class="bcls-section">
@@ -102,8 +103,15 @@ layout: staging
       <li>Currently, we provide captions only in one language. We don't support multi language captions at the moment. The Default language for captions is set to <code translate="No">en-US</code></li>
       <li>The accuracy of the captions depends on the transcript result from AWS in a timely manner. We will skip captions for a segment if AWS wasn't able to deliver the same before the segment slides off the sliding window by delivering an empty VTT file.</li>
     </ul>
-    
-   
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="AWS_Limitations">AWS Limitations</h2>
+    <p>Some limitations are specific to how Amazon transcribes speech to text. For details, see the <a href="https://docs.aws.amazon.com/transcribe/latest/dg/how-it-works.html">How Amazon Transcribe works</a> document.</p>
+    <ul>
+      <li>The number of concurrent streaming transcriptions is set to 25 which can be increased by requesting a quota increase. Based on AWS TAM Inputs, the typical turnaround is ~1 week.</li>
+      <li>The maximum limit for audio file duration that can be sent to AWS for transcribing (both file / streaming) is capped at 4 hours. This seems to be a hard limit that can't be raised. This means that the connection will go down and be re-established automatically when the 4 hours streaming limit is exceeded, resulting in non availability of captions during that interval.</li>
+    </ul>
   </section>
 
 
