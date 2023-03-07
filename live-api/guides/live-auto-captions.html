@@ -231,11 +231,11 @@ X-API-KEY: <span class="bcls-input">your_API_key</span></code></pre>
     <p>Enabling automated captions is supported after the job has been created any time independent of the job state. New Endpoints have been defined and shall be shared shortly to accomplish the sam.</p>
     <p>The endpoint would be:</p>
 
-<pre class="line-numbers"><code class="language-json" translate="No">PATCH https://&lt;TBD&gt;/v2/jobs/{job_id}/transcribe
+<pre class="line-numbers"><code class="language-json" translate="No">PATCH https://alive-auth.api.brightcove.com/v2/accounts/{account_id}/{job_region}/jobs/{job_id}/transcribe
 
   Payload:
   {
-    &quot;enabled&quot;: true/false
+    &quot;transcribe_state&quot;: &quot;ON&quot;/&quot;OFF&quot;
   }</code></pre>  
   <aside class="bcls-aside bcls-aside--information">
     Turning Transcription ON/OFF will not impact existing playback sessions. Players must refresh for the changes to take effect because the master manifest is not fetched once playback begins. New sessions will start with Master manifest fetch so they'll align with the current state of transcribe flag.
@@ -250,18 +250,18 @@ X-API-KEY: <span class="bcls-input">your_API_key</span></code></pre>
       <!-- <li>Transcription support is built on top of capabilities exposed via the Manifest API. So, <strong>manifest-api</strong> support has to be enabled on your account. The playback URL exposed via the Manifest API is the only manifest that supports subtitles in them and not the one from our S3 origin.</li> -->
       <li>You cannot enable Transcribe support for Jobs already created in your account.</li>
       <li>Currently, we provide captions only in one language. We don't support multi language captions at the moment. The Default language for captions is set to <code translate="No">en-US</code></li>
-      <li>The accuracy of the captions depends on the transcript result from AWS in a timely manner. We will skip captions for a segment if AWS wasn't able to deliver the same before the segment slides off the sliding window by delivering an empty VTT file.</li>
+      <li>The maximum limit for audio file duration for transcribing (both file/streaming) is capped at 4 hours. When the 4 hours streaming limit is reached, the connection will stop and automatically be re-established, resulting in the non-availability of captions during that interval.</li>
     </ul>
   </section>
 
-  <section class="bcls-section">
+  <!-- <section class="bcls-section">
     <h2 id="AWS_Limitations">AWS Limitations</h2>
     <p>Some limitations are specific to how Amazon transcribes speech to text. For details, see the <a href="https://docs.aws.amazon.com/transcribe/latest/dg/how-it-works.html">How Amazon Transcribe works</a> document.</p>
     <ul>
       <li>The number of concurrent streaming transcriptions is set to 25 which can be increased by requesting a quota increase. Based on AWS TAM Inputs, the typical turnaround is ~1 week.</li>
       <li>The maximum limit for audio file duration that can be sent to AWS for transcribing (both file / streaming) is capped at 4 hours. This seems to be a hard limit that can't be raised. This means that the connection will go down and be re-established automatically when the 4 hours streaming limit is exceeded, resulting in non availability of captions during that interval.</li>
     </ul>
-  </section>
+  </section> -->
 
   <section>
      <!-- <h3>Supported fields for the <code translate="No">Track</code> object</h3>
