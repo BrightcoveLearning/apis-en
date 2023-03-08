@@ -9,6 +9,7 @@ git submodule add https://github.com/BrightcoveLearning/s-apis-general
 git submodule add https://github.com/BrightcoveLearning/s-general
 git submodule add https://github.com/BrightcoveLearning/s-media
 git submodule add https://github.com/BrightcoveLearning/s-support
+git submodule add https://github.com/BrightcoveLearning/s-training
 git submodule add https://github.com/BrightcoveLearning/s-misc
 git submodule add https://github.com/BrightcoveLearning/s-brightcove-interactivity
 git submodule add https://github.com/BrightcoveLearning/s-live
@@ -20,6 +21,7 @@ git submodule add https://github.com/BrightcoveLearning/s-apis-general-img
 git submodule add https://github.com/BrightcoveLearning/s-general-img
 git submodule add https://github.com/BrightcoveLearning/s-media-img
 git submodule add https://github.com/BrightcoveLearning/s-support-img
+git submodule add https://github.com/BrightcoveLearning/s-training-img
 git submodule add https://github.com/BrightcoveLearning/s-feather-img
 git submodule add https://github.com/BrightcoveLearning/s-misc-img
 git submodule add https://github.com/BrightcoveLearning/s-live-img
