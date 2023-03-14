@@ -1,0 +1,74 @@
+basePath: /v2/jobs
+definitions:
+  encode.errorResponse:
+    properties:
+      error_code:
+        type: string
+      message:
+        type: string
+    type: object
+  handler.UpdateTranscribe.request:
+    properties:
+      transcribe_state:
+        enum:
+        - "ON"
+        - "OFF"
+        type: string
+    type: object
+  handler.UpdateTranscribe.response:
+    properties:
+      id:
+        type: string
+      transcribe_state:
+        type: string
+    type: object
+host: https://jobs-api.alive.{job_region}.{environment}.deploys.brightcove.com
+info:
+  contact: {}
+  description: |-
+    API for interacting with Live Jobs.
+
+    **Base URL** https://jobs-api.alive.{job_region}.prod.deploys.brightcove.com/v2/jobs
+  title: Jobs API
+  version: "2.0"
+paths:
+  /{job_id}/transcribe:
+    patch:
+      consumes:
+      - application/json
+      description: Toggle Transcribe ON/OFF
+      parameters:
+      - description: body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.UpdateTranscribe.request'
+      - description: job_id
+        example: bdbdc12a94f943238b1655de31426dab
+        in: path
+        name: job_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.UpdateTranscribe.response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/encode.errorResponse'
+      summary: Toggle Transcribe
+      tags:
+      - transcribe
+      - job
+      - public
+securityDefinitions:
+  ApiKeyHeader:
+    in: header
+    name: x-api-key
+    type: apiKey
+swagger: "2.0"
