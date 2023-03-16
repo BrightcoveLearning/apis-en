@@ -14,16 +14,18 @@ layout: staging
     <p>The Brightcove web and mobile device players have a lot of built-in functionality, including sending QoE data. If you choose to use a non-Brightcove Player, you can send QoE data manually using the Data Collection API. </p>
 
     <p>For details about using your Video Cloud library, see the <a href="https://player.support.brightcove.com/publish/using-non-brightcove-player.html">Using a Non-Brightcove Player</a> document.</p>
+    <p>QoE analytic data can be viewed in Video Cloud Studio. For details, see the <a href="https://studio.support.brightcove.com/analytics/module/qoe-analytics.html">Quality of Experience (QoE) Analytics</a> document.</p>
   </section>
 
   <section class="bcls-section">
-    <h2 id="Sending_QoE_data">Sending QoE data</h2>
+    <h2 id="Configure_player_data">Configure player data</h2>
 
     <p>Follow these steps to send QoE data from your player to Brightcove:</p>
     <ol class="bcls-tasklist">
       <li>If you are new to the Data Collection API, review the <a href="/data-collection/getting-started/overview-data-collection-api-v2.html">Overview: Data Collection API v2</a> document.</li>
+      <li>Configure some key data as defined in the <a href="/data-collection/getting-started/overview-data-collection-api-v2.html#minimal">Minimal data</a> section of the Overview document.</li>
       <li>
-       <p> Configure fields and events for QoE.</p>
+       <p> Configure fields and events for QoE analytics.</p>
        {% include s-apis-general/analytics/fields-events-qoe.html %}
 
       </li>
@@ -55,6 +57,27 @@ layout: staging
         </tr>
       </tbody>
     </table> -->
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Send_player_data">Send player data</h2>
+
+    <p>You will use the videojs <code translate="No">collectData</code> plugin to send data to Brightcove's Data Collection API.</p>
+    <ol class="bcls-tasklist-restart">
+      <li>Review the <a href="/data-collection/getting-started/data-collection-api-sample.html">Data Collection API Sample</a>. Here you will find example code for sending player data.</li>
+      <li>
+       <p> For your custom player, create JavaScript code to do the following:</p>
+       <ol>
+        <li>Get a reference to your player.</li>
+        <li>Register the videojs <code translate="No">collectData</code> plugin.</li>
+        <li>Listen for player events that you are interested in.</li>
+        <li>When an event is triggered, send data to the Data Collection API.</li>
+        <li>To avoid CORS issues,the best way to "send" to the Data Collection API is by setting the request URL as the <code translate="No">src</code> value for a new <code translate="No">img</code> element and then injecting that element into your HTML page.</li>
+       </ol>
+      </li>    
+      <li>Test your data collection script in a controlled environment for at least a day.</li>
+      <li>Verify your analytics data either in Video Cloud Studio or by using the Analytics API.</li>
+    </ol>
   </section>
 
  
