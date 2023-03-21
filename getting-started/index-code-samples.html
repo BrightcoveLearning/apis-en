@@ -1,0 +1,34 @@
+---
+title: Index of Platform API Code Samples
+description: Just looking for sample code? This page contains an index of all sample apps/code for the platform APIs
+parent: Getting Started
+---
+
+<!-- create array of sections that have code samples -->
+{% assign sections_array = "" | split: ',' %}
+{% for item in site.data.navigation %}
+  {% for doc in item.docs %}
+    {% if doc.name == 'Code Samples' %}
+      {% assign sections_array = sections_array | push: item %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  {% for section in sections_array %}
+    <section class="bcls-section">
+      <h2 id="{{ section.name | replace: " ", "_"}}">{{ section.name }}</h2>
+      <ul>
+        {% for doc in section.docs %}
+          {% if doc.name == 'Code Samples' %}
+            {% for subdoc in doc.docs %}
+              <li><a href="{{ subdoc.url }}">{{ subdoc.name }}</a></li>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  {% endfor %}
+</article>
