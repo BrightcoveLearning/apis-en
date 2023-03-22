@@ -15,7 +15,7 @@ echo 'Added changed files in parent repo'
 git pull --quiet
 git add . > /dev/null
 echo 'Committing files in parent repo'
-git commit -m '$COMMITMESSAGE' --quiet
+git commit -m $COMMITMESSAGE --quiet
 echo 'Pushing files in parent repo'
 git push --quiet
 echo 'Getting all submodules'
@@ -25,6 +25,6 @@ git submodule --quiet foreach "git checkout --quiet main ; git pull --quiet; git
 echo 'Syncing changed submodules with parent repo'
 git add . > /dev/null
 echo 'Committing changes'
-git commit -m '$COMMITMESSAGE' --quiet
+git commit -m $COMMITMESSAGE --quiet
 echo 'Pushing parent repo changes'
 git push --quiet
