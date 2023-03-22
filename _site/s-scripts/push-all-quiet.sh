@@ -1,3 +1,4 @@
+# Push all with quiet statements
 echo "Enter your ${bold}COMMIT MESSAGE${normal}:"
 read COMMITMESSAGE 
 cd ..
@@ -20,7 +21,7 @@ git push --quiet
 echo 'Getting all submodules'
 git submodule --quiet foreach "git fetch origin main --quiet"
 echo 'Writing to submouldes'
-git submodule --quiet foreach "git checkout --quiet main  ; echo 'a' ; git pull --quiet; echo 'b' ;  git add . > /dev/null; echo 'c' ; git commit  --quiet -m '$COMMITMESSAGE'; echo 'd' ;  git push --quiet" --quiet
+git submodule --quiet foreach "git checkout --quiet main ; git pull --quiet; git add . > /dev/null; git commit  --quiet -m '$COMMITMESSAGE';  git push --quiet"
 echo 'Syncing changed submodules with parent repo'
 git add . > /dev/null
 echo 'Committing changes'
