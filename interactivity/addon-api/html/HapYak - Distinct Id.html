@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!-- saved from url=(0076)https://d2qrdklrsxowl2.cloudfront.net/static/js/pages/distinct-id/index.html -->
+<html data-lt-installed="true"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>HapYak - Distinct Id</title>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1101.0" data-gr-ext-installed="">
+    <script>
+        var COOKIE_NAME = 'hapyak_did';
+
+        function ready(fn) {
+          if (document.readyState != 'loading'){
+            fn();
+          } else if (document.addEventListener) {
+            document.addEventListener('DOMContentLoaded', fn);
+          } else {
+            document.attachEvent('onreadystatechange', function() {
+              if (document.readyState != 'loading')
+                fn();
+            });
+          }
+        }
+
+        var hex = (function () {
+            var a = [], i;
+            for (i = 0; i < 16; i++) {
+                a.push(i.toString(16));
+            }
+            return a;
+        }());
+
+        function uuid() {
+            function randInt() {
+                return Math.floor(0x100000000 * Math.random());
+            }
+
+            function calcUUID(w1, w2, w3, w4, version) {
+                var uuid, data,
+                    i, j, k, r, rnd;
+
+                uuid = new Array(36);
+                data = [
+                    (w1 & 0xFFFFFFFF),
+                    (w2 & 0xFFFF0FFF) | ((version || 4) << 12), // version (1-5)
+                    (w3 & 0x3FFFFFFF) | 0x80000000,    // rfc 4122 variant
+                    (w4 & 0xFFFFFFFF)
+                ];
+                for (i = 0, k = 0; i < 4; i++) {
+                    rnd = data[i];
+                    for (j = 0; j < 8; j++) {
+                        if (k === 8 || k === 13 || k === 18 || k === 23) {
+                            uuid[k++] = '-';
+                        }
+                        r = (rnd >>> 28) & 0xf; // Take the high-order nybble
+                        rnd = (rnd & 0x0FFFFFFF) << 4;
+                        uuid[k++] = hex[r];
+                    }
+                }
+                return uuid.join('');
+            }
+
+            return calcUUID(randInt(), randInt(), randInt(), randInt(), 4);
+        };
+
+        var cookie = {
+            set: function (key, value, days) {
+                var expires, date;
+
+                if (days) {
+                    date = new Date();
+
+                    date.setTime(date.getTime() + (days * 86400000));
+
+                    expires = '; expires=' + date.toGMTString();
+                } else {
+                    expires = '';
+                }
+
+                document.cookie = key + '=' + value + expires + '; path=/; samesite=none; secure=true';
+            },
+            get: function (key) {
+                var identifier = key + '=',
+                    cookies = document.cookie.split(';');
+
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i];
+
+                    while (cookie.charAt(0) === ' ') {
+                        cookie = cookie.substring(1, cookie.length);
+                    }
+
+                    if (cookie.indexOf(identifier) === 0) {
+                        return cookie.substring(identifier.length, cookie.length);
+                    }
+                }
+
+                return null;
+            },
+            remove: function (key) {
+                this.set(key, '', -1);
+            },
+
+            setObject: function (key, objectValue, days) {
+                var json = JSON.stringify(objectValue);
+                this.set(key, json, days);
+            },
+
+            getObject: function (key) {
+                var json = this.get(key);
+                return JSON.parse(json);
+            }
+        };
+
+        function init() {
+            var userInfo,
+                postTarget = window.parent || window,
+                expiry = 365;
+
+            try {
+                userInfo = cookie.getObject(COOKIE_NAME) || {};
+            }
+            catch(e) {
+                userInfo = {};
+            }
+
+            if (!userInfo.uid) {
+                userInfo.uid = uuid().replace(/\-/g, '');
+                userInfo.ru = 0;
+                userInfo.iu = 0;
+                cookie.setObject(COOKIE_NAME, userInfo, expiry);
+            } else {
+                // Incr the returning user bit and extend expiry
+                userInfo.ru++;
+                cookie.setObject(COOKIE_NAME, userInfo, expiry);
+            }
+
+            postTarget.postMessage(JSON.stringify({
+                'source': 'hapyak-distinct-id',
+                'event': 'loaded',
+                uid: userInfo.uid,
+                ru: +userInfo.ru,
+                iu: +userInfo.iu
+            }), '*');
+
+            function auth(event, uid) {
+                return event.data && event.data.uid === uid && event.source === postTarget;
+            }
+
+            window.addEventListener('message', function onMessage(event) {
+                var data
+
+                try {
+                    data = JSON.parse(event.data);
+                } 
+                catch(e) {
+                    console && console.log && console.log('[hapyak] distinct id: Message parse failed');
+                }
+                
+                if (auth(event)) {
+                    if (data.command === 'set_iu') {
+                        userInfo.iu++;
+                        cookie.setObject(COOKIE_NAME, userInfo, expiry);
+                    }
+                } else {
+                    console && console.log && console.log('[hapyak] distinct id: Message auth failed');
+                }
+            });
+        }
+
+        ready(init);
+    </script>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
