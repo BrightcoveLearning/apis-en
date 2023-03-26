@@ -11,7 +11,7 @@ servers:
   - url: 'https://cms.api.brightcove.com/v1'
     variables: {}
 paths:
-  '/accounts/{account_id}/playlists/{playlist_id}':
+  '/accounts/{{account_id}}/playlists/{playlist_id}':
     patch:
       tags:
         - Cloud Playout CMS Interactions
@@ -60,7 +60,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/playlists/{playlist_id}/videos':
+  '/accounts/{{account_id}}/playlists/{playlist_id}/videos':
     get:
       tags:
         - Cloud Playout CMS Interactions
@@ -103,7 +103,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/counts/videos':
+  '/accounts/{{account_id}}/counts/videos':
     get:
       tags:
         - Cloud Playout CMS Interactions
@@ -152,7 +152,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos':
+  '/accounts/{{account_id}}/videos':
     get:
       tags:
         - Cloud Playout CMS Interactions
@@ -261,7 +261,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_id}':
+  '/accounts/{{account_id}}/videos/{{video_id}}':
     patch:
       tags:
         - Cloud Playout CMS Interactions
@@ -334,7 +334,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/videos/{video_ids}':
+  '/accounts/{{account_id}}/videos/{video_ids}':
     delete:
       tags:
         - Cloud Playout CMS Interactions
@@ -372,7 +372,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  '/accounts/{account_id}/playlists':
+  '/accounts/{{account_id}}/playlists':
     get:
       tags:
         - Cloud Playout CMS Interactions
@@ -1437,6 +1437,15 @@ components:
           - description: Trailing week video views (this field can only be sorted on - it is not returned)
             name: plays_trailing_week
       style: form
+    AccountId:
+      name: account_id
+      in: path
+      description: The account id
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
     VideoId:
       name: video_id
       in: path

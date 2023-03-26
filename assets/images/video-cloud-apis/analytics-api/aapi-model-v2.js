@@ -28,13 +28,13 @@ var aapi_model = {
         urlparams: ['from', 'to']
       }, {
         name: 'Player engagement',
-        path: '/accounts/{account_id}/players/{player}',
+        path: '/accounts/{{account_id}}/players/{player}',
         methods: ['GET'],
         pathparams: ['account', 'player'],
         urlparams: ['from', 'to']
       }, {
         name: 'Video engagement',
-        path: '/accounts/{account_id}/videos/{video_id}',
+        path: '/accounts/{{account_id}}/videos/{{video_id}}',
         methods: ['GET'],
         pathparams: ['account', 'video'],
         urlparams: ['from', 'to']
