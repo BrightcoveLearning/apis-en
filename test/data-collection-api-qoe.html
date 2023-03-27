@@ -33,97 +33,85 @@
       //   myPlayer.audioPosterMode(true);
       // });
 
-var myPlayer,
-    requestData,
-    apiBaseURL = 'https://edge.api.brightcove.com/playback/v1/accounts/',
-    policyKey = "BCpkADawqM1eifBpAkEr4aJrH9i950qErQCg8FvHXBCigF0JjC-zZyhN4T1XGGGBbB0hojevaABtp54BTvT9Er0KplSpC6tqm8YgyCtIzGl5sc77i23GLWYdpLdtF7Aei45EuLqlUznlkiXU",
-    videoData = [];
 
-// +++ Wait for loadedmetadata +++
-/**
-  * wait for the video metadata to load
-  */
-videojs.getPlayer('myPlayerID').one('loadedmetadata', function(){
-  myPlayer = this;
-  // set up the Playback API request
-  requestData = setRequestData();
-  // make the Playback API request
-  getRelatedVideos(requestData, function(relatedVideos) {
-    // extract the needed video data into an array
-    videoData = extractVideoData(relatedVideos);
-    // generate the HTML for the overlay
-    videoList = createVideoList(videoData);
-    // add the overlay
-    addOverlayText(videoList);
-  });
+      videojs("myPlayerID").ready(function () {
+          var myPlayer = this,
+            // Build options needed for CMS API request
+            apioptions = {},
+            apiBaseURL = 'https://edge.api.brightcove.com/playback/v1/accounts/',
+            policyKey = "BCpkADawqM1eifBpAkEr4aJrH9i950qErQCg8FvHXBCigF0JjC-zZyhN4T1XGGGBbB0hojevaABtp54BTvT9Er0KplSpC6tqm8YgyCtIzGl5sc77i23GLWYdpLdtF7Aei45EuLqlUznlkiXU",
+            accountId = "1752604059001",
+            videoId = "5802784116001",
+            requestData = {},
+            videoData = [],
+            videoObjects = [];
+            console.log("player ready");
+          // Set up the Playback API request
+          requestData = setRequestData(myPlayer,apiBaseURL,accountId,videoId);
+          console.log("requestData= ",requestData);
+          // Make the Playback API request
+          getVideo(requestData,policyKey, function(videoReturn) {
+            console.log("videoReturn= ",videoReturn);
+            // Load the video into the player
+            console.log("videoReturn source= ",videoReturn.sources[0]);
+            myPlayer.src({
+                type: videoReturn.sources[0].type,
+                src: videoReturn.sources[0].src
+              });
+          });
+          
+            // options = {};   
+      });  
 
-});
+      // +++ Setup the API request +++
+      /**
+        * set up the Playback API request
+        */
+      function setRequestData(myPlayer,apiBaseURL,accountId,videoId) {
+        var requestData = {},
+            dataReturned = false;
 
-// +++ Setup the API request +++
-/**
-  * set up the Playback API request
-  */
-function setRequestData() {
-  var endPoint = '',
-      accountId,
-      videoName,
-      requestURL,
-      endPoint,
-      tagValue,
-      requestData = {},
-      dataReturned = false;
+        // add the query string to the request URL
+        requestData.url = apiBaseURL + accountId + '/videos/' + videoId;
+        // set the request type to GET
+        requestData.requestType = 'GET';
+        return requestData;
+      }
 
-  // use the mediainfo object to get the account id, tag value and video name for the video currently loaded in the player
-  accountId = myPlayer.mediainfo.account_id;
-  tagValue = myPlayer.mediainfo.tags[0];
-  videoName = myPlayer.mediainfo.name;
+      // +++ Make the Playback API request +++
+      /**
+        * request data from the Playback API
+        */
+        getVideo = function(requestData,policyKey, callback) {
+        var httpRequest = new XMLHttpRequest(),
+            responseData,
+            parsedData,
+            // response handler
+            getResponse = function() {
+              try {
+                if (httpRequest.readyState === 4) {
+                  if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                    responseData = httpRequest.responseText;
+                    parsedData = JSON.parse(responseData);
 
-  // add the account id and videos search term to the base URL. Note that your policy key needs to be enabled for search or you will get an error with the request.
-  requestURL = apiBaseURL + accountId + '/videos';
-  // return up to 9 videos which have a tag value equal to the current video, excluding the current video by name
-  endPoint = '?q=tags:"' + tagValue + '" -name:"' + videoName + '"&limit=9';
-
-  // add the query string to the request URL
-  requestData.url = requestURL + endPoint;
-  // set the request type to GET
-  requestData.requestType = 'GET';
-  return requestData;
-}
-
-// +++ Make the Playback API request +++
-/**
-  * request data from the Playback API
-  */
-getRelatedVideos = function(options, callback) {
-  var httpRequest = new XMLHttpRequest(),
-      responseData,
-      parsedData,
-      // response handler
-      getResponse = function() {
-        try {
-          if (httpRequest.readyState === 4) {
-            if (httpRequest.status >= 200 && httpRequest.status < 300) {
-              responseData = httpRequest.responseText;
-              parsedData = JSON.parse(responseData);
-
-              callback(parsedData);
-            } else {
-              alert('There was a problem with the request. Request returned ' + httpRequest.status);
-            }
-          }
-        } catch (e) {
-          alert('Caught Exception: ' + e);
-        }
+                    callback(parsedData);
+                  } else {
+                    alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                  }
+                }
+              } catch (e) {
+                alert('Caught Exception: ' + e);
+              }
+            };
+        // set the response handler
+        httpRequest.onreadystatechange = getResponse;
+        // open the request
+        httpRequest.open('GET', requestData.url);
+        // set the headers
+        httpRequest.setRequestHeader('Accept', 'application/json;pk=' + policyKey);
+        // open and send the request
+        httpRequest.send();
       };
-  // set the response handler
-  httpRequest.onreadystatechange = getResponse;
-  // open the request
-  httpRequest.open('GET', requestData.url);
-  // set the headers
-  httpRequest.setRequestHeader('Accept', 'application/json;pk=' + policyKey);
-  // open and send the request
-  httpRequest.send();
-};
 
 // +++ Format the overlay content +++
 /**
