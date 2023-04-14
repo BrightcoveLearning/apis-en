@@ -3625,16 +3625,54 @@
   </section>
   <details>
     <summary>New to working with APIs?</summary>
+    <p>If you are new to working with APIs, and just doing this to retrieve your video masters, here is some information to help you. REST APIs are popular because to make the request, you just open a URL with the appropriate HTTP method. Browsers do this every time you open a web page, but they are only using the GET HTTP method. There are others.</p>
+    <p>Fortunately, there are many tools out there to help you make REST API requests, and they are sufficient if you just need to make one or a few requests. We have documented how to use a couple of the most popular ones with the Brightcove APIs:</p>
+    <ul>
+      <li><a href="/general/developer-tools/use-insomnia-api-requests.html">Using Insomnia with the Brightcove APIS</a></li>
+      <li><a href="/general/developer-tools/use-postman-api-requests.html">Using Postman with the Brightcove APIs</a></li>
+    </ul>
   </details>
   <section class="bcls-section">
     <h2 id="process_overview">Process overview</h2>
     <p>Here are the high-level steps for setting up the feed to download your masters - the steps are detailed in the sections that follow.</p>
     <ol>
-      <li>Obtain authentication credentials for the Social Syndication API if you do not already have them.</li>
+      <li>Obtain <a href="#Authentication">authentication credentials</a> for the Social Syndication API if you do not already have them.</li>
+      <li><a href="#create_mrss_feed">Create an MRSS feed</a> of the "universal" type, that can accept a template</li>
+      <li><a href="#Set_a_template">Set a template that includes masters</a></li>
     </ol>
   </section>
   <section class="bcls-section">
-    <h2 id="Obtain_authentication_credentials">Obtain authentication credentials</h2>
+    <h2 id="Authentication">Authentication</h2>
+
+    <p>Access to the Configuration API requires specification of a <code translate="No">bearer</code> token from the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth service</a> in the request's <code translate="No">Authorization</code> header. The various API methods also require one of the following operations (depending upon the method accessed) to be specified for the credentials in question:</p>
+
+    <ul>
+      <li><code translate="No">video-cloud/social/mrss/read</code></li>
+      <li><code translate="No">video-cloud/social/mrss/write</code></li>
+    </ul>
+
+    <p>These operations can be configured via the <a href="/general/managing-api-authentication-credentials.html">API Authentication section of the Studio Admin Module</a>:</p>
+
+    <figure class="bcls-figure"><img class="bcls-image" alt="Social Syndication Permissions" src="https://apis.support.brightcove.com/assets/images/social-syndication/social-syndication-permissions.png" />
+      <figcaption class="bcls-caption--image">Social Syndication Permissions</figcaption>
+    </figure>
+
+    <aside class="bcls-aside bcls-aside--information language-editable">Note: the operations will <strong>not</strong> appear in Studio unless the account has the Social Module enabled. They can still be added using the OAuth API as explained below.</aside>
+
+    <p>If you prefer, you can also create credentials via the OAuth API:</p>
+
+    <ul>
+      <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Create Client Credentials Using cURL</a></li>
+      <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Create Client Credentials Using Postman</a></li>
+    </ul>
+
+  </section>
+  <section class="bcls-section">
+    <h2 id="create_mrss_feed">Create the MRSS feed</h2>
+    <p></p>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Set_a_template">Set a template that include masters</h2>
     <p></p>
   </section>
 </article>
