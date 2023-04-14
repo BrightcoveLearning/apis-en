@@ -58,6 +58,13 @@
                 type: videoReturn.sources[0].type,
                 src: videoReturn.sources[0].src
               });
+            /* each time we load a video, we want to add an event listener for the play event that will unload after one event */
+            myPlayer.one("play", function (evt) {
+                var dateTime = new Date();
+                evt.timeStamp = dateTime.valueOf();
+                logEvent("player-event", "play", "", dateTime.toISOString());
+                sendAnalyticsEvent("video_view", evt);
+              });
           });
           
             // options = {};   
@@ -78,7 +85,6 @@
         return requestData;
       }
 
-      // +++ Make the Playback API request +++
       /**
         * request data from the Playback API
         */
@@ -113,7 +119,6 @@
         httpRequest.send();
       };
 
-// +++ Format the overlay content +++
 /**
   * extract video data from Playback API response
   * @param {array} playbackData the data from the Playback API
@@ -135,6 +140,12 @@ function extractVideoData(playbackData) {
   }
   return videoData;
 }
+
+
+
+
+
+
 
 /**
   * create the html for the overlay
