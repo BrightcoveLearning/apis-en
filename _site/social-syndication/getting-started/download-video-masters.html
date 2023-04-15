@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"> 
     <head>
-        <title>Download Video Masters via the Social Syndication API</title>
+        <title>Download Video Masters</title>
         
         <!-- Meta -->
         <meta charset="utf-8">
@@ -3371,6 +3371,12 @@
                   
                   
                   
+                  <li class="nav-item section-doc"><a class="nav-link" href="/social-syndication/getting-started/download-video-masters.html" aria-current="page">Downloading Video Masters</a></li>
+                  
+                  
+                  
+                  
+                  
                   <li class="nav-item"><a class="nav-link" href="/cms/searching/cms-and-playback-apis-video-search-v2.html">CMS and Playback APIs: Video Search v2</a></li>
                   
                   
@@ -3582,7 +3588,7 @@
             
             
             
-            <li class="breadcrumb-item active" aria-current="page">Download Video Masters via the Social Syndication API</li>
+            <li class="breadcrumb-item active" aria-current="page">Download Video Masters</li>
             
             
           </ol>
@@ -3604,7 +3610,7 @@
       
       
 
-<h1>Download Video Masters via the Social Syndication API</h1>
+<h1>Download Video Masters</h1>
 <article class="bcls-article">
   <summary>A video master is the original source file you ingested. In case you need to download it again, you can use the Social Syndication API to do so.</summary>
   <section class="bcls-section">
@@ -3624,7 +3630,7 @@
     </ul>
   </section>
   <details>
-    <summary>New to working with APIs?</summary>
+    <summary><h4>New to working with APIs?</h4></summary>
     <p>If you are new to working with APIs, and just doing this to retrieve your video masters, here is some information to help you. REST APIs are popular because to make the request, you just open a URL with the appropriate HTTP method. Browsers do this every time you open a web page, but they are only using the GET HTTP method. There are others.</p>
     <p>Fortunately, there are many tools out there to help you make REST API requests, and they are sufficient if you just need to make one or a few requests. We have documented how to use a couple of the most popular ones with the Brightcove APIs:</p>
     <ul>
@@ -3640,6 +3646,7 @@
       <li><a href="#create_mrss_feed">Create an MRSS feed</a> of the "universal" type, that can accept a template</li>
       <li><a href="#Set_a_template">Set a template that includes masters</a></li>
     </ol>
+    <p>After completing these steps, you will be able to download your video masters.</p>
   </section>
   <section class="bcls-section">
     <h2 id="Authentication">Authentication</h2>
@@ -3653,7 +3660,7 @@
 
     <p>These operations can be configured via the <a href="/general/managing-api-authentication-credentials.html">API Authentication section of the Studio Admin Module</a>:</p>
 
-    <figure class="bcls-figure"><img class="bcls-image" alt="Social Syndication Permissions" src="https://apis.support.brightcove.com/assets/images/social-syndication/social-syndication-permissions.png" />
+    <figure class="bcls-figure"><img class="bcls-image" alt="Social Syndication Permissions" src="/assets/images/social-syndication/social-syndication-permissions.png" />
       <figcaption class="bcls-caption--image">Social Syndication Permissions</figcaption>
     </figure>
 
@@ -3669,11 +3676,38 @@
   </section>
   <section class="bcls-section">
     <h2 id="create_mrss_feed">Create the MRSS feed</h2>
-    <p></p>
+    <p>The feed can be created with a <code translate="No">POST</code> request to the Social Syndication API:</p>
+<pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1/accounts/<span class="bcls-input"></span>/mrss/syndications</code></pre>
+    <p>The request body must include the <code translate="No">type</code> set to <code translate="No">universal</code> and <code translate="No">fetch_digital_master</code> set to <code translate="No">true</code>. Below is the minimum request body you need to get this working:</p>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "name": "Feed with masters",
+  <span class="bcls-highlight">"type": "universal"</span>,
+  <span class="bcls-highlight">"fetch_digital_master": true</span>
+}</code></pre>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that the response to the request will include the syndication <code translate="No">id</code>, which you will need in the next step.</aside>
   </section>
   <section class="bcls-section">
     <h2 id="Set_a_template">Set a template that include masters</h2>
-    <p></p>
+    <p>A template can be set for the feed that instructs the feed to include the masters for each video in the account. This can be done by making the following <code translate="No">PUT</code> request:</p>
+<pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1/accounts/<span class="bcls-input"></span>/mrss/syndications/<span class="bcls-input"></span>/template</code></pre>
+    <p>The request body is the template to set for the feed. You will want to use the <a href="social-syndication/getting-started/sample-templates-universal-syndication.html#source">Source template</a> included in the sample templates - it is reproduced below for convenience.</p>
+<pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;rss xmlns:media="https://search.yahoo.com/mrss/" xmlns:dcterms="https://purl.org/dc/terms/" xmlns:ext="https://ooyala.com/syndication/ext/" version="2.0"&gt;
+  &lt;channel&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;description&gt;&lt;/description&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;</code></pre>
+    <h3>Modified version of the template</h3>
+    <p>The template above escapes URLs, which is the correct format for typical RSS reader. In this case, however, you may wish to have download links that will work in browsers and other apps. You can easily do this by replacing the section of the template that is highlighted above with this slightly modified version:</p>
+<pre class="line-numbers"><code class="language-xml"></code></pre>
+    <p>This will change the URLs so that they can be opened in a browser to begin downloading the video master.</p>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that after you set or change a template, it can take up to 10 minutes for the change to be reflected in the feed.</aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Paging_the_feed">Paging the feed</h2>
+    <p>MRSS feeds are limited to 100 items. If you wish to download masters for more than 100 videos, you can do so by paging through whole feed using the <code translate="No">offset</code> parameter (see <a href="/social-syndication/getting-started/feed-syndication-api-overview.html#operations">Operations for the feed API</a>). For example, to get the second 100 videos, you would set <code translate="No">offset</code> to 100, like this:</p>
+<pre><code class="language-http" translate="No">https://social.feeds.brightcove.com/v1/accounts//mrss/syndications//feed<span class="bcls-highlight">?offset=100</span></code></pre>
   </section>
 </article>
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
