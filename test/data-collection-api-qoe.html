@@ -45,10 +45,18 @@
             requestData = {},
             videoData = [],
             videoObjects = [];
-            console.log("player ready");
+            console.log("player ready"),
+            now = new Date().toISOString(),
+            rand = Math.random() * 1000000,
+            session = parseInt(rand).toString() + "_" + now,
+            firstTimeUpdate = true;
+            
           // Set up the Playback API request
           requestData = setRequestData(myPlayer,apiBaseURL,accountId,videoId);
           console.log("requestData= ",requestData);
+
+          initListeners(myPlayer);
+          
           // Make the Playback API request
           getVideo(requestData,policyKey, function(videoReturn) {
             console.log("videoReturn= ",videoReturn);
@@ -58,13 +66,9 @@
                 type: videoReturn.sources[0].type,
                 src: videoReturn.sources[0].src
               });
-            /* each time we load a video, we want to add an event listener for the play event that will unload after one event */
-            myPlayer.one("play", function (evt) {
-                var dateTime = new Date();
-                evt.timeStamp = dateTime.valueOf();
-                logEvent("player-event", "play", "", dateTime.toISOString());
-                sendAnalyticsEvent("video_view", evt);
-              });
+            /* with video load, add an event listener for the play event that will unload after one event */
+            
+            
           });
           
             // options = {};   
@@ -118,6 +122,124 @@
         // open and send the request
         httpRequest.send();
       };
+
+      // event logger
+      function logEvent(eventType, event, data, dateTime) {
+        var str = "";
+        str +=
+          '<span class="' +
+          eventType +
+          '">' +
+          dateTime +
+          "<br>" +
+          eventType +
+          ": " +
+          event;
+        if (data !== "") {
+          str += " (" + data + " )";
+        }
+        str += "</span><br /><hr />";
+        eventLog.innerHTML += str;
+        return;
+      }
+
+      function initListeners(player) {
+        // add player event listeners
+        player.on("loadstart", function (evt) {
+          console.log("loadstart evt= ",evt);
+          // var dateTime = new Date(evt.timeStamp); - does this need to use the evt??
+          var dateTime = new Date();
+          console.log("dateTime= ",dateTime);
+          logEvent("player-event", "loadstart", "", dateTime.toISOString());
+          // sendAnalyticsEvent("video_impression", evt);
+        });
+        // add listener for loadedalldata
+        player.on("loadedalldata", function () {
+          var dateTime = new Date();
+          logEvent("player-event", "loadedalldata", "", dateTime.toISOString());
+        });
+        player.one("play", function (evt) {
+          var dateTime = new Date();
+          evt.timeStamp = dateTime.valueOf();  // do we need to add this value to the player evt??
+          logEvent("player-event", "play", "", dateTime.toISOString());
+          // sendAnalyticsEvent("video_view", evt);
+        });
+        // add listener for video ended
+        player.on("ended", function () {
+          var dateTime = new Date();
+          logEvent("player-event", "ended", "", dateTime.toISOString());
+        });
+        // add listener for time updates events
+        player.on("timeupdate", onTimeUpdate);
+      }
+
+      function onTimeUpdate(evt) {
+        var thisPosition = evt.timeStamp,
+          range = "",
+          dateTime = new Date(evt.timeStamp);
+        console.log("onTimeUpdate= ",evt);
+        if (firstTimeUpdate) {
+          initialPosition = evt.timeStamp;
+          lastPosition = evt.timeStamp;
+          firstTimeUpdate = false;
+        }
+        if (
+          Math.round(thisPosition / 1000) - Math.round(lastPosition / 1000) ===
+          10
+        ) {
+          // set the range and add it to the evt object
+          range =
+            ((lastPosition - initialPosition) / 1000).toString() +
+            ".." +
+            ((thisPosition - initialPosition) / 1000).toString();
+          // reset lastPosition
+          lastPosition = thisPosition;
+          evt.range = range;
+          // log player event
+          console.log("logEvent= ");
+          logEvent(
+            "player-event",
+            "position update",
+            (thisPosition - initialPosition) / 1000 + " sec",
+            dateTime.toISOString()
+          );
+          // send video_enagement event
+          // sendAnalyticsEvent("video_engagement", evt);
+        }
+      }
+      // event logger
+      function logEvent(eventType, event, data, dateTime) {
+        var str = "";
+        str +=
+          '<span class="' +
+          eventType +
+          '">' +
+          dateTime +
+          "<br>" +
+          eventType +
+          ": " +
+          event;
+        if (data !== "") {
+          str += " (" + data + " )";
+        }
+        str += "</span><br /><hr />";
+        eventLog.innerHTML += str;
+        return;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
   * extract video data from Playback API response
