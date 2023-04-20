@@ -3609,40 +3609,58 @@
       <br>
       
       
-
 <h1>Download Video Masters</h1>
 <article class="bcls-article">
   <summary>A video master is the original source file you ingested. In case you need to download it again, you can use the Social Syndication API to do so.</summary>
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    <p>Brightcove generally stores video masters to use in case you need to retranscode the video sometime in the future. You may need to download some or all of your video masters, perhaps because your original video files were accidentally deleted. Studio and the CMS API do not provide a direct way to do this, but because MRSS feeds created with the Social Syndication API can provide links to the video masters, you can use these feeds to download them.</p>
+    <p>Brightcove generally stores video masters to use in case you need to retranscode the video sometime in the
+      future. You may need to download some or all of your video masters, perhaps because your original video files were
+      accidentally deleted. Studio and the CMS API do not provide a direct way to do this, but because MRSS feeds
+      created with the Social Syndication API can provide links to the video masters, you can use these feeds to
+      download them.</p>
     <h3>Notes</h3>
     Be aware of the following:
     <ul>
       <li>
         There are cases where the video master will not be available:
         <ul>
-          <li>All standard ingest profiles store the video master, but if you are using a custom ingest profile, it is possible that it specifies that masters should not be stored.</li>
-          <li>It is possible using the CMS API to delete video masters, and some customers have opted to do that in order to reduce data storage costs.</li>
+          <li>All standard ingest profiles store the video master, but if you are using a custom ingest profile, it is
+            possible that it specifies that masters should not be stored.</li>
+          <li>It is possible using the CMS API to delete video masters, and some customers have opted to do that in
+            order to reduce data storage costs.</li>
         </ul>
       </li>
-      <li>The video master may be the original video file that you ingested, or it may be a slightly modified copy: during the transcoding process, we inspect the video file and sometimes find minor encoding errors - in this case we correct the errors in a copy that we store as the video master.</li>
+      <li>The video master may be the original video file that you ingested, or it may be a slightly modified copy:
+        during the transcoding process, we inspect the video file and sometimes find minor encoding errors - in this
+        case we correct the errors in a copy that we store as the video master.</li>
     </ul>
   </section>
   <details>
-    <summary><h4>New to working with APIs?</h4></summary>
-    <p>If you are new to working with APIs, and just doing this to retrieve your video masters, here is some information to help you. REST APIs are popular because to make the request, you just open a URL with the appropriate HTTP method. Browsers do this every time you open a web page, but they are only using the GET HTTP method. There are others.</p>
-    <p>Fortunately, there are many tools out there to help you make REST API requests, and they are sufficient if you just need to make one or a few requests. We have documented how to use a couple of the most popular ones with the Brightcove APIs:</p>
+    <summary>
+      <h4>New to working with APIs?</h4>
+    </summary>
+    <p>If you are new to working with APIs, and just doing this to retrieve your video masters, here is some information
+      to help you. REST APIs are popular because to make the request, you just open a URL with the appropriate HTTP
+      method. Browsers do this every time you open a web page, but they are only using the GET HTTP method. There are
+      others.</p>
+    <p>Fortunately, there are many tools out there to help you make REST API requests, and they are sufficient if you
+      just need to make one or a few requests. We have documented how to use a couple of the most popular ones with the
+      Brightcove APIs:</p>
     <ul>
-      <li><a href="/general/developer-tools/use-insomnia-api-requests.html">Using Insomnia with the Brightcove APIS</a></li>
-      <li><a href="/general/developer-tools/use-postman-api-requests.html">Using Postman with the Brightcove APIs</a></li>
+      <li><a href="/general/developer-tools/use-insomnia-api-requests.html">Using Insomnia with the Brightcove APIS</a>
+      </li>
+      <li><a href="/general/developer-tools/use-postman-api-requests.html">Using Postman with the Brightcove APIs</a>
+      </li>
     </ul>
   </details>
   <section class="bcls-section">
     <h2 id="process_overview">Process overview</h2>
-    <p>Here are the high-level steps for setting up the feed to download your masters - the steps are detailed in the sections that follow.</p>
+    <p>Here are the high-level steps for setting up the feed to download your masters - the steps are detailed in the
+      sections that follow.</p>
     <ol>
-      <li>Obtain <a href="#Authentication">authentication credentials</a> for the Social Syndication API if you do not already have them.</li>
+      <li>Obtain <a href="#Authentication">authentication credentials</a> for the Social Syndication API if you do not
+        already have them.</li>
       <li><a href="#create_mrss_feed">Create an MRSS feed</a> of the "universal" type, that can accept a template</li>
       <li><a href="#Set_a_template">Set a template that includes masters</a></li>
     </ol>
@@ -3651,65 +3669,95 @@
   <section class="bcls-section">
     <h2 id="Authentication">Authentication</h2>
 
-    <p>Access to the Configuration API requires specification of a <code translate="No">bearer</code> token from the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth service</a> in the request's <code translate="No">Authorization</code> header. The various API methods also require one of the following operations (depending upon the method accessed) to be specified for the credentials in question:</p>
+    <p>Access to the Configuration API requires specification of a <code translate="No">bearer</code> token from the <a
+        href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth service</a> in the request's <code
+        translate="No">Authorization</code> header. The various API methods also require one of the following operations
+      (depending upon the method accessed) to be specified for the credentials in question:</p>
 
     <ul>
       <li><code translate="No">video-cloud/social/mrss/read</code></li>
       <li><code translate="No">video-cloud/social/mrss/write</code></li>
     </ul>
 
-    <p>These operations can be configured via the <a href="/general/managing-api-authentication-credentials.html">API Authentication section of the Studio Admin Module</a>:</p>
+    <p>These operations can be configured via the <a href="/general/managing-api-authentication-credentials.html">API
+        Authentication section of the Studio Admin Module</a>:</p>
 
-    <figure class="bcls-figure"><img class="bcls-image" alt="Social Syndication Permissions" src="/assets/images/social-syndication/social-syndication-permissions.png" />
+    <figure class="bcls-figure"><img class="bcls-image" alt="Social Syndication Permissions"
+        src="/assets/images/social-syndication/social-syndication-permissions.png" />
       <figcaption class="bcls-caption--image">Social Syndication Permissions</figcaption>
     </figure>
 
-    <aside class="bcls-aside bcls-aside--information language-editable">Note: the operations will <strong>not</strong> appear in Studio unless the account has the Social Module enabled. They can still be added using the OAuth API as explained below.</aside>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note: the operations will <strong>not</strong>
+      appear in Studio unless the account has the Social Module enabled. They can still be added using the OAuth API as
+      explained below.</aside>
 
     <p>If you prefer, you can also create credentials via the OAuth API:</p>
 
     <ul>
-      <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Create Client Credentials Using cURL</a></li>
-      <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Create Client Credentials Using Postman</a></li>
+      <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Create Client Credentials Using
+          cURL</a></li>
+      <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Create Client Credentials Using
+          Postman</a></li>
     </ul>
 
   </section>
   <section class="bcls-section">
     <h2 id="create_mrss_feed">Create the MRSS feed</h2>
     <p>The feed can be created with a <code translate="No">POST</code> request to the Social Syndication API:</p>
-<pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1/accounts/<span class="bcls-input"></span>/mrss/syndications</code></pre>
-    <p>The request body must include the <code translate="No">type</code> set to <code translate="No">universal</code> and <code translate="No">fetch_digital_master</code> set to <code translate="No">true</code>. Below is the minimum request body you need to get this working:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "name": "Feed with masters",
-  <span class="bcls-highlight">"type": "universal"</span>,
-  <span class="bcls-highlight">"fetch_digital_master": true</span>
-}</code></pre>
-    <aside class="bcls-aside bcls-aside--information language-editable">Note that the response to the request will include the syndication <code translate="No">id</code>, which you will need in the next step.</aside>
+    <pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1/accounts/<span
+          class="bcls-input"></span>/mrss/syndications</code></pre>
+    <p>The request body must include the <code translate="No">type</code> set to <code translate="No">universal</code>
+      and <code translate="No">fetch_digital_master</code> set to <code translate="No">true</code>. Below is the minimum
+      request body you need to get this working:</p>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "name": "Feed with masters",
+        <span class="bcls-highlight">"type": "universal"</span>,
+        <span class="bcls-highlight">"fetch_digital_master": true</span>
+        }</code></pre>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that the response to the request will
+      include the syndication <code translate="No">id</code>, which you will need in the next step.</aside>
   </section>
   <section class="bcls-section">
     <h2 id="Set_a_template">Set a template that include masters</h2>
-    <p>A template can be set for the feed that instructs the feed to include the masters for each video in the account. This can be done by making the following <code translate="No">PUT</code> request:</p>
-<pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1/accounts/<span class="bcls-input"></span>/mrss/syndications/<span class="bcls-input"></span>/template</code></pre>
-    <p>The request body is the template to set for the feed. You will want to use the <a href="social-syndication/getting-started/sample-templates-universal-syndication.html#source">Source template</a> included in the sample templates - it is reproduced below for convenience.</p>
-<pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;rss xmlns:media="https://search.yahoo.com/mrss/" xmlns:dcterms="https://purl.org/dc/terms/" xmlns:ext="https://ooyala.com/syndication/ext/" version="2.0"&gt;
-  &lt;channel&gt;
-    &lt;title&gt;&lt;/title&gt;
-    &lt;description&gt;&lt;/description&gt;
-  &lt;/channel&gt;
-&lt;/rss&gt;</code></pre>
+    <p>A template can be set for the feed that instructs the feed to include the masters for each video in the account.
+      This can be done by making the following <code translate="No">PUT</code> request:</p>
+    <pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1/accounts/<span
+          class="bcls-input"></span>/mrss/syndications/<span
+          class="bcls-input"></span>/template</code></pre>
+    <p>The request body is the template to set for the feed. You will want to use the <a
+        href="social-syndication/getting-started/sample-templates-universal-syndication.html#source">Source template</a>
+      included in the sample templates - it is reproduced below for convenience.</p>
+    <pre class="line-numbers"><code class="language-xml" translate="No">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+        &lt;rss xmlns:media="https://search.yahoo.com/mrss/" xmlns:dcterms="https://purl.org/dc/terms/"
+        xmlns:ext="https://ooyala.com/syndication/ext/" version="2.0"&gt;
+        &lt;channel&gt;
+        &lt;title&gt;&lt;/title&gt;
+        &lt;description&gt;&lt;/description&gt;
+        &lt;/channel&gt;
+        &lt;/rss&gt;</code></pre>
     <h3>Modified version of the template</h3>
-    <p>The template above escapes URLs, which is the correct format for typical RSS reader. In this case, however, you may wish to have download links that will work in browsers and other apps. You can easily do this by replacing the section of the template that is highlighted above with this slightly modified version:</p>
-<pre class="line-numbers"><code class="language-xml"></code></pre>
+    <p>The template above escapes URLs, which is the correct format for typical RSS reader. In this case, however, you
+      may wish to have download links that will work in browsers and other apps. You can easily do this by replacing the
+      section of the template that is highlighted above with this slightly modified version:</p>
+    <pre class="line-numbers"><code class="language-xml">
+      </code></pre>
     <p>This will change the URLs so that they can be opened in a browser to begin downloading the video master.</p>
-    <aside class="bcls-aside bcls-aside--information language-editable">Note that after you set or change a template, it can take up to 10 minutes for the change to be reflected in the feed.</aside>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that after you set or change a template, it
+      can take up to 10 minutes for the change to be reflected in the feed.</aside>
   </section>
   <section class="bcls-section">
     <h2 id="Paging_the_feed">Paging the feed</h2>
-    <p>MRSS feeds are limited to 100 items. If you wish to download masters for more than 100 videos, you can do so by paging through whole feed using the <code translate="No">offset</code> parameter (see <a href="/social-syndication/getting-started/feed-syndication-api-overview.html#operations">Operations for the feed API</a>). For example, to get the second 100 videos, you would set <code translate="No">offset</code> to 100, like this:</p>
-<pre><code class="language-http" translate="No">https://social.feeds.brightcove.com/v1/accounts//mrss/syndications//feed<span class="bcls-highlight">?offset=100</span></code></pre>
+    <p>MRSS feeds are limited to 100 items. If you wish to download masters for more than 100 videos, you can do so by
+      paging through whole feed using the <code translate="No">offset</code> parameter (see <a
+        href="/social-syndication/getting-started/feed-syndication-api-overview.html#operations">Operations for the feed
+        API</a>). For example, to get the second 100 videos, you would set <code translate="No">offset</code> to 100,
+      like this:</p>
+    <pre><code class="language-http"
+        translate="No">https://social.feeds.brightcove.com/v1/accounts//mrss/syndications//feed<span
+          class="bcls-highlight">?offset=100</span></code></pre>
   </section>
 </article>
+
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   
   <nav class="right-side-nav" id="right_side_nav">
