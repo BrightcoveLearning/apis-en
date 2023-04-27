@@ -1,6 +1,9 @@
 ---
 title: 'Overview: OTT Syndication API'
-description: 'The OTT Syndication API is a publicly accessible API that allows you to create a data set for universal search for different platforms such as Apple TV and Roku from your Beacon media assets. Creating an data set for universal search allows viewers to find your content when they search for movies or series on a platform like Apple TV, Roku, or Fire TV on a device, even if they have not subscribed to your specific app.'
+description: 'The OTT Syndication API is a publicly accessible API that allows you to create a data set for universal
+search for different platforms such as Apple TV and Roku from your Beacon media assets. Creating an data set for
+universal search allows viewers to find your content when they search for movies or series on a platform like Apple TV,
+Roku, or Fire TV on a device, even if they have not subscribed to your specific app.'
 parent: OTT Syndication API
 layout: doc_pages_staging
 ---
@@ -8,374 +11,471 @@ layout: doc_pages_staging
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
   <summary>{{ page.description }}</summary>
-  <aside class="bcls-aside bcls-aside--information language-editable">Note that this syndication API can also be used to generate MRSS syndications - see <a href="/social-syndication/index.html">Social Syndication API</a> for details.</aside>
+  <aside class="bcls-aside bcls-aside--information language-editable">Note that this syndication API can also be used to
+    generate MRSS syndications - see <a href="/social-syndication/index.html">Social Syndication API</a> for details.
+  </aside>
   </section>
-    <ul>
-      <li><a href="#introduction">Introduction</a></li>
-      <li><a href="#OpenAPI_Specification">OpenAPI Specification</a></li>
-      <li><a href="#Authentication">Authentication</a></li>
-      <li><a href="#Base_URL">Base URL</a></li>
-      <li><a href="#Syndication_Resource">Syndication Resource</a></li>
-      <li><a href="#Actions">Actions</a></li>
-      <li><a href="#Universal_Template_Language">Universal Template Language</a></li>
-    </ul>
-  
-    <h3>Related documents</h3>
-  
-    <ul>
-      <!-- <li><a href="/ott-syndication/getting-started/sample-templates-universal-syndication.html">Sample Templates for Universal Syndication</a></li> -->
-      <li><a href="/ott-syndication/references/reference.html">OTT Syndication API Reference</a></li>
-    </ul>
-  
-    <section class="bcls-section">
-      <h2 id="introduction">Introduction</h2>
-  
-      <p>The Brightcove OTT Syndication API is a publicly accessible API that allows syndications to be created, managed, and used to generate data sets for universal search on various OTT platforms such as Apple TV, Roku, and Fire TV, allowing them to display results from your app in top-level searches for movies, series, and so forth.</p>
-  
-  
-      <h3>Availability</h3>
-      <p>The syndication API is available to all Beacon customers. The OTT platforms have different procedures and requirements for including media in universal search, so you will need to work with the specific OTT platforms you want to use.</p>
-    </section>
-  
-    <section class="bcls-section">
-      <h2 id="OpenAPI_Specification">API reference / base URL / headers</h2>
-  
-      <p>The <a href="/ott-syndication/references/reference.html">OTT Syndication API Reference</a> contains all the details about the available operations, fields, and parameters.</p>
-      <p>The base URL is:</p>
-      <pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1</code></pre>
-      <p>All requests must be authenticated via an Authorization header:</p>
-      <pre><code class="language-bash" translate="No">Authorization: Bearer <span class="bcls-input">{your_access_token}</span></code></pre>
-      <p>See the next section on authentication for information on access tokens.</p>
-      <p>For any request that sends a request body, you must also include a <code translate="No">Content-Type: application/json</code> header.</p>
-    </section>
-  
-    <section class="bcls-section">
-      <h2 id="Authentication">Authentication</h2>
-  
-      <p>Access to the Configuration API requires specification of a <code translate="No">bearer</code> token from the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth service</a> in the request's <code translate="No">Authorization</code> header. The various API methods also require one of the following operations (depending upon the method accessed) to be specified for the credentials in question:</p>
-  
-      <ul>
-        <li><code translate="No">video-cloud/social/mrss/read</code></li>
-        <li><code translate="No">video-cloud/social/mrss/write</code></li>
-      </ul>
-  
-      <p>These operations can be configured via the <a href="https://beacon-help.support.brightcove.com/admin/managing-api-authentication-credentials.html">API Authentication section of the Studio Admin Module</a>:</p>
-  
-      <figure class="bcls-figure"><img class="bcls-image" alt="Social Syndication Permissions" src="/assets/images/ott-syndication/social-syndication-permissions.png" />
-        <figcaption class="bcls-caption--image">OTT Syndication Permissions</figcaption>
-      </figure>
-    </section>
-    <section class="bcls-section">
-      <h2 id="Syndication_Resource">Syndication Resource</h2>
-  
-      <p>The syndication resource is an object that defines how the syndication will be created. Here is a sample request body for creating a syndication resource:</p>
-  
-      <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-      "name": "Apple TV Movie Catalog",
-      "type": "umcCatalogCsv",
-      "asset_type_filter": [
-        "movie"
-      ],
-      "filename": "apple_tv_movie_catalog"
-    }</code></pre>
-  
-      <p>The response will add some read-only fields:</p>
-  
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "id": "7f594cd3-4853-4174-aff3-203c3e99e9c2",
-  "name": "Apple TV Movie Catalog",
-  "type": "umcCatalogCsv",
-  "asset_type_filter": [
-    "movie"
-  ],
-  "filename": "apple_tv_movie_catalog"
-  "locator_prefix": "",
-  "fetch_unpublished": false,
-  "fetch_episodeless": true,
-  "fetch_videos": false,
-  "fetch_dynamic_renditions": false,
-  "fetch_audio_tracks": false,
-  "asset_container_type": "list"      
-}</code></pre>
-  
-      <table class="bcls-table">
-        <caption class="bcls-caption--table">Syndication Resource</caption>
-        <thead class="bcls-table__head">
-          <tr>
-            <th>Field</th>
-            <th>Type</th>
-            <th>Read-Only</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody class="bcls-table__body">
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">id</code></td>
-            <td>String</td>
-            <td>Yes</td>
-            <td>generated when syndication configuration is created</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">name</code></td>
-            <td>String</td>
-            <td>No</td>
-            <td>an internal name for this syndication - required for POST requests</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">type</code></td>
-            <td>
-              Enum:
-              <ul>
-                <li><code translate="No">umcCatalogCsv</code></li>
-                <li><code translate="No">umcAvailabilityCsv</code></li>
-                <li><code translate="No">googleVideoSitemapXml</code></li>
-                <li><code translate="No">universal</code></li>
-              </ul>
-            </td>
-            <td>No</td>
-            <td>The type of feed that will be generated. The universal type allows custom feeds to be generated by an uploaded feed template. Required for POST requests. The <code translate="No">type</code> may <strong>not</strong> be changed after the configuration is created.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">asset_type_filter</code></td>
-            <td>Array</td>
-            <td>No</td>
-            <td>Specifies which OTT asset types to include in the generated feed. If unspecified, all types will be included.
-              <p>Items Enum:</p>
-              <ul>
-                <li><code translate="No">movie</code></li>
-                <li><code translate="No">series</code></li>
-                <li><code translate="No">season</code></li>
-                <li><code translate="No">episode</code></li>
-              </ul>
-              
-            </td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">filename</code></td>
-            <td>String</td>
-            <td>No</td>
-            <td>The filename that should be used for the generated feed results for this syndication within zip results files. Should be a flat filename (no paths) using valid zip filename characters. Should not be the same as the filenames used for any other syndications that might have results included in the same zipped results. If not specified, a unique filename will be generated.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">locator_prefix</code></td>
-            <td>String</td>
-            <td>No</td>
-            <td>An URL that can be used as the prefix for generated universal link locators. Currently only used by syndications of type <code translate="No">umcAvailabilityCsv</code>. Typically points to the root of the catalog website.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">publish_results</code></td>
-            <td>Boolean</td>
-            <td>No</td>
-            <td>
-              Default: <code translate="No">false</code><br>
-              Whether to write generated feed results to a publicly accessible web location. Generated feed results are always written to a privately stored zip file, but if this property is true the feed results will also be written in unzipped form to a cloud storage location that can be accessed via a public CDN-backed URL. The public URL can be found in the stored job's <code translate="No">public_results</code> field.
-            </td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">content_type_header</code></td>
-            <td>String</td>
-            <td>No</td>
-            <td>
-              For public feeds, content type header that the syndication's feed will be served with. If not specified, a default that is specific to the syndication type will be used.
-            </td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">rights_location_filter</code></td>
-            <td>Array of strings</td>
-            <td>No</td>
-            <td>
-              Specifies whether assets should be filtered out of the generated feed based upon the set of permitted and denied locations in the asset's rights object(s). If set, rights objects are considered valid if at least one of the locations in the filter set is allowed by the rights object's <code translate="No">permitted_locations</code> set and is not excluded by the rights object's <code translate="No">denied_locations</code> set. Assets with no valid rights objects are excluded from the generated feed. For assets included in the feed, valid rights objects can be accessed by the feed template via a filtered_rights array field on the asset. Location filter values should be upper-cased ISO-3166 two-letter country codes (for example, "US").
-            </td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">fetch_unpublished</code></td>
-            <td>Boolean</td>
-            <td>No</td>
-            <td>Default: <code translate="No">false</code><br>
-              Valid only for <code translate="No">universal</code> syndications. Specifies whether unpublished OTT assets should be included in set of assets used to generate the feed.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">fetch_episodeless</code></td>
-            <td>Boolean</td>
-            <td>No</td>
-            <td>Default: true<br>
-              Valid only for <code translate="No">universal</code> syndications. Specifies whether OTT series and season assets that have no descendant episodes should be included in set of assets used to generate the feed.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">fetch_videos</code></td>
-            <td>Boolean</td>
-            <td>No</td>
-            <td>Default: <code translate="No">false</code><br>
-              Valid only for <code translate="No">universal</code> syndications. Specifies whether the CMS videos associated with OTT movie and episode assets should be fetched. If true, the CMS video objects will be available to the feed template in a <code translate="No">video</code> field for each applicable asset. Setting to true will result in slower feed generation times, only set if CMS video metadata is actually needed.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">fetch_dynamic_renditions</code></td>
-            <td>Boolean</td>
-            <td>No</td>
-            <td>Default: <code translate="No">false</code><br>
-              Valid only for <code translate="No">universal</code> syndications that have fetch_videos set to true. Specifies whether the dynamic rendition metadata for fetched CMS videos should also be fetched. If true, the dynamic rendition metadata be available to the feed template in a <code translate="No">video.dynamic_renditions</code> field for each applicable asset. Setting to true will result in slower feed generation times, only set if CMS dynamic rendition metadata is actually needed.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">fetch_audio_tracks</code></td>
-            <td>Boolean</td>
-            <td>No</td>
-            <td>Default: <code translate="No">false</code><br>
-              Valid only for <code translate="No">universal</code> syndications that have fetch_videos set to true. Specifies whether the audio track metadata for fetched CMS videos should also be fetched. If true, the audio track metadata be available to the feed template in a <code translate="No">video.audio_tracks</code> field for each applicable asset. Setting to true will result in slower feed generation times, only set if CMS audio track metadata is actually needed.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">filter_on_start_date</code></td>
-            <td>Boolean</td>
-            <td>No</td>
-            <td>Default: <code translate="No">false</code><br>
-              Valid only for universal syndications. Specifies whether assets should be filtered out of the generated feed based upon the <code translate="No">start_date</code> of the asset's rights object(s). If true, rights objects with <code translate="No">start_date</code> values after the current datetime are considered invalid and assets with no valid rights objects are excluded from the generated feed. For assets included in the feed, valid rights objects can be accessed by the feed template via a <code translate="No">filtered_rights</code> array field on the asset.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">start_date_modifier_hours</code></td>
-            <td>Integer</td>
-            <td>No</td>
-            <td>Default: <code translate="No">0</code><br>
-              Valid only for universal syndications with the <code translate="No">filter_on_start_date</code> attribute set to true. Specifies a positive or negative number of hours to adjust a rights object's <code translate="No">start_date</code> by when evaluating the rights object's start date validity. Can be used for example to include assets in the feed that are not yet within their rights validity window but will be transitioning into that window within a specified future timespan.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">filter_on_end_date</code></td>
-            <td>Boolean</td>
-            <td>No</td>
-            <td>Default: <code translate="No">false</code><br>
-              Valid only for universal syndications. Specifies whether assets should be filtered out of the generated feed based upon the <code translate="No">end_date</code> of the asset's rights object(s). If true, rights objects with <code translate="No">end_date</code> values after the current datetime are considered invalid and assets with no valid rights objects are excluded from the generated feed. For assets included in the feed, valid rights objects can be accessed by the feed template via a <code translate="No">filtered_rights</code> array field on the asset.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">end_date_modifier_hours</code></td>
-            <td>Integer</td>
-            <td>No</td>
-            <td>Default: <code translate="No">0</code><br>
-              Valid only for universal syndications with the <code translate="No">filter_on_end_date</code> attribute set to true. Specifies a positive or negative number of hours to adjust a rights object's <code translate="No">end_date</code> by when evaluating the rights object's start date validity. Can be used for example to include assets in the feed that have reached the end of their rights validity window within a specified timespan in the past.</td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">rights_type_filter</code></td>
-            <td>Array of strings</td>
-            <td>No</td>
-            <td>
-              Items enum:
-              <ul>
-                <li><code translate="No">FREE</code></li>
-                <li><code translate="No">SVOD</code></li>
-                <li><code translate="No">AVOD</code></li>
-                <li><code translate="No">BUY</code></li>
-                <li><code translate="No">RENT</code></li>
-              </ul>
-               
-              <p>Valid only for universal syndications. Specifies whether assets should be filtered out of the generated feed based upon the type of the asset's rights object(s). If set, rights objects with type values not in the specified filter set are considered invalid and assets with no valid rights objects are excluded from the generated feed. For assets included in the feed, valid rights objects can be accessed by the feed template via a <code translate="No">filtered_rights</code> array field on the asset.</p>
-            </td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">rights_device_filter</code></td>
-            <td>Array of strings</td>
-            <td>No</td>
-            <td>
-              Valid only for universal syndications. Specifies whether assets should be filtered out of the generated feed based upon the device set in the asset's rights object(s). If set, rights objects with no devices in the specified filter set are considered invalid and assets with no valid rights objects are excluded from the generated feed. For assets included in the feed, valid rights objects can be accessed by the feed template via a <code translate="No">filtered_rights</code> array field on the asset.
-            </td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap;"><code translate="No">asset_container_type</code></td>
-            <td>String</td>
-            <td>No</td>
-            <td>
-              Enum:
-              <ul>
-                <li><code translate="No">list</code></li>
-                <li><code translate="No">typemap</code></li>
-              </ul>
-              <p>Default: <code translate="No">list</code></p>
-              <p>Valid only for universal syndications. Specifies whether the "assets" object that is accessible from the feed template should be a flat list of all fetched assets or a map of asset submaps keyed by OTT asset type. Each asset submap will contain assets of the specified type keyed by the asset id.</p>
-              
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="bcls-section">
-      <h2 id="Actions">Syndication Operations</h2>
-  
-      <p>See the API Reference for full details of the operations available:</p>
-  
-      <ul>
-        <li><a href="/ott-syndication/references/reference.html">The Configuration API</a></li>
-      </ul>
-  
-      <p>The following actions are supported - details of endpoints, parameters, and request and response fields can be found in the <a href="/ott-syndication/references/reference.html">API Reference</a>:</p>
-      <h3>Syndication configurations</h3>
-      <p>These operations manage syndication configurations. The actual syndication files are generated and managed using the OTT stored job requests listed next.</p>
-      <ul>
-        <li><a href="/ott-syndication/references/reference.html#operation/postOTTSyndication">Create a new OTT syndication configuration</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/getOTTSyndications">Get all OTT syndication configurations</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/putOTTSyndication">Replace an OTT syndication configuration</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/patchOTTSyndication">Patch an OTT syndication configuration</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/deleteOTTSyndication">Delete an OTT syndication configuration</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/getOTTSyndication">Get an OTT syndication configuration</a></li>
-      </ul>
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#OpenAPI_Specification">OpenAPI Specification</a></li>
+    <li><a href="#Authentication">Authentication</a></li>
+    <li><a href="#Base_URL">Base URL</a></li>
+    <li><a href="#Syndication_Resource">Syndication Resource</a></li>
+    <li><a href="#Actions">Actions</a></li>
+    <li><a href="#Universal_Template_Language">Universal Template Language</a></li>
+  </ul>
 
-      <h3>OTT stored jobs</h3>
-      <p>Stored job operations are used to generate OTT syndications from syndication configurations asynchronously (because depending on how much content you want indexed for universal search, the resulting file may be very large and take some time to generate and send back). Stored jobs can be run manually as needed and can also be configured to run automatically at scheduled intervals.</p>
-      <ul>
-        <li><a href="/ott-syndication/references/reference.html#operation/postOTTStoredJob">Create a new OTT stored job</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/getOTTStoredJobs">Get all OTT stored jobs</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/getOTTStoredJob">Get an OTT stored job</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/putOTTStoredJob">Replace an OTT stored job</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/patchOTTStoredJob">Patch an OTT stored job</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/deleteOTTStoredJob">Delete an OTT stored job</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/runOTTStoredJob">Run an OTT stored job</a></li>
-      </ul>
-  
-      <h3>Templates for custom OTT feeds</h3>
-      <p>The operations are for managing custom templates for syndications.</p>
-      <ul>
-        <li><a href="/ott-syndication/references/reference.html#operation/putOTTTemplate">Upload a custom OTT feed template</a></li>
-        <li><a href="/ott-syndication/references/reference.html#operation/putOTTTemplate">Get a custom OTT feed template</a></li>
-      </ul>
-  
-      <section class="bcls-subsection">
-        <h3 id="error_messages">Error messages</h3>
-  
-        <p>If any API requests fails, an error message will be returned. Error responses will look like the following:</p>
-  
-<pre class="line-numbers"><code class="language-json" translate="No">[
-  {
-    "error_code" : "Application error code 1",
-    "message" : "Application error message 1"
-  }, {
-    "error_code" : "Application error code 2",
-    "message" : "Application error message 2"
-  }
-]</code></pre>
-        <aside class="bcls-aside bcls-aside--information">Note that if you include a request body in a GET request, the request will fail and an error will be returned.</aside>
-      </section>
-  
+  <h3>Related documents</h3>
+
+  <ul>
+    <!-- <li><a href="/ott-syndication/getting-started/sample-templates-universal-syndication.html">Sample Templates for Universal Syndication</a></li> -->
+    <li><a href="/ott-syndication/references/reference.html">OTT Syndication API Reference</a></li>
+  </ul>
+
+  <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+
+    <p>The Brightcove OTT Syndication API is a publicly accessible API that allows syndications to be created, managed,
+      and used to generate data sets for universal search on various OTT platforms such as Apple TV, Roku, and Fire TV,
+      allowing them to display results from your app in top-level searches for movies, series, and so forth.</p>
+
+
+    <h3>Availability</h3>
+    <p>The syndication API is available to all Beacon customers. The OTT platforms have different procedures and
+      requirements for including media in universal search, so you will need to work with the specific OTT platforms you
+      want to use.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="OpenAPI_Specification">API reference / base URL / headers</h2>
+
+    <p>The <a href="/ott-syndication/references/reference.html">OTT Syndication API Reference</a> contains all the
+      details about the available operations, fields, and parameters.</p>
+    <p>The base URL is:</p>
+    <pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1</code></pre>
+    <p>All requests must be authenticated via an Authorization header:</p>
+    <pre><code class="language-bash" translate="No">Authorization: Bearer <span
+          class="bcls-input">{your_access_token}</span></code></pre>
+    <p>See the next section on authentication for information on access tokens.</p>
+    <p>For any request that sends a request body, you must also include a <code translate="No">Content-Type:
+        application/json</code> header.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Authentication">Authentication</h2>
+
+    <p>Access to the Configuration API requires specification of a <code translate="No">bearer</code> token from the <a
+        href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth service</a> in the request's <code
+        translate="No">Authorization</code> header. The various API methods also require one of the following operations
+      (depending upon the method accessed) to be specified for the credentials in question:</p>
+
+    <ul>
+      <li><code translate="No">video-cloud/social/mrss/read</code></li>
+      <li><code translate="No">video-cloud/social/mrss/write</code></li>
+    </ul>
+
+    <p>These operations can be configured via the <a
+        href="https://beacon-help.support.brightcove.com/admin/managing-api-authentication-credentials.html">API
+        Authentication section of the Studio Admin Module</a>:</p>
+
+    <figure class="bcls-figure"><img class="bcls-image" alt="Social Syndication Permissions"
+        src="/assets/images/ott-syndication/social-syndication-permissions.png" />
+      <figcaption class="bcls-caption--image">OTT Syndication Permissions</figcaption>
+    </figure>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Syndication_Resource">Syndication Resource</h2>
+
+    <p>The syndication resource is an object that defines how the syndication will be created. Here is a sample request
+      body for creating a syndication resource:</p>
+
+    <pre class="line-numbers">
+      <code class="language-json" translate="No">{
+        "name": "Apple TV Movie Catalog",
+        "type": "umcCatalogCsv",
+        "asset_type_filter": [
+        "movie"
+        ],
+        "filename": "apple_tv_movie_catalog"
+        }</code>
+    </pre>
+
+    <p>The response will add some read-only fields:</p>
+
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "id": "7f594cd3-4853-4174-aff3-203c3e99e9c2",
+        "name": "Apple TV Movie Catalog",
+        "type": "umcCatalogCsv",
+        "asset_type_filter": [
+        "movie"
+        ],
+        "filename": "apple_tv_movie_catalog"
+        "locator_prefix": "",
+        "fetch_unpublished": false,
+        "fetch_episodeless": true,
+        "fetch_videos": false,
+        "fetch_dynamic_renditions": false,
+        "fetch_audio_tracks": false,
+        "asset_container_type": "list"
+        }</code></pre>
+
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Syndication Resource</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Read-Only</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">id</code></td>
+          <td>String</td>
+          <td>Yes</td>
+          <td>generated when syndication configuration is created</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">name</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>an internal name for this syndication - required for POST requests</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">type</code></td>
+          <td>
+            Enum:
+            <ul>
+              <li><code translate="No">umcCatalogCsv</code></li>
+              <li><code translate="No">umcAvailabilityCsv</code></li>
+              <li><code translate="No">googleVideoSitemapXml</code></li>
+              <li><code translate="No">universal</code></li>
+            </ul>
+          </td>
+          <td>No</td>
+          <td>The type of feed that will be generated. The universal type allows custom feeds to be generated by an
+            uploaded feed template. Required for POST requests. The <code translate="No">type</code> may
+            <strong>not</strong> be changed after the configuration is created.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">asset_type_filter</code></td>
+          <td>Array</td>
+          <td>No</td>
+          <td>Specifies which OTT asset types to include in the generated feed. If unspecified, all types will be
+            included.
+            <p>Items Enum:</p>
+            <ul>
+              <li><code translate="No">movie</code></li>
+              <li><code translate="No">series</code></li>
+              <li><code translate="No">season</code></li>
+              <li><code translate="No">episode</code></li>
+            </ul>
+
+          </td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">filename</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>The filename that should be used for the generated feed results for this syndication within zip results
+            files. Should be a flat filename (no paths) using valid zip filename characters. Should not be the same as
+            the filenames used for any other syndications that might have results included in the same zipped results.
+            If not specified, a unique filename will be generated.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">locator_prefix</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>An URL that can be used as the prefix for generated universal link locators. Currently only used by
+            syndications of type <code translate="No">umcAvailabilityCsv</code>. Typically points to the root of the
+            catalog website.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">publish_results</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>
+            Default: <code translate="No">false</code><br>
+            Whether to write generated feed results to a publicly accessible web location. Generated feed results are
+            always written to a privately stored zip file, but if this property is true the feed results will also be
+            written in unzipped form to a cloud storage location that can be accessed via a public CDN-backed URL. The
+            public URL can be found in the stored job's <code translate="No">public_results</code> field.
+          </td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">content_type_header</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>
+            For public feeds, content type header that the syndication's feed will be served with. If not specified, a
+            default that is specific to the syndication type will be used.
+          </td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">rights_location_filter</code></td>
+          <td>Array of strings</td>
+          <td>No</td>
+          <td>
+            Specifies whether assets should be filtered out of the generated feed based upon the set of permitted and
+            denied locations in the asset's rights object(s). If set, rights objects are considered valid if at least
+            one of the locations in the filter set is allowed by the rights object's <code
+              translate="No">permitted_locations</code> set and is not excluded by the rights object's <code
+              translate="No">denied_locations</code> set. Assets with no valid rights objects are excluded from the
+            generated feed. For assets included in the feed, valid rights objects can be accessed by the feed template
+            via a filtered_rights array field on the asset. Location filter values should be upper-cased ISO-3166
+            two-letter country codes (for example, "US").
+          </td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">fetch_unpublished</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>Default: <code translate="No">false</code><br>
+            Valid only for <code translate="No">universal</code> syndications. Specifies whether unpublished OTT assets
+            should be included in set of assets used to generate the feed.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">fetch_episodeless</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>Default: true<br>
+            Valid only for <code translate="No">universal</code> syndications. Specifies whether OTT series and season
+            assets that have no descendant episodes should be included in set of assets used to generate the feed.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">fetch_videos</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>Default: <code translate="No">false</code><br>
+            Valid only for <code translate="No">universal</code> syndications. Specifies whether the CMS videos
+            associated with OTT movie and episode assets should be fetched. If true, the CMS video objects will be
+            available to the feed template in a <code translate="No">video</code> field for each applicable asset.
+            Setting to true will result in slower feed generation times, only set if CMS video metadata is actually
+            needed.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">fetch_dynamic_renditions</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>Default: <code translate="No">false</code><br>
+            Valid only for <code translate="No">universal</code> syndications that have fetch_videos set to true.
+            Specifies whether the dynamic rendition metadata for fetched CMS videos should also be fetched. If true, the
+            dynamic rendition metadata be available to the feed template in a <code
+              translate="No">video.dynamic_renditions</code> field for each applicable asset. Setting to true will
+            result in slower feed generation times, only set if CMS dynamic rendition metadata is actually needed.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">fetch_audio_tracks</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>Default: <code translate="No">false</code><br>
+            Valid only for <code translate="No">universal</code> syndications that have fetch_videos set to true.
+            Specifies whether the audio track metadata for fetched CMS videos should also be fetched. If true, the audio
+            track metadata be available to the feed template in a <code translate="No">video.audio_tracks</code> field
+            for each applicable asset. Setting to true will result in slower feed generation times, only set if CMS
+            audio track metadata is actually needed.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">filter_on_start_date</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>Default: <code translate="No">false</code><br>
+            Valid only for universal syndications. Specifies whether assets should be filtered out of the generated feed
+            based upon the <code translate="No">start_date</code> of the asset's rights object(s). If true, rights
+            objects with <code translate="No">start_date</code> values after the current datetime are considered invalid
+            and assets with no valid rights objects are excluded from the generated feed. For assets included in the
+            feed, valid rights objects can be accessed by the feed template via a <code
+              translate="No">filtered_rights</code> array field on the asset.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">start_date_modifier_hours</code></td>
+          <td>Integer</td>
+          <td>No</td>
+          <td>Default: <code translate="No">0</code><br>
+            Valid only for universal syndications with the <code translate="No">filter_on_start_date</code> attribute
+            set to true. Specifies a positive or negative number of hours to adjust a rights object's <code
+              translate="No">start_date</code> by when evaluating the rights object's start date validity. Can be used
+            for example to include assets in the feed that are not yet within their rights validity window but will be
+            transitioning into that window within a specified future timespan.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">filter_on_end_date</code></td>
+          <td>Boolean</td>
+          <td>No</td>
+          <td>Default: <code translate="No">false</code><br>
+            Valid only for universal syndications. Specifies whether assets should be filtered out of the generated feed
+            based upon the <code translate="No">end_date</code> of the asset's rights object(s). If true, rights objects
+            with <code translate="No">end_date</code> values after the current datetime are considered invalid and
+            assets with no valid rights objects are excluded from the generated feed. For assets included in the feed,
+            valid rights objects can be accessed by the feed template via a <code translate="No">filtered_rights</code>
+            array field on the asset.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">end_date_modifier_hours</code></td>
+          <td>Integer</td>
+          <td>No</td>
+          <td>Default: <code translate="No">0</code><br>
+            Valid only for universal syndications with the <code translate="No">filter_on_end_date</code> attribute set
+            to true. Specifies a positive or negative number of hours to adjust a rights object's <code
+              translate="No">end_date</code> by when evaluating the rights object's start date validity. Can be used for
+            example to include assets in the feed that have reached the end of their rights validity window within a
+            specified timespan in the past.</td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">rights_type_filter</code></td>
+          <td>Array of strings</td>
+          <td>No</td>
+          <td>
+            Items enum:
+            <ul>
+              <li><code translate="No">FREE</code></li>
+              <li><code translate="No">SVOD</code></li>
+              <li><code translate="No">AVOD</code></li>
+              <li><code translate="No">BUY</code></li>
+              <li><code translate="No">RENT</code></li>
+            </ul>
+
+            <p>Valid only for universal syndications. Specifies whether assets should be filtered out of the generated
+              feed based upon the type of the asset's rights object(s). If set, rights objects with type values not in
+              the specified filter set are considered invalid and assets with no valid rights objects are excluded from
+              the generated feed. For assets included in the feed, valid rights objects can be accessed by the feed
+              template via a <code translate="No">filtered_rights</code> array field on the asset.</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">rights_device_filter</code></td>
+          <td>Array of strings</td>
+          <td>No</td>
+          <td>
+            Valid only for universal syndications. Specifies whether assets should be filtered out of the generated feed
+            based upon the device set in the asset's rights object(s). If set, rights objects with no devices in the
+            specified filter set are considered invalid and assets with no valid rights objects are excluded from the
+            generated feed. For assets included in the feed, valid rights objects can be accessed by the feed template
+            via a <code translate="No">filtered_rights</code> array field on the asset.
+          </td>
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;"><code translate="No">asset_container_type</code></td>
+          <td>String</td>
+          <td>No</td>
+          <td>
+            Enum:
+            <ul>
+              <li><code translate="No">list</code></li>
+              <li><code translate="No">typemap</code></li>
+            </ul>
+            <p>Default: <code translate="No">list</code></p>
+            <p>Valid only for universal syndications. Specifies whether the "assets" object that is accessible from the
+              feed template should be a flat list of all fetched assets or a map of asset submaps keyed by OTT asset
+              type. Each asset submap will contain assets of the specified type keyed by the asset id.</p>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Actions">Syndication Operations</h2>
+
+    <p>See the API Reference for full details of the operations available:</p>
+
+    <ul>
+      <li><a href="/ott-syndication/references/reference.html">The Configuration API</a></li>
+    </ul>
+
+    <p>The following actions are supported - details of endpoints, parameters, and request and response fields can be
+      found in the <a href="/ott-syndication/references/reference.html">API Reference</a>:</p>
+    <h3>Syndication configurations</h3>
+    <p>These operations manage syndication configurations. The actual syndication files are generated and managed using
+      the OTT stored job requests listed next.</p>
+    <ul>
+      <li><a href="/ott-syndication/references/reference.html#operation/postOTTSyndication">Create a new OTT syndication
+          configuration</a></li>
+      <li><a href="/ott-syndication/references/reference.html#operation/getOTTSyndications">Get all OTT syndication
+          configurations</a></li>
+      <li><a href="/ott-syndication/references/reference.html#operation/putOTTSyndication">Replace an OTT syndication
+          configuration</a></li>
+      <li><a href="/ott-syndication/references/reference.html#operation/patchOTTSyndication">Patch an OTT syndication
+          configuration</a></li>
+      <li><a href="/ott-syndication/references/reference.html#operation/deleteOTTSyndication">Delete an OTT syndication
+          configuration</a></li>
+      <li><a href="/ott-syndication/references/reference.html#operation/getOTTSyndication">Get an OTT syndication
+          configuration</a></li>
+    </ul>
+
+    <h3>OTT stored jobs</h3>
+    <p>Stored job operations are used to generate OTT syndications from syndication configurations asynchronously
+      (because depending on how much content you want indexed for universal search, the resulting file may be very large
+      and take some time to generate and send back). Stored jobs can be run manually as needed and can also be
+      configured to run automatically at scheduled intervals.</p>
+    <ul>
+      <li><a href="/ott-syndication/references/reference.html#operation/postOTTStoredJob">Create a new OTT stored
+          job</a></li>
+      <li><a href="/ott-syndication/references/reference.html#operation/getOTTStoredJobs">Get all OTT stored jobs</a>
+      </li>
+      <li><a href="/ott-syndication/references/reference.html#operation/getOTTStoredJob">Get an OTT stored job</a></li>
+      <li><a href="/ott-syndication/references/reference.html#operation/putOTTStoredJob">Replace an OTT stored job</a>
+      </li>
+      <li><a href="/ott-syndication/references/reference.html#operation/patchOTTStoredJob">Patch an OTT stored job</a>
+      </li>
+      <li><a href="/ott-syndication/references/reference.html#operation/deleteOTTStoredJob">Delete an OTT stored job</a>
+      </li>
+      <li><a href="/ott-syndication/references/reference.html#operation/runOTTStoredJob">Run an OTT stored job</a></li>
+    </ul>
+
+    <h3>Templates for custom OTT feeds</h3>
+    <p>The operations are for managing custom templates for syndications.</p>
+    <ul>
+      <li><a href="/ott-syndication/references/reference.html#operation/putOTTTemplate">Upload a custom OTT feed
+          template</a></li>
+      <li><a href="/ott-syndication/references/reference.html#operation/putOTTTemplate">Get a custom OTT feed
+          template</a></li>
+    </ul>
+
+    <section class="bcls-subsection">
+      <h3 id="error_messages">Error messages</h3>
+
+      <p>If any API requests fails, an error message will be returned. Error responses will look like the following:</p>
+
+      <pre class="line-numbers"><code class="language-json" translate="No">[
+          {
+          "error_code" : "Application error code 1",
+          "message" : "Application error message 1"
+          }, {
+          "error_code" : "Application error code 2",
+          "message" : "Application error message 2"
+          }
+          ]</code></pre>
+      <aside class="bcls-aside bcls-aside--information">Note that if you include a request body in a GET request, the
+        request will fail and an error will be returned.</aside>
+    </section>
+
     <!--   <section class="bcls-subsection">
         <h3 id="Create_a_syndication">Create a syndication configuration</h3>
-  
+
         <p>Method: <code translate="No">POST</code></p>
-  
+
         <p>Endpoint: <code translate="No">/v1/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications</code></p>
-  
+
         <p>Sample request body:</p>
-  
+
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "name": "Syndication for AppleTV Universal Search",
   "type": "umcAvailabilityCsv"
 }</code></pre>
-  
+
         <p>Note that the <code translate="No">name</code> and <code translate="No">type</code> fields are required. Others are optional.</p>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="Get_all_syndications_for_an_account">Get all syndication configurations for an account</h3>
-  
+
         <p>Method: <code translate="No">GET</code></p>
-  
+
         <p>Endpoint: <code translate="No">/v1/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications</code></p>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="Update_a_syndication">Update a syndication configuration</h3>
 
@@ -394,24 +494,24 @@ layout: doc_pages_staging
         </aside>
 
         <h4>PATCH updates</h4>
-  
+
         <p>Method: <code translate="No">PATCH</code></p>
-  
+
         <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span></code></p>
-  
+
         <p>Sample request body:</p>
-  
+
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "name": "my new name"
 }</code></pre>
 
         <h4>PUT updates</h4>
         <p>Method: <code translate="No">PATCH</code></p>
-  
+
         <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span></code></p>
-  
+
         <p>Sample request body:</p>
-  
+
 <pre class="line-numbers"><code class="language-json" translate="No">{
   "name": "my new name",
   "type": "umcAvailabilityCsv"
@@ -419,52 +519,52 @@ layout: doc_pages_staging
 
         <aside class="bcls-aside bcls-aside--information language-editable">Note again that the <code translate="No">type</code> value here must match the type already set in the configuration.</aside>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="Delete_a_syndication">Delete a syndication configuration</h3>
-  
+
         <p>Method: <code translate="No">DELETE</code></p>
-  
+
         <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span></code></p>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="Get_a_specific_syndication">Get a specific syndication configuration</h3>
-  
+
         <p>Method: <code translate="No">GET</code></p>
-  
+
         <p>Endpoint: <code translate="No">/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-syndications/<span class="bcls-input">{syndication_id}</span></code></p>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="create_a_new_ott_async_job_request">Create a new OTT async job request</h3>
-  
+
         <p>Method: <code translate="No">POST</code></p>
-  
+
         <p>Endpoint: <code translate="No">/v1/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-async-jobs</code></p>
-  
+
         <p>Sample request body:</p>
-  
+
 <pre class="line-numbers"><code class="language-json" translate="No">{
-  "name" : "Weekly feed", 
+  "name" : "Weekly feed",
   "syndications": ["asdfglkjh1231212"]
 }</code></pre>
 <aside class="bcls-aside bcls-aside--information language-editable">Note that since this is an asynchronous operation, the response will include an <code translate="No">id</code> for the job, which you can then use to check the status and retrieve the syndication when complete using the operations below.</aside>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="create_a_new_ott_async_job_request">Get all OTT Syndications</h3>
-  
+
         <p>Method: <code translate="No">GET</code></p>
-  
+
         <p>Endpoint: <code translate="No">/v1/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-async-jobs</code></p>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="get_an_ott_async_job">Get the feed associated with a syndication</h3>
-    
+
         <p>Method: <code translate="No">GET</code></p>
-  
+
         <p>Endpoint: <code translate="No">/v1/accounts/<span class="bcls-input">{account_id}</span>/mrss/ott-async-jobs/<span class="bcls-input">{job_id}</span></code></p>
       </section>
     </section>
@@ -472,11 +572,11 @@ layout: doc_pages_staging
     <section class="bcls-section">
       <h2 id="template_operations">Template operations</h2>
       <p>See the API Reference for full details of the operations available:</p>
-  
+
       <ul>
         <li><a href="/ott-syndication/references/reference.html">The Configuration API</a></li>
       </ul>
-  
+
       <p>The following actions are supported:</p>
       <h3>Templates for custom OTT feeds</h3>
       <ul>
@@ -486,11 +586,11 @@ layout: doc_pages_staging
 
       <section class="bcls-subsection">
         <h3 id="upload_a_custom_ott_feed_template">Upload a custom OTT feed template</h3>
-  
+
         <p>If you need to submit a data set for universal search (or some other purpose) to an OTT platform and Brightcove does not directly support the type you need, you can create a custom template and upload it to Brightcove. The template language is described <a href="#Universal_Template_Language">below</a>.</p>
-  
+
         <p>Method: <code translate="No">POST</code></p>
-  
+
         <p>Endpoint: <code translate="No">/v1/accounts/{{account_id}}/mrss/ott-syndications/{syndication_id}/template</code></p>
 
         <p>Request body: a template following the guidelines and syntax shown below.</p>
@@ -498,44 +598,52 @@ layout: doc_pages_staging
 
       <section class="bcls-subsection">
         <h3 id="get_a_custom_ott_feed_template">Get a custom syndication feed template</h3>
-  
+
         <p>Method: <code translate="No">GET</code></p>
-  
+
         <p>Endpoint: <code translate="No">/v1/accounts/{{account_id}}/mrss/ott-syndications/{syndication_id}/template</code></p>
       </section>
 
     </section> -->
-  
+
     <section class="bcls-section">
       <h2 id="Universal_Template_Language">Universal Template Language</h2>
-  
-      <p>Universal syndications allow catalog data to be merged with a custom template to generate any kind of feed desired. The supported template language is <a href="https://shopify.github.io/liquid/basics/introduction/">Liquid</a>. Feeds for the default syndication types are generated using the same types of templates, You can see the <a href="/ott-syndication/getting-started/sample-templates-universal-syndication.html">templates provided as samples</a> to help you build custom templates if you need to.</p>
-  
-      <p>The sections below identify the syndication, asset, source, and digital master properties you can use, as well as an extension to Liquid added for convenience.</p>
-  
-      <p>To see all Video Cloud video metadata fields with descriptions, to go the <a href="/cms/references/cms-api-video-fields-reference.html">CMS API Video Fields Reference</a>.</p>
-  
+
+      <p>Universal syndications allow catalog data to be merged with a custom template to generate any kind of feed
+        desired. The supported template language is <a
+          href="https://shopify.github.io/liquid/basics/introduction/">Liquid</a>. Feeds for the default syndication
+        types are generated using the same types of templates, You can see the <a
+          href="/ott-syndication/getting-started/sample-templates-universal-syndication.html">templates provided as
+          samples</a> to help you build custom templates if you need to.</p>
+
+      <p>The sections below identify the syndication, asset, source, and digital master properties you can use, as well
+        as an extension to Liquid added for convenience.</p>
+
+      <p>To see all Video Cloud video metadata fields with descriptions, to go the <a
+          href="/cms/references/cms-api-video-fields-reference.html">CMS API Video Fields Reference</a>.</p>
+
       <section class="bcls-subsection">
         <h3 id="Top_level_properties">Top level properties</h3>
-  
+
         <h4>Video Cloud account id</h4>
-  
+
         <ul>
           <li><code translate="No">account_id</code></li>
         </ul>
-    
+
         <h4>Collection of video assets retrieved from the catalog (see below for details)</h4>
-  
+
         <ul>
           <li><code translate="No">assets</code></li>
         </ul>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="Asset_properties">Asset properties</h3>
-  
-        <p>The resources in the assets collection are derived from the video resources returned by the CMS Get Videos API method, and all of the same properties are supported, including but not limited to the following:</p>
-  
+
+        <p>The resources in the assets collection are derived from the video resources returned by the CMS Get Videos
+          API method, and all of the same properties are supported, including but not limited to the following:</p>
+
         <ul>
           <li><code translate="No">created_at</code></li>
           <li><code translate="No">description</code></li>
@@ -554,23 +662,29 @@ layout: doc_pages_staging
           <li><code translate="No">text_tracks</code></li>
           <li><code translate="No">updated_at</code></li>
         </ul>
-  
+
         <p>Asset resources also support the following properties:</p>
-  
+
         <ul>
-          <li><code translate="No">sources</code> (collection of sources for the video - see the next section for source properties)</li>
-          <li><code translate="No">digital_master</code> (will be empty if no digital master exists - see below for the digital master properties)</li>
-          <li><code translate="No">best_mp4_source</code> (the highest quality MP4 source - may be empty if there are no MP4 sources. Properties will be the same as items returned in the <code translate="No">sources</code>)</li>
+          <li><code translate="No">sources</code> (collection of sources for the video - see the next section for source
+            properties)</li>
+          <li><code translate="No">digital_master</code> (will be empty if no digital master exists - see below for the
+            digital master properties)</li>
+          <li><code translate="No">best_mp4_source</code> (the highest quality MP4 source - may be empty if there are no
+            MP4 sources. Properties will be the same as items returned in the <code translate="No">sources</code>)</li>
           <li><code translate="No">hls_source</code> (returns the HLS source - will be empty if none exists)</li>
-          <li><code translate="No">best_dynamic_rendition_quality</code> (returns the video quality of the video's dynamic rendition with the largest frame size, if dynamic rendition metadata has been fetched for the video. Allowable values are "SD", "HD", "FHD", and "UHD".)</li>
+          <li><code translate="No">best_dynamic_rendition_quality</code> (returns the video quality of the video's
+            dynamic rendition with the largest frame size, if dynamic rendition metadata has been fetched for the video.
+            Allowable values are "SD", "HD", "FHD", and "UHD".)</li>
         </ul>
       </section>
-  
+
       <section class="bcls-subsection">
         <h3 id="Source_properties">Source properties</h3>
-  
-        <p>The resources in the sources collection for an asset are derived from the video source resources returned by the CMS Get Video Sources API method. The following properties are supported:</p>
-  
+
+        <p>The resources in the sources collection for an asset are derived from the video source resources returned by
+          the CMS Get Video Sources API method. The following properties are supported:</p>
+
         <ul>
           <li><code translate="No">app_name</code></li>
           <li><code translate="No">asset_id</code></li>
@@ -588,12 +702,12 @@ layout: doc_pages_staging
           <li><code translate="No">width</code></li>
         </ul>
       </section>
-  
+
       <!-- <section class="bcls-subsection">
         <h3 id="Digital_master_properties">Digital master properties</h3>
-  
+
         <p>The <code translate="No">digital_master</code> resource for an asset is derived from the digital master resource returned by the CMS Get Digital Master Info API method. The following properties are supported:</p>
-  
+
         <ul>
           <li><code translate="No">duration</code></li>
           <li><code translate="No">encoding_rate</code></li>
@@ -603,12 +717,13 @@ layout: doc_pages_staging
           <li><code translate="No">width</code></li>
         </ul>
       </section> -->
-  
+
       <section class="bcls-subsection">
         <h3 id="Dynamic_rendition_properties">Dynamic rendition properties</h3>
-  
-        <p>The <code translate="No">dynamic_renditions</code> resource for an asset is derived from the dynamic renditions returned by the CMS Get Digital Master Info API method. The following properties are supported:</p>
-  
+
+        <p>The <code translate="No">dynamic_renditions</code> resource for an asset is derived from the dynamic
+          renditions returned by the CMS Get Digital Master Info API method. The following properties are supported:</p>
+
         <ul>
           <li><code translate="No">rendition_id</code></li>
           <li><code translate="No">frame_height</code></li>
@@ -636,53 +751,70 @@ layout: doc_pages_staging
 
         <h4><code translate="No">jsonEscape</code> filter</h4>
         <p>The <code translate="No">jsonEscape</code> filter performs JSON escaping on a string.</p>
-  
+
         <h4><code translate="No">toUTC</code> filter</h4>
-  
-        <p>We have extended our Liquid parser to support a toUTC filter which will parse most standard ISO-8601 datetime string formats and transform them into standard UTC datetime strings. This format is acceptable to Liquid's date filter, which can then be used to reformat the timestamps into datetime strings in any desired format. For example:</p>
-  
+
+        <p>We have extended our Liquid parser to support a toUTC filter which will parse most standard ISO-8601 datetime
+          string formats and transform them into standard UTC datetime strings. This format is acceptable to Liquid's
+          date filter, which can then be used to reformat the timestamps into datetime strings in any desired format.
+          For example:</p>
+
         <pre class="line-numbers">
-    <code class="language-xml" translate="No">&lt;pubDate&gt;{{asset.published_at | toUTC | date: "%a, %d %b %Y %H:%M:%S %Z"}}&lt;/pubDate&gt;</code></pre>
-  
-        <p>This produces an output like the following if asset.published_at has a value of 2019-08-09T13:32:52.031Z::</p>
-  
+          <code class="language-xml" translate="No">&lt;pubDate&gt;{{asset.published_at | toUTC | date: "%a, %d %b %Y
+            %H:%M:%S %Z"}}&lt;/pubDate&gt;</code>
+        </pre>
+
+        <p>This produces an output like the following if asset.published_at has a value of 2019-08-09T13:32:52.031Z::
+        </p>
+
         <pre class="line-numbers">
-    <code class="language-xml" translate="No">&lt;pubDate&gt;Fri, 09 Aug 2019 09:32:52 +0000&lt;/pubDate&gt;</code></pre>
-  
+          <code class="language-xml" translate="No">&lt;pubDate&gt;Fri, 09 Aug 2019 09:32:52
+            +0000&lt;/pubDate&gt;</code>
+        </pre>
+
         <h4><code translate="No">toEpoch</code> filter</h4>
-  
-        <p>The Liquid parser we use does not support the "%s" token in date filters for converting dates to Unix epoch timestamps. To address this, a toEpoch custom filter is provided that can be used to convert valid date specifications to the epoch format. The filter returns a numeric data value representing milliseconds since the epoch that is suitable for input to mathematical filters. For example:</p>
-  
+
+        <p>The Liquid parser we use does not support the "%s" token in date filters for converting dates to Unix epoch
+          timestamps. To address this, a toEpoch custom filter is provided that can be used to convert valid date
+          specifications to the epoch format. The filter returns a numeric data value representing milliseconds since
+          the epoch that is suitable for input to mathematical filters. For example:</p>
+
         <pre class="line-numbers">
-    <code class="language-html" translate="No">&lt;toEpochMillis&gt;{{"now" | toEpoch }}&lt;/toEpochMillis&gt;
-    &lt;toEpochSeconds&gt;{{"now" | toEpoch | divided_by : 1000 }}&lt;/toEpochSeconds&gt;
-    &lt;thirtyDaysAgo&gt;{{'now' | toEpoch | minus:2592000000 | fromEpoch }}&lt;/thirtyDaysAgo&gt;</code></pre>
-  
+          <code class="language-html" translate="No">&lt;toEpochMillis&gt;{{"now" | toEpoch }}&lt;/toEpochMillis&gt;
+            &lt;toEpochSeconds&gt;{{"now" | toEpoch | divided_by : 1000 }}&lt;/toEpochSeconds&gt;
+            &lt;thirtyDaysAgo&gt;{{'now' | toEpoch | minus:2592000000 | fromEpoch }}&lt;/thirtyDaysAgo&gt;</code>
+        </pre>
+
         <p>produces an output like the following:</p>
-  
+
         <pre class="line-numbers">
-    <code class="language-html" translate="No">&lt;toEpochMillis&gt;1580917253024&lt;/toEpochMillis&gt;
-    &lt;toEpochSeconds&gt;1580917253&lt;/toEpochSeconds&gt;
-    &lt;thirtyDaysAgo&gt;2020-01-06T15:40:53.055Z&lt;/thirtyDaysAgo&gt;</code></pre>
-  
+          <code class="language-html" translate="No">&lt;toEpochMillis&gt;1580917253024&lt;/toEpochMillis&gt;
+            &lt;toEpochSeconds&gt;1580917253&lt;/toEpochSeconds&gt;
+            &lt;thirtyDaysAgo&gt;2020-01-06T15:40:53.055Z&lt;/thirtyDaysAgo&gt;</code>
+        </pre>
+
         <h4>fromEpoch filter</h4>
-  
-        <p>The fromEpoch filter converts numbers representing milliseconds since the epoch to UTC date strings. The filter will also accept a string containing the epoch value digits as an input. The output can be passed to the date filter for reformatting if necessary.</p>
-  
+
+        <p>The fromEpoch filter converts numbers representing milliseconds since the epoch to UTC date strings. The
+          filter will also accept a string containing the epoch value digits as an input. The output can be passed to
+          the date filter for reformatting if necessary.</p>
+
         <p>For example:</p>
-  
+
         <pre class="line-numbers">
-    <code class="language-html" translate="No">
-    &lt;fromEpochMillis&gt;{{"now" | toEpoch | fromEpoch }}&lt;/fromEpochMillis&gt;
-    &lt;thirtyDaysAgoAltFormat&gt;{{1580917253024 | fromEpoch | date:"%Y-%m-%d" }}&lt;/thirtyDaysAgo&gt;
-    </code></pre>
-  
+          <code class="language-html" translate="No">
+            &lt;fromEpochMillis&gt;{{"now" | toEpoch | fromEpoch }}&lt;/fromEpochMillis&gt;
+            &lt;thirtyDaysAgoAltFormat&gt;{{1580917253024 | fromEpoch | date:"%Y-%m-%d" }}&lt;/thirtyDaysAgo&gt;
+          </code>
+        </pre>
+
         <p>produces an output like the following:</p>
-  
+
         <pre class="line-numbers">
-    <code class="language-html" translate="No">
-    &lt;fromEpochMillis&gt;2020-02-05T16:09:37.809Z&lt;/fromEpochMillis&gt;
-    &lt;thirtyDaysAgoAltFormat&gt;2020-02-05&lt;/thirtyDaysAgo&gt;</code></pre>
+          <code class="language-html" translate="No">
+            &lt;fromEpochMillis&gt;2020-02-05T16:09:37.809Z&lt;/fromEpochMillis&gt;
+            &lt;thirtyDaysAgoAltFormat&gt;2020-02-05&lt;/thirtyDaysAgo&gt;</code>
+        </pre>
       </section>
     </section>
     {% endraw %}

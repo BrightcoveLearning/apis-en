@@ -196,11 +196,11 @@ var aapi_model = {
       filter_values: ['chrome', 'edge', 'firefox', 'ie', 'opera', 'safari', 'other'],
       incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
       samples: [{
-          dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type'
-        },
-        {
-          filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari'
-        }
+        dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type'
+      },
+      {
+        filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari'
+      }
       ]
     },
     city: {
@@ -242,11 +242,11 @@ var aapi_model = {
       fields: ['ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
       filter_values: ['The date dimension is not used as a filter.'],
       incompatible_dimensions: ['city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type',
-      samples: [{
-        dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date'
-      }, {
-        filter: 'Not applicable'
-      }]
+        samples: [{
+          dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date'
+        }, {
+          filter: 'Not applicable'
+        }]
     },
     date_hour: {
       name: 'date_hour',
@@ -317,11 +317,11 @@ var aapi_model = {
       filter_values: ['amazon', 'apple', 'asus', 'blackberry', 'fujitsu', 'google', 'htc', 'huawei', 'kyocera', 'lenovo', 'lg', 'micromax', 'microsoft', 'nintendo', 'panasonic', 'roku', 'samsung', 'sharp', 'sony', 'vizio', 'zte', 'other'],
       incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
       samples: [{
-          dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer'
-        },
-        {
-          filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple'
-        }
+        dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer'
+      },
+      {
+        filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple'
+      }
       ]
     },
     device_type: {
@@ -852,7 +852,7 @@ var aapi_model = {
     search_terms__date: {
       dimensions: ['search_terms', 'date'],
       from: '2012-10-01',
-      fields: ['search_terms', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load','video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+      fields: ['search_terms', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
     search_terms__date_hour: {
       dimensions: ['search_terms', 'date_hour'],
@@ -912,7 +912,7 @@ var aapi_model = {
     referrer_domain__date: {
       dimensions: ['referrer_domain', 'date'],
       from: '2011-01-01',
-      fields: ['ad_mode_begin', 'ad_mode_complete',  'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+      fields: ['ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
     video__date: {
       dimensions: ['video', 'date'],

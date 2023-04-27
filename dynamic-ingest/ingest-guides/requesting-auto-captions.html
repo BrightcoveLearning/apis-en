@@ -1,6 +1,7 @@
 ---
 title: 'Requesting Auto Captions'
-description: 'This topic explains how to request the generation of captions from audio tracks in your video using the Dynamic Ingest API.'
+description: 'This topic explains how to request the generation of captions from audio tracks in your video using the
+Dynamic Ingest API.'
 parent: 'Ingest Guides'
 grandparent: Dynamic Ingest API
 ---
@@ -13,22 +14,34 @@ grandparent: Dynamic Ingest API
 
     <!-- <p>In addition to providing captions automatically for your videos, this service can also generate a transcription to be included in metadata to improve SEO and/or provide a full transcription of the video for viewers.</p> -->
 
-    <p>Brightcove Auto Captioning is a platform-level service that allows you to automatically generate captions for new or existing videos in 31 different languages (provided you have an audio track for the language specified). Like all speech-to-text services Auto Captioning is not 100% accurate, but it provides a quick and easy way to generate captions right in Video Cloud.</p>
+    <p>Brightcove Auto Captioning is a platform-level service that allows you to automatically generate captions for new
+      or existing videos in 31 different languages (provided you have an audio track for the language specified). Like
+      all speech-to-text services Auto Captioning is not 100% accurate, but it provides a quick and easy way to generate
+      captions right in Video Cloud.</p>
 
     <p>Video Cloud uses the follow process to determine the source that will be used to generate the captions.</p>
     <ul>
-      <li>If the video has default audio track, that will be used as the captions source file (supported by default in the Media module)</li>
-      <li>If the video has no default audio track but a master/mezzanine file exists, that will be used as the source file (supported by default in the Media module)</li>
-      <li>If the video has no default audio track or master/mezzanine files, but audio tracks are specified in the Dynamic Ingest call, the specified audio track will be used (not yet supported in the Media module)</li>
-      <li>If the video has no default audio track, no master/mezzanine files, and no audio track is specified, captions cannot be generated</li>
+      <li>If the video has default audio track, that will be used as the captions source file (supported by default in
+        the Media module)</li>
+      <li>If the video has no default audio track but a master/mezzanine file exists, that will be used as the source
+        file (supported by default in the Media module)</li>
+      <li>If the video has no default audio track or master/mezzanine files, but audio tracks are specified in the
+        Dynamic Ingest call, the specified audio track will be used (not yet supported in the Media module)</li>
+      <li>If the video has no default audio track, no master/mezzanine files, and no audio track is specified, captions
+        cannot be generated</li>
     </ul>
 
     <aside class="bcls-aside bcls-aside--information language-editable">
       Notes:
       <ul>
-        <li>Auto captions is available to all Video Cloud accounts. Auto captions for a number of minutes of audio will be provided free of charge; there will be a charge for additional minutes if you need them. Contact your Customer Success Manager for details and to have auto-captioning enabled for your account.</li>
-        <li>Auto captions can also requested in the Upload Module in Video Cloud - see <a href="https://studio.support.brightcove.com/media/generating-captions-videos.html">Automatically Generating Captions for Videos</a>.</li>
-        <li>Auto captions cannot be generated for existing videos unless the videos have a <a href="/ingest-profiles/guides/archiving-masters.html">digital master</a>.</li>
+        <li>Auto captions is available to all Video Cloud accounts. Auto captions for a number of minutes of audio will
+          be provided free of charge; there will be a charge for additional minutes if you need them. Contact your
+          Customer Success Manager for details and to have auto-captioning enabled for your account.</li>
+        <li>Auto captions can also requested in the Upload Module in Video Cloud - see <a
+            href="https://studio.support.brightcove.com/media/generating-captions-videos.html">Automatically Generating
+            Captions for Videos</a>.</li>
+        <li>Auto captions cannot be generated for existing videos unless the videos have a <a
+            href="/ingest-profiles/guides/archiving-masters.html">digital master</a>.</li>
         <li>
           The minimum length of a video to generate auto captions is:
           <ul>
@@ -37,31 +50,40 @@ grandparent: Dynamic Ingest API
           </ul>
         </li>
       </ul>
-      </aside>
+    </aside>
 
   </section>
   <section class="bcls-section">
     <h2 id="setup">Setup</h2>
 
-    <p>The setup for <span translate="No">Dynamic Ingest</span> requests is the same, whether you are ingesting a video, images, audio tracks, <span translate="No">WebVTT</span> files, requesting auto captions, or all of these:</p>
+    <p>The setup for <span translate="No">Dynamic Ingest</span> requests is the same, whether you are ingesting a video,
+      images, audio tracks, <span translate="No">WebVTT</span> files, requesting auto captions, or all of these:</p>
 
     <dl>
       <dt>Request URL</dt>
       <dd>
-<pre><code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/{{account_id}}/videos/{{video_id}}/ingest-requests</code></pre>
+        <pre><code class="language-http"
+            translate="No">https://ingest.api.brightcove.com/v1/accounts/{{account_id}}/videos/{{video_id}}/ingest-requests</code>
+        </pre>
       </dd>
       <dt>Authentication</dt>
-      <dd>Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code translate="No">Authorization</code> header:
+      <dd>Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code
+          translate="No">Authorization</code> header:
         <pre class="line-numbers">
-      <code class="language-bash" translate="No">Authorization: Bearer {access_token}</code></pre>
+          <code class="language-bash" translate="No">Authorization: Bearer {access_token}</code>
+        </pre>
 
-        <p>To get access tokens, you will need <strong>client credentials</strong> (see below). For the process of obtaining an access token, see <a href="/oauth/guides/getting-access-tokens.html">Get Access Tokens</a>.</p>
+        <p>To get access tokens, you will need <strong>client credentials</strong> (see below). For the process of
+          obtaining an access token, see <a href="/oauth/guides/getting-access-tokens.html">Get Access Tokens</a>.</p>
       </dd>
     </dl>
 
     <h3>Note on S3</h3>
 
-    <p>If your source files will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow <span translate="No">Video Cloud</span> to access the files. See <a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html#setPolicy">Using <span translate="No">Dynamic Ingest</span> with S3</a> for details.</p>
+    <p>If your source files will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow
+      <span translate="No">Video Cloud</span> to access the files. See <a
+        href="/dynamic-ingest/general/using-dynamic-ingest-s3.html#setPolicy">Using <span translate="No">Dynamic
+          Ingest</span> with S3</a> for details.</p>
   </section>
 
   <section class="bcls-section">
@@ -70,34 +92,41 @@ grandparent: Dynamic Ingest API
         <h2 id="gettingCredentials">Getting Credentials</h2>
       </summary>
 
-      <p>To get a <code translate="No">client_id</code> and <code translate="No">client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+      <p>To get a <code translate="No">client_id</code> and <code translate="No">client_secret</code>, you will need to
+        go to the OAuth UI and register this app:</p>
 
       <ul>
-        <li><a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a></li>
+        <li><a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a>
+        </li>
       </ul>
 
       <p>These are the permissions you will need:</p>
 
-      <figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Ingest Permissions" src="/assets/images/dynamic-ingest/code-samples/di-permissions.png" />
+      <figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Ingest Permissions"
+          src="/assets/images/dynamic-ingest/code-samples/di-permissions.png" />
         <figcaption class="bcls-caption--image"><span translate="No">Dynamic Ingest</span> Permissions</figcaption>
       </figure>
 
-      <p>You can also get your credentials via <span translate="No">CURL</span>, <span translate="No">Postman</span>, or our online app - see:</p>
+      <p>You can also get your credentials via <span translate="No">CURL</span>, <span translate="No">Postman</span>, or
+        our online app - see:</p>
 
       <ul>
-        <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Get Client Credentials Using <span translate="No">CURL</span></a></li>
-        <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Get Client Credentials Using <span translate="No">Postman</span></a></li>
-        <li><a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">Create Client Credentials</a></li>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">Get Client Credentials Using <span
+              translate="No">CURL</span></a></li>
+        <li><a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Get Client Credentials Using
+            <span translate="No">Postman</span></a></li>
+        <li><a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">Create Client Credentials</a>
+        </li>
       </ul>
 
       <p>If you are getting credentials directly from the API, these are the permissions you need:</p>
 
-<pre class="line-numbers"><code class="language-json" translate="No">[
-  "video-cloud/video/all",
-  "video-cloud/ingest-profiles/profile/read",
-  "video-cloud/ingest-profiles/account/read",
-  "video-cloud/upload-urls/read"
-]</code></pre>
+      <pre class="line-numbers"><code class="language-json" translate="No">[
+          "video-cloud/video/all",
+          "video-cloud/ingest-profiles/profile/read",
+          "video-cloud/ingest-profiles/account/read",
+          "video-cloud/upload-urls/read"
+          ]</code></pre>
     </details>
   </section>
 
@@ -110,105 +139,111 @@ grandparent: Dynamic Ingest API
     <details>
       <summary>Request body</summary>
       <pre class="line-numbers"><code class="language-json" translate="No">{
-  "master": {
-    "use_archived_master": true
-  },
-  "profile": "multi-platform-standard-static-with-mp4",
-  "transcriptions": [
-    {
-      "srclang": "EN-us",
-      "kind": "captions",
-      "label": "English",
-      "status" : "published",
-      "default": true
-    }
-  ],
-  "priority": "normal"
-}</code></pre>
+          "master": {
+          "use_archived_master": true
+          },
+          "profile": "multi-platform-standard-static-with-mp4",
+          "transcriptions": [
+          {
+          "srclang": "EN-us",
+          "kind": "captions",
+          "label": "English",
+          "status" : "published",
+          "default": true
+          }
+          ],
+          "priority": "normal"
+          }</code></pre>
     </details>
 
     <h3>Create auto-captions when ingesting an audio track</h3>
     <details>
       <summary>Request body</summary>
       <pre class="line-numbers"><code class="language-json" translate="No">{
-  "audio_tracks": {
-    "merge_with_existing": true,
-    "masters": [
-        {
-            "language": "fr-FR",
-            "variant": "alternate",
-            "url": "https://support.brightcove.com/test-assets//audio/celtic_lullaby.m4a"
-        }
-    ]
-  },
-  "transcriptions": [
-      {
+          "audio_tracks": {
+          "merge_with_existing": true,
+          "masters": [
+          {
+          "language": "fr-FR",
+          "variant": "alternate",
+          "url": "https://support.brightcove.com/test-assets//audio/celtic_lullaby.m4a"
+          }
+          ]
+          },
+          "transcriptions": [
+          {
           "srclang": "fr-FR",
           "kind": "captions",
           "label": "french-FR",
           "status" : "published",
           "default": false,
           "input_audio_track": {
-              "language": "fr-FR",
-              "variant": "alternate"
+          "language": "fr-FR",
+          "variant": "alternate"
           }
-      }
-  ]
-}</code></pre>
+          }
+          ]
+          }</code></pre>
     </details>
 
     <h3>Create auto-captions for an existing video using the digital master</h3>
     <details>
       <summary>Request body</summary>
       <pre class="line-numbers"><code class="language-json" translate="No">{
-  "transcriptions": [
-      {
+          "transcriptions": [
+          {
           "srclang": "fr-FR",
           "kind": "captions",
           "label": "french-FR",
           "default": false
-      }
-  ]
-}</code></pre>
+          }
+          ]
+          }</code></pre>
     </details>
 
     <h3>Create auto-captions for an existing video defining the audio tracks</h3>
     <aside class="bcls-aside bcls-aside--information language-editable">
       Note: to get information about the videos audio tracks, you can either:
       <ul>
-        <li>Look at the <a href="https://studio.support.brightcove.com/media/editing-video-properties-using-media-module.html#audiotracks">video properties</a> in Studio</li>
+        <li>Look at the <a
+            href="https://studio.support.brightcove.com/media/editing-video-properties-using-media-module.html#audiotracks">video
+            properties</a> in Studio</li>
         <li>
-          Use the <a href="https://apis.support.brightcove.com/cms/references/reference.html#operation/GetVideoAudioTracks">CMS API</a> to retrieve the audio tracks using this endpoint:
-<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">{account_id}</span>/videos/<span class="bcls-input">{video_id}</span>/audio_tracks</code></pre>
+          Use the <a
+            href="https://apis.support.brightcove.com/cms/references/reference.html#operation/GetVideoAudioTracks">CMS
+            API</a> to retrieve the audio tracks using this endpoint:
+          <pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span
+                class="bcls-input">{account_id}</span>/videos/<span
+                class="bcls-input">{video_id}</span>/audio_tracks</code></pre>
         </li>
       </ul>
     </aside>
     <details>
       <summary>Request body</summary>
       <pre class="line-numbers"><code class="language-json" translate="No">{
-  "transcriptions": [
-      {
+          "transcriptions": [
+          {
           "srclang": "en-US",
           "kind": "captions",
           "label": "english-EN",
           "default": false,
           "input_audio_track": {
-              "language": "en-US",
-              "variant": "main"
+          "language": "en-US",
+          "variant": "main"
           }
-      },
-      {
+          },
+          {
           "srclang": "fr-FR",
           "kind": "captions",
           "label": "french-FR",
           "default": false,
           "input_audio_track": {
-              "language": "fr-FR",
-              "variant": "alternate"
+          "language": "fr-FR",
+          "variant": "alternate"
           }
-      }
-  ]
-}</code></pre>
+          }
+          ]
+          }</code></pre>
     </details>
 
   </section>
@@ -216,7 +251,7 @@ grandparent: Dynamic Ingest API
   <section class="bcls-section">
     <h2 id="Audio_track_metadata">Request body fields for auto captions</h2>
     <p>The table below shows the request body fields for auto captions.</p>
-    
+
     {% include s-apis-general/ingest-fields-transcripts.html %}
 
     <h3 id="input_audio_track"><code translate="No">input_audio_track</code> fields</h3>
@@ -235,7 +270,8 @@ grandparent: Dynamic Ingest API
           <td><code translate="No">language</code></td>
           <td>string</td>
           <td>yes</td>
-          <td>BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.); see <a href="#supported_languages">supported languages</a></td>
+          <td>BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.); see <a
+              href="#supported_languages">supported languages</a></td>
         </tr>
         <tr>
           <td><code translate="No">variant</code></td>
