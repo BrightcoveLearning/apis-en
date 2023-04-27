@@ -196,11 +196,11 @@ var aapi_model = {
       filter_values: ['chrome', 'edge', 'firefox', 'ie', 'opera', 'safari', 'other'],
       incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
       samples: [{
-        dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type'
-      },
-      {
-        filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari'
-      }
+          dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type'
+        },
+        {
+          filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari'
+        }
       ]
     },
     city: {
@@ -317,11 +317,11 @@ var aapi_model = {
       filter_values: ['amazon', 'apple', 'asus', 'blackberry', 'fujitsu', 'google', 'htc', 'huawei', 'kyocera', 'lenovo', 'lg', 'micromax', 'microsoft', 'nintendo', 'panasonic', 'roku', 'samsung', 'sharp', 'sony', 'vizio', 'zte', 'other'],
       incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
       samples: [{
-        dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer'
-      },
-      {
-        filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple'
-      }
+          dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer'
+        },
+        {
+          filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple'
+        }
       ]
     },
     device_type: {
@@ -498,568 +498,568 @@ var aapi_model = {
       dimensions: ['account', 'viewer', 'date_hour'],
       from: '2011-01-01',
       fields: [
-        "account.name",
-        "application",
-        "date_hour",
-        "engagement_score",
-        "engagement_score",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "video_view",
-        "viewer"
-      ]
+  "account.name",
+  "application",
+  "date_hour",
+  "engagement_score",
+  "engagement_score",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "video_view",
+  "viewer"
+]
     },
     viewer__date_hour: {
       dimensions: ['viewer', 'date_hour'],
       from: '2011-01-01',
       fields: [
-        "application",
-        "date_hour",
-        "engagement_score",
-        "engagement_score",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "video_view",
-        "viewer"
-      ]
+  "application",
+  "date_hour",
+  "engagement_score",
+  "engagement_score",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video: {
       dimensions: ['account', 'viewer', 'video'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     viewer__video: {
       dimensions: ['viewer', 'video'],
       from: '2011-01-01',
       fields: [
-        "application",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "application",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     viewer__video__date: {
       dimensions: ['viewer', 'video', 'date'],
       from: '2011-01-01',
       fields: [
-        "application",
-        "date",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "application",
+  "date",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     viewer__video__date_hour: {
       dimensions: ['viewer', 'video', 'date_hour'],
       from: '2011-01-01',
       fields: [
-        "application",
-        "date_hour",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "application",
+  "date_hour",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__date: {
       dimensions: ['account', 'viewer', 'video', 'date'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "date",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "date",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__date_hour: {
       dimensions: ['account', 'viewer', 'video', 'date_hour'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "date_hour",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "date_hour",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__country: {
       dimensions: ['account', 'viewer', 'video', 'country'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "country",
-        "country_name",
-        "engagement_score",
-
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "country",
+  "country_name",
+  "engagement_score",
+  
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__country: {
       dimensions: ['account', 'viewer', 'country'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "country",
-        "country_name",
-        "engagement_score",
-
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "country",
+  "country_name",
+  "engagement_score",
+  
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__country__date: {
       dimensions: ['account', 'viewer', 'video', 'country', 'date'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "country",
-        "country_name",
-        "date",
-        "engagement_score",
-
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "country",
+  "country_name",
+  "date",
+  "engagement_score",
+  
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__country__date_hour: {
       dimensions: ['account', 'viewer', 'video', 'country', 'date_hour'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "country",
-        "country_name",
-        "date_hour",
-        "engagement_score",
-
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "country",
+  "country_name",
+  "date_hour",
+  "engagement_score",
+  
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__region: {
       dimensions: ['account', 'viewer', 'video', 'region'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "engagement_score",
-        "region",
-        "region_name",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "engagement_score",
+  "region",
+  "region_name",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__region: {
       dimensions: ['account', 'viewer', 'region'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "engagement_score",
-        "region",
-        "region_name",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "engagement_score",
+  "region",
+  "region_name",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__region__date: {
       dimensions: ['account', 'viewer', 'video', 'region', 'date'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "date",
-        "engagement_score",
-        "region",
-        "region_name",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "date",
+  "engagement_score",
+  "region",
+  "region_name",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__region__date_hour: {
       dimensions: ['account', 'viewer', 'video', 'region', 'date_hour'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "date_hour",
-        "engagement_score",
-
-        "region",
-        "region_name",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "date_hour",
+  "engagement_score",
+  
+  "region",
+  "region_name",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__city: {
       dimensions: ['account', 'viewer', 'video', 'city'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "city",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__city: {
       dimensions: ['account', 'viewer', 'city'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "city",
-        "engagement_score",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "engagement_score",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__city__date: {
       dimensions: ['account', 'viewer', 'video', 'city', 'date'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "city",
-        "date",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "date",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__city__date_hour: {
       dimensions: ['account', 'viewer', 'video', 'city', 'date_hour'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "city",
-        "date_hour",
-        "engagement_score",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "date_hour",
+  "engagement_score",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__country__region: {
       dimensions: ['account', 'viewer', 'video', 'country', 'region'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "country",
-        "country_name",
-        "engagement_score",
-
-        "region",
-        "region_name",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "country",
+  "country_name",
+  "engagement_score",
+  
+  "region",
+  "region_name",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__country__region__city: {
       dimensions: ['account', 'viewer', 'video', 'country', 'region', 'city'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "city",
-        "country",
-        "country_name",
-        "engagement_score",
-
-        "region",
-        "region_name",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "country",
+  "country_name",
+  "engagement_score",
+  
+  "region",
+  "region_name",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__country__region__city__date: {
       dimensions: ['account', 'viewer', 'video', 'country', 'region', 'city', 'date'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "city",
-        "country",
-        "country_name",
-        "date",
-        "engagement_score",
-
-        "region",
-        "region_name",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "country",
+  "country_name",
+  "date",
+  "engagement_score",
+  
+  "region",
+  "region_name",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__country__region__city__date_hour: {
       dimensions: ['account', 'viewer', 'video', 'country', 'region', 'city', 'date_hour'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "city",
-        "country",
-        "country_name",
-        "date_hour",
-        "engagement_score",
-
-        "region",
-        "region_name",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "country",
+  "country_name",
+  "date_hour",
+  "engagement_score",
+  
+  "region",
+  "region_name",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__country__region__city__date: {
       dimensions: ['account', 'viewer', 'video', 'country', 'region', 'city', 'date'],
       from: '2011-01-01',
       fields: [
-        "account",
-        "account.name",
-        "application",
-        "city",
-        "country",
-        "country_name",
-        "date",
-        "engagement_score",
-
-        "region",
-        "region_name",
-        "video",
-        "video_engagement_1",
-        "video_engagement_100",
-        "video_engagement_25",
-        "video_engagement_50",
-        "video_engagement_75",
-        "video_percent_viewed",
-        "video_seconds_viewed",
-        "video_view",
-        "viewer"
-      ]
+  "account",
+  "account.name",
+  "application",
+  "city",
+  "country",
+  "country_name",
+  "date",
+  "engagement_score",
+  
+  "region",
+  "region_name",
+  "video",
+  "video_engagement_1",
+  "video_engagement_100",
+  "video_engagement_25",
+  "video_engagement_50",
+  "video_engagement_75",
+  "video_percent_viewed",
+  "video_seconds_viewed",
+  "video_view",
+  "viewer"
+]
     },
     account__viewer__video__region__city__date_hour: {
       dimensions: ['account', 'viewer', 'video', 'region', 'city', 'date_hour'],
@@ -1099,97 +1099,97 @@ var aapi_model = {
     viewer__video__country__date: {
       dimensions: ['viewer', 'video', 'country', 'date'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'date', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'date', 'rebuffering_seconds']
     },
     viewer__video__country__date_hour: {
       dimensions: ['viewer', 'video', 'country', 'date_hour'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'date_hour', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'date_hour', 'rebuffering_seconds']
     },
     viewer__video__region: {
       dimensions: ['viewer', 'video', 'region'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'rebuffering_seconds']
     },
     viewer__video__region__date: {
       dimensions: ['viewer', 'video', 'region', 'date'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'date', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'date', 'rebuffering_seconds']
     },
     viewer__video__region__date_hour: {
       dimensions: ['viewer', 'video', 'region', 'date_hour'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'date_hour', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'date_hour', 'rebuffering_seconds']
     },
     viewer__video__city: {
       dimensions: ['viewer', 'video', 'city'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'city']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'city']
     },
     viewer__video__city__date: {
       dimensions: ['viewer', 'video', 'city', 'date'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'city', 'date']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'city', 'date']
     },
     viewer__video__city__date_hour: {
       dimensions: ['viewer', 'video', 'city', 'date_hour'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'city', 'date_hour']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'city', 'date_hour']
     },
     viewer__video__country__region: {
       dimensions: ['viewer', 'video', 'country', 'region'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'rebuffering_seconds']
     },
     viewer__video__country__region__city: {
       dimensions: ['viewer', 'video', 'country', 'region', 'city'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'city', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'city', 'rebuffering_seconds']
     },
     viewer__video__country__region__city__date: {
       dimensions: ['viewer', 'video', 'country', 'region', 'city', 'date', 'rebuffering_seconds'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'city', 'date']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'city', 'date']
     },
     viewer__video__country__region__city__date_hour: {
       dimensions: ['viewer', 'video', 'country', 'region', 'city', 'date_hour'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'city', 'date_hour', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'city', 'date_hour', 'rebuffering_seconds']
     },
     viewer__video__country__region__city__date: {
       dimensions: ['viewer', 'video', 'country', 'region', 'city', 'date'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'city', 'date', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'city', 'date', 'rebuffering_seconds']
     },
     viewer__video__region__city__date_hour: {
       dimensions: ['viewer', 'video', 'region', 'city', 'date_hour'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'city', 'date_hour', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'city', 'date_hour', 'rebuffering_seconds']
     },
     viewer__video__region__city__date: {
       dimensions: ['viewer', 'video', 'region', 'city', 'date'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'city', 'date_hour', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'region', 'region_name', 'city', 'date_hour', 'rebuffering_seconds']
     },
     viewer__video__country__city__date_hour: {
       dimensions: ['viewer', 'video', 'country', 'city', 'date_hour'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'city', 'date_hour', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'city', 'date_hour', 'rebuffering_seconds']
     },
     viewer__video__country__city__date: {
       dimensions: ['viewer', 'video', 'country', 'city', 'date'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'city', 'date', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'city', 'date', 'rebuffering_seconds']
     },
     viewer__video__country__region__date_hour: {
       dimensions: ['viewer', 'video', 'country', 'region', 'date_hour'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'date_hour', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'date_hour', 'rebuffering_seconds']
     },
     viewer__video__country__region__date: {
       dimensions: ['viewer', 'video', 'country', 'region', 'date'],
       from: '2011-01-01',
-      fields: ['video', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'date', 'rebuffering_seconds']
+      fields: ['video',  'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer', 'country', 'country_name', 'region', 'region_name', 'date', 'rebuffering_seconds']
     },
     viewer__country: {
       dimensions: ['viewer', 'country'],
@@ -1339,12 +1339,12 @@ var aapi_model = {
     account__player__date: {
       dimensions: ['account', 'player', 'date'],
       from: '2011-01-01',
-      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'date', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name']
+      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'date','play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name']
     },
     account__player__date_hour: {
       dimensions: ['account', 'player', 'date_hour'],
       from: '2011-01-01',
-      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'date_hour', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name']
+      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'date_hour','play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'player', 'player_name']
     },
     account__player__source_type: {
       dimensions: ['account', 'player', 'source_type'],
@@ -1499,7 +1499,7 @@ var aapi_model = {
     account__video__viewer: {
       dimensions: ['account', 'video', 'browser_type'],
       from: '2011-01-01',
-      fields: ['account.name', 'ad_mode_begin', 'ad_mode_complete', 'alive_ss_ad_start', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer']
+      fields: ['account.name','ad_mode_begin', 'ad_mode_complete', 'alive_ss_ad_start', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'engagement_score', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'viewer']
     },
     video__viewer: {
       dimensions: ['video', 'browser_type'],
@@ -1774,32 +1774,32 @@ var aapi_model = {
     account__device_os__device_type__device_manufacturer__browser_type__region: {
       dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer', 'browser_type', 'region'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer', 'browser_type', 'region']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer','browser_type', 'region']
     },
     account__device_os__device_type__device_manufacturer__browser_type__region__country: {
-      dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer', 'browser_type', 'region', 'country'],
+      dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer','browser_type', 'region', 'country'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer', 'browser_type', 'region', 'country', 'country_name']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer','browser_type', 'region', 'country', 'country_name']
     },
     account__device_os__device_type__device_manufacturer__browser_type__country: {
-      dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer', 'browser_type', 'country'],
+      dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer','browser_type', 'country'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer', 'browser_type', 'country', 'country_name']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer','browser_type', 'country', 'country_name']
     },
     account__device_os__device_type__device_manufacturer__region: {
       dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer', 'region'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer', 'region']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer','region']
     },
     account__device_os__device_type__device_manufacturer__region__country: {
-      dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer', 'region', 'country'],
+      dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer','region', 'country'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer', 'region', 'country', 'country_name']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer','region', 'country', 'country_name']
     },
     account__device_os__device_type__device_manufacturer__country: {
-      dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer', 'country'],
+      dimensions: ['account', 'device_os', 'device_type', 'device_manufacturer','country'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer', 'country', 'country_name']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_type', 'device_manufacturer','country', 'country_name']
     },
     account__device_os__device_manufacturer__browser_type__region: {
       dimensions: ['account', 'device_os', 'device_manufacturer', 'browser_type', 'region'],
@@ -1807,29 +1807,29 @@ var aapi_model = {
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_manufacturer', 'browser_type', 'region']
     },
     account__device_os__device_manufacturer__browser_type__region__country: {
-      dimensions: ['account', 'device_os', 'device_manufacturer', 'browser_type', 'region', 'country'],
+      dimensions: ['account', 'device_os', 'device_manufacturer','browser_type', 'region', 'country'],
       from: '2011-01-01',
       fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_manufacturer', 'browser_type', 'region', 'country', 'country_name']
     },
     account__device_os__device_manufacturer__browser_type__country: {
-      dimensions: ['account', 'device_os', 'device_manufacturer', 'browser_type', 'country'],
+      dimensions: ['account', 'device_os', 'device_manufacturer','browser_type', 'country'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_manufacturer', 'browser_type', 'country', 'country_name']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os', 'device_manufacturer','browser_type', 'country', 'country_name']
     },
     account__device_type__device_manufacturer__browser_type__region: {
       dimensions: ['account', 'device_type', 'device_manufacturer', 'browser_type', 'region'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type', 'device_manufacturer', 'browser_type', 'region']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type', 'device_manufacturer','browser_type', 'region']
     },
     account__device_type__device_manufacturer__browser_type__region__country: {
-      dimensions: ['account', 'device_type', 'device_manufacturer', 'browser_type', 'region', 'country'],
+      dimensions: ['account', 'device_type', 'device_manufacturer','browser_type', 'region', 'country'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type', 'device_manufacturer', 'browser_type', 'region', 'country', 'country_name']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type', 'device_manufacturer','browser_type', 'region', 'country', 'country_name']
     },
     account__device_type__device_manufacturer__browser_type__country: {
-      dimensions: ['account', 'device_type', 'device_manufacturer', 'browser_type', 'country'],
+      dimensions: ['account', 'device_type', 'device_manufacturer','browser_type', 'country'],
       from: '2011-01-01',
-      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type', 'device_manufacturer', 'browser_type', 'country', 'country_name']
+      fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_type', 'device_manufacturer','browser_type', 'country', 'country_name']
     },
     account__device_os__date: {
       dimensions: ['account', 'device_os', 'date'],
@@ -2269,7 +2269,7 @@ var aapi_model = {
     search_terms__date: {
       dimensions: ['search_terms', 'date'],
       from: '2012-10-01',
-      fields: ['search_terms', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+      fields: ['search_terms', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load','video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
     search_terms__date_hour: {
       dimensions: ['search_terms', 'date_hour'],
@@ -2317,7 +2317,7 @@ var aapi_model = {
       fields: ['device_os', 'device_manufacturer', 'engagement_score', 'play_request', 'video_view']
     },
     device_os__device_manufacturer__date: {
-      dimensions: ['device_os', 'device_manufacturer', 'date'],
+      dimensions: ['device_os','device_manufacturer', 'date'],
       from: '2011-01-01',
       fields: ['device_os', 'device_manufacturer', 'ad_mode_begin', 'ad_mode_complete', 'active_media', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
@@ -2344,7 +2344,7 @@ var aapi_model = {
     referrer_domain__date: {
       dimensions: ['referrer_domain', 'date'],
       from: '2011-01-01',
-      fields: ['ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+      fields: ['ad_mode_begin', 'ad_mode_complete',  'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
     video__date: {
       dimensions: ['video', 'date'],
@@ -2354,7 +2354,7 @@ var aapi_model = {
     video__date__destination_domain: {
       dimensions: ['video', 'date', 'destination_domain'],
       from: '2011-01-01',
-      fields: ['ad_mode_begin', 'ad_mode_complete', 'date', 'destination_domain', 'engagement_score', 'video', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at']
+      fields: ['ad_mode_begin', 'ad_mode_complete', 'date', 'destination_domain', 'engagement_score', 'video',  'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at']
     },
     video__date__country: {
       dimensions: ['video', 'date', 'country'],
