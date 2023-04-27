@@ -3643,9 +3643,12 @@
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
 
-    <p>Brightcove provides static URLs to video manifest files for assets in your Video Cloud library. This gives you the flexibility to manage your content in your own CMS, and deliver it using a custom security schema. </p>
+    <p>Brightcove provides static URLs to video manifest files for assets in your Video Cloud library. This gives you
+      the flexibility to manage your content in your own CMS, and deliver it using a custom security schema. </p>
 
-    <p>This is important for customers who have existing architecture that does not allow a Playback API call before needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one call.</p>
+    <p>This is important for customers who have existing architecture that does not allow a Playback API call before
+      needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one
+      call.</p>
 
     <p>Also see the <a href="/playback/references/reference_v2.html#tag/Static-URLs">Playback API v2 reference</a>.</p>
   </section>
@@ -3664,24 +3667,32 @@
         To sign the <span translate="No">JSON Web Token</span> (JWT), your Brightcove account needs to be enabled for Playback Authorization Service. Contact your Customer Success Manager to have this done.
       </p> -->
     <h3>Analytics registration </h3>
-    <p>With static URLs, you are integrating with the Playback API without using the Brightcove Player. While the Brightcove Player automatically sends analytics data to Brightcove, you will use the Data Collection API to do this.</p>
+    <p>With static URLs, you are integrating with the Playback API without using the Brightcove Player. While the
+      Brightcove Player automatically sends analytics data to Brightcove, you will use the Data Collection API to do
+      this.</p>
     <p>
-      If you are not familiar with the Data Collection API, review the <a href="https://apis.support.brightcove.com/data-collection/getting-started/overview-data-collection-api-v2.html">Overview: Data Collection API</a> document.
+      If you are not familiar with the Data Collection API, review the <a
+        href="https://apis.support.brightcove.com/data-collection/getting-started/overview-data-collection-api-v2.html">Overview:
+        Data Collection API</a> document.
     </p>
     <p>
-      For details about sending information to the Data Collector, see the <a href="https://apis.support.brightcove.com/data-collection/code-samples/data-collection-api-sample.html">Data Collection API Sample</a>.
+      For details about sending information to the Data Collector, see the <a
+        href="https://apis.support.brightcove.com/data-collection/code-samples/data-collection-api-sample.html">Data
+        Collection API Sample</a>.
     </p>
   </section>
 
   <section class="bcls-section">
     <h2 id="Video_Cloud">Video Cloud</h2>
     <p>
-      Today, every playback through VideoCloud requires 2 API calls to start video playback. With the use of static URLs, you can reduce the number of API calls to just one.
+      Today, every playback through VideoCloud requires 2 API calls to start video playback. With the use of static
+      URLs, you can reduce the number of API calls to just one.
     </p>
 
     <p>The following diagram shows the API calls for video playback WITHOUT static URLs.</p>
     <figure class="bcls-figure">
-      <img class="bcls-image--no-border" width="800" src="/assets/images/playback/guides/current-playback-calls.png" alt="Video Cloud playback">
+      <img class="bcls-image--no-border" width="800" src="/assets/images/playback/guides/current-playback-calls.png"
+        alt="Video Cloud playback">
       <figcaption class="bcls-caption--image">Video Cloud playback</figcaption>
     </figure>
   </section>
@@ -3777,7 +3788,7 @@
       </tbody>
     </table>
   </section>
-
+  
   <section class="bcls-section">
     <h2 id="Implementing_Static_URLs">Implementing Static URLs</h2>
 
@@ -3797,7 +3808,9 @@
       </li>
     </ul>
     <p>
-      Static URLs are secured using a customer-generated and signed <span translate="No">JSON Web Token</span> (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a <span translate="No">JSON Web Token</span></a> section.
+      Static URLs are secured using a customer-generated and signed <span translate="No">JSON Web Token</span> (JWT).
+      With this token, you can configure and enforce aspects of delivery. For details, see the <a
+        href="#Creating_a_JSON_Web_Token">Creating a <span translate="No">JSON Web Token</span></a> section.
     </p>
     <!-- <p>
       For manifests & VMAPs, the response will be returned directly. For MP4s it will 302 to the right CDN URL. DRM is not necessary to include here. This is controlled by flags on the account & video themselves. You  can use a claim in the JWT, if necessary, to switch between DRM types on the fly.
@@ -3832,43 +3845,54 @@
     <dl>
       <dt>HLS Master Manifest</dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//master.m3u8?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/master.m3u8?bcov_auth={jwt}</code></pre>
       </dd>
       <dt>DASH Manifest</dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//manifest.mpd?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/manifest.mpd?bcov_auth={jwt}</code></pre>
       </dd>
       <dt>HLS VMAP <sup><a href="#note1">[1]</a></sup></dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//hls.vmap?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/hls.vmap?bcov_auth={jwt}</code></pre>
       </dd>
       <dt>DASH VMAP <sup><a href="#note1">[1]</a></sup></dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//dash.vmap?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/dash.vmap?bcov_auth={jwt}</code></pre>
       </dd>
       <dt>Highest Bitrate MP4 <sup><a href="#note2">[2]</a></sup></dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//high.mp4?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/high.mp4?bcov_auth={jwt}</code></pre>
       </dd>
       <dt>Lowest Bitrate MP4 <sup><a href="#note2">[2]</a></sup></dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//low.mp4?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/low.mp4?bcov_auth={jwt}</code></pre>
       </dd>
       <dt>Thumbnail images</dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//thumbnail.jpg?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/thumbnail.jpg?bcov_auth={jwt}</code></pre>
       </dd>
       <dt>Poster images</dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//poster.jpg?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/poster.jpg?bcov_auth={jwt}</code></pre>
       </dd>
     </dl>
     <h4>Notes</h4>
     <ul>
-      <li id="note1"><sup>[1]</sup> HLS and DASH VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you <a href="#Creating_a_JSON_Web_Token">create the JWT</a>.</li>
-      <li id="note2"><sup>[2]</sup> When using the <code translate="No">high.mp4</code> and <code translate="No">low.mp4</code> endpoints, your videos must include MP4 renditions or you will get the following error:
-      <pre><code class="language-html" translate="No">404 (NO RESOURCE)</code></pre>
-    </li>
+      <li id="note1"><sup>[1]</sup> HLS and DASH VMAPs can only be retrieved if you include the <code
+          translate="No">ssai</code> claim when you <a href="#Creating_a_JSON_Web_Token">create the JWT</a>.</li>
+      <li id="note2"><sup>[2]</sup> When using the <code translate="No">high.mp4</code> and <code
+          translate="No">low.mp4</code> endpoints, your videos must include MP4 renditions or you will get the following
+        error:
+        <pre><code class="language-html" translate="No">404 (NO RESOURCE)</code></pre>
+      </li>
     </ul>
 
     <h3>Live Endpoints</h3>
@@ -3878,23 +3902,29 @@
     <dl>
       <dt>HLS Master Manifest</dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//master.m3u8?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/master.m3u8?bcov_auth={jwt}</code></pre>
       </dd>
       <dt>HLS VMAP <sup><a href="#note1">[1]</a></sup></dt>
       <dd>
-        <pre><code class="language-html" translate="No">/accounts//videos//hls.vmap?bcov_auth={jwt}</code></pre>
+        <pre><code class="language-html"
+            translate="No">/accounts/{{account_id}}/videos/{{video_id}}/hls.vmap?bcov_auth={jwt}</code></pre>
       </dd>
     </dl>
     <h4>Notes</h4>
     <ul>
-      <li id="note1"><sup>[1]</sup> HLS VMAPs can only be retrieved if you include the <code translate="No">ssai</code> claim when you <a href="#Creating_a_JSON_Web_Token">create the JWT</a>.</li>
-    </li>
+      <li id="note1"><sup>[1]</sup> HLS VMAPs can only be retrieved if you include the <code translate="No">ssai</code>
+        claim when you <a href="#Creating_a_JSON_Web_Token">create the JWT</a>.</li>
+      </li>
     </ul>
   </section>
 
   <section class="bcls-section">
     <h2 id="Creating_a_JSON_Web_Token">Creating a <span translate="No">JSON Web Token</span></h2>
-    <p>To create a token to use when communicating with Brightcove's Playback API, see the <a href="https://general.support.brightcove.com/developer/create-json-web-token.html">Creating a <span translate="No">JSON Web Token</span> (JWT)</a> document. You will find the claims that can be used for static URL delivery there.</p>
+    <p>To create a token to use when communicating with Brightcove's Playback API, see the <a
+        href="https://general.support.brightcove.com/developer/create-json-web-token.html">Creating a <span
+          translate="No">JSON Web Token</span> (JWT)</a> document. You will find the claims that can be used for static
+      URL delivery there.</p>
 
   </section>
 
@@ -3903,21 +3933,24 @@
     <p>You can include the <code translate="No">pro</code> claim, as defined above, to specify a protection type.</p>
 
     <p>
-      For license requests, the JWT does not need any payload, but it has to be signed using the same RSA key as the manifest request JWT.
+      For license requests, the JWT does not need any payload, but it has to be signed using the same RSA key as the
+      manifest request JWT.
     </p>
     <h3>Widevine license request</h3>
     <p>
       You can use the following endpoint to get the DRM license for Widevine:
     </p>
-    <pre><code class="language-html" translate="No">/accounts//videos//licenses/cenc/widevine?bcov_auth={JWT}</code></pre>
+    <pre><code class="language-html"
+        translate="No">/accounts/{{account_id}}/videos/{{video_id}}/licenses/cenc/widevine?bcov_auth={JWT}</code></pre>
     <h3>FairPlay app cert</h3>
     <p>
       For FairPlay app certificates, the endpoint is:
     </p>
-    <pre><code class="language-http" translate="No">/accounts//fairplay_app_cert</code></pre>
+    <pre><code class="language-http" translate="No">/accounts/{{account_id}}/fairplay_app_cert</code></pre>
     <h3>PlayReady endpoint</h3>
     <p>For PlayReady, the endpoint for the licence request is:</p>
-    <pre><code class="language-http" translate="No">/accounts//videos//licenses/cenc/playready?bcov_auth={JWT}</code></pre>
+    <pre><code class="language-http"
+        translate="No">/accounts/{{account_id}}/videos/{{video_id}}/licenses/cenc/playready?bcov_auth={JWT}</code></pre>
   </section>
 
   <section class="bcls-section">
@@ -3928,16 +3961,18 @@
         In-Manifest captions are supported. Out-of-band sidecar captions will be supported in a future release.
       </li>
       <li>
-        The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest and sub-manifests.
+        The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest
+        and sub-manifests.
       </li>
       <li>
-        Brightcove supports using a JWT that does not expire. To do this, exclude the <code translate="No">exp</code> claim when creating your token.
+        Brightcove supports using a JWT that does not expire. To do this, exclude the <code translate="No">exp</code>
+        claim when creating your token.
       </li>
     </ul>
   </section>
-
+  
   <!-- <section class="bcls-section">
-    <h2 id="Limitations">Limitations</h2>
+  <h2 id="Limitations">Limitations</h2>
     <p>The following limitations apply to Static URL Delivery.</p>
     <ul>
     </ul>
