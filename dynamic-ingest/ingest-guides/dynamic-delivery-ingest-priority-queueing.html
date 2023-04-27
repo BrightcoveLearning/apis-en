@@ -18,16 +18,19 @@ grandparent: Dynamic Ingest API
   <section class="bcls-section">
     <h2 id="how-dynamic-delivery-ingestion-currently-works">How Dynamic Delivery ingestion queueing works</h2>
 
-    <p>With normal priority queueing, Dynamic Delivery Ingestion has a limit of 200 active jobs per account. When that limit is exceeded, the ingestion system will queue up to 10,000 additional requests for processing later. When that is reached it will reject the ingestion request back to the customer (with a 429 error code). When jobs finish up, capacity is freed up and jobs that are queued will be picked up and processed one at a time, in the order they were received.</p>
+    <p><strong>Normal</strong> priority supports up to 200 concurrent jobs per account, after this quota is reached the system will queue the request up to 10,000. After that a new request will be rejected. The system constantly is validating concurrent jobs and is moving jobs from the queue to concurrent.</p>
 
-    <p>The video status in the <span translate="No">CMS API</span> does not reflect that the job was queued - the status
-      will be <code translate="No">pending </code> whether the job is processing or queued.</p>
+    <p><strong>Low</strong> priority supports up to 1,000 concurrent jobs per account, after this quota is reached the system will queue the request up to 20,000. After that a new request will be rejected. One thing to keep on mind is low priority could take longer to be completed.</p>
+
+    <p>We can not ensure an ETA on low priority jobs, as there are many factors that can affect that.</p>
+
+    <p>The video status in the <span translate="No">CMS API</span> does not reflect that the job was queued - the status will be <code translate="No">pending</code> whether the job is processing or queued.</p>
   </section>
 
   <section class="bcls-section">
     <h2 id="How_Priority_Queueing_affects_ingestion">How Priority Queueing affects ingestion</h2>
 
-    <p>Priority queueing allows the user to add a <code translate="No">priority </code> flag to an ingest request. The allowable values for <code translate="No">priority </code> are <code translate="No">low </code> and <code translate="No">normal </code>. Any other value will cause the request to be rejected with a 422 error code. When the user doesn't specify any priority, the default value of <code translate="No">normal </code> is used. Here is a brief description of how Priority Queueing changes how jobs are processed from the queue:</p>
+    <p>Priority queueing allows the user to add a <code translate="No">priority </code> flag to an ingest request. The allowable values for <code translate="No">priority </code> are <code translate="No">low</code> and <code translate="No">normal</code>. Any other value will cause the request to be rejected with a 422 error code. When the user doesn't specify any priority, the default value of <code translate="No">normal </code> is used. Here is a brief description of how Priority Queueing changes how jobs are processed from the queue:</p>
 
     <ol>
       <li>If there are no queued jobs and there is capacity to run a job, then the job is run immediately. This applies to both low and normal priority jobs.</li>
@@ -52,27 +55,15 @@ grandparent: Dynamic Ingest API
 
     <h3>Rendition details changed after submitting a job</h3>
 
-    <p>When you create a Dynamic Ingest job, the ingest profile specified is copied by the Dynamic Ingest system, and
-      that profile <strong>copy</strong> will be used for processing even if the profile has been modified since the job
-      was submitted.</p>
+    <p>When you create a Dynamic Ingest job, the ingest profile specified is copied by the Dynamic Ingest system, and that profile <strong>copy</strong> will be used for processing even if the profile has been modified since the job was submitted.</p>
 
-    <p>For low priority jobs, where processing could be delayed for a significant amount of time in some cases,
-      <strong>the renditions specified in that profile could be modified</strong> before the job is actually processed.
-      If that happens, the renditions used to process the video will be the <strong>NEW</strong> definition of those
-      renditions; not the definition of the renditions at the time the job was submitted.
-    </p>
+    <p>For low priority jobs, where processing could be delayed for a significant amount of time in some cases, <strong>the renditions specified in that profile could be modified</strong> before the job is actually processed. If that happens, the renditions used to process the video will be the <strong>NEW</strong> definition of those renditions; not the definition of the renditions at the time the job was submitted. </p>
 
-    <p>If you wish to <strong>guarantee</strong> you get the renditions <strong>as they were specified when the job was
-        submitted</strong>, you should make copies of the renditions and create a new profile that references those
-      copied renditions, then start the ingestion process. (You can retranscode the video with the updated profile if
-      the video has already been put into Video Cloud. Remember that you cannot retranscode the video until processing
-      for the original job is complete.)</p>
+    <p>If you wish to <strong>guarantee</strong> you get the renditions <strong>as they were specified when the job was submitted</strong>, you should make copies of the renditions and create a new profile that references those copied renditions, then start the ingestion process. (You can retranscode the video with the updated profile if the video has already been put into Video Cloud. Remember that you cannot retranscode the video until processing for the original job is complete.)</p>
 
     <h3>Source file upload</h3>
 
-    <p>Source file upload will delete files in that S3 bucket after 24-hours. Since low priority jobs may not be
-      processed for more than 24-hours in some cases, the file(s) may have already been deleted, and processing in that
-      case will fail. <strong>We do not recommend low priority ingestion for source file upload</strong>.</p>
+    <p>Source file upload will delete files in that S3 bucket after 24-hours. Since low priority jobs may not be processed for more than 24-hours in some cases, the file(s) may have already been deleted, and processing in that case will fail. <strong>We do not recommend low priority ingestion for source file upload</strong>.</p>
   </section>
 
   <section class="bcls-section">
@@ -80,68 +71,62 @@ grandparent: Dynamic Ingest API
 
     <p>Below is a sample of an ingest request body with low priority:</p>
 
-    <pre class="line-numbers">
-      <code class="language-json" translate="No">{
-        "master": {
-        "url": "https://host/master.mp4"
-        },
-        "profile": "multi-platform-extended-static",
-        <span class="bcls-highlight">"priority": "low"</span>,
-        "callbacks": [
-        "https://mydomain.com/di-callbacks.php"
-        ]
-        }
-      </code>
-    </pre>
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "master": {
+  "url": "https://host/master.mp4"
+  },
+  "profile": "multi-platform-extended-static",
+  <span class="bcls-highlight">"priority": "low"</span>,
+  "callbacks": [
+  "https://mydomain.com/di-callbacks.php"
+  ]
+  }
+</code>
+</pre>
 
     <p>And here's a sample of a normal priority job:</p>
 
-    <pre class="line-numbers">
-      <code class="language-json" translate="No">{
-        "master": {
-        "url": "https://host/master.mp4"
-        },
-        "profile": "multi-platform-extended-static",
-        <span class="bcls-highlight">"priority": "normal"</span>,
-        "callbacks": [
-        "https://mydomain.com/di-callbacks.php"
-        ]
-        }
-      </code>
-    </pre>
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "master": {
+  "url": "https://host/master.mp4"
+  },
+  "profile": "multi-platform-extended-static",
+  <span class="bcls-highlight">"priority": "normal"</span>,
+  "callbacks": [
+  "https://mydomain.com/di-callbacks.php"
+  ]
+  }
+</code>
+</pre>
 
-    <p>Note that since <code translate="No">normal </code> is the default value, the previous request would be processed
-      in exactly the same way as the following one:</p>
+    <p>Note that since <code translate="No">normal </code> is the default value, the previous request would be processed in exactly the same way as the following one:</p>
 
-    <pre class="line-numbers">
-      <code class="language-json" translate="No">{
-        "master": {
-        "url": "https://host/master.mp4"
-        },
-        "profile": "multi-platform-extended-static",
-        "callbacks": [
-        "https://mydomain.com/di-callbacks.php"
-        ]
-        }
-      </code>
-    </pre>
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "master": {
+  "url": "https://host/master.mp4"
+  },
+  "profile": "multi-platform-extended-static",
+  "callbacks": [
+  "https://mydomain.com/di-callbacks.php"
+  ]
+  }
+</code>
+</pre>
   </section>
 
   <section class="bcls-section">
     <h2 id="Using_the_priority_queue">Using the priority queue</h2>
 
-    <p>From the last example in the previous section, it should be clear that if you do <strong>not</strong> use the
-      <code translate="No">priority </code> field in your ingest jobs, they will continue to be processed exactly as
-      they have been.
-    </p>
+    <p>From the last example in the previous section, it should be clear that if you do <strong>not</strong> use the <code translate="No">priority </code> field in your ingest jobs, they will continue to be processed exactly as they have been. </p>
 
     <p>The addition of the <code translate="No">priority </code> field will benefit you mainly if:</p>
 
     <ol>
       <li>You ingest a fairly large number of videos</li>
-      <li>It is critical to get <em>some</em> of your videos online as soon as possible, while there is no urgency to
-        publish others (because the content is less important, or you do not plan to publish the videos immediately
-        anyway)</li>
+      <li>It is critical to get <em>some</em> of your videos online as soon as possible, while there is no urgency to publish others (because the content is less important, or you do not plan to publish the videos immediately anyway)</li>
       <li>You have videos that you want to retranscode, but you do not want that to slow down ingestion of new content
       </li>
     </ol>
@@ -152,13 +137,10 @@ grandparent: Dynamic Ingest API
 
     <p>This section explains how the low priority queue works.</p>
 
-    <p>There is no guarantee when normal or low priority jobs will be started. However, normal priority jobs will always
-      be started before low priority jobs.</p>
+    <p>There is no guarantee when normal or low priority jobs will be started. However, normal priority jobs will always be started before low priority jobs.</p>
 
-    <p>If you have a steady, fast rate of submitting normal priority jobs, it could take considerable time before low
-      priority jobs are started.</p>
+    <p>If you have a steady, fast rate of submitting normal priority jobs, it could take considerable time before low priority jobs are started.</p>
 
-    <p>Low priority jobs may take longer to start and also longer to process than normal priority for the same video.
-    </p>
+    <p>Low priority jobs may take longer to start and also longer to process than normal priority for the same video. </p>
   </section>
 </article>
