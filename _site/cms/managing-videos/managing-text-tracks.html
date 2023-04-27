@@ -3631,15 +3631,19 @@
     </p>
     <h3>Notes</h3>
     <ul>
-      <li>The methods explained in this document are for updating WebVTT files added to your videos. You can ingest WebVTT files to Video Cloud using the
-        <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Dynamic Ingest API</a> or
-        <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">add remote WebVTT files</a> to your videos using the CMS API.
+      <li>The methods explained in this document are for updating WebVTT files added to your videos. You can ingest
+        WebVTT files to Video Cloud using the
+        <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Dynamic Ingest API</a>
+        or
+        <a href="/cms/managing-videos/using-cms-api-add-webvtt-captions-text-tracks.html">add remote WebVTT files</a> to
+        your videos using the CMS API.
       </li>
     </ul>
   </section>
   <section class="section">
     <h2 id="authorization">Authorization</h2>
-    <p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the
+    <p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to
+      obtain client credentials and use them to retrieve access tokens, see the
       <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
     </p>
     <p>The operations you will need to update video metadata are
@@ -3653,15 +3657,16 @@
       <strong>entire array must be patched</strong>, not just the track or the field that is changing.
     </aside>
     <p>We recommend making the following request first to get the complete array:</p>
-<pre>
-<code class="language-http" translate="No">
-GET
-https://cms.api.brightcove.com/v1/accounts//videos/
-</code>
-</pre>
+    <pre>
+      <code class="language-http" translate="No">
+        GET
+        https://cms.api.brightcove.com/v1/accounts//videos/
+      </code>
+    </pre>
     <h3>Updating Text Tracks</h3>
     <p>When updating Text Tracks, some fields in
-      <a href="/cms/references/cms-api-video-fields-reference-stage.html#text_tracks">Text Tracks Fields</a> can be treated differently according to its type.
+      <a href="/cms/references/cms-api-video-fields-reference-stage.html#text_tracks">Text Tracks Fields</a> can be
+      treated differently according to its type.
     </p>
     <table class="bcls-table">
       <caption class="bcls-caption--table">Text Track Fields</caption>
@@ -3790,7 +3795,8 @@ https://cms.api.brightcove.com/v1/accounts//videos/
           <td>Boolean</td>
           <td colspan="2">
             <code translate="no">true</code> or
-            <code translate="no">false</code>. The field <code translate="No">default</code> for ingested Text Tracks will have the same
+            <code translate="no">false</code>. The field <code translate="No">default</code> for ingested Text Tracks
+            will have the same
             behavior for remote and ingested text tracks. You cannot add multiple
             <code translate="no">default=true</code> to text tracks with different
             <code translate="no">srclang</code>.
@@ -3801,12 +3807,12 @@ https://cms.api.brightcove.com/v1/accounts//videos/
     </table>
     <h3>Request</h3>
     <p>Applicable to Remote, Static and Dynamic Text Tracks.</p>
-<pre>
-<code class="language-http" translate="No">
-PATCH
-https://cms.api.brightcove.com/v1/accounts//videos/
-</code>
-</pre>
+    <pre>
+      <code class="language-http" translate="No">
+        PATCH
+        https://cms.api.brightcove.com/v1/accounts//videos/
+      </code>
+    </pre>
     <h3>Request body examples</h3>
     <details>
       <summary>Remote text tracks</summary>
@@ -3814,30 +3820,30 @@ https://cms.api.brightcove.com/v1/accounts//videos/
       <pre class="line-numbers">
         <code class="language-json" translate="No">
           {
-  "text_tracks" : 
-  [ 
-    { 
-      "id" : "1234-1234-1234"
-      "src" :     "https://some.site.com/captions/bc_smart_ja.vtt",
-      "srclang" : "ja", 
-      "label" : "日本人", 
-      "kind" : "captions", 
-      "mime_type" : null, 
-      "default" : true,
-      "status": "published"
-    }, 
-    { 
-      "id" : "5678-5678-5678"
-      "src" : "https://some.site.com/captions/bc_smart_es.vtt",  
-      "srclang" : "es", 
-      "label" : "español", 
-      "kind" : "descriptions",
-      "mime_type" : null,
-      "default" : false,
-      "status": "published"
-    } 
-  ] 
-}
+          "text_tracks" :
+          [
+          {
+          "id" : "1234-1234-1234"
+          "src" : "https://some.site.com/captions/bc_smart_ja.vtt",
+          "srclang" : "ja",
+          "label" : "日本人",
+          "kind" : "captions",
+          "mime_type" : null,
+          "default" : true,
+          "status": "published"
+          },
+          {
+          "id" : "5678-5678-5678"
+          "src" : "https://some.site.com/captions/bc_smart_es.vtt",
+          "srclang" : "es",
+          "label" : "español",
+          "kind" : "descriptions",
+          "mime_type" : null,
+          "default" : false,
+          "status": "published"
+          }
+          ]
+          }
         </code>
       </pre>
     </details>
@@ -3847,28 +3853,28 @@ https://cms.api.brightcove.com/v1/accounts//videos/
       <pre class="line-numbers">
         <code class="language-json" translate="No">
           {
-  "text_tracks" : 
-  [ 
-    { 
-      "id" : "1234-1234-1234"
-      "srclang" : "ja", 
-      "label" : "日本人", 
-      "kind" : "captions", 
-      "mime_type" : null, 
-      "default" : true,
-      "status": "published"
-    }, 
-    { 
-      "id" : "5678-5678-5678"  
-      "srclang" : "es", 
-      "label" : "español", 
-      "kind" : "descriptions",
-      "mime_type" : null,
-      "default" : false,
-      "status": "published"
-    } 
-  ] 
-}
+          "text_tracks" :
+          [
+          {
+          "id" : "1234-1234-1234"
+          "srclang" : "ja",
+          "label" : "日本人",
+          "kind" : "captions",
+          "mime_type" : null,
+          "default" : true,
+          "status": "published"
+          },
+          {
+          "id" : "5678-5678-5678"
+          "srclang" : "es",
+          "label" : "español",
+          "kind" : "descriptions",
+          "mime_type" : null,
+          "default" : false,
+          "status": "published"
+          }
+          ]
+          }
         </code>
       </pre>
     </details>
@@ -3878,32 +3884,33 @@ https://cms.api.brightcove.com/v1/accounts//videos/
       <pre class="line-numbers">
         <code class="language-json" translate="No">
           {
-  "text_tracks" : 
-  [ 
-    { 
-      "id" : "1234-1234-1234"
-      "srclang" : "ja", 
-      "label" : "日本人", 
-      "kind" : "captions", 
-      "mime_type" : null, 
-      "default" : true,
-      "status": "published" 
-    }, 
-    { 
-      "id" : "5678-5678-5678"  
-      "srclang" : "es", 
-      "label" : "español", 
-      "kind" : "descriptions",
-      "mime_type" : null,
-      "default" : false,
-      "status": "published" 
-    } 
-  ] 
-}
+          "text_tracks" :
+          [
+          {
+          "id" : "1234-1234-1234"
+          "srclang" : "ja",
+          "label" : "日本人",
+          "kind" : "captions",
+          "mime_type" : null,
+          "default" : true,
+          "status": "published"
+          },
+          {
+          "id" : "5678-5678-5678"
+          "srclang" : "es",
+          "label" : "español",
+          "kind" : "descriptions",
+          "mime_type" : null,
+          "default" : false,
+          "status": "published"
+          }
+          ]
+          }
         </code>
       </pre>
     </details>
-    <aside class="bcls-aside--information">Note to delete text tracks, simply leave them of the array you submit on the update request. To delete all text tracks, send an update containing
+    <aside class="bcls-aside--information">Note to delete text tracks, simply leave them of the array you submit on the
+      update request. To delete all text tracks, send an update containing
       <code translate="no">"text_tracks"=[]</code>.
     </aside>
   </section>

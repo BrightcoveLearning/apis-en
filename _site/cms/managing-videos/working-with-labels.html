@@ -3626,29 +3626,42 @@
   <summary>In this topic, you will learn how to create, manage, and use labels using the CMS API.</summary>
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    <aside class="bcls-aside bcls-aside--tip">Note that labels are not automatically enabled for accounts. To get labels enabled for your account,  <a href="https://supportportal.brightcove.com/s/login/">contact Brightcove Support</a>.</aside>
-    <p>Labels are similar to tags. You can add them to videos and then use them to search for a group of videos or  but they have some distinct advantages:</p>
+    <aside class="bcls-aside bcls-aside--tip">Note that labels are not automatically enabled for accounts. To get labels
+      enabled for your account, <a href="https://supportportal.brightcove.com/s/login/">contact Brightcove Support</a>.
+    </aside>
+    <p>Labels are similar to tags. You can add them to videos and then use them to search for a group of videos or but
+      they have some distinct advantages:</p>
     <ul>
       <li>
         Labels are created at the account level, and applied to videos.
-        <p>This is important particularly if your purpose is to organize your video library.For example, if you are trying organize your videos using tags, you might create tags like <code translate="No">birds</code>, <code translate="No">fish</code>, and <code translate="No">insects</code>. Then it's easy to search and find all your bird videos and create a smart playlist for them. But if a user adding a new video accidentally types <code translate="No">bird</code> instead of <code translate="No">birds</code>, you now have a new tag, and the video does not belong to your <code translate="No">birds</code> collection.</p>
-        <p>If you create a label called <code translate="No">birds</code> instead, only that label can be added to a video. You cannot accidentally add the non-existent label <code translate="No">birds</code> instead.</p>
+        <p>This is important particularly if your purpose is to organize your video library.For example, if you are
+          trying organize your videos using tags, you might create tags like <code translate="No">birds</code>, <code
+            translate="No">fish</code>, and <code translate="No">insects</code>. Then it's easy to search and find all
+          your bird videos and create a smart playlist for them. But if a user adding a new video accidentally types
+          <code translate="No">bird</code> instead of <code translate="No">birds</code>, you now have a new tag, and the
+          video does not belong to your <code translate="No">birds</code> collection.</p>
+        <p>If you create a label called <code translate="No">birds</code> instead, only that label can be added to a
+          video. You cannot accidentally add the non-existent label <code translate="No">birds</code> instead.</p>
       </li>
       <li>
         Labels are created as hierarchical path, such as <code translate="No">/nature/birds/shore_birds</code>.
         <p>This means that you can search (or create a playlist based on) a partial or full path:
-          <ul>
-            <li><code translate="No">q=labels:/nature</code> - returns all videos that have the label <code translate="No">nature</code></li>
-            <li><code translate="No">q=labels:/nature/birds</code> - returns the <code translate="No">birds</code> sub-group of the <code translate="No">nature</code> videos</li>
-            <li><code translate="No">q=labels:/nature/birds/shore_birds</code> - returns the <code translate="No">shore_birds</code> sub-group of the <code translate="No">/nature/birds</code> videos</li>
-          </ul>
+        <ul>
+          <li><code translate="No">q=labels:/nature</code> - returns all videos that have the label <code
+              translate="No">nature</code></li>
+          <li><code translate="No">q=labels:/nature/birds</code> - returns the <code translate="No">birds</code>
+            sub-group of the <code translate="No">nature</code> videos</li>
+          <li><code translate="No">q=labels:/nature/birds/shore_birds</code> - returns the <code
+              translate="No">shore_birds</code> sub-group of the <code translate="No">/nature/birds</code> videos</li>
+        </ul>
         </p>
       </li>
     </ul>
   </section>
   <section class="bcls-section">
     <h2 id="creating_managing_labels">Creating and managing labels</h2>
-    <p>Labels for your account can be created and managed using the <span translate="No">CMS API</span> <code translate="No">/v1/accounts//labels</code> endpoints.</p>
+    <p>Labels for your account can be created and managed using the <span translate="No">CMS API</span> <code
+        translate="No">/v1/accounts//labels</code> endpoints.</p>
     <p>Note that all the API endpoints shown below would be appended to the CMS base URL:</p>
     <pre><code class="language-http" translate="No">https://cms.api.brightcove.com</code></pre>
     <h3>Creating a label</h3>
@@ -3656,113 +3669,135 @@
     <h4>Sample request endpoint</h4>
     <pre><code class="language-http" translate="No">/v1/accounts/1234567890/labels</code></pre>
     <h4>Sample request body</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "path": "/nature/birds/shore_birds/"
-}</code></pre>
-    <p>Note that <em>all</em> labels in the path that do not already exist will be created. If you want to add another group of <code translate="No">forest_birds</code>, you would send:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "path": "/nature/birds/forest_birds/"
-}</code></pre>
-    <p>This time, only the <code translate="No">forest_birds</code> sub-label, will be created, since <code translate="No">nature</code> and <code translate="No">birds</code> already exist.</p>
-    <p>Similarly, if you want to add a new sub-group <code translate="No">sandpipers</code> to <code translate="No">shore_birds</code>, you would send:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "path": "/nature/birds/shore_birds/sandpipers"
-}</code></pre>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "path": "/nature/birds/shore_birds/"
+        }</code></pre>
+    <p>Note that <em>all</em> labels in the path that do not already exist will be created. If you want to add another
+      group of <code translate="No">forest_birds</code>, you would send:</p>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "path": "/nature/birds/forest_birds/"
+        }</code></pre>
+    <p>This time, only the <code translate="No">forest_birds</code> sub-label, will be created, since <code
+        translate="No">nature</code> and <code translate="No">birds</code> already exist.</p>
+    <p>Similarly, if you want to add a new sub-group <code translate="No">sandpipers</code> to <code
+        translate="No">shore_birds</code>, you would send:</p>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "path": "/nature/birds/shore_birds/sandpipers"
+        }</code></pre>
     <h4>Sample response</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "path": "/nature/birds/shore_birds/sandpipers/"
-}</code></pre>
-        <h3>Getting labels</h3>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "path": "/nature/birds/shore_birds/sandpipers/"
+        }</code></pre>
+    <h3>Getting labels</h3>
     <p>You can get all the labels for an account by sending a <code translate="No">GET</code> request:</p>
     <h4>Sample request endpoint</h4>
     <pre><code class="language-http" translate="No">/v1/accounts/1234567890/labels</code></pre>
     <h4>Sample response</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "account_id": "57838016001",
-  "labels": [
-    "/nature/birds/",
-    "/nature/birds/shore_birds/",
-    "/nature/birds/forest_birds/",
-    "/nature/mammals/seamammals/"
-  ],
-  "version": 4
-}</code></pre>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "account_id": "57838016001",
+        "labels": [
+        "/nature/birds/",
+        "/nature/birds/shore_birds/",
+        "/nature/birds/forest_birds/",
+        "/nature/mammals/seamammals/"
+        ],
+        "version": 4
+        }</code></pre>
     <h3>Updating a label</h3>
     <p>To update a label, you send a <code translate="No">PATCH</code> request to:</p>
     <pre><code class="language-http" translate="No">/v1/accounts//labels/by_path/{path}</code></pre>
     <h4>Sample request endpoint</h4>
-    <pre><code class="language-http" translate="No">/v1/accounts/1234567890/labels/by_path//nature/birds/shore_birds</code></pre>
+    <pre><code class="language-http"
+        translate="No">/v1/accounts/1234567890/labels/by_path//nature/birds/shore_birds</code></pre>
     <h4>Sample request body</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "new_label": "coastal_birds"
-}</code></pre>
-    <p>Note that the <code translate="No">new_label</code> value will replace the last item in the <code translate="No">{path}</code> included in the request. So if instead you wanted to replace <code translate="No">/birds</code> with <code translate="No">/avian</code>, the request and body would look like this:</p>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "new_label": "coastal_birds"
+        }</code></pre>
+    <p>Note that the <code translate="No">new_label</code> value will replace the last item in the <code
+        translate="No">{path}</code> included in the request. So if instead you wanted to replace <code
+        translate="No">/birds</code> with <code translate="No">/avian</code>, the request and body would look like this:
+    </p>
     <h5>Endpoint</h5>
     <pre><code class="language-http" translate="No">/v1/accounts/1234567890/labels/by_path//nature/birds/</code></pre>
     <h5>Request body</h5>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "new_label": "avian"
-}</code></pre>
-    <p>After this request, the <code translate="No">coastal_birds</code> path would become <code translate="No">/nature/avian/coastal_birds</code>. The path would change for any addition sub-labels in the hierarchy, so <code translate="No">/nature/birds/forest_birds</code> would become <code translate="No">/nature/avian/forest_birds</code></p>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "new_label": "avian"
+        }</code></pre>
+    <p>After this request, the <code translate="No">coastal_birds</code> path would become <code
+        translate="No">/nature/avian/coastal_birds</code>. The path would change for any addition sub-labels in the
+      hierarchy, so <code translate="No">/nature/birds/forest_birds</code> would become <code
+        translate="No">/nature/avian/forest_birds</code></p>
     <p>The response will include the number of labels that were updated.</p>
     <h5>Sample response</h5>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "path": "/nature/avian",
-  "labels_updated": "2"
-}</code></pre>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "path": "/nature/avian",
+        "labels_updated": "2"
+        }</code></pre>
     <h3>Delete a label</h3>
-    <p>Deleting a label uses a <code translate="No">DELETE</code> request sent to the same endpoint as the update request. Only the path ending with that sub-label (and paths that have additional sub-labels) will be deleted, while higher-level labels are retained.</p>
+    <p>Deleting a label uses a <code translate="No">DELETE</code> request sent to the same endpoint as the update
+      request. Only the path ending with that sub-label (and paths that have additional sub-labels) will be deleted,
+      while higher-level labels are retained.</p>
     <p>For example, say you have these three label paths:</p>
     <pre><code translate="No">
-      /nature/wildlife/avian/coastal_birds
-      /nature/wildlife/avian/coastal_birds/sandpipers
-      /nature/wildlife/avian/forest_birds
-    </code></pre>
-    <p>Sending a <code translate="No">DELETE</code> request to <code translate="No">/v1/accounts/1234567890/labels/by_path//nature/wildlife/avian/coastal_birds</code> would delete the first paths above, but it would not affect the third one.</p>
-    <aside class="bcls-aside bcls-aside--information">When you delete a label, it will be removed asynchronously from any videos it has been added to.</aside>
+        /nature/wildlife/avian/coastal_birds
+        /nature/wildlife/avian/coastal_birds/sandpipers
+        /nature/wildlife/avian/forest_birds
+      </code></pre>
+    <p>Sending a <code translate="No">DELETE</code> request to <code
+        translate="No">/v1/accounts/1234567890/labels/by_path//nature/wildlife/avian/coastal_birds</code> would delete
+      the first paths above, but it would not affect the third one.</p>
+    <aside class="bcls-aside bcls-aside--information">When you delete a label, it will be removed asynchronously from
+      any videos it has been added to.</aside>
   </section>
   <section class="bcls-section">
     <h2 id="adding_labels_videos">Adding and updating labels to videos</h2>
     <p>Add labels to videos as an array of full label paths:</p>
     <pre class="line-numbers"><code class="language-json" translate="No">[
-      "/nature/wildlife/avian/coastal_birds",
-      "/nature/wildlife/avian/coastal_birds/sandpipers"
-]</code></pre>
-    <p>The labels array can be included in a <a href="/cms/references/reference.html#operation/CreateVideo">create video (POST) request</a> or an <a href="/cms/references/reference.html#operation/UpdateVideo">update video (PATCH) request</a>.</p>
-    <p>To update the video labels, send the full, updated videos array in a <a href="/cms/references/reference.html#operation/UpdateVideo">update video (PATCH) request</a>. So, for example, to add the <code translate="No">/nature/wildlife/avian/forest_birds</code>, you would send the array:</p>
+        "/nature/wildlife/avian/coastal_birds",
+        "/nature/wildlife/avian/coastal_birds/sandpipers"
+        ]</code></pre>
+    <p>The labels array can be included in a <a href="/cms/references/reference.html#operation/CreateVideo">create video
+        (POST) request</a> or an <a href="/cms/references/reference.html#operation/UpdateVideo">update video (PATCH)
+        request</a>.</p>
+    <p>To update the video labels, send the full, updated videos array in a <a
+        href="/cms/references/reference.html#operation/UpdateVideo">update video (PATCH) request</a>. So, for example,
+      to add the <code translate="No">/nature/wildlife/avian/forest_birds</code>, you would send the array:</p>
     <pre class="line-numbers"><code class="language-json" translate="No">[
-      "/nature/wildlife/avian/coastal_birds",
-      "/nature/wildlife/avian/coastal_birds/sandpipers",
-      "/nature/wildlife/avian/forest_birds"
-]</code></pre>
-    <aside class="bcls-aside bcls-aside--warning">Note that labels you include when you add or update the video labels <strong>must exist</strong> or the request will return an error.</aside>
+        "/nature/wildlife/avian/coastal_birds",
+        "/nature/wildlife/avian/coastal_birds/sandpipers",
+        "/nature/wildlife/avian/forest_birds"
+        ]</code></pre>
+    <aside class="bcls-aside bcls-aside--warning">Note that labels you include when you add or update the video labels
+      <strong>must exist</strong> or the request will return an error.</aside>
   </section>
   <section class="bcls-section">
     <h2 id="searching_videos_label">Searching for videos by labels</h2>
-    <p>You can search for videos by <code translate="No">labels</code> just as you can other fields that are supported for searching. As mentioned in the introduction, adding sub-labels to the search path filters the search results:</p>
+    <p>You can search for videos by <code translate="No">labels</code> just as you can other fields that are supported
+      for searching. As mentioned in the introduction, adding sub-labels to the search path filters the search results:
+    </p>
     <table class="bcls-table">
       <caption class="bcls-caption--table">Search by Label Examples</caption>
       <thead class="bcls-table__head">
-          <tr>
-              <th>Sample Search</th>
-              <th>What it Returns</th>
-          </tr>
+        <tr>
+          <th>Sample Search</th>
+          <th>What it Returns</th>
+        </tr>
       </thead>
       <tbody class="bcls-table__body">
-          <tr>
-              <td><code translate="No">q=labels:/nature</code></td>
-              <td>All videos with label paths beginning with <code translate="No">/nature</code></td>
-          </tr>
-          <tr>
-              <td><code translate="No">q=labels:/nature/wildlife</code></td>
-              <td>All videos with label paths beginning with <code translate="No">/nature/wildlife</code></td>
-          </tr>
-          <tr>
-              <td><code translate="No">q=labels:/nature/wildlife/avian</code></td>
-              <td>All videos with label paths beginning with <code translate="No">/nature/wildlife/avian</code></td>
-          </tr>
+        <tr>
+          <td><code translate="No">q=labels:/nature</code></td>
+          <td>All videos with label paths beginning with <code translate="No">/nature</code></td>
+        </tr>
+        <tr>
+          <td><code translate="No">q=labels:/nature/wildlife</code></td>
+          <td>All videos with label paths beginning with <code translate="No">/nature/wildlife</code></td>
+        </tr>
+        <tr>
+          <td><code translate="No">q=labels:/nature/wildlife/avian</code></td>
+          <td>All videos with label paths beginning with <code translate="No">/nature/wildlife/avian</code></td>
+        </tr>
       </tbody>
-  </table>
+    </table>
   </section>
   <!-- <section class="bcls-section">
     <h2 id="playlists_based_on_labels">Playlists based on labels</h2>
@@ -3773,8 +3808,11 @@
     <ul>
       <li>A maximum of 10,000 labels can be added to an account</li>
       <li>Labels can only be managed using the API. There is currently no option in the UI</li>
-      <li>Searching by labels is currently supported by the <a href="/cms/searching/cmsplayback-api-videos-search.html">v1 search syntax only</a></li>
-      <li>Labels are <strong>not</strong> included in the video metadata that is shared to an affiliate using <a href="https://apis.support.brightcove.com/cms/managing-videos/media-sharing-cms-api.html">Media Sharing</a>.</li>
+      <li>Searching by labels is currently supported by the <a
+          href="/cms/searching/cmsplayback-api-videos-search.html">v1 search syntax only</a></li>
+      <li>Labels are <strong>not</strong> included in the video metadata that is shared to an affiliate using <a
+          href="https://apis.support.brightcove.com/cms/managing-videos/media-sharing-cms-api.html">Media Sharing</a>.
+      </li>
     </ul>
   </section>
 </article>

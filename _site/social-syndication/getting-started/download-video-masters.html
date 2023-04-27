@@ -3713,11 +3713,12 @@
     </ul>
 
   </section>
+  
   <section class="bcls-section">
     <h2 id="create_mrss_feed">Create the MRSS feed</h2>
     <p>The feed can be created with a <code translate="No">POST</code> request to the Social Syndication API:</p>
     <pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1/accounts/<span
-          class="bcls-input"></span>/mrss/syndications</code></pre>
+          class="bcls-input">{{account_ID}}</span>/mrss/syndications</code></pre>
     <p>The request body must include the <code translate="No">type</code> set to <code translate="No">universal</code>
       and <code translate="No">fetch_digital_master</code> set to <code translate="No">true</code>. Below is the minimum
       request body you need to get this working:</p>
@@ -3734,8 +3735,8 @@
     <p>A template can be set for the feed that instructs the feed to include the masters for each video in the account.
       This can be done by making the following <code translate="No">PUT</code> request:</p>
     <pre><code class="language-http" translate="No">https://social.api.brightcove.com/v1/accounts/<span
-          class="bcls-input"></span>/mrss/syndications/<span
-          class="bcls-input"></span>/template</code></pre>
+          class="bcls-input">{{account_id}}</span>/mrss/syndications/<span
+          class="bcls-input">{{syndication_id}}</span>/template</code></pre>
     <p>The request body is the template to set for the feed. You will want to use the <a
         href="social-syndication/getting-started/sample-templates-universal-syndication.html#source">Source template</a>
       included in the sample templates - it is reproduced below for convenience.</p>
@@ -3743,15 +3744,90 @@
         &lt;rss xmlns:media="https://search.yahoo.com/mrss/" xmlns:dcterms="https://purl.org/dc/terms/"
         xmlns:ext="https://ooyala.com/syndication/ext/" version="2.0"&gt;
         &lt;channel&gt;
-        &lt;title&gt;&lt;/title&gt;
-        &lt;description&gt;&lt;/description&gt;
+        {%- if title %}
+        &lt;title&gt;{{title | escape}}&lt;/title&gt;
+        {%- else %}
+        &lt;title&gt;{{name | escape}}&lt;/title&gt;
+        {%- endif %}
+
+        {%- if description %}
+        &lt;description&gt;{{description | escape}}&lt;/description&gt;
+        {%- else %}
+        &lt;description&gt;{{name | escape}}&lt;/description&gt;
+        {%- endif %}
+
+        {%- if destination_url %}
+        &lt;link&gt;{{destination_url | escape}}&lt;/link&gt;
+        {%- elsif syndication_url %}
+        &lt;link&gt;{{syndication_url | escape}}&lt;/link&gt;
+        {%- endif %}
+
+        {%- for asset in assets %}
+        &lt;item&gt;
+        {%- if asset.name %}
+        &lt;title&gt;{{asset.name | escape}}&lt;/title&gt;
+        {%- endif %}
+
+        {%- if asset.id %}
+        &lt;guid isPermaLink="false"&gt;{{account_id}}:{{asset.id}}&lt;/guid&gt;
+        &lt;link&gt;{{player_url}}/{{account_id}}/default_default/index.html?videoId={{asset.id}}&lt;/link&gt;
+        {%- endif %}
+
+        {%- if asset.publish_at %}
+        &lt;pubDate&gt;{{asset.publish_at | date: "%a, %d %b %Y %H:%M:%S +0000"}}&lt;/pubDate&gt;
+        {%- else %}
+        &lt;pubDate&gt;{{asset.created_at | date: "%a, %d %b %Y %H:%M:%S +0000"}}&lt;/pubDate&gt;
+        {%- endif %}
+
+        {%- if asset.name %}
+        &lt;media:title&gt;{{asset.name | escape}}&lt;/media:title&gt;
+        {%- endif %}
+
+        {%- if asset.schedule.starts_at or asset.created_at %}
+        &lt;dcterms:valid&gt;
+        {%- if asset.schedule.starts_at %}start={{asset.schedule.starts_at | date: "%Y-%m-%dT%H:%M+00:00"}};
+        {%- else %}start={{asset.created_at | date: "%Y-%m-%dT%H:%M+00:00"}};{%- endif -%}
+        {%- if asset.schedule.ends_at %}end={{asset.schedule.ends_at | date: "%Y-%m-%dT%H:%M+00:00"}};{%- endif -%}
+        scheme=W3C-DTF&lt;/dcterms:valid&gt;
+        {%- endif %}
+
+        {%- if asset.images.thumbnail.sources.size &gt; 0 %}
+        {%- assign thumb = asset.images.thumbnail.sources[0] %}
+        &lt;media:thumbnail url="{{thumb.src | escape}}"
+        {%- if thumb.width %} width="{{thumb.width}}" {%- endif %}
+        {%- if thumb.height %} height="{{thumb.height}}" {%- endif -%}
+        /&gt;
+        {%- endif %}
+
+        <span class="bchighlight">
+          {%- if asset.digital_master.url %}
+          &lt;media:content url="{{asset.digital_master.url | escape}}" medium="video" expression="full"
+          {%- if asset.digital_master.size %} fileSize="{{asset.digital_master.size}}" {%- endif %}
+          {%- if asset.digital_master.duration %} duration="{{asset.digital_master.duration | divided_by: 1000}}" {%-
+          endif -%}
+          /&gt;
+          {%- endif %}
+        </span>
+
+        {%- if asset.original_filename %}
+        &lt;ext:originalFilename&gt;&lt;![CDATA[ {{asset.original_filename}} ]]&gt;&lt;/ext:originalFilename&gt;
+        {%- endif %}
+        &lt;/item&gt;
+        {%- endfor %}
         &lt;/channel&gt;
         &lt;/rss&gt;</code></pre>
     <h3>Modified version of the template</h3>
     <p>The template above escapes URLs, which is the correct format for typical RSS reader. In this case, however, you
       may wish to have download links that will work in browsers and other apps. You can easily do this by replacing the
       section of the template that is highlighted above with this slightly modified version:</p>
-    <pre class="line-numbers"><code class="language-xml">
+    <pre class="line-numbers"><code class="language-xml">{%- if asset.digital_master.url %}
+        <media:content <span class="bcls-highlight">url="{{asset.digital_master.url}}"</span> medium="video"
+          expression="full"
+          {%- if asset.digital_master.size %} fileSize="{{asset.digital_master.size}}" {%- endif %}
+          {%- if asset.digital_master.duration %} duration="{{asset.digital_master.duration | divided_by: 1000}}" {%-
+          endif -%}
+          />
+          {%- endif %}
       </code></pre>
     <p>This will change the URLs so that they can be opened in a browser to begin downloading the video master.</p>
     <aside class="bcls-aside bcls-aside--information language-editable">Note that after you set or change a template, it
@@ -3765,9 +3841,10 @@
         API</a>). For example, to get the second 100 videos, you would set <code translate="No">offset</code> to 100,
       like this:</p>
     <pre><code class="language-http"
-        translate="No">https://social.feeds.brightcove.com/v1/accounts//mrss/syndications//feed<span
+        translate="No">https://social.feeds.brightcove.com/v1/accounts//mrss/syndications/{{syndication_id}}/feed<span
           class="bcls-highlight">?offset=100</span></code></pre>
   </section>
+  
 </article>
 
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->

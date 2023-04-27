@@ -3626,53 +3626,66 @@
   <summary>This topic explains how to capture or ingest images for a video.</summary>
   <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
-		<p>You can ingest two categories of images:</p>
-		<ul>
-			<li>Primary/default poster and thumbnail images, which are defined in the request body as <code translate="no">poster</code> and <code translate="no">thumbnail</code> objects (field and syntax details are below)</li>
-			<li>Multilingual variant images, which are defined in an <code translate="no">images</code> array of objects (field and syntax details are below)</li>
-		</ul>
+    <p>You can ingest two categories of images:</p>
+    <ul>
+      <li>Primary/default poster and thumbnail images, which are defined in the request body as <code
+          translate="no">poster</code> and <code translate="no">thumbnail</code> objects (field and syntax details are
+        below)</li>
+      <li>Multilingual variant images, which are defined in an <code translate="no">images</code> array of objects
+        (field and syntax details are below)</li>
+    </ul>
     <p>The multilingual variant images can be of six types:</p>
     <dl>
       <dt>poster</dt>
-      <dd>The poster image is displayed in the Brightcove Player before the user plays the video. It is typically a frame captured from the video, but does not have to be.</dd>
+      <dd>The poster image is displayed in the Brightcove Player before the user plays the video. It is typically a
+        frame captured from the video, but does not have to be.</dd>
       <dt>thumbnail</dt>
-      <dd>The thumbnail image is displayed in playlists, end screens, and so forth. It is typically a frame captured from the video, but does not have to be.</dd>
+      <dd>The thumbnail image is displayed in playlists, end screens, and so forth. It is typically a frame captured
+        from the video, but does not have to be.</dd>
       <dt>portrait</dt>
-      <dd>An image used typically as a poster in portrait mode on phones and other devices. Required for <a href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Details of the specification are in the <a href="#details_table">table</a> below.</dd>
+      <dd>An image used typically as a poster in portrait mode on phones and other devices. Required for <a
+          href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Details of the specification are in the <a
+          href="#details_table">table</a> below.</dd>
       <dt>square</dt>
-      <dd>An image used typically as a channel logo or in grid displays. Required for <a href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Details of the specification are in the <a href="#details_table">table</a> below.</dd>
+      <dd>An image used typically as a channel logo or in grid displays. Required for <a
+          href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Details of the specification are in the <a
+          href="#details_table">table</a> below.</dd>
       <dt>wide</dt>
-      <dd>An image used typically as a poster in landscape mode on phones and other devices. Required for <a href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Details of the specification are in the <a href="#details_table">table</a> below.</dd>
+      <dd>An image used typically as a poster in landscape mode on phones and other devices. Required for <a
+          href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Details of the specification are in the <a
+          href="#details_table">table</a> below.</dd>
       <dt>ultra-wide</dt>
-      <dd>An image used typically as a poster on ultra-wide displays such as TVs. Required for <a href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Details of the specification are in the <a href="#details_table">table</a> below.</dd>
+      <dd>An image used typically as a poster on ultra-wide displays such as TVs. Required for <a
+          href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Details of the specification are in the <a
+          href="#details_table">table</a> below.</dd>
     </dl>
     <h3 id="details_table">Specifications</h3>
     <p>The tables below provide specifications for images.</p>
-		<table class="bcls-table">
-			<caption class="bcls-caption--table">Primary Image Details</caption>
-			<thead class="bcls-table__head">
-					<tr>
-						<th>Type</th>
-						<th>Format</th>
-						<th>Aspect Ratio (W/H)</th>
-						<th>Minimum Width (pixels)</th>
-						</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-					<tr>
-							<td>Poster</td>
-							<td>png or jpg</td>
-							<td>16:9 or 4:3</td>
-							<td>640</td>
-					</tr>
-					<tr>
-							<td>Thumbnail</td>
-							<td>png or jpg</td>
-							<td>16:9 or 4:3</td>
-							<td>160</td>
-					</tr>
-			</tbody>
-	</table>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Primary Image Details</caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Type</th>
+          <th>Format</th>
+          <th>Aspect Ratio (W/H)</th>
+          <th>Minimum Width (pixels)</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>Poster</td>
+          <td>png or jpg</td>
+          <td>16:9 or 4:3</td>
+          <td>640</td>
+        </tr>
+        <tr>
+          <td>Thumbnail</td>
+          <td>png or jpg</td>
+          <td>16:9 or 4:3</td>
+          <td>160</td>
+        </tr>
+      </tbody>
+    </table>
     <table class="bcls-table">
       <caption class="bcls-caption--table">Multilingual Variant Image Details</caption>
       <thead class="bcls-table__head">
@@ -3723,18 +3736,25 @@
       </tbody>
     </table>
 
-    <p>There are two different ways to add primary poster and thumbnail images to your videos using the Dynamic Ingest API:</p>
+    <p>There are two different ways to add primary poster and thumbnail images to your videos using the Dynamic Ingest
+      API:</p>
 
     <ul>
-      <li><a href="#capture_images">Capture images</a> at the mid-point of the video during transcoding (currently this applies to <code translate="No">poster</code> and <code translate="No">thumbnail</code> images. Other types must be ingested). Capturing images for the primary poster and thumbnail can be used along with ingested images for multilingual variants.</li>
-      <li>Ingest your own images, either at the same time you ingest the video, or separately. Note that if you ingest images after ingesting the video, <strong>you must wait for the video processing to complete before ingesting the images.</strong></li>
+      <li><a href="#capture_images">Capture images</a> at the mid-point of the video during transcoding (currently this
+        applies to <code translate="No">poster</code> and <code translate="No">thumbnail</code> images. Other types must
+        be ingested). Capturing images for the primary poster and thumbnail can be used along with ingested images for
+        multilingual variants.</li>
+      <li>Ingest your own images, either at the same time you ingest the video, or separately. Note that if you ingest
+        images after ingesting the video, <strong>you must wait for the video processing to complete before ingesting
+          the images.</strong></li>
     </ul>
   </section>
 
   <section class="bcls-section">
     <h2 id="setup">Setup</h2>
 
-    <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a WebVTT file, or all of these:</p>
+    <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a WebVTT file, or
+      all of these:</p>
 
     <aside class="bcls-aside bcls-aside--information">Note that all file names should be URI-encoded.</aside>
 
@@ -3742,12 +3762,16 @@
       <dt>Request URL</dt>
       <dd>
         <pre class="line-numbers">
-    <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts//videos//ingest-requests</code></pre>
+          <code class="language-http"
+            translate="No">https://ingest.api.brightcove.com/v1/accounts//videos//ingest-requests</code>
+        </pre>
       </dd>
       <dt>Authentication</dt>
-      <dd>Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code translate="No">Authorization</code> header:
+      <dd>Authentication requires an access token passed as a <code translate="No">Bearer</code> token in an <code
+          translate="No">Authorization</code> header:
         <pre class="line-numbers">
-    <code class="language-bash" translate="No">Authorization: Bearer {access_token}</code></pre>
+          <code class="language-bash" translate="No">Authorization: Bearer {access_token}</code>
+        </pre>
       </dd>
     </dl>
   </section>
@@ -3755,13 +3779,18 @@
   <section class="bcls-section">
     <h2 id="s3">Note on S3</h2>
 
-    <p>If your images will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow Video Cloud to access the files. See <a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html#setPolicy">Using Dynamic Ingest with S3</a> for details.</p>
+    <p>If your images will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow Video
+      Cloud to access the files. See <a href="/dynamic-ingest/general/using-dynamic-ingest-s3.html#setPolicy">Using
+        Dynamic Ingest with S3</a> for details.</p>
   </section>
 
   <section class="bcls-section">
     <h2 id="multilingual_variants">Multilingual variants</h2>
-    <p>You can provide different versions of images to be used for different languages. This is handled by <a href="https://beacon.support.brightcove.com">Brightcove Beacon</a> for Brightcove Beacon apps. General implementation in the Brightcove Player currently requires custom development.</p>
-    <p>The language for an image is specified in the <code translate="No">language</code> property detailed in the next section.</p>
+    <p>You can provide different versions of images to be used for different languages. This is handled by <a
+        href="https://beacon.support.brightcove.com">Brightcove Beacon</a> for Brightcove Beacon apps. General
+      implementation in the Brightcove Player currently requires custom development.</p>
+    <p>The language for an image is specified in the <code translate="No">language</code> property detailed in the next
+      section.</p>
   </section>
 
   <section class="bcls-section">
@@ -3770,11 +3799,13 @@
     <p>Here are the details of adding custom images for your video.</p>
 
     <h3>Image fields in the request body</h3>
-    <p>As noted above, primary poster and thumbnail images are specified as top-level objects in the request body. Multilingual variant images in the ingest request body are specified as an array of objects. The object properties are detailed in the following tables.</p>
+    <p>As noted above, primary poster and thumbnail images are specified as top-level objects in the request body.
+      Multilingual variant images in the ingest request body are specified as an array of objects. The object properties
+      are detailed in the following tables.</p>
 
-		<table class="bcls-table">
-			<caption class="bcls-caption--table">Primary Poster and Thumbnail Images</caption>
-			<thead class="bcls-table__head">
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Primary Poster and Thumbnail Images</caption>
+      <thead class="bcls-table__head">
         <tr>
           <th>Property</th>
           <th>Description</th>
@@ -3782,31 +3813,31 @@
           <th>Required</th>
           <th>Example</th>
         </tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-						<td><code translate="no">url</code></td>
-						<td>Public URL where the image can be retrieved</td>
-						<td>String</td>
-						<td><i data-feather="check"></i></td>
-						<td><code translate="no">https://some.site.com/images/celtic-lullaby-large.png</code></td>
-				</tr>
-				<tr>
-						<td><code translate="no">width</code></td>
-						<td>Width of the image in pixels</td>
-						<td>Number</td>
-						<td><i data-feather="x"></i></td>
-						<td>1920</td>
-				</tr>
-				<tr>
-						<td><code translate="no">Height</code></td>
-						<td>Height of the image in pixels</td>
-						<td>Number</td>
-						<td><i data-feather="x"></i></td>
-						<td>1080</td>
-				</tr>
-			</tbody>
-	</table>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="no">url</code></td>
+          <td>Public URL where the image can be retrieved</td>
+          <td>String</td>
+          <td><i data-feather="check"></i></td>
+          <td><code translate="no">https://some.site.com/images/celtic-lullaby-large.png</code></td>
+        </tr>
+        <tr>
+          <td><code translate="no">width</code></td>
+          <td>Width of the image in pixels</td>
+          <td>Number</td>
+          <td><i data-feather="x"></i></td>
+          <td>1920</td>
+        </tr>
+        <tr>
+          <td><code translate="no">Height</code></td>
+          <td>Height of the image in pixels</td>
+          <td>Number</td>
+          <td><i data-feather="x"></i></td>
+          <td>1080</td>
+        </tr>
+      </tbody>
+    </table>
 
     <table class="bcls-table">
       <caption class="bcls-caption--table">Multilingual Image Object Properties</caption>
@@ -3829,14 +3860,19 @@
         </tr>
         <tr>
           <td><code translate="No">language</code></td>
-          <td>Language code for the image from the subtags in <a href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a> (default can be set for the account by contacting Brightcove Support); if not included, the default language for the account will be used.</td>
+          <td>Language code for the image from the subtags in <a
+              href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a>
+            (default can be set for the account by contacting Brightcove Support); if not included, the default language
+            for the account will be used.</td>
           <td>string</td>
           <td><i data-feather="x"></i></td>
           <td><code translate="No"></code></td>
         </tr>
         <tr>
           <td><code translate="No">variant</code></td>
-          <td>The type for this image: <code translate="No">poster</code> | <code translate="No">thumbnail</code> | <code translate="No">portrait</code> | <code translate="No">square</code> | <code translate="No">wide</code> | <code translate="No">ultra-wide</code></td>
+          <td>The type for this image: <code translate="No">poster</code> | <code translate="No">thumbnail</code> |
+            <code translate="No">portrait</code> | <code translate="No">square</code> | <code translate="No">wide</code>
+            | <code translate="No">ultra-wide</code></td>
           <td>string</td>
           <td><i data-feather="check"></i></td>
           <td><code translate="No">wide</code></td>
@@ -3857,219 +3893,257 @@
         </tr>
       </tbody>
     </table>
-		<h3>Sample request body</h3>
-		<p>The sample request body below includes the image fields only. Other ingest fields can be included as well.</p>
+    <h3>Sample request body</h3>
+    <p>The sample request body below includes the image fields only. Other ingest fields can be included as well.</p>
     <pre class="line-numbers"><code class="language-json" translate="No">{
-			"poster": {
-				"url": "https://some.site.com/images/celtic-lullaby-large.png",
-				"width": 1400,
-				"height": 1400
-			},
-			"thumbnail": {
-				"url": "https://some.site.com/images/celtic-lullaby-large.png",
-				"width": 160,
-				"height": 90
-			},
-	    "images":[
+        "poster": {
+        "url": "https://some.site.com/images/celtic-lullaby-large.png",
+        "width": 1400,
+        "height": 1400
+        },
+        "thumbnail": {
+        "url": "https://some.site.com/images/celtic-lullaby-large.png",
+        "width": 160,
+        "height": 90
+        },
+        "images":[
         {
-            "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/poster.jpg",
-            "variant": "poster",
-            "height": 1080,
-            "width": 1920
+        "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/poster.jpg",
+        "variant": "poster",
+        "height": 1080,
+        "width": 1920
         },
         {
-            "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/thumbnail.jpg",
-            "variant": "thumbnail",
-            "height": 108,
-            "width": 292
+        "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/thumbnail.jpg",
+        "variant": "thumbnail",
+        "height": 108,
+        "width": 292
         },
         {
-            "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/square.jpg",
-            "language": "de",
-            "variant": "square",
-            "height": 570,
-            "width": 570
+        "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/square.jpg",
+        "language": "de",
+        "variant": "square",
+        "height": 570,
+        "width": 570
         },
         {
-            "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/wide.jpg",
-            "language": "fr",
-            "variant": "wide",
-            "height": 1440,
-            "width": 2560
+        "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/wide.jpg",
+        "language": "fr",
+        "variant": "wide",
+        "height": 1440,
+        "width": 2560
         },
         {
-            "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/portrait.jpg",
-            "language": "es",
-            "variant": "portrait",
-            "height": 1200,
-            "width": 800
+        "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/portrait.jpg",
+        "language": "es",
+        "variant": "portrait",
+        "height": 1200,
+        "width": 800
         },
         {
-            "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/ultra-wide.jpg",
-            "language": "hi",
-            "variant": "ultra-wide",
-            "height": 1646,
-            "width": 3840
+        "url":"https://apis.support.brightcove.com/assets/images/dynamic-ingest/test-images/ultra-wide.jpg",
+        "language": "hi",
+        "variant": "ultra-wide",
+        "height": 1646,
+        "width": 3840
         }
-      ]
-    }</code></pre>
+        ]
+        }</code></pre>
 
     <aside class="bcls-aside bcls-aside--information">
       <p>Notes:</p>
       <ul>
         <li>For images, only unprotected HTTP/HTTPS URLs or signed S3 URLs are currently supported</li>
-        <li>The images can be included with the ingestion of a video <code translate="No">master</code>, or separately</li>
-        <li>If you are uploading your own poster and thumbnail images along with a video master, and the ingest profile you are using includes image renditions, you should set <code translate="No">capture-images</code> to <code translate="No">false</code></li>
+        <li>The images can be included with the ingestion of a video <code translate="No">master</code>, or separately
+        </li>
+        <li>If you are uploading your own poster and thumbnail images along with a video master, and the ingest profile
+          you are using includes image renditions, you should set <code translate="No">capture-images</code> to <code
+            translate="No">false</code></li>
       </ul>
     </aside>
 
-		<details>
-			<summary>Sample response</summary>
-			<p>Below is a response to a <a href="/cms/references/reference.html#operation/GetVideoImages">CMS API Get Video Images request</a>. See <a href="#Retrieving_image_data">Retrieving image data</a> below.</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "thumbnail.en": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/5b593403-01a7-4a18-978e-cad13647cf99/292x108/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/5b593403-01a7-4a18-978e-cad13647cf99/292x108/match/image.jpg",
-        "height": 108,
-        "width": 292
-      }
-    ]
-  },
-  "ultra-wide.en": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/48900952-8e0e-4fc6-bd4f-116809195ab7/2000x857/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/48900952-8e0e-4fc6-bd4f-116809195ab7/2000x857/match/image.jpg",
-        "height": 857,
-        "width": 2000
-      }
-    ]
-  },
-  "wide.en": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/111fafb1-d754-49a9-9fc7-04a5637bb3d0/2000x1125/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/111fafb1-d754-49a9-9fc7-04a5637bb3d0/2000x1125/match/image.jpg",
-        "height": 1125,
-        "width": 2000
-      }
-    ]
-  },
-  "portrait.en": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/d6c605ed-11db-45a1-a7a9-beeb7b4ead1d/500x750/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/d6c605ed-11db-45a1-a7a9-beeb7b4ead1d/500x750/match/image.jpg",
-        "height": 750,
-        "width": 500
-      }
-    ]
-  },
-  "poster.en": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/35d3f294-b62e-46e5-874e-c0c85846d80a/1920x1080/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/35d3f294-b62e-46e5-874e-c0c85846d80a/1920x1080/match/image.jpg",
-        "height": 1080,
-        "width": 1920
-      }
-    ]
-  },
-  "square.en": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/1f719d8b-ebe9-4f6a-b5f1-8906b220554f/500x500/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/1f719d8b-ebe9-4f6a-b5f1-8906b220554f/500x500/match/image.jpg",
-        "height": 500,
-        "width": 500
-      }
-    ]
-  },
-  "poster": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/6c9b5fc6-3368-47c5-98a5-a5878224fe5b/1400x1400/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/6c9b5fc6-3368-47c5-98a5-a5878224fe5b/1400x1400/match/image.jpg",
-        "height": 1400,
-        "width": 1400
-      }
-    ]
-  },
-  "thumbnail": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/b56eee50-f593-4d0d-be15-42d5c5c147af/160x90/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/b56eee50-f593-4d0d-be15-42d5c5c147af/160x90/match/image.jpg",
-        "height": 90,
-        "width": 160
-      }
-    ]
-  },
-  "ultra-wide.hi": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/48b1cfee-8579-4d48-9824-93ea2e1cce22/3840x1646/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/48b1cfee-8579-4d48-9824-93ea2e1cce22/3840x1646/match/image.jpg",
-        "height": 1646,
-        "width": 3840
-      }
-    ]
-  },
-  "wide.fr": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/45bf1048-d3fa-4ad3-89f1-1df362b60264/2560x1440/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/45bf1048-d3fa-4ad3-89f1-1df362b60264/2560x1440/match/image.jpg",
-        "height": 1440,
-        "width": 2560
-      }
-    ]
-  },
-  "portrait.es": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/89581e27-38b7-4b1b-85c6-fc624331a72b/800x1200/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/89581e27-38b7-4b1b-85c6-fc624331a72b/800x1200/match/image.jpg",
-        "height": 1200,
-        "width": 800
-      }
-    ]
-  },
-  "square.de": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/12819ec8-4da6-42ae-a67f-aed0424b8d51/570x570/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/12819ec8-4da6-42ae-a67f-aed0424b8d51/570x570/match/image.jpg",
-        "height": 570,
-        "width": 570
-      }
-    ]
-  }
-}</code></pre>
-		</details>
+    <details>
+      <summary>Sample response</summary>
+      <p>Below is a response to a <a href="/cms/references/reference.html#operation/GetVideoImages">CMS API Get Video
+          Images request</a>. See <a href="#Retrieving_image_data">Retrieving image data</a> below.</p>
+      <pre class="line-numbers"><code class="language-json" translate="No">{
+          "thumbnail.en": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/5b593403-01a7-4a18-978e-cad13647cf99/292x108/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/5b593403-01a7-4a18-978e-cad13647cf99/292x108/match/image.jpg",
+          "height": 108,
+          "width": 292
+          }
+          ]
+          },
+          "ultra-wide.en": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/48900952-8e0e-4fc6-bd4f-116809195ab7/2000x857/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/48900952-8e0e-4fc6-bd4f-116809195ab7/2000x857/match/image.jpg",
+          "height": 857,
+          "width": 2000
+          }
+          ]
+          },
+          "wide.en": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/111fafb1-d754-49a9-9fc7-04a5637bb3d0/2000x1125/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/111fafb1-d754-49a9-9fc7-04a5637bb3d0/2000x1125/match/image.jpg",
+          "height": 1125,
+          "width": 2000
+          }
+          ]
+          },
+          "portrait.en": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/d6c605ed-11db-45a1-a7a9-beeb7b4ead1d/500x750/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/d6c605ed-11db-45a1-a7a9-beeb7b4ead1d/500x750/match/image.jpg",
+          "height": 750,
+          "width": 500
+          }
+          ]
+          },
+          "poster.en": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/35d3f294-b62e-46e5-874e-c0c85846d80a/1920x1080/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/35d3f294-b62e-46e5-874e-c0c85846d80a/1920x1080/match/image.jpg",
+          "height": 1080,
+          "width": 1920
+          }
+          ]
+          },
+          "square.en": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/1f719d8b-ebe9-4f6a-b5f1-8906b220554f/500x500/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/1f719d8b-ebe9-4f6a-b5f1-8906b220554f/500x500/match/image.jpg",
+          "height": 500,
+          "width": 500
+          }
+          ]
+          },
+          "poster": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/6c9b5fc6-3368-47c5-98a5-a5878224fe5b/1400x1400/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/6c9b5fc6-3368-47c5-98a5-a5878224fe5b/1400x1400/match/image.jpg",
+          "height": 1400,
+          "width": 1400
+          }
+          ]
+          },
+          "thumbnail": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/b56eee50-f593-4d0d-be15-42d5c5c147af/160x90/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/b56eee50-f593-4d0d-be15-42d5c5c147af/160x90/match/image.jpg",
+          "height": 90,
+          "width": 160
+          }
+          ]
+          },
+          "ultra-wide.hi": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/48b1cfee-8579-4d48-9824-93ea2e1cce22/3840x1646/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/48b1cfee-8579-4d48-9824-93ea2e1cce22/3840x1646/match/image.jpg",
+          "height": 1646,
+          "width": 3840
+          }
+          ]
+          },
+          "wide.fr": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/45bf1048-d3fa-4ad3-89f1-1df362b60264/2560x1440/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/45bf1048-d3fa-4ad3-89f1-1df362b60264/2560x1440/match/image.jpg",
+          "height": 1440,
+          "width": 2560
+          }
+          ]
+          },
+          "portrait.es": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/89581e27-38b7-4b1b-85c6-fc624331a72b/800x1200/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/89581e27-38b7-4b1b-85c6-fc624331a72b/800x1200/match/image.jpg",
+          "height": 1200,
+          "width": 800
+          }
+          ]
+          },
+          "square.de": {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/12819ec8-4da6-42ae-a67f-aed0424b8d51/570x570/match/image.jpg",
+          "sources": [
+          {
+          "src":
+          "https://cf-images.us-east-1.prod.boltdns.net/v1/static/3676484086001/4fb9012e-7b20-4744-9fff-512634d7b2a5/12819ec8-4da6-42ae-a67f-aed0424b8d51/570x570/match/image.jpg",
+          "height": 570,
+          "width": 570
+          }
+          ]
+          }
+          }</code></pre>
+    </details>
   </section>
 
   <section class="bcls-section">
     <h2 id="Automatic_resizing">Automatic resizing</h2>
 
-    <p>When you add custom poster and/or thumbnail images via Studio or the Dynamic Ingest API, by default Video Cloud will resize these to match the image sizes defined in the default Ingest Profile for the account.</p>
+    <p>When you add custom poster and/or thumbnail images via Studio or the Dynamic Ingest API, by default Video Cloud
+      will resize these to match the image sizes defined in the default Ingest Profile for the account.</p>
 
-    <p>Note that resizing and padding are the only modifications Video Cloud or <a href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Images are never cropped.</p>
+    <p>Note that resizing and padding are the only modifications Video Cloud or <a
+        href="https://beacon.support.brightcove.com">Brightcove Beacon</a>. Images are never cropped.</p>
 
   </section>
 
   <section class="bcls-section">
     <h2 id="capture_images">Capture images</h2>
 
-    <p>During transcoding, Video Cloud can capture a snapshot from the video at the midpoint and save this as poster and thumbnail images.</p>
+    <p>During transcoding, Video Cloud can capture a snapshot from the video at the midpoint and save this as poster and
+      thumbnail images.</p>
 
-    <aside class="bcls-aside bcls-aside--information">The number of poster and thumbnail created by the Dynamic Ingest is one for each. You cannot create more than one poster and thumbnail renditions even if you have more than one image renditions in the profile.</aside>
+    <aside class="bcls-aside bcls-aside--information">The number of poster and thumbnail created by the Dynamic Ingest
+      is one for each. You cannot create more than one poster and thumbnail renditions even if you have more than one
+      image renditions in the profile.</aside>
 
-    <p>For custom ingest profiles, image capture requires that two special renditions be added to the ingest profile that you are using. See <a href="#ingest_profiles">Images in ingest profiles</a> below.</p>
+    <p>For custom ingest profiles, image capture requires that two special renditions be added to the ingest profile
+      that you are using. See <a href="#ingest_profiles">Images in ingest profiles</a> below.</p>
 
-    <p>You should also set the <code translate="No">capture-images</code> flag in your request data to <code translate="No">true</code> if you want the poster and thumbnail to be captured from the video during transcoding, but this is the default value <em>if</em> the selected profile includes image renditions. (If there are no image renditions in the profile, the default for <code translate="No">capture-images</code> is <code translate="No">false</code>.)</p>
+    <p>You should also set the <code translate="No">capture-images</code> flag in your request data to <code
+        translate="No">true</code> if you want the poster and thumbnail to be captured from the video during
+      transcoding, but this is the default value <em>if</em> the selected profile includes image renditions. (If there
+      are no image renditions in the profile, the default for <code translate="No">capture-images</code> is <code
+        translate="No">false</code>.)</p>
 
     <h4>Sample request data:</h4>
 
@@ -4078,14 +4152,19 @@
         "master": { "url": "https://some.site.com/videos/mp4/Bird_Titmouse.mp4" },
         "profile": "multi-platform-standard-static",
         "capture-images": true
-      }</code></pre>
+        }</code>
+    </pre>
 
-    <aside class="bcls-aside bcls-aside--information">Note that you must include the <code translate="No">profile</code> field and specify a profile with image renditions (all the standard profiles have them).</aside>
+    <aside class="bcls-aside bcls-aside--information">Note that you must include the <code translate="No">profile</code>
+      field and specify a profile with image renditions (all the standard profiles have them).</aside>
   </section>
 
   <section class="bcls-section">
     <h2 id="ingest_profiles">Images in ingest profiles</h2>
-    <p>For <code translate="No">poster</code> and <code translate="No">thumbnail</code> images only, you must include image renditions in the ingest profile. This is for auto-capture, whether you use it when you ingest the video or decide to later when transcoding it. Image renditions are included in all standard ingest profiles, so this section applies only to custom ingest profiles.</p>
+    <p>For <code translate="No">poster</code> and <code translate="No">thumbnail</code> images only, you must include
+      image renditions in the ingest profile. This is for auto-capture, whether you use it when you ingest the video or
+      decide to later when transcoding it. Image renditions are included in all standard ingest profiles, so this
+      section applies only to custom ingest profiles.</p>
     <p>Here are details of how image renditions are specified in ingest profiles.</p>
     <table class="bcls-table">
       <thead class="bcls-table__head">
@@ -4120,57 +4199,58 @@
 
     <p>Here is sample data for the renditions:</p>
 
-<pre class="line-numbers"><code class="language-json" translate="No">"images": [
-	{
-		"label": "square",
-		"height": 500,
-		"width": 500
-	},
-	{
-		"label": "ultra-wide",
-		"height": 1714,
-		"width": 4000
-	},
-	{
-		"label": "wide",
-		"height": 2250,
-		"width": 4000
-	},
-	{
-		"label": "portrait",
-		"height": 3000,
-		"width": 2000
-	},
-	{
-		"label": "thumbnail",
-		"height": 90,
-		"width": 160
-	},
-	{
-		"label": "poster",
-		"height": 1080,
-		"width": 1920
-	}
-]</code></pre>
+    <pre class="line-numbers"><code class="language-json" translate="No">"images": [
+        {
+        "label": "square",
+        "height": 500,
+        "width": 500
+        },
+        {
+        "label": "ultra-wide",
+        "height": 1714,
+        "width": 4000
+        },
+        {
+        "label": "wide",
+        "height": 2250,
+        "width": 4000
+        },
+        {
+        "label": "portrait",
+        "height": 3000,
+        "width": 2000
+        },
+        {
+        "label": "thumbnail",
+        "height": 90,
+        "width": 160
+        },
+        {
+        "label": "poster",
+        "height": 1080,
+        "width": 1920
+        }
+        ]</code></pre>
 
     <aside class="bcls-aside bcls-aside--information">
       <p>You can specify png or jpg as the format - currently captured images are always output as jpg images.</p>
 
       <pre>
-            <code translate="No">{
-                "height": 360,
-                "label": "poster",
-                "width": 480,
-                "media_type": "image",
-                "format": "png"
-            },
-            {
-                "height": 90,
-                "label": "thumbnail",
-                "width": 160,
-                "media_type": "image",
-                "format": "png"
-            }</code></pre>
+        <code translate="No">{
+          "height": 360,
+          "label": "poster",
+          "width": 480,
+          "media_type": "image",
+          "format": "png"
+          },
+          {
+          "height": 90,
+          "label": "thumbnail",
+          "width": 160,
+          "media_type": "image",
+          "format": "png"
+          }</code>
+      </pre>
     </aside>
 
   </section>
@@ -4178,90 +4258,109 @@
   <section class="bcls-section">
     <h2 id="Retrieving_image_data">Retrieving image data</h2>
     <p>You can retrieve image data using the <a href="/cms/index.html">CMS API</a>.</p>
-    <p>The <span translate="No">CMS API</span> will return the image data in a <code translate="No">GET</code> request to <code translate="No">https://cms.api.brightcove.com/v1/accounts//videos/</code> or, if you only want the image data, to <code translate="No">https://cms.api.brightcove.com/v1/accounts//videos//images</code></p>
+    <p>The <span translate="No">CMS API</span> will return the image data in a <code translate="No">GET</code> request
+      to <code translate="No">https://cms.api.brightcove.com/v1/accounts//videos/</code> or,
+      if you only want the image data, to <code
+        translate="No">https://cms.api.brightcove.com/v1/accounts//videos//images</code></p>
     <p>In either case, the image data in the response will look like this:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "thumbnail": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/160x90/20s629ms/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/160x90/20s629ms/match/image.jpg",
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "thumbnail": {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/160x90/20s629ms/match/image.jpg",
+        "sources": [
+        {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/160x90/20s629ms/match/image.jpg",
         "height": 90,
         "width": 160
-      }
-    ]
-  },
-  "poster": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/1280x720/20s629ms/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/1280x720/20s629ms/match/image.jpg",
+        }
+        ]
+        },
+        "poster": {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/1280x720/20s629ms/match/image.jpg",
+        "sources": [
+        {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/main/1280x720/20s629ms/match/image.jpg",
         "height": 720,
         "width": 1280
-      }
-    ]
-  },
-  "portrait.es": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/bac8717a-43db-4fa8-a6f0-189c80ee4c4e/800x1200/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/bac8717a-43db-4fa8-a6f0-189c80ee4c4e/800x1200/match/image.jpg",
+        }
+        ]
+        },
+        "portrait.es": {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/bac8717a-43db-4fa8-a6f0-189c80ee4c4e/800x1200/match/image.jpg",
+        "sources": [
+        {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/bac8717a-43db-4fa8-a6f0-189c80ee4c4e/800x1200/match/image.jpg",
         "height": 1200,
         "width": 800
-      }
-    ]
-  },
-  "thumbnail.en": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/0ce2da4d-ca36-469b-9024-0273d79feeeb/292x108/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/0ce2da4d-ca36-469b-9024-0273d79feeeb/292x108/match/image.jpg",
+        }
+        ]
+        },
+        "thumbnail.en": {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/0ce2da4d-ca36-469b-9024-0273d79feeeb/292x108/match/image.jpg",
+        "sources": [
+        {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/0ce2da4d-ca36-469b-9024-0273d79feeeb/292x108/match/image.jpg",
         "height": 108,
         "width": 292
-      }
-    ]
-  },
-  "poster.en": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/a7cb150d-c84a-48e0-9469-5b4ce80fba53/1920x1080/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/a7cb150d-c84a-48e0-9469-5b4ce80fba53/1920x1080/match/image.jpg",
+        }
+        ]
+        },
+        "poster.en": {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/a7cb150d-c84a-48e0-9469-5b4ce80fba53/1920x1080/match/image.jpg",
+        "sources": [
+        {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/a7cb150d-c84a-48e0-9469-5b4ce80fba53/1920x1080/match/image.jpg",
         "height": 1080,
         "width": 1920
-      }
-    ]
-  },
-  "square.de": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/22209955-e136-4f17-914c-e19ec4c58886/570x570/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/22209955-e136-4f17-914c-e19ec4c58886/570x570/match/image.jpg",
+        }
+        ]
+        },
+        "square.de": {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/22209955-e136-4f17-914c-e19ec4c58886/570x570/match/image.jpg",
+        "sources": [
+        {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/22209955-e136-4f17-914c-e19ec4c58886/570x570/match/image.jpg",
         "height": 570,
         "width": 570
-      }
-    ]
-  },
-  "ultra-wide.hi": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/72fd489f-d978-44ba-8d04-1e33c7c36cef/3840x1646/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/72fd489f-d978-44ba-8d04-1e33c7c36cef/3840x1646/match/image.jpg",
+        }
+        ]
+        },
+        "ultra-wide.hi": {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/72fd489f-d978-44ba-8d04-1e33c7c36cef/3840x1646/match/image.jpg",
+        "sources": [
+        {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/72fd489f-d978-44ba-8d04-1e33c7c36cef/3840x1646/match/image.jpg",
         "height": 1646,
         "width": 3840
-      }
-    ]
-  },
-  "wide.fr": {
-    "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/4405a5d5-8b9e-4c2b-be71-cf4e2c153e87/2560x1440/match/image.jpg",
-    "sources": [
-      {
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/4405a5d5-8b9e-4c2b-be71-cf4e2c153e87/2560x1440/match/image.jpg",
+        }
+        ]
+        },
+        "wide.fr": {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/4405a5d5-8b9e-4c2b-be71-cf4e2c153e87/2560x1440/match/image.jpg",
+        "sources": [
+        {
+        "src":
+        "https://cf-images.us-east-1.prod.boltdns.net/v1/static/57838016001/ee705e97-3fb5-409c-99d8-703e9f57bd0a/4405a5d5-8b9e-4c2b-be71-cf4e2c153e87/2560x1440/match/image.jpg",
         "height": 1440,
         "width": 2560
-      }
-    ]
-  }
-}</code></pre>
+        }
+        ]
+        }
+        }</code></pre>
   </section>
 
   <section class="bcls-section">
@@ -4269,10 +4368,12 @@
 
     <ul>
       <li><strong>The ingestion system does not allow concurrent jobs on the same video</strong>.</li>
-      <li>Currently, image data for the wide, square, portrait, and ultra-wide variants is returned only by the CMS API, <strong><em>not</em></strong> by Playback API video requests.</li>
+      <li>Currently, image data for the wide, square, portrait, and ultra-wide variants is returned only by the CMS API,
+        <strong><em>not</em></strong> by Playback API video requests.</li>
     </ul>
   </section>
 </article>
+
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   
   <nav class="right-side-nav" id="right_side_nav">

@@ -3624,178 +3624,214 @@
 <h1>Adding WebVTT Captions (Text Tracks)</h1>
 <article class="bcls-article">
   <summary>In this topic, you will learn how to use the <span translate="No">CMS API</span> to add WebVTT text tracks for captions or chapters to your videos.</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    
-    <p>WebVTT captions (text tracks) cannot be added when you initially create the video using a POST request:</p>
-    
-    <ul>
-      <li>For text tracks to be ingested in Video Cloud, the tracks can be included in the Dynamic Ingest request to ingest the video - see <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Ingesting WebVTT Files</a> for details.</li>
-      <li>If the text tracks are going to be hosted at some remote location, they can be added to the video using a <code translate="No">PATCH</code> request to update the video metadata. See the <a href="/cms/code-samples/cms-api-sample-update-videos.html">CMS API Sample: Update Videos</a> for an example of an update request.</li>
-    </ul>
-    
-    <p>Whether the text tracks are ingested or remote, you can you use a <code translate="No">PATCH</code> request to update the metadata associated with the text tracks (such as the <code translate="No">scrlang</code> or <code translate="No">label</code>, or whether the text tracks are the <code translate="No">default</code> for the video).</p>
 
-		<p>Also see <a href="/cms/managing-videos/managing-text-tracks.html">Managing Text Tracks Using the CMS API</a> for more information on differences in the way text track metadata is handled depending on whether the text tracks are remote, ingested with a static ingest profile, or ingested with a dynamic ingest profile.</p>
-    
-    <h3>Notes</h3>
-    
+    <p>WebVTT captions (text tracks) cannot be added when you initially create the video using a POST request:</p>
+
     <ul>
-      <li>When you update text tracks on a Dynamic Delivery video, the process is asynchronous, so the response status code will be <code translate="No">202 ACCEPTED</code>, and the update will not happen immediately.</li>
-      <li>There is a limit of 1000 text tracks per video.</li>
-      <li>The text of the captions must be encoded UTF-8 to display properly for double-byte languages such as Japanese and Korean.</li>
+      <li>For text tracks to be ingested in Video Cloud, the tracks can be included in the Dynamic Ingest request to
+        ingest the video - see <a
+          href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">Ingesting WebVTT
+          Files</a> for details.</li>
+      <li>If the text tracks are going to be hosted at some remote location, they can be added to the video using a
+        <code translate="No">PATCH</code> request to update the video metadata. See the <a
+          href="/cms/code-samples/cms-api-sample-update-videos.html">CMS API Sample: Update Videos</a> for an example of
+        an update request.</li>
     </ul>
-    </section>
-    
-    <section id="Remote_or_ingested" class="bcls-section">
+
+    <p>Whether the text tracks are ingested or remote, you can you use a <code translate="No">PATCH</code> request to
+      update the metadata associated with the text tracks (such as the <code translate="No">scrlang</code> or <code
+        translate="No">label</code>, or whether the text tracks are the <code translate="No">default</code> for the
+      video).</p>
+
+    <p>Also see <a href="/cms/managing-videos/managing-text-tracks.html">Managing Text Tracks Using the CMS API</a> for
+      more information on differences in the way text track metadata is handled depending on whether the text tracks are
+      remote, ingested with a static ingest profile, or ingested with a dynamic ingest profile.</p>
+
+    <h3>Notes</h3>
+
+    <ul>
+      <li>When you update text tracks on a Dynamic Delivery video, the process is asynchronous, so the response status
+        code will be <code translate="No">202 ACCEPTED</code>, and the update will not happen immediately.</li>
+      <li>There is a limit of 1000 text tracks per video.</li>
+      <li>The text of the captions must be encoded UTF-8 to display properly for double-byte languages such as Japanese
+        and Korean.</li>
+    </ul>
+  </section>
+
+  <section id="Remote_or_ingested" class="bcls-section">
     <h2>Remote or ingested</h2>
-    
-    <aside class="bcls-aside bcls-aside--information">The method explained in this document is for adding remote WebVTT files to your videos. You can also <a href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">ingest WebVTT files</a> to Video Cloud using the Dynamic Ingest API.</aside>
-    </section>
-    
-    <section class="section">
+
+    <aside class="bcls-aside bcls-aside--information">The method explained in this document is for adding remote WebVTT
+      files to your videos. You can also <a
+        href="/dynamic-ingest/ingest-guides/ingesting-webvtt-files-text-trackscaptions.html">ingest WebVTT files</a> to
+      Video Cloud using the Dynamic Ingest API.</aside>
+  </section>
+
+  <section class="section">
     <h2 id="authorization">Authorization</h2>
-    
-    <p class="BCL-aside">Requests to the <span translate="No">CMS API</span> require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
-    
-    <p>The operations you will need to update video metadata are <code translate="No">video-cloud/video/update</code> or <code translate="No">video-cloud/video/all</code>.</p>
-    </section>
-    
-    <section class="section">
+
+    <p class="BCL-aside">Requests to the <span translate="No">CMS API</span> require an authorization header which
+      contain your access tokens. For details on how to obtain client credentials and use them to retrieve access
+      tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
+
+    <p>The operations you will need to update video metadata are <code translate="No">video-cloud/video/update</code> or
+      <code translate="No">video-cloud/video/all</code>.</p>
+  </section>
+
+  <section class="section">
     <h2 id="syntax">Syntax</h2>
-    
+
     <h3>Request</h3>
-    
+
     <pre class="line-numbers">
-              <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts//videos/</code></pre>
-    
+      <code class="language-http"
+        translate="No">https://cms.api.brightcove.com/v1/accounts//videos/</code>
+    </pre>
+
     <h3>Request body:</h3>
-    
+
     <p>The request body will be a JSON object containing an array of text tracks:</p>
-    
+
     <pre class="line-numbers">
-    <code class="language-json" translate="No">{"text_tracks" : [ {
-      "src" : "https://some.site.com/captions/bc_smart_ja.vtt",
-      "srclang" : "ja",
-      "label" : "日本人",
-      "kind" : "captions",
-      "mime_type" : null,
-      "default" : false
-    }, {
-      "src" : "https://some.site.com/captions/bc_smart_es.vtt",
-      "srclang" : "es",
-      "label" : "español",
-      "kind" : "captions",
-      "mime_type" : null,
-      "default" : false
-    }, {
-      "src" : "https://some.site.com/captions/bc_smart_de.vtt",
-      "srclang" : "de",
-      "label" : "Deutsch",
-      "kind" : "captions",
-      "mime_type" : null,
-      "default" : false
-    }, {
-      "src" : "https://some.site.com/captions/bc_smart_fr.vtt",
-      "srclang" : "fr",
-      "label" : "français",
-      "kind" : "captions",
-      "mime_type" : null,
-      "default" : false
-    }, {
-      "src" : "https://some.site.com/captions/bc_smart.vtt",
-      "srclang" : "en",
-      "label" : "English",
-      "kind" : "captions",
-      "mime_type" : null,
-      "default" : true
-    }
-    ]}</code></pre>
-    </section>
-    
-    <section class="bcls-section">
+      <code class="language-json" translate="No">{"text_tracks" : [ {
+        "src" : "https://some.site.com/captions/bc_smart_ja.vtt",
+        "srclang" : "ja",
+        "label" : "日本人",
+        "kind" : "captions",
+        "mime_type" : null,
+        "default" : false
+        }, {
+        "src" : "https://some.site.com/captions/bc_smart_es.vtt",
+        "srclang" : "es",
+        "label" : "español",
+        "kind" : "captions",
+        "mime_type" : null,
+        "default" : false
+        }, {
+        "src" : "https://some.site.com/captions/bc_smart_de.vtt",
+        "srclang" : "de",
+        "label" : "Deutsch",
+        "kind" : "captions",
+        "mime_type" : null,
+        "default" : false
+        }, {
+        "src" : "https://some.site.com/captions/bc_smart_fr.vtt",
+        "srclang" : "fr",
+        "label" : "français",
+        "kind" : "captions",
+        "mime_type" : null,
+        "default" : false
+        }, {
+        "src" : "https://some.site.com/captions/bc_smart.vtt",
+        "srclang" : "en",
+        "label" : "English",
+        "kind" : "captions",
+        "mime_type" : null,
+        "default" : true
+        }
+        ]}</code>
+    </pre>
+  </section>
+
+  <section class="bcls-section">
     <h2 id="replaceTracks">Replacing text tracks</h2>
-    
+
     <p>Replacing existing text tracks (either uploaded or remote) is a two-step process:</p>
-    
+
     <ol class="bcls-tasklist">
       <li>Remove the existing text tracks via a <span translate="No">CMS API</span> update (PATCH):
-      <h4>API request (PATCH)</h4>
-    
-      <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code></pre>
-    
-      <h4>Request body</h4>
-    
-      <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-          "text_tracks": []
-      }</code></pre>
+        <h4>API request (PATCH)</h4>
+
+        <pre class="line-numbers">
+          <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span
+              class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code>
+        </pre>
+
+        <h4>Request body</h4>
+
+        <pre class="line-numbers">
+          <code class="language-json" translate="No">{
+            "text_tracks": []
+            }</code>
+        </pre>
       </li>
-      <li>If you are adding remote text tracks, add them via another <span translate="No">CMS API</span> update (PATCH) (optional - if you are uploading text tracks, skip to the next step):
-      <h4>API request (PATCH)</h4>
-    
-      <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code></pre>
-    
-      <h4>Request body</h4>
-    
-      <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-        "text_tracks": [
+      <li>If you are adding remote text tracks, add them via another <span translate="No">CMS API</span> update (PATCH)
+        (optional - if you are uploading text tracks, skip to the next step):
+        <h4>API request (PATCH)</h4>
+
+        <pre class="line-numbers">
+          <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span
+              class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code>
+        </pre>
+
+        <h4>Request body</h4>
+
+        <pre class="line-numbers">
+          <code class="language-json" translate="No">{
+            "text_tracks": [
             {
-              "src": "https://some.site.com/vtt/sample.vtt",
-              "srclang": "en",
-              "label": "EN",
-              "kind": "captions",
-              "mime_type": "text/webvtt"
+            "src": "https://some.site.com/vtt/sample.vtt",
+            "srclang": "en",
+            "label": "EN",
+            "kind": "captions",
+            "mime_type": "text/webvtt"
             },
             {
-              "src": "https://some.site.com/vtt/sample-es.vtt",
-              "srclang": "es",
-              "label": "ES",
-              "kind": "captions",
-              "mime_type": "text/webvtt"
+            "src": "https://some.site.com/vtt/sample-es.vtt",
+            "srclang": "es",
+            "label": "ES",
+            "kind": "captions",
+            "mime_type": "text/webvtt"
             }
-        ]
-    }</code></pre>
+            ]
+            }</code>
+        </pre>
       </li>
       <li>If you are uploading new text tracks instead, add them via a POST request to the Dynamic Ingest API:
-      <h4>API request (POST)</h4>
-    
-      <pre class="line-numbers">
-    <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code>/ingest-requests</pre>
-    
-      <h4>Request body</h4>
-    
-      <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-        "text_tracks": [
+        <h4>API request (POST)</h4>
+
+        <pre class="line-numbers">
+          <code class="language-http" translate="No">https://ingest.api.brightcove.com/v1/accounts/<span
+              class="bcls-input">account_id</span>/videos/<span
+              class="bcls-input">video_id</span></code>/ingest-requests
+        </pre>
+
+        <h4>Request body</h4>
+
+        <pre class="line-numbers">
+          <code class="language-json" translate="No">{
+            "text_tracks": [
             {
-                "url": "https://solutions.brightcove.com/bcls/assets/vtt/sample.vtt",
-                "srclang": "en",
-                "kind": "captions",
-                "label": "EN",
-                "default": true
+            "url": "https://solutions.brightcove.com/bcls/assets/vtt/sample.vtt",
+            "srclang": "en",
+            "kind": "captions",
+            "label": "EN",
+            "default": true
             },
             {
-                "url": "https://solutions.brightcove.com/bcls/assets/vtt/sample-ar.vtt",
-                "srclang": "ar",
-                "kind": "captions",
-                "label": "AR",
-                "default": false
+            "url": "https://solutions.brightcove.com/bcls/assets/vtt/sample-ar.vtt",
+            "srclang": "ar",
+            "kind": "captions",
+            "label": "AR",
+            "default": false
             }
-        ]
-    }</code></pre>
+            ]
+            }</code>
+        </pre>
       </li>
-      <li>Make a GET request to the <span translate="No">CMS API</span> to verify that your new text tracks are associated with the video:
-      <pre class="line-numbers">
-              <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code></pre>
+      <li>Make a GET request to the <span translate="No">CMS API</span> to verify that your new text tracks are
+        associated with the video:
+        <pre class="line-numbers">
+          <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span
+              class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code>
+        </pre>
       </li>
     </ol>
-    </section>
-    </article>
-    
+  </section>
+</article>
+
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   
   <nav class="right-side-nav" id="right_side_nav">

@@ -3625,227 +3625,286 @@
 <article class="bcls-article">
   <summary>In this topic, you will learn about <span translate="No">CMS API</span> notifications. The <span translate="No">CMS API</span> provides notifications of changes to the videos in your account, whether made by an account user or the Video Cloud system.</summary>
   <section class="bcls-section">
-  <h2 id="overview">Overview</h2>
-  
-  <p>You can receive notifications when <code translate="No">video-change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <span translate="No">HTTP</span> <code translate="No">POST</code> requests.</p>
+    <h2 id="overview">Overview</h2>
 
-  <aside class="bcls-aside bcls-aside--tip language-editable">Starting on March 17th of 2022, users have the possibility to receive notifications for <code translate="No">master-video-change</code> events, also sent to the URL you specify, pointing to an application cable of handling HTTP <code translate="No">POST</code> requests. The notifications for this event are exclusively related with <a href="/cms/managing-videos/media-sharing-cms-api.html">Media Sharing</a> and occur when a Dynamic Delivery Master Video updates its assets; this change is automatically reflected in their affiliate videos but in the past did not to trigger notifications to subscribers in affiliate’s accounts. Keep reading to know more about this new feature and go to the media sharing section to get a better understanding of how sharing works.</aside>
+    <p>You can receive notifications when <code translate="No">video-change</code> events occur in your video library.
+      Notifications will be sent to the URL you specify, which should point to an application capable of handling <span
+        translate="No">HTTP</span> <code translate="No">POST</code> requests.</p>
 
-  <aside class="bcls-aside bcls-aside--information language-editable">Note that two new fields, <code translate="No">action</code> and <code translate="No">updated_by</code> are added to notifications as of February 2022. If you have an app in place to handle notifications, <strong>these are non-breaking changes and will not affect your current app</strong>. The changes are noted below.</aside>
-  
-  <h3>Authentication</h3>
-  
-  <p>Like all requests to the CMS API, requests to set up or list notification subscriptions must be authenticated using an <a href="/oauth/guides/getting-access-tokens.html">access token</a>. The client credentials used to get the access token must have permissions for <code translate="No">video-cloud/notifications/all</code> (<strong translate="No">CMS-&gt;Notifications</strong> if you use the <a href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">Studio UI</a> to create the credentials.)</p>
-  
-  <h3>Setup</h3>
-  
-  <p>To create a new subscription, submit a <code translate="No">POST</code> request to <code translate="No">https://cms.api.brightcove.com/v1/accounts//subscriptions</code> with a request body including the endpoint that you want notifications delivered to and <code translate="No">video-change</code> or <code translate="No">master-video-change</code> as the single item in an events array. You can specify up to 10 endpoints per event to receive notifications.</p>
+    <aside class="bcls-aside bcls-aside--tip language-editable">Starting on March 17th of 2022, users have the
+      possibility to receive notifications for <code translate="No">master-video-change</code> events, also sent to the
+      URL you specify, pointing to an application cable of handling HTTP <code translate="No">POST</code> requests. The
+      notifications for this event are exclusively related with <a
+        href="/cms/managing-videos/media-sharing-cms-api.html">Media Sharing</a> and occur when a Dynamic Delivery
+      Master Video updates its assets; this change is automatically reflected in their affiliate videos but in the past
+      did not to trigger notifications to subscribers in affiliate’s accounts. Keep reading to know more about this new
+      feature and go to the media sharing section to get a better understanding of how sharing works.</aside>
 
-  <p>The available events for <code translate="No">video-change</code> are for your video library, and now, events for <code translate="No">master-video-change</code> are for changes in the assets of a dynamic delivery master video that will eventually be reflected in your shared video.</p>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note that two new fields, <code
+        translate="No">action</code> and <code translate="No">updated_by</code> are added to notifications as of
+      February 2022. If you have an app in place to handle notifications, <strong>these are non-breaking changes and
+        will not affect your current app</strong>. The changes are noted below.</aside>
 
-  <h4>For <code translate="No">video-change</code> events</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "endpoint":"https://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
-  "events":["video-change"]
-}</code></pre>
-  
-  <h4>For <code translate="No">master-video-change</code> events</h4>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "endpoint":"https://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
-  "events":["master-video-change"]
-}</code></pre>
-  
-  <p>Notifications are sent in JSON format. Here's an example for <code translate="No">video-change</code> events:</p>
-  
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "timestamp":1423840514446, 
-  "account_id":"775205503001", 
-  "event":"video-change", 
-  "video":"4020894387001", 
-  "version":26,
-  <span class="bcls-highlight">“action”:”UPDATE”,</span>
-  <span class="bcls-highlight">“updated_by”:{ "email": "string", "id": "string", "type": "user" }</span>
-}</code></pre>
-  
-  <aside class="bcls-aside bcls-aside--information">
-    Notes:
-    <ul>
-      <li>The highlighted fields above were added in February 2022.</li>
-      <li>There is currently no other way to subscribe to notifications except through the API.</li>
-    </ul>
-  </aside>
+    <h3>Authentication</h3>
 
-  <p>And an example for <code translate="No">master-video-change</code> looks like this:</p>
+    <p>Like all requests to the CMS API, requests to set up or list notification subscriptions must be authenticated
+      using an <a href="/oauth/guides/getting-access-tokens.html">access token</a>. The client credentials used to get
+      the access token must have permissions for <code translate="No">video-cloud/notifications/all</code> (<strong
+        translate="No">CMS-&gt;Notifications</strong> if you use the <a
+        href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">Studio UI</a> to
+      create the credentials.)</p>
 
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "timestamp":1423840514446,
-  "account_id":"775205503001",
-  "event":"video-change",
-  "video":"4020894387001", 
-  "version":26, 
-  "action":"UPDATE", 
-  "updated_by":{ "email": "string", "id": "string", "type": "user" },
-  "master_account_id":"784205904003",
-  "master_video_id":"6200985429005"
-}</code></pre>
+    <h3>Setup</h3>
 
-<aside class="bcls-aside bcls-aside--information language-editable">Notice that, for <code translate="No">master-video-change</code>, <code translate="No">master_account_id</code> and <code translate="No">master_video_id</code> values are included in the response, this is to provide an easiest way to know about the master video who performs the changes reflected in the affiliate video.</aside>
-  
-  <h3>Notification fields</h3>
-  
-  <table class="bcls-table">
-    <thead class="bcls-table__head">
-      <tr>
-        <th>Item</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody class="bcls-table__body">
-      <tr>
-        <td ><code translate="No">timestamp</code></td>
-        <td >time when the event occurred in <span translate="No">Epoch</span> milliseconds</td>
-      </tr>
-      <tr>
-        <td ><code translate="No">account_id</code></td>
-        <td >the <span translate="No">Video Cloud</span> account id</td>
-      </tr>
-      <tr>
-        <td ><code translate="No">master_account_id</code></td>
-        <td >the <span translate="No"><strong>Only for master-video-change events</strong>: The <code translate="No">id</code> of the master video who made the update in the assets shared with the affiliate video.</td>
-      </tr>
-      <tr>
-        <td ><code translate="No">master_video_id</code></td>
-        <td >the <span translate="No"><strong>Only for master-video-change events</strong>: The id of the Video Cloud master account for the master video.</td>
-      </tr>
-      <tr>
-        <td ><code translate="No">event</code></td>
-        <td >the type of event - currently this will always be <code translate="No">video-change</code></td>
-      </tr>
-      <tr>
-        <td ><code translate="No">video</code></td>
-        <td >the video ID</td>
-      </tr>
-      <tr>
-        <td ><code translate="No">version</code></td>
-        <td >the version of the video - each set of change events increments the video version - for example, creation of a new set of renditions would constitute a set of change events</td>
-      </tr>
-      <tr>
-        <td ><code translate="No">action</code><sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
-        <td >
-          the action that was performed - one of the following:
-          <li><code translate="no">UPDATE</code> - an asset was updated</li>
-          <li><code translate="no">CREATE</code> - an asset was created</li>
-          <li><code translate="no">TRIGGERED_MANUAL</code> - a notification was triggered by an internal Brightcove application</li>
-          <li><code translate="no">DELETE</code> - an asset was deleted</li>
-        </td>
-      </tr>
-      <tr>
-        <td ><code translate="No">updated_by</code><sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
-        <td >
-          an object containing information about who performed the action, if available; the object properties are:
-          <li><code translate="no">email</code> - the user's email address</li>
-          <li><code translate="no">id</code>- the Video Cloud system id for the user</li>
-          <li>
-            <code translate="no">type</code> - the type of update:
-            <ul>
-              <li><code translate="no">user</code> - a user in Studio</li>
-              <li><code translate="no">api-key</code> - a user via the API</li>
-              <li><code translate="no">internal</code> - a Brightcove system or user</li>
-            </ul>
-          </li>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  
-  <p>Requests to create a subscription will receive an <span translate="No">HTTP 422</span> error response for the following conditions:</p>
-  
-  <ul>
-    <li>The <code translate="No">endpoint</code> or <code translate="No">events</code> field is missing from the request body</li>
-    <li>The <code translate="No">events</code> field value is not a list (array)</li>
-    <li>The subscription defined already exists</li>
-    <li>You already have 10 subscriptions to this event</li>
-  </ul>
-  
-  <h3>Notification failures</h3>
-  
-  <p>The notification system treats any <code translate="No">4xx</code> or <code translate="No">5xx</code> return from the customer server as a retry-able failure. Failing callbacks will be retried up to 20 times, with an exponentially increasing delay between subsequent callbacks. The first few retries will happen within minutes of the initial callback attempt. If the callback continues failing, and we get all the way out to the 20th retry, the retry delay will be a few days.</p>
-  
-  <aside class="bcls-aside bcls-aside--information">&gt;Notes:
-  <ul>
-    <li><code translate="No">video-change</code> events are triggered by automated system processes as well as user actions, so these events will not always corresponds to changes you made to video properties in Studio or via the APIs.</li>
-    <li>Notification handlers on servers built on HTTP2 are not currently supported. Notifications sent to HTTP2 servers may fail to be delivered without returning any error.</li>
-    <li><code translate="No">master-video-change</code> events are triggered by automated system processes after a master video updates its assets. These events can not be triggered manually.</li>
-  </ul>
-  </aside>
-  
-  <h3>Firewalls</h3>
-  
-  <p>In case your organization has a strict policy regarding sources of incoming traffic through your firewall, we allow the AWS us-east-1/Virginia IPs. This is subject to change, so all AWS IPs should be whitelisted. See <a href="https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html</a> for more information.</p>
-  
-  <h3>Endpoint for notification subscriptions</h3>
-  
-  <pre class="line-numbers">
-        <code class="language-http" translate="No">/accounts//subscriptions
-        </code>
-        </pre>
-  
-  <h3 id="getSubscriptions">Get a list of your subscriptions</h3>
-  
-  <p>To get a list of all your subscriptions, send a <code translate="No">GET</code> request to the subscriptions endpoint:.</p>
+    <p>To create a new subscription, submit a <code translate="No">POST</code> request to <code
+        translate="No">https://cms.api.brightcove.com/v1/accounts//subscriptions</code> with a request
+      body including the endpoint that you want notifications delivered to and <code translate="No">video-change</code>
+      or <code translate="No">master-video-change</code> as the single item in an events array. You can specify up to 10
+      endpoints per event to receive notifications.</p>
 
-  <pre class="line-numbers"><code class="language-http" translate="No">/accounts//subscriptions</code></pre>
-  
-  <h3 id="getSubscription">Get or Delete a single subscription</h3>
-  
-  <p>Use the following endpoint to get or delete a single subscription:</p>
-  
-  <h4>Endpoint</h4>
-  
-  <pre class="line-numbers"><code class="language-http" translate="No">/accounts//subscriptions/{subscription_id}</code></pre>
-  
-  <p>A <code translate="No">GET</code> request will retrieve the subscription. A <code translate="No">DELETE</code> request will delete the subscription. You cannot update a subscription at this time. If you want to modify a subscription, you will need to delete it and create a new one.</p>
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="What_triggers">What triggers notifications?</h2>
-  
-  <p><code translate="No">video-change</code> events are triggered by any change in the video metadata. This includes any change to the video made in Studio or through a <span translate="No">CMS API</span> write method. There are also system events that will trigger <code translate="No">video-change</code> events.</p>
-  
-  <p>Changes that will trigger an event include:</p>
-  
-  <ul>
-    <li>A video is created</li>
-    <li>Ingestion of video or asset file starts</li>
-    <li>Ingestion of video or asset file is completed</li>
-    <li>Encoding of a new rendition finishes</li>
-    <li>A poster image is created</li>
-    <li>A thumbnail image is created</li>
-    <li>A video is activated or deactivated</li>
-    <li>A video is deleted</li>
-    <li>Video metadata is changed (by the system or a user)</li>
-    <li>
-      <code translate="No">master-video-change</code> events are triggered by updates in the assets of a master video, which makes them only available for sharing.
-      <p>Changes that will trigger this event include:</p>
+    <p>The available events for <code translate="No">video-change</code> are for your video library, and now, events for
+      <code translate="No">master-video-change</code> are for changes in the assets of a dynamic delivery master video
+      that will eventually be reflected in your shared video.</p>
+
+    <h4>For <code translate="No">video-change</code> events</h4>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "endpoint":"https://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
+        "events":["video-change"]
+        }</code></pre>
+
+    <h4>For <code translate="No">master-video-change</code> events</h4>
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "endpoint":"https://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
+        "events":["master-video-change"]
+        }</code></pre>
+
+    <p>Notifications are sent in JSON format. Here's an example for <code translate="No">video-change</code> events:</p>
+
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "timestamp":1423840514446,
+        "account_id":"775205503001",
+        "event":"video-change",
+        "video":"4020894387001",
+        "version":26,
+        <span class="bcls-highlight">“action”:”UPDATE”,</span>
+        <span class="bcls-highlight">“updated_by”:{ "email": "string", "id": "string", "type": "user" }</span>
+        }</code></pre>
+
+    <aside class="bcls-aside bcls-aside--information">
+      Notes:
       <ul>
-        <li>Ingested assets are added to the master video</li>
-        <li>Ingested assets are replaced/retranscoded in the master video</li>
+        <li>The highlighted fields above were added in February 2022.</li>
+        <li>There is currently no other way to subscribe to notifications except through the API.</li>
       </ul>
-    </li>
-  </ul>
-  
-  <h3>Notes</h3>
-  
-  <p>Retranscoding a video will not trigger a <code translate="No">video-change</code> event unless the resulting rendition set is different.</p>
-  
-  <p>There are system events that occur after a video is deleted, so you will receive notifications about a video after deleting it.</p>
-  
-  <p>What will <strong>not</strong> trigger a <code translate="No">video-change</code> event is a change to a video asset that does not change the video metadata. For example, if you replace a remote text track file or image, but the URL recorded in the video metadata remains the same, no <code translate="No">video-change</code> event will occur, and no notification will be sent.</p>
+    </aside>
 
-  <p>Deletion of assets in a master video will not trigger a <code translate="No">master-video-change</code> event. When assets are removed in a video it’s because the video is being deleted, and sharing already handles the deletion process for affiliate videos.</p>
+    <p>And an example for <code translate="No">master-video-change</code> looks like this:</p>
+
+    <pre class="line-numbers"><code class="language-json" translate="No">{
+        "timestamp":1423840514446,
+        "account_id":"775205503001",
+        "event":"video-change",
+        "video":"4020894387001",
+        "version":26,
+        "action":"UPDATE",
+        "updated_by":{ "email": "string", "id": "string", "type": "user" },
+        "master_account_id":"784205904003",
+        "master_video_id":"6200985429005"
+        }</code></pre>
+
+    <aside class="bcls-aside bcls-aside--information language-editable">Notice that, for <code
+        translate="No">master-video-change</code>, <code translate="No">master_account_id</code> and <code
+        translate="No">master_video_id</code> values are included in the response, this is to provide an easiest way to
+      know about the master video who performs the changes reflected in the affiliate video.</aside>
+
+    <h3>Notification fields</h3>
+
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code translate="No">timestamp</code></td>
+          <td>time when the event occurred in <span translate="No">Epoch</span> milliseconds</td>
+        </tr>
+        <tr>
+          <td><code translate="No">account_id</code></td>
+          <td>the <span translate="No">Video Cloud</span> account id</td>
+        </tr>
+        <tr>
+          <td><code translate="No">master_account_id</code></td>
+          <td>the <span translate="No"><strong>Only for master-video-change events</strong>: The <code
+                translate="No">id</code> of the master video who made the update in the assets shared with the affiliate
+              video.</td>
+        </tr>
+        <tr>
+          <td><code translate="No">master_video_id</code></td>
+          <td>the <span translate="No"><strong>Only for master-video-change events</strong>: The id of the Video Cloud
+              master account for the master video.</td>
+        </tr>
+        <tr>
+          <td><code translate="No">event</code></td>
+          <td>the type of event - currently this will always be <code translate="No">video-change</code></td>
+        </tr>
+        <tr>
+          <td><code translate="No">video</code></td>
+          <td>the video ID</td>
+        </tr>
+        <tr>
+          <td><code translate="No">version</code></td>
+          <td>the version of the video - each set of change events increments the video version - for example, creation
+            of a new set of renditions would constitute a set of change events</td>
+        </tr>
+        <tr>
+          <td><code translate="No">action</code><sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+          <td>
+            the action that was performed - one of the following:
+            <li><code translate="no">UPDATE</code> - an asset was updated</li>
+            <li><code translate="no">CREATE</code> - an asset was created</li>
+            <li><code translate="no">TRIGGERED_MANUAL</code> - a notification was triggered by an internal Brightcove
+              application</li>
+            <li><code translate="no">DELETE</code> - an asset was deleted</li>
+          </td>
+        </tr>
+        <tr>
+          <td><code translate="No">updated_by</code><sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+          <td>
+            an object containing information about who performed the action, if available; the object properties are:
+            <li><code translate="no">email</code> - the user's email address</li>
+            <li><code translate="no">id</code>- the Video Cloud system id for the user</li>
+            <li>
+              <code translate="no">type</code> - the type of update:
+              <ul>
+                <li><code translate="no">user</code> - a user in Studio</li>
+                <li><code translate="no">api-key</code> - a user via the API</li>
+                <li><code translate="no">internal</code> - a Brightcove system or user</li>
+              </ul>
+            </li>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Requests to create a subscription will receive an <span translate="No">HTTP 422</span> error response for the
+      following conditions:</p>
+
+    <ul>
+      <li>The <code translate="No">endpoint</code> or <code translate="No">events</code> field is missing from the
+        request body</li>
+      <li>The <code translate="No">events</code> field value is not a list (array)</li>
+      <li>The subscription defined already exists</li>
+      <li>You already have 10 subscriptions to this event</li>
+    </ul>
+
+    <h3>Notification failures</h3>
+
+    <p>The notification system treats any <code translate="No">4xx</code> or <code translate="No">5xx</code> return from
+      the customer server as a retry-able failure. Failing callbacks will be retried up to 20 times, with an
+      exponentially increasing delay between subsequent callbacks. The first few retries will happen within minutes of
+      the initial callback attempt. If the callback continues failing, and we get all the way out to the 20th retry, the
+      retry delay will be a few days.</p>
+
+    <aside class="bcls-aside bcls-aside--information">&gt;Notes:
+      <ul>
+        <li><code translate="No">video-change</code> events are triggered by automated system processes as well as user
+          actions, so these events will not always corresponds to changes you made to video properties in Studio or via
+          the APIs.</li>
+        <li>Notification handlers on servers built on HTTP2 are not currently supported. Notifications sent to HTTP2
+          servers may fail to be delivered without returning any error.</li>
+        <li><code translate="No">master-video-change</code> events are triggered by automated system processes after a
+          master video updates its assets. These events can not be triggered manually.</li>
+      </ul>
+    </aside>
+
+    <h3>Firewalls</h3>
+
+    <p>In case your organization has a strict policy regarding sources of incoming traffic through your firewall, we
+      allow the AWS us-east-1/Virginia IPs. This is subject to change, so all AWS IPs should be whitelisted. See <a
+        href="https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html</a>
+      for more information.</p>
+
+    <h3>Endpoint for notification subscriptions</h3>
+
+    <pre class="line-numbers">
+      <code class="language-http" translate="No">/accounts//subscriptions
+      </code>
+    </pre>
+
+    <h3 id="getSubscriptions">Get a list of your subscriptions</h3>
+
+    <p>To get a list of all your subscriptions, send a <code translate="No">GET</code> request to the subscriptions
+      endpoint:.</p>
+
+    <pre class="line-numbers"><code class="language-http" translate="No">/accounts//subscriptions</code>
+    </pre>
+
+    <h3 id="getSubscription">Get or Delete a single subscription</h3>
+
+    <p>Use the following endpoint to get or delete a single subscription:</p>
+
+    <h4>Endpoint</h4>
+
+    <pre class="line-numbers"><code class="language-http"
+        translate="No">/accounts//subscriptions/{subscription_id}</code></pre>
+
+    <p>A <code translate="No">GET</code> request will retrieve the subscription. A <code translate="No">DELETE</code>
+      request will delete the subscription. You cannot update a subscription at this time. If you want to modify a
+      subscription, you will need to delete it and create a new one.</p>
   </section>
-  </article>
-  
+
+  <section class="bcls-section">
+    <h2 id="What_triggers">What triggers notifications?</h2>
+
+    <p><code translate="No">video-change</code> events are triggered by any change in the video metadata. This includes
+      any change to the video made in Studio or through a <span translate="No">CMS API</span> write method. There are
+      also system events that will trigger <code translate="No">video-change</code> events.</p>
+
+    <p>Changes that will trigger an event include:</p>
+
+    <ul>
+      <li>A video is created</li>
+      <li>Ingestion of video or asset file starts</li>
+      <li>Ingestion of video or asset file is completed</li>
+      <li>Encoding of a new rendition finishes</li>
+      <li>A poster image is created</li>
+      <li>A thumbnail image is created</li>
+      <li>A video is activated or deactivated</li>
+      <li>A video is deleted</li>
+      <li>Video metadata is changed (by the system or a user)</li>
+      <li>
+        <code translate="No">master-video-change</code> events are triggered by updates in the assets of a master video,
+        which makes them only available for sharing.
+        <p>Changes that will trigger this event include:</p>
+        <ul>
+          <li>Ingested assets are added to the master video</li>
+          <li>Ingested assets are replaced/retranscoded in the master video</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Notes</h3>
+
+    <p>Retranscoding a video will not trigger a <code translate="No">video-change</code> event unless the resulting
+      rendition set is different.</p>
+
+    <p>There are system events that occur after a video is deleted, so you will receive notifications about a video
+      after deleting it.</p>
+
+    <p>What will <strong>not</strong> trigger a <code translate="No">video-change</code> event is a change to a video
+      asset that does not change the video metadata. For example, if you replace a remote text track file or image, but
+      the URL recorded in the video metadata remains the same, no <code translate="No">video-change</code> event will
+      occur, and no notification will be sent.</p>
+
+    <p>Deletion of assets in a master video will not trigger a <code translate="No">master-video-change</code> event.
+      When assets are removed in a video it’s because the video is being deleted, and sharing already handles the
+      deletion process for affiliate videos.</p>
+  </section>
+</article>
+
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   
   <nav class="right-side-nav" id="right_side_nav">

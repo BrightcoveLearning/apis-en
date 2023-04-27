@@ -3624,312 +3624,334 @@
 <h1>Retrieve Video Data</h1>
 <article class="bcls-article">
   <summary>This topic shows a variety of sample requests using the HTTP GET method.</summary>
-    <section id="intro" class="bcls-section">
+  <section id="intro" class="bcls-section">
     <h2>Introduction</h2>
-    
-    <p>In this topic, you will learn how to retrieve various kinds of information about your Video Cloud videos, using <span translate="No">CMS API</span> requests. To create these requests, append the endpoints listed in this document to the base URL with your account id.</p>
-    
+
+    <p>In this topic, you will learn how to retrieve various kinds of information about your Video Cloud videos, using
+      <span translate="No">CMS API</span> requests. To create these requests, append the endpoints listed in this
+      document to the base URL with your account id.
+    </p>
+
     <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts//{endpoint}
-    </code>
+      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts//{endpoint}
+      </code>
     </pre>
-    
-    <p class="BCL-aside">Requests to the <span translate="No">CMS API</span> require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
-    </section>
-    
-    <section class="section" id="GET_videos">
+
+    <p class="BCL-aside">Requests to the <span translate="No">CMS API</span> require an authorization header which
+      contain your access tokens. For details on how to obtain client credentials and use them to retrieve access
+      tokens, see the <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
+  </section>
+
+  <section class="section" id="GET_videos">
     <h2>GET videos</h2>
-    
+
     <p>Retrieve data for all of the videos in your Video Cloud account.</p>
-    
+
     <p>Endpoint: <code translate="No">/videos </code></p>
-    
+
     <h3>Request</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos
-    </code>
+      <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos
+      </code>
     </pre>
-    
+
     <h3>Response</h3>
-    
-<pre class="line-numbers">
-<code class="language-json" translate="No">[
-  {
-    "id" : "2114345471001",
-    "account_id" : "1507807800001",
-    "complete" : true,
-    "created_at" : "2013-01-23T19:06:16.328Z",
-    "cue_points" : [ {
-    "name" : "Flying Off",
-    "type" : "CODE",
-    "time" : 2.64,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Pre-roll",
-    "type" : "AD",
-    "time" : 0.0,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Bird Back",
-    "type" : "CODE",
-    "time" : 5.938,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Post-roll",
-    "type" : "AD",
-    "time" : 8.242,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    } ],
-    "custom_fields" : {
-    "customfield1" : "Approved",
-"customfield2" : "Verified"
-  }, ...
-]</code>
-</pre>
-    </section>
-    
-    <section class="section" id="GET_a_video">
+
+    <pre class="line-numbers">
+      <code class="language-json" translate="No">[
+        {
+        "id" : "2114345471001",
+        "account_id" : "1507807800001",
+        "complete" : true,
+        "created_at" : "2013-01-23T19:06:16.328Z",
+        "cue_points" : [ {
+        "name" : "Flying Off",
+        "type" : "CODE",
+        "time" : 2.64,
+        "metadata" : null,
+        "force_stop" : false,
+        "asset_id" : null
+        }, {
+        "name" : "Pre-roll",
+        "type" : "AD",
+        "time" : 0.0,
+        "metadata" : null,
+        "force_stop" : false,
+        "asset_id" : null
+        }, {
+        "name" : "Bird Back",
+        "type" : "CODE",
+        "time" : 5.938,
+        "metadata" : null,
+        "force_stop" : false,
+        "asset_id" : null
+        }, {
+        "name" : "Post-roll",
+        "type" : "AD",
+        "time" : 8.242,
+        "metadata" : null,
+        "force_stop" : false,
+        "asset_id" : null
+        } ],
+        "custom_fields" : {
+        "customfield1" : "Approved",
+        "customfield2" : "Verified"
+        }, ...
+        ]</code>
+    </pre>
+  </section>
+
+  <section class="section" id="GET_a_video">
     <h2>GET a video</h2>
-    
+
     <p>Retrieve data for a specific video, or multiple videos by id</p>
-    
-    <aside class="bcls-aside bcls-aside--information">Note that <strong>no more than 10 video ids</strong> can be included.</aside>
-    
+
+    <aside class="bcls-aside bcls-aside--information">Note that <strong>no more than 10 video ids</strong> can be
+      included.</aside>
+
     <p>Endpoint: <code translate="No">/videos/[,{video2_id},{video3_id}] </code></p>
-    
+
     <h3>Request</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001
-    </code>
+      <code class="language-http"
+        translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001
+      </code>
     </pre>
-    
+
     <h3>Response</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-    "id" : "2114345471001",
-    "account_id" : "1507807800001",
-    "complete" : true,
-    "created_at" : "2013-01-23T19:06:16.328Z",
-    "cue_points" : [ {
-    "name" : "Flying Off",
-    "type" : "CODE",
-    "time" : 2.64,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Pre-roll",
-    "type" : "AD",
-    "time" : 0.0,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, {
-    "name" : "Bird Back",
-    "type" : "CODE",
-    "time" : 5.938,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, ...
-    </code>
+      <code class="language-json" translate="No">{
+        "id" : "2114345471001",
+        "account_id" : "1507807800001",
+        "complete" : true,
+        "created_at" : "2013-01-23T19:06:16.328Z",
+        "cue_points" : [ {
+        "name" : "Flying Off",
+        "type" : "CODE",
+        "time" : 2.64,
+        "metadata" : null,
+        "force_stop" : false,
+        "asset_id" : null
+        }, {
+        "name" : "Pre-roll",
+        "type" : "AD",
+        "time" : 0.0,
+        "metadata" : null,
+        "force_stop" : false,
+        "asset_id" : null
+        }, {
+        "name" : "Bird Back",
+        "type" : "CODE",
+        "time" : 5.938,
+        "metadata" : null,
+        "force_stop" : false,
+        "asset_id" : null
+        }, ...
+      </code>
     </pre>
-    </section>
-    
-    <section class="section" id="sourcesEndpoint">
+  </section>
+
+  <section class="section" id="sourcesEndpoint">
     <h2>GET sources</h2>
-    
+
     <p>Retrieve the sources for a specific video.</p>
-    
+
     <p>Endpoint: <code translate="No">/videos//sources </code></p>
-    
+
     <h3>Request</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001/sources
-    </code>
+      <code class="language-http"
+        translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001/sources
+      </code>
     </pre>
-    
+
     <h3>Response</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-json" translate="No">[
-    {
-    "asset_id": "5164827527001",
-    "remote": false,
-    "src": "https://brightcove.vo.llnwd.net/e2/hls/57838016001/57838016001_5164827527001_5164799982001.m3u8?pubId=57838016001&amp;videoId=5164799982001",
-    "type": "application/vnd.apple.mpegurl"
-    },
-    {
-    "asset_id": "5164827527001",
-    "remote": false,
-    "src": "https://brightcove.hs.llnwd.net/e2/hls/57838016001/57838016001_5164827527001_5164799982001.m3u8?pubId=57838016001&amp;videoId=5164799982001",
-    "type": "application/vnd.apple.mpegurl"
-    }, ...
-    ]
-    </code>
+      <code class="language-json" translate="No">[
+        {
+        "asset_id": "5164827527001",
+        "remote": false,
+        "src":
+        "https://brightcove.vo.llnwd.net/e2/hls/57838016001/57838016001_5164827527001_5164799982001.m3u8?pubId=57838016001&amp;videoId=5164799982001",
+        "type": "application/vnd.apple.mpegurl"
+        },
+        {
+        "asset_id": "5164827527001",
+        "remote": false,
+        "src":
+        "https://brightcove.hs.llnwd.net/e2/hls/57838016001/57838016001_5164827527001_5164799982001.m3u8?pubId=57838016001&amp;videoId=5164799982001",
+        "type": "application/vnd.apple.mpegurl"
+        }, ...
+        ]
+      </code>
     </pre>
-    </section>
-    
-    <section class="section" id="imagesEndpoint">
+  </section>
+
+  <section class="section" id="imagesEndpoint">
     <h2>GET images</h2>
-    
+
     <p>Retrieve the images for a specific video.</p>
-    
+
     <p>Endpoint: <code translate="No">/videos//images </code></p>
-    
+
     <h3>Request</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001/images
-    </code>
+      <code class="language-http"
+        translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/2114345471001/images
+      </code>
     </pre>
-    
+
     <h3>Response</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-    "thumbnail" : {
-    "id" : "3815806023001",
-    "src" : "https://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/2431/1507807800001_3815806023001_thumb.jpg?pubId=1507807800001"
-    },
-    "poster" : {
-    "id" : "3815782921001",
-    "src" : "https://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/273/1507807800001_3815782921001_still.jpg?pubId=1507807800001"
-    }
-    }
-    </code>
+      <code class="language-json" translate="No">{
+        "thumbnail" : {
+        "id" : "3815806023001",
+        "src" :
+        "https://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/2431/1507807800001_3815806023001_thumb.jpg?pubId=1507807800001"
+        },
+        "poster" : {
+        "id" : "3815782921001",
+        "src" :
+        "https://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/273/1507807800001_3815782921001_still.jpg?pubId=1507807800001"
+        }
+        }
+      </code>
     </pre>
-    </section>
-    
-    <section class="section" id="videoRefidEndpoint">
+  </section>
+
+  <section class="section" id="videoRefidEndpoint">
     <h2>GET video by refid</h2>
-    
+
     <p>Retrieve the data for a specific video using the reference id.</p>
-    
+
     <p>Endpoint: <code translate="No">/videos/ref:{video_reference_id} </code></p>
-    
+
     <h3>Request</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7
-    </code>
+      <code class="language-http"
+        translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7
+      </code>
     </pre>
-    
+
     <h3>Response</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-    "id" : "2114345471001",
-    "account_id" : "1507807800001",
-    "complete" : true,
-    "created_at" : "2013-01-23T19:06:16.328Z",
-    "cue_points" : [ {
-    "name" : "Flying Off",
-    "type" : "CODE",
-    "time" : 2.64,
-    "metadata" : null,
-    "force_stop" : false,
-    "asset_id" : null
-    }, ...
-    </code>
+      <code class="language-json" translate="No">{
+        "id" : "2114345471001",
+        "account_id" : "1507807800001",
+        "complete" : true,
+        "created_at" : "2013-01-23T19:06:16.328Z",
+        "cue_points" : [ {
+        "name" : "Flying Off",
+        "type" : "CODE",
+        "time" : 2.64,
+        "metadata" : null,
+        "force_stop" : false,
+        "asset_id" : null
+        }, ...
+      </code>
     </pre>
-    </section>
-    
-    <section class="section" id="videoRefidSourcesEndpoint">
+  </section>
+
+  <section class="section" id="videoRefidSourcesEndpoint">
     <h2>GET sources by refid</h2>
-    
+
     <p>Retrieve the sources for a specific video using its reference id.</p>
-    
-    <aside class="bcls-aside bcls-aside--information">If you want a downloadable rendition, choose an <code translate="No">http </code> or <code translate="No">https </code> source with container <code translate="No">MP4 </code></aside>
-    
+
+    <aside class="bcls-aside bcls-aside--information">If you want a downloadable rendition, choose an <code
+        translate="No">http </code> or <code translate="No">https </code> source with container <code translate="No">MP4
+      </code></aside>
+
     <p>Endpoint: <code translate="No">/videos/ref:{video_reference_id}/sources </code></p>
-    
+
     <h3>Request</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7/sources
-    </code>
+      <code class="language-http"
+        translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7/sources
+      </code>
     </pre>
-    
+
     <h3>Response</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-json" translate="No">[
-    {
-    "asset_id": "5192219618001",
-    "remote": false,
-    "src": "https://brightcove.vo.llnwd.net/v1/uds/pd/57838016001/201611/3753/57838016001_5192219618001_5192207668001.mp4?pubId=57838016001&amp;videoId=5192207668001",
-    "codec": "H264",
-    "container": "MP4",
-    "encoding_rate": 1823000,
-    "duration": 41237,
-    "height": 540,
-    "width": 960,
-    "size": 9417086,
-    "uploaded_at": "2016-11-01T09:37:37.336Z"
-    },
-    {
-    "asset_id": "5192219618001",
-    "remote": false,
-    "src": "https://brightcove.hs.llnwd.net/v1/uds/pd/57838016001/201611/3753/57838016001_5192219618001_5192207668001.mp4?pubId=57838016001&amp;videoId=5192207668001",
-    "codec": "H264",
-    "container": "MP4",
-    "encoding_rate": 1823000,
-    "duration": 41237,
-    "height": 540,
-    "width": 960,
-    "size": 9417086,
-    "uploaded_at": "2016-11-01T09:37:37.336Z"
-    }, ...
-    ]
-    </code>
+      <code class="language-json" translate="No">[
+        {
+        "asset_id": "5192219618001",
+        "remote": false,
+        "src":
+        "https://brightcove.vo.llnwd.net/v1/uds/pd/57838016001/201611/3753/57838016001_5192219618001_5192207668001.mp4?pubId=57838016001&amp;videoId=5192207668001",
+        "codec": "H264",
+        "container": "MP4",
+        "encoding_rate": 1823000,
+        "duration": 41237,
+        "height": 540,
+        "width": 960,
+        "size": 9417086,
+        "uploaded_at": "2016-11-01T09:37:37.336Z"
+        },
+        {
+        "asset_id": "5192219618001",
+        "remote": false,
+        "src":
+        "https://brightcove.hs.llnwd.net/v1/uds/pd/57838016001/201611/3753/57838016001_5192219618001_5192207668001.mp4?pubId=57838016001&amp;videoId=5192207668001",
+        "codec": "H264",
+        "container": "MP4",
+        "encoding_rate": 1823000,
+        "duration": 41237,
+        "height": 540,
+        "width": 960,
+        "size": 9417086,
+        "uploaded_at": "2016-11-01T09:37:37.336Z"
+        }, ...
+        ]
+      </code>
     </pre>
-    </section>
-    
-    <section class="section" id="videoRefidImagesEndpoint">
+  </section>
+
+  <section class="section" id="videoRefidImagesEndpoint">
     <h2>GET images by refid</h2>
-    
+
     <p>Retrieve the images for a specific video using its reference id.</p>
-    
+
     <p>Endpoint: <code translate="No">/videos/ref:{video_reference_id}/images </code></p>
-    
+
     <h3>Request</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7/images
-    </code>
+      <code class="language-http"
+        translate="No">https://cms.api.brightcove.com/v1/accounts/1507807800001/videos/ref:titmouse_title_refid7/images
+      </code>
     </pre>
-    
+
     <h3>Response</h3>
-    
+
     <pre class="line-numbers">
-    <code class="language-json" translate="No">{
-    "thumbnail" : {
-    "id" : "3815806023001",
-    "src" : "https://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/2431/1507807800001_3815806023001_thumb.jpg?pubId=1507807800001"
-    },
-    "poster" : {
-    "id" : "3815782921001",
-    "src" : "https://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/273/1507807800001_3815782921001_still.jpg?pubId=1507807800001"
-    }
-    }
-    </code>
+      <code class="language-json" translate="No">{
+        "thumbnail" : {
+        "id" : "3815806023001",
+        "src" :
+        "https://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/2431/1507807800001_3815806023001_thumb.jpg?pubId=1507807800001"
+        },
+        "poster" : {
+        "id" : "3815782921001",
+        "src" :
+        "https://brightcove.vo.llnwd.net/v1/unsecured/media/1507807800001/201410/273/1507807800001_3815782921001_still.jpg?pubId=1507807800001"
+        }
+        }
+      </code>
     </pre>
-    </section>
-    </article>
-    
+  </section>
+</article>
+
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   
   <nav class="right-side-nav" id="right_side_nav">

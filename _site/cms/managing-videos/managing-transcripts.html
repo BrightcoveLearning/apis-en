@@ -3631,14 +3631,17 @@
     </p>
     <h3>Notes</h3>
     <ul>
-      <li>The methods explained in this document are for updating transcript files added to your videos. Currently you can have Brightcove 
-        <a href="/dynamic-ingest/ingest-guides/requesting-auto-captions.html">generate a  transcript file (along with captions)</a> during ingestion. Ingesting your own transcript files will be supported in a future release.
+      <li>The methods explained in this document are for updating transcript files added to your videos. Currently you
+        can have Brightcove
+        <a href="/dynamic-ingest/ingest-guides/requesting-auto-captions.html">generate a transcript file (along with
+          captions)</a> during ingestion. Ingesting your own transcript files will be supported in a future release.
       </li>
     </ul>
   </section>
   <section class="section">
     <h2 id="authorization">Authorization</h2>
-    <p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the
+    <p>Requests to the CMS API require an authorization header which contains your access tokens. For details on how to
+      obtain client credentials and use them to retrieve access tokens, see the
       <a href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.
     </p>
     <p>The operations you will need to update video metadata are
@@ -3652,15 +3655,16 @@
       <strong>entire array must be patched</strong>, not just the transcript metadata that is changing.
     </aside>
     <p>We recommend making the following request first to get the complete array:</p>
-<pre>
-<code class="language-http" translate="No">
-GET
-https://cms.api.brightcove.com/v1/accounts//videos/
-</code>
-</pre>
+    <pre>
+      <code class="language-http" translate="No">
+        GET
+        https://cms.api.brightcove.com/v1/accounts//videos/
+      </code>
+    </pre>
     <h3>Updating Transcripts</h3>
     <p>When updating Transcripts, some fields in
-      <a href="/cms/references/cms-api-video-fields-reference-stage.html#transcripts">Transcripts Fields</a> can be treated differently according to its type.
+      <a href="/cms/references/cms-api-video-fields-reference-stage.html#transcripts">Transcripts Fields</a> can be
+      treated differently according to its type.
     </p>
 
     <table class="bcls-table">
@@ -3699,7 +3703,8 @@ https://cms.api.brightcove.com/v1/accounts//videos/
             <code translate="no">srclang</code>
           </td>
           <td>String</td>
-          <td>2 or 4 letter language code, such as <code translate="No">es</code> or <code translate="No">es-MX</code></td>
+          <td>2 or 4 letter language code, such as <code translate="No">es</code> or <code translate="No">es-MX</code>
+          </td>
         </tr>
         <tr>
           <td>
@@ -3724,7 +3729,8 @@ https://cms.api.brightcove.com/v1/accounts//videos/
             <code translate="no">sources</code>
           </td>
           <td>Array</td>
-          <td>READ-ONLY value. <code translate="No">http</code> and <code translate="No">https</code> URLs for the transcript.</td>
+          <td>READ-ONLY value. <code translate="No">http</code> and <code translate="No">https</code> URLs for the
+            transcript.</td>
         </tr>
         <tr>
           <td>
@@ -3736,7 +3742,7 @@ https://cms.api.brightcove.com/v1/accounts//videos/
             <code translate="no">false</code>. You cannot add multiple
             <code translate="no">default=true</code> to transcripts with different
             <code translate="no">srclang</code>.
-            <br/>
+            <br />
             <p>Updates on this field will be ignored.</p>
           </td>
         </tr>
@@ -3745,42 +3751,48 @@ https://cms.api.brightcove.com/v1/accounts//videos/
 
 
     <h3>Request</h3>
-<pre><code class="language-http" translate="No">PATCH https://cms.api.brightcove.com/v1/accounts//videos/</code> </pre>
+    <pre><code class="language-http" translate="No">PATCH
+        https://cms.api.brightcove.com/v1/accounts//videos/</code> </pre>
     <details>
-      <summary><h3>Request body example</h3></summary>
+      <summary>
+        <h3>Request body example</h3>
+      </summary>
       <p>The request body will be a JSON object containing an array of transcripts:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">"transcripts": [
-  {
-      "id": "d5967d03-1de1-a2de-47db-73486c7474c1",
-      "account_id": "12345678910",
-      "src": "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt*~hmac=101a93fa0e0d247194de3c128460d457d4eea7a27d270a1f8509c2c00205af10",
-      "srclang": "en-IE",
-      "label": "Irish English",
-      "status": "draft",
-      "sources": [
+      <pre class="line-numbers"><code class="language-json" translate="No">"transcripts": [
+          {
+          "id": "d5967d03-1de1-a2de-47db-73486c7474c1",
+          "account_id": "12345678910",
+          "src":
+          "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt*~hmac=101a93fa0e0d247194de3c128460d457d4eea7a27d270a1f8509c2c00205af10",
+          "srclang": "en-IE",
+          "label": "Irish English",
+          "status": "draft",
+          "sources": [
           "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt*~hmac=101a93fa0e0d247194de3c128460d457d4eea7a27d270a1f8509c2c00205af10",
           "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/d5967d03-1de1-47db-a2de-774c3486c741/transcript.txt*~hmac=101a93fa0e0d247194de3c128460d457d4eea7a27d270a1f8509c2c00205af10"
-      ],
-      "default": false
-  },
-  {
-      "id": "2d0cb632-8753-a68a-4143-aea0429eac7f",
-      "account_id": "12345678910",
-      "src": "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt*~hmac=8ae7069ac9717559e9439f5112ee133d955ec18a09563e7a3e2a48a83637c108",
-      "srclang": "en-US",
-      "label": "American English",
-      "status": "draft",
-      "sources": [
+          ],
+          "default": false
+          },
+          {
+          "id": "2d0cb632-8753-a68a-4143-aea0429eac7f",
+          "account_id": "12345678910",
+          "src":
+          "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt*~hmac=8ae7069ac9717559e9439f5112ee133d955ec18a09563e7a3e2a48a83637c108",
+          "srclang": "en-US",
+          "label": "American English",
+          "status": "draft",
+          "sources": [
           "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt*~hmac=8ae7069ac9717559e9439f5112ee133d955ec18a09563e7a3e2a48a83637c108",
           "https://bcboltqause1-a.akamaihd.net/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt?akamai_token=exp=1656544942~acl=/media/v1/text/txt/clear/12345678910/c6359761-86f7-70d6-4b98-f11f5bb98475/2d0cb632-a68a-4143-8753-aea0429eac7f/transcript.txt*~hmac=8ae7069ac9717559e9439f5112ee133d955ec18a09563e7a3e2a48a83637c108"
-      ],
-      "default": false
-  }
-]</code></pre>
+          ],
+          "default": false
+          }
+          ]</code></pre>
     </details>
     <aside class="bcls-aside--information">
       <p>
-        Note to delete transcripts, simply leave them out of the array you submit on the update request. To delete all transcripts, send an update containing
+        Note to delete transcripts, simply leave them out of the array you submit on the update request. To delete all
+        transcripts, send an update containing
         <code translate="no">"transcripts"=[]</code>.
       </p>
       <!-- <p>To replace transcripts, first delete the existing ones by sending the update with <code translate="no">"transcripts"=[]</code>. Then <a href="/dynamic-ingest/ingest-guides/ingesting-transcripts.html">ingest the new transcripts</a>.</p> -->
