@@ -1,6 +1,8 @@
 bold=`tput bold`
 normal=`tput sgr0`
-if [ -v NB ]
+# uf NB exists this is a nightly build
+echo $NB
+if [[ -v NB ]]
 then
 COMMITMESSAGE="Nightly Build"
 else
