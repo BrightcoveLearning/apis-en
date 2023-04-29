@@ -4,10 +4,10 @@ normal=`tput sgr0`
 echo $NB
 if [[ NB == true ]]
 then
-COMMITMESSAGE="Nightly Build"
+  COMMITMESSAGE="Nightly Build"
 else
-echo "Enter your ${bold}COMMIT MESSAGE${normal}:"
-read COMMITMESSAGE
+  echo "Enter your ${bold}COMMIT MESSAGE${normal}:"
+  read COMMITMESSAGE
 fi 
 cd ..
 git pull
