@@ -1,7 +1,12 @@
 bold=`tput bold`
 normal=`tput sgr0`
+if [ -v NB ]
+then
+COMMITMESSAGE="Nightly Build"
+else
 echo "Enter your ${bold}COMMIT MESSAGE${normal}:"
-read COMMITMESSAGE 
+read COMMITMESSAGE
+fi 
 cd ..
 git pull
 bundle update
