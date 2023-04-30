@@ -1,10 +1,11 @@
 bold=`tput bold`
 normal=`tput sgr0`
 # uf NB exists this is a nightly build
-echo $NB
-if [[ NB == 1 ]]
+echo $0
+if [[ $0 == nightly-build.sh ]]
 then
   COMMITMESSAGE="Nightly Build"
+  echo $COMMITMESSAGE
 else
   echo "Enter your ${bold}COMMIT MESSAGE${normal}:"
   read COMMITMESSAGE
