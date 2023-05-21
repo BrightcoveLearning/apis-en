@@ -105,7 +105,7 @@ var BCLS = (function (window, document) {
         iMax = video_ids.length;
 
     request_data.request =
-      'https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos?q=';
+      'https://edge.api.brightcove.com/playback/v1/accounts/' + account_id + '/videos?q=';
     // add video ids to the search string
     for (i; i < iMax; i++) {
       request_data.request = request_data.request + 'id:' + video_ids[i];
