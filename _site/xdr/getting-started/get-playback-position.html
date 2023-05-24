@@ -3619,15 +3619,70 @@
       Because the Cross-Device Resume (XDR) API cannot be called from your client-side apps, you will need to create a
       server-side proxy to make the call and return the playback position value.
     </p>
-    <aside class="bcls-aside bcls-aside--information">Note that there is a delay between the submission of XDR data and
-      the availability of that data via the API of up to 30 seconds.</aside>
+    <aside class="bcls-aside bcls-aside--information">Note that there is a delay between the submission of XDR data and the availability of that data via the API of up to 30 seconds.</aside>
   </section>
+
+  <section class="bcls-section">
+  <h2 id="Send_viewer_id_web_player">Send viewer id - Brightcove player</h2>
+  <aside class="bcls-aside bcls-aside--information language-editable">Note: for information on setting the viewer id in Native SDK players, see <a href="https://sdks.support.brightcove.com/features/cross-device-resume-sdks.html">Cross-Device Resume with the Native SDKs</a>.</aside>
+  <p>First, you need to set the user identifier to store that user's viewing activity.</p>
+  <h3>Brightcove Player</h3>
+  <p>
+    If you are using Brightcove Player, follow these steps:
+  </p>
+
+  <ol class="bcls-tasklist-restart">
+    <li>
+      <p>
+        Even though viewer data is sent to Brightcove analytics automatically, you need to set the user identifier. To do this, use the <code translate="No">setUser()</code> method. For example:
+      </p>
+      <pre class="line-numbers"><code class="language-javascript" translate="No">myPlayer.bcAnalytics.client.setUser('<span class="bcls-input">viewer id</span>');</code></pre>
+      <p>On your websites that host Brightcove Player, you can use an authentication gateway or some identity management solution to keep track of viewers. Use this viewer id as the viewer identifier to pass to Brightcove analytics.</p>
+      <aside class="bcls-aside bcls-aside--warning">The <span class="bcls-input">viewer id</span> value must be a unique string. An invalid value, such as a number, will be ignored. </aside>
+    </li>
+    <li>
+      <p>
+        It is important to set the viewer id before any source is set on the player. It should be called immediately after initializing the player.
+      </p>
+      <pre class="line-numbers"><code class="language-javascript" translate="No">&lt;video-js
+  id=&quot;myPlayerID&quot;
+  data-account=&quot;1752604059001&quot;
+  data-player=&quot;hyQW6GByl&quot;
+  data-embed=&quot;default&quot;
+  controls=&quot;&quot;
+  data-video-id=&quot;6156696074001&quot;
+  data-playlist-id=&quot;&quot;
+  data-application-id=&quot;&quot;
+  width=&quot;640&quot; height=&quot;360&quot;&gt;&lt;/video-js&gt;
+&lt;script src=&quot;https://players.brightcove.net/1752604059001/hyQW6GByl_default/index.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this;
+
+    // Set the viewer id for Brightcove analytics
+    myPlayer.bcAnalytics.client.setUser('<span class="bcls-input">viewer id</span>');
+  });
+&lt;/script&gt;</code></pre>
+    </li>
+    <li>When the <code translate="No">setUser()</code> method is used, the value is not hashed and will be sent in the clear with all subsequent beacons.
+      <p>
+        Note that the <code translate="No">player_init</code> event will not include the <code translate="No">user</code> field in this case, but all <code translate="No">video_*</code> events should include it.
+      </p>
+    </li>
+  </ol>
+  <h3>Custom web player</h3>
+  <p>
+    If you are building a custom implementation that does not use Brightcove Player, add the <code translate="No">user</code> parameter to your Data Collection API requests. For details, see the <a href="https://apis.support.brightcove.com/data-collection/overview-data-collection-api-v2.html#all-event-parameters">Overview: Data Collection API v2</a> document.
+  </p>
+  <p>On your websites that host your player, you can use an authentication gateway or some identity management solution to keep track viewers. Use this viewer id as the viewer identifier to pass to Brightcove analytics.</p>
+  
+</section>
 
   <section class="bcls-section">
     <h2 id="Getting_playback_position">Getting playback position</h2>
 
-    <p>You can get the viewer playback position with the <a href="/xdr/references/reference.html">Cross-Device Resume
-        (XDR) API</a>.</p>
+    <p>You can get the viewer playback position with the <a href="/xdr/references/reference.html">Cross-Device Resume (XDR) API</a>.</p>
 
     <h3 id="Cross_Device_Resume_API">Cross-Device Resume (XDR) API</h3>
     <p>
