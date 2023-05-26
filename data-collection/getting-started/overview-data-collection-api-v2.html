@@ -359,7 +359,7 @@ parent: Data Collection API
       <dt><code translate="No">video_engagement</code></dt>
       <dd>
         <h5>Intent/Meaning</h5>
-        <p>A user watched a range of seconds of a video's timeline. This event is a heartbeat for tracking video engagement and will likely be sent many times during playback, depending on the user interaction and the length of the video. The Brightcove player instrumentation sends this event every 10 seconds, if playback is not interrupted. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong></p>
+        <p>video_engagement: Includes additional rendition selection, bitrate measurements, and buffering information. A subtle change to video engagement was also made in that it should be sent periodically even if no viewing occurred during the engagement period, unless the viewer has intentionally paused playback, either through the player controls or through a player event such as backgrounding the player. In this scenario of the viewer intentionally pausing playback, video_engagement reporting should resume when the viewer intentionally resumes playback, either through the player controls or through a player event such as foregrounding the player. This change is to enable tracking re-buffering delays and counts that cause users to wait for playback. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong></p>
         <h5>Example</h5>
         <pre><code class="language-http" translate="No">https://metrics.brightcove.com/tracker
   ?event=video_engagement
