@@ -3960,7 +3960,7 @@
       <dt><code translate="No">video_engagement</code></dt>
       <dd>
         <h5>Intent/Meaning</h5>
-        <p>video_engagement: Includes additional rendition selection, bitrate measurements, and buffering information. A subtle change to video engagement was also made in that it should be sent periodically even if no viewing occurred during the engagement period, unless the viewer has intentionally paused playback, either through the player controls or through a player event such as backgrounding the player. In this scenario of the viewer intentionally pausing playback, video_engagement reporting should resume when the viewer intentionally resumes playback, either through the player controls or through a player event such as foregrounding the player. This change is to enable tracking re-buffering delays and counts that cause users to wait for playback. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong></p>
+        <p><code translate="No">video_engagement</code>: Includes additional rendition selection, bitrate measurements, and buffering information. A subtle change to video engagement was also made in that it should be sent periodically even if no viewing occurred during the engagement period, unless the viewer has intentionally paused playback, either through the player controls or through a player event such as backgrounding the player. In this scenario of the viewer intentionally pausing playback, <code translate="No">video_engagement</code> reporting should resume when the viewer intentionally resumes playback, either through the player controls or through a player event such as foregrounding the player. This change is to enable tracking re-buffering delays and counts that cause users to wait for playback. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong></p>
         <h5>Example</h5>
         <pre><code class="language-http" translate="No">https://metrics.brightcove.com/tracker
   ?event=video_engagement
@@ -4397,7 +4397,7 @@
       </tbody>
     </table>
 
-    <h3 id="engagementEventParams">video_engagement event parameters</h3>
+    <h3 id="engagementEventParams"><code translate="No">video_engagement</code> event parameters</h3>
 
     <p>The following parameters should be sent with <code translate="No">video_engagement</code> events.</p>
 
@@ -4532,7 +4532,7 @@
       </tbody>
     </table>
 
-    <p>The <code translate="No">video_engagement</code> event is a means of tracking video engagement while a video is playing back, and will likely be sent many times during playback. (The Flash/HTML5 player instrumentation sends this event every 10 seconds, if playback is not interrupted.) <strong>At present, events describing ranges over 20 seconds are discarded by the Analytics system, so it is necessary to send these events more frequently.</strong></p>
+    <p>The <code translate="No">video_engagement</code> event is a means of tracking video engagement while a video is playing back, and will likely be sent many times during playback. (The player instrumentation sends this event every 10 seconds, if playback is not interrupted.) <strong>At present, events describing ranges over 20 seconds are discarded by the Analytics system, so it is necessary to send these events more frequently.</strong></p>
 
     <p>There are two forms that a <code translate="No">video_engagement</code> event can take (other parameters omitted for brevity):</p>
 
@@ -4747,7 +4747,7 @@
       <li><strong>start_time_ms</strong>: The time, in milliseconds, between initiation of playback and the first frame of the video being rendered. This can be different depending on the experience, for instance, if there are no pre-roll ads configured, this measurement is the time between the 'play_request' and <code translate="No">video_view</code> events. If there is a preroll ad, the time between <code translate="No">ad_mode_begin</code> and <code translate="No">ad_mode_complete</code> should not be included.</li>
     </ul>
 
-    <p><strong>video_engagement</strong>: Includes additional rendition selection, bitrate measurements, and buffering information. A subtle change to video engagement was also made in that it should be sent periodically even if no viewing occurred during the engagement period. This change is to enable tracking re-buffering delays and counts that cause users to wait for playback.</p>
+    <p><code translate="No">video_engagement</code>: Includes additional rendition selection, bitrate measurements, and buffering information. A subtle change to video engagement was also made in that it should be sent periodically even if no viewing occurred during the engagement period, unless the viewer has intentionally paused playback, either through the player controls or through a player event such as backgrounding the player. In this scenario of the viewer intentionally pausing playback, <code translate="No">video_engagement</code> reporting should resume when the viewer intentionally resumes playback, either through the player controls or through a player event such as foregrounding the player. This change is to enable tracking re-buffering delays and counts that cause users to wait for playback. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong></p>
 
     <ul>
       <li><strong>range</strong>: The range parameter is now optional, range can be left out of an engagement event to show that during the period covered by the event, there was no viewing activity. (for example, when there is only re-buffering activity)</li>
