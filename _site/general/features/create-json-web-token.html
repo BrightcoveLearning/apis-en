@@ -4389,24 +4389,24 @@ echo "Public key to saved in $PUBLIC_TXT"
     <pre class="line-numbers"><code class="language-bash" translate="No">#! /usr/bin/env bash
 # Static header fields.
 HEADER='{
-	"type": "JWT",
-	"alg": "RS256"
+  "type": "JWT",
+  "alg": "RS256"
 }'
 
 payload='{
-	"accid": "<span class="bcls-input">{your_account_id}</span>"
+  "accid": "<span class="bcls-input">{your_account_id}</span>"
 }'
 
 # Use jq to set the dynamic `iat` and `exp`
 # fields on the payload using the current time.
 # `iat` is set to now, and `exp` is now + 1 hour. Note: 3600 seconds = 1 hour
 PAYLOAD=$(
-	echo "${payload}" | jq --arg time_str "$(date +%s)" \
-	'
-	($time_str | tonumber) as $time_num
-	| .iat=$time_num
-	| .exp=($time_num + 60 * 60)
-	'
+  echo "${payload}" | jq --arg time_str "$(date +%s)" \
+  '
+  ($time_str | tonumber) as $time_num
+  | .iat=$time_num
+  | .exp=($time_num + 60 * 60)
+  '
 )
 
 function b64enc() { openssl enc -base64 -A | tr '+/' '-_' | tr -d '='; }
@@ -4435,21 +4435,21 @@ echo "$UNSIGNED_JWT.$SIGNATURE"
       <pre class="line-numbers"><code class="language-bash" translate="No">package main
 
 import (
-	"crypto"
-	"crypto/ecdsa"
-	"crypto/rand"
-	"crypto/rsa"
-	"crypto/sha256"
-	"crypto/x509"
-	"encoding/base64"
-	"encoding/json"
-	"encoding/pem"
-	"flag"
-	"fmt"
-	"io/ioutil"
-	"os"
-	"strings"
-	"time"
+  "crypto"
+  "crypto/ecdsa"
+  "crypto/rand"
+  "crypto/rsa"
+  "crypto/sha256"
+  "crypto/x509"
+  "encoding/base64"
+  "encoding/json"
+  "encoding/pem"
+  "flag"
+  "fmt"
+  "io/ioutil"
+  "os"
+  "strings"
+  "time"
 )
 
 // Header is the base64UrlEncoded string of a JWT header for the RS256 algorithm
@@ -4460,155 +4460,155 @@ const ECHeader = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9"
 
 // Claims represents constraints that should be applied to the use of the token
 type Claims struct {
-	Iat   float64 `json:"iat,omitempty"`   // Issued At
-	Exp   float64 `json:"exp,omitempty"`   // Expires At
-	Accid string  `json:"accid,omitempty"` // Account ID
-	Conid string  `json:"conid,omitempty"` // Content ID
-	Maxu  float64 `json:"maxu,omitempty"`  // Max Uses
-	Maxip float64 `json:"maxip,omitempty"` // Max IPs
-	Ua    string  `json:"ua,omitempty"`    // User Agent
+  Iat   float64 `json:"iat,omitempty"`   // Issued At
+  Exp   float64 `json:"exp,omitempty"`   // Expires At
+  Accid string  `json:"accid,omitempty"` // Account ID
+  Conid string  `json:"conid,omitempty"` // Content ID
+  Maxu  float64 `json:"maxu,omitempty"`  // Max Uses
+  Maxip float64 `json:"maxip,omitempty"` // Max IPs
+  Ua    string  `json:"ua,omitempty"`    // User Agent
 }
 
 func main() {
-	var key, algorithm string
+  var key, algorithm string
 
-	c := Claims{Iat: float64(time.Now().Unix())}
+  c := Claims{Iat: float64(time.Now().Unix())}
 
-	flag.StringVar(&amp;key, "key", "", "Path to private.pem key file")
-	flag.StringVar(&amp;c.Accid, "account-id", "", "Account ID")
-	flag.StringVar(&amp;c.Conid, "content-id", "", "Content ID (eg, video_id or live_job_id)")
-	flag.Float64Var(&amp;c.Exp, "expires-at", float64(time.Now().AddDate(0, 0, 1).Unix()), "Epoch timestamp (in seconds) for when the token should stop working")
-	flag.Float64Var(&amp;c.Maxu, "max-uses", 0, "Maximum number of times the token is valid for")
-	flag.Float64Var(&amp;c.Maxip, "max-ips", 0, "Maximum number of unique IP addresses the token is valid for")
-	flag.StringVar(&amp;c.Ua, "user-agent", "", "User Agent that the token is valid for")
-	flag.StringVar(&amp;algorithm, "algo", "", "Key algorithm to use for signing. Valid: ec256, rsa256")
-	flag.Parse()
+  flag.StringVar(&amp;key, "key", "", "Path to private.pem key file")
+  flag.StringVar(&amp;c.Accid, "account-id", "", "Account ID")
+  flag.StringVar(&amp;c.Conid, "content-id", "", "Content ID (eg, video_id or live_job_id)")
+  flag.Float64Var(&amp;c.Exp, "expires-at", float64(time.Now().AddDate(0, 0, 1).Unix()), "Epoch timestamp (in seconds) for when the token should stop working")
+  flag.Float64Var(&amp;c.Maxu, "max-uses", 0, "Maximum number of times the token is valid for")
+  flag.Float64Var(&amp;c.Maxip, "max-ips", 0, "Maximum number of unique IP addresses the token is valid for")
+  flag.StringVar(&amp;c.Ua, "user-agent", "", "User Agent that the token is valid for")
+  flag.StringVar(&amp;algorithm, "algo", "", "Key algorithm to use for signing. Valid: ec256, rsa256")
+  flag.Parse()
 
-	if key == "" {
-		fmt.Printf("missing required flag: -key\n\n")
-		flag.Usage()
-		os.Exit(1)
-	}
+  if key == "" {
+    fmt.Printf("missing required flag: -key\n\n")
+    flag.Usage()
+    os.Exit(1)
+  }
 
-	if algorithm == "" {
-		fmt.Printf("missing required flag: -algo\n\n")
-		flag.Usage()
-		os.Exit(2)
-	}
+  if algorithm == "" {
+    fmt.Printf("missing required flag: -algo\n\n")
+    flag.Usage()
+    os.Exit(2)
+  }
 
-	if algorithm != "rsa256" &amp;&amp; algorithm != "ec256" {
-		fmt.Printf("missing valid value for -algo flag. Valid: rsa256, ec256\n\n")
-		flag.Usage()
-		os.Exit(3)
-	}
+  if algorithm != "rsa256" &amp;&amp; algorithm != "ec256" {
+    fmt.Printf("missing valid value for -algo flag. Valid: rsa256, ec256\n\n")
+    flag.Usage()
+    os.Exit(3)
+  }
 
-	if c.Accid == "" {
-		fmt.Printf("missing required flag: -account-id\n\n")
-		flag.Usage()
-		os.Exit(4)
-	}
+  if c.Accid == "" {
+    fmt.Printf("missing required flag: -account-id\n\n")
+    flag.Usage()
+    os.Exit(4)
+  }
 
-	bs, err := json.Marshal(c)
-	if err != nil {
-		fmt.Println("failed to marshal token to json", err)
-		os.Exit(5)
-	}
+  bs, err := json.Marshal(c)
+  if err != nil {
+    fmt.Println("failed to marshal token to json", err)
+    os.Exit(5)
+  }
 
-	kbs, err := ioutil.ReadFile(key)
-	if err != nil {
-		fmt.Println("failed to read private key", err)
-		os.Exit(6)
-	}
+  kbs, err := ioutil.ReadFile(key)
+  if err != nil {
+    fmt.Println("failed to read private key", err)
+    os.Exit(6)
+  }
 
-	if algorithm == "rsa256" {
-		processRSA256(kbs, bs)
-	} else {
-		processEC256(kbs, bs)
-	}
+  if algorithm == "rsa256" {
+    processRSA256(kbs, bs)
+  } else {
+    processEC256(kbs, bs)
+  }
 }
 
 func processRSA256(kbs, bs []byte) {
-	block, _ := pem.Decode(kbs)
-	if block == nil {
-		fmt.Println("failed to decode PEM block containing private key")
-		os.Exit(7)
-	}
+  block, _ := pem.Decode(kbs)
+  if block == nil {
+    fmt.Println("failed to decode PEM block containing private key")
+    os.Exit(7)
+  }
 
-	if block.Type != "RSA PRIVATE KEY" {
-		fmt.Println("failed to decode PEM block containing private key")
-		os.Exit(8)
-	}
+  if block.Type != "RSA PRIVATE KEY" {
+    fmt.Println("failed to decode PEM block containing private key")
+    os.Exit(8)
+  }
 
-	pKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-	if err != nil {
-		fmt.Println("failed to parse rsa private key", err)
-		os.Exit(9)
-	}
+  pKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+  if err != nil {
+    fmt.Println("failed to parse rsa private key", err)
+    os.Exit(9)
+  }
 
-	message := RSAHeader + "." + base64.RawURLEncoding.EncodeToString(bs)
+  message := RSAHeader + "." + base64.RawURLEncoding.EncodeToString(bs)
 
-	hash := crypto.SHA256
-	hasher := hash.New()
-	_, _ = hasher.Write([]byte(message))
-	hashed := hasher.Sum(nil)
+  hash := crypto.SHA256
+  hasher := hash.New()
+  _, _ = hasher.Write([]byte(message))
+  hashed := hasher.Sum(nil)
 
-	r, err := rsa.SignPKCS1v15(rand.Reader, pKey, hash, hashed)
-	if err != nil {
-		fmt.Println("failed to sign token", err)
-		os.Exit(10)
-	}
+  r, err := rsa.SignPKCS1v15(rand.Reader, pKey, hash, hashed)
+  if err != nil {
+    fmt.Println("failed to sign token", err)
+    os.Exit(10)
+  }
 
-	sig := strings.TrimRight(base64.RawURLEncoding.EncodeToString(r), "=")
+  sig := strings.TrimRight(base64.RawURLEncoding.EncodeToString(r), "=")
 
-	fmt.Println(message + "." + sig)
+  fmt.Println(message + "." + sig)
 }
 
 func processEC256(kbs, bs []byte) {
-	block, _ := pem.Decode(kbs)
-	if block == nil {
-		fmt.Println("failed to decode PEM block containing private key")
-		os.Exit(7)
-	}
+  block, _ := pem.Decode(kbs)
+  if block == nil {
+    fmt.Println("failed to decode PEM block containing private key")
+    os.Exit(7)
+  }
 
-	if block.Type != "EC PRIVATE KEY" {
-		fmt.Println("failed to decode PEM block containing private key")
-		os.Exit(8)
-	}
+  if block.Type != "EC PRIVATE KEY" {
+    fmt.Println("failed to decode PEM block containing private key")
+    os.Exit(8)
+  }
 
-	pkey, err := x509.ParseECPrivateKey(block.Bytes)
-	if err != nil {
-		fmt.Println("failed to parse ec private key", err)
-		os.Exit(9)
-	}
+  pkey, err := x509.ParseECPrivateKey(block.Bytes)
+  if err != nil {
+    fmt.Println("failed to parse ec private key", err)
+    os.Exit(9)
+  }
 
-	message := ECHeader + "." + base64.RawURLEncoding.EncodeToString(bs)
-	hash := sha256.Sum256([]byte(message))
+  message := ECHeader + "." + base64.RawURLEncoding.EncodeToString(bs)
+  hash := sha256.Sum256([]byte(message))
 
-	r, s, err := ecdsa.Sign(rand.Reader, pkey, hash[:])
-	if err != nil {
-		fmt.Println("failed to sign token", err)
-		os.Exit(10)
-	}
+  r, s, err := ecdsa.Sign(rand.Reader, pkey, hash[:])
+  if err != nil {
+    fmt.Println("failed to sign token", err)
+    os.Exit(10)
+  }
 
-	curveBits := pkey.Curve.Params().BitSize
+  curveBits := pkey.Curve.Params().BitSize
 
-	keyBytes := curveBits / 8
-	if curveBits%8 &gt; 0 {
-		keyBytes++
-	}
+  keyBytes := curveBits / 8
+  if curveBits%8 &gt; 0 {
+    keyBytes++
+  }
 
-	rBytes := r.Bytes()
-	rBytesPadded := make([]byte, keyBytes)
-	copy(rBytesPadded[keyBytes-len(rBytes):], rBytes)
+  rBytes := r.Bytes()
+  rBytesPadded := make([]byte, keyBytes)
+  copy(rBytesPadded[keyBytes-len(rBytes):], rBytes)
 
-	sBytes := s.Bytes()
-	sBytesPadded := make([]byte, keyBytes)
-	copy(sBytesPadded[keyBytes-len(sBytes):], sBytes)
+  sBytes := s.Bytes()
+  sBytesPadded := make([]byte, keyBytes)
+  copy(sBytesPadded[keyBytes-len(sBytes):], sBytes)
 
-	out := append(rBytesPadded, sBytesPadded...)
+  out := append(rBytesPadded, sBytesPadded...)
 
-	sig := base64.RawURLEncoding.EncodeToString(out)
-	fmt.Println(message + "." + sig)
+  sig := base64.RawURLEncoding.EncodeToString(out)
+  fmt.Println(message + "." + sig)
 }
 </code></pre>
     </details>
@@ -4650,7 +4650,7 @@ func processEC256(kbs, bs []byte) {
       Request playback:
     </p>
     <pre class="line-numbers"><code class="language-http" translate="No">curl -X GET \
-https://edge.api.brightcove.com/playback/v1/accounts//videos//master.m3u8?bcov_auth={jwt}
+https://edge.api.brightcove.com/playback/v1/accounts/{{account_id}}/videos/{{video_id}}/master.m3u8?bcov_auth={jwt}
 </code></pre>
 <p>For a list of Static URL endpoints, see the <a href="https://apis.support.brightcove.com/playback/guides/static-url-delivery.html#Implementing_Static_URLs">Static URL Delivery</a> document.</p>
 <h3>Playback Restrictions</h3>
@@ -4662,6 +4662,7 @@ https://edge.api.brightcove.com/playback/v1/accounts//videos//master.m3u8?bcov_a
 https://edge-auth.api.brightcove.com/playback/v1/accounts/{your_account_id}/videos/{your_video_id}
 </code></pre>
   </section>
+  
 </article>
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   

@@ -107,6 +107,7 @@ var BCLS = (function(window, document) {
     summaryCsvStr,
     folders = [],
     folder,
+    selectedFolder,
     // elements
     account_id_element = document.getElementById('account_id'),
     client_id_element = document.getElementById('client_id'),
@@ -162,6 +163,22 @@ var BCLS = (function(window, document) {
    */
   function getSelectedValue(e) {
     return e.options[e.selectedIndex].value;
+  }
+
+  /**
+   * get the object in an array that has a specified (and unique) property value
+   * @param {array} array the name of the array
+   * @param {string} property the property to search on
+   * @param {string} match the value to match
+   */
+  function getObjectInArray(array, property, match) {
+    const arrayLength = array.length;
+    let i = 0;
+    for (i; i < arrayLength; i++ ) {
+      if (array[i][property] === match) {
+        return array[i];
+      }
+    }
   }
 
   /**
@@ -260,11 +277,7 @@ var BCLS = (function(window, document) {
     // disable buttons to prevent a new request before current one finishes
     disableButtons();
     switch (id) {
-      case 'getCount':
-        endPoint = account_id + '/counts/videos?sort=created_at';
-        if (isDefined(tag.value)) {
-          endPoint += '&q=%2Btags:' + tag.value;
-        }
+      case 'getFolders':
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
