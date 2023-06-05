@@ -55,6 +55,8 @@ code {
 
     <p>Client secret: <input id="client_secret" type="text" size="60" value="" placeholder="w7NQYu0vUloM4GYYy2SXAxrvyFpt8fwI35qAFZcS13-VIgs0itwKNsAwHOS80sOWK" /></p>
 
+    <p><button class="bcls-button" id="useAccount">Use My Account</button></p>
+
     <p>Select the folder to retrieve videos from: 
       <select id="folder" value="" style="width:30%;display:inline;">
       </select>
@@ -108,18 +110,20 @@ var BCLS = (function(window, document) {
     folders = [],
     folder,
     selectedFolder,
+    useDefaultAccount = true,
     // elements
-    account_id_element = document.getElementById('account_id'),
-    client_id_element = document.getElementById('client_id'),
-    client_secret_element = document.getElementById('client_secret'),
-    folder = document.getElementById('folder'),
-    videoCount = document.getElementById('videoCount'),
-    makeReport = document.getElementById('makeReport'),
-    content,
-    logger = document.getElementById('logger'),
-    logText = document.getElementById('logText'),
-    csvData = document.getElementById('csvData'),
-    apiRequest = document.getElementById('apiRequest'),
+    account_id_element = document.querySelector('#account_id'),
+    client_id_element = document.querySelector('#client_id'),
+    client_secret_element = document.querySelector('#client_secret'),
+    use_account = document.querySelector('#useAccount')
+    folderElement = document.querySelector('#folder'),
+    videoCount = document.querySelector('#videoCount'),
+    makeReport = document.querySelector('#makeReport'),
+    content = '',
+    logger = document.querySelector('#logger'),
+    logText = document.querySelector('#logText'),
+    csvData = document.querySelector('#csvData'),
+    apiRequest = document.querySelector('#apiRequest'),
     allButtons = document.getElementsByName('button'),
     pLogGettingVideos = document.createElement('p'),
     pLogGettingRenditions = document.createElement('p'),
@@ -203,29 +207,6 @@ var BCLS = (function(window, document) {
     }
   }
 
-  /**
-   * sort an array of objects based on an object property
-   * @param {array} targetArray - array to be sorted
-   * @param {string|number} objProperty - object property to sort on
-   * @return sorted array
-   */
-  function sortArray(targetArray, objProperty) {
-    targetArray.sort(function(a, b) {
-      var propA = a[objProperty],
-        propB = b[objProperty];
-      // sort ascending; reverse propA and propB to sort descending
-      if (propA < propB) {
-        return -1;
-      } else if (propA > propB) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-    return targetArray;
-  }
-
-
 
 
   function startCSVStrings() {
@@ -267,6 +248,9 @@ var BCLS = (function(window, document) {
   function createRequest(id) {
     var endPoint = '',
       parsedData,
+      i,
+      iMax,
+      newOption,
       options = {};
       options.proxyURL = proxyURL;
       options.account_id = account_id;
@@ -284,13 +268,16 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           // set total videos
-          video_count = parsedData.count;
-          if (totalVideos === "All") {
-            totalVideos = video_count;
-          } else {
-            totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
+          iMax = parsedData.length;
+          for (i = 0; i < iMax; i++) {
+            if (parsedData[i].video_count > 0) {
+              folders.push(parsedData[i]);
+              newOption = document.createElement('option');
+              newOption.setAttribute('value', parsedData[i].id);
+              newOption.textContent = parsedData[i].name;
+              folderElement.appendChild(newOption);
+            }
           }
-          totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
           createRequest('getVideos');
         });
@@ -314,46 +301,7 @@ var BCLS = (function(window, document) {
             callNumber = 0;
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
-            createRequest('getVideoRenditions');
-          }
-        });
-        break;
-      case 'getVideoRenditions':
-        var i,
-          iMax = videosArray.length;
-        videosArray[callNumber].hlsRenditions = [];
-        videosArray[callNumber].mp4Renditions = [];
-        videosArray[callNumber].flvRenditions = [];
-        videosArray[callNumber].otherRenditions = [];
-        endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        spanRenditionsCountEl.textContent = callNumber + 1;
-        makeRequest(options, function(response) {
-            var renditions = JSON.parse(response);
-            if (renditions.length > 0) {
-              processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions) {
-                if (hlsRenditions.length > 0) {
-                  sortArray(hlsRenditions, 'encoding_rate');
-                }
-
-                videosArray[callNumber].hlsRenditions = hlsRenditions;
-                if (mp4Renditions.length > 0) {
-                  sortArray(mp4Renditions, 'encoding_rate');
-                }
-                videosArray[callNumber].mp4Renditions = mp4Renditions;
-                if (flvRenditions.length > 0) {
-                  sortArray(flvRenditions, 'encoding_rate');
-                }
-                videosArray[callNumber].flvRenditions = flvRenditions;
-            });
-          } else {
-              videosArray[callNumber].hlsRenditions = [];
-              videosArray[callNumber].mp4Renditions = [];
-              videosArray[callNumber].flvRenditions = [];
-            }
-          videosCompleted++;
+            videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
           if (callNumber < totalVideos) {
@@ -363,6 +311,7 @@ var BCLS = (function(window, document) {
             startCSVStrings();
             // write the report
             writeReport();
+          }
           }
         });
         break;
@@ -425,33 +374,40 @@ var BCLS = (function(window, document) {
     csvData.addEventListener('click', function() {
       this.select();
     });
+
     // set up the log elements
-    content = document.createTextNode('Getting renditions for video ');
+    content = document.createTextNode('Getting folders for the account ');
     spanIntro2.appendChild(content);
     content = document.createTextNode(' of ');
     spanOf2.appendChild(content);
-    spanRenditionsCount.setAttribute('id', 'spanRenditionsCount');
-    spanRenditionsTotal.setAttribute('id', 'spanRenditionsTotal');
-    pLogGettingRenditions.appendChild(spanIntro2);
-    pLogGettingRenditions.appendChild(spanRenditionsCount);
-    pLogGettingRenditions.appendChild(spanOf2);
-    pLogGettingRenditions.appendChild(spanRenditionsTotal);
-    logger.appendChild(pLogGettingRenditions);
-    spanRenditionsCountEl = document.getElementById('spanRenditionsCount');
-    spanRenditionsTotalEl = document.getElementById('spanRenditionsTotal');
     logger.appendChild(pLogFinish);
-
+    createRequest('getFolders');
   }
 
   // button event handlers
-  makeReport.addEventListener('click', function() {
-    // in case of re-run, cleal the results
-    csvData.textContent = '';
+  use_account.addEventListener('click', function() {
     // get the inputs
     client_id = client_id_element.value;
     client_secret = client_secret_element.value;
-    account_id = account_id_element.value
+    account_id = account_id_element.value;
+    if (client_id === '' || client_secret === '' || account_id === '') {
+      window.alert('Account id, Client id, and Client Secret are all required');
+    }
+    createRequest(getFolders)
+  });
+
+  makeReport.addEventListener('click', function() {
+    // in case of re-run, cleal the results
+    csvData.textContent = '';
     totalVideos = getSelectedValue(videoCount);
+
+    if (totalVideos === "All") {
+            totalVideos = video_count;
+          } else {
+            totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
+          }
+          totalCalls = Math.ceil(totalVideos / limit);
+
     // only use entered account id if client id and secret are entered also
     if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
       logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
