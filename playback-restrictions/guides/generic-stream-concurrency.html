@@ -147,19 +147,19 @@ grandparent: Playback Restrictions
     </ol>
     <details>
       <summary>
-        Sample <span translate="No">JSON Web Token</span> (JWT) claims
+        Sample JSON Web Token (JWT) claims
       </summary>
       <pre class="line-numbers"><code class="language-json" translate="No">{
-          // account id: JWT is only valid for this account
-          "accid":"4590388311111",
-          // limit of concurrent users
-          "climit": 3,
-          // user id
-          "uid": "108.26.184.3_1634052241",
-          // correlator identifier
-          "sid": "Firefox MAC (Cadmium) HTML 5 - 1112346677"
-          }
-          }</code></pre>
+  // account id: JWT is only valid for this account
+  "accid":"4590388311111",
+  // limit of concurrent users
+  "climit": 3,
+  // user id
+  "uid": "108.26.184.3_1634052241",
+  // correlator identifier
+  "sid": "Firefox MAC (Cadmium) HTML 5 - 1112346677"
+  }
+}</code></pre>
     </details>
   </section>
   <section class="bcls-section">
@@ -198,17 +198,17 @@ grandparent: Playback Restrictions
       configuration will look something like this:</p>
     <pre class="line-numbers"><code class="language-json" translate="No">"stream_concurrency" : true</code></pre>
     <pre class="line-numbers"><code class="language-json" translate="No">...
-        "video_cloud": {
-        <span class="bcls-highlight">"stream_concurrency": true,</span>
-        "policy_key": "BCpk..."
-        },
-        "player": {
-        "template": {
-        "name": "single-video-template",
-        "version": "6.63.1"
-        }
-        },
-        ...</code></pre>
+  "video_cloud": {
+  <span class="bcls-highlight">"stream_concurrency": true,</span>
+  "policy_key": "BCpk..."
+  },
+  "player": {
+  "template": {
+  "name": "single-video-template",
+  "version": "6.63.1"
+  }
+  },
+  ...</code></pre>
     <p>If this key/value pair is not present in JSON or the value is false, GSC feature would not be enabled for the
       player.</p>
     <h4>Setting the JWT at Runtime</h4>
@@ -216,26 +216,25 @@ grandparent: Playback Restrictions
     </p>
     <p>Once the player is configured for generic stream concurrency, as above, the remaining step is to provide a JWT to
       the player at runtime. This is the same process as when using EPA:</p>
-    <pre class="line-numbers"><code class="language-javascript" translate="No">player.catalog.setBcovAuthToken('
-        <MY_TOKEN>');</code></pre>
+    <pre class="line-numbers"><code class="language-javascript" translate="No">player.catalog.setBcovAuthToken('<MY_TOKEN>');</code></pre>
     <h5>Example</h5>
     <p>After adding a JWT token, the final step is to request data from the Playback API and load it into the player.
       This example demonstrates fetching a single video:</p>
     <pre class="line-numbers"><code class="language-javascript" translate="No">// Set the authorization token.
-        player.catalog.setBcovAuthToken('<MY_TOKEN>');
+  player.catalog.setBcovAuthToken('<MY_TOKEN>');
 
-          // Initiate a catalog request. API selection will occur each time this
-          // is called.
-          player.catalog.get({id: '1', type: 'video'}).
-          then(function(data) {
+    // Initiate a catalog request. API selection will occur each time this
+    // is called.
+    player.catalog.get({id: '1', type: 'video'}).
+    then(function(data) {
 
-          // When the request is complete, you must load the returned metadata
-          // and sources into the player.
-          player.catalog.load(data);
-          }).
-          catch(function(error) {
-          throw new Error(error);
-          });</code></pre>
+    // When the request is complete, you must load the returned metadata
+    // and sources into the player.
+    player.catalog.load(data);
+    }).
+    catch(function(error) {
+    throw new Error(error);
+  });</code></pre>
 
     <h3>iOS</h3>
     <p>To enable the Generic Stream Concurrency feature for iOS SDK, you need to enable the option <code
@@ -244,12 +243,12 @@ grandparent: Playback Restrictions
       empty, this value will not be sent as header.</p>
     <h4>Objective-C</h4>
     <pre><code class="language-objectivec" translate="No">self.playbackController.streamConcurrencyEnabled = YES;
-        // Optional. Set custom sid
-        self.playbackController.options ■ (?{ kBCOVAuthHeartbeatPropertyKeySessionld: G'sessionld" };</code></pre>
+  // Optional. Set custom sid
+  self.playbackController.options ■ (?{ kBCOVAuthHeartbeatPropertyKeySessionld: G'sessionld" };</code></pre>
     <h4>Swift</h4>
     <pre><code class="language-swift" translate="No">self.playbackController.streamConcurrencyEnabled ■ true
-        // Optional. Set custom sid
-        self.playbackController.options = [ kBCOVAuthHeartbeatPropertyKeySessionld: "sessionld" ]</code></pre>
+  // Optional. Set custom sid
+  self.playbackController.options = [ kBCOVAuthHeartbeatPropertyKeySessionld: "sessionld" ]</code></pre>
     <p>For more details, see the <a
         href="https://sdks.support.brightcove.com/ios/reference/sdk/index.html#GSC">Brightcove Native Player for iOS
         Reference</a>.</p>
@@ -263,11 +262,11 @@ grandparent: Playback Restrictions
       to retrieve the video is used here, and should include a <code translate="No">uid</code> claim (and optionally, a
       <code translate="No">sid</code> claim):</p>
     <pre class="line-numbers"><code translate="no" class="language-java">Map&lt;String, String&gt; requestHeaders = new
-        HashMap&lt;&gt;();
-        requestHeaders.put(ConcurrencyClient.HEARTBEAT_VIDEO_HEADER_KEY, video.getId());
-        requestHeaders.put(ConcurrencyClient.HEARTBEAT_ACCOUNTID_HEADER_KEY, accountId);
-        requestHeaders.put(BrightcoveTokenAuthorizer.BRIGHTCOVE_AUTHORIZATION_HEADER_KEY, jwtToken);
-        brightcoveVideoView.setStreamConcurrencyRequestHeaders(requestHeaders);</code></pre>
+  HashMap&lt;&gt;();
+  requestHeaders.put(ConcurrencyClient.HEARTBEAT_VIDEO_HEADER_KEY, video.getId());
+  requestHeaders.put(ConcurrencyClient.HEARTBEAT_ACCOUNTID_HEADER_KEY, accountId);
+  requestHeaders.put(BrightcoveTokenAuthorizer.BRIGHTCOVE_AUTHORIZATION_HEADER_KEY, jwtToken);
+  brightcoveVideoView.setStreamConcurrencyRequestHeaders(requestHeaders);</code></pre>
     <p>For more details, see the <a
         href="https://sdks.support.brightcove.com/android/content-protection/generic-stream-concurrency-android.html">Generic
         Stream Concurrency (GSC) with the Native SDK for Android</a> document.</p>
@@ -284,7 +283,7 @@ grandparent: Playback Restrictions
 
     <p>The authorization method is through the JWT sent in an <code translate="No">Authorization</code> header:</p>
     <pre><code class="language-http" translate="No">Authorization: Bearer <span class="bcls-input">code
-          translate="No">{token}</code></span></code></pre>
+  translate="No">{token}</code></span></code></pre>
 
     <p>The basic logic your player/app needs to perform is shown in the diagram below:</p>
     <figure class="bcls-figure">
@@ -302,8 +301,8 @@ grandparent: Playback Restrictions
         <p><strong>Method: <code translate="No">POST</code></strong></p>
         <p><strong>Request body:</strong></p>
         <pre class="line-numbers"><code class="language-json" translate="No">{
-            "video": "<span class="bcls-input">the_video_id</span>"
-            }</code></pre>
+  "video": "<span class="bcls-input">the_video_id</span>"
+}</code></pre>
       </dd>
       <dt>Active sessions</dt>
       <dd>
