@@ -3975,12 +3975,23 @@ echo "Public key to saved in $PUBLIC_TXT"
       </thead>
       <tbody class="bcls-table__body">
         <tr>
-          <td rowspan="5" style="background-color:#dbdbdb;font-weight: bold;border-bottom:1px solid #707070;">General</td>
+          <td rowspan="6" style="background-color:#dbdbdb;font-weight: bold;border-bottom:1px solid #707070;">General</td>
           <td><code translate="No">accid</code></td>
           <td>String</td>
           <td>Yes</td>
           <td></td>
           <td>The account id that owns the content being played</td>
+        </tr>
+        <tr>
+          <td><code translate="No">aud</code></td>
+          <td>Array of Strings</td>
+          <td></td>
+          <td></td>
+          <td>
+            The audience (recipient) for which the JWT is intended.<br/><br/>
+            This claim is optional. JWT tokens submitted to the Playback API with no <code translate="No">aud</code> claim will continue to work.<br/><br/>
+            If the <code translate="No">aud</code> claim is present, it must contain the value <strong>playback.api.brightcove.com</strong> within the claims array of values.
+          </td>
         </tr>
         <tr>
           <td><code translate="No">exp</code></td>
@@ -4036,14 +4047,14 @@ echo "Public key to saved in $PUBLIC_TXT"
         </tr>
         <tr>
           <td><code translate="No">tags</code></td>
-          <td>Array &lt;Strings&gt;</td>
+          <td>Array of Strings</td>
           <td></td>
           <td></td>
           <td>if present, this token is only valid for videos that have the listed tags values. Only these videos are authorized for playback.</td>
         </tr>
         <tr>
           <td><code translate="No">vids</code></td>
-          <td>Array &lt;Strings&gt;</td>
+          <td>Array of Strings</td>
           <td></td>
           <td></td>
           <td>If present, this token will only authorize license fetching for a set of video IDs.
@@ -4197,7 +4208,7 @@ echo "Public key to saved in $PUBLIC_TXT"
         <tr>
           <td rowspan="1" style="background-color:#dbdbdb;font-weight: bold;border-bottom:1px solid #707070;">Delivery Rules</td>
           <td><code translate="No">drules</code></td>
-          <td>String[]</td>
+          <td>Array of Strings</td>
           <td></td>
           <td></td>
           <td>List of delivery rule action IDs to apply. For details, see the <a href="https://apis.support.brightcove.com/delivery-rules/getting-started/implementing-delivery-rules.html">Implementing Delivery Rules</a> document.
@@ -4237,8 +4248,14 @@ echo "Public key to saved in $PUBLIC_TXT"
       </thead>
       <tbody class="bcls-table__body">
         <tr>
-          <td rowspan="4" style="background-color:#dbdbdb;font-weight: bold;border-bottom:1px solid #707070;">General</td>
+          <td rowspan="5" style="background-color:#dbdbdb;font-weight: bold;border-bottom:1px solid #707070;">General</td>
           <td>accid</td>
+          <td style="background-color: #D7F6E6;text-align: center;">Yes</td>
+          <td style="background-color: #D7F6E6;text-align: center;">Yes</td>
+          <td style="background-color: #D7F6E6;text-align: center;">Yes</td>
+        </tr>
+        <tr>
+          <td>aud</td>
           <td style="background-color: #D7F6E6;text-align: center;">Yes</td>
           <td style="background-color: #D7F6E6;text-align: center;">Yes</td>
           <td style="background-color: #D7F6E6;text-align: center;">Yes</td>
