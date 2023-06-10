@@ -22,4 +22,94 @@ layout: staging
       <li><strong>Cloud Playout</strong> - In order to be <a href="{{ site.cloud_playout_path }}managing-content/cloud-playout-add-content.html">added to  Cloud Playout channels</a>, videos must have at least one MP4 rendition.</li>
     </ul>
   </section>
+  <section class="bcls-section">
+    <h2 id="requesting_late_binding">Requesting late binding</h2>
+    <p>To request late binding in a Dynamic Ingest API request, set the <code translate="No">late_binding_type</code> to either <code translate="No">merge</code> or <code translate="No">replace</code>:</p>
+    <dl>
+      <dt><code translate="No">merge</code></dt>
+      <dd>
+        Performs a merge operation during late binding. This means that any existing rendition associated with the video will be preserved and only new pmp4 renditions defined into the current ingest profile will be merged. If the pmp4 rendition already exists in the video, the rendition won’t be ingested.
+        <p><strong>Note:</strong> a PMP4 rendition will overridden only in the following cases:</p>
+        <ul>
+          <li>The request is asking for <code translate="No">embed_closed_caption</code> and current PMP4 does not have it.</li>
+          <li>The request is not asking for <code translate="No">embed_closed_caption</code> and current PMP4 have it.</li>
+        </ul>
+      </dd>
+      <dt><code translate="No">replace</code></dt>
+      <dd>
+        Performs a replace operation during late binding. This means that any existing PMP4 rendition associated with the video will be completely replaced with the new renditions defined in the ingest profile. If a rendition already exists in the video's metadata, the new value provided will overwrite the existing value for that rendition.
+        <p><strong>Note:</strong> if the video does not have PMP4 renditions, this will not add them.</p>
+      </dd>
+    </dl>
+  </section>
+  <section class="bcls-section">
+    <h2 id="use_cases">Use cases</h2>
+    <p>Below are some typical use cases for requesting late binding with sample code.</p>
+    <h3>Merge an mp4 rendition onto an existing Video</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "master": {
+    "use_archived_master": true,
+    "late_binding_type": "merge"
+  },
+  "profile": "multi-platform-standard-static-with-mp4"
+}
+</code></pre>
+    <h3>Replace an mp4 rendition for an existing Video</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "master": {
+    "use_archived_master": true,
+    "late_binding_type": "replace"
+  },
+  "profile": "multi-platform-standard-static-with-mp4"
+}
+</code></pre>
+    <h3>Merge mp4 rendition with embedded close captions onto an existing Video</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "master": {
+    "use_archived_master": true,
+    "late_binding_type": "merge"
+  },
+  "text_tracks": [
+    {
+      "url": "https://support.brightcove.com/test-assets/captions/herons.vtt",
+      "srclang": "en-US",
+      "kind": "captions",
+      "label": "EN",
+      "default": true,
+      "status": "published",
+      "embed_closed_caption": true
+    }
+  ],
+  "profile": "multi-platform-standard-static-with-mp4"
+}
+</code></pre>
+    <h3>Replace an mp4 rendition for an existing Video with one that has embedded close captions</h3>
+<pre class="line-numbers"><code class="language-json" translate="No">{
+  "master": {
+    "use_archived_master": true,
+    "late_binding_type": "replace"
+  },
+  "text_tracks": [
+    {
+      "url": "https://support.brightcove.com/test-assets/captions/herons.vtt",
+      "srclang": "en-US",
+      "kind": "captions",
+      "label": "EN",
+      "default": true,
+      "status": "published",
+      "embed_closed_caption": true
+    }
+  ],
+  "profile": "multi-platform-standard-static-with-mp4"
+}
+</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="notes_and_limitations">Notes and limitations</h2>
+    <ul>
+      <li>This feature is only available for videos that have the master stored. In your request you must also include the <code translate="No">use_archived_master</code> field.</li>
+      <li>The comparison of PMP4 renditions will be carried out using the specified Ingest Profile or using the  default Ingest Profile (if not specified in the Dynamic Ingest request). See <a href="/ingest-profiles/index.html">Ingest Profiles</a> for more information about.</li>
+      <li><strong>Forensic Watermarking is unsupported</strong>. Since all renditions need an A/B version and need to be in perfect sync, any attempt to merge or replace renditions in an asset that has Forensic Watermarking must to be performed through re-transcoding.</li>
+    </ul>
+  </section>
 </article>
