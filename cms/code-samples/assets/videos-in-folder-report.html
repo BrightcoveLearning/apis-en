@@ -1,44 +1,48 @@
 <style>
-/* * The body style is just for the
+  /* * The body style is just for the
  * background color of the codepen.
  * Do not include in your code.
  */
- body {
-  background-color: #333;
-  color: #f5f5f5;
-  font-family: sans-serif;
-  margin: 2em;
-}
-/*
+  body {
+    background-color: #333;
+    color: #f5f5f5;
+    font-family: sans-serif;
+    margin: 2em;
+  }
+
+  /*
  * Styles essential to the sample
  * are below
  */
-.bcls-code {
-  color: #111;
-  font-family: 'Source Code Pro',monospace;
-  padding: 1em;
-  width: 90%;
-  min-height: 5em;
-  background-color: #fff;
-  font-size: 1rem;
-}
-.bcls-button {
-  padding: .5em;
-  background-color: #333;
-  border: 1px yellow solid;
-  border-radius: .5em;
-  color: yellow;
-  cursor: pointer;
-}
-fieldset {
-  color: #64AAB2;
-  border: 1px #64AAB2 solid;
-  border-radius: .5em;
-}
-code {
-  color: #E4B842;
-  font-family: 'Source Code Pro',monospace;
-}
+  .bcls-code {
+    color: #111;
+    font-family: 'Source Code Pro', monospace;
+    padding: 1em;
+    width: 90%;
+    min-height: 5em;
+    background-color: #fff;
+    font-size: 1rem;
+  }
+
+  .bcls-button {
+    padding: .5em;
+    background-color: #333;
+    border: 1px yellow solid;
+    border-radius: .5em;
+    color: yellow;
+    cursor: pointer;
+  }
+
+  fieldset {
+    color: #64AAB2;
+    border: 1px #64AAB2 solid;
+    border-radius: .5em;
+  }
+
+  code {
+    color: #E4B842;
+    font-family: 'Source Code Pro', monospace;
+  }
 </style>
 
 <section class="bcls-section" id="workingSample">
@@ -57,12 +61,18 @@ code {
 
     <p><button class="bcls-button" id="useAccount">Use My Account</button></p>
 
-    <p>Select the folder to retrieve videos from: 
+    <p>Select the folder to retrieve videos from:
       <select id="folder" value="" style="width:30%;display:inline;">
       </select>
     </p>
 
-    <p>Videos to retrieve: <select name="videoCount" id="videoCount"><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="500">500</option><option value="All">All</option></select></p>
+    <p>Videos to retrieve: <select name="videoCount" id="videoCount">
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="500">500</option>
+        <option value="All">All</option>
+      </select></p>
 
     <aside class="bcls-aside bcls-aside--warning">If you select <code>All</code>, be prepared to wait awhile!</aside>
 
@@ -84,277 +94,274 @@ code {
 </section>
 
 <section id="csvDisplay" class="bcls-section">
-<h2>CSV Data</h2>
+  <h2>CSV Data</h2>
 
-<p>Copy and paste the data below into a an empty text file, and save it with a .csv extension. You can then open the file to view it in your spreadsheet application.</p>
-<textarea name="csvData" id="csvData" class="bcls-code" style="height:30em;"></textarea></section>
+  <p>Copy and paste the data below into a an empty text file, and save it with a .csv extension. You can then open the file to view it in your spreadsheet application.</p>
+  <textarea name="csvData" id="csvData" class="bcls-code" style="height:30em;"></textarea>
+</section>
 
 
 <script translate="no">
-var BCLS = (function(window, document) {
-  var account_id,
-    client_id,
-    client_secret,
-    // api stuff
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
-    baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
-    limit = 25,
-    totalVideos = 0,
-    totalCalls = 0,
-    callNumber = 0,
-    videosCompleted = 0,
-    videosArray = [],
-    summaryData = {},
-    csvStr,
-    summaryCsvStr,
-    folders = [],
-    folder,
-    selectedFolder,
-    useDefaultAccount = true,
-    // elements
-    account_id_element = document.querySelector('#account_id'),
-    client_id_element = document.querySelector('#client_id'),
-    client_secret_element = document.querySelector('#client_secret'),
-    use_account = document.querySelector('#useAccount')
+  var BCLS = (function (window, document) {
+    var account_id,
+      client_id,
+      client_secret,
+      // api stuff
+      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
+      baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
+      limit = 25,
+      totalVideos = 0,
+      totalCalls = 0,
+      callNumber = 0,
+      videosCompleted = 0,
+      videosArray = [],
+      summaryData = {},
+      csvStr,
+      summaryCsvStr,
+      folders = [],
+      folder,
+      selectedFolder,
+      useDefaultAccount = true,
+      // elements
+      account_id_element = document.querySelector('#account_id'),
+      client_id_element = document.querySelector('#client_id'),
+      client_secret_element = document.querySelector('#client_secret'),
+      use_account = document.querySelector('#useAccount')
     folderElement = document.querySelector('#folder'),
-    videoCount = document.querySelector('#videoCount'),
-    makeReport = document.querySelector('#makeReport'),
-    content = '',
-    logger = document.querySelector('#logger'),
-    logText = document.querySelector('#logText'),
-    csvData = document.querySelector('#csvData'),
-    apiRequest = document.querySelector('#apiRequest'),
-    allButtons = document.getElementsByName('button'),
-    pLogGettingVideos = document.createElement('p'),
-    pLogGettingRenditions = document.createElement('p'),
-    pLogFinish = document.createElement('p'),
-    spanIntro2 = document.createElement('span'),
-    spanOf2 = document.createElement('span'),
-    spanRenditionsTotal = document.createElement('span'),
-    spanRenditionsCount = document.createElement('span'),
-    spanRenditionsTotalEl,
-    spanRenditionsCountEl;
+      videoCount = document.querySelector('#videoCount'),
+      makeReport = document.querySelector('#makeReport'),
+      content = '',
+      logger = document.querySelector('#logger'),
+      logText = document.querySelector('#logText'),
+      csvData = document.querySelector('#csvData'),
+      apiRequest = document.querySelector('#apiRequest'),
+      allButtons = document.getElementsByName('button'),
+      pLogGettingVideos = document.createElement('p'),
+      pLogGettingRenditions = document.createElement('p'),
+      pLogFinish = document.createElement('p'),
+      spanIntro2 = document.createElement('span'),
+      spanOf2 = document.createElement('span');
 
-  /**
-   * tests for all the ways a variable might be undefined or not have a value
-   * @param {String|Number} x the variable to test
-   * @return {Boolean} true if variable is defined and has a value
-   */
-  function isDefined(x) {
-    if (x === '' || x === null || x === undefined) {
-      return false;
-    }
-    return true;
-  }
-
-  /*
-   * tests to see if a string is json
-   * @param {String} str string to test
-   * @return {Boolean}
-   */
-  function isJson(str) {
-      try {
-          JSON.parse(str);
-      } catch (e) {
-          return false;
+    /**
+     * tests for all the ways a variable might be undefined or not have a value
+     * @param {String|Number} x the variable to test
+     * @return {Boolean} true if variable is defined and has a value
+     */
+    function isDefined(x) {
+      if (x === '' || x === null || x === undefined) {
+        return false;
       }
       return true;
-  }
+    }
 
-  /**
-   * get selected value for single select element
-   * @param {htmlElement} e the select element
-   */
-  function getSelectedValue(e) {
-    return e.options[e.selectedIndex].value;
-  }
-
-  /**
-   * get the object in an array that has a specified (and unique) property value
-   * @param {array} array the name of the array
-   * @param {string} property the property to search on
-   * @param {string} match the value to match
-   */
-  function getObjectInArray(array, property, match) {
-    const arrayLength = array.length;
-    let i = 0;
-    for (i; i < arrayLength; i++ ) {
-      if (array[i][property] === match) {
-        return array[i];
+    /*
+     * tests to see if a string is json
+     * @param {String} str string to test
+     * @return {Boolean}
+     */
+    function isJson(str) {
+      try {
+        JSON.parse(str);
+      } catch (e) {
+        return false;
       }
+      return true;
     }
-  }
 
-  /**
-   * disables all buttons so user can't submit new request until current one finishes
-   */
-  function disableButtons() {
-    var i,
-      iMax = allButtons.length;
-    for (i = 0; i < iMax; i++) {
-      allButtons[i].setAttribute('disabled', 'disabled');
+    /**
+     * get selected value for single select element
+     * @param {htmlElement} e the select element
+     */
+    function getSelectedValue(e) {
+      return e.options[e.selectedIndex].value;
     }
-  }
 
-  /**
-   * re-enables all buttons
-   */
-  function enableButtons() {
-    var i,
-      iMax = allButtons.length;
-    for (i = 0; i < iMax; i++) {
-      allButtons[i].removeAttribute('disabled');
-    }
-  }
-
-
-
-  function startCSVStrings() {
-    var i = 0,
-      iMax;
-    csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","State","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)",\r\n';
-  }
-
-  function writeReport() {
-    var i,
-      iMax,
-      j,
-      jMax,
-      video;
-    if (videosArray.length > 0) {
-      iMax = videosArray.length;
-      for (i = 0; i < iMax; i += 1) {
-        video = videosArray[i];
-        // replace any line breaks in description, as that will break the CSV
-        if (video.description) {
-          video.description = video.description.replace(/(?:\r\n|\r|\n)/g, ' ');
+    /**
+     * get the object in an array that has a specified (and unique) property value
+     * @param {array} array the name of the array
+     * @param {string} property the property to search on
+     * @param {string} match the value to match
+     */
+    function getObjectInArray(array, property, match) {
+      const arrayLength = array.length;
+      let i = 0;
+      for (i; i < arrayLength; i++) {
+        if (array[i][property] === match) {
+          return array[i];
         }
-        // generate the video detail row
-        // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.state + '","' + video.original_filename + '","' + '","' + video.duration / 1000 + '","'  + '",\r\n';
       }
-      csvData.textContent += csvStr;
-      // content = document.createTextNode('Finished! See the results or get the CSV data below.');
-      pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
-      // reportDisplay.innerHTML = summaryReportStr + reportStr;
-      enableButtons();
     }
-  }
 
-  /**
-   * sets up the data for the API request
-   * @param {String} id the id of the button that was clicked
-   */
-  function createRequest(id) {
-    var endPoint = '',
-      parsedData,
-      i,
-      iMax,
-      newOption,
-      options = {};
+    /**
+     * disables all buttons so user can't submit new request until current one finishes
+     */
+    function disableButtons() {
+      var i,
+        iMax = allButtons.length;
+      for (i = 0; i < iMax; i++) {
+        allButtons[i].setAttribute('disabled', 'disabled');
+      }
+    }
+
+    /**
+     * re-enables all buttons
+     */
+    function enableButtons() {
+      var i,
+        iMax = allButtons.length;
+      for (i = 0; i < iMax; i++) {
+        allButtons[i].removeAttribute('disabled');
+      }
+    }
+
+
+
+    function startCSVStrings() {
+      var i = 0,
+        iMax;
+      csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","State","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)",\r\n';
+    }
+
+    function writeReport() {
+      var i,
+        iMax,
+        j,
+        jMax,
+        video;
+      if (videosArray.length > 0) {
+        iMax = videosArray.length;
+        for (i = 0; i < iMax; i += 1) {
+          video = videosArray[i];
+          // replace any line breaks in description, as that will break the CSV
+          if (video.description) {
+            video.description = video.description.replace(/(?:\r\n|\r|\n)/g, ' ');
+          }
+          // generate the video detail row
+          // add csv row
+          csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.state + '","' + video.original_filename + '","' + '","' + video.duration / 1000 + '","' + '",\r\n';
+        }
+        csvData.textContent += csvStr;
+        // content = document.createTextNode('Finished! See the results or get the CSV data below.');
+        pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
+        // reportDisplay.innerHTML = summaryReportStr + reportStr;
+        enableButtons();
+      }
+    }
+
+    /**
+     * sets up the data for the API request
+     * @param {String} id the id of the button that was clicked
+     */
+    function createRequest(id) {
+      var endPoint = '',
+        parsedData,
+        i,
+        iMax,
+        newOption,
+        options = {};
       options.proxyURL = proxyURL;
       options.account_id = account_id;
       if (isDefined(client_id) && isDefined(client_secret)) {
         options.client_id = client_id;
         options.client_secret = client_secret;
       }
-    // disable buttons to prevent a new request before current one finishes
-    disableButtons();
-    switch (id) {
-      case 'getFolders':
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        makeRequest(options, function(response) {
-          parsedData = JSON.parse(response);
-          // set total videos
-          iMax = parsedData.length;
-          for (i = 0; i < iMax; i++) {
-            if (parsedData[i].video_count > 0) {
-              folders.push(parsedData[i]);
-              newOption = document.createElement('option');
-              newOption.setAttribute('value', parsedData[i].id);
-              newOption.textContent = parsedData[i].name;
-              folderElement.appendChild(newOption);
-            }
-          }
-          logText.textContent = totalVideos + ' videos found; getting account custom fields';
-          createRequest('getVideos');
-        });
-        break;
-      case 'getVideos':
-        var offset = (limit * callNumber);
-        endPoint = account_id + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
-        if (isDefined(tag.value)) {
-          endPoint += '&q=%2Btags:' + tag.value;
-        }
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        makeRequest(options, function(response) {
-          parsedData = JSON.parse(response);
-          videosArray = videosArray.concat(parsedData);
-          callNumber++;
-          if (callNumber < totalCalls) {
-            createRequest('getVideos');
-          } else {
-            callNumber = 0;
-            spanRenditionsCountEl.textContent = callNumber + 1;
-            spanRenditionsTotalEl.textContent = totalVideos;
-            videosCompleted++;
-          logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
-          callNumber++;
-          if (callNumber < totalVideos) {
-            createRequest('getVideoRenditions');
-          } else {
-            // create csv headings
-            startCSVStrings();
-            // write the report
-            writeReport();
-          }
-          }
-        });
-        break;
-    }
-  }
-
-  /**
-   * send API request to the proxy
-   * @param  {Object} options for the request
-   * @param  {String} options.url the full API request URL
-   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
-   * @param  {String} options.proxyURL proxyURL to send the request to
-   * @param  {String} options.client_id client id for the account (default is in the proxy)
-   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
-   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
-   * @param  {Function} [callback] callback function that will process the response
-   */
-  function makeRequest(options, callback) {
-      var httpRequest = new XMLHttpRequest(),
-          response,
-          requestParams,
-          dataString,
-          proxyURL    = options.proxyURL,
-          // response handler
-          getResponse = function() {
-              try {
-                  if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                          response = httpRequest.responseText;
-                          // some API requests return '{null}' for empty responses - breaks JSON.parse
-                          if (response === '') {
-                              response = null;
-                          }
-                          // return the response
-                          callback(response);
-                      } else {
-                          logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
-                      }
-                  }
-              } catch (e) {
-                  logger.appendChild(document.createTextNode('Caught Exception: ' + e));
+      // disable buttons to prevent a new request before current one finishes
+      disableButtons();
+      switch (id) {
+        case 'getFolders':
+          options.url = baseURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          makeRequest(options, function (response) {
+            parsedData = JSON.parse(response);
+            // set total videos
+            iMax = parsedData.length;
+            for (i = 0; i < iMax; i++) {
+              if (parsedData[i].video_count > 0) {
+                folders.push(parsedData[i]);
+                newOption = document.createElement('option');
+                newOption.setAttribute('value', parsedData[i].id);
+                newOption.textContent = parsedData[i].name;
+                folderElement.appendChild(newOption);
               }
-          };
+            }
+            logText.textContent = totalVideos + ' videos found; getting account custom fields';
+            createRequest('getVideos');
+          });
+          break;
+        case 'getVideos':
+          var offset = (limit * callNumber);
+          endPoint = account_id + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
+          if (isDefined(tag.value)) {
+            endPoint += '&q=%2Btags:' + tag.value;
+          }
+          options.url = baseURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          makeRequest(options, function (response) {
+            parsedData = JSON.parse(response);
+            videosArray = videosArray.concat(parsedData);
+            callNumber++;
+            if (callNumber < totalCalls) {
+              createRequest('getVideos');
+            } else {
+              callNumber = 0;
+              spanRenditionsCountEl.textContent = callNumber + 1;
+              spanRenditionsTotalEl.textContent = totalVideos;
+              videosCompleted++;
+              logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
+              callNumber++;
+              if (callNumber < totalVideos) {
+                createRequest('getVideoRenditions');
+              } else {
+                // create csv headings
+                startCSVStrings();
+                // write the report
+                writeReport();
+              }
+            }
+          });
+          break;
+      }
+    }
+
+    /**
+     * send API request to the proxy
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
+     */
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        requestParams,
+        dataString,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function () {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '') {
+                  response = null;
+                }
+                // return the response
+                callback(response);
+              } else {
+                logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
+              }
+            }
+          } catch (e) {
+            logger.appendChild(document.createTextNode('Caught Exception: ' + e));
+          }
+        };
       /**
        * set up request data
        * the proxy used here takes the following request body:
@@ -366,62 +373,62 @@ var BCLS = (function(window, document) {
       httpRequest.open('POST', proxyURL);
       // open and send request
       httpRequest.send(JSON.stringify(options));
-  }
+    }
 
 
-  function init() {
-    // event listeners
-    csvData.addEventListener('click', function() {
-      this.select();
+    function init() {
+      // event listeners
+      csvData.addEventListener('click', function () {
+        this.select();
+      });
+
+      // set up the log elements
+      content = document.createTextNode('Getting folders for the account ');
+      spanIntro2.appendChild(content);
+      content = document.createTextNode(' of ');
+      spanOf2.appendChild(content);
+      logger.appendChild(pLogFinish);
+      createRequest('getFolders');
+    }
+
+    // button event handlers
+    use_account.addEventListener('click', function () {
+      // get the inputs
+      client_id = client_id_element.value;
+      client_secret = client_secret_element.value;
+      account_id = account_id_element.value;
+      if (client_id === '' || client_secret === '' || account_id === '') {
+        window.alert('Account id, Client id, and Client Secret are all required');
+      }
+      createRequest(getFolders)
     });
 
-    // set up the log elements
-    content = document.createTextNode('Getting folders for the account ');
-    spanIntro2.appendChild(content);
-    content = document.createTextNode(' of ');
-    spanOf2.appendChild(content);
-    logger.appendChild(pLogFinish);
-    createRequest('getFolders');
-  }
+    makeReport.addEventListener('click', function () {
+      // in case of re-run, cleal the results
+      csvData.textContent = '';
+      totalVideos = getSelectedValue(videoCount);
 
-  // button event handlers
-  use_account.addEventListener('click', function() {
-    // get the inputs
-    client_id = client_id_element.value;
-    client_secret = client_secret_element.value;
-    account_id = account_id_element.value;
-    if (client_id === '' || client_secret === '' || account_id === '') {
-      window.alert('Account id, Client id, and Client Secret are all required');
-    }
-    createRequest(getFolders)
-  });
+      if (totalVideos === "All") {
+        totalVideos = video_count;
+      } else {
+        totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
+      }
+      totalCalls = Math.ceil(totalVideos / limit);
 
-  makeReport.addEventListener('click', function() {
-    // in case of re-run, cleal the results
-    csvData.textContent = '';
-    totalVideos = getSelectedValue(videoCount);
-
-    if (totalVideos === "All") {
-            totalVideos = video_count;
-          } else {
-            totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
-          }
-          totalCalls = Math.ceil(totalVideos / limit);
-
-    // only use entered account id if client id and secret are entered also
-    if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
-      logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
+      // only use entered account id if client id and secret are entered also
+      if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
+        logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
         account_id = '1752604059001';
-    }
-    // disable this button
-    makeReport.setAttribute('disabled', 'disabled');
-    makeReport.setAttribute('style', 'opacity:.6;cursor:not-allowed;');
-    // get video count
-    createRequest('getCount');
+      }
+      // disable this button
+      makeReport.setAttribute('disabled', 'disabled');
+      makeReport.setAttribute('style', 'opacity:.6;cursor:not-allowed;');
+      // get video count
+      createRequest('getCount');
 
-  });
+    });
 
-  init();
-})(window, document);
+    init();
+  })(window, document);
 
 </script>
