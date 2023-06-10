@@ -301,13 +301,10 @@ components:
         transcriptions:
           type: array
           items:
-            $ref: '#/components/schemas/IngestMediaAssetbody.captions'
+            $ref: '#/components/schemas/IngestMediaAssetbody.transcripts'
           description: array of auto captions to be generated
         audio_tracks:
-          type: array
-          items:
-            $ref: '#/components/schemas/IngestMediaAssetbody.audioTracks'
-          description: array of audio track objects **Dynamic Delivery only**
+          $ref: '#/components/schemas/IngestMediaAssetbody.audioTracks'
         images:
           type: array
           items:
@@ -335,9 +332,9 @@ components:
       title: Ingest Media Asset Body.master
       type: object
       description: >-
-        Spefication of master for media asset(s) to be ingested
+        Specification of master for media asset(s) to be ingested
       example: {
-          "url": "https://some.site.com/videos/mp4/greatblueheron.mp4",
+          "url": "https://support.brightcove.com/test-assets/videos/Great_Blue_Heron.mp4",
           "audio_tracks": [
             {
               "language": "en",
@@ -352,12 +349,19 @@ components:
             URL for the video source; required except for re-transcoding where a
             digital master has been archived, or you are adding images or text
             tracks to an existing video
-          example: https://some.site.com/audio/celtic_lullaby.m4a
+          example: https://support.brightcove.com/test-assets/audio/celtic_lullaby.m4a
         use_archived_master:
           type: boolean
           description: >-
             For retranscode requests, will use the archived master if set to true; if set to false, you must also include the url for the source video
           default: false
+        late_binding_type:
+          type: string
+          enum:
+            - merge
+            - replace
+          description: >- 
+            Ability to merge or  replace an existing PMP4 rendition with a new PMP4 rendition, if set, you must also include the use_archived_master for the source video
         audio_tracks:
           type: array
           description: >-
@@ -404,7 +408,8 @@ components:
           description: URL for a WebVTT file
         srclang:
           type: string
-          description: ISO 639 2-letter (alpha-2) language code for the text tracks
+          description: >-
+            BCP 47 language code for the text tracks. Both two letter language codes like `es` (Spanish) and language+region codes like `es-MX` (Mexican Spanish) are valid
         kind:
           type: string
           description: how the vtt file is meant to be used
@@ -414,151 +419,185 @@ components:
             - subtitles
             - chapters
             - metadata
+            - transcripts
         label:
           type: string
           description: user-readable title
         default:
           type: boolean
           description: sets the default language for captions/subtitles
-      example: [
-          {
-            "url": "https://some.site.com/captions/bc_smart.vtt",
-            "srclang": "en",
-            "kind": "captions",
-            "label": "EN",
-            "default": true
-          }
-        ]
-    IngestMediaAssetbody.captions:
-      title: Ingest Media Asset Body.captions
-      description: >-
-        array of auto captions to be generated - see [Requesting Auto Captions](/dynamic-ingest/ingest-guides/requesting-auto-captions.html)
-      type: object
-      properties:
-        autodetect:
-          type: boolean
-          description: |-
-            `true` to auto-detect language from audio source.
-            `false`  to use srclang specifying the audio language.
-
-            **Note:**
-              - If `autodetect` is set to `true`, `srclang` must **not** be present
-              - If `autodetect` is set to `false`, and `srclang` is not present, the request will fail
-        default:
-          type: boolean
-          description: If true, srclang should be ignored and we will get captions for main audio, and the language will be determined from audio.
           default: false
-        input_audio_track:
-          type: object
-          description: Defines the audio to extract the captions. Composed by language and variant (both required).
-          properties:
-            language:
-              type: string
-              description: BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.)
-              enum:
-                - af-ZA
-                - ar-AE
-                - ar-SA
-                - cy-GB
-                - da-DK
-                - de-CH
-                - de-DE
-                - en-AB
-                - en-AU
-                - en-GB
-                - en-IE
-                - en-IN
-                - en-US
-                - en-WL
-                - es-ES
-                - es-US
-                - fa-IR
-                - fr-CA
-                - fr-FR
-                - ga-IE
-                - gd-GB
-                - he-IL
-                - hi-IN
-                - id-ID
-                - it-IT
-                - ja-JP
-                - ko-KR
-                - ms-MY
-                - nl-NL
-                - pt-BR
-                - pt-PT
-                - ru-RU
-                - ta-IN
-                - te-IN
-                - tr-TR
-                - zh-CN
-            variant:
-              type: string
-              description: Specifies the variant to use.
-              enum:
-                - main
-                - alternate
-                - dub
-                - commentary
-                - descriptive
-        kind:
+        status:
           type: string
-          description: The kind of output to generate - currently the only value allowed is `captions`
-          default: captions
+          description: The status of the text tracks - `published` or `draft` (use `draft` if you want the text tracks added but not yet available to users - `status` can be updated using the CMS API if you need to)
           enum:
-            - captions
-        label:
-          type: string
-          description: user-readable title - defaults to the BCP-47 style language code
-        srclang:
-          type: string
-          description: BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.)
-          enum:
-            - af-ZA
-            - ar-AE
-            - ar-SA
-            - cy-GB
-            - da-DK
-            - de-CH
-            - de-DE
-            - en-AB
-            - en-AU
-            - en-GB
-            - en-IE
-            - en-IN
-            - en-US
-            - en-WL
-            - es-ES
-            - es-US
-            - fa-IR
-            - fr-CA
-            - fr-FR
-            - ga-IE
-            - gd-GB
-            - he-IL
-            - hi-IN
-            - id-ID
-            - it-IT
-            - ja-JP
-            - ko-KR
-            - ms-MY
-            - nl-NL
-            - pt-BR
-            - pt-PT
-            - ru-RU
-            - ta-IN
-            - te-IN
-            - tr-TR
-            - zh-CN
+            - published
+            - draft
+          default: null
+        embed_closed_caption:
+          type: boolean
+          description: whether to embed the text tracks in MP4 renditions as 608 embedded captions
+          default: false
       example: [
           {
-            "url": "https://some.site.com/captions/bc_smart.vtt",
-            "srclang": "en",
+            "url": "https://support.brightcove.com/test-assets/captions/herons.vtt",
+            "srclang": "en-US",
             "kind": "captions",
             "label": "EN",
-            "default": true
+            "default": true,
+            "status" : "published",
+            "embed_closed_caption": true
           }
         ]
+    IngestMediaAssetbody.transcripts:
+      title: Ingest Media Asset Body.transcripts
+      description: >-
+        array of auto captions/transcripts to be generated - see [Requesting Auto Captions](/dynamic-ingest/ingest-guides/requesting-auto-captions.html), or an array of transcript files to be ingested - see [Ingesting Transcript Files](/dynamic-ingest/ingest-guides/ingesting-transcriptions.html)
+      type: array
+      items:
+        type: object
+        properties:
+          autodetect:
+            type: boolean
+            description: |-
+              `true` to auto-detect language from audio source.
+              `false`  to use srclang specifying the audio language.
+
+              **Note:**
+                - If `autodetect` is set to `true`, `srclang` must **not** be present
+                - If `autodetect` is set to `false`, and `srclang` is not present, the request will fail
+          default:
+            type: boolean
+            description: If true, srclang should be ignored and we will get captions for main audio, and the language will be determined from audio.
+            default: false
+          input_audio_track:
+            type: object
+            description: Defines the audio to extract the captions. Composed by language and variant (both required).
+            properties:
+              language:
+                type: string
+                description: BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.)
+                enum:
+                  - af-ZA
+                  - ar-AE
+                  - ar-SA
+                  - cy-GB
+                  - da-DK
+                  - de-CH
+                  - de-DE
+                  - en-AB
+                  - en-AU
+                  - en-GB
+                  - en-IE
+                  - en-IN
+                  - en-NZ
+                  - en-US
+                  - en-WL
+                  - en-ZA
+                  - es-ES
+                  - es-US
+                  - fa-IR
+                  - fr-CA
+                  - fr-FR
+                  - ga-IE
+                  - gd-GB
+                  - he-IL
+                  - hi-IN
+                  - id-ID
+                  - it-IT
+                  - ja-JP
+                  - ko-KR
+                  - ms-MY
+                  - nl-NL
+                  - pt-BR
+                  - pt-PT
+                  - ru-RU
+                  - ta-IN
+                  - te-IN
+                  - th-TH
+                  - tr-TR
+                  - zh-CN
+                  - zh-TW
+              variant:
+                type: string
+                description: Specifies the variant to use.
+                enum:
+                  - main
+                  - alternate
+                  - dub
+                  - commentary
+                  - descriptive
+          kind:
+            type: string
+            description: >-
+              The kind of output to generate - for auto captions requests, if `kind` is `transcripts`, both captions and a transcript will be generated. For ingestion requests (including a `url`) the transcript will be ingested.
+            default: captions
+            enum:
+              - captions
+              - transcripts
+          label:
+            type: string
+            description: user-readable title - defaults to the BCP-47 style language code
+          srclang:
+            type: string
+            description: BCP-47 style language code for the text tracks (en-US, fr-FR, es-ES, etc.)
+            enum:
+              - af-ZA
+              - ar-AE
+              - ar-SA
+              - cy-GB
+              - da-DK
+              - de-CH
+              - de-DE
+              - en-AB
+              - en-AU
+              - en-GB
+              - en-IE
+              - en-IN
+              - en-US
+              - en-WL
+              - es-ES
+              - es-US
+              - fa-IR
+              - fr-CA
+              - fr-FR
+              - ga-IE
+              - gd-GB
+              - he-IL
+              - hi-IN
+              - id-ID
+              - it-IT
+              - ja-JP
+              - ko-KR
+              - ms-MY
+              - nl-NL
+              - pt-BR
+              - pt-PT
+              - ru-RU
+              - ta-IN
+              - te-IN
+              - tr-TR
+              - zh-CN
+          status:
+            type: string
+            description: The status of the text tracks - `published` or `draft` (use `draft` if you want the text tracks added but not yet available to users - `status` can be updated using the CMS API if you need to)
+            enum:
+              - published
+              - draft
+            default: null
+          url:
+            type: string
+            description: >-
+              The URL where a transcript file is located. Must be included in the `kind` is `transcripts`. Must <strong>not</strong> be included if the `kind` is `captions`.
+      example: [
+                  {
+                    "srclang": "en-US",
+                    "kind": "transcripts",
+                    "label": "en-US",
+                    "status": "published",
+                    "default": true
+                  }
+                ]
     IngestMediaAssetbody.audioTracks:
       title: Ingest Media Asset Body.audio_tracks
       type: object
@@ -574,20 +613,20 @@ components:
             $ref: '#/components/schemas/IngestMediaAssetbody.audioTracks.masters'
           description: array of audio track objects **Dynamic Delivery only**
       example: {
-        "merge_with_existing": true,
-        "masters": [
-            {
-              "url": "https://some.site.com/audio/celtic_lullaby.m4a",
-              "language": "en",
-              "variant": "alternate"
-            },
-            {
-              "url": "https://some.site.com/audio/audio1.m4a",
-              "language": "en",
-              "variant": "commentary"
-            }
-          ]
-        }
+                "merge_with_existing": true,
+                "masters": [
+                      {
+                        "url": "https://support.brightcove.com/test-assets/audio/celtic_lullaby.m4a",
+                        "language": "en",
+                        "variant": "alternate"
+                      },
+                      {
+                        "url": "https://support.brightcove.com/test-assets/audio/audio1.m4a",
+                        "language": "en",
+                        "variant": "commentary"
+                      }
+                    ]
+                  }
     IngestMediaAssetbody.audioTracks.masters:
       title: Ingest Media Asset Body.audio_tracks.masters
       description: >-
@@ -631,7 +670,7 @@ components:
           type: number
           description: pixel width of the image
       example: {
-          "url": "https://some.site.com/images/celtic-lullaby-large.png",
+          "url": "https://support.brightcove.com/test-assets/images/celtic-lullaby-large.png",
           "width": 1400,
           "height": 1400
         }
@@ -651,7 +690,7 @@ components:
           type: number
           description: pixel width of the image
       example: {
-          "url": "https://some.site.com/images/celtic-lullaby-large.png",
+          "url": "https://support.brightcove.com/test-assets/images/celtic-lullaby-large.png",
           "width": 160,
           "height": 90
         }
@@ -690,13 +729,13 @@ components:
           type: number
           description: pixel width of the image
       example: {
-            "media_type": "image",
-            "language": "es",
-            "format": "jpg",
-            "label": "poster",
-            "width": 1280,
-            "height": 720
-          }
+                  "media_type": "image",
+                  "language": "es",
+                  "format": "jpg",
+                  "label": "poster",
+                  "width": 1280,
+                  "height": 720
+                }
     IngestMediaAssetResponse:
       title: Ingest Media Asset Response
       required:
