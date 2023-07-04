@@ -156,10 +156,6 @@
           <option value="https://ssai.support.brightcove.com" translate="no">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove SSAI</option>
           
           
-          
-          <option value="https://campaign.support.brightcove.com" translate="no">&nbsp;&nbsp;&nbsp;&nbsp;Brightcove Campaign</option>
-          
-          
         </select>
 
         <select id="language_select" class="form-select select-focus" style="width: 10%;"
@@ -3615,14 +3611,21 @@
   </section>
   <section class="bcls-section">
     <h2 id="basics">The basics</h2>
-    <p>The reporting API requires that you pass a valid Brightcove Interactivity reporting API Key associated with your account.  API Keys must be passed in the request header <code>X-Hapyak-API-Key</code>. For example:</p>
-    <p><code>X-Hapyak-API-Key: 1e7bc263e32198e49c</code> </p>
-    <aside class="bcls-aside bcls-aside--information">Note: This is a made up example and will be rejected with an HTTP 403 error.</aside>
+    <h3>Base URL</h3>
+    <p>The base URL for reporting requests:</p>
+    <p><code>https://interactivity-reporting.api.brightcove.com/api/reports/v2/</code> </p>
+    <h3>Authenticating requests</h3>
+    <p>The reporting API uses Brightcove's <a href="/oauth/">OAuth system</a> for authentication, using the client credential flow. This means that you obtain client credentials (a <code translate="No">client_id</code> and <code translate="No">client_secret</code>) and use those to obtain an <strong>access token</strong> which is submitted in the Authorization header like this:</p>
+    <pre><code translate="No">Authorization: Bearer <span class="bcls-highlight">access_token_here</span></code></pre>
+    <p>The easiest way to get client credentials is through Studio - see <a href="/general/managing-api-authentication-credentials.html">Managing API Credentials</a>. The permissions you need for Interactivity are:</p>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/assets/images/s-brightcove-interactivity-img/developer/api-authentication-permissions.webp" alt="API Permissions">
+      <figcaption class="bcls-caption--image">API Permissions</figcaption>
+    </figure>
     <p>You can find your own reporting API key on the integrations tab of the admin section of the Brightcove Interactivity Portal. 
       Treat your reporting API key with the 
       sensitivity of a password as anyone with it can use it to retrieve reporting data from your account.</p>
     <p>Base URL for reporting requests:</p>
-    <p><code>https://www.hapyak.com/api/reports/v2/</code> </p>
     <p>Example URL structure:</p>
     <code>https://[base-url]/[report-name]?send_status=true&[parameters]</code> </section>
   <section class="bcls-section">
