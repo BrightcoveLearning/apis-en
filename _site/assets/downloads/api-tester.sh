@@ -15,23 +15,23 @@ echo --------------------------
 echo "Enter the HTTP method: [ ${bold}g${normal} (GET - default) | ${bold}po${normal} (POST) | ${bold}pa${normal} (PATCH) | ${bold}pu${normal} (PUT) | ${bold}d${normal} (DELETE) ]:"
 read VERB
 if [ "$VERB" = "" ]
-	then
-	export VERB="GET"
+  then
+  export VERB="GET"
 elif [ "$VERB" = "g" ] || [ "$VERB" = "GET" ] || [ "$VERB" = "get" ]
-	then
-	export VERB="GET"
+  then
+  export VERB="GET"
 elif [ "$VERB" = "po" ] || [ "$VERB" = "p" ] || [ "$VERB" = "POST" ] || [ "$VERB" = "post" ]
-	then
-	export VERB="POST"
+  then
+  export VERB="POST"
 elif [ "$VERB" = "pa" ] || [ "$VERB" = "PATCH" ] || [ "$VERB" = "patch" ]
-	then
-	export VERB="PATCH"
+  then
+  export VERB="PATCH"
 elif [ "$VERB" = "pu" ] || [ "$VERB" = "PUT" ] || [ "$VERB" = "put" ]
-	then
-	export VERB="PUT"
+  then
+  export VERB="PUT"
 elif [ "$VERB" = "d" ] || [ "$VERB" = "DELETE" ] || [ "$VERB" = "delete" ]
-	then
-	export VERB="DELETE"
+  then
+  export VERB="DELETE"
 fi
 echo "Your request type: $VERB"
 echo --------------------------
