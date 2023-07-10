@@ -3626,8 +3626,11 @@
       Treat your reporting API key with the 
       sensitivity of a password as anyone with it can use it to retrieve reporting data from your account.</p>
     <p>Base URL for reporting requests:</p>
-    <p>Example URL structure:</p>
-    <code>https://[base-url]/[report-name]?send_status=true&[parameters]</code> </section>
+    <p><strong>Example URL structure</strong></p>
+    <code translate="no">https://[base-url]/[report-name]?send_status=true&[parameters]</code> 
+    <p><strong>Example request</strong></p>
+    <code translate="No">reporting.api.brightcove.com/api/reports/v2/project_engagement_summary_raw?send_status=true&account_id=6415650835001</code>
+  </section>
   <section class="bcls-section">
     <h2 id="api-request">API request construction</h2>
     <p>The API is invoked via GET operation to the Base API URL. The request must contain a valid <code>X-Hapyak-API-Key</code> header. Specific reports are requested by appending the name of the report and valid parameters to the Base API URL.</p>
@@ -3681,23 +3684,18 @@
           <tr>
             <td>Sign In Widget 
               Summary</td>
-            <td><p>One row per Sign In Widget instance with 
-                counts of various Sign In stats. 
-                Project IDs will contain a list of all projects 
-                where the Sign In appeared and was 
-                submitted. This is included to support 
-                templates where the same Sign In widget will 
-                appear with multiple projects. </p>
-              <p>Note: The Project IDs list is not de-duped.</p></td>
+            <td>
+              <p>One row per Sign In Widget instance with counts of various Sign In stats. Project IDs will contain a list of all projects where the Sign In appeared and was submitted. This is included to support templates where the same Sign In widget will appear with multiple projects. </p>
+              <p>Note: The Project IDs list is not de-duped.</p>
+            </td>
             <td>signin_widget_summary</td>
           </tr>
           <tr>
             <td>User Activity Stream</td>
-            <td><p>One row per Action, with User ID if known</p>
-              <p> *Includes "views" of bookmarks, user 
-                interactions with player controls, annotations 
-                and widgets. </p>
-              <p>**Excludes "progress" events. </p></td>
+            <td>
+              <p>One row per Action, with User ID if known</p>
+              <p> *Includes "views" of bookmarks, user interactions with player controls, annotations and widgets. </p> <p>**Excludes "progress" events. </p>
+            </td>
             <td>user_stream_raw</td>
           </tr>
           <tr>
@@ -3751,7 +3749,7 @@
     <section class="bcls-section">
     <h2 id="details">Important details: limits</h2>
     <ul>
-      <li>      <strong>Maximum row count</strong> - The API limits the returned results to 500,000 rows of output. Output beyond this limit is omitted from the results.</li>
+      <li><strong>Maximum row count</strong> - The API limits the returned results to 500,000 rows of output. Output beyond this limit is omitted from the results.</li>
       <li><strong>Maximum time range</strong> - The API limits the time range of data retrieved to six months.</li>
       <li><strong>Rate limits</strong> - By default, the reporting API limits you to running 4 reports per minute; 20 per hour; and 100 per day. These limits apply to the number of unique reports you can execute, not the number of times you hit the reporting endpoint to retrieve results or check status on an already queued report.</li>
     </ul>
