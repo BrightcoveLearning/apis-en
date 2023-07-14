@@ -686,6 +686,118 @@ API Requests</a>.</p>
     </tr>
   </tbody>
 </table>
+
+ <h4>Brightcove Ad Monetization</h4>
+    <p>At minimum, a Brightcove Ad Monetization ad config using SpringServe will include the following macros when used with the Brightcove Web Player. For SDK and other implementations, values should be passed programmatically in-app instead of using the web player macros listed below.</p>
+    <table class="bcls-table">
+        <caption class="bcls-caption--table">Brightcove Ad Monetization</caption>
+        <thead class="bcls-table__head">
+            <tr>
+                <th>Description</th>             
+                <th>Ad Config Query Parameter</th>
+                <th>Brightcove Web Player</th>
+                <th>Always Available to SSAI system</th>
+            </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+            <tr>
+              <td>Player Width</td>          
+              <td><code translate="No">w</code></td>
+              <td><code translate="No">{% raw %}{{page.player.width}}{% endraw %}</code></td>
+              <td>Implementation Dependent</td>
+            </tr>
+            <tr>
+              <td>Player Height</td>          
+              <td><code translate="No">h</code></td>
+              <td><code translate="No">{% raw %}{{page.player.height}}{% endraw %}</code></td>
+              <td>Implementation Dependent</td>
+            </tr>   
+            <tr>
+              <td>Cachebuster Random number</td>          
+              <td><code translate="No">cb</code></td>
+              <td><code translate="No">{% raw %}{{system.random_number_32}}{% endraw %}</code></td>
+              <td>Yes</td>
+            </tr>   
+            <tr>
+              <td>Current page</td>          
+              <td><code translate="No">url</code></td>
+              <td><code translate="No">{% raw %}{{page.document.referrer}}{% endraw %}</code></td>
+              <td>Implementation Dependent</td>
+            </tr> 
+            <tr>
+              <td>User Agent</td>          
+              <td><code translate="No">ua</code></td>
+              <td><code translate="No">{% raw %}{{system.user_agent}}{% endraw %}</code></td>
+              <td>Yes</td>
+            </tr> 
+            <tr>
+              <td>GDPR Consent value</td>          
+              <td><code translate="No">gdpr_consent</code></td>
+              <td><code translate="No">{% raw %}{{page.pageVariable.gdpr_consent}}{% endraw %}</code></td>
+              <td>See Privacy section below</td>
+            </tr>  
+            <tr>
+              <td>Subject to GDPR</td>          
+              <td><code translate="No">gdpr</code></td>
+              <td><code translate="No">{% raw %}{{page.pageVariable.gdpr}}{% endraw %}</code></td>
+              <td>See Privacy section below</td>
+            </tr>  
+            <tr>
+              <td>Subject to US Privacy Regulations</td>          
+              <td><code translate="No">us_privacy</code></td>
+              <td><code translate="No">{% raw %}{{page.pageVariable.us_privacy}}{% endraw %}</code></td>
+              <td>See Privacy section below</td>
+            </tr> 
+            <tr>
+              <td>Subject to COPPA regulations</td>          
+              <td><code translate="No">coppa</code></td>
+              <td><code translate="No">{% raw %}{{page.pageVariable.coppa}}{% endraw %}</code></td>
+              <td>See Privacy section below</td>
+            </tr> 
+            <tr>
+              <td>Content Genre</td>          
+              <td><code translate="No">content_genre</code></td>
+              <td><code translate="No">{% raw %}{{metadata.custom_fields.genre}}{% endraw %}</code></td>
+              <td>Brightcove Library dependent</td>
+            </tr> 
+            <tr>
+              <td>Content Rating</td>  
+              <td><code translate="No">rating</code></td>        
+              <td><code translate="No">{% raw %}{{metadata.custom_fields.rating}}{% endraw %}</code></td>
+              <td>Brightcove Library dependent</td>
+            </tr> 
+            <tr>
+              <td>Content Language</td>          
+              <td><code translate="No">language</code></td>
+              <td><code translate="No">{% raw %}{{metadata.custom_fields.language}}{% endraw %}</code></td>
+              <td>Brightcove Library dependent</td>
+            </tr>
+            <tr>
+              <td>Content ID</td>          
+              <td><code translate="No">content_id</code></td>
+              <td><code translate="No">{% raw %}{{metadata.video_id}} OR {{metadata.custom_fields.content_id}}{% endraw %}</code></td>
+              <td>Yes / Brightcove Library dependent</td>
+            </tr>
+            <tr>
+              <td>App Store URL</td>          
+              <td><code translate="No">app_store_url</code></td>
+              <td><code translate="No">{% raw %}{{metadata.custom_fields.app_store_url}}{% endraw %}</code></td>
+              <td>Brightcove Library dependent</td>
+            </tr>
+            <tr>
+              <td>[Optional] Additional Custom Fields</td>          
+              <td></td>
+              <td><code translate="No">{% raw %}{{metadata.custom_fields.field_name}}{% endraw %}</code></td>
+              <td>Brightcove Library dependent</td>
+            </tr>
+        </tbody>
+    </table>
+    <h5>Privacy</h5>
+    <p>To add the privacy-related macros to your ad tag, your implementation needs to collect the data from users and pass them to the player at runtime. With a standard implementation, each variable is defined as a global JavaScript variable with the same name within the page or app, allowing the player to access them and send them to the ad server when it makes ad requests.</p>
+    <p>If the variables are named differently within your page or app, ensure that the relevant macro name (<code translate="No">pageVariable.macro_name</code>) is updated to match. For example, you could define each variable within a &lt;script&gt; tag at the top of your page like this:</p>
+    <pre><code class="language-javascript" translate="No">var my_gdpr_variable = true;</code></pre>
+    <p>The player will then be able to retrieve the <code translate="No">gdpr</code> value of <code translate="No">true</code> via <code translate="No">{pageVariable.my_gdpr_variable}</code>.</p>
+
 </section>
 
 <section class="bcls-section">
