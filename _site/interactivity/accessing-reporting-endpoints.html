@@ -3634,7 +3634,7 @@
   </section>
   <section class="bcls-section">
     <h2 id="api-request">API request construction</h2>
-    <p>The API is invoked via GET operation to the Base API URL. The request must contain a valid <code>X-Hapyak-API-Key</code> header. Specific reports are requested by appending the name of the report and valid parameters to the Base API URL.</p>
+    <p>The API is invoked via GET operation to the Base API URL. The request must contain a valid <code>Authorization</code> header. Specific reports are requested by appending the name of the report and valid parameters to the Base API URL.</p>
     <p><strong>Results are not synchronously returned.</strong> The reporting API operation is asynchronous in that results may not be available when your request returns. In this case your request will be queued and you will need to poll, or try later, for results.</p>
     <p>Requests must always include <code>send_status=true</code> which forces the API to return HTTP 202 status while the reporting request is processing and then HTTP 200 with results when it is complete.</p>
     <p>To determine if you need to &quot;poll&quot; for results, examine the HTTP status code returned by the API. If it is &quot;202 Accepted&quot; your report is still being generated and you’ll need to repeat the request a little bit later to retrieve results. The results are returned with an HTTP 200 status code when they are complete. 
@@ -3762,40 +3762,40 @@
 import sys
 import time
 
-TIMEOUT = 120 # consider a report &ldquo;timed out&rdquo; if running &gt; 2
+TIMEOUT = 120 # consider a report "timed out" if running > 2
 
 minutes processing = True
 
-url = "https://interactivity-reporting.api.brightcove.com/api/reports/v2/project_engagement_summary_raw"
+url = "https://{BASE_DOMAIN}/api/reports/v2/project_engagement_summary_raw"
 
 # Reporting endpoint url
 
 querystring = {
-    "start": "2019-07-01", # begin date
-    "end": "2019-09-30", # end date
+    "start": "2023-07-01", # begin date
+    "end": "2023-07-31", # end date
     "format": "csv", # csv or JSON
     "send_status":"true"
     }
 headers = {
-    'X-Hapyak-API-Key': "YOUR-KEY-HERE",
+    'Authorization': "Bearer {Brightove Access Token}",
     'cache-control': "no-cache",
     }
 
 start_time = time.time()
 
 while processing:
-    if time.time() - start_time &gt; TIMEOUT:
-        print('Report timed-out') 
-        sys.exit(-1) 
-response = requests.request("GET", url, headers=headers, params=querystring) print('Result: {}'.format(response.status_code)) 
-if response.status_code == 200: 
-    processing = False 
-    print(response.text) 
-elif response.status_code == 202: 
-    print('sleep/recheck') 
-    time.sleep (10) 
-else: 
-    print('Something went wrong') 
+    if time.time() - start_time > TIMEOUT:
+        print('Report timed-out')
+        sys.exit(-1)
+response = requests.request("GET", url, headers=headers, params=querystring) print('Result: {}'.format(response.status_code))
+if response.status_code == 200:
+    processing = False
+    print(response.text)
+elif response.status_code == 202:
+    print('sleep/recheck')
+    time.sleep (10)
+else:
+    print('Something went wrong')
     sys.exit(-2)
     </code></pre>
     </section>
