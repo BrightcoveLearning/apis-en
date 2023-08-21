@@ -416,6 +416,8 @@ grandparent: Live API
     <p>Each processing region in the Redundant Group will have its own <code translate="No">status</code> object, keyed by region. You can see in this example that in the <code translate="No">us_west_2</code> processing region, the <code translate="No">on_air</code> job is <code translate="No">0b76bc73f92f46dc917bbe5061c0c633</code>.</p>
     
     <p>As a side note, the <code translate="No">probability</code> associated with the processing region will at this point always be <code translate="No">1</code>, but is included in the data model for future enhancements that will allow multiple processing regions with probabilities between 0 and 1, representing the approximate percentage of playback traffic that will use that region.</p>
+
+    <p>The <code translate="No">health</code> parameter is used by the Redundancy service to compare output processing times between jobs and estimate how many seconds of playback buffer should be available to players before a stall occurs. Auto failover occurs when the OnAir job's health is less than or equal to 0, and when in auto mode, the service will attempt to switch to another healthy job.</p>
     </section>
     
     <section class="bcls-section">
