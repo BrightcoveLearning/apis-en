@@ -1,0 +1,1888 @@
+openapi: 3.0.0
+x-bc-implicit-head: true
+x-bc-implicit-options: true
+x-bc-throttle-key: $bf_capture_account_id
+x-bc-upstream: 'http://backend_server'
+info:
+  title: Brightcove Interactivity API Reference
+  description: 'API for videocloud to access interactivity data'
+  version: 1.0.115-e554f8e
+  x-bc-studio: interactivity
+servers:
+  - url: 'https://interactivity.api.brightcove.com'
+    description: Production server
+  - url: 'https://interactivity.api.qa.brightcove.com'
+    description: QA server
+  - url: 'https://interactivity.api.stage.brightcove.com'
+    description: Staging server
+paths:
+  '/v1/accounts/{account_id}/projects':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets all projects for a specific account
+      description: Gets all projects for a specific account. It will return the first 10 projects by default.
+      tags:
+        - Projects
+      operationId: GetProjects
+      parameters:
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+        - $ref: '#/components/parameters/Title'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/OrderBy'
+        - $ref: '#/components/parameters/SoftDeleteRetrieval'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    post:
+      summary: Create a project for a specific account
+      description: Create a project for a specific account
+      tags:
+        - Projects
+      operationId: CreateProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          description: 'SUCCESS: The project was created'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Project'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/projects/counts':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets the number of projects for a specific account
+      description: Gets the number of projects for a specific account
+      tags:
+        - Projects
+      operationId: GetProjectCount
+      parameters:
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+        - $ref: '#/components/parameters/Title'
+        - $ref: '#/components/parameters/SoftDeleteRetrieval'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int64
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+  '/v1/accounts/{account_id}/projects/{id}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets a specific project from a specific account
+      description: Gets a specific project from a specific account
+      tags:
+        - Projects
+      operationId: GetProject
+      parameters:
+        - $ref: '#/components/parameters/IncludeTemplateAnnotations'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: '#/components/schemas/Project'
+                          - type: object
+                            properties:
+                              template_annotations:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/Annotation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    patch:
+      summary: Update an specific project from a specific account
+      description: Update an specific project from a specific account
+      tags:
+        - Projects
+      operationId: UpdateProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          description: 'SUCCESS: The project was updated'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Project'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  
+  '/v1/accounts/{account_id}/projects/{id}/{soft_delete}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/SoftDelete'
+    delete:
+      summary: Deletes a specific project from a specific account
+      description: Deletes a specific project from a specific account. Performs a soft delete by default. Use the request body to perform a hard delete.
+      tags:
+        - Projects
+      operationId: DeleteProject
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  
+  '/v1/accounts/{account_id}/projects/{id}/annotations':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets all annotations for a specific project
+      description: Gets all annotations for a specific project
+      tags:
+        - Project Annotations
+      operationId: GetProjectAnnotations
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Annotation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    post:
+      summary: Create an annotation for a project
+      description: Create an annotation for a project
+      tags:
+        - Project Annotations
+      operationId: CreateAnnotation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Annotation'
+      responses:
+        '200':
+          description: 'SUCCESS: The annotation was created'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Annotation'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/projects/{id}/annotations/{annotation_id}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/AnnotationId'
+    get:
+      summary: Gets a specific annotation for a specific project
+      description: Gets a specific annotation for a specific project
+      tags:
+        - Project Annotations
+      operationId: GetAnnotation
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Annotation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    patch:
+      summary: Update an annotation
+      description: Update an annotation
+      tags:
+        - Project Annotations
+      operationId: UpdateAnnotation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Annotation'
+      responses:
+        '200':
+          description: 'SUCCESS: The annotation was updated'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Annotation'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+    delete:
+      summary: Delete an annotation
+      description: Delete an annotation
+      tags:
+        - Project Annotations
+      operationId: DeleteAnnotation
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/templates':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets all templates for a specific account
+      description: Gets all templates for a specific account. It will return the first 10 templates by default.
+      tags:
+        - Templates
+      operationId: GetTemplates
+      parameters:
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+        - $ref: '#/components/parameters/Title'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/OrderBy'
+        - $ref: '#/components/parameters/SoftDeleteRetrieval'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Template'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    post:
+      summary: Create a template for an account
+      description: Create a template for an account
+      tags:
+        - Templates
+      operationId: CreateTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Template'
+      responses:
+        '200':
+          description: 'SUCCESS: The template was created'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Template'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/templates/counts':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets the count of templates for a specific account
+      description: Gets the count of templates for a specific account
+      tags:
+        - Templates
+      operationId: GetTemplateCount
+      parameters:
+        - $ref: '#/components/parameters/VideoId'
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+        - $ref: '#/components/parameters/Title'
+        - $ref: '#/components/parameters/SoftDeleteRetrieval'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int32
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+  '/v1/accounts/{account_id}/templates/{id}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets a specific template for an account
+      description: Gets a specific template for an account
+      tags:
+        - Templates
+      operationId: GetTemplate
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Template'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    patch:
+      summary: Update the template
+      description: Update the template
+      tags:
+        - Templates
+      operationId: UpdateTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Template'
+      responses:
+        '200':
+          description: 'SUCCESS: The template was updated'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Template'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all 
+  '/v1/accounts/{account_id}/templates/{id}/{soft_delete}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/SoftDelete'
+    delete:
+      summary: Deletes a template
+      description: Deletes a template. Performs a soft delete by default. Use the request body to perform a hard delete.
+      tags:
+        - Templates
+      operationId: DeleteTemplate
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/templates/{id}/annotations':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets all annotations for a specific template
+      description: Gets all annotations for a specific template
+      tags:
+        - Template Annotations
+      operationId: GetTemplateAnnotations
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Annotation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    post:
+      summary: Create an annotation for a template
+      description: Create an annotation for a template
+      tags:
+        - Template Annotations
+      operationId: CreateTemplateAnnotation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Annotation'
+      responses:
+        '200':
+          description: 'SUCCESS: The annotation was created'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Annotation'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/templates/{id}/annotations/{annotation_id}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/AnnotationId'
+    get:
+      summary: Gets a specific annotation for a specific template
+      description: Gets a specific annotation for a specific template
+      tags:
+        - Template Annotations
+      operationId: GetTemplateAnnotationById
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Annotation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    patch:
+      summary: Update an annotation
+      description: Update an annotation
+      tags:
+        - Template Annotations
+      operationId: UpdateTemplateAnnotationById
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Annotation'
+      responses:
+        '200':
+          description: 'SUCCESS: The annotation was updated'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Annotation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+    delete:
+      summary: Delete an annotation
+      description: Delete an annotation
+      tags:
+        - Template Annotations
+      operationId: DeleteTemplateAnnotationById
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/experiences':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets all experiences for a specific account
+      description: Gets all experiences for a specific account
+      tags:
+        - Experiences
+      operationId: GetExperiences
+      parameters:
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+        - $ref: '#/components/parameters/Title'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/OrderBy'
+        - $ref: '#/components/parameters/SoftDeleteRetrieval'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Experience'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    post:
+      summary: Create a experience for an account
+      description: Create a experience for an account
+      tags:
+        - Experiences
+      operationId: CreateExperience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Experience'
+      responses:
+        '200':
+          description: 'SUCCESS: The experience was created'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Experience'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/experiences/counts':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets the count of experiences for a specific account
+      description: Gets the count of experiences for a specific account
+      tags:
+        - Experiences
+      operationId: GetExperienceCount
+      parameters:
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+        - $ref: '#/components/parameters/Title'
+        - $ref: '#/components/parameters/SoftDeleteRetrieval'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int32
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+  '/v1/accounts/{account_id}/experiences/{id}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets a specific experience for an account
+      description: Gets a specific experience for an account
+      tags:
+        - Experiences
+      operationId: GetExperience
+      parameters:
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+        - $ref: '#/components/parameters/Title'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Experience'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    patch:
+      summary: Update the experience
+      description: Update the experience
+      tags:
+        - Experiences
+      operationId: UpdateExperience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Experience'
+      responses:
+        '200':
+          description: 'SUCCESS: The Experience was updated'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Experience'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all   
+  '/v1/accounts/{account_id}/experiences/{id}/{soft_delete}': 
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/SoftDelete'
+    delete:
+      summary: Deletes an experience
+      description: Deletes an experience. Performs a soft delete by default. Use the request body to perform a hard delete.
+      tags:
+        - Experiences
+      operationId: DeleteExperience
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/experiences/{id}/scorm_download':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets scorm download
+      description: Gets scorm zip file for an experience
+      tags:
+        - Experiences
+      operationId: GetExperienceScormDownload
+      parameters:
+        - name: scorm_version
+          in: query
+          description: select scorm version to download.  Defaults to 2004
+          schema:
+            type: string
+            enum:
+              - v1_2
+              - v2004
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+  '/v1/accounts/{account_id}/folders':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets all folders for a specific account
+      description: Gets all folders for a specific account
+      tags:
+        - Folders
+      operationId: GetFolders
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Folder'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/read
+    post:
+      summary: Create a folder for an account
+      description: Create a folder for an account
+      tags:
+        - Folders
+      operationId: CreateFolder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Folder'
+      responses:
+        '200':
+          description: 'SUCCESS: The folder was created'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Folder'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/folders/{id}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets a specific folder for an account
+      description: Gets a specific folder for an account
+      tags:
+        - Folders
+      operationId: GetFolder
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Folder'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+    patch:
+      summary: Rename a folder
+      description: Rename a folder
+      tags:
+        - Folders
+      operationId: RenameFolder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                id:
+                  type: string
+                  description: ID
+                  readOnly: true
+                name:
+                  type: string
+                  description: 'The name of the folder'
+      responses:
+        '200':
+          description: 'SUCCESS: The folder was renamed'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Folder'
+                      message:
+                        type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+    delete:
+      summary: Delete a folder
+      description: Delete a folder
+      tags:
+        - Folders
+      operationId: DeleteFolder
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/folders/{id}/contents':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets the contents for a specific folder for an account
+      description: Gets the contents for a specific folder for an account
+      tags:
+        - Folders
+      operationId: GetFolderContents
+      parameters:
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/OrderBy'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      items:
+                        oneOf:
+                          - type: array
+                            items:
+                              $ref: '#/components/schemas/Project'
+                          - type: array
+                            items:
+                              $ref: '#/components/schemas/Template'
+                          - type: array
+                            items:
+                              $ref: '#/components/schemas/Experience'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/folders/{id}/contents/counts':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+    get:
+      summary: Gets the number of content items in a specific folder for an account
+      description: Gets the number of content items for a specific folder for an account
+      tags:
+        - Folders
+      operationId: GetFolderContentsCounts
+      parameters:
+        - $ref: '#/components/parameters/Tag'
+        - $ref: '#/components/parameters/TagMatchMode'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Count'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/folders/{id}/contents/{content_id}':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/ContentId'
+    put:
+      summary: Moves a content item to a folder
+      description: Moves a content item to a specific folder for an account
+      tags:
+        - Folders
+      operationId: MoveContentToFolder
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+    delete:
+      summary: Removes a content item from a folder
+      description: Removes a content item from a specific folder for an account
+      tags:
+        - Folders
+      operationId: RemoveContentFromFolder
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+
+components:
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      description: account id
+      required: true
+      schema:
+        type: string
+    Id:
+      name: id
+      in: path
+      description: id for item
+      required: true
+      schema:
+        type: string
+    AnnotationId:
+      name: annotation_id
+      in: path
+      description: annotation id
+      required: true
+      schema:
+        type: string
+    IncludeTemplateAnnotations:
+      name: include_template_annotations
+      in: query
+      description: Set this to true to include template annotations in the response. Default is false.
+      required: false
+      schema:
+        type: boolean
+    ContentId:
+      name: content_id
+      in: path
+      description: id for a Project, Template, or Experience
+      required: true
+      schema:
+        type: string
+    VideoId:
+      name: video_id
+      in: query
+      description: Filter by video id
+      schema:
+        type: string
+    ProjectId:
+      name: project_id
+      in: query
+      description: Filter by project id
+      schema:
+        type: string
+    Tag:
+      name: tag
+      in: query
+      description: Filter by tag, multiple tags can be specified by using tag=tag1&tag=tag2,  AND / OR is done by `tag_match_mode` parameter
+      schema:
+        type: string
+    TagMatchMode:
+      name: tag_match_mode
+      in: query
+      description: Sets `tag` filter to be `all` or `any`.  Defaults to `any` if not set.
+      schema:
+        type: string
+        enum: [ all, any ]
+    Title:
+      name: title
+      in: query
+      description: Filter by title
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: Defines the page to show/list
+      required: false
+      schema: 
+        type: integer
+        default: 1
+    PageSize:
+      name: pageSize
+      in: query
+      description: Sets the number of items to return per page
+      required: false
+      schema: 
+        type: integer
+        default: 10
+    SortBy:
+      name: sort_by
+      in: query
+      description: Defines the field to be sorted
+      required: false
+      schema: 
+        type: string
+        default: 'updated_at'
+    OrderBy:
+      name: order_by
+      in: query
+      description: Sets the sort order (asc or desc)
+      required: false
+      schema: 
+        type: string
+        default: desc
+    SoftDeleteRetrieval:
+      name: soft_delete
+      in: query
+      description: If false, retrieves only non-deleted items. If true, retrieves only deleted items.
+      required: false
+      schema:
+        type: boolean
+        default: false
+    SoftDelete:
+      name: soft_delete
+      in: path
+      description: If true, soft deletes the item. If false, hard deletes the item.
+      required: true
+      schema:
+        type: boolean
+        default: true
+    StartTime:
+      name: start_time
+      in: query
+      description: date range start time
+      required: false
+      schema:
+        type: string
+        format: date-time
+    EndTime:
+      name: end_time
+      in: query
+      description: date range end time
+      required: false
+      schema:
+        type: string
+        format: date-time
+  schemas:
+    Project:
+      title: Project
+      description: Project object
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID
+          readOnly: true
+        title:
+          type: string
+          description: title
+        video_id:
+          type: string
+          description: Video Id
+        tags:
+          type: array
+          items:
+            type: string
+            example: ['Tag1', 'Tag2']
+          description: tags
+        template_ids:
+          type: array
+          items: 
+            type: string
+            example: ['5f6e34f5759403001663bf6a']
+          description: template ids
+        annotations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Annotation'
+        show_questions_once:
+          type: boolean
+        css_url:
+          type: string
+          format: uri
+        workflow_state:
+          type: boolean
+        created_at:
+          type: string
+          description: created date for the item
+          readOnly: true
+        updated_at:
+          type: string
+          description: updated date for the item
+          readOnly: true
+        created_by:
+          description: created by for the item
+          readOnly: true
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID
+              readOnly: true
+            email:
+              type: string
+              description: email 
+            type:
+              type: string
+              enum: [user, unknown]
+              description: type 
+        updated_by:
+          description: updated by for the item
+          readOnly: true
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID
+              readOnly: true
+            email:
+              type: string
+              description: email 
+            type:
+              type: string
+              enum: [user, unknown]
+              description: type 
+      required:
+        - title
+        - video_id
+    Template:
+      title: Template
+      description: Template object
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID
+          readOnly: true
+        title:
+          type: string
+          description: title
+        video_id:
+          type: string
+          description: Video Id
+        tags:
+          type: array
+          items:
+            type: string
+            example: ['Tag1', 'Tag2']
+          description: tags
+        apply_to_project_tags:
+          type: array
+          items:
+            type: string
+            example: ['Tag1', 'Tag2']
+          description: template will be applied to projects that have any of these tags
+        apply_to_all_projects:
+          type: boolean
+          description: if true, template will be applied to all projects
+          default: false
+        annotations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Annotation'
+        created_at:
+          type: string
+          description: created date for the item
+          readOnly: true
+        updated_at:
+          type: string
+          description: updated date for the item
+          readOnly: true
+        created_by:
+          description: created by for the item
+          readOnly: true
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID
+              readOnly: true
+            email:
+              type: string
+              description: email 
+            type:
+              type: string
+              enum: [user, unknown]
+              description: type 
+        updated_by:
+          description: updated by for the item
+          readOnly: true
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID
+              readOnly: true
+            email:
+              type: string
+              description: email 
+            type:
+              type: string
+              enum: [user, unknown]
+              description: type 
+      required:
+        - title
+    Annotation:
+      title: Annotation
+      description: Annotation object
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID
+          readOnly: true
+        type:
+          type: string
+          enum: [contents, iframe, pop, quiz, bookmark, ontime, drawing, image, hotlink]
+          description: type of annotation
+        properties:
+          type: object
+          description: properties of the annotation
+          default: {}
+        start_time:
+          type: object
+          description: start time of the annotation
+          properties:
+            value:
+              type: number
+              description: value of the timecode
+              readOnly: false
+            units:
+              type: string
+              enum: [percent, seconds]
+              description: units of the timecode
+              default: seconds
+          required:
+            - value
+            - units
+        duration:
+          type: object
+          description: duration of the annotation
+          properties:
+            value:
+              type: number
+              description: value of the timecode
+            units:
+              type: string
+              enum: [percent, seconds, infinite]
+              description: units of the timecode
+              default: seconds
+          required:
+            - value
+            - units
+        created_at:
+          type: string
+          description: created date for the item
+          readOnly: true
+        updated_at:
+          type: string
+          description: updated date for the item
+          readOnly: true
+      required:
+        - type
+        - properties
+        - start_time
+        - duration
+    Experience:
+      title: Experience
+      description: Experience object
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID
+          readOnly: true
+        title:
+          type: string
+          description: The title of the experience
+        type:
+          type: string
+          enum: [slidesync, lesson, branching, off_video_chapters]
+          description: The type of experience
+        tags:
+          type: array
+          items:
+            type: string
+            example: ['Tag1', 'Tag2']
+          description: User-assignedd tags for organizing experiences
+        playlist:
+          type: array
+          items:
+            type: string
+            example: ['5f6e34f5759403001663bf6a']
+          description: The ordered list of projects for playback
+        playback:
+          type: object
+          properties:
+            auto_play:
+              type: boolean
+              default: false
+            auto_progress:
+              type: boolean
+              default: false
+        configuration:
+          type: object
+          properties:
+            layout:
+              type: string
+              enum: [playlist_under_video, playlist_full_width, off_video_chapters, video_only]
+              description: For slide sync experience only
+            default_zoom:
+              type: number
+              minimum: 20
+              maximum: 80
+              description: For slide sync experience only
+            grading_algorithm:
+              type: string
+              enum: [percent_watched, gate_until_watched, quiz_results]
+              description: For lesson experience
+            pass_fail_grading:
+              type: boolean
+              description: For lesson experience
+            completion_threshold:
+              type: number
+              minimum: 0
+              maximum: 100
+              description: For lesson experience
+        branding:
+          type: object
+          properties:
+            header_html:
+              type: string
+            footer_html:
+              type: string
+            background_image_url:
+              type: string
+              format: uri
+        css_url:
+          type: string
+          format: uri
+        landing_page_code:
+          type: string
+        created_at:
+          type: string
+          description: created date for the item
+          readOnly: true
+        updated_at:
+          type: string
+          description: updated date for the item
+          readOnly: true
+        created_by:
+          description: created by for the item
+          readOnly: true
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID
+              readOnly: true
+            email:
+              type: string
+              description: email 
+            type:
+              type: string
+              enum: [user, unknown]
+              description: type 
+        updated_by:
+          description: updated by for the item
+          readOnly: true
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID
+              readOnly: true
+            email:
+              type: string
+              description: email 
+            type:
+              type: string
+              enum: [user, unknown]
+              description: type 
+      required:
+        - title
+        - type
+        - playlist
+    Quiz:
+      title: Quiz
+      description: Quiz object
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID
+          readOnly: true
+        project_id:
+          type: string
+          description: ID
+          readOnly: true
+        annotation_id:
+          type: string
+          description: The globally unique quiz annotation identifier
+        submitted_at:
+          type: string
+          description: The time when these quiz answers were submitted
+        total_question_count:
+          type: number
+          description: The total number of questions in the quiz (not all questions may have been answered)
+        answers:
+          type: array
+          description: The submitted questions and answers
+          items:
+            properties:
+              question:
+                type: string
+                description: The text of the question
+              answer:
+                type: string
+                description: The text of the submitted answer
+              is_correct:
+                type: boolean
+                description: Indicator of whether the question was answered correctly
+              final:
+                type: boolean
+                description: nothing
+            required:
+              - question
+              - answer
+              - is_correct
+              - final
+        created_at:
+          type: string
+          description: created date for the item
+          readOnly: true
+        updated_at:
+          type: string
+          description: updated date for the item
+          readOnly: true
+        created_by:
+          type: string
+          description: created by for the item
+          readOnly: true
+        updated_by:
+          type: string
+          description: updated by for the item
+          readOnly: true
+      required:
+        - account_id
+        - user_id
+        - project_id
+        - annotation_id
+        - submitted_at
+        - answers
+    Folder:
+      title: Folder
+      description: Folder object
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID
+          readOnly: true
+        name:
+          type: string
+          description: The name of the folder
+        content_type:
+          type: string
+          enum: [project, template, experience]
+          description: The type of content the folder can hold
+        content_count:
+          type: integer
+          format: int32
+          readOnly: true
+        created_at:
+          type: string
+          description: created date for the item
+          readOnly: true
+        updated_at:
+          type: string
+          description: updated date for the item
+          readOnly: true
+        created_by:
+          type: string
+          description: author id of the created item
+          readOnly: true
+        updated_by:
+          type: string
+          description: updated by for the item
+          readOnly: true
+      required:
+        - name
+        - content_type
+    Count:
+      title: Count
+      description: Count Response Object
+      type: object
+      properties:
+        data:
+          type: number
+          description: number of items
+          readOnly: true
+    JsonPatchBody:
+      type: array
+      items:
+        $ref: "#/components/schemas/JsonPatchDocument"
+    JsonPatchDocument:
+      type: object
+      description: A JSONPatch document as defined by RFC 6902
+      required:
+        - "op"
+        - "path"
+      properties:
+        op:
+          type: string
+          description: The operation to be performed
+          enum:
+            - "add"
+            - "remove"
+            - "replace"
+            - "move"
+            - "copy"
+            - "test"
+        path:
+          type: string
+          description: A JSON-Pointer
+        value:
+          type: object
+          description: The value to be used within the operations.
+        from:
+          type: string
+          description: A string containing a JSON Pointer value.
+    Widget:
+      title: Widget
+      description: Widget Object
+      type: object
+      properties:
+        name:
+          type: string
+          description: Widget Name
+        src:
+          type: string
+          description: Widget location URL
+        id:
+          type: integer
+        details:
+          type: object
+          description: Specific details for the widget
+          properties:
+            displayedName:
+              type: string
+            prevImg:
+              type: string
+            price:
+              type: string
+              description: Widget version
+            description:
+              type: string
+            infoTitle:
+              type: string
+        default_configuration:
+          type: object
+          description: Specific widget default configurations
+  responses:
+    Unauthorized:
+      description: 'UNAUTHORIZED: Authentication failed'
+    NotFound:
+      description: 'NOT FOUND: Specified item was not found'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: object
+                properties:
+                  message:
+                    type: string
+    BadRequest:
+      description: 'Bad Request: Validation Failed'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+    SuccessMessage:
+      description: 'SUCCESS'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
+  securitySchemes:
+    BC_OAuth2:
+      type: oauth2
+      description: 'Brightcove OAuth API. See the [support documentation](https://support.brightcove.com/oauth-api) or [Getting Access Tokens](https://support.brightcove.com/oauth-api-sample-get-access-token) to learn more'
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://oauth.brightcove.com/v4/access_token'
+          scopes:
+            video-cloud/interactivity/read: Read
+            video-cloud/interactivity/all: All
