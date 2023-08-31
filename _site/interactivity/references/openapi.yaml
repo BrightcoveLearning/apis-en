@@ -196,7 +196,6 @@ paths:
       security:
         - BC_OAuth2:
             - video-cloud/interactivity/all
-  
   '/v1/accounts/{account_id}/projects/{id}/{soft_delete}':
     parameters:
       - $ref: '#/components/parameters/AccountId'
@@ -218,7 +217,6 @@ paths:
       security:
         - BC_OAuth2:
             - video-cloud/interactivity/all
-  
   '/v1/accounts/{account_id}/projects/{id}/annotations':
     parameters:
       - $ref: '#/components/parameters/AccountId'
@@ -1497,7 +1495,11 @@ components:
         properties:
           type: object
           description: properties of the annotation
-          default: {}
+          properties:
+            popcorn:
+              $ref: '#/components/schemas/PopcornProperties'
+            custom_configuration:
+              $ref: '#/components/schemas/customeConfigurations'
         start_time:
           type: object
           description: start time of the annotation
@@ -1777,67 +1779,194 @@ components:
           type: number
           description: number of items
           readOnly: true
-    JsonPatchBody:
-      type: array
-      items:
-        $ref: "#/components/schemas/JsonPatchDocument"
-    JsonPatchDocument:
+    PopcornProperties:
+      title: Popcorn
+      description: Properties of popcorn
       type: object
-      description: A JSONPatch document as defined by RFC 6902
-      required:
-        - "op"
-        - "path"
       properties:
-        op:
+        start:
+          type: number
+        end:
+          type: number
+        mode:
           type: string
-          description: The operation to be performed
-          enum:
-            - "add"
-            - "remove"
-            - "replace"
-            - "move"
-            - "copy"
-            - "test"
-        path:
+        duration:
+          type: number
+        environment:
           type: string
-          description: A JSON-Pointer
-        value:
+        _duration:
+          type: number
+        text:
+          type: string
+        transitionClass:
+          type: string
+        left:
+          type: string
+        top:
+          type: string
+        width:
+          type: string
+        columns:
+          type: number
+        expandedState:
+          type: string
+        title:
+          type: string
+        showResults:
+          type: boolean
+        showRetry:
+          type: boolean
+        showReview:
+          type: boolean
+        showSkip:
+          type: boolean
+        quiz:
           type: object
-          description: The value to be used within the operations.
-        from:
+          properties:
+            id:
+              type: string
+            pages:
+              type: array
+              items:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  id:
+                    type: number
+                  type:
+                    type: string
+                  answers:
+                    type: array
+                    items:
+                      properties:
+                        text:
+                          type: string
+                        type:
+                          type: string
+            randomizeAnswers:
+              type: boolean
+            showSkip:
+              type: boolean
+            showResults:
+              type: boolean
+            showRetry:
+              type: boolean
+            showReview:
+              type: boolean
+            showHints:
+              type: boolean
+            thankYouText:
+              type: string
+        onClick:
+          type: object
+        original:
           type: string
-          description: A string containing a JSON Pointer value.
-    Widget:
-      title: Widget
-      description: Widget Object
-      type: object
-      properties:
-        name:
+        url:
           type: string
-          description: Widget Name
+        creationEnvironment:
+          type: string
+        height:
+          type: string
+        noSort:
+          type: boolean
         src:
           type: string
-          description: Widget location URL
-        id:
-          type: integer
-        details:
+        customWidget:
+          type: string
+        drawing:
           type: object
-          description: Specific details for the widget
-          properties:
-            displayedName:
-              type: string
-            prevImg:
-              type: string
-            price:
-              type: string
-              description: Widget version
-            description:
-              type: string
-            infoTitle:
-              type: string
-        default_configuration:
+        pause:
+          type: number
+        precondition:
+          type: string
+        gate:
+          type: boolean
+        scale:
+          type: boolean
+    customeConfigurations:
+      title: Custome Configurations
+      description: Custome Configurations in annotations
+      type: object
+      properties:
+        inactiveColor:
           type: object
-          description: Specific widget default configurations
+        fontColor:
+          type: object
+        backgroundColor:
+          type: object
+        activeColor:
+          type: object
+        thumbsDownThreshold:
+          type: object
+        beginning:
+          type: object
+        middle:
+          type: object
+        prompt:
+          type: object
+        end:
+          type: object
+        into:
+          type: object
+        iconGraphic:
+          type: object
+        thumbsUpThreshold:
+          type: object
+        showThumbsUpCount:
+          type: object
+        showThumbsDownCount:
+          type: object
+        outro:
+          type: object
+        pollData:
+          type: object
+        formWidth:
+          type: object
+        icon-picker:
+          type: object
+        formPosition:
+          type: object
+        button-text:
+          type: object
+        font-color:
+          type: object
+        background-color:
+          type: object
+        formSource:
+          type: object
+        disableAnnotationListEdit:
+          type: object
+        title:
+          type: object
+        sub-title:
+          type: object
+        first-name:
+          type: object
+        last-name:
+          type: object
+        user-id:
+          type: object
+        email-address:
+          type: object
+        option-one-text:
+          type: object
+        option-one:
+          type: object
+        text-color:
+          type: object
+        button-background-color:
+          type: object
+        button-text-color:
+          type: object
+        skip:
+          type: object
+        gate:
+          type: object
+        privacy:
+          type: object
+        privacylink:
+          type: object
   responses:
     Unauthorized:
       description: 'UNAUTHORIZED: Authentication failed'
