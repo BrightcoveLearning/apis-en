@@ -39,8 +39,7 @@ grandparent: Live API
       "token_name": "AKAMAI_TOKEN_NAME",
       "media": {
         "start_time": "now",
-        "end_time": 1495697388,
-        "ttl": 60
+        "ttl": 600
       }
     }
   }]</code></pre>
@@ -61,15 +60,73 @@ grandparent: Live API
 			<td >either <code translate="No">now</code> or a unix/posix start time</td>
 		</tr>
 		<tr>
-			<td ><code translate="No">end_time</code></td>
-			<td >unix/posix end time</td>
-		</tr>
-		<tr>
 			<td ><code translate="No">ttl</code></td>
 			<td >number in seconds for time to live</td>
 		</tr>
+		<tr>
+			<td ><code translate="No">end_time</code></td>
+			<td >unix/posix end time</td>
+		</tr>
+		
 	</tbody>
 </table>
+<aside class="bcls-aside bcls-aside--information">The media authentication properties require either the <code translate="No">end_time</code> or <code translate="No">ttl</code> to be specified. However, providing both is unsupported. This does not produce an error, but the <code translate="No">ttl</code> will be checked first, and the <code translate="No">end_time</code> will be ignored.</aside>
+
+<p>Optionally, specify the playlist properties in the request body:</p>
+
+<pre class="line-numbers">
+	<code class="language-json" translate="No">"add_cdns": [{
+		"label": "My CDN",
+		"prepend": "mycdn-a.akamaihd.net",
+		"protocol": "https",
+		"vendor": "akamai",
+		"token_auth": {
+		  "auth_type": "Akamai2.0",
+		  "key": "AKAMAI_TOKEN_PASSWORD",
+		  "token_name": "AKAMAI_TOKEN_NAME",
+		  "media": {
+			"start_time": "now",
+			"ttl": 600
+		  },
+		  "media_playlist": {
+			"start_time": "now",
+			"ttl": 3600
+		  },
+		  "master_playlist": {
+			"start_time": "now",
+			"ttl": 3600
+		  }
+		}
+	  }]</code></pre>
+
+	  <p>The relevant fields are described in the following table:</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Playlist properties fields for Live Jobs</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td ><code translate="No">media</code></td>
+			<td >media segment authorization.</td>
+		</tr>
+		<tr>
+			<td ><code translate="No">media_playlist</code></td>
+			<td >media playlist authorization, defaults to indefinite.</td>
+		</tr>
+		<tr>
+			<td ><code translate="No">master_playlist</code></td>
+			<td >master playlist (start URL) authorization, defaults to <code translate="No">media</code>.</td>
+		</tr>
+		
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--tip">Note that smaller authorization windows can cause playback failures when clients cache playback URLs, particularly the <code translate="No">media_playlist</code>.</aside>
 
 <h3>Step 2: After the live job is created</h3>
 
