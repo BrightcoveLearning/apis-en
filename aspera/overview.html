@@ -34,13 +34,13 @@ parent: Aspera
         <li>Aspera is only available to customers with Elite and Ultimate packages. If you are interested in this function, you can reach out to your Customer Success Manager for more details.</li>
       </ul>
     </aside>
-    <p>The basic workflow for using Aspera to transfer your files to Video Cloud as shown below. Note that you will need to install the IBM Aspera Connect extension for your browser. The first time you login to Aspera, the dialog below will appear and guide you through the steps - see <a href="https://www.ibm.com/docs/en/aspera-on-cloud?topic=installation-installing-aspera-connect">Installing Aspera Connect</a> for more information.</p>
-    <figure class="bcls-figure">
+    <p>The basic workflow for using Aspera to transfer your files to Video Cloud as shown below. Note that you will need to install the IBM Aspera Desktop Client. For more information, see <a href="https://www.ibm.com/docs/en/asdc/4.0?topic=iu-installing-desktop-client">Installing Desktop Client</a>.</p>
+    <!-- <figure class="bcls-figure">
       <img class="bcls-image" src="/assets/images/aspera/aspera-pop-up.png" alt="Aspera Dialog">
       <figcaption class="bcls-caption--image">Aspera Dialog</figcaption>
-    </figure>
+    </figure> -->
     <ol class="bcls-tasklist-restart">
-      <li>Go to <a href="https://ingest-transfer.brightcove.com/">https://ingest-transfer.brightcove.com/</a> and login using you Video Cloud credentials with the proper permissions (see <a href="#Credentials">Credentials</a> below).</li>
+      <li>Go to <a href="http://ingest-transfer-aspera.brightcove.com/">http://ingest-transfer-aspera.brightcove.com/</a> and login using you Video Cloud credentials with the proper permissions (see <a href="#Credentials">Credentials</a> below).</li>
       <li>Upload the files you want to ingest into Video Cloud.</li>
       <li>Wait for the transfer to finish</li>
       <li>Monitor the rest of the ingestion in Video Cloud using <a href="https://studio.support.brightcove.com/media/index.html">Studio</a> or the <a href="/cms/index.html">CMS API</a>.</li>
@@ -72,4 +72,16 @@ parent: Aspera
   </section>
   {% include s-apis-general/mass-ingest.html %}
 
+  <section class="bcls-section">
+    <h2 id="Limitations">Limitations</h2>
+    <p>The list below shows the current limitations of Aspera Host for ingesting videos.</p>
+    <ul>
+      <li>If you try to upload a file with an existing name, it will not be uploaded (be it a video or an XML file).</li>
+      <li>Aspera considers the Upload and Upload With Metadata permissions to upload only videos or videos with metadata, respectively.</li>
+      <li>If files with the same name need to be uploaded, they can be uploaded in different folders to avoid name validation and the file being ingested. </li>
+      <li>Aspera v1.4 can only be accessed through its CLI and the Desktop Client. The webUI has already been deprecated in this version.</li>
+      <li>Suppose an XML is uploaded, and the video is not yet in the bucket. In that case, the video is not ingested until the video(s) are in the bucket, and vice versa: if the videos are uploaded but the XML does not yet exist, they will be ingested until the XML is in the bucket.</li>
+      <li>If you need to use a specific profile, upload the video with its metadata (the XML). The account's default profile will be used if a video is ingested without metadata.</li>
+    </ul>
+  </section>
 </article>
