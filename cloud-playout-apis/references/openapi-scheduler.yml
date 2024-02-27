@@ -1,0 +1,1295 @@
+openapi: 3.0.0
+x-bc-implicit-head: true
+x-bc-implicit-options: true
+x-bc-upstream: 'http://backend_server'
+info:
+  title: EPG Scheduling Backend API
+  version: "1.0"
+  description: |-
+    Reference for the Brightcove EPG Scheduling Backend API, used to access and manage your EPG schedules. To test API requests, you can use our [API Testing Tools](/getting-started/concepts-testing-tools-brightcove-apis.html). For permissions needed for OAuth credentials, see [API Operations](/oauth/guides/api-operations-client-credentials-requests.html). For information on authenticating API requests, see the [OAuth Overview](/oauth/getting-started/overview-oauth-api-v4.html).
+
+    **Base URL**: https://showtime.api.brightcove.com
+  x-bc-access: public
+servers:
+  - url: https://showtime.api.brightcove.com/v1
+    description: The Showtime API server in QA with OAuth.
+tags:
+  - name: Program service
+    description: API for managing EPG programs.
+  - name: Schedule service
+    description: API for managing EPG schedules.
+  - name: Slot service
+    description: API for managing EPG slots.
+paths:
+  /accounts/{account_id}/programs:
+    post:
+      tags:
+        - Program service
+      summary: Create program
+      description: Creates a new program along with a draft and a main schedule
+      operationId: createProgram
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProgram'
+        required: true
+      responses:
+        "201":
+          description: Program created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        "400":
+          description: "Invalid data supplied, either in filter or request body."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "422":
+          description: "Constraint validation errors such existing reference id."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/create
+  /accounts/{account_id}/programs/{program_id}/actions:
+    post:
+      tags:
+        - Program service
+      summary: Program Actions
+      description: This Endpoint is intended to run special actions such as publish, copy slots, move slots
+      operationId: postAction
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ProgramId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Action'
+        required: true
+      responses:
+        "204":
+          description: No content, when action succeeded
+        "400":
+          description: "Invalid data supplied or validation errors"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "409":
+          description: "If any business logic check failed, such overlap rules"
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/create
+  /accounts/{account_id}/schedules:
+    get:
+      tags:
+        - Schedule service
+      summary: Get Schedules
+      description: Get a paginated list of schedules for an account
+      operationId: getSchedules
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: main
+          in: query
+          description: Filters main schedule
+          required: false
+          schema:
+            type: boolean
+        - name: program_id
+          in: query
+          description: Schedules of program id
+          required: false
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        "200":
+          description: List of schedules.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+        "400":
+          description: "Invalid data supplied, either in filter or request body."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/read
+    post:
+      tags:
+        - Schedule service
+      summary: Create Schedule
+      description: Create a new Schedule for an account
+      operationId: createSchedule
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+        required: true
+      responses:
+        "201":
+          description: Schedule created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        "400":
+          description: "Invalid data supplied, either in filter or request body."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "422":
+          description: "Constraint validation errors such existing reference id."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/create
+  /accounts/{account_id}/schedules/{schedule_id}/slots:
+    get:
+      tags:
+        - Slot service
+      summary: Get Slots
+      description: Gets a paginated list of slots for a schedule
+      operationId: getScheduleSlots
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - name: period
+          in: query
+          description: "Query parameter to filter slots with time. <br> Format as <b>[{start}
+           TO {end}]</b> where <i>{start}</i> and <i>{end}</i> are UTC ISO-8601 timestamp. Can be wildcard
+           *."
+          required: false
+          schema:
+            type: string
+            example: "[2023-04-26T00:00:00Z TO 2023-05-17T00:00:00Z]"
+        - name: status
+          in: query
+          description: Query parameter to filter slots with status.
+          required: false
+          schema:
+            type: string
+            enum:
+              - INACTIVE
+              - ACTIVE
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        "400":
+          description: "Invalid data supplied, either in filter or request body."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+        "200":
+          description: "One page of slots, ordered by start time."
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: The total count of slots based on the query parameters
+            X-Limit:
+              schema:
+                type: string
+              description: Contains the provided or default limit used por pagination
+            X-Offset:
+              schema:
+                type: string
+              description: Contains the provided or default offset used por pagination
+            Access-Control-Expose-Headers:
+              schema:
+                type: string
+              description: Exposes pagination headers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slot'
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/read
+    post:
+      tags:
+        - Slot service
+      summary: Create Slot
+      description:  Create a new Slot for a schedule
+      operationId: createSlot
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - name: on_overlap
+          in: query
+          description: "Query parameter to indicate how to handle overlapping when creating a
+                        slot. <br>If value is not provided, Schedule default <i>onOverlap</i> property is used."
+          required: false
+          schema:
+            type: string
+            enum:
+              - REPLACE
+              - REJECT
+              - IGNORE
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Slot'
+        required: true
+      responses:
+        "201":
+          description: Slot created successfully.
+          headers:
+            X-BCOV-WARN-OVERLAP:
+              schema:
+                type: array
+                items:
+                  type: integer
+              description: If present, contains the id's of the slots overlapping with the created slot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slot'
+        "400":
+          description: "Invalid data supplied, either in filter or request body."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource (account or schedule) you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/create
+    delete:
+      tags:
+        - Slot service
+      summary: Delete Slots
+      description: Delete all slots under the schedule
+      operationId: deleteAllSlots
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - name: period
+          in: query
+          description: "Query parameter to filter slots with time. <br> Format as <b>[{start}
+           TO {end}]</b> where <i>{start}</i> and <i>{end}</i> are UTC timestamp to seconds. Can be wildcard
+           *."
+          required: false
+          schema:
+            type: string
+            example: "[2023-04-26T00:00:00Z TO 2023-05-17T00:00:00Z]"
+      responses:
+        "204":
+          description: Slots deleted successfully.
+        "400":
+          description: "Invalid data supplied, either in filter or request body."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource (account or schedule) you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/delete
+  /accounts/{account_id}/schedules/{schedule_id}:
+    get:
+      tags:
+        - Schedule service
+      summary: Get Schedule by ID
+      description: Get a schedule by its id
+      operationId: getScheduleById
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+      responses:
+        "200":
+          description: Schedule data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/read
+    delete:
+      tags:
+        - Schedule service
+      summary: Delete Schedule
+      description: Delete a schedule by its id
+      operationId: deleteSchedule
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - name: remove_slots
+          in: query
+          description: "Query parameter of boolean value. <br>If set to true, it will delete all slots
+                        under the schedule. Otherwise, 
+                        it will return error if there are slots under this schedule."
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "204":
+          description: Schedule deleted successfully.
+        "400":
+          description: "Validation failed, such as cannot delete ACTIVE schedule."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/delete
+    patch:
+      tags:
+        - Schedule service
+      summary: Update Schedule
+      description: Partial update to a schedule
+      operationId: updateSchedule
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+        required: true
+      responses:
+        "200":
+          description: Updated schedule data successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        "400":
+          description: Invalid data supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "409":
+          description: Optimistic locking error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "422":
+          description: Unprocessable Entity error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/update
+  /accounts/{account_id}/schedules/ref:{reference_id}:
+    get:
+      tags:
+        - Schedule service
+      summary: Get Schedule by Reference ID
+      description: Get a schedule by its reference id
+      operationId: getScheduleByRef
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ReferenceId'
+      responses:
+        "200":
+          description: Schedule data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/read
+    delete:
+      tags:
+        - Schedule service
+      summary: Delete Schedule by Reference ID
+      description: Delete a schedule by its reference id
+      operationId: deleteScheduleByRef
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ReferenceId'
+        - name: remove_slots
+          in: query
+          description: "Query parameter of boolean value. <br>If set to true, it will delete all slots
+                        under the schedule. Otherwise, 
+                        it will return error if there are slots under this schedule."
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "204":
+          description: Schedule deleted successfully.
+        "400":
+          description: "Validation failed, such as cannot delete published schedule."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/delete
+    patch:
+      tags:
+        - Schedule service
+      summary: Update Schedule by Reference ID
+      description: Partial update to a schedule by its reference id
+      operationId: updateScheduleByRef
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ReferenceId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+        required: true
+      responses:
+        "200":
+          description: Updated schedule data successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        "400":
+          description: Invalid data supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "409":
+          description: Optimistic locking error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "422":
+          description: Unprocessable Entity error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/update
+  /accounts/{account_id}/schedules/{schedule_id}/slots/{slot_id}:
+    get:
+      tags:
+        - Slot service
+      summary: Get Slot by ID
+      description: Get a slot by its id
+      operationId: getSlot
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - $ref: '#/components/parameters/SlotId'
+      responses:
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "200":
+          description: Slot data with media references.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slot'
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/read
+    delete:
+      tags:
+        - Slot service
+      summary: Delete Slot
+      description: Delete a slot by its id
+      operationId: deleteSlot
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - $ref: '#/components/parameters/SlotId'
+      responses:
+        "204":
+          description: Slot deleted successfully.
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/delete
+    patch:
+      tags:
+        - Slot service
+      summary: Update Slot
+      description: Partial update to a slot
+      operationId: updateSlot
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - $ref: '#/components/parameters/SlotId'
+        - name: on_overlap
+          in: query
+          description: "Query parameter to indicate how to handle overlapping when updating a
+                        slot (only if duration or start_time changed). <br>If value is not provided, Schedule default <i>onOverlap</i> property is used."
+          required: false
+          schema:
+            type: string
+            enum:
+              - REPLACE
+              - REJECT
+              - IGNORE
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Slot'
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/Slot'
+        required: true
+      responses:
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "409":
+          description: Optimistic locking error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "400":
+          description: Invalid query parameter value or update data supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: "System related errors"
+        "200":
+          description: Updated slot data successfully.
+          headers:
+            X-BCOV-WARN-OVERLAP:
+              schema:
+                type: array
+                items:
+                  type: integer
+              description: If present, contains the id's of the slots overlapping with the updated slot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slot'
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/update
+  /accounts/{account_id}/schedules/{schedule_id}/slots/{slot_ids}:
+    delete:
+      tags:
+        - Slot service
+      summary: Delete slots by IDs
+      description: Deletes slots by passing a comma separated list of slot ids (up to 10)
+      operationId: deleteSlotByIds
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - $ref: '#/components/parameters/SlotIds'
+      responses:
+        "204":
+          description: Slots deleted successfully.
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/delete
+  /accounts/{account_id}/schedules/{schedule_id}/media-references:
+    get:
+      tags:
+        - Schedule service
+      summary: Get Slot Media References
+      description: Returns a list of customized format slot media references for the given scheduleId, paginated and ordered by start time
+      operationId: getScheduleMediaReferences
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - name: period
+          in: query
+          description: "Query parameter to filter slots with time. <br> Format as <b>[{start}
+           TO {end}]</b> where <i>{start}</i> and <i>{end}</i> are UTC timestamp to seconds. Can be wildcard
+           *."
+          required: false
+          schema:
+            type: string
+            example: "[2023-04-26T00:00:00Z TO 2023-05-17T00:00:00Z]"
+        - name: status
+          in: query
+          description: Query parameter to filter schedules with status
+          required: false
+          schema:
+            type: string
+            enum:
+              - INACTIVE
+              - ACTIVE
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        "400":
+          description: Invalid parameters supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: "System related errors"
+        "200":
+          description: Slot media references for the selected period and status.
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              description: The total count of media references based on the query parameters
+            X-Limit:
+              schema:
+                type: string
+              description: Contains the provided or default limit used por pagination
+            X-Offset:
+              schema:
+                type: string
+              description: Contains the provided or default offset used por pagination
+            Access-Control-Expose-Headers:
+              schema:
+                type: string
+              description: Exposes pagination headers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaReferences'
+        "404":
+          description: "The api couldn't find the resource you requested."
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/read
+  /accounts/{account_id}/schedules/{schedule_id}/errors:
+    get:
+      tags:
+        - Schedule service
+      summary: Check Schedule
+      description: Validates a given schedule for slot errors. The scheduleId can be reference_id.
+      operationId: checkSchedule
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/ScheduleId'
+        - name: period
+          in: query
+          description: "Query parameter to filter slots with time. <br> Format as <b>[{start}
+           TO {end}]</b> where <i>{start}</i> and <i>{end}</i> are UTC timestamp to seconds. Can be wildcard
+           *."
+          required: false
+          schema:
+            type: string
+            example: "[2023-04-26T00:00:00Z TO 2023-05-17T00:00:00Z]"
+        - name: error
+          in: query
+          description: "Query parameter with the list of errors to check. <br>Possible errors:
+                        OVERLAP, MISSING. Default value is <i>OVERLAP,MISSING</i>"
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - MISSING
+                - OVERLAP
+      responses:
+        "200":
+          description: Results of the schedule check.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CheckError'
+        "400":
+          description: Invalid parameters supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: "The api couldn't find the resource you requested."
+        "500":
+          description: "System related errors"
+      security:
+        - BC_OAuth2:
+            - video-cloud/schedule/read
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+              error_code:
+                type: string
+                enum:
+                  - UNKNOWN
+                  - ILLEGAL_FIELD
+                  - VALIDATION_ERROR
+    MediaReference:
+      type: object
+      properties:
+        slot_id:
+          type: integer
+          description: Foreign key to Slot table.
+          format: int64
+        start:
+          type: integer
+          description: Member start time in milliseconds relative to slot start time.
+          format: int32
+        duration:
+          type: integer
+          description: Member duration in milliseconds.
+          format: int32
+        type:
+          type: string
+          description: Referenced object type.
+          enum:
+            - VIDEO
+            - CP_LIVE_EVENT
+            - POST_ROLL_BUMPER
+            - PRE_ROLL_BUMPER
+        video_id:
+          type: string
+          description: Referenced object ID.
+        properties:
+          type: object
+          description: Object properties set by frontend. In JSON format.
+      description: Slot Media References.
+    Slot:
+      title: Slot
+      type: object
+      properties:
+        id:
+          type: integer
+          description: System generated primary key.
+          format: int64
+        account_id:
+          type: integer
+          description: Account this slot belongs to.
+          format: int64
+        schedule_id:
+          type: integer
+          description: Foreign key to Schedule table.
+          format: int64
+        status:
+          type: string
+          description: Slot status.
+        title:
+          type: string
+          description: Slot title.
+        description:
+          type: string
+          description: Slot description.
+        duration:
+          type: integer
+          description: Slot duration in milliseconds.
+          format: int32
+        images:
+          type: object
+          description: Image data. In JSON format
+        media_references:
+          type: array
+          description: Slot media references.
+          items:
+            $ref: '#/components/schemas/MediaReference'
+        start_time:
+          type: string
+          description: Slot start time in UTC timestamp.
+          format: date-time
+        end_time:
+          type: string
+          description: Slot end time in UTC timestamp.
+          format: date-time
+        custom_metadata:
+          type: object
+          description: Frontend used meta data in JSON format.
+        created_at:
+          type: string
+          description: "When this slot was created, in UTC timestamp."
+          format: date-time
+        created_by:
+          type: string
+          description: Account name who created this slot.
+        updated_at:
+          type: string
+          description: "When this slot was last updated, in UTC timestamp."
+          format: date-time
+        updated_by:
+          type: string
+          description: Account name who last updated this slot.
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: System generated primary key.
+          format: int64
+        account_id:
+          type: integer
+          description: Account this schedule belongs to.
+          format: int64
+        title:
+          maxLength: 255
+          type: string
+          description: Schedule title.
+        program_id:
+          type: integer
+          description: "Reference to program object, such as a channel in CP."
+          format: int64
+        reference_id:
+          type: string
+          description: Reference to external system entered by customer.
+        on_overlap:
+          type: string
+          description: Indicate how to handle slot overlap by default.
+          enum:
+            - REPLACE
+            - REJECT
+            - IGNORE
+        start_time:
+          type: string
+          description: "User entered schedule start time in UTC timestamp format,\
+            \ information only."
+          format: date-time
+        images:
+          type: object
+          description: Image data. In JSON format.
+        custom_metadata:
+          type: object
+          description: Frontend used meta data in JSON format.
+        created_at:
+          type: string
+          description: "When this schedule was created, in UTC timestamp."
+          format: date-time
+        created_by:
+          type: string
+          description: Account name who created this schedule.
+        updated_at:
+          type: string
+          description: "When this schedule was last updated, in UTC timestamp."
+          format: date-time
+        updated_by:
+          type: string
+          description: Account name who last updated this schedule.
+    CreateProgram:
+      type: object
+      properties:
+        reference_id:
+          type: string
+          description: External reference id of program, such as channel in CP.
+          maxLength: 150
+        type:
+          type: string
+          description: Program type.
+          enum:
+            - CP
+            - LIVE
+        title:
+          maxLength: 255
+          type: string
+          description: Schedule title.
+        on_overlap:
+          type: string
+          description: Indicate how to handle slot overlap by default.
+          enum:
+            - REPLACE
+            - REJECT
+            - IGNORE
+        start_time:
+          type: string
+          description: "User entered schedule start time in UTC timestamp ISO-8601 format,\
+            \ information only."
+          format: date-time
+        custom_metadata:
+          type: object
+          description: Frontend used meta data in JSON format.
+    Program:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: System generated primary key.
+          format: int64
+        version:
+          type: integer
+          description: "The version number of the schedule entity, used for optimistic\
+            \ locking check."
+          format: int64
+        account_id:
+          type: integer
+          description: Account this schedule belongs to.
+          format: int64
+        type:
+          type: string
+          description: Program type.
+          enum:
+            - CP
+            - LIVE
+        reference_id:
+          type: string
+          description: "External reference to program object, such as channel in CP."
+        main_schedule:
+          type: object
+          description: Main schedule object.
+          $ref: '#/components/schemas/Schedule'
+        schedules:
+          type: array
+          description: Program Schedules.
+          $ref: '#/components/schemas/Schedule'
+        created_at:
+          type: string
+          description: "When this schedule was created, in UTC timestamp."
+          format: date-time
+        created_by:
+          type: string
+          description: Account name who created this schedule.
+        updated_at:
+          type: string
+          description: "When this schedule was last updated, in UTC timestamp."
+          format: date-time
+        updated_by:
+          type: string
+          description: Account name who last updated this schedule.
+    Action:
+      type: object
+      discriminator:
+        propertyName: action_type
+        mapping:
+          PUBLISH: '#/components/schemas/PublishAction'
+          COPY_SLOTS: '#/components/schemas/CopyAction'
+          MOVE_SLOTS: '#/components/schemas/MoveAction'
+      oneOf:
+        - $ref: '#/components/schemas/PublishAction'
+        - $ref: '#/components/schemas/CopyAction'
+        - $ref: '#/components/schemas/MoveAction'
+    PublishAction:
+      type: object
+      properties:
+        action_type:
+          type: string
+          description: Type of action to be performed
+          example: PUBLISH
+        params:
+          properties:
+            source_schedule:
+              maxLength: 150
+              type: string
+              description: Id of the reference schedule
+            period:
+              type: string
+              description: Period range to take slots from source schedule, with format of  [{start} TO {end}]
+    CopyAction:
+      type: object
+      properties:
+        action_type:
+          type: string
+          description: Type of action to be performed
+          example: COPY_SLOTS
+        params:
+          properties:
+            source_schedule:
+              maxLength: 150
+              type: string
+              description: Id of the reference schedule
+            target_schedule:
+              maxLength: 150
+              type: string
+              description: Id of the target schedule
+            slot_ids:
+              type: array
+              description: Array of Slot Ids
+            start_time:
+              type: string
+              description: UTC timestamp ISO-8601 format. The time to put first slot
+    MoveAction:
+      type: object
+      properties:
+        action_type:
+          type: string
+          description: Type of action to be performed
+          example: MOVE_SLOTS
+        params:
+          properties:
+            source_schedule:
+              maxLength: 150
+              type: string
+              description: Id of the reference schedule
+            slot_ids:
+              type: array
+              description: Array of Slot Ids
+            start_time:
+              type: string
+              description: UTC timestamp format. The time to put first slot
+    MediaReferences:
+      type: object
+      properties:
+        schedule_start_time:
+          type: string
+          description: The schedule start time or start time of the first slot in the list.
+          format: date-time
+        slot_members:
+          type: array
+          description: Array of slot media references.
+          items:
+            $ref: '#/components/schemas/SlotMediaReference'
+    SlotMediaReference:
+      type: object
+      properties:
+        slot_id:
+          type: integer
+          description: Foreign key to Slot table.
+          format: int64
+        slot_title:
+          type: string
+          description: Slot title
+        video_id:
+          type: string
+          description: Referenced object ID.
+        type:
+          type: string
+          description: Referenced object type.
+          enum:
+            - VIDEO
+            - CUE_POINT
+            - CP_LIVE_EVENT
+            - POST_ROLL_BUMPER
+            - PRE_ROLL_BUMPER
+        properties:
+          type: object
+          description: Object properties set by frontend. In JSON format.
+        start:
+          type: integer
+          description: Media reference start time in milliseconds relative to slot start time.
+          format: int32
+        duration:
+          type: integer
+          description: Member duration in milliseconds.
+          format: int32
+        start_time:
+          type: string
+          description: Slot start time + media reference relative start.
+          format: date-time
+    JsonNode:
+      type: object
+      description: External object properties.
+    CheckError:
+      type: object
+      properties:
+        slots:
+          type: array
+          description: "Pair of conflicting slots, ordered by start time."
+          items:
+            $ref: '#/components/schemas/ErrorSlot'
+        error_type:
+          type: string
+          description: Type of errors when checking slots in a schedule.
+          enum:
+            - MISSING
+            - OVERLAP
+    ErrorSlot:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Error slot id.
+          format: int64
+        start_time:
+          type: string
+          description: Error slot start time.
+          format: date-time
+        end_time:
+          type: string
+          description: Error slot end time.
+          format: date-time
+      description: "Pair of slots with error, ordered by start time."
+  parameters:
+    ProgramId:
+      name: program_id
+      in: path
+      description: Program Unique Identifier
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      example: 263785096
+    AccountId:
+      name: account_id
+      in: path
+      description: Video Cloud account ID
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      example: 263785096
+    ContentType:
+      name: Content-Type
+      in: header
+      description: 'Content-Type: application/json'
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      description: Number of items to return
+      style: form
+      explode: true
+      schema:
+        type: integer
+        format: int32
+        default: 20
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip
+      style: form
+      explode: true
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    ScheduleId:
+      name: scheduleId
+      in: path
+      description: Schedule Id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    ReferenceId:
+      name: reference_id
+      in: path
+      description: Schedule Reference Id
+      required: true
+      schema:
+        type: string
+    SlotId:
+      name: slotId
+      in: path
+      description: Slot Id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    SlotIds:
+      name: slotIds
+      in: path
+      description: Comma separated list of slot ids
+      required: true
+      schema:
+        type: integer
+        format: int64
+    OnOverlap:
+      name: on_overlap
+      in: query
+      description: "Query parameter to indicate how to handle overlapping when create\
+        \ slot.If not provided, use Schedule default onOverlap property."
+      required: false
+      schema:
+        type: string
+        enum:
+          - REPLACE
+          - REJECT
+          - IGNORE
+  securitySchemes:
+    BC_OAuth2:
+      type: oauth2
+      description: "Brightcove OAuth API. See the [support documentation](https://support.brightcove.com/oauth-api)\
+        \ or [Getting Access Tokens](https://support.brightcove.com/oauth-api-sample-get-access-token)\
+        \ to learn more"
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.qa.brightcove.com/v4/access_token
+          scopes:
+            video-cloud/schedule/read: Read schedule data.
+            video-cloud/schedule/create: Create a schedule data.
+            video-cloud/schedule/update: Update a schedule data
+            video-cloud/schedule/delete: Delete a schedule data.
+            video-cloud/schedule/all: Read, write, update and delete schedule data.
