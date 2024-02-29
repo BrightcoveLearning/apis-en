@@ -4233,12 +4233,21 @@ API Requests</a>.</p>
 <p>Query Params provided on the entry point VMAP/Manifest are available under the <code translate="No">url</code> namespace. Unlike variables under other namespaces, these params are not url encoded when inserting into the template. If variable values need to be url encoded going to the ad provider, they will need to be double url encoded on the entry point url.</p>
 
 <p>URL variables are identified as: <code translate="No">{{url.*}}</code></p>
-<p>URL variables need to be replaced using custom integration as follows:</p>
+<p>URL variables are added to the VMAP urls using custom integration as follows:</p>
 <ol class="bcls-tasklist">
-  <li>Write code to make a request to the Playback API.</li>
-  <li>Intercept the data returned from the API request.</li>
-  <li>Replace any <code translate="No">{{url.*}}</code> tokens in source URLs</li>
-  <li>Load the data/source into the player (Brightcove Player for web or the Native SDKs)</li>
+  <li>Add <code translate="No">{{url.*}}</code> macro variables to the ad tag for a specific server-side ad config. For example:
+    <pre class="line-numbers"><code class="language-http" translate="No">https://general.support.brightcove.com/assets/ads/vmap/simple-vmap.xml?foo=&#123;&#123;url.foo&#125;&#125;&bar=&#123;&#123;url.bar&#125;&#125;</code></pre>
+  </li>
+  <li>Configure a player with the SSAI plugin and the ad configuration containing the ad tag with macros.</li>
+  <li>Pass a vmapURLParams options object to the SSAI plugin containing the variable names and values to replace:
+    <pre class="line-numbers"><code class="language-json" translate="No">"options": {
+  "vmapURLParams": {
+    "foo": 123,
+    "bar": "test"
+  }
+}</code></pre>
+  </li>
+  <li>Brightcove player with SSAI plugin (v2.4.6+) calls to retrieve the VMAP URL from Playback API and then automatically appends the values of the variables before sending the request.</li>
 </ol>
 
 <h3 id="Metadata_variables">Metadata variables</h3>
