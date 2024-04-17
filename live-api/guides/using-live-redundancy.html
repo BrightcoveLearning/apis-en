@@ -413,11 +413,11 @@ grandparent: Live API
       }
     }</code></pre>
     
-    <p>Each processing region in the Redundant Group will have its own <code translate="No">status</code> object, keyed by region. You can see in this example that in the <code translate="No">us_west_2</code> processing region, the <code translate="No">on_air</code> job is <code translate="No">0b76bc73f92f46dc917bbe5061c0c633</code>.</p>
+    <p>Each processing region in the Redundant Group will have its own <code translate="No">status</code> object, keyed by region. You can see in this example that in the <code translate="No">us_west_2</code> processing region, the <code translate="No">OnAir</code> job is <code translate="No">0b76bc73f92f46dc917bbe5061c0c633</code>.</p>
     
     <p>As a side note, the <code translate="No">probability</code> associated with the processing region will at this point always be <code translate="No">1</code>, but is included in the data model for future enhancements that will allow multiple processing regions with probabilities between 0 and 1, representing the approximate percentage of playback traffic that will use that region.</p>
 
-    <p>The <code translate="No">health</code> parameter is used by the Redundancy service to compare output processing times between jobs and estimate how many seconds of playback buffer should be available to players before a stall occurs. Auto failover occurs when the OnAir job's health is less than or equal to 0, and when in auto mode, the service will attempt to switch to another healthy job.</p>
+    <p>The <code translate="No">Healthiness</code> parameter is used by the Redundancy service to compare output processing times between jobs and estimate how many seconds of playback buffer should be available to players before a stall occurs. Auto failover occurs when the OnAir job's Healthiness is less than or equal to 0, and when in auto mode, the service will attempt to switch to another healthy job.</p>
     </section>
     
     <section class="bcls-section">
@@ -445,7 +445,7 @@ grandparent: Live API
     <section class="bcls-section">
     <h2 id="Force_a_Job_failover">Force a job failover</h2>
     
-    <p>Failover will be managed automatically by the Brightcove Live system, and should require no intervention on your part. If for some reason you want to force failover to another job, however, the simplest way to do it is to simply stop the encoder of the <code translate="No">on_air</code> job.</p>
+    <p>Failover will be managed automatically by the Brightcove Live system, and should require no intervention on your part. If for some reason you want to force failover to another job, however, the simplest way to do it is to simply stop the encoder of the <code translate="No">OnAir</code> job.</p>
     
     <p>You can also force failover using the API by making a <code translate="No">PUT</code> request to:</p>
     
@@ -457,10 +457,10 @@ grandparent: Live API
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
       "mode": "manual",
-      "on_air": "0ae5a4a71dc54b3181af0f98ee407c27"
+      "OnAir": "0ae5a4a71dc54b3181af0f98ee407c27"
     }</code></pre>
     
-    <p>Here, <code translate="No">mode</code> will be either <code translate="No">manual</code> or <code translate="No">auto</code> (the default), and the <code translate="No">on_air</code> will have a value of one of the <strong>secondary</strong> job ids.</p>
+    <p>Here, <code translate="No">mode</code> will be either <code translate="No">manual</code> or <code translate="No">auto</code> (the default), and the <code translate="No">OnAir</code> will have a value of one of the <strong>secondary</strong> job ids.</p>
     
     <p>Note: Once in <code translate="No">manual</code> mode, automatic job failover will <strong>not</strong> occur. You <strong>must</strong> set the mode back to <code translate="No">auto</code> for automatic failover to resume. You can change the On-Air Job without switching to manual by omitting mode from the body and adding the force query param <code translate="No">?force=true</code> to your request. This will force the service to switch Jobs, but it may switch back at any time if it detects issues.</p>
     </section>
@@ -475,7 +475,7 @@ grandparent: Live API
     <pre>
     <code class="language-http" translate="No">https://api.bcovlive.io/v1/redundantgroups/{redundant_group_id}/jobs/{job_id}</code></pre>
     
-    <p>for each job you want to remove. Note that in order to remove the job that is currently <code translate="No">on_air</code>, you will have to add the <code translate="No">?force=true</code> query parameter.</p>
+    <p>for each job you want to remove. Note that in order to remove the job that is currently <code translate="No">OnAir</code>, you will have to add the <code translate="No">?force=true</code> query parameter.</p>
     
     <p>The second way to end the stream is to delete the redundant group completely by sending a <code translate="No">DELETE</code> request to:</p>
     
