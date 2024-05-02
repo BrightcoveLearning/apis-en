@@ -3938,12 +3938,13 @@ echo "Public key to saved in $PUBLIC_TXT"
           <td></td>
           <td>Your Server-Side Ad Insertion (SSAI) configuration id. This claim is <strong>required</strong> to retrieve either an HLS or a DASH VMAP.</td>
         </tr>
-        <!-- <tr>
+        <tr>
           <td><code translate="No">aud</code></td>
-          <td>String[]</td>
-          <td></td>
-          <td>It must contain the <code>"static.playback.api.brightcove.com"</code> string in the array. If present, requests that do not include the <code>"static.playback.api.brightcove.com"</code> string will be denied with a 401 error.</td>
-        </tr> -->
+          <td>String</td>
+          <td>Yes<strong>*</strong></td>
+          <td>The audience (recipient) for which the JWT is intended.
+            <p> * This claim is optional for now, but will be soon enforced. Once it is enforced, JWT tokens submitted to the Playback API with no <code>aud</code>claim will be rejected. If the <code>aud</code> laim is present, it must contain the value <strong>static.api.brightcove.com</strong> within the claims array of values.</td></p>
+        </tr>
       </tbody>
     </table>
     </div>
