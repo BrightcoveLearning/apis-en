@@ -3650,16 +3650,9 @@
     </aside>
     </section>
     
-    <section class="bcls-section">
-    <h2 id="requirements">Requirements</h2>
     
-    <ul>
-      <li>A valid Brightcove account with Admin permissions required to create client credentials</li>
-    </ul>
-    </section>
     
-    <section class="bcls-section">
-    <h2 id="steps">Steps</h2>
+    <!-- <h2 id="steps">Steps</h2>
     
     <h3>Get your <code translate="No">BC_TOKEN</code></h3>
     
@@ -3690,8 +3683,40 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</textarea>
       <figcaption class="bcls-caption--image">BC_TOKEN in Chrome Developer Tools"</figcaption>
       </figure>
       </li>
-    </ol>
+    </ol> -->
+    <section class="bcls-section">
+      <h2 id="prerequisites">Prerequisites</h2>
+      <p>To create the <code translate="no">BC_TOKEN</code>, you must have API Authentication Credentials. For more information on managing API Authentication Credentials, please refer to the following <a href="https://apis.support.brightcove.com/general/managing-api-authentication-credentials.html" target="_blank">link</a>.</p>
+  </section>
+  <section class="bcls-section">
+      <h2 id="steps">Steps to Obtain Your BC_TOKEN</h2>
+      <ol class="bcls-tasklist">
+          <li>Navigate to the <a href="https://apis.support.brightcove.com/oauth/references/reference.html" target="_blank">OAuth API Reference</a> page.</li>
+          <li>Download the OpenAPI specification.
+            <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="/assets/images/video-cloud-apis/oauth-api/guides/get-client-credentials-curl/download.webp" />
+          </li>
+          <li>Once downloaded, open <strong>Postman</strong> and import the <strong>OpenAPI specification</strong>.
+            <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="/assets/images/video-cloud-apis/oauth-api/guides/get-client-credentials-curl/import.webp" />
+          </li>
+          <li>After importing the <strong>OpenAPI specification</strong> in <strong>Postman</strong>, a collection named <strong>OAuth API Reference</strong> is automatically created.</li>
+          <li>Within the <strong>OAuth API Reference</strong> collection, locate the folder named <strong>access_token</strong>.</li>
+          <li>Find the request named <strong>Create Access Token</strong> which contains a predefined environment variable <code translate="no">&#123;&#123;baseUrl&#125;&#125;</code>.
+            <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="/assets/images/video-cloud-apis/oauth-api/guides/get-client-credentials-curl/create-token.webp" />
+          </li>
+          <li>Replace the <code translate="no">&#123;&#123;baseUrl&#125;&#125;</code> variable with the API base URL: <code translate="no">https://oauth.brightcove.com/v4</code>.
+            <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="/assets/images/video-cloud-apis/oauth-api/guides/get-client-credentials-curl/replace-url.webp" />
+          </li>
+          <li>Go to the <strong>Authorization</strong> tab and select <strong>Basic Auth</strong>. Fill in the fields with your <strong>Username</strong> (Client ID) and <strong>Password</strong> (Client Secret) that were created in Studio.
+            <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="/assets/images/video-cloud-apis/oauth-api/guides/get-client-credentials-curl/auth.webp" />
+          </li>
+          <li><span class="button-blue">Send</span></li>
+          <li>Response
+            <figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="/assets/images/video-cloud-apis/oauth-api/guides/get-client-credentials-curl/response.webp" />
+          </li>
+      </ol>
+  </section>
 
+    <section class="bcls-section">
     <h3>Next steps</h3>
     <p>See one of the following topics for the steps needed to create client credentials</p>
     <ul>
