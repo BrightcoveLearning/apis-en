@@ -7,7 +7,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="In this topic, you will learn how to set up the popular Postman HTTP client to make requests to the Brightcove RESTful APIs. Although you can use curl statements on the command line to make requests, there are several apps that provide you UI and features to make this easier. This document will show you how to use one such tool, the Postman app. Note: this totorial was written for Postman 9.6.2 - if you see discrepancies with the current version, please use the Feedback link on the right below to let us know.">
+        <meta name="description" content="In this topic, you will learn how to set up the popular Postman HTTP client to make requests to the Brightcove RESTful APIs. Although you can use curl statements on the command line to make requests, there are several apps that provide you UI and features to make this easier. This document will show you how to use one such tool, the Postman app.">
         
         <!-- Google Font -->
         <link href="/assets/s-site-assets-stylesheets/fonts/poppins.css" rel="stylesheet">
@@ -3628,35 +3628,38 @@
       
 <h1>Use Postman for API Requests</h1>
 <article class="bcls-article">
-  <summary>In this topic, you will learn how to set up the popular Postman HTTP client to make requests to the Brightcove RESTful APIs. Although you can use curl statements on the command line to make requests, there are several apps that provide you UI and features to make this easier. This document will show you how to use one such tool, the Postman app. Note: this totorial was written for Postman 9.6.2 - if you see discrepancies with the current version, please use the Feedback link on the right below to let us know.</summary>
+  <summary>In this topic, you will learn how to set up the popular Postman HTTP client to make requests to the Brightcove RESTful APIs. Although you can use curl statements on the command line to make requests, there are several apps that provide you UI and features to make this easier. This document will show you how to use one such tool, the Postman app.</summary>
   <section class="bcls-section">
     <h2 id="install">Install <span translate="No">Postman</span></h2>
-    <p>Get <span translate="No">Postman</span> from <a translate="No" href="https://www.postman.com/downloads/">postman.com</a>. There is an online version you can use, but we recommend installing the desktop app.</p>
+    <p>Get <span translate="No">Postman</span> from <a translate="No" target="_blank" href="https://www.postman.com/downloads/">postman.com</a>. There is an online version you can use, but we recommend installing the desktop app.</p>
   </section>
   <section class="bcls-section">
     <h2 id="getCredentials">Get client credentials</h2>
-    <p>To work with the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use. Get you client credentials in Studio by following the directions in <a href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a>. In the steps below, we will be making CMS API requests using <span translate="No">Postman</span>, so your credentials should have at least the following permissions:</p>
+    <p>To work with the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use. Get you client credentials in Studio by following the directions in <a target="_blank" href="/general/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a>. In the steps below, we will be making CMS API requests using <span translate="No">Postman</span>, so your credentials should have at least the following permissions:</p>
     <ul>
       <li><code translate="No"><strong>Video</strong>: <strong>Read/Write</strong></code></li>
     </ul>
     <p>You can add as many additional permissions as you like to get credentials that will be usable for a wider range of API requests. Also note that you get credentials that will work for multiple accounts if you like.</p>
-    <p>You can use <a href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">this online app</a> if you prefer. If you do, you need to specify at least <code translate="No">video-cloud/video/all</code> permissions.</p>
+    <p>You can use <a target="_blank" href="/oauth/code-samples/oauth-api-sample-create-client-credentials.html">this online app</a> if you prefer. If you do, you need to specify at least <code translate="No">video-cloud/video/all</code> permissions.</p>
     <aside class="bcls-aside bcls-aside--information">In order to generate client credentials you must have Admin permissions for the Brightcove account, or get someone in your organization who has Admin permissions to generate the credentials for you.</aside>
   </section>
 	<section class="bcls-section">
 		<h2 id="get_openapi_spec">Get the OpenAPI spec</h2>
 		<p>Although not required, you can greatly simplify the setup of <span translate="No">Postman</span> is to import the OpenAPI specification for the API you want to use. You can do this for any of the Brightcove platform APIs, but for this tutorial, we'll use the CMS API.</p>
-		<p>To get the OpenAPI spec, just go to the <a href="/cms/references/reference.html">CMS API Reference</a> and click the <strong>Download</strong> button:</p>
+		<p>To get the OpenAPI spec, just go to the <a target="_blank" href="/cms/references/reference.html">CMS API Reference</a> and click the <strong>Download</strong> button:</p>
 		<figure class="bcls-figure">
-			<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/download-cms-api-openapi-spec.png" alt="Download OpenAPI Spec">
+			<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/download-openapi.webp" alt="Download OpenAPI Spec">
 			<figcaption class="bcls-caption--image">Download OpenAPI Spec</figcaption>
 		</figure>
 		<p>The downloaded file will be called <strong translate="no">openapi.yaml</strong></p>
 	</section>
 	<section class="bcls-section">
 		<h2 id="Import_openapi_spec">Import the OpenAPI Spec</h2>
-		<p>The next step is to launch the Postman app, and then import the OpenAPI spec that you downloaded:</p>
-		<div style="position: relative; display: block; max-width: 960px;"><div style="padding-top: 63.53%;"><iframe src="https://players.brightcove.net/6225316964001/Qznf2bKtV_default/index.html?videoId=6251814348001" allowfullscreen="" allow="encrypted-media" style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;"></iframe></div></div>
+		<p>The next step is to launch the Postman app, and then import the OpenAPI spec that you downloaded with the default settings:</p>
+		<figure class="bcls-figure">
+			<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/import-openapi.webp" alt="import OpenAPI Spec">
+			<figcaption class="bcls-caption--image">Import OpenAPI Spec</figcaption>
+		</figure>
 	</section>
 	<section class="bcls-section">
 		<h2 id="Open_collection">Open the Collection</h2>
@@ -3664,51 +3667,64 @@
 		<ol class="bcls-tasklist-restart">
 			<li>Click <strong>Collections</strong>.</li>
 			<li>
-				Select the new CMS API collection:
+				Select the new <strong>Brightcove CMS API Reference</strong> collection:
 			</li>
 			<li>
 				Expand the collection and click on the <strong>videos</strong> folder and select the <strong>Get Videos</strong> request.
 				<figure class="bcls-figure">
-					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/view-collection.png" alt="CMS API Collection">
+					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/folder-structure.webp" alt="CMS API Collection">
 					<figcaption class="bcls-caption--image">CMS API Collection</figcaption>
 				</figure>
 				<figure class="bcls-figure">
-					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/request-details.png" alt="Request Details">
+					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/auto-populated.webp" alt="Request Details">
 					<figcaption class="bcls-caption--image">Request Details</figcaption>
 				</figure>
 			</li>
 		</ol>
 		<p>Notice that Postman has set up most of the details for you from the API reference, including the request itself and the params that can be added to it. It also provides the documentation for the parameters, let's you edit values, and uncheck the ones you do not wish to send with the request.</p>
-		<div style="position: relative; display: block; max-width: 960px;"><div style="padding-top: 56.25%;"><iframe src="https://players.brightcove.net/6225316964001/default_default/index.html?videoId=6289193630001" allowfullscreen="" allow="encrypted-media" style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;"></iframe></div></div>
-			<p>You will still need to supply some information of your own, however, including the account id and authentication information. You can do this on a request by request basis, but the better way is to create an <strong>environment</strong> for the request, where you can store commonly used information as variables. We will do that in the next section.</p>
+		<figure class="bcls-figure">
+			<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/edit-request.webp" alt="Edit Request">
+			<figcaption class="bcls-caption--image">Edit Request</figcaption>
+		</figure>
+			<p>You still need to supply some information of your own, however, including the account id and authentication information. Modifying the url variables identified by a colon like <code translate="">:account_id</code>in this case.</p>
+			<figure class="bcls-figure">
+				<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/url-variable.webp" alt="Identify a URL variable">
+				<figcaption class="bcls-caption--image">Identify a URL variable</figcaption>
+			</figure>
+			<figure class="bcls-figure">
+				<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/replace-colon-variable.webp" alt="replace a URL variable">
+				<figcaption class="bcls-caption--image">Replace a URL variable</figcaption>
+			</figure>
+
+			<p>But the better way is to create an <strong>environment</strong> for the request, where you can store commonly used information as variables. We will do that in the next section.</p>
 	</section>
 	<section class="bcls-section">
 		<h2 id="create_enviroment">Create an environment</h2>
 		<p>The steps below will walk you through setting up an environment for the CMS API requests</p>
 		<ol class="bcls-tasklist-restart">
 			<li>
-				Click the <strong>Environment Quick Look</strong> icon, and then <strong>Add</strong>:
+				Click the <strong>Environments</strong> icon, and then <i class="fa-solid fa-plus"></i>:
 				<figure class="bcls-figure">
-					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/create-environment.png" alt="Create Environment">
+					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/environment-variables.webp" alt="Create Environment">
 					<figcaption class="bcls-caption--image">Create Environment</figcaption>
 				</figure>
 			</li>
 			<li>
-        Edit the environment name, changing it to "Brightcove APIs" (you will be able to use this environment for other Brightcove APIs as well, adding new variables to it as necessary).
+        Edit the environment name, changing it to <strong>Brightcove APIs</strong> (you will be able to use this environment for other Brightcove APIs as well, adding new variables to it as necessary).
         <figure class="bcls-figure">
-          <img class="bcls-image" src="/assets/images/s-apis-general-img/postman/edit-enviroment-name.png" alt="Edit Enviroment Name">
+          <img class="bcls-image" src="/assets/images/s-apis-general-img/postman/name-environment.webp" alt="Edit Enviroment Name">
           <figcaption class="bcls-caption--image">Edit Enviroment Name</figcaption>
         </figure>
       </li>
 			<li>
 				Click the text "Add a new variable", type in <code translate="no">account_id</code>, and then click in the <strong>INITIAL VALUE</strong> field and enter your Video Cloud account id (then do the same for CURRENT VALUE):
 				<figure class="bcls-figure">
-					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/enter-variable.png" alt="Enter Variable">
+					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/environment-variable.webp" alt="Enter Variable">
 					<figcaption class="bcls-caption--image">Enter Variable</figcaption>
 				</figure>
 			</li>
 			<li>
-				Repeat the previous step to add additional variables:
+				Repeat the previous step to add additional variables.
 				<table class="bcls-table">
 					<caption class="bcls-caption--table">Environment Variables</caption>
 					<thead class="bcls-table__head">
@@ -3736,32 +3752,34 @@
 			<li>
 				Click <strong>Save</strong> to save the environment:
 				<figure class="bcls-figure">
-					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/save-environment.png" alt="Save Environment">
+					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/save-environment-variable.webp" alt="Save Environment">
 					<figcaption class="bcls-caption--image">Save Environment</figcaption>
 				</figure>
 			</li>
 			<li>
 				Go back to your Brightcove CMS API collection and select the environment you created from the environment selector:
 				<figure class="bcls-figure">
-					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/environment-selector.png" alt="Environment Selector">
+					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/apply-environment.webp" alt="Environment Selector">
 					<figcaption class="bcls-caption--image">Environment Selector</figcaption>
 				</figure>
 			</li>
 		</ol>
 		
-		<p>Environment variables can be referenced by enclosing them in double curly braces - example: {{client_id}}. Postman helps you with auto-completion when you type "{{...". You can try this by going back to the <strong>Get Videos</strong> request and start typing "{{a" in the <strong>Value</strong> field for the Path Variable <code translate="no">account_id</code>:</p>
-		
-		<figure class="bcls-figure">
-			<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/autocomplete-variables.png" alt="Variable Autocompletion">
-			<figcaption class="bcls-caption--image">Variable Autocompletion</figcaption>
-		</figure>
+		<p>Environment variables can be referenced by enclosing them in double curly braces - example: {{account_id}}.
+			
+		</p>
 	</section>
 	<section class="bcls-section">
 		<h2 id="Enable_requests">Enable requests</h2>
 		<p>Now that you have the environment set up, you can use the variables to test requests. We will look at the Get Videos request first.</p>
 		
 		<ol class="bcls-tasklist-restart">
-			<li>If you did not already do so, enter {{account_id}} for the value of the <code translate="no">account_id</code> <strong>Path Variable</strong>.</li>
+			<li>If you did not already do so, enter {{account_id}} for the value of the <code translate="no">account_id</code> <strong>Path Variable</strong>.
+				<figure class="bcls-figure">
+					<img class="bcls-image" src="/assets/images/s-apis-general-img/postman/reference-environment-variable.webp" alt="Reference Environment variable">
+					<figcaption class="bcls-caption--image">Reference Environment variable</figcaption>
+				</figure>
+			</li>
 			<li>
 				Click the <strong>Authorization</strong> tab for the request:
 				<figure class="bcls-figure">
