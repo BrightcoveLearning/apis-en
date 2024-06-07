@@ -89,58 +89,61 @@ grandparent: Dynamic Ingest API
     <p>(Last updated: 7/12/17)</p>
     
     <pre class="line-numbers">
-    <code class="language-json" translate="No">"dynamic_profile_options":
-    {
-          "min_renditions": 2,
-          "max_renditions": 6,
-          "max_resolution": {
-            "width": 1280,
-            "height": 720
-          },
-          "max_bitrate": 2400,
-          "max_first_rendition_bitrate": 400,
-          "max_frame_rate": 30,
-          "keyframe_rate": 1,
-          "select_baseline_profile_configuration": true,
-    }</code></pre>
+    <code class="language-json" translate="No">{
+  "dynamic_profile_options": {
+    "min_renditions": 2,
+    "max_renditions": 6,
+    "max_resolution": {
+      "width": 1280,
+      "height": 720
+    },
+    "max_bitrate": 2400,
+    "max_first_rendition_bitrate": 400,
+    "max_frame_rate": 30,
+    "keyframe_rate": 1,
+    "select_baseline_profile_configuration": true
+  }
+}</code></pre>
     
     <h4><span translate="No">Multiplatform Extended</span></h4>
     
     <pre class="line-numbers">
-    <code class="language-json" translate="No">"dynamic_profile_options":
-    {
-          "min_renditions": 3,
-          "max_renditions": 6,
-          "max_resolution": {
-            "width": 1920,
-            "height":1080
-          },
-          "max_bitrate": 4200
-          "max_first_rendition_bitrate": 400,
-          "max_frame_rate": 30,
-          "keyframe_rate": 1,
-          "select_baseline_profile_configuration": true,
-    }</code></pre>
+    <code class="language-json" translate="No">{
+  "dynamic_profile_options": {
+    "min_renditions": 2,
+    "max_renditions": 6,
+    "max_resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "max_bitrate": 2400,
+    "max_first_rendition_bitrate": 400,
+    "max_frame_rate": 30,
+    "keyframe_rate": 1,
+    "select_baseline_profile_configuration": true
+  }
+}</code></pre>
     
     <h4><span translate="No">Bandwidth Limited</span></h4>
     
     <p>(Last updated: 7/12/17)</p>
     
     <pre class="line-numbers">
-    <code class="language-json" translate="No">"dynamic_profile_options":
-    {
-          "min_renditions": 2,
-          "max_renditions": 6,
-          "max_resolution": {
-            "width": 1280,
-            "height": 720
-          },
-          "max_bitrate": 1800
-          "max_first_rendition_bitrate": 200,
-          "max_frame_rate": 30,
-          "keyframe_rate": 1,
-          "select_baseline_profile_configuration": true,
-    }</code></pre>
+    <code class="language-json" translate="No">{
+  "dynamic_profile_options": {
+    "min_renditions": 2,
+    "max_renditions": 6,
+    "max_resolution": {
+      "width": 1280,
+      "height": 720
+    },
+    "max_bitrate": 1800,
+    "max_first_rendition_bitrate": 200,
+    "max_frame_rate": 30,
+    "keyframe_rate": 1,
+    "select_baseline_profile_configuration": true
+  }
+}</code></pre>
     
     <h3>Sample CAE Profile</h3>
     
@@ -151,7 +154,7 @@ grandparent: Dynamic Ingest API
   "name": "custom-cae-profile",
   "description": "My custom CAE profile",
   "account_id": 40000000001,
-  "brightcove_standard" : false,
+  "brightcove_standard": false,
   "digital_master": {
     "rendition": "passthrough",
     "distribute": false
@@ -177,9 +180,18 @@ grandparent: Dynamic Ingest API
       "select_baseline_profile_configuration": true,
       "min_ssim": 0.95,
       "video_configurations": [
-          {"width": 1280, "height": 720},
-          {"width": 960,  "height": 540},
-          {"width": 640,  "height": 360}
+        {
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "width": 960,
+          "height": 540
+        },
+        {
+          "width": 640,
+          "height": 360
+        }
       ]
     },
     "images": [
@@ -206,16 +218,19 @@ grandparent: Dynamic Ingest API
     <p>If you want to have downloadable progressive (MP4) renditions for your video, you can specify them in the <code translate="No">dynamic_origin.renditions</code> array:</p>
     
     <pre class="line-numbers">
-    <code class="language-json" translate="No">
-      "dynamic_origin": {
-        "renditions": [
-          "default/audio64",
-          "default/audio96",
-          "default/audio128",
-          "default/audio192",
-          <span class="bcls-highlight">"default/progressive700",
-          "default/progressive2500"</span>
-        ],</code></pre>
+    <code class="language-json" translate="No">{
+  "dynamic_origin": {
+    "renditions": [
+      "default/audio64",
+      "default/audio96",
+      "default/audio128",
+      "default/audio192",
+      <span class="bcls-highlight">"default/progressive700"</span>,
+      <span class="bcls-highlight">"default/progressive2500"</span>,
+      "default/progressive2500"
+    ]
+  }
+}</code></pre>
     </section>
     <section class="bcls-section">
       <h2 id="mp4_renditions">MP4 Renditions</h2>
