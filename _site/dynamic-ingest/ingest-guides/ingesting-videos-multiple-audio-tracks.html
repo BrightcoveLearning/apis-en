@@ -3658,6 +3658,10 @@
       <li>Ingest will <strong>not</strong> fail the job for any master track that is not part of the media info and that track will be skipped.</li>
       <li>For the master audio tracks input, any one of the languages or the variants can be passed in the <code translate="No">master.audio_tracks</code> object as well. In that case we will look for that in media info and skip it if not present.</li>
       <li>Where the language or variant for a track is not specified in the request, we will default to <code translate="no">eng</code> for the language, and <code translate="no">main</code> for the variant.</li>
+      <aside class="bcls-aside bcls-aside--information language-editable">
+        <p>When ingesting a video with multiple audio tracks, Brightcove currently cannot separate tracks that use the same language but have different variants.</p>
+        <p><strong>i.e.</strong>, ingest a file with English (US) and English (UK). Zencoder will only be able to process one audio track as English, and the other will be ignored.
+        This limitation applies only during ingestion; you can add the required variants to the existing asset later.</p></aside>
     </ul>
   </section>
 
