@@ -3680,7 +3680,7 @@
 
     <p>Notifications are sent in JSON format. Here's an example for <code translate="No">video-change</code> events:</p>
 
-    <pre class="line-numbers"><code class="language-json" translate="No">{
+    <!-- <pre class="line-numbers"><code class="language-json" translate="No">{
         "timestamp":1423840514446,
         "account_id":"775205503001",
         "event":"video-change",
@@ -3688,7 +3688,22 @@
         "version":26,
         <span class="bcls-highlight">“action”:”UPDATE”,</span>
         <span class="bcls-highlight">“updated_by”:{ "email": "string", "id": "string", "type": "user" }</span>
-        }</code></pre>
+        }</code></pre> -->
+
+        <pre class="line-numbers"><code class="language-json" translate="No">
+{
+    "account_id": "6415716881001",
+    "updated_by": {
+    "ip": "x.x.x.x",
+    "type": "internal",
+    "user_agent": "BoltIngestWorker/df3979c"
+    },
+    "action": "UPDATE",
+    "video": "6356304892112",
+    "event": "video-change",
+    "version": 2,
+    "timestamp": 1719930805071
+}</code></pre>
 
     <aside class="bcls-aside bcls-aside--information">
       Notes:
@@ -3700,7 +3715,7 @@
 
     <p>And an example for <code translate="No">master-video-change</code> looks like this:</p>
 
-    <pre class="line-numbers"><code class="language-json" translate="No">{
+    <!-- <pre class="line-numbers"><code class="language-json" translate="No">{
         "timestamp":1423840514446,
         "account_id":"775205503001",
         "event":"video-change",
@@ -3710,7 +3725,24 @@
         "updated_by":{ "email": "string", "id": "string", "type": "user" },
         "master_account_id":"784205904003",
         "master_video_id":"6200985429005"
-        }</code></pre>
+        }</code></pre> -->
+      
+        <pre class="line-numbers"><code class="language-json" translate="No">
+{
+    "account_id": "775205503001",
+    "master_account_id": "784205904003",
+    "updated_by": {
+    "ip": "x.x.x.x",
+    "type": "internal",
+    "user_agent": "ingest/imageprocessor"
+    },
+    "master_video_id": "6200985429005",
+    "action": "update",
+    "video": "4020894387001",
+    "event": "master-video-change",
+    "timestamp": 1720647010151
+}</code></pre>
+
 
     <aside class="bcls-aside bcls-aside--information language-editable">Notice that, for <code
         translate="No">master-video-change</code>, <code translate="No">master_account_id</code> and <code
