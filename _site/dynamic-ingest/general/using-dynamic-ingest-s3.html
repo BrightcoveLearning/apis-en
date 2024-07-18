@@ -3638,34 +3638,44 @@
     
     <pre class="line-numbers">
     <code class="language-json" translate="No">{
-     "Version": "2012-10-17",
-     "Id": "VideoCloudBucketPolicy",
-     "Statement": [
-       {
-         "Sid": "Stmt1295042087538",
-         "Effect": "Allow",
-         "Principal": {
-             "AWS": "arn:aws:iam::395540211253:root"
-         },
-         "Action": [
-         "s3:GetObjectAcl",
-         "s3:GetObject"
-         ],
-         "Resource": "arn:aws:s3:::MY-BUCKET/*"
-       },
-       {
-         "Sid": "Stmt1295042087538",
-         "Effect": "Allow",
-         "Principal": {
-             "AWS": "arn:aws:iam::395540211253:root"
-         },
-         "Action": [
-         "s3:GetBucketLocation"
-         ],
-         "Resource": "arn:aws:s3:::MY-BUCKET"
-       }
-     ]
-     }</code></pre>
+      "Version": "2012-10-17",
+      "Id": "VideoCloudBucketPolicy",
+      "Statement": [
+        {
+          "Sid": "Stmt1295042087538",
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": "arn:aws:iam::395540211253:root"
+          },
+          "Action": [
+          "s3:GetObjectAcl",
+          "s3:GetObject"
+          ],
+          "Resource": "arn:aws:s3:::MY-BUCKET/*",
+          "Condition": {
+                     "StringEquals": {
+                         "s3:prefix": "specific-prefix/"
+                     }
+                 }
+        },
+        {
+          "Sid": "Stmt1295042087538",
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": "arn:aws:iam::395540211253:root"
+          },
+          "Action": [
+          "s3:GetBucketLocation"
+          ],
+          "Resource": "arn:aws:s3:::MY-BUCKET",
+          "Condition": {
+                     "StringEquals": {
+                         "s3:prefix": "specific-prefix/"
+                     }
+                 }
+        }
+      ]
+      }</code></pre>
     
     <p>There is only <strong>one change you must make</strong> to this bucket policy before it's ready to go:</p>
     
