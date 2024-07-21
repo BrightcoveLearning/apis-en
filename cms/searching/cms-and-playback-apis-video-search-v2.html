@@ -144,7 +144,7 @@ grandparent: CMS API
         </tr>
         <tr>
           <td><code translate="no">economics</code></td>
-          <td><code>economics:AD_SUPPORTED</code><br><code>economics:FREE</code></td>
+          <td>string<br><code>economics:AD_SUPPORTED</code><br><code>economics:FREE</code></td>
         </tr>
         <tr>
           <td><code translate="no">original_filename</code></td>
@@ -160,7 +160,7 @@ grandparent: CMS API
         </tr>
         <tr>
           <td><code translate="no">geo</code></td>
-          <td>string or quoted strings<br><code>geo.{property}:{value} geo.countries:fr</code></td>
+          <td>string or quoted strings<br>geo.{property}:{value}<br><code>geo.countries:fr</code></td>
         </tr>
         <tr>
           <td><code translate="no">images</code></td>
@@ -172,11 +172,11 @@ grandparent: CMS API
         </tr>
         <tr>
           <td><code translate="no">sharing</code></td>
-          <td>string or quoted string<br><code>sharing.{property}:{value} sharing.by_external_acct:true</code></td>
+          <td>string or quoted string<br>sharing.{property}:{value} <br><code>sharing.by_external_acct:true</code></td>
         </tr>
         <tr>
           <td><code translate="no">variants</code></td>
-          <td>string or quoted string<br><code>variants.{language}.{property}:{value} variants.en-US.name:eng</code></td>
+          <td>string or quoted string<br> variants.{language}.{property}:{value} <br><code>variants.en-US.name:eng</code></td>
         </tr>
         <tr>
           <td><code translate="no">labels</code></td>
@@ -220,27 +220,27 @@ grandparent: CMS API
         </tr>
         <tr>
           <td><code translate="no">created_by</code></td>
-          <td>string<br><code>created_by.{property}:{value} created_by.type:user</code></td>
+          <td>string<br> created_by.{property}:{value} <br><code>created_by.type:user</code></td>
         </tr>
         <tr>
           <td><code translate="no">updated_by</code></td>
-          <td>string<br><code>updated_by.{property}:{value} updated_by.type:user</code></td>
+          <td>string<br>updated_by.{property}:{value} <br><code>updated_by.type:user</code></td>
         </tr>
         <tr>
           <td><code translate="no">duration</code></td>
-          <td>datetime or range (details below)<br><code>duration:[* TO 1450000]</code></td>
+          <td>datetime or range (<a href="#date_times">details below</a>)<br><code>duration:[* TO 1450000]</code></td>
         </tr>
         <tr>
           <td><code translate="no">plays_total</code></td>
-          <td>range (details below)<br><code>plays_total:[0 TO 100000]</code></td>
+          <td>range (<a href="#date_times">details below</a>)<br><code>plays_total:[0 TO 100000]</code></td>
         </tr>
         <tr>
           <td><code translate="no">plays_trailing_week</code></td>
-          <td>range (details below)<br><code>plays_trailing_week:[0 TO 100000]</code></td>
+          <td>range (<a href="#date_times">details below</a>)<br><code>plays_trailing_week:[0 TO 100000]</code></td>
         </tr>
         <tr>
           <td><code translate="no">shared_at</code></td>
-          <td>date or range (details below)<br><code>shared_at:[2023-11-02T16:21:34.905Z TO 2024-05-02T16:21:34.908Z]</code></td>
+          <td>date or range (<a href="#date_times">details below</a>)<br><code>shared_at:[2023-11-02T16:21:34.905Z TO 2024-05-02T16:21:34.908Z]</code></td>
         </tr>
       </tbody>
     </table>
@@ -318,9 +318,15 @@ grandparent: CMS API
           <td>The logical <code translate="No">AND</code> and <code translate="No">OR</code> operators allow you to combine multiple search terms for complex queries</td>
           <td>
           <ul>
-            <li><code translate="No">(+name:heron) AND (+tags:bird)</code> (would return videos that have <strong>both</strong> "<code translate="No">heron</code>" in the <code translate="No">name</code> and "<code translate="No">bird</code>" in the <code translate="No">tags</code>)</li>
-            <li><code translate="No">(+name:heron) OR (+tags:bird)</code> (would return videos that have <strong>either</strong> "<code translate="No">heron</code>" in the <code translate="No">name</code> and "<code translate="No">bird</code>" in the <code translate="No">tags</code>)</li>
-            <li><code translate="No">((+name:heron) AND (+tags:bird)) AND (NOT tags:internal)</code> (would return videos that have <strong>both</strong> "<code translate="No">heron</code>" in the <code translate="No">name</code> and "<code translate="No">bird</code>" in the <code translate="No">tags</code>, but <strong>not</strong> the tag "<code translate="No">internal</code>")</li>
+            <li>
+              <code>(economics:FREE) AND (has_text_tracks:true)</code> (would return videos that have both <strong>"FREE"</strong> in <strong>economics</strong> and <strong>has_text_tracks</strong>)
+            </li>
+            <li>
+              <code>(original_filename:oystercatcher.mp4) OR (duration:[* TO 14500])</code> (would return videos that have either <strong>"oystercatcher.mp4"</strong> in the <strong>original_filename</strong> and <strong>duration</strong> up to 14500 seconds)
+            </li>
+            <li>
+              <code>(variants.en-US.name:"My Variant") AND (has_images:true) AND (NOT labels:"/root/label5")</code> (would return videos that have both <strong>"My Variant"</strong> in the <strong>Variant name</strong> and <strong>has images</strong>, but <strong>not the label "/root/label5"</strong>)
+            </li>
           </ul>
           </td>
         </tr>
@@ -340,9 +346,9 @@ grandparent: CMS API
     </section>
 
     <section class="bcls-section">
-    <h2 id="date_times">Date/Times</h2>
+    <h2 id="date_times">Date/Times and Ranges</h2>
 
-    <p>You can search on a date-time interval by using:</p>
+    <p>Search on a date-time interval by using:</p>
 
     <p><code translate="No">[{start} TO {end}]</code></p>
 
@@ -368,12 +374,14 @@ grandparent: CMS API
           <td><code translate="No">2019-09-30T14:24:33.512Z</code></td>
         </tr>
         <tr>
-          <td>Wildcard (can be used for the start or end date/time)</td>
+          <td>Wildcard (can be used for the start or end date/time and ranges)</td>
           <td><code translate="No">*</code></td>
           <td>
           <ul>
             <li><code translate="No">2019-09-30T14:24:33.512Z TO *</code></li>
             <li><code translate="No">* TO 2019-09-30T14:24:33.512-4:00Z</code></li>
+            <li><code translate="No">[500 TO *]</code></li>
+            <li><code translate="No">[* TO 340000]</code></li>
           </ul>
           </td>
         </tr>
@@ -382,8 +390,9 @@ grandparent: CMS API
 
     <aside class="bcls-aside bcls-aside--information">Notes:
       <ul>
+        <li>An incorrect format in Date/Time will return 200 status code with a Blank <code translate="no">[]</code> response.</li>
         <li>The required <code translate="No">Z</code> in the timezone indicator. Currently the value must be blank (indicating UTC as the timezone).</li>
-        <li><code translate="No">NOW</code> operator and date ranges using <code translate="No">..</code> (including open ended ranges) are not supported in this version.</li>
+        <li><code translate="No">NOW</code> operator and date ranges using <code translate="no">..</code> (including open ended ranges) are not supported in this version.</li>
         <li>This date syntax does not apply to Date-like beacon fields (end and start dates), which can only be searched as text.</li>
       </ul>
       </aside>
