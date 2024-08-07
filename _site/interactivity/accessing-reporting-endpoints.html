@@ -3788,44 +3788,46 @@
     <h2 id="example">Python code example</h2>
     <p>The example below illustrates how to invoke a report from Python using the popular Requests library.</p>
     <pre class="line-numbers"><code class="language-javascript" translate="No">import requests
-import sys
-import time
+ import sys
+ import time
 
-TIMEOUT = 120 # consider a report "timed out" if running > 2
+ TIMEOUT = 120 # consider a report "timed out" if running > 2
 
-minutes processing = True
+ minutes = True
+ processing = True
+ BASE_DOMAIN= "https://interactivity-reporting.api.brightcove.com/api/reports/v2/"
 
-url = "https://{BASE_DOMAIN}/api/reports/v2/project_engagement_summary_raw"
+ url = BASE_DOMAIN+"api/reports/v2/project_engagement_summary_raw"
+ print(url)
 
-# Reporting endpoint url
-
-querystring = {
-    "start": "2023-07-01", # begin date
-    "end": "2023-07-31", # end date
-    "format": "csv", # csv or JSON
-    "send_status":"true"
-    }
-headers = {
-    'Authorization': "Bearer {Brightove Access Token}",
-    'cache-control': "no-cache",
-    }
-
-start_time = time.time()
-
-while processing:
-    if time.time() - start_time > TIMEOUT:
-        print('Report timed-out')
-        sys.exit(-1)
-response = requests.request("GET", url, headers=headers, params=querystring) print('Result: {}'.format(response.status_code))
-if response.status_code == 200:
-    processing = False
-    print(response.text)
-elif response.status_code == 202:
-    print('sleep/recheck')
-    time.sleep (10)
-else:
-    print('Something went wrong')
-    sys.exit(-2)
+ # Reporting endpoint url
+ querystring = {
+     "start": "2023-07-01",
+     "end": "2024-03-31",
+     "format": "csv", # csv or JSON
+     "send_status":"true"
+     }
+ headers = {
+     'Authorization': "Bearer {Brightove Access Token}",
+     'cache-control': "no-cache",
+     }
+     
+ start_time = time.time()
+ while processing:
+     if time.time() - start_time > TIMEOUT:
+         print('Report timed-out')
+         sys.exit(-1)
+ response = requests.request("GET", url, headers=headers, params=querystring) 
+ print('Result: {}'.format(response.status_code))
+ if response.status_code == 200:
+     processing = False
+     print(response.text)
+ elif response.status_code == 202:
+     print('sleep/recheck')
+     time.sleep (10)
+ else:
+     print('Something went wrong')
+     sys.exit(-2)
     </code></pre>
     </section>
 </article>
