@@ -3802,7 +3802,83 @@
     <h2 id="ingest_images">Ingest images</h2>
 
     <p>Here are the details of adding custom images for your video.</p>
+    <h3>Correct way to send images using Images API</h3>
+    <p>The following instruction is the correct way to ingest poster/thumbnail <code>images</code> using images block via Ingest API:</p>
+    <p><code>images</code>block are intended to store Beacon images where customers are able to provide variants and language for each image. The correct way to ingest primary images is using <code>poster</code> and <code>thumbnail</code> objects into main level. See the follow example:
+      <pre class="line-numbers"><code class="language-json" translate="No">
+        {
+          "master": {
+            "url": "{SOURCE_URL}"
+          },
+          "poster": {
+            "url": "https://some.site.com/images/celtic-lullaby-large.png",
+            "width": 1400,
+            "height": 1400
+          },
+          "thumbnail": {
+            "url": "https://some.site.com/images/celtic-lullaby-large.png",
+            "width": 160,
+            "height": 90
+          }
+        }
+        </code>
+      </pre>
+    </p>
+        <aside class="bcls-aside bcls-aside--information language-editable">Note: There is an exception where primary images can be taken from the images block, this is only when language on each image is not defined and capture-images is not defined. See follow examples:</aside>
+        <aside class="bcls-aside bcls-aside--tip language-editable">This is a good request:
+        <pre class="line-numbers"><code class="language-json" translate="No">
+          {
+            "master": {
+              "url": "{SOURCE_URL}"
+            },
+            "images": [
+              {
+                "variant": "poster",
+                "url": "{POSTER_SOURCE_URL}",
+                "height": 360,
+                "width": 640
+              },
+              {
+                "variant": "thumbnail",
+                "url": "{THUMBANIL_SOURCE_URL}",
+                "height": 360,
+                "width": 640
+              }
+            ]
+          }
+        </code>
+        </pre>
+      </aside>
+      </p>
+        <aside class="bcls-aside bcls-aside--warning language-editable">This is a bad request:
+          <pre class="line-numbers"><code class="language-json" translate="No">
+            {
+              "master": {
+                "url": "{SOURCE_URL}"
+              },
+              "capture-images": false,
+              "images": [
+                {
+                  "variant": "poster",
+                  "url": "{POSTER_SOURCE_URL}",
+                  "height": 360,
+                  "width": 640
+                },
+                {
+                  "variant": "thumbnail",
+                  "url": "{THUMBANIL_SOURCE_URL}",
+                  "height": 360,
+                  "width": 640
+                }
+              ]
+            }
+            </code>
 
+        </aside>
+
+
+
+  </section>
     <h3>Image fields in the request body</h3>
     <p>As noted above, primary poster and thumbnail images are specified as top-level objects in the request body.
       Multilingual variant images in the ingest request body are specified as an array of objects. The object properties
