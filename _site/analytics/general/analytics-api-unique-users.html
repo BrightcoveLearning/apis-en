@@ -3773,9 +3773,9 @@
   <ol class="bcls-tasklist-restart">
     <li>
       <p>
-        Even though viewer data is sent to Brightcove analytics automatically, you need to set the user identifier. To do this, use the <code translate="No">setUser()</code> method. For example:
+        Even though viewer data is sent to Brightcove analytics automatically, you need to set the user identifier. To do this, use the <code translate="No">user()</code> method. For example:
       </p>
-      <pre class="line-numbers"><code class="language-javascript" translate="No">myPlayer.bcAnalytics.client.setUser('<span class="bcls-input">viewer id</span>');</code></pre>
+      <pre class="line-numbers"><code class="language-javascript" translate="No">myPlayer.bcAnalytics.client.user('<span class="bcls-input">viewer id</span>');</code></pre>
       <p>On your websites that host Brightcove Player, you can use an authentication gateway or some identity management solution to keep track of viewers. Use this viewer id as the viewer identifier to pass to Brightcove analytics.</p>
       <aside class="bcls-aside bcls-aside--warning">The <span class="bcls-input">viewer id</span> value must be a unique string. An invalid value, such as a number, will be ignored. </aside>
       <p></p>
@@ -3803,11 +3803,11 @@
     var myPlayer = this;
 
     // Set the viewer id for Brightcove analytics
-    myPlayer.bcAnalytics.client.setUser('<span class="bcls-input">viewer id</span>');
+    myPlayer.bcAnalytics.client.user('<span class="bcls-input">viewer id</span>');
   });
 &lt;/script&gt;</code></pre>
     </li>
-    <li>When the <code translate="No">setUser()</code> method is used, the value is not hashed and will be sent in the clear with all subsequent beacons.
+    <li>When the <code translate="No">user()</code> method is used, the value is not hashed and will be sent in the clear with all subsequent beacons.
       <p>
         Note that the <code translate="No">player_init</code> event will not include the <code translate="No">user</code> field in this case, but all <code translate="No">video_*</code> events should include it.
       </p>
