@@ -1187,7 +1187,260 @@ paths:
       security:
         - BC_OAuth2:
             - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/reports/gradebook/summary':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets gradebook summary report
+      description: Gets counts of correctly answered questions grouped by user id
+      tags:
+        - Reports
+      operationId: GetGradeBookSummary
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+        - $ref: '#/components/parameters/StartTime'
+        - $ref: '#/components/parameters/EndTime'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      num_questions:
+                        type: number
+                        description: Total number of questions in the quizzes after filtering by date / project id
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            user_id:
+                              type: string
+                              description: ID
+                              readOnly: true
+                            total_correct_answers:
+                              type: number
+                            total_question_count:
+                              type: number
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/reports/gradebook/users/answers':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets gradebook user answer details report
+      description: Get user submitted answers
+      tags:
+        - Reports
+      operationId: GetGradeBookDetails
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+        - $ref: '#/components/parameters/StartTime'
+        - $ref: '#/components/parameters/EndTime'
+        - in: query
+          name: user_id
+          description: user id used in quizzes
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: show_details
+          description: show additional fields in response (project_title, question, answer)
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: string
+                        projects:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              project_id:
+                                type: string
+                              project_title:
+                                type: string
+                                description: only shows when show_details is set to true
+                              questions:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    question:
+                                      type: string
+                                    answer:
+                                      type: string
+                                    correct:
+                                      type: boolean
+                                    submitted_at:
+                                      type: string
+                                      description: iso date string
+                                    answers:
+                                      type: array
+                                      description: only shows when show_details is set to true. Shows the answers possible answers for the question.
+                                      items:
+                                        type: object
+                                        properties:
+                                          text:
+                                            type: string
+                                            description: answer text
+                                          type:
+                                            type: string
+                                            enum:
+                                              - choice
+                                              - text-choice
+                                            description:
+                                              answer type
+                                          correct:
+                                            type: boolean
+                                            description: set to true if it is the correct answer, missing field means false.
+                                    total_submissions:
+                                      type: number
+                                      description: only shows when show_details is set to true. Shows the number of submitted answers for the question (corresponds to number of users that answered the question)
 
+
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/reports/quiz/actions':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets quiz actions report
+      description: Gets counts of answered questions grouped by project
+      tags:
+        - Reports
+      operationId: GetQuizActions
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+        - $ref: '#/components/parameters/StartTime'
+        - $ref: '#/components/parameters/EndTime'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        actions:
+                          type: number
+                          description: Total number of submitted answers filtering by date / project id
+                        project:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              description: ID
+                              readOnly: true
+                            title:
+                              type: string
+                              description: Project title
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
+  '/v1/accounts/{account_id}/reports/quiz/project/summary':
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Gets quiz project summary report
+      description: Gets counts of unique answers submitted grouped by question and answer
+      tags:
+        - Reports
+      operationId: GetQuizActionsSummary
+      parameters:
+        - name: project_id
+          in: query
+          description: Filter by project id
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/StartTime'
+        - $ref: '#/components/parameters/EndTime'
+      responses:
+        '200':
+          description: 'SUCCESS'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        answers:
+                          type: array
+                          description: The unique answers submitted for question
+                          items:
+                            type: object
+                            properties:
+                              answer:
+                                type: string
+                                description: The text of the submitted answer
+                              correct:
+                                type: boolean
+                                description: Indicates if this was a correct answer
+                              num_responses:
+                                type: number
+                                description: Total number of submissions containing this answer
+                              percent:
+                                type: number
+                                description: Percent of total submissions for question with this answer
+                        num_correct:
+                          type: number
+                          description: Total number of correct answers for question filtering by date / project id
+                        num_responses:
+                          type: number
+                          description: Total number of submitted answers for question filtering by date / project id
+                        question:
+                          type: string
+                          description: The text of the question
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - BC_OAuth2:
+            - video-cloud/interactivity/all
 components:
   parameters:
     AccountId:
