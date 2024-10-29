@@ -3643,17 +3643,9 @@
     <h2 id="viewer_api">Viewer API</h2>
     <p>The Brightcove Interactivity annotation viewer supports viewing annotations for an existing video element on a page. The existing video javascript object, iframe, html element, etc is passed into the viewer API method call.</p>
     <h3 id="viewer_api_example">Example</h3>
-<pre class="line-numbers"><code class="language-javascript" translate="No">ytPlayer = new YT.Player('video', {
-  height: '390',
-  width: '640',
-  videoId: 'u1zgFlCw8Aw',
-  playerVars: {
-    html: 1,
-    wmode: 'opaque'
-  }
-});
+<pre class="line-numbers"><code class="language-javascript" translate="No">
 
-hapyak.viewer({
+  player.interactivityViewer({
     css: "https://modernizr.com/i/css/modernizr-2.1.1.css?v=1",
     width: 640,
     height: 360,
@@ -3667,19 +3659,15 @@ hapyak.viewer({
     <h4><code translate="no">playerType</code></h4>
     <p>Tells Brightcove Interactivity what sort of <em>player</em> was passed in. Valid values are "videojs", "youtube", "vimeo", "html5", "jplayer", "wistia", "dailymotion", "brightcove"</p> -->
     <h4><code translate="no">width</code> (optional)</h4>
-    <p>Tells Brightcove Interactivity the width of the player object. Optional, but the viewer may not always be able to figure out the right sizing.</p>
+    <p>Brightcove doesn't support this as a parameter, this needs to be defined in the player options.</p>
     <h4><code translate="no">height</code> (optional)</h4>
-    <p>Tells Brightcove Interactivity the height of the player object. Optional, but the viewer may not always be able to figure out the right sizing.</p>
+    <p>Brightcove doesn't support this as a parameter, this needs to be defined in the player options.</p>
     <h4><code translate="no">css</code> (optional)</h4>
     <p>The location of a CSS file to load.</p>
     <h4><code translate="no">trackId</code></h4>
     <p>The ID of the Brightcove Interactivity commentary track to load. A Brightcove Interactivity "track" is the container for popup, drawing, audio, etc, commentary.</p>
     <h4><code translate="no">autoplay</code> (optional)</h4>
     <p>If set to true, the video with commentary will start to play once the video is loaded, and the track has been downloaded from www.hapyak.com.</p>
-    <h4><code translate="no">minWidth</code> (optional)</h4>
-    <p>Minimum width of player in pixels to show annotations. If the player width is below this value, all annotations will be hidden.  Optional, defaults to 300px.</p>
-    <h4><code translate="no">minHeight</code> (optional)</h4>
-    <p>Minimum height of player in pixels to show annotations. If the player height is below this value, all annotations will be hidden.  Optional, defaults to 200px.</p>
     <h4><code translate="no">onLoad</code> (optional)</h4>
     <p>A function to be called when the viewer has loaded. Will be passed one argument, a <code translate="no">Interactivity Viewer</code> object (see below).</p>
     <h4><code translate="no">onLoadAnnotations</code> (optional)</h4>
@@ -3688,30 +3676,28 @@ hapyak.viewer({
     <p>If set to true, all track variables set by quizzes, clicks or iframe scripts will be cleared before loading.</p>
 
     <h3 id="viewer_api_advanced_options">Advanced Options</h3>
-    <h4><code translate="no">userId</code> (optional)</h4>
+    <!-- <h4><code translate="no">userId</code> (optional)</h4>
     <p>You can optionally pass in a userId for tracking purposes.</p>
     <h4><code translate="no">username</code> (optional)</h4>
-    <p>You can optionally pass in a username for tracking purposes.</p>
+    <p>You can optionally pass in a username for tracking purposes.</p> -->
     <h4><code translate="no">groupId</code> (optional, requires api key)</h4>
-    <p>When using an api key, you can optionally pass in a groupId. The groupId should
-    represent some subgroup of your end users.</p>
     <h4><code translate="no">variables</code></h4>
     <p>Dictionary of variables to be made available to dynamic annotations.</p>
-<pre class="line-numbers"><code class="language-javascript" translate="No">.viewer({
+<pre class="line-numbers"><code class="language-javascript" translate="No">player.interactivityViewer
   variables: {
       courseName: "Math 101"
   }
 });</code></pre>
     <h4><code translate="no">environment</code> (optional, for debugging)</h4>
     <p>Valid values are "production", "staging" or "feature". Only used when attempting to test against a specific environment.</p>
-<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+<pre class="line-numbers"><code class="language-javascript" translate="No">player.interactivityViewer
   environment: 'production'
 });</code></pre>
 
     <h3 id="viewer_api_event_callbacks"></h3>
     <p>The viewer API triggers a number of event callbacks related to both video and data. An event callback may be registered by passing the event name to <code translate="no">addEventListener</code> (see below) or including the event callback as an option, with the name of the event preceeded by <code translate="no">on</code> as the key.</p>
     <p>For example, the <code translate="no">play</code> event, which fires whenever the video starts playing may be registered as an option:</p>
-<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+<pre class="line-numbers"><code class="language-javascript" translate="No">player.interactivityViewer
   /* ...other options here... */
   onplay: function() {
       console.log('video started playing');
@@ -3719,7 +3705,7 @@ hapyak.viewer({
 });</code></pre>
     
     <p>Another way to accomplish the same thing:</p>
-<pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
+<pre class="line-numbers"><code class="language-javascript" translate="No">player.interactivityViewer
   /* ...other options here... */
   onload: function(viewer) {
       viewer.addEventListener('play', function () {
@@ -4004,7 +3990,7 @@ editor.addEventListener('play', function () {
     
   </section>
 
-  <section class="bcls-section">
+  <!-- <section class="bcls-section">
     <h2 id="templates">Templates</h2>
     <p>Brightcove Interactivity supports the concept of template tracks. A template track can be applied to any video, whether it already has a project/track associated or not. To apply a template track to your video, pass in a "project" search parameter.</p>
 <pre class="line-numbers"><code class="language-javascript" translate="No">hapyak.viewer({
@@ -4020,7 +4006,7 @@ editor.addEventListener('play', function () {
 });</code></pre>
         
     <p>If there were existing annotations for the video, they will be combined with the annotations from the template. If there are no existing annotations, only the template track annotations will be shown.</p>
-  </section>
+  </section> -->
   <section class="bcls-section">
     <h2 id="faq">FAQ</h2>
     <dl>
