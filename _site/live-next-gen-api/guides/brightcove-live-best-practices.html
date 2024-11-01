@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"> 
     <head>
-        <title>Analytics API Explorer</title>
+        <title>Brightcove Live: Best Practices</title>
         
         <!-- Meta -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="In this topic, you will learn how to get started quickly using the Analytics API by testing some of the common request types and seeing what the response data contains.">
+        <meta name="description" content="This topic provides a guide to best practices for creating live streams using the Live API.">
         
         <!-- Google Font -->
         <link href="/assets/s-site-assets-stylesheets/fonts/poppins.css" rel="stylesheet">
@@ -472,7 +472,7 @@
                   
                   
                   
-                  <li class="nav-item section-doc"><a class="nav-link" href="/analytics/getting-started/analytics-api-explorer.html" aria-current="page">Analytics API Explorer</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/analytics/getting-started/analytics-api-explorer.html">Analytics API Explorer</a></li>
                   
                   
                   
@@ -3597,15 +3597,15 @@
             <li class="breadcrumb-item"><a class="theme-link" href="/">Home</a></li>
             
             
-            <li class="breadcrumb-item"><a class="theme-link" href="/analytics/">Analytics</a></li>
+            <li class="breadcrumb-item"><a class="theme-link" href="/live-next-gen-api/">Live next gen api</a></li>
             
             
             
-            <li class="breadcrumb-item"><a class="theme-link" href="/analytics/getting-started/">Getting started</a></li>
+            <li class="breadcrumb-item"><a class="theme-link" href="/live-next-gen-api/guides/">Guides</a></li>
             
             
             
-            <li class="breadcrumb-item active" aria-current="page">Analytics API Explorer</li>
+            <li class="breadcrumb-item active" aria-current="page">Brightcove Live: Best Practices</li>
             
             
           </ol>
@@ -3626,50 +3626,441 @@
       <br>
       
       
-<h1>Analytics API Explorer</h1>
-<article class="bcls-article">
-  <summary>In this topic, you will learn how to get started quickly using the <span translate="No">Analytics API</span> by testing some of the common request types and seeing what the response data contains.</summary>
-    <section class="bcls-section" id="Overview">
-    <h2>Overview</h2>
-    
-    <p>The <span translate="No">Analytics API</span> allows you to retrieve various analytics reports for your Video Cloud videos. This quick start will allow you to test a number of different requests to see what the request URL and response look like.</p>
-    
-    <aside class="bcls-aside bcls-aside--information">
-    <ul>
-      <li>For a full explanation of the API, see the <a href="/analytics/getting-started/overview-analytics-api-v1.html">Analytics API Overview</a> and the <a href="/analytics/references/reference.html">Analytics API Reference</a></li>
-      <li>If you would like to test requests on your own account(s), try our <a href="/getting-started/concepts-testing-tools-brightcove-apis.html">API testing tools</a></li>
-    </ul>
-    </aside>
-    </section>
-    
-    <section id="authorization" class="bcls-section">
-    <h2>Authorization</h2>
-    
-    <p>API calls are authorized using OAuth2 access tokens. The token is passed with requests in an authorization header:</p>
-    
-    <pre class="slide">
-    <code translate="No">Authorization: Bearer {access_token}</code></pre>
-    
-    <p class="slide">Access tokens are short-lived (5 min), so you must get one each time you make a request</p>
-    
-    <p class="slide">In quick start, all requests will be for a Brightcove sample account, using a <a href="/oauth/guides/getting-access-tokens.html#php">proxy</a> that has the necessary client credentials and will fetch an access token and then make the request.</p>
-    </section>
-    
-    <section id="codepen" class="bcls-section">
-    <h2>CodePen</h2>
-    
-    <p>Use the CodePen below to test out different <span translate="No">Analytics API</span> requests.</p>
+<h1>This page has moved - you will be directed to the <a href="https://live.support.brightcove.com/get-started/live-module-guidelines-and-best-practices.html">new location</a> in 3 seconds. Please update your bookmarks!</h1>
+<script type="text/javascript">
+var t = setTimeout(function() {
+    window.location.href = 'https://live.support.brightcove.com/get-started/live-module-guidelines-and-best-practices.html';
+}, 3000);
+</script>
 
-    <aside class="bcls-aside bcls-aside--tip">Note: The CodeSample may not work as expected due to a temporary issue with the proxy service. Our team is actively working to resolve this issue.</aside>
-    <p class="codepen" data-height="800" data-theme-id="34967" data-default-tab="result" data-user="rcrooks1969" data-slug-hash="MaVaxN" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Analytics API Tester">
-      <span>See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/MaVaxN">
-      <span translate="No">Analytics API</span> Tester</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>)
-      on <a href="https://codepen.io">CodePen</a>.</span>
-    </p>
-    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-  </section>
-    </article>
-    
+<h1>Brightcove Live: Best Practices</h1>
+<article class="bcls-article">
+  <summary>This topic provides a guide to best practices for creating live streams using the Live API.</summary>
+  <section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>Brightcove Live provides a robust service for creating live streaming events or 24/7 live streams. This guide outlines best practices for optimizing your live streams</p>
+</section>
+
+<section class="bcls-section">
+  <h2 id="Content_context">Content context</h2>
+  <p>The type of content being streamed needs to be considered as it has an impact on the required settings for maintaining the quality of the input. Note that there are trade-offs and using the highest possible settings may cause issues such as skipped frames.</p>
+  <p>Based on the information below, we recommend that you test different setting combinations for quality and performance before your live event.</p>
+	<p>The key input parameters are outlined in the following table:</p>
+	<table class="bcls-table">
+    <caption class="bcls-caption--table">Key Input Parameters for Live Streaming</caption>
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Parameter</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>Input bitrate</td>
+            <td>The bitrate that the encoder sends. Higher rates are more susceptible to network loss so should be kept as low as practical.</td>
+        </tr>
+        <tr>
+            <td>Input resolution</td>
+            <td>This should match the source content. There is no benefit in making this greater than the original source and the higher this value is, the higher the bitrate is required to support it.</td>
+        </tr>
+        <tr>
+            <td>Input bitrate to top profile ratio</td>
+            <td>
+              The input bitrate should be higher than the rate of the top profile, but too much higher may result in dropped frames or other issues - e.g. if your top rate is 1080p 30fps, the input should ideally be around 4 MBPS. Note that this is affected by the profile.
+              <p>If you require a high bitrate top output it is worth testing the <code translate="no">copy_video</code> setting which will simply copy your input encode to the output.</p>
+            </td>
+        </tr>
+        <tr>
+          <td>Profiles</td>
+          <td>
+            The different profiles (baseline, main, high) compress the data in ascending amounts (baseline: lowest, high: highest). Greater compression improves the rate of transmission, but also requires greater CPU resources to decode the data. Unless the encoder is highly constrained in available resources baseline profile should be avoided. On the other hand, using high profile at high bitrates is more likely to cause skipped frames due to the increased decode CPU resources required.
+            <p>Also see <a href="#gop_structure">GOP structure</a> below.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>Frame rate</td>
+          <td>
+            This should match the source.
+            <p>Higher rates will require proportionally higher input bitrates e.g. with action sport content a 60fps input stream carries substantially more data than a 30fps stream.</p>
+            <p>High rates such as 60fps are more likely to have skip frame issues on complex content at high bitrates.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>Keyframe rate</td>
+          <td>
+            The most efficient setting for this is the segment duration x frame rate - for example, if you have 6 second segments and 30fps making the keyframe rate 180 (6x30) would result in the lowest decoder load.
+            <p>However, to account for any fluctuations this is set to 2 x the frame rate - for example, 60 for a framerate of 30 fps.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>GOP structure</td>
+          <td>See <a href="#gop_structure">GOP structure</a> below.</td>
+        </tr>
+    </tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+  <h2 id="Key_issues">Key issues with streaming</h2>
+  <p>There are several issues that are generally encountered that relate to problems with the streaming experience from the encoder to Brightcove:</p>
+  <ol>
+    <li>
+      Network instability affecting the input:
+      <ol>
+        <li>While the internet is generally quite reliable it is not infallible and issues do occur. Issues are more likely to be noticed on higher bitrates.</li>
+        <li>If it takes longer to upload the video than real time then this can result in input drift (the time that the video is received is substantially later than when it was sent)</li>
+      </ol>
+    </li>
+    <li>
+      Transcoder overload resulting in skip frames: while we do everything to make sure our transcoders have enough overhead sometimes sudden spikes in either content complexity, network hiccups/ catchups or other interruptions to our transcoders can cause skip frames. The more complex the input is then the more likely it is that skipped frames will be encountered. There is also a known issue where changes from a still image for an extended duration e.g. longer than 5 minutes and a sudden change to action content can cause an overload.
+    </li>
+    <li>Encoder sending variable frame durations: the frame rate should be constant and it should be such that it allows for a keyframe interval that is constant. For example, for a frame rate such as 29.97 aka 30000/1001 or 23.976 aka 24000/1001 it is not possible to set a keyframe at a regular interval and as such should be avoided.</li>
+    <li>Encoder sending keyframes that are not a consistent duration apart, the keyframe rate should be a minimum of 2x the frame rate in seconds. For example, for a frame rate of 30fps the keyframe interval should be 60 frames which is 2 seconds and should be a maximum interval of once per segment - for example, if you have a 6 second segment then the maximum interval would be 180 frames at 30 fps</li>
+  </ol>
+</section>
+
+<section class="bcls-section">
+  <h2 id="Content_types">Content types</h2>
+  <p>Generally, more complex content will require using the higher of these settings and as such is more susceptible to skipped frames. The table below shows some examples in order of complexity. Note that these are examples only, and as just about every encoder setup is different. Testing and verification should be performed.</p>
+  <table class="bcls-table">
+    <caption class="bcls-caption--table">Content Type Examples</caption>
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Content Type</th>
+            <th>Example Settings</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td>Webcam</td>
+            <td>
+              <ul>
+                <li>Resolution: 360p</li>
+                <li>Bitrate: 1 MBPS</li>
+                <li>Profile: Baseline</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Web conference</td>
+            <td>
+              <ul>
+                <li>Resolution: 480p</li>
+                <li>Bitrate: 2.5 MBPS</li>
+                <li>Profile: Main</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Animation</td>
+            <td>
+              <ul>
+                <li>Resolution: 720p</li>
+                <li>Bitrate: 2.5 MBPS</li>
+                <li>Profile: Main</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Talking Head / News</td>
+            <td>
+              <ul>
+                <li>Resolution: 720p</li>
+                <li>Bitrate: 4 MBPS</li>
+                <li>Profile: Main</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Live Concert</td>
+            <td>
+              <ul>
+                <li>Resolution: 1080p (or source)</li>
+                <li>Bitrate: 5 MBPS</li>
+                <li>Profile: High</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Live Sport</td>
+            <td>
+              <ul>
+                <li>Resolution: 1080p (or source)</li>
+                <li>Bitrate: 6 MBPS</li>
+                <li>Profile: High</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Live Sport High FPS</td>
+            <td>
+              <ul>
+                <li>Resolution: 1080p (or source)</li>
+                <li>Bitrate: 10 MBPS</li>
+                <li>Profile: High</li>
+              </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+  <h2 id="verification">Verification and testing</h2>
+  <p>Ideally customers should start with the lowest possible settings on their most complex (most changing content) and test with their content by increasing the various settings until the output is acceptable. This is because generally the higher the settings the more likely issues are to be encountered in either the network or transcoding.</p>
+</section>
+
+<section class="bcls-section">
+  <h2 id="gop_structure">GOP structure</h2>
+  <p>The Group of Pictures (GOP) structure of the video is dependent first on the profile that is used as:</p>
+  <ol>
+    <li><strong>Baseline</strong> profile only supports I and P frames and CAVLC entropy encoding</li>
+    <li><strong>Main</strong> and <strong>High</strong> support I, B and P frames and CABAC entropy encoding</li>
+  </ol>
+  <p>Main and High profiles generally result in better compression at better quality but also require additional computation to encode and decode, as such may be more susceptible to skipped frames. In addition, as these profiles use B (bi-directional) frames, they induce some delay in the encoding process.</p>
+  <p>Baseline profile requires less CPU to encode and decode, but as it offers less compression, it requires a higher bitrate to maintain quality and as such is more susceptible to network issues.</p>
+  <h3>Notes on frame types and their likely impact on performance:</h3>
+  <ol>
+    <li><strong>I frames</strong>: uses the most bandwidth. Best added for complete scene changes or at the segment boundaries - i.e. the more the content changes the more of these you need (shorter GOP length)</li>
+    <li><strong>P frames</strong>: are the base unit between I frames</li>
+    <li><strong>B frames</strong>: use both prior and future frames, the more you add the better the compression will be but the higher the CPU and latency</li>
+  </ol>
+  <p>The use of <strong>I frames</strong> should ideally be limited to start of segments (critical if using passthrough) or scene changes. All or high numbers of I frames should be avoided as this can cause excess load leading to skipped frames.</p>
+  <h3>Additional notes:</h3>
+  <ul>
+    <li>Use options for preventing dense placement of key frames (example: <code translate="no">min_keyin</code> = 3+).</li>
+    <li>Use options ensuring a regular cadence of insertion of Key frames. For example, instead of specifying GOP length in seconds, specify it in exact fractions or frames.</li>
+  </ul>
+</section>
+
+<section class="bcls-section">
+  <h2 id="bitrate">Bitrate</h2>
+  <ul>
+    <li>Minimum input bandwidth: 2.5 mbps</li>
+    <li>Maximum input bandwidth: 10 mbps</li>
+  </ul>
+  
+  <ul>
+    <li>Make the stream "almost CBR"" - with <code translate="no">max_bitrate</code> = 1.1 * target_bitrate.</li>
+    <li>Use strict HRD-compliant rate control mode, if available.</li>
+  </ul>
+</section>
+
+<section class="bcls-section">
+  <h2 id="Protocol">Protocol</h2>
+  <p>It is important to note that the internet is not a guaranteed delivery network, and that while an internet connection may be considered "good", it may not be good enough for reliable live video streaming at high quality. A small disruption in the path between the customer encoder and the Brightcove transcoding platform such as a small amount of congestion at an ISP, an unplanned failover between routers, or similar issues can cause a disruption in the video output. In high stakes live broadcast it is normal practice to have multiple dedicated networks consisting of either dedicated fibre, booked satellite bandwidth, or committed bandwidth on a managed network. This comes with a substantial cost, and in most cases it is possible to achieve a good enough outcome over the internet. If, however, it is critical to maintain fault-free transport please consider AWS Direct Connect or an ISP that can provide some level of dedicated bandwidth.</p>
+  <p>The options we recommend are (in order):</p>
+  <ol>
+    <li><strong>SRT</strong> - provides a good combination of speed of transport (UDP) with some control and error resilience. Not available on all encoders, though there are tools that can translate from local RTP such as srt-transmit.</li>
+    <li><strong>RTMP</strong> - being TCP based, it provides a good level of error resilience, downsides are that this comes with a substantial overhead. Note that not all features such as multiple audio tracks are available with RTMP.</li>
+    <li><strong>RTP-FEC</strong> - provides fast UDP based transport with some error resilience</li>
+    <li><strong>RTP</strong> - provides fast transport and advanced features with no error resilience</li>
+  </ol>
+  <aside class="bcls-aside bcls-aside--information">Note:  if you use RTMP, please consider disabling slices if possible as they may result in parts of a frame arriving out of order.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Certified_encoders">Supported encoders</h2>
+
+<p>See <a href="https://live.support.brightcove.com/general/supported-encoders-live-events.html">Supported Encoders for Live Events</a> for list of encoders known to work with Live. Note that other encoders may also work, but have not been tested.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Supported_CDNs">Supported CDNs</h2>
+
+<ul>
+	<li>Akamai</li>
+	<li>Amazon CloudFront</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information">The CDNs above are officially supported, but other file-based CDNs should work.</aside>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="retries">Retries</h2>
+
+<p>We recommend enabling retries for the RTMP connection from the encoder. A large number of retry attempts with a 5-second retry interval will mitigate any intermittent connectivity issues between the encoder and the entry point.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="job_settings">Job settings</h2>
+
+<p>Recommended job settings</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Job Settings</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Recommended Value</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code translate="No">ad_audio_loudness_level</code></td>
+			<td><code translate="No">-23 </code> (EBU R.128 standard)</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="input_requirements">Input requirements</h2>
+
+<p>The following table shows requirements for the input live stream.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Input Requirements</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Item</th>
+			<th>Requirement</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Protocol</td>
+			<td><code translate="No">rtmp</code>, <code translate="No">rpt</code>, <code translate="No">rtp-fec</code>, or <code translate="No">srt</code> (all except <code translate="No">rtmp</code> are for MPEG2-TS inputs)<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
+		</tr>
+		<tr>
+			<td>Video format</td>
+			<td>h.264</td>
+		</tr>
+		<tr>
+			<td>Audio format</td>
+			<td>AAC</td>
+		</tr>
+		<tr>
+			<td>Maximum audio sampling rate</td>
+			<td>up to 48000 Hz (Brightcove Support can increase this value on request)</td>
+		</tr>
+		<tr>
+			<td>Resolution</td>
+			<td>Up to 1080p (width: 1920 pixels; height: 1080 pixels)</td>
+		</tr>
+		<tr>
+			<td>Bitrate</td>
+			<td>Must be at least as high as the highest output bitrate - maximum: 10MBPS.
+			<p>In almost all cases, Brightcove Support has found that using Constant Bitrate for the input stream greatly reduces the chance of problems.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Framerate</td>
+			<td>30 fps (you can submit a <a href="https://supportportal.brightcove.com">Support request</a> to have the limit raised to 60fps)</td>
+		</tr>
+		<tr>
+			<td>Slices</td>
+			<td>If your encoder has this option, set it to <code translate="no">1</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Notes</h3>
+
+<ul>
+	<li id="note1-1"><sup><strong>[1-1]</strong></sup> If you have multiple video/audio tracks in your TS input, we will pick the first for each. We also strongly recommend using FEC, as plain TS over UDP over the internet is very unreliable. For FEC, we could note that the <em>smaller</em> the values you use for rows/columns, the more reliable the error correction will be (at the cost of increased bandwidth.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="slate_source_file_recommendations">Slate source file recommendations</h2>
+
+<ul>
+	<li><strong>Resolution</strong>: (best in your encoding ladder)</li>
+	<li><strong>FPS</strong>: (same as your source)</li>
+	<li><strong>Bitrate</strong>: (best in your encoding ladder or better)</li>
+	<li><strong>Audio</strong>: (same bitrate, channels, sampling frequency, and bits per sample as your best rendition, or same as your input)</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="output_recommendations" class="bcls-section">Output recommendations</h2>
+
+<p>Below are recommended output settings, but note that for many encoders, the RTMP input is limited to 10 MBPS (video + audio) and a framerate of 30fps.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Output Recommendations</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Item</th>
+			<th>Recommendation</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Video codec</td>
+			<td><code translate="No">h264</code> is currently the only option</td>
+		</tr>
+		<tr>
+			<td>Audio codec</td>
+			<td><code translate="No">aac</code> is currently the only option</td>
+		</tr>
+		<tr>
+			<td>Width</td>
+			<td>If no <code translate="No">width</code> or <code translate="No">height</code> is supplied, the source dimensions are used. If either <code translate="No">width</code> or <code translate="No">height</code> is supplied, the other dimension will be calculated to maintain the aspect ratio of the source.</td>
+		</tr>
+		<tr>
+			<td>Height</td>
+			<td>If no <code translate="No">width</code> or <code translate="No">height</code> is supplied, the source dimensions are used. If either <code translate="No">width</code> or <code translate="No">height</code> is supplied, the other dimension will be calculated to maintain the aspect ratio of the source.</td>
+		</tr>
+		<tr>
+			<td>Bitrate</td>
+			<td>Less than or equal to the input bitrate</td>
+		</tr>
+		<tr>
+			<td>Keyframe rate</td>
+			<td>2 seconds</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section id="AWS_regions">AWS regions
+<p>See the <a href="/live-api/getting-started/overview-brightcove-live-api.html#Support_aws_regions">Live API Overview</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="FAQ">FAQ</h2>
+
+<dl>
+	<dt class="bcls-question">How soon do you have to start streaming after creating a live job?</dt>
+	<dd class="bcls-answer">In Brightcove Live, there are two conditions when the state transitions from <code translate="No">waiting </code> to <code translate="No">finishing </code>:
+	<ol>
+		<li>if the job is in the <strong>waiting</strong> state (not yet started) and the <code translate="No">max_waiting_time_ms</code> has elapsed, the job is finished/deactivated.</li>
+		<li>If the job is in the <strong>disconnected</strong> state (started, but disconnected) and the <code translate="No">reconnect_time</code> has elapsed, the job is finished/deactivated.</li>
+	</ol>
+
+	<p>If the <code translate="No">event_length </code> is greater than 30 minutes, the job will terminate in 30 minutes. If the <code translate="No">event_length </code> is less than 30 minutes, the job will terminate in <code translate="No">event_length </code>.</p>
+
+	<p>For example, if the <code translate="No">event_length </code> is 60 minutes, then, the live job will terminate in 30 minutes. If the <code translate="No">event_length </code> is 15 minutes, then, the live job will terminate in 15 minutes</p>
+
+	<p>The <code translate="No">reconnect_time </code> has no effect for waiting state.</p>
+	</dd>
+	<dt class="bcls-question">What are the limitations on concurrent live job_settings?</dt>
+	<dd class="bcls-answer">
+	<p>A maximum of 5 active <strong>waiting, unstarted</strong> jobs is allowed at any time.</p>
+
+	<p>Additional limitations on concurrent jobs:</p>
+
+	<ul>
+		<li>The number of <code translate="No">channel</code> (24x7) jobs is limited to 0 or a low number per region (depending on the account type).</li>
+		<li>The number of concurrently <strong>running</strong> <code translate="No">event</code> jobs is limited by region, generally to 100.</li>
+		<li>The number of concurrently <strong>waiting to connect</strong> <code translate="No">event</code> jobs is limited to 5.</li>
+		<li>The number of SEP jobs per region is limited to 3 or 10 (see <a href="/live-api/getting-started/overview-brightcove-live-api.html#Support_aws_regions">Supported AWS regions</a>).</li>
+	</ul>
+
+	<p>Any of these limits can be adjusted on an account level by Support. Contact your Customer Success Manager if you need additional capacity.</p>
+	</dd>
+	<dt class="bcls-question">Can Brightcove Live push 1080p quality provided the input bandwidth is sufficient?</dt>
+	<dd class="bcls-answer">Yes, 1080p input is enabled for all accounts.</dd>
+	<dt class="bcls-question">Is DRM available?</dt>
+	<dd class="bcls-answer">Yes! Contact your Customer Success Manager if you are interested in adding DRM support to your live account.</dd>
+</dl>
+</section>
+</article>
+
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   
   <nav class="right-side-nav" id="right_side_nav">

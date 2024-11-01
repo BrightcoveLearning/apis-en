@@ -1,0 +1,596 @@
+---
+title: 'Live API: Notifications'
+description: 'This topic show how to set up notifications for Live API jobs.'
+parent: Guides
+grandparent: Live API
+---
+<h1>{{ page.title }}</h1>
+<article class="bcls-article">
+ <summary>{{ page.description }}</summary>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>The Brightcove Live system sends notifications of various events. You can set up listeners for notifications to trigger further actions. The listener(s) can be written in any server-side language you use, and they would look for incoming POST requests, parse the JSON request body, and then take whatever action you want. Below we will see how you can request notifications.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Requesting_notifications">Requesting notifications</h2>
+
+<p>You can request notifications by including one or more <code translate="No">notifications</code> fields in the outputs your <a href="/live-api/references/reference.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> request.</p>
+
+<p>The value of <code translate="No">notifications</code> is an array of notification destination objects. You can use a simple string with a url: <code translate="No">"https://httpbin.org/post"</code>, or you can use an object with following options: <code translate="No">{"url": "https://httpbin.org/post", "credentials": "reference_to_your_credentials"}</code>. A notification will be sent to the destination you specify when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Please note. Only one notification url per event type ( <code translate="No">first_segment_uploaded</code>, <code translate="No">state_change</code>, etc) is allowed.</aside>
+
+<aside class="bcls-aside bcls-aside--information">The Live API does not return the updated CMS information, even if the video object is updated. For example, if you update the Live Event title, the change will not be reflected in the <code translate="no">videocloud</code> section in the API response, and the Live API will return the original Live Event title.</aside>
+
+<p>Here are some examples:</p>
+
+<h3>Notifications for a Live job</h3>
+
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+    "live_stream": true,
+    "region": "us-west-2",
+    "reconnect_time": 20,
+    <span class="bcls-highlight">"notifications": [
+      {"url": "https://httpbin.org/post/URLA",
+        "credentials": "reference_to_your_credentials",
+        "event": "first_segment_uploaded"},
+      {"url": "https://httpbin.org/post/URLB",
+      "credentials": "reference_to_your_credentials",
+      "event": "state_changed"}
+      ]</span>,
+    "outputs": [
+    {
+        "label": "hls360p",
+        "live_stream": true,
+        "height": 360,
+        "video_bitrate": 650,
+        "segment_seconds": 6
+    },
+    {
+        "url":"s3://YOURBUCKET/path/filename.mp4",
+        "credentials": "accConfiguredCredsAWSIdSecret",
+        <span class="bcls-highlight">"notifications":    [
+        {
+            "url": "https://httpbin.org/post?vodStateChange"
+        },
+        {
+            "url": "https://httpbin.org/post?vodFinished",
+            "event": "output_finished"
+        }
+        ]</span>
+    }]
+}</code></pre>
+
+<h3>Notifications for Live to VOD (<code translate="No">output_finished</code> event only)</h3>
+
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "videocloud": {
+    "video": {
+      "name": "video name"
+    }
+  },
+  "notifications": [{
+    "url": "https://httpbin.org/post?vodFinished",
+    "event": "output_finished"
+  }]
+}</code></pre>
+<aside class="bcls-aside bcls-aside--information">Note: The notifications for Live to VOD are supported if the <code translate="no">“videocloud”</code> object exists within the <code translate="no">“outputs”</code> property without <code translate="no">“live_to_vod”</code> parameter.</aside>
+
+<h3>Notifications for Live to VOD (all events)</h3>
+
+<pre class="line-numbers">
+<code class="language-json" translate="No">{
+  "videocloud": {
+    "video": {
+      "name": "video name"
+    }
+  },
+  "notifications": [{
+    "url": "https://httpbin.org/post"
+  }]
+}</code></pre>
+<aside class="bcls-aside bcls-aside--information">Note: The notifications for Live to VOD are supported if the <code translate="no">“videocloud”</code> object exists within the <code translate="no">“outputs”</code> property without <code translate="no">“live_to_vod”</code> parameter.</aside>
+
+<h3>Retry strategy</h3>
+
+<p>In the event of a failed request to send a notification, the default retry strategy is to retry 50 times with an exponential delay between attempts.</p>
+
+<pre>
+          <code translate="No">max_retry_times = 50
+          delay_delta_s = 5
+          next_retry = now_s + retry_count * delay_delta_s</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Events">Events</h2>
+
+<p>Below are the events of a job lifecycle you can listen for. Note that the event scope is per job, so the event lifecycle for a live job would be separate from the lifecycle for a VOD clipping job based on the same live stream.</p>
+
+<ul>
+	<li><code translate="No">state_changed</code> - the state of the live job changed; see the table below for details</li>
+	<li><code translate="No">first_segment_uploaded</code> - the first segment of the live stream is uploaded to origin</li>
+	<li><code translate="No">output_finished</code> - the live event has ended, and VOD processing has created at least one audio and one video rendition, or one progressive MP4 rendition</li>
+</ul>
+
+<p>The <code translate="No">state_changed</code> will notify on the following states described in the table below</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Live Job States</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>State</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">JOB States (reported in notifications as <code translate="No">state</code>)</td>
+		</tr>
+		<tr>
+			<td><code translate="No">error</code></td>
+			<td>An error has occurred; the job will not be processed.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">standby</code></td>
+			<td>(Only applicable to Static Entry Point [SEP] jobs.) The job is allocated and ready for activation.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">processing</code></td>
+			<td>The encoder is connected and the job is available for playback.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">disconnected</code></td>
+			<td>The encoder has disconnected and the streaming worker is waiting for a reconnection.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">cancelling</code></td>
+			<td>The job has been cancelled and the worker is stopping the job and will NOT process any pending VOD outputs.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">finishing</code></td>
+			<td>The encoder has been disconnected for more than <code translate="No">reconnect_time</code>, and streaming worker is stopping the jobs and creating any associated VOD outputs.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">cancelled</code></td>
+			<td>The job has been cancelled successfully.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">finished</code></td>
+			<td>The job has finished successfully.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">failed</code></td>
+			<td>The job has stopped as a result of a system error.</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">VOD JOB States (reported in notifications as <code translate="No">jvod_state</code>)</td>
+		</tr>
+		<tr>
+			<td><code translate="No">error</code></td>
+			<td>An error has occurred; the job will not be processed.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">waiting</code></td>
+			<td>The job waiting for processing.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">waiting_finish_live</code></td>
+			<td>The job waiting for the Live Job to finish (if the clip depends on that).</td>
+		</tr>
+		<tr>
+			<td><code translate="No">processing</code></td>
+			<td>The clip is being processed.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">creating_asset</code></td>
+			<td>A VOD asset is being created.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">cancelling</code></td>
+			<td>The job has been cancelled and the worker is stopping the job and will NOT process any pending VOD outputs.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">cancelled</code></td>
+			<td>The job has been cancelled successfully.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">finished</code></td>
+			<td>The job has finished successfully.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">failed</code></td>
+			<td>The job has stopped as a result of a system error.</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">SSAI States (reported in notifications as <code translate="No">ssai_state</code>)</td>
+		</tr>
+		<tr>
+			<td><code translate="No">none</code></td>
+			<td>The job is not an SSAI job.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">waiting_input</code></td>
+			<td>The streaming worker is waiting for the encoder to connect and provide the stream input information.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">start_transcoding</code></td>
+			<td>The encoder has connected and the SSAI slate has been queued for transcoding based on the stream input data and outputs data.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">transcoding</code></td>
+			<td>The slate is being transcoded.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">error</code></td>
+			<td>The slate could not be downloaded or transcoded.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">ready</code></td>
+			<td>The slate has been generated and the job is ready for SSAI playback.</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">SEP States (reported in notifications as <code translate="No">sep_state</code>)</td>
+		</tr>
+		<tr>
+			<td><code translate="No">none</code></td>
+			<td>The job is not an SEP job.</td>
+		</tr>
+    <tr>
+			<td><code translate="No">waiting</code></td>
+			<td>The job has been assigned to a streaming worker and ready for the encoder to connect.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">ready</code></td>
+			<td>The entry point has been activated and ready for the encoder to connect.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">pending_activation</code></td>
+			<td>The entry point has been queued for streaming worker assignment.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">activation_in_progress</code></td>
+			<td>The entry point is updating to route connections to the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">pending_deactivation</code></td>
+			<td>The entry point has been queued for cleanup from the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">deactivation_in_progress</code></td>
+			<td>The entry point is disconnecting from the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">cancelled</code></td>
+			<td>The entry point has been cancelled.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">finished</code></td>
+			<td>The entry point has completed successfully.</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">RTMP Output States (reported for <code translate="No">rtmp_output_state_changed</code> notifications as <code translate="No">state</code>)</td>
+		</tr>
+		<tr>
+			<td><code translate="No">starting</code></td>
+			<td>The stream is starting.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">connected</code></td>
+			<td>The encoder has connected.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">Disconnected</code></td>
+			<td>The encoder has disconnected.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">error</code></td>
+			<td>The stream failed to connect.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">pending_deactivation</code></td>
+			<td>The entry point has been queued for cleanup from the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">deactivation_in_progress</code></td>
+			<td>The entry point is disconnecting from the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">cancelled</code></td>
+			<td>The entry point has been cancelled.</td>
+		</tr>
+		<tr>
+			<td><code translate="No">finished</code></td>
+			<td>The entry point has completed successfully.</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="sample_notification">Sample notifications</h2>
+
+<h3>Live stream notification</h3>
+
+<p>Here is a sample notification for a <code translate="No">state_changed</code> event for a live job:</p>
+
+<pre class="line-numbers">
+          <code class="language-json" translate="No">{
+              "outputs": [
+                  {
+                      "rfc_6381_video_codec": null,
+                      "finished_at": "2017-10-19T20:08:11.115Z",
+                      "segment_seconds": 4,
+                      "created_at": "2017-10-19T19:47:04.534Z",
+                      "privacy": false,
+                      "md5_checksum": null,
+                      "audio_codec": "AAC",
+                      "error_class": null,
+                      "updated_at": "2017-10-19T20:08:11.115Z",
+                      "video_bitrate_in_kbps": 2150.4,
+                      "id": "0-621669558be84a7da4ff20bccb9a6a1a",
+                      "state": "cancelled",
+                      "playback_url": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_0\/chunklist.m3u8",
+                      "duration_in_ms": 1156873,
+                      "file_size_bytes": null,
+                      "height": 720,
+                      "playback_url_dvr": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_0\/chunklist_dvr.m3u8",
+                      "error_message": null,
+                      "video_codec": "H.264",
+                      "audio_bitrate_in_kbps": 196.608,
+                      "fragment_duration_in_ms": null,
+                      "test": false,
+                      "playback_url_vod": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_0\/chunklist_vod.m3u8",
+                      "total_bitrate_in_kbps": 2347.008,
+                      "format": null,
+                      "label": "hls720p",
+                      "frame_rate": null,
+                      "video_codec_profile": "high",
+                      "keyframe_interval": 60,
+                      "keyframe_interval_follow_source": false,
+                      "live_stream": true,
+                      "channels": null,
+                      "playback_added_cdns": [
+
+                      ],
+                      "width": 1280,
+                      "rfc_6381_audio_codec": null,
+                      "audio_sample_rate": null
+                  },
+                  {
+                      "rfc_6381_video_codec": null,
+                      "finished_at": "2017-10-19T20:08:11.115Z",
+                      "segment_seconds": 4,
+                      "created_at": "2017-10-19T19:47:04.534Z",
+                      "privacy": false,
+                      "md5_checksum": null,
+                      "audio_codec": "AAC",
+                      "error_class": null,
+                      "updated_at": "2017-10-19T20:08:11.115Z",
+                      "video_bitrate_in_kbps": 1536,
+                      "id": "1-621669558be84a7da4ff20bccb9a6a1a",
+                      "state": "cancelled",
+                      "playback_url": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_1\/chunklist.m3u8",
+                      "duration_in_ms": 1156873,
+                      "file_size_bytes": null,
+                      "height": 540,
+                      "playback_url_dvr": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_1\/chunklist_dvr.m3u8",
+                      "error_message": null,
+                      "video_codec": "H.264",
+                      "audio_bitrate_in_kbps": 196.608,
+                      "fragment_duration_in_ms": null,
+                      "test": false,
+                      "playback_url_vod": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_1\/chunklist_vod.m3u8",
+                      "total_bitrate_in_kbps": 1732.608,
+                      "format": null,
+                      "label": "hls540p",
+                      "frame_rate": null,
+                      "video_codec_profile": "main",
+                      "keyframe_interval": 60,
+                      "keyframe_interval_follow_source": false,
+                      "live_stream": true,
+                      "channels": null,
+                      "playback_added_cdns": [
+
+                      ],
+                      "width": 960,
+                      "rfc_6381_audio_codec": null,
+                      "audio_sample_rate": null
+                  },
+                  {
+                      "rfc_6381_video_codec": null,
+                      "finished_at": "2017-10-19T20:08:11.115Z",
+                      "segment_seconds": 4,
+                      "created_at": "2017-10-19T19:47:04.534Z",
+                      "privacy": false,
+                      "md5_checksum": null,
+                      "audio_codec": "AAC",
+                      "error_class": null,
+                      "updated_at": "2017-10-19T20:08:11.115Z",
+                      "video_bitrate_in_kbps": 819.2,
+                      "id": "2-621669558be84a7da4ff20bccb9a6a1a",
+                      "state": "cancelled",
+                      "playback_url": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_2\/chunklist.m3u8",
+                      "duration_in_ms": 1156873,
+                      "file_size_bytes": null,
+                      "height": 360,
+                      "playback_url_dvr": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_2\/chunklist_dvr.m3u8",
+                      "error_message": null,
+                      "video_codec": "H.264",
+                      "audio_bitrate_in_kbps": 196.608,
+                      "fragment_duration_in_ms": null,
+                      "test": false,
+                      "playback_url_vod": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_2\/chunklist_vod.m3u8",
+                      "total_bitrate_in_kbps": 1015.808,
+                      "format": null,
+                      "label": "hls360p",
+                      "frame_rate": null,
+                      "video_codec_profile": "main",
+                      "keyframe_interval": 60,
+                      "keyframe_interval_follow_source": false,
+                      "live_stream": true,
+                      "channels": null,
+                      "playback_added_cdns": [
+
+                      ],
+                      "width": 640,
+                      "rfc_6381_audio_codec": null,
+                      "audio_sample_rate": null
+                  },
+                  {
+                      "playlist_type": "defaultS3",
+                      "dvr_filename": "playlist_dvr.m3u8",
+                      "filename": "playlist.m3u8",
+                      "playback_url": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/playlist.m3u8",
+                      "type": "playlist",
+                      "playback_url_dvr": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/playlist_dvr.m3u8"
+                  }
+              ],
+              "input": {
+                  "finished_at": "2017-10-19T20:08:11.115Z",
+                  "created_at": "2017-10-19T19:47:04.534Z",
+                  "privacy": false,
+                  "md5_checksum": null,
+                  "audio_codec": null,
+                  "error_class": null,
+                  "updated_at": "2017-10-19T20:08:11.115Z",
+                  "video_bitrate_in_kbps": null,
+                  "id": "input-621669558be84a7da4ff20bccb9a6a1a",
+                  "state": "cancelled",
+                  "duration_in_ms": 1156873,
+                  "file_size_bytes": null,
+                  "audio_tracks": null,
+                  "height": null,
+                  "error_message": null,
+                  "video_codec": null,
+                  "audio_bitrate_in_kbps": null,
+                  "test": false,
+                  "total_bitrate_in_kbps": null,
+                  "format": null,
+                  "frame_rate": null,
+                  "url": null,
+                  "channels": null,
+                  "width": null,
+                  "audio_sample_rate": null
+              },
+              <span class="bcls-highlight">"event": "state_changed",</span>
+              "job": {
+                  "event_length": 0,
+                  "static": false,
+                  "finished_at": "2017-10-19T20:08:11.115Z",
+                  "test": false,
+                  "submitted_at": "2017-10-19T19:47:04.534Z",
+                  "created_at": "2017-10-19T19:47:04.534Z",
+                  "privacy": false,
+                  "out_worker_bytes_rate": 0,
+                  "ad_insertion": false,
+                  "metadata_passthrough": false,
+                  "live_stream": true,
+                  "out_worker_bytes": 147114065,
+                  "live_dvr_sliding_window_duration_ms": 57600000,
+                  "updated_at": "2017-10-19T20:08:11.115Z",
+                  "encryption": [
+
+                  ],
+                  "live_dvr_sliding_window_duration_ms": 57600000,
+                  "ssai_state": "none",
+                  "id": "621669558be84a7da4ff20bccb9a6a1a",
+                  "state": "cancelled",
+                  "playback_url": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/playlist.m3u8",
+                  "region": "us-west-2",
+                  "reconnect_time": 1800,
+                  "playback_url_dvr": "https:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/playlist_dvr.m3u8"
+              }
+          }
+          </code></pre>
+
+<h3>Clipping to S3 sample</h3>
+
+<p>Below is a sample <code translate="No">state_changed</code> event for creating a clip and sending it to an S3 bucket. Note that it includes the S3 address of the clip as <code translate="No">jvod_url</code>.</p>
+
+<pre class="line-numbers">
+          <code class="language-json" translate="No">{
+              "jvod_id": "b750cce9e21a4cc894c4507208495b0c",
+              <span class="bcls-highlight">"jvod_url": "s3:\/\/some.bucket\/test_dur60.mp4",</span>
+              "jvod_created_at": 1517520650785,
+              "jvod_duration_s": 30,
+              "jvod_cancelling_flag": false,
+              "label": "last_30",
+              "jvod_reported_duration_s": null,
+              "jvod_finished_at": 0,
+              "jvod_type": "s3",
+              "account_id": "a95ac581551b4478b27910e5675db1f8",
+              "jvod_worker_id": "b55b6fec738e4d2788544d3233b5ecf6",
+              "user_id": "c2691d4d039040be96c190a949d754a7",
+              "job_id": "7005c6e07bc24ca7b69b6b9d24052720",
+              "jvod_last_state_change_at": 1517520652312,
+              "jvod_region": "us-west-2",
+              "cloud_id": "301c91a5d9254b5d944b108c355f12be",
+              "event": "state_changed",
+              "jvod_state": "processing"
+          }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="handling_notifications">Handling notifications</h2>
+
+<p>To receive notifications, you simply need an app that can receive HTTP/HTTPS <code translate="No">POST</code> requests. The app can then parse the JSON notifications and do whatever you want based on their contents.</p>
+
+<p>As a simple example, here is a PHP app we use in Brightcove Learning Services to receive notifications and write them to a text file.</p>
+
+<pre class="line-numbers">
+          <code class="language-php">&lt;?php
+            // POST won't work for JSON data
+            $problem = "No errors";
+            $notificationType = null;
+            try {
+                $json    = file_get_contents('php://input');
+                $decoded = json_decode($json, true);
+                // turn notification into pretty printed JSON
+                $notification = json_encode($decoded, JSON_PRETTY_PRINT);
+            } catch (Exception $e) {
+                $problem = $e---&gt;getMessage();
+                $notification = $json;
+            }
+
+            $logEntry = $notification."\n \n";
+
+            // Tell PHP where it can find the log file and tell PHP to open it
+            // and add the string we created earlier to it.
+                $logFileLocation = "live-log.txt";
+                $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+                fwrite($fileHandle, $logEntry);
+                fclose($fileHandle);
+
+            // line below is displayed when you browse the app directly
+            echo "Live callback app is running";
+            ?&gt;
+          </code></pre>
+
+<h3>Notes</h3>
+
+<ul>
+	<li>In certain cases, identical notifications will be sent more than once. If your handler is taking actions (apart from simple logging) based on notifications, you should configure it to check for duplicates (multiple notifications with the same <code translate="No">id</code> and <code translate="No">status</code>) and ignore them.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="notifications_in_live_module">Set up notifications in the Live module</h2>
+
+<p>To set up notifications for a live event created in the Live Module, you will need to do the following:</p>
+
+<ol class="bcls-tasklist-restart">
+	<li>Create a handler application that can receive POST requests like the PHP app shown in the previous section.</li>
+	<li>Host the app on a public URL.</li>
+	<li>When you create your live job in the Live module, expand the <strong>Advanced Options</strong>.</li>
+	<li>Check the <strong>Enable stream status notifications option</strong> and enter the URL for your handler app:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Enable Notications in Live Module" src="/assets/images/live-api/18448/enable-notifications.png" />
+	<figcaption class="bcls-caption--image">Enable Notications in Live Module</figcaption>
+	</figure>
+	</li>
+</ol>
+</section>
+</article>
