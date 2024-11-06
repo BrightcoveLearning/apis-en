@@ -7,7 +7,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="In this overview, you will learn what the Live Next Gen API is for and how to use it. Topics included in this document include supported AWS regions and CDNs, live channels and events, and inserting ID3 timed metadata into a live stream.">
+        <meta name="description" content="In this overview, you will learn what the Live Next Gen API is for and how to use it. Topics included in this document include supported AWS regions and CDNs, live channels, and inserting ID3 timed metadata into a live stream.">
         
         <!-- Google Font -->
         <link href="/assets/s-site-assets-stylesheets/fonts/poppins.css" rel="stylesheet">
@@ -3628,19 +3628,19 @@
       
 <h1>Overview: Brightcove Live Next Gen API</h1>
 <article class="bcls-article">
- <summary>In this overview, you will learn what the Live Next Gen API is for and how to use it. Topics included in this document include supported AWS regions and CDNs, live channels and events, and inserting ID3 timed metadata into a live stream.</summary>
+ <summary>In this overview, you will learn what the Live Next Gen API is for and how to use it. Topics included in this document include supported AWS regions and CDNs, live channels, and inserting ID3 timed metadata into a live stream.</summary>
 
     <section class="bcls-section">
       <h2 id="Introduction">Introduction</h2>
 
-      <p>The <span translate="No">Live Next Gen API</span> is a REST-based API that allows you to create and manage live streaming events. Optional features include:</p>
+      <p>The <span translate="No">The Next Gen API is a powerful, RESTful API designed to support the creation, management, and distribution of high-quality live video streams. Built with scalability, flexibility, and performance in mind, the NextGen API enables you to handle complex live streaming workflows with ease. Optional features include:</p>
 
       <ul>
-        <li>Server-side ad insertion ( <span translate="No">SSAI</span> )</li>
-        <li><span translate="No">AES-128</span> encryption</li>
-        <li>Create video-on-demand assets from clips taken from the live stream</li>
-        <li><span translate="No">DVR</span> capability</li>
-        <li>Multiple <span translate="No">CDNs</span></li>
+        <li>Real-Time Notifications.</li>
+        <li>Metrics and Monitoring.</li>
+        <li>Automatic Failover and Redundancy.</li>
+        <li>Regional Availability.</li>
+        
       </ul>
 
       <p>Also see the <a target="_blank" href="/live-next-gen-api/references/reference.html">API Reference</a>.</p>
@@ -3652,7 +3652,7 @@
 
       <p>The base URL for the <span translate="No">Live Next Gen API</span> is:</p>
 
-      <pre><code class="language-http" translate="No">https://api.live.brightcove.com/v2</code></pre>
+      <pre><code class="language-http" translate="No">https://api.live.brightcove.com</code></pre>
     </section>
 
     <section class="bcls-section">
@@ -3712,7 +3712,7 @@
           <tr>
             <td>Mumbai</td>
             <td><span translate="No">ap-south-1</span></td>
-            <td style="text-align: center;"><i data-feather="x"></i></td>
+            <td style="text-align: center;"><i data-feather="check"></i></td>
           </tr>
           <tr>
             <td>Frankfurt</td>
@@ -3722,7 +3722,7 @@
           <tr>
             <td>Ireland</td>
             <td><span translate="No">eu-west-1</span></td>
-            <td style="text-align: center;"><i data-feather="x"></i></td>
+            <td style="text-align: center;"><i data-feather="check"></i></td>
           </tr>
         </tbody>
       </table>
@@ -3823,42 +3823,48 @@
       <h3><a href="#Creating_and_managing_jobs">Creating and managing jobs</a></h3>
 
       <ul>
-        <li><a href="#Create_a_Live_Job">Create a Live Job</a></li>
-        <li><a href="#List_Live_Jobs">List a Live Jobs</a></li>
-        <li><a href="#Get_Live_Job_Details">Get Live Job Details</a></li>
-        <li><a href="#Manual_Ad_Cue_Point_Insertion">Manual Ad Cue Point Insertion</a></li>
-        <li><a href="#Stop_a_Live_Job">Stop a Live Job</a></li>
+        <li><a href="#configure-job">Configure a new job</a></li>
+        <li><a href="#update-job">Update a given job</a></li>
+        <li><a href="#get-job">Get a job</a></li>
+        <li><a href="#start-job">Start a given job</a></li>
+        <li><a href="#stop-job">Stop a job</a></li>
+        <li><a href="#finish-job">Finish a job</a></li>
+        <li><a href="#health">Healthcheck</a></li>
       </ul>
 
-      <h3><a href="#Creating_clips">Creating clips</a></h3>
+      <h3><a href="#playback-management">Playback Management</a></h3>
 
       <ul>
-        <li><a href="#Create_VOD_Clip">Create VOD Clip</a></li>
+        <li><a href="#create-playback-token">Create a playback token for a job</a></li>
+        <li><a href="#generate-url">Generate a playback url for a job</a></li>
+        <li><a href="#generate-sources">Generate sources for a job</a></li>
       </ul>
 
-      <h3><a href="#Managing_SSAI">Managing SSAI</a></h3>
+      <h3><a href="#notifications">Job Listings and Notifications</a></h3>
 
       <ul>
-        <li><a href="#Get_Account_Ad_Configurations">Get Account Ad Configurations</a></li>
-        <li><a href="#Create_Ad_Configuration">Create Ad Configuration</a></li>
-        <li><a href="#Get_Ad_Configuration">Get Ad Configuration</a></li>
-        <li><a href="#Update_Ad_Configuration">Update Ad Configuration</a></li>
-        <li><a href="#Get_Slate_Media_Source_Assets">Get Slate Media Source Assets</a></li>
-        <li><a href="#Ingest_Slate_Media_Source_Asset">Ingest Slate Media Source Asset</a></li>
-        <li><a href="#Delete_Slate_Media_Source_Asset">Delete Slate Media Source Asset</a></li>
+        <li><a href="#list-all-jobs">List all jobs in an account</a></li>
+        <li><a href="#list-notifications-account">List notifications for an account</a></li>
+        <li><a href="#list-notifications-job">List notifications for a job</a></li>
+      </ul>
+
+      <h3><a href="#metrics">Metrics</a></h3>
+      <ul>
+        <li><a href="#job-metrics">Get Job metrics</a></li>
+        <li><a href="#job-all-metrics">Get all supported metrics</a></li>
       </ul>
     </section>
 
     <section class="bcls-section">
       <h2 id="Creating_and_managing_jobs">Creating and managing jobs</h2>
 
-      <p>These operations allow you to create a live job, get the details of it, and stop it. There is also an endpoint to create an immediate cue point for an ad break.</p>
+      <p>These operations allow you to create a live job, start it, get the details of it, and stop it.</p>
 
-      <h3 id="Create_a_Live_Job">Create a Live Job</h3>
+      <h3 id="configure-job">Configure a new job</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/jobs</code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">POST</span> /v2/accounts/{account_id}/jobs</code></pre>
 
-      <p>This endpoint is used to create live streams via a <code translate="No">POST </code> request. In addition to specifying properties of the live stream itself, the request can also specify VOD clips to be generated from the live stream (this can also be done later via the <a href="#vod">endpoint</a>). Details of the fields that can be included in the request body are given in the <a href="/live-api/references/reference.html#operation/CreateALiveJob">API Reference</a>.</p>
+      <p>This endpoint is used to create live streams via a <code translate="No">POST </code> request. Initialize a live stream tailored to specific requirements. Details of the fields that can be included in the request body are given in the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p>
 
       <section class="bcls-subsection">
         <h4 id="input_protocol">Input protocol</h4>
@@ -3868,135 +3874,121 @@
         <ul>
           <li><code translate="No">rtmp</code> (the default)</li>
           <li><code translate="No">rtp</code></li>
-          <li><code translate="No">rtp-fec</code></li>
           <li><code translate="No">srt</code></li>
         </ul>
 
         <p>The RTMP protocol is for delivery a stream in FLV format. The other protocols are for delivering MPEG2-TS.</p>
 
-        <p>If you use <code translate="No">rtp</code>, <code translate="No">rtp-fec</code> or <code translate="No">srt</code>, you must also specify a <code translate="No">cidr_whitelist</code> (see <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">Classless Inter-Domain Routing</a>).</p>
+        <p>If you use <code translate="No">rtp</code> or <code translate="No">srt</code>, you must also specify a <code translate="No">cidr_whitelist</code> (see <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">Classless Inter-Domain Routing</a>).</p>
 
         <p>If you use <code translate="No">rtmp</code>, you can specify an <code translate="No">ip_whitelist</code> for the input instead, but this is not required.</p>
-
-        <p>Example request body for RTP+FEC job:</p>
-
-<pre class="line-numbers">
-<code class="language-json" translate="No">{
-    "live_stream":true,
-    "region":"us-west-2",
-    "reconnect_time":300,
-    "outputs":[
-      {
-        "label": "hls720p",
-        "live_stream": true,
-        "height": 720,
-        "video_bitrate": 800,
-        "segment_seconds": 6,
-        "keyframe_interval": 90
-      }
-    ],
-    "protocol": "rtp-fec",
-    "cidr_whitelist": ["127.0.0.1/32"]
-}</code></pre>
       </section>
 
-      <p>The <a href="/live-api/getting-started/quick-start-create-live-stream-using-brightcove-live-api.html"> <span translate="No">Live Next Gen API</span> Quick Start</a> walks you through creating a live stream job and setting up a Brightcove Player to play it.</p>
 
-      <h3 id="List_Live_Jobs">List Live Jobs</h3>
+      <h3 id="update-job">Update a given job</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/jobs</code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">PUT</span> /v2/accounts/{account_id}/jobs/{id}</code></pre>
 
-      <p>This endpoint is used to list your live streams via a <code translate="No">GET </code> request. The endpoint supports pagination, sorting, and search filtering. Details of the fields that can be included in the request body are given in the <a href="/live-api/references/reference.html#/Live_Jobs/ListLiveJobs">API Reference</a> and some additional information can be found in <a href="/live-api/guides/getting-list-live-or-vod-jobs.html">Getting a List of Live or VOD Jobs</a>.</p>
+      <p>This endpoint is used to modify the configuration of an existing live streaming job via a <code translate="No">PUT </code> request. adjust job settings such as video and audio parameters, playback options, and other attributes while the job is in an inactive state. Details of the fields that can be included in the request body are given in the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/put">API Reference</a></p>
 
-      <h3 id="Get_Live_Job_Details">Get Live Job Details</h3>
+      <h3 id="get-job">Get a job</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/jobs/<span class="bcls-input" translate="No">:jobId</span></code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs/{id}</code></pre>
 
-      <p>This endpoint allows you to get the detailed information about a live stream, which is also returned when you originally create the job. See the <a href="/live-api/references/reference.html#/Live_Jobs/GetLiveJobDetails">API Reference</a> for details of the response fields.</p>
+      <p>This endpoint allows you to retrieve detailed information about a specific live streaming job via a <code translate="No">GET</code> request. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/get">API Reference</a> for more details.</p>
 
-      <h3 id="Manual_Ad_Cue_Point_Insertion">Manual Ad Cue Point Insertion</h3>
+      <h3 id="start-job">Start a given job</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/jobs/<span class="bcls-input" translate="No">:jobId</span>/cuepoint</code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">PUT</span> /v2/accounts/{account_id}/jobs/{id}/start</code></pre>
 
-      <p>Typically your encoder will be sending cue points for ad breaks, but you can also create an immediate ad break by sending a request to this endpoint. See the <a href="/live-api/references/reference.html#/Live_Jobs/ManualAdCuePointInsertion">API Reference</a> for details.</p>
+      <p>Initiates a previously configured live streaming job, start processing and distributing the stream according to the job’s settings. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1start/put">API Reference</a> for details.</p>
 
-      <p>Note that a <code translate="No">timecode</code> in the form <code translate="No">DD:HH:MM:SS</code> is required for the cue point.</p>
+    
 
-      <h3 id="Stop_a_Live_Job">Stop a Live Job</h3>
+      <h3 id="stop-job">Stop a Live Job</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">PUT</span> https://api.bcovlive.io/v1/jobs/<span class="bcls-input" translate="No">:jobId</span>/cancel</code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">PUT</span> /v2/accounts/{account_id}/jobs/{id}/stop</code></pre>
 
-      <p>Use this endpoint to stop a live stream immediately. Once cancelled, a live stream cannot be restarted. See the <a href="/live-api/references/reference.html#/Live_Jobs/CancelLiveJob">API Reference</a> for details.</p>
+      <p>Use this endpoint to end a live broadcast, disconnecting from the input source, and stopping the encoding and distribution processes. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/delete">API Reference</a> for details.</p>
+
+      <h3 id="finish-job">Finish a job</h3>
+
+      <pre><code translate="No"><span class="bcls-highlight">DELETE</span> /v2/accounts/{account_id}/jobs/{id}</code></pre>
+
+      <p>Use this endpoint to finalize a live streaming job, permanently. Unlike the "Stop" endpoint, which simply halts the stream, "Finish" ensures that the job is completed. See the <a href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
+
+      <h3 id="health">Healthcheck</h3>
+
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/healthcheck</code></pre>
+
+      <p>This endpoint can be used to perform routine checks to ensure that the API is functioning as expected. See the <a href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/misc/paths/~1healthcheck/get">API Reference</a> for details.</p>
     </section>
 
     <section class="bcls-section">
-      <h2 id="Creating_clips">Creating clips</h2>
+      <h2 id="playback-management">Playback Management</h2>
 
-      <p>You can create video-on-demand clips from a live stream and store them in a Video Cloud account, or send them to S3 bucket or FTP address. You can define the clips when you create the live stream, or create them later using the endpoint described below. Also see the <a href="/live-api/guides/live-api-creating-vod-clips.html">Creating Clips</a> guide.</p>
+      <p>This section provides endpoints for generating playback tokens and retrieving playback URLs, enabling secure and customizable access to live content.</p>
 
-      <p>When creating clips, the highest quality rendition from the selected Live Ingest Profile is used as the source for the clip. The default uploading ingest profile for the account is used when creating renditions for the clip.</p>
+      <h3 id="create-playback-token">Create a playback token for a job</h3>
 
-      <h3 id="Create_VOD_Clip">Create VOD Clip</h3>
+      <pre><code translate="No"><span class="bcls-highlight">POST</span> /v2/accounts/{account_id}/playback/{id}/token</code></pre>
 
-      <pre><code translate="No"><span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/vods</code></pre>
+      <p>Generate a secure, time-limited token that allows authorized access to a specific live streaming job ensuring that only viewers with valid tokens can watch the live stream. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/playback/paths/~1accounts~1%7Baccount_id%7D~1playback~1%7Bid%7D~1token/post">API Reference</a> for details.</p>
 
-      <p>The start and end points for the clips can be defined in terms of offsets from the start of the stream or UNIX timestamps. Details of the request body fields can be found in the <a href="/live-api/references/reference.html#/Clips/CreateVodClip">API Reference</a>.</p>
 
-      <aside class="bcls-aside bcls-aside--information">Note that clips from live streams can be created for <strong>up to 7 days</strong> after the event has ended.</aside>
+      <h3 id="generate-url">Generate a playback url for a job</h3>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/playback/{id}</code></pre>
 
-      <h3>Get a list of VOD (clip) jobs</h3>
+      <p>This endpoint provides a direct URL to access the live stream of a specific job, incorporating a playback token for secure, authorized viewing. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/playback/paths/~1playback~1%7Bid%7D/get">API Reference</a> for details.</p>
 
-      <p>To get a list of your VOD jobs for clips, see <a href="/live-api/guides/getting-list-live-or-vod-jobs.html">Getting a List of Live or VOD Jobs</a> and the <a href="/live-api/references/reference.html#/Clips/ListVodClips">API Reference</a>.</p>
+
+      <h3 id="generate-sources">Generate sources for a job</h3>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/playback/{job_id}/sources</code></pre>
+
+      <p>This endpoint retrieves the list of playback sources (URLs) available for a specific live streaming job. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/playback/paths/~1accounts~1%7Baccount_id%7D~1playback~1%7Bid%7D~1token/post">API Reference</a> for details.</p>
     </section>
 
     <section class="bcls-section">
-      <h2 id="Managing_SSAI">Managing <span translate="No">SSAI</span></h2>
+      <h2 id="notifications">Job Listings and Notifications</h2>
 
-      <p>Using server-side ad insertion ( <span translate="No">SSAI</span>), you can insert as many ad breaks as you like into your live stream. You can also ingest slate assets (VOD clips) to fill any unused ad time with a be-right-back message or whatever you like.</p>
-      <aside class="bcls-aside bcls-aside--information">Currently, an <strong>SRT + SSAI</strong> configuration is not supported on Brightcove Live. However, it is possible to insert SSAI into an SRT stream with <strong>SCTE-35</strong> markers sent from the encoder. To learn how to add <strong>SCTE-35</strong> markers, please review your encoder documentation.</aside>
-      <p>More details of setting up <span translate="No">SSAI</span> can be found in <a href="/live-api/ssai/live-api-server-side-ad-insertion-ssai.html">Server-Side Ad Insertion Using the Brightcove <span translate="No">Live Next Gen API</span> </a> and the <a href="/live-api/references/reference.html#api-SSAI">API Reference</a>.</p>
+      <p>This section provides tools to manage and monitor live streaming jobs across an account.</p>
 
-      <h3 id="Get_Account_Ad_Configurations">Get Account Ad Configurations</h3>
+      <h3 id="list-all-jobs">List all jobs in an account</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/ssai/applications/<span class="bcls-input" translate="No">:account_id</span></code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs</code></pre>
 
-      <p>This endpoint allows you to get all ad configurations that have been set up for an account. Details of the response fields can be found in the <a href="/live-api/references/reference.html#api-SSAI-Get_Account_Ad_Configurations">API Reference</a>.</p>
+      <p>This endpoint retrieves a comprehensive list of all live streaming jobs associated with a specific account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/get">API Reference</a> for details.</p>
 
-      <h3 id="Create_Ad_Configuration">Create Ad Configuration</h3>
+      <h3 id="list-notifications-account">List notifications for an account</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/ssai/application</code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/notifications</code></pre>
 
-      <p>Create an ad configuration that defines how ads will be retrieved for <span translate="No">SSAI</span>. Details of the request body fields can be found in the <a href="/live-api/references/reference.html#/SSAI/CreateAdConfiguration">API Reference.</a></p>
+      <p>This endpoint retrieves a list of notifications related to live streaming activities and job status changes within a specific Brightcove account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
 
-      <h3 id="Get_Ad_Configuration">Get Ad Configuration</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/ssai/application/<span class="bcls-input" translate="No">:application_id</span></code></pre>
+      <h3 id="list-notifications-job">List notifications for a job</h3>
 
-      <p>Use this endpoint to get the details of an ad configuration you have created. Details of the response fields can be found in the <a href="/live-api/references/reference.html#/SSAI/GetuserAdConfigurations">API Reference</a>.</p>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs/{job_id}/notifications</code></pre>
 
-      <h3 id="Update_Ad_Configuration">Update Ad Configuration</h3>
+      <p>This endpoint retrieves notifications specific to a particular live streaming job. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1notifications/get">API Reference</a> for details.</p>
+    </section>
 
-      <pre><code translate="No"><span class="bcls-highlight">PUT</span> https://api.bcovlive.io/v1/ssai/application/account/<span class="bcls-input" translate="No">:application_id</span></code></pre>
+    <section class="bcls-section">
+      <h2 id="metrics">Metrics</h2>
+      <p>This section allows you to monitor key indicators of streaming performance, enabling proactive management and optimization of live broadcasts.</p>
 
-      <p>Update the details of an ad configuration. Details of the request body fields can be found in the <a href="/live-api/references/reference.html#/SSAI/UpdateAdConfiguration">API Reference</a>.</p>
+      <h3 id="job-metrics">Get Job metrics</h3>
 
-      <h3 id="Get_Slate_Media_Source_Assets">Get Slate Media Source Assets</h3>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs/{job_id}/metrics</code></pre>
 
-      <pre><code translate="No"><span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/ssai/slates/<span class="bcls-input" translate="No">:ACCOUNT_ID</span></code></pre>
+      <p>This endpoint retrieves detailed performance metrics for a specific live streaming job, providing real-time data on key indicators. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/metricsapi/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1metrics/get">API Reference</a> for details.</p>
 
-      <p>Get the slate media assets that have been defined for an account. Slate media assets are used to fill ad break time that is not filled by ads. Details of the response fields can be found in the <a href="/live-api/references/reference.html#/SSAI/GetUserSlateMediaSourceAssets">API Reference</a>.</p>
 
-      <h3 id="Ingest_Slate_Media_Source_Asset">Ingest Slate Media Source Asset</h3>
+      <h3 id="job-all-metrics">Get all supported metrics</h3>
 
-      <pre><code translate="No"><span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/ssai/slates</code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs/{job_id}/supported-metrics</code></pre>
 
-      <p>Add a media asset for slates to fill unfilled ad break time. Details of the request body fields can be found in the <a href="/live-api/references/reference.html#/SSAI/IngestSlateMediaSourceAsset">API Reference</a>.</p>
-
-      <h3 id="Delete_Slate_Media_Source_Asset">Delete Slate Media Source Asset</h3>
-
-      <pre><code translate="No"><span class="bcls-highlight">DELETE</span> https://api.bcovlive.io/v1/ssai/slates/<span class="bcls-input" translate="No">:SLATE_MSA_ID</span></code></pre>
-
-      <p>Deletes a slate media asset.</p>
+      <p>This endpoint provides a list of all metrics available for monitoring live streaming jobs within an account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/metricsapi/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1supported-metrics/get">API Reference</a> for details.</p>
     </section>
 
     <section class="bcls-section">
