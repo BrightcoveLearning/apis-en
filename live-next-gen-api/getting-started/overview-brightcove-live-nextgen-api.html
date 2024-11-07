@@ -1,8 +1,8 @@
 ---
-title: 'Overview: Brightcove Live Next Gen API'
-description: 'In this overview, you will learn what the Live Next Gen API is for and how to use it. Topics included in this document include supported AWS regions and CDNs, live channels, and inserting ID3 timed metadata into a live stream.'
+title: 'Overview: Brightcove Live NextGen API'
+description: 'In this overview, you will learn what the Live NextGen API is for and how to use it. Topics included in this document include supported AWS regions and CDNs, live channels, and inserting ID3 timed metadata into a live stream.'
 parent: Getting Started
-grandparent: Live Next Gen API
+grandparent: Live NextGen API
 layout: staging
 ---
 <h1>{{ page.title }}</h1>
@@ -12,7 +12,7 @@ layout: staging
     <section class="bcls-section">
       <h2 id="Introduction">Introduction</h2>
 
-      <p>The <span translate="No">The Next Gen API is a powerful, RESTful API designed to support the creation, management, and distribution of high-quality live video streams. Built with scalability, flexibility, and performance in mind, the NextGen API enables you to handle complex live streaming workflows with ease. Optional features include:</p>
+      <p>The NextGen API is a powerful, RESTful API designed to support the creation, management, and distribution of high-quality live video streams. Built with scalability, flexibility, and performance in mind, the NextGen API enables you to handle complex live streaming workflows with ease. Optional features include:</p>
 
       <ul>
         <li>Real-Time Notifications.</li>
@@ -25,23 +25,16 @@ layout: staging
       <p>Also see the <a target="_blank" href="/live-next-gen-api/references/reference.html">API Reference</a>.</p>
     </section>
 
-    <section class="bcls-section">
+    
 
-      <h2 id="Base_URL">Base URL</h2>
-
-      <p>The base URL for the <span translate="No">Live Next Gen API</span> is:</p>
-
-      <pre><code class="language-http" translate="No">https://api.live.brightcove.com</code></pre>
-    </section>
-
-    <section class="bcls-section">
+    <!-- <section class="bcls-section">
       <h2 id="Headers">Headers</h2>
 
-      <p>When making a request to the Live Next Gen API, you will need to authenticate using an API key. To get the Live Next Gen API key, open a <a href="https://supportportal.brightcove.com/s/login/?language=en_US&startURL=%2Fs%2F&ec=302">customer support ticket</a>. The key is passed in an <code translate="No">X-API-KEY </code> header. A <code translate="No">Content-Type </code> header is also required:</p>
+      <p>When making a request to the Live NextGen API, you will need to authenticate using an API key. To get the Live NextGen API key, open a <a href="https://supportportal.brightcove.com/s/login/?language=en_US&startURL=%2Fs%2F&ec=302">customer support ticket</a>. The key is passed in an <code translate="No">X-API-KEY </code> header. A <code translate="No">Content-Type </code> header is also required:</p>
       
       <pre><code class="language-bash" translate="No">X-API-KEY : <span class="bcls-input" translate="No">YOUR_APIKey</span>
  Content-Type: application/json</code></pre>
-    </section>
+    </section> -->
 
     <section class="bcls-section">
       <h2 id="Supported_AWS_regions">Supported AWS regions</h2>
@@ -191,11 +184,19 @@ layout: staging
 
       <p>The <span translate="No">DVR</span> stream will remain available for 7 days after the live stream is completed.</p>
     </section>
+    <section class="bcls-section">
+
+      <h2 id="Base_URL">Base URL</h2>
+
+      <p>The base URL for the <span translate="No">Live NextGen API</span> is:</p>
+
+      <pre><code class="language-http" translate="No">https://api.live.brightcove.com</code></pre>
+    </section>
 
     <section class="bcls-section">
       <h2 id="Endpoints_and_operations">Endpoints and operations</h2>
 
-      <p>The main operations for the <span translate="No">Live Next Gen API</span> are creating and managing live streams, and generate VOD clips from live streams. These operations are carried out through requests to following endpoints, which are explained in more detail in the remainder of the document.</p>
+      <p>The main operations for the <span translate="No">Live NextGen API</span> are creating and managing live streams, and generate VOD clips from live streams. These operations are carried out through requests to following endpoints, which are explained in more detail in the remainder of the document.</p>
 
       <aside class="bcls-aside bcls-aside--information">Note that Brightcove Live has its own account id, separate from any other account ids. In the API operations, <code translate="No">account_id</code> refers to your <strong>Live account id</strong>.</aside>
 
@@ -389,66 +390,18 @@ layout: staging
 
     </section>
 
-    <section class="bcls-section">
+    <!-- <section class="bcls-section">
       <h2 id="Insert_ID3_timed_metadata">Insert ID3 timed metadata</h2>
 
       <p>This information has been moved to <a href="/live-api/guides/live-api-insert-id3-timed-metadata.html">Insert ID3 timed metadata</a>.</p>
-    </section>
+    </section> -->
 
     <section class="bcls-section">
       <h2 id="Limitations">Limitations</h2>
-
       <ul>
-        <li>
-          In order for Live jobs created using the API to appear and cannot be used in the <a href="https://live.support.brightcove.com/live-module/creating-and-managing-live-events-using-live-module.html">Live Module</a>, You must include the <code translate="No">videocloud</code> object in the request body when you create the job.
-          <p>For example:</p>
-<pre class="line-numbers"><code class="language-json" translate="No">{
-  "live_stream": true,
-  "region": "eu-central-1",
-  "reconnect_time": 1800,
-  "live_sliding_window_duration_ms": 0,
-  "outputs": [
-    { "label": "hls720p", "live_stream": true, "width": 1280, "height": 720, "video_codec": "h264", "h264_profile": "high", "video_bitrate": 2100, "segment_seconds": 4, "keyframe_interval": 60 }
-    ,
-    { "label": "hls540p", "live_stream": true, "width": 960, "height": 540, "video_codec": "h264", "h264_profile": "main", "video_bitrate": 1500, "segment_seconds": 4, "keyframe_interval": 60 }
-    ,
-    { "label": "hls360p", "live_stream": true, "width": 640, "height": 360, "video_codec": "h264", "h264_profile": "main", "video_bitrate": 800, "segment_seconds": 4, "keyframe_interval": 60 }
-  ],
-  "<span class="bcls-highlight">videocloud</span>": {
-    "video":
-      { "name": "live event UI", "description": "live event UI", "long_description": "", "tags": [], "reference_id": "", "state": "ACTIVE" }
-    }
-  }</code></pre>
-        </li>
-        <li>The initial connection from encoder provides the bandwidth information to be created with the Live playlist. If the initial connection is low, even if the job configuration had high output, the playlist will still maintain the same information on the playlist until the following is done:
-          <ul>
-            <li>Encoder is restarted</li>
-            <li>The CDN cache may also need to be cleared</li>
-          </ul>
-        </li>
-        <li>Currently the framerate for input streams is limited to 30 FPS. If you are interested in using a higher frame rate, please contact Support.</li>
-        <li>By default the resolution of the input stream is limited to 1080p.</li>
-        <li>When disconnecting and reconnecting, the stream settings must stay the same. Any changes to the number of audio channels, resolutions, or codec settings will result in unpredictable behavior.</li>
-        <li>Although you can add DASH and MP4 for remote sources for Video Cloud videos, Live currently supports <strong translate="No">HLS</strong> only.</li>
-        <li>Only AAC audio is supported for input streams.</li>
-        <li>A maximum of 5 active <strong>waiting, unstarted</strong> jobs is allowed at any time.
-          <p>Additional limitations on concurrent jobs:</p>
-
-          <ul>
-            <li>The number of <code translate="No">channel</code> (24x7) jobs is limited to 0 or a low number per region (depending on the account type).</li>
-            <li>The number of concurrently <strong>running</strong> <code translate="No">event</code> jobs is limited by region, generally to 100.</li>
-            <li>The number of concurrently <strong>waiting to connect</strong> <code translate="No">event</code> jobs is limited to 5.</li>
-            <li>The number of SEP jobs per region is limited to 3 or 10 (see <a href="#Support_aws_regions">Supported AWS regions</a>).</li>
-          </ul>
-
-          <p>Any of these limits can be adjusted on an account level by Support. Contact your Customer Success Manager if you need additional capacity.</p>
-        </li>
-        <li>The "RTMP" address returned as the <code translate="No">stream_url</code> for Live jobs is an Akamai HD Live stream, not a legacy FMS RTMP stream - it is not supported by older versions of Internet Explorer.</li>
-        <li>Live streams are delivered over HTTPS, and if your Brightcove account is not enabled for HTTPS, the Brightcove player will fail to load the live stream. If your account does not have HTTPS support for origin serving enabled, please <a href="https://supportportal.brightcove.com">Contact Brightcove Support</a> to get HTTPS support for origin serving enabled to prevent playback issues.</li>
-        <li>When using a transmuxed rendition within a multi-bitrate HLS output, <code translate="No">segment_size</code> can be included when transmuxing, but should be set so that it is a multiple of the <code translate="No">GOP</code> size of the input stream. So if the input is 30 fps with keyframes every 60 frames, the <code translate="No">GOP</code> size is 2 seconds, and the segment size should be a multiple of 2. If you do not do this, the stream segments will be of varying sizes.
-          <p>Also, <code translate="No">keyframe_interval</code> should <strong>not</strong> be specified on any outputs.</p>
-        </li>
-        <li>When using your own FTP or S3 origin location, your CDN must be configured to fallback to your origin location. The Brightcove Live system will not validate that the origin locations for the CDNs provided in the job request.</li>
+        <li><strong>Low Latency</strong>: Low-latency streaming is currently supported only for HLS outputs. Customization options are not yet available and remain under development.</li>
+        <li><strong>TS Segment Container Jobs</strong>: The TS segment container is configured to include muxed audio with all video renditions. As a result, any audio-only chunklist generated in the playlist manifest may not load correctly, potentially affecting audio-only playback.</li>
+        <li><strong>4K Output Rendition</strong>: Support for 4K output renditions has not been implemented.</li>
       </ul>
     </section>
 </article>
