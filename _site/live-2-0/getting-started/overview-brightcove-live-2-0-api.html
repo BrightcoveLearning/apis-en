@@ -8,7 +8,7 @@
         <meta name="robots" content="noindex,nofollow"> 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="In this overview, you will learn what the Live 2.0 API is for and how to use it. Topics included in this document include supported AWS regions and CDNs, live channels, and inserting ID3 timed metadata into a live stream.">
+        <meta name="description" content="In this overview, you will learn what the Live 2.0 API is for and how to use it. Create, configure, and manage high-quality live streams with robust features.">
         
         <!-- Google Font -->
         <link href="/assets/s-site-assets-stylesheets/fonts/poppins.css" rel="stylesheet">
@@ -3627,7 +3627,7 @@
       <h3 style="color:#990000;border:#990000 solid 1px; padding:10px;width: fit-content;">Limited Availability - Do not share this document</h3>
 <h1>Overview: Brightcove Live 2.0 API</h1>
 <article class="bcls-article">
- <summary>In this overview, you will learn what the Live 2.0 API is for and how to use it. Topics included in this document include supported AWS regions and CDNs, live channels, and inserting ID3 timed metadata into a live stream.</summary>
+ <summary>In this overview, you will learn what the Live 2.0 API is for and how to use it. Create, configure, and manage high-quality live streams with robust features.</summary>
 
     <section class="bcls-section">
       <h2 id="Introduction">Introduction</h2>
@@ -3642,7 +3642,7 @@
         
       </ul>
 
-      <p>Also see the <a target="_blank" href="/live-next-gen-api/references/reference.html">API Reference</a>.</p>
+      <p>Also see the <a target="_blank" href="/live-2-0/references/reference.html">API Reference</a>.</p>
     </section>
 
     
@@ -3735,7 +3735,7 @@
       <p>Other file-based CDNs should work, but have not been tested and are not actively supported.</p>
     </section>
 
-    <section class="bcls-section">
+    <!-- <section class="bcls-section">
       <h2 id="Channels_and_event_hours">Channels and event hours</h2>
 
       <p>There are two purchasing options for Live:</p>
@@ -3760,9 +3760,9 @@
           <li>Customers who have purchased only event hours of streaming time, must <strong>not</strong> include <code translate="No">"channel_type": "24x7"</code> in requests.</li>
         </ul>
       </aside>
-    </section>
+    </section> -->
 
-    <section class="bcls-section">
+    <!-- <section class="bcls-section">
       <h2 id="Billable_states">Billable states</h2>
       <p>Billing for live jobs applies to <strong>Active</strong> states:</p>
       <h3>Active states (billing applies)</h3>
@@ -3780,15 +3780,15 @@
         <li><code translate="no">finished</code></li>
         <li><code translate="no">failed</code></li>
       </ul>
-    </section>
+    </section> -->
 
-    <section class="bcls-section">
+    <!-- <section class="bcls-section">
       <h2 id="Token_authentication">Token authentication</h2>
 
       <p>Brightcove offers the option of adding token authentication to live video stream playback URLs. If you would like to add token authentication, <a href="https://supportportal.brightcove.com">Contact Brightcove Support</a>. It may take up to three days for token authentication to be set up.</p>
 
       <p>The TTL (time-to-live) for the tokens can be set to any value from one hour to 365 days. How long you set the TTL will depend on what kinds of live streams you deploy. Be aware that the TTL is an account-wide setting, however, and will apply to all live streams.</p>
-    </section>
+    </section> -->
 
     <section class="bcls-section">
       <h2 id="DVR_capability"><span translate="No">DVR</span> capability</h2>
@@ -3796,13 +3796,29 @@
       <p>Brightcove Live streams have <span translate="No">DVR</span> capability. To use this capability, you must:</p>
 
       <ul>
-        <li>Use the <code translate="No">playback_url_dvr</code> URL for playback</li>
         <li>Use a player that has <a href="https://player.support.brightcove.com/general/playing-live-streams.html">DVR</span> capability</a></li>
+        <li>Set the DVR window (e.g., <code translate="no">dvr</code>.<code translate="no">playlist_window_seconds</code>) in the manifest configuration</li>
+        <li>Enable DVR in the playback token by setting <code translate="no">"dvr": true</code>.</li>
       </ul>
 
       <p>DVR capability is limited to 86,400 seconds.</p>
 
       <p>The <span translate="No">DVR</span> stream will remain available for 7 days after the live stream is completed.</p>
+    </section>
+    <section class="bcls-section">
+      <h2 id="prerequisites">Prerequisite for Live 2.0 API</h2>
+      <ul>
+        <li>Create an OAuth 2.0 API Authentication Client ID/Secret.</li>
+        <li>Depending on the actions you need to perform, define specific scopes
+          <ul>
+            <li><p><code translate="no">video-cloud/livev2/jobs/read</code>: Provides read-only access to view job details.</p></li>
+            <li><p><code translate="no">video-cloud/livev2/jobs/create</code>: Allows the creation of new live streaming jobs.</p></li>
+            <li><p><code translate="no">video-cloud/livev2/jobs/update</code>: Permits updates to existing live jobs.</p></li>
+            <li><p><code translate="no">video-cloud/livev2/jobs/delete</code>: Enables the deletion of live jobs.</p></li>
+            <li><p><code translate="no">video-cloud/livev2/jobs/all</code>: Grants full access to all job-related operations, combining read, create, update, and delete permissions.</p></li>
+          </ul>
+        </li>
+      </ul>
     </section>
     <section class="bcls-section">
 
@@ -3816,9 +3832,9 @@
     <section class="bcls-section">
       <h2 id="Endpoints_and_operations">Endpoints and operations</h2>
 
-      <p>The main operations for the <span translate="No">Live 2.0 API</span> are creating and managing live streams, and generate VOD clips from live streams. These operations are carried out through requests to following endpoints, which are explained in more detail in the remainder of the document.</p>
+      <p>Each endpoint is designed to perform specific tasks related to live streaming management, from job creation and configuration to playback control and real-time monitoring. These operations are carried out through requests to following endpoints, which are explained in more detail in the remainder of the document.</p>
 
-      <aside class="bcls-aside bcls-aside--information">Note that Brightcove Live has its own account id, separate from any other account ids. In the API operations, <code translate="No">account_id</code> refers to your <strong>Live account id</strong>.</aside>
+      <!-- <aside class="bcls-aside bcls-aside--information">Note that Brightcove Live has its own account id, separate from any other account ids. In the API operations, <code translate="No">account_id</code> refers to your <strong>Live account id</strong>.</aside> -->
 
       <h3><a href="#Creating_and_managing_jobs">Creating and managing jobs</a></h3>
 
@@ -3864,7 +3880,7 @@
 
       <pre><code translate="No"><span class="bcls-highlight">POST</span> /v2/accounts/{account_id}/jobs</code></pre>
 
-      <p>This endpoint is used to create live streams via a <code translate="No">POST </code> request. Initialize a live stream tailored to specific requirements. Details of the fields that can be included in the request body are given in the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p>
+      <p>This endpoint is used to create live streams via a <code translate="No">POST </code> request. Initialize a live stream tailored to specific requirements. Details of the fields that can be included in the request body are given in the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p>
 
       <section class="bcls-subsection">
         <h4 id="input_protocol">Input protocol</h4>
@@ -3884,24 +3900,240 @@
         <p>If you use <code translate="No">rtmp</code>, you can specify an <code translate="No">ip_whitelist</code> for the input instead, but this is not required.</p>
       </section>
 
+        <p>Sample payload:</p>
+        <pre class="line-numbers"><code class="language-json" translate="No">{
+   "name": "Test Job",
+   "description": "Blive Job",
+   "long_description": "Blive Job long description",
+   "playback_rights_id": "",
+   "tags": [
+     "sports"
+   ],
+   "input": {
+     "protocol": "rtmp",
+     "whitelist_cidr_blocks": ["0.0.0.0/0"],
+     "fixed_ingest_ip": false
+   },
+   "type": "event",
+   "live_to_vod": false,
+   "outputs": {
+     "video": [
+       {
+         "label": "1080p",
+         "height": 1080,
+         "width": 1920,
+         "bitrate": 6000000,
+         "codec": "h264",
+         "codec_options": {
+           "profile": "high",
+           "level": "4.2"
+         },
+         "keyframe_rate": 0.5,
+         "sample_aspect_ratio": "1:1",
+         "decoder_buffer_size":9000000,
+         "max_bitrate":7200000
+       },
+       {
+         "label": "720p",
+         "height": 720,
+         "width": 1280,
+         "bitrate": 4000000,
+         "codec": "h264",
+         "codec_options": {
+           "level": "4",
+           "profile": "main"
+         }
+       },
+       {
+         "label": "480p",
+         "height": 480,
+         "width": 640,
+         "bitrate": 2000000,
+         "codec": "h264",
+         "codec_options": {
+           "profile": "main"
+         }
+       }
+     ],
+     "audio": [
+       {
+         "label": "aac1",
+         "input_selector_name": "default",
+         "language_code": "eng",
+         "codec": "aac",
+         "bitrate": 128000,
+         "sample_rate": 44100
+       }
+     ]
+   },
+   "manifest": {
+     "name": "playlist",
+     "segment_duration_seconds": 6,
+     "playlist_window_seconds": 60,
+     "segment_container_format": "cmaf",
+     "hls": {
+       "startover_window_seconds": 300
+     },
+     "dvr": {
+       "playlist_window_seconds": 300
+     },
+     "dash": {
+       "startover_window_seconds": 300
+     },
+     "low_latency": {},
+     "playlist_groups": [
+             {
+                 "name": "playlist-fullhd",
+                 "video_height": {
+                     "min": 721,
+                     "max": 1080
+                 }
+             },
+             {
+                 "name": "playlist-hd",
+                 "video_height": {
+                     "min": 1,
+                     "max": 720
+                 }
+             }
+         ]
+   },
+   "region": "us-east-1",
+   "maintenance_preferences": {
+     "day": "MONDAY"
+   }
+ }</code></pre>
+      
+
 
       <h3 id="update-job">Update a given job</h3>
 
       <pre><code translate="No"><span class="bcls-highlight">PUT</span> /v2/accounts/{account_id}/jobs/{id}</code></pre>
 
-      <p>This endpoint is used to modify the configuration of an existing live streaming job via a <code translate="No">PUT </code> request. adjust job settings such as video and audio parameters, playback options, and other attributes while the job is in an inactive state. Details of the fields that can be included in the request body are given in the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/put">API Reference</a></p>
+      <p>This endpoint is used to modify the configuration of an existing live streaming job via a <code translate="No">PUT </code> request. adjust job settings such as video and audio parameters, playback options, and other attributes while the job is in an inactive state. Details of the fields that can be included in the request body are given in the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/put">API Reference</a></p>
+
+      <p>Sample payload:</p>
+        <pre class="line-numbers"><code class="language-json" translate="No">{
+   "input": {
+     "audio_pids": [
+       {
+         "language_code": "string",
+         "name": "string",
+         "pid": 0
+       }
+     ],
+     "fixed_ingest_ip": true,
+     "input_loss_behaviour": {
+       "fill_type": "black_screen"
+     },
+     "protocol": "rtp",
+     "srt_options": {
+       "ingest_port": 0,
+       "min_latency": 0
+     },
+     "whitelist_cidr_blocks": [
+       "string"
+     ]
+   },
+   "live_to_vod": true,
+   "maintenance_preferences": {
+     "day": "string",
+     "start_time": "string"
+   },
+   "manifest": {
+     "dash": {},
+     "dvr": {
+       "playlist_window_seconds": 30
+     },
+     "hls": {
+       "playlist_type": "string",
+       "startover_window_seconds": 0
+     },
+     "include_iframe_only_stream": true,
+     "low_latency": {},
+     "name": "string",
+     "playlist_groups": [
+       {
+         "audio_bitrate": {
+           "max": 2147483647,
+           "min": 0
+         },
+         "audio_codec": [
+           "aac"
+         ],
+         "language_code": [
+           "string"
+         ],
+         "name": "string",
+         "video_bitrate": {
+           "max": 2147483647,
+           "min": 0
+         },
+         "video_codec": [
+           "h264"
+         ],
+         "video_height": {
+           "max": 2160,
+           "min": 1
+         }
+       }
+     ],
+     "playlist_window_seconds": 30,
+     "segment_container_format": "cmaf",
+     "segment_duration_seconds": 1
+   },
+   "notifications": [
+     {
+       "subscription_type": "string",
+       "url": "string"
+     }
+   ],
+   "outputs": {
+     "audio": [
+       {
+         "bitrate": 0,
+         "codec": "aac",
+         "input_selector_name": "string",
+         "label": "string",
+         "language_code": "string",
+         "sample_rate": 0
+       }
+     ],
+     "video": [
+       {
+         "bitrate": 0,
+         "codec": "h264",
+         "codec_options": {
+           "level": "3",
+           "profile": "baseline"
+         },
+         "decoder_buffer_size": 0,
+         "framerate": "passthrough",
+         "height": 0,
+         "keyframe_rate": 0,
+         "label": "string",
+         "max_bitrate": 0,
+         "sample_aspect_ratio": "string",
+         "width": 0
+       }
+     ]
+   },
+   "region": "string",
+   "type": "channel"
+ }
+        </code></pre>
 
       <h3 id="get-job">Get a job</h3>
 
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs/{id}</code></pre>
 
-      <p>This endpoint allows you to retrieve detailed information about a specific live streaming job via a <code translate="No">GET</code> request. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/get">API Reference</a> for more details.</p>
+      <p>This endpoint allows you to retrieve detailed information about a specific live streaming job via a <code translate="No">GET</code> request. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/get">API Reference</a> for more details.</p>
 
       <h3 id="start-job">Start a given job</h3>
 
       <pre><code translate="No"><span class="bcls-highlight">PUT</span> /v2/accounts/{account_id}/jobs/{id}/start</code></pre>
 
-      <p>Initiates a previously configured live streaming job, start processing and distributing the stream according to the job’s settings. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1start/put">API Reference</a> for details.</p>
+      <p>Initiates a previously configured live streaming job, start processing and distributing the stream according to the job’s settings. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1start/put">API Reference</a> for details.</p>
 
     
 
@@ -3909,19 +4141,19 @@
 
       <pre><code translate="No"><span class="bcls-highlight">PUT</span> /v2/accounts/{account_id}/jobs/{id}/stop</code></pre>
 
-      <p>Use this endpoint to end a live broadcast, disconnecting from the input source, and stopping the encoding and distribution processes. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/delete">API Reference</a> for details.</p>
+      <p>Use this endpoint to end a live broadcast, disconnecting from the input source, and stopping the encoding and distribution processes. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/delete">API Reference</a> for details.</p>
 
       <h3 id="finish-job">Finish a job</h3>
 
       <pre><code translate="No"><span class="bcls-highlight">DELETE</span> /v2/accounts/{account_id}/jobs/{id}</code></pre>
 
-      <p>Use this endpoint to finalize a live streaming job, permanently. Unlike the "Stop" endpoint, which simply halts the stream, "Finish" ensures that the job is completed. See the <a href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
+      <p>Use this endpoint to finalize a live streaming job, permanently. Unlike the "Stop" endpoint, which simply halts the stream, "Finish" ensures that the job is completed. See the <a href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
 
       <h3 id="health">Healthcheck</h3>
 
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/healthcheck</code></pre>
 
-      <p>This endpoint can be used to perform routine checks to ensure that the API is functioning as expected. See the <a href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/misc/paths/~1healthcheck/get">API Reference</a> for details.</p>
+      <p>This endpoint can be used to perform routine checks to ensure that the API is functioning as expected. See the <a href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/misc/paths/~1healthcheck/get">API Reference</a> for details.</p>
     </section>
 
     <section class="bcls-section">
@@ -3933,19 +4165,27 @@
 
       <pre><code translate="No"><span class="bcls-highlight">POST</span> /v2/accounts/{account_id}/playback/{id}/token</code></pre>
 
-      <p>Generate a secure, time-limited token that allows authorized access to a specific live streaming job ensuring that only viewers with valid tokens can watch the live stream. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/playback/paths/~1accounts~1%7Baccount_id%7D~1playback~1%7Bid%7D~1token/post">API Reference</a> for details.</p>
+      <p>Generate a secure, time-limited token that allows authorized access to a specific live streaming job ensuring that only viewers with valid tokens can watch the live stream. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/playback/paths/~1accounts~1%7Baccount_id%7D~1playback~1%7Bid%7D~1token/post">API Reference</a> for details.</p>
+
+      <p>Sample payload:</p>
+        <pre class="line-numbers"><code class="language-json" translate="No">{
+     "dvr": true, //filters playlist with dvr
+     "manifest_format": "hls", //filters playlist output type
+     "playlist_name": "playlist", //filters by custom playlsit name
+     "low_latency": true //filters playlist by low latency
+ }</code></pre>
 
 
       <h3 id="generate-url">Generate a playback url for a job</h3>
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/playback/{id}</code></pre>
 
-      <p>This endpoint provides a direct URL to access the live stream of a specific job, incorporating a playback token for secure, authorized viewing. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/playback/paths/~1playback~1%7Bid%7D/get">API Reference</a> for details.</p>
+      <p>This endpoint provides a direct URL to access the live stream of a specific job, incorporating a playback token for secure, authorized viewing. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/playback/paths/~1playback~1%7Bid%7D/get">API Reference</a> for details.</p>
 
 
       <h3 id="generate-sources">Generate sources for a job</h3>
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/playback/{job_id}/sources</code></pre>
 
-      <p>This endpoint retrieves the list of playback sources (URLs) available for a specific live streaming job. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/playback/paths/~1accounts~1%7Baccount_id%7D~1playback~1%7Bid%7D~1token/post">API Reference</a> for details.</p>
+      <p>This endpoint retrieves the list of playback sources (URLs) available for a specific live streaming job. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/playback/paths/~1accounts~1%7Baccount_id%7D~1playback~1%7Bid%7D~1token/post">API Reference</a> for details.</p>
     </section>
 
     <section class="bcls-section">
@@ -3957,20 +4197,20 @@
 
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs</code></pre>
 
-      <p>This endpoint retrieves a comprehensive list of all live streaming jobs associated with a specific account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/get">API Reference</a> for details.</p>
+      <p>This endpoint retrieves a comprehensive list of all live streaming jobs associated with a specific account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/get">API Reference</a> for details.</p>
 
       <h3 id="list-notifications-account">List notifications for an account</h3>
 
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/notifications</code></pre>
 
-      <p>This endpoint retrieves a list of notifications related to live streaming activities and job status changes within a specific Brightcove account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
+      <p>This endpoint retrieves a list of notifications related to live streaming activities and job status changes within a specific Brightcove account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
 
 
       <h3 id="list-notifications-job">List notifications for a job</h3>
 
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs/{job_id}/notifications</code></pre>
 
-      <p>This endpoint retrieves notifications specific to a particular live streaming job. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1notifications/get">API Reference</a> for details.</p>
+      <p>This endpoint retrieves notifications specific to a particular live streaming job. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1notifications/get">API Reference</a> for details.</p>
     </section>
 
     <section class="bcls-section">
@@ -3981,25 +4221,130 @@
 
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs/{job_id}/metrics</code></pre>
 
-      <p>This endpoint retrieves detailed performance metrics for a specific live streaming job, providing real-time data on key indicators. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/metricsapi/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1metrics/get">API Reference</a> for details.</p>
+      <p>This endpoint retrieves detailed performance metrics for a specific live streaming job, providing real-time data on key indicators. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/metricsapi/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1metrics/get">API Reference</a> for details.</p>
 
 
       <h3 id="job-all-metrics">Get all supported metrics</h3>
 
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/accounts/{account_id}/jobs/{job_id}/supported-metrics</code></pre>
 
-      <p>This endpoint provides a list of all metrics available for monitoring live streaming jobs within an account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-next-gen-api/references/reference.html#tag/metricsapi/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1supported-metrics/get">API Reference</a> for details.</p>
+      <p>This endpoint provides a list of all metrics available for monitoring live streaming jobs within an account. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/metricsapi/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bjob_id%7D~1supported-metrics/get">API Reference</a> for details.</p>
+    </section>
+    <section class="bcls-section">
+      <h2 id="recomendation">Recommendation for Standard Ingest Profiles</h2>
+      <p>The following recommended ingest profiles are designed to optimize the quality and compatibility of live streams in the Live 2.0 API. Each profile specifies standard settings, ensuring consistent video quality and performance across various playback devices</p>
+
+      <div class="table-responsive">
+        <table class="bcls-table">
+              <thead class="bcls-table__head">
+                <tr>
+                  <th>Profile Name</th>
+                  <th>Color Format</th>
+                  <th>Codec</th>
+                  <th>Max Level</th>
+                  <th>Max Resolution</th>
+                  <th>Frame Rates</th>
+                  <th>Deinterlace Modes</th>
+                  <th>DAR</th>
+                </tr>
+              </thead>
+              <tbody class="bcls-table__body">
+                <tr>
+                  <td>Live HD 1080</td>
+                  <td>BT.709</td>
+                  <td>H.264</td>
+                  <td>4.0</td>
+                  <td>1920x1080</td>
+                  <td>passthrough [default], 23.976, 24, 25, 29.97, 30</td>
+                  <td>detect[default] /on/off</td>
+                  <td>16:9</td>
+                </tr>
+                <tr>
+                  <td>Live HD 1080 HFR</td>
+                  <td>BT.709</td>
+                  <td>H.264</td>
+                  <td>4.2</td>
+                  <td>1920x1080</td>
+                  <td>passthrough [default], 50, 59.94, 60</td>
+                  <td>detect[default] /on/off</td>
+                  <td>16:9</td>
+                </tr>
+                <tr>
+                  <td>Live HD 720</td>
+                  <td>BT.709</td>
+                  <td>H.264</td>
+                  <td>3.1</td>
+                  <td>1280x720</td>
+                  <td>passthrough [default], 23.976, 24, 25, 29.97, 30</td>
+                  <td>detect[default] /on/off</td>
+                  <td>16:9</td>
+                </tr>
+                <tr>
+                  <td>Live HD 720 HFR</td>
+                  <td>BT.709</td>
+                  <td>H.264</td>
+                  <td>3.2</td>
+                  <td>1280x720</td>
+                  <td>passthrough [default], 50, 59.94, 60</td>
+                  <td>detect[default] /on/off</td>
+                  <td>16:9</td>
+                </tr>
+                <tr>
+                  <td>Live SD 576</td>
+                  <td>BT.709</td>
+                  <td>H.264</td>
+                  <td>3.1</td>
+                  <td>1024x576</td>
+                  <td>passthrough [default], 23.976, 24, 25, 29.97, 30</td>
+                  <td>detect[default] /on/off</td>
+                  <td>16:9</td>
+                </tr>
+                <tr>
+                  <td>Live SD 4:3 576</td>
+                  <td>BT.709</td>
+                  <td>H.264</td>
+                  <td>3.1</td>
+                  <td>768x576</td>
+                  <td>passthrough [default], 23.976, 24, 25, 29.97, 30</td>
+                  <td>detect[default] /on/off</td>
+                  <td>4:3</td>
+                </tr>
+                <tr>
+                  <td>Live 30 1080</td>
+                  <td>HDR10</td>
+                  <td>HEVC</td>
+                  <td>4.1</td>
+                  <td>1920x1080</td>
+                  <td>passthrough [default], 50, 59.94, 60</td>
+                  <td>off</td>
+                  <td>16:9</td>
+                </tr>
+                <tr>
+                  <td>Live HDR10 2160</td>
+                  <td>HDR10</td>
+                  <td>HEVC</td>
+                  <td>5.1</td>
+                  <td>3840x2160</td>
+                  <td>passthrough [default], 50, 59.94, 60</td>
+                  <td>off</td>
+                  <td>16:9</td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+        
+
     </section>
 
-    <section class="bcls-section">
+    <!-- <section class="bcls-section">
       <h2 id="Static_entry_points">Static entry points</h2>
 
       <p>The Static Entry Points (SEP) feature allows for a long-running live job that can be activated and deactivated while keeping the entry point URLs and playback URLs static and re-usable. This feature allows for customers to configure their encoder in their facilities or the field and allows the customer to create their own scheduling logic for live channels or programs. See <a href="/live-api/guides/live-api-static-entry-points.html">Static Entry Points</a> for details.</p>
 
       <p>There is also scheduler that allows you to schedule the activation and/or deactivation of SEP jobs. See <a href="/live-api/guides/live-scheduler.html">Overview: Live Scheduler</a>.</p>
-    </section>
+    </section> -->
 
-    <section class="bcls-section">
+    <!-- <section class="bcls-section">
       <h2 id="Captions">Captions</h2>
 
       <p>If captions are inside the h264 input signal (correctly signaled in the user_data packet) those are passed through to the h264 outputs.</p>
@@ -4008,7 +4353,7 @@
 
       <aside class="bcls-aside bcls-aside--information">As a current limitation, Safari will display the CC controls for Live streams, even when there are no captions to display.</aside>
 
-    </section>
+    </section> -->
 
     <!-- <section class="bcls-section">
       <h2 id="Insert_ID3_timed_metadata">Insert ID3 timed metadata</h2>
