@@ -847,7 +847,7 @@ layout: staging
                   <td><b>keyframe_rate</b></td>
                   <td>Float (fps)</td>
                   <td>0.5</td>
-                  <td>Allowed values: 1, 0.5</td>
+                  <td>1, 0.5</td>
                   <td>No</td>
                   <td>Defines the frequency of keyframes. This parameter must be consistent across all video renditions. It is the inverse of the smallest segment size that can be assigned to encoded streams.</td>
                 </tr>
@@ -863,7 +863,7 @@ layout: staging
                   <td><b>deinterlace</b></td>
                   <td>String</td>
                   <td>detect</td>
-                  <td>Allowed values: "on", "off", "detect"</td>
+                  <td>"on", "off", "detect"</td>
                   <td>No</td>
                   <td>Defines how to handle inputs from broadcast workflows. In broadcast settings, some streams are encoded as interlaced but contain progressive content. The "detect" option allows automatic detection, while "on" or "off" can be used to manually control deinterlacing if detection is inaccurate.</td>
                 </tr>
@@ -887,10 +887,46 @@ layout: staging
                 </tr>
               </thead>
               <tbody class="bcls-table__body">
-                  <tr>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                  </tr>
+                <tr>
+                  <td><b>codec</b> or <b>audio_codec</b></td>
+                  <td>String</td>
+                  <td>"aac"</td>
+                  <td>"aac", "ac3", "eac3"</td>
+                  <td>No</td>
+                  <td>Defines the audio codec to be used.</td>
+                </tr>
+                <tr>
+                  <td><b>profile</b> or <b>audio_codec_profile</b></td>
+                  <td>String</td>
+                  <td>"aac-lc"</td>
+                  <td>AAC codec: "aac-lc", "he-aac", "he-aac-v2"</td>
+                  <td>No</td>
+                  <td>Defines the audio codec profile. It is important to specify this parameter accurately for precise control over audio quality and compatibility.</td>
+                </tr>
+                <tr>
+                  <td><b>bitrate</b> or <b>audio_bitrate</b></td>
+                  <td>Integer (kbps)</td>
+                  <td>128 for stereo, 384 for 5.1</td>
+                  <td>Range: 32–512</td>
+                  <td>No</td>
+                  <td>Defines the audio codec bitrate. This should be cross-checked against the sampling rate and the number of channels for each codec profile to ensure compatibility. An error will be reported if the bitrate is inadequate for the configuration.</td>
+                </tr>
+                <tr>
+                  <td><b>sample_rate</b></td>
+                  <td>String</td>
+                  <td>"48000"</td>
+                  <td>"passthrough", "32000", "44100", "48000", "96000"</td>
+                  <td>No</td>
+                  <td>Defines the sample rate of the audio signal to be delivered. It’s important to control this setting carefully, as input mezzanines may have higher sample rates, which can cause issues if lower target bitrates are used.</td>
+                </tr>
+                <tr>
+                  <td><b>channels</b></td>
+                  <td>Number</td>
+                  <td>"2"</td>
+                  <td>"passthrough", "1", "2", "6"</td>
+                  <td>No</td>
+                  <td>Defines the number of audio channels on the output. For example, setting "6" indicates a 5.1 surround sound configuration. This parameter should be controlled precisely to ensure compatibility with audio output requirements.</td>
+                </tr>
               </tbody>
           </table>
         </div>
