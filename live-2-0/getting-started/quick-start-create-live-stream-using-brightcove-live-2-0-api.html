@@ -18,7 +18,7 @@ layout: staging
 	<!-- <li>An account set up for the Live 2.0 API</li>
 	<li>An api key for the Live 2.0 API (provided to you when the account is set up)</li> -->
 	<li>A Video Cloud account (not required to create the live stream job, but needed to set up playback in the Brightcove Player)</li>
-	<li>If you will be using the <span translate="No">CMS API</span> to create the Video Cloud video rather than Studio, you will need client credentials with video/read and video/write permissions - if you are not familiar with the process of getting client credentials, see the <a href="#Get_credentials_for_the_CMS_API">authentication</a> section below.</li>
+	<li>If you will be using the <span translate="No">CMS API</span> to create the Video Cloud video rather than Studio and the Live 2.0 API, you will need client credentials, if you are not familiar with the process of getting client credentials, see the <a href="#Get_credentials_for_the_CMS_API">authentication</a> section below.</li>
 	<li>The ability to make REST API requests either via <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">cURL</a> or a REST client such as <a href="/general/use-insomnia-api-requests.html">Insomnia</a> or <a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Postman</a>.
 	<!-- <p>To help you, we've prepared some Insomnia and Postman imports you can use for the exercise (at Brightcove Learning Services, we prefer and use Insomnia, but Postman will also work if that is what you have):</p>
 
@@ -34,14 +34,14 @@ layout: staging
 </section>
 
 <section class="bcls-section">
-<h2 id="Get_credentials_for_the_CMS_API" class="bcls-expander-head">Get credentials for the CMS API and Live 2.0</h2>
+<h2 id="obtain-credentials" class="bcls-expander-head">Obtain credentials</h2>
 
 <div class="bcls-expander-content">
-<p>To use the <span translate="No">CMS API</span> and <span translate="no">Live 2.0 API</span>you will need proper credentials.</p>
+<p>To use the <span translate="No">CMS API</span> and <span translate="no">Live 2.0 API</span> you will need proper credentials.</p>
 
-<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. In this case, the permissions you need are for <strong>sharing relationships</strong> - you need both read and write permissions:</p>
+<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a> for details. This is the recommended way of obtaining your client credentials.  In most cases, you will likely want to get all permissions:</p>
 
-<figure class="bcls-figure"><img class="bcls-image" alt="Sharing Relationship Permissions" src="/assets/images/live-api/17765/17765-api-permissions.png" />
+<figure class="bcls-figure"><img class="bcls-image" alt="Sharing Relationship Permissions" src="/assets/images/live-v2/live-options.png" />
 <figcaption class="bcls-caption--image">Sharing Relationship Permissions</figcaption>
 </figure>
 
@@ -50,7 +50,13 @@ layout: staging
 <pre class="line-numbers"><code class="language-json" translate="No">"operations": [
     "video-cloud/videos/read",
     "video-cloud/videos/create",
-    "video-cloud/videos/update"]</code></pre>
+    "video-cloud/videos/update",
+	"video-cloud/livev2/jobs/read",
+	"video-cloud/livev2/jobs/create",
+	"video-cloud/livev2/jobs/update",
+	"video-cloud/livev2/jobs/delete",
+	"video-cloud/livev2/jobs/all"
+	]</code></pre>
 
 <ul>
 	<li><a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">OAuth: Get Client Credentials Using cURL</a></li>
@@ -62,13 +68,13 @@ layout: staging
 <section class="bcls-section">
 <h2 id="configure-new-job">Configure a new job</h2>
 
-<p>First we will configure a new job</p>
+<p>First we will configure a new job using Postman</p>
 
 <ol class="bcls-tasklist-restart">
 	<li>For this step, you will submit a <code translate="No">POST </code> request to:
 
 	<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;account_id&#125;&#125;/jobs</code></pre>
-
+	<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID.</p>
 	<p>Use the following as the request body:</p>
 
 	<pre class="line-numbers"><code class="language-json" translate="No">{
@@ -180,30 +186,15 @@ layout: staging
    "type": "channel"
 }</code></pre>
 	</li>
-	<li>If you are using a REST client such as <a href="/general/use-insomnia-api-requests.html">Insomnia</a> or <a href="/general/use-postman-api-requests.html">Postman</a>, you will need to add the following headers for your request:
-	<table class="bcls-table">
-		<thead>
-			<tr>
-				<th>Key</th>
-				<th>Value</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>X-API-KEY</td>
-				<td><span class="bcls-input">YOUR API KEY</span></td>
-			</tr>
-			<tr>
-				<td>Content-Type</td>
-				<td>application/json</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<p>Use the request body shown in step 1 above, and be sure to send the request using the POST method.</p>
-
-	<aside class="bcls-aside bcls-aside--information">If you prefer to use cURL, you will find the <a href="#curlCreateLiveJob">equivalent cURL command below</a>.</aside>
+	<li><p>In the <strong>Authorization</strong> tab, set the type to <strong>OAuth 2.0</strong>, then click Get New Access Token. Fill in the following fields:</p>
+		<ul>
+			<li><p><strong>Token Name</strong>: Enter a name (e.g., "Access Token").</p></li>
+			<li><p><strong>Grant Type</strong>: Client Credentials.</p></li>
+			<li><p><strong>Access Token URL</strong>: <code translate="no">https://oauth.brightcove.com/v4/access_token</code></p></li>
+			<li><p><strong>Client ID</strong> and <strong>Client Secret</strong>: Your Brightcove credentials.</p></li>
+		</ul>
 	</li>
+	<p>Click Request Token to generate the token, select the token as Access Token, and then click Use Token to apply it to your request.</p>
 	<li>The response from the API should look similar to this:
 		
 	<details>
@@ -321,19 +312,6 @@ layout: staging
 		</pre>
 	</details>
 	</li>
-	<li>For our purposes, the important fields in the response are:
-	<ul>
-		<li>stream_url (line 51)</li>
-		<li>stream_name (line 52)</li>
-		<li>playback_url (line 54)</li>
-	</ul>
-
-	<aside class="bcls-aside bcls-aside--information">Note that you can also use the <code translate="No">playback_url_dvr</code> if you want DVR capability; the <code translate="No">playback_url_vod</code> is for internal use only.</aside>
-
-	<aside class="bcls-aside bcls-aside--information">Note that DVR capability will only work if the player supports it. See <a href="https://player.support.brightcove.com/plugins/live-dvrux-plugin.html">Live DVRUX Plugin</a> for the Brightcove Player plugin required.</aside>
-
-	<p>You will need the values of these fields - from your own response - in the steps that follow.</p>
-	</li>
 </ol>
 </section>
 
@@ -427,52 +405,63 @@ layout: staging
 	</summary>
 	
 	<pre class="line-numbers"><code class="language-bash" translate="No">## Create Job - Simple
-	curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
-	-H "X-API-KEY: <span class="bcls-input">YOUR_API_KEY_HERE</span>" \
-	-H "Content-Type: application/json" \
-	-d $'{
-	"outputs": [
-	{
-	"height": 720,
-	"video_bitrate": 2100,
-	"segment_seconds": 4,
-	"keyframe_interval": 60,
-	"width": 1280,
-	"video_codec": "h264",
-	"label": "hls720p",
-	"h264_profile": "high",
-	"live_stream": true
-	},
-	{
-	"height": 540,
-	"video_bitrate": 1500,
-	"segment_seconds": 4,
-	"keyframe_interval": 60,
-	"width": 960,
-	"video_codec": "h264",
-	"label": "hls540p",
-	"h264_profile": "main",
-	"live_stream": true
-	},
-	{
-	"height": 360,
-	"video_bitrate": 800,
-	"segment_seconds": 4,
-	"keyframe_interval": 60,
-	"width": 640,
-	"video_codec": "h264",
-	"label": "hls360p",
-	"h264_profile": "main",
-	"live_stream": true
-	}
-	],
-	"region": "us-west-2",
-	"reconnect_time": 1800,
-	"live_stream": true
-	}'</code></pre>
+ curl -X POST \
+ https://api.live.brightcove.com/v2/accounts/{Account_ID}/jobs \
+ -H "Authorization: Bearer {ACCESS_TOKEN}" \
+ -H "Content-Type: application/json" \
+ -d '{
+   "name": "Test Job",
+   "description": "Blive Job",
+   "long_description": "Blive Job long description",
+   "playback_rights_id": "",
+   "tags": ["sports"],
+   "input": {
+ 	"protocol": "rtmp",
+ 	"whitelist_cidr_blocks": ["0.0.0.0/0"],
+ 	"fixed_ingest_ip": false
+   },
+   "type": "event",
+   "live_to_vod": false,
+   "outputs": {
+ 	"video": [
+ 	  {
+ 		"label": "1080p",
+ 		"height": 1080,
+ 		"width": 1920,
+ 		"bitrate": 6000000,
+ 		"codec": "h264",
+ 		"codec_options": {
+ 		  "profile": "high",
+ 		  "level": "4.2"
+ 		}
+ 	  }
+ 	],
+ 	"audio": [
+ 	  {
+ 		"label": "aac1",
+ 		"input_selector_name": "default",
+ 		"language_code": "eng",
+ 		"codec": "aac",
+ 		"bitrate": 128000,
+ 		"sample_rate": 44100
+ 	  }
+ 	]
+   },
+   "manifest": {
+ 	"name": "playlist",
+ 	"segment_duration_seconds": 6,
+ 	"playlist_window_seconds": 60,
+ 	"segment_container_format": "cmaf"
+   },
+   "region": "us-east-1",
+   "maintenance_preferences": {
+ 	"day": "MONDAY"
+   }
+ }'
+	  </code></pre>
 </details>
 
-<p>Copy the code into a text editor, and replace <code translate="No">YOUR_API_KEY_HERE </code> with your own api key. Then copy and paste the code at a command line and run it.</p>
+<p>Replace the <code translate="no">{Account_ID}</code> and <code translate="no">{ACCESS_TOKEN}</code> placeholders with your respective Brightcove account ID and your OAuth 2.0 access token.</p>
 </section>
 
 <section class="bcls-section">
