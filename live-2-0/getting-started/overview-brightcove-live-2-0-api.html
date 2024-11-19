@@ -185,7 +185,7 @@ layout: staging
 
       <p>The <span translate="No">DVR</span> stream will remain available for 7 days after the live stream is completed.</p>
     </section>
-    <section class="bcls-section">
+    <!-- <section class="bcls-section">
       <h2 id="prerequisites">Prerequisite for Live 2.0 API</h2>
       <ul>
         <li>Create an OAuth 2.0 API Authentication Client ID/Secret.</li>
@@ -199,18 +199,40 @@ layout: staging
           </ul>
         </li>
       </ul>
-    </section>
+    </section> -->
     <section class="bcls-section">
 
-      <h2 id="Base_URL">Base URL</h2>
+      <h2 id="general-info">General information</h2>
+      <h3 id="base-url">Base URL</h3>
 
       <p>The base URL for the <span translate="No">Live 2.0 API</span> is:</p>
 
       <pre><code class="language-http" translate="No">https://api.live.brightcove.com</code></pre>
+
+      <h3 id="authentication">Authentication</h3>
+      <p>Authentication for requests requires an <span translate="No">Authorization header</span> :</p>
+  
+  <pre class="line-numbers">
+        <code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
+  
+  <p>The <code translate="No">access_token</code> is a temporary OAuth2 access token that must be obtained from the <span translate="No">Brightcove OAuth</span> service. For more details,see the <a target="_blank" href="/oauth/getting-started/overview-oauth-api-v4.html">Brightcove OAuth Overview</a>.</p>
+
+  <p>The easiest way to create client credentials is through the Brightcove Studio admin pages. For detailed instructions, see <a target="_blank" href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">Managing API Authentication Credentials</a></p>
+
+  <h3 id="operations">Operations</h3>
+  <p>Depending on the actions you need to perform, define specific scopes</p>
+  <ul>
+    <li><p><code translate="no">video-cloud/livev2/jobs/read</code>: Provides read-only access to view job details.</p></li>
+    <li><p><code translate="no">video-cloud/livev2/jobs/create</code>: Allows the creation of new live streaming jobs.</p></li>
+    <li><p><code translate="no">video-cloud/livev2/jobs/update</code>: Permits updates to existing live jobs.</p></li>
+    <li><p><code translate="no">video-cloud/livev2/jobs/delete</code>: Enables the deletion of live jobs.</p></li>
+    <li><p><code translate="no">video-cloud/livev2/jobs/all</code>: Grants full access to all job-related operations, combining read, create, update, and delete permissions.</p></li>
+  </ul>
+  
     </section>
 
     <section class="bcls-section">
-      <h2 id="Endpoints_and_operations">Endpoints and operations</h2>
+      <h2 id="Endpoints">Endpoints</h2>
 
       <p>Each endpoint is designed to perform specific tasks related to live streaming management, from job creation and configuration to playback control and real-time monitoring. These operations are carried out through requests to following endpoints, which are explained in more detail in the remainder of the document.</p>
 
