@@ -3638,7 +3638,7 @@
 	<!-- <li>An account set up for the Live 2.0 API</li>
 	<li>An api key for the Live 2.0 API (provided to you when the account is set up)</li> -->
 	<li>A Video Cloud account (not required to create the live stream job, but needed to set up playback in the Brightcove Player)</li>
-	<li>If you will be using the <span translate="No">CMS API</span> to create the Video Cloud video rather than Studio and the Live 2.0 API, you will need client credentials, if you are not familiar with the process of getting client credentials, see the <a href="#Get_credentials_for_the_CMS_API">authentication</a> section below.</li>
+	<li>If you will be using the <span translate="No">CMS API</span> to create the Video Cloud video rather than Studio and the Live 2.0 API, you will need <a target="_blank" href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">client credentials</a>.</li>
 	<li>The ability to make REST API requests either via <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">cURL</a> or a REST client <a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Postman</a>.
 	<!-- <p>To help you, we've prepared some Insomnia and Postman imports you can use for the exercise (at Brightcove Learning Services, we prefer and use Insomnia, but Postman will also work if that is what you have):</p>
 
@@ -3928,6 +3928,83 @@
 	</details>
 	</li>
 </ol>
+</section>
+
+<section class="bcls-section">
+	<h2 id="start-job">Start a Job</h2>
+	<p>Now that we have retrieved the Job ID from the previous step, along with its current status, we can use this Job ID to start the job.</p>
+
+	<ol class="bcls-tasklist-restart">
+		<li>For this step, you will submit a <code translate="No">PUT</code> request to:
+	
+		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;Account_ID&#125;&#125;/jobs/&#123;&#123;Job_ID&#125;&#125;/start</code></pre>
+		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;Job_ID&#125;&#125; with the Job ID retrieved in the previous step.</p>
+ 		</li>
+		<li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
+		<li>When the request is successful, you will receive a response with a status code of <code translate="no">200 OK</code>. The response body will confirm the job has started and provide the job's unique identifier, like this:
+
+			<pre class="line-numbers"><code class="language-json" translate="No">{
+ 	"id": "1816266131926533508"
+ }</code></pre>
+		</li>
+	</ol>
+
+</section>
+
+<section class="bcls-section">
+	<h2 id="rtmp-address">Obtain the RTMP Address</h2>
+	<p>Now that the job has been started, we can retrieve the RTMP address for the stream, which is required to configure your encoder.</p>
+	<ol class="bcls-tasklist-restart">
+		<li>For this step, you will submit a <code translate="No">GET</code> request to:
+	
+		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;Account_ID&#125;&#125;/jobs/&#123;&#123;Job_ID&#125;&#125;</code></pre>
+		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;Job_ID&#125;&#125; with the Job ID.</p>
+ 		</li>
+		 <li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
+		 <li>A successful response will return an HTTP status code of <code translate="no">200 OK</code>, along with a JSON payload containing the job details. Look for the <code translate="no">ingest_endpoints</code> field, which provides the <strong>RTMP URL</strong> to configure your encoder.
+		<p>sample response:</p>
+		<pre class="line-numbers"><code class="language-json" translate="No">{
+   	"id": "1816266131926533508",
+   	"account_id": "17526048509001",
+   	"state": {
+   	  "processing_state": "on",
+   	  "ingest_state": "waiting"
+   	},
+   	"ingest_endpoints": [
+   	  {
+		<span class="bcls-highlight">    "url": "rtmp://1816266131926533508.ingest.live.brightcove.com:1935/1816266131926533508/blive"</span>
+   	  }
+   	],
+   	"created_at": "2024-11-20T18:12:41Z",
+   	"input": {
+   	  "protocol": "rtmp",
+   	  "whitelist_cidr_blocks": ["0.0.0.0/0"]
+   	},
+   	...
+ }</code></pre>
+		</li>
+	</ol>
+</section>
+
+<section class="bcls-section">
+	<h2 id="generate-token">Generate a Playback Token</h2>
+	<p>Now we have to generate a playback token, which will be necessary to retrieve the playback URL for the live stream.</p>
+	<ol class="bcls-tasklist-restart">
+		<li>For this step, you will submit a <code translate="No">POST</code> request to:
+	
+		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;Account_ID&#125;&#125;/playback/&#123;&#123;Job_ID&#125;&#125;/token</code></pre>
+		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;Job_ID&#125;&#125; with the Job ID.</p>
+ 		</li>
+		 <li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
+		 <li>In the request body, you can specify parameters to customize the token generation.
+			<p>Sample request body:</p>
+			<pre class="line-numbers"><code class="language-json" translate="No">{
+	"dvr_enabled": false, // Enables or disables DVR functionality in the playback
+	"manifest_format": "hls", // Specifies the output format, such as HLS or DASH
+	"playlist_name": "BCLS playlist", // Filters by a specific playlist name
+	"low_latency": true // Enables low latency for playback
+}</code></pre>
+		 </li>
 </section>
 
 <section class="bcls-section">
