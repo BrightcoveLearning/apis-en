@@ -3999,12 +3999,36 @@
 		 <li>In the request body, you can specify parameters to customize the token generation.
 			<p>Sample request body:</p>
 			<pre class="line-numbers"><code class="language-json" translate="No">{
-	"dvr_enabled": false, // Enables or disables DVR functionality in the playback
-	"manifest_format": "hls", // Specifies the output format, such as HLS or DASH
-	"playlist_name": "BCLS playlist", // Filters by a specific playlist name
-	"low_latency": true // Enables low latency for playback
-}</code></pre>
+ 	"dvr_enabled": false, //filters playlist with dvr
+ 	"manifest_format": "hls", //filters playlist output type
+ 	"playlist_name": "playlist", //filters by custom playlsit name
+ 	"low_latency": true //filters playlist by low latency
+ }</code></pre>
 		 </li>
+		 <li>A successful response will return a status code of <code translate="no">200 OK</code>, along with the generated playback token.
+			<p>Example response:</p>
+			<pre class="line-numbers"><code class="language-json" translate="No">{
+ 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ }</code></pre>
+		 </li>
+</section>
+
+<section class="bcls-section">
+	<h2 id="generate-playback-url">Generate Playback URL</h2>
+	<p>After generating the playback token in the previous step, the next step is to use this token to generate the playback URL.</p>
+	<ol class="bcls-tasklist-restart">
+		<li>For this step, you will submit a <code translate="No">GET</code> request to:
+	
+		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/playback/&#123;&#123;Job_ID&#125;&#125;?pt=&#123;&#123;Job_Token&#125;&#125;</code></pre>
+		<p>Replace &#123;&#123;Job_ID&#125;&#125; with the Job ID and the &#123;&#123;Job_Token&#125;&#125; with the playback token generated in the previous step.</p>
+ 		</li>
+		 <li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
+		 <li>A successful response will return an HTTP status code of <code translate="no">200 OK</code> and a JSON payload containing the playback URL.
+		<p>Example response:</p>
+		<pre class="line-numbers"><code class="language-json" translate="No">{
+ 	"url": "https://blive.akamaized.net/1816266131926533508/us-east-1/17526048509001/eyJhbGciOiJIUzI..."
+ }</code></pre>
+		</li>
 </section>
 
 <section class="bcls-section">
@@ -4165,7 +4189,7 @@
 	<figcaption class="bcls-caption--image">Add Remote Video Menu Item</figcaption>
 	</figure>
 	</li>
-	<li>In the <strong>Add Remote Video</strong> dialog, add a video name and copy and paste the value for the <code translate="No">playback_url</code> from the Live API response into the URL field. Then click <strong>Add Rendition</strong>, and <strong>Save</strong>:
+	<li>In the <strong>Add Remote Video</strong> dialog, add a video name and copy and paste the value for the  playback url from the Live API response into the URL field. Then click <strong>Add Rendition</strong>, and <strong>Save</strong>:
 	<figure class="bcls-figure"><img class="bcls-image" alt="Add Rendition Dialog" src="/assets/images/live-api/17765/remote-video-dialog.png" />
 	<figcaption class="bcls-caption--image">Add Rendition Dialog</figcaption>
 	</figure>
@@ -4210,7 +4234,7 @@
 </ol>
 </section>
 
-<section class="bcls-section">
+<!-- <section class="bcls-section">
 <h2 id="Conclusion">Conclusion</h2>
 
 <p>You are now ready to create a live streaming session. You need to add the following to your encoder configuration:</p>
@@ -4221,7 +4245,7 @@
 </ul>
 
 <p>Once you start the live stream, you should see it show up in the Brightcove player you created in the earlier steps.</p>
-</section>
+</section> -->
 </article>
 
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
