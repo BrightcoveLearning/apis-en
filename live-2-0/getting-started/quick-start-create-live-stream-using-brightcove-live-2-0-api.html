@@ -78,113 +78,107 @@ layout: staging
 	<p>Use the following as the request body:</p>
 
 	<pre class="line-numbers"><code class="language-json" translate="No">{
+   "name": "BCLS Job",
+   "description": "Blive Job",
+   "long_description": "Blive Job long description",
+   "playback_rights_id": "",
+   "tags": [
+     "sports"
+   ],
    "input": {
-     "audio_pids": [
-   	{
-   	  "language_code": "string",
-   	  "name": "string",
-   	  "pid": 0
-   	}
-     ],
-     "fixed_ingest_ip": true,
-     "input_loss_behaviour": {
-   	"fill_type": "black_screen"
-     },
-     "protocol": "rtp",
-     "srt_options": {
-   	"ingest_port": 0,
-   	"min_latency": 0
-     },
-     "whitelist_cidr_blocks": [
-   	"string"
-     ]
+     "protocol": "rtmp",
+     "whitelist_cidr_blocks": ["0.0.0.0/0"],
+     "fixed_ingest_ip": false
    },
-   "live_to_vod": true,
-   "maintenance_preferences": {
-     "day": "string",
-     "start_time": "string"
-   },
-   "manifest": {
-     "dash": {},
-     "dvr": {
-   	"playlist_window_seconds": 30
-     },
-     "hls": {
-   	"playlist_type": "string",
-   	"startover_window_seconds": 0
-     },
-     "include_iframe_only_stream": true,
-     "low_latency": {},
-     "name": "string",
-     "playlist_groups": [
+   "type": "event",
+   "live_to_vod": false,
+   "outputs": {
+     "video": [
    	{
-   	  "audio_bitrate": {
-   		"max": 2147483647,
-   		"min": 0
+   	  "label": "1080p",
+   	  "height": 1080,
+   	  "width": 1920,
+   	  "bitrate": 6000000,
+   	  "codec": "h264",
+   	  "codec_options": {
+   		"profile": "high",
+   		"level": "4.2"
    	  },
-   	  "audio_codec": [
-   		"aac"
-   	  ],
-   	  "language_code": [
-   		"string"
-   	  ],
-   	  "name": "string",
-   	  "video_bitrate": {
-   		"max": 2147483647,
-   		"min": 0
-   	  },
-   	  "video_codec": [
-   		"h264"
-   	  ],
-   	  "video_height": {
-   		"max": 2160,
-   		"min": 1
+   	  "keyframe_rate": 0,
+   	  "sample_aspect_ratio": "1:1",
+   	  "decoder_buffer_size":9000000,
+   	  "max_bitrate":7200000
+   	},
+   	{
+   	  "label": "720p",
+   	  "height": 720,
+   	  "width": 1280,
+   	  "bitrate": 4000000,
+   	  "codec": "h264",
+   	  "codec_options": {
+   		"level": "4",
+   		"profile": "main"
+   	  }
+   	},
+   	{
+   	  "label": "480p",
+   	  "height": 480,
+   	  "width": 640,
+   	  "bitrate": 2000000,
+   	  "codec": "h264",
+   	  "codec_options": {
+   		"profile": "main"
    	  }
    	}
      ],
-     "playlist_window_seconds": 30,
-     "segment_container_format": "cmaf",
-     "segment_duration_seconds": 1
-   },
-   "notifications": [
-     {
-   	"subscription_type": "string",
-   	"url": "string"
-     }
-   ],
-   "outputs": {
      "audio": [
    	{
-   	  "bitrate": 0,
+   	  "label": "aac1",
+   	  "input_selector_name": "default",
+   	  "language_code": "eng",
    	  "codec": "aac",
-   	  "input_selector_name": "string",
-   	  "label": "string",
-   	  "language_code": "string",
-   	  "sample_rate": 0
-   	}
-     ],
-     "video": [
-   	{
-   	  "bitrate": 0,
-   	  "codec": "h264",
-   	  "codec_options": {
-   		"level": "3",
-   		"profile": "baseline"
-   	  },
-   	  "decoder_buffer_size": 0,
-   	  "framerate": "passthrough",
-   	  "height": 0,
-   	  "keyframe_rate": 0,
-   	  "label": "string",
-   	  "max_bitrate": 0,
-   	  "sample_aspect_ratio": "string",
-   	  "width": 0
+   	  "bitrate": 128000,
+   	  "sample_rate": 44100
    	}
      ]
    },
-   "region": "string",
-   "type": "channel"
-}</code></pre>
+   "manifest": {
+     "name": "playlist",
+     "segment_duration_seconds": 6,
+     "playlist_window_seconds": 60,
+     "segment_container_format": "cmaf",
+     "hls": {
+   	"startover_window_seconds": 300
+     },
+     "dvr": {
+   	"playlist_window_seconds": 300
+     },
+     "dash": {
+   	"startover_window_seconds": 300
+     },
+     "low_latency": {},
+     "playlist_groups": [
+   		  {
+   			  "name": "playlist-fullhd",
+   			  "video_height": {
+   				  "min": 721,
+   				  "max": 1080
+   			  }
+   		  },
+   		  {
+   			  "name": "playlist-hd",
+   			  "video_height": {
+   				  "min": 1,
+   				  "max": 720
+   			  }
+   		  }
+   	  ]
+   },
+   "region": "us-east-1",
+   "maintenance_preferences": {
+     "day": "MONDAY"
+   }
+ } </code></pre>
 	</li>
 	<li><p>In the <strong>Authorization</strong> tab, set the type to <strong>OAuth 2.0</strong>, then fill in the following fields:</p>
 		<ul>
@@ -203,12 +197,12 @@ layout: staging
 		<summary>Sample response</summary>
 		<pre class="line-numbers">
 		<code class="language-json" translate="No">{
- 	"id": "1816106968898464151",
+	<span class="bcls-highlight">    "id": "1816266131926533508"</span>,
  	"account_id": "1752604059001",
  	"state": {
- 		"processing_state": "configuring"
+		<span class="bcls-highlight">    "processing_state": "configuring"</span>
  	},
- 	"created_at": "2024-11-19T00:02:52Z",
+ 	"created_at": "2024-11-20T18:12:41Z",
  	"input": {
  		"protocol": "rtmp",
  		"whitelist_cidr_blocks": [
@@ -228,7 +222,6 @@ layout: staging
  					"level": "4.2",
  					"profile": "high"
  				},
- 				"keyframe_rate": 0.5,
  				"sample_aspect_ratio": "1:1",
  				"decoder_buffer_size": 9000000,
  				"max_bitrate": 7200000
@@ -303,7 +296,7 @@ layout: staging
  		"day": "MONDAY"
  	},
  	"type": "event",
- 	"name": "Test Job",
+ 	"name": "BCLS Job",
  	"description": "Blive Job",
  	"long_description": "Blive Job long description",
  	"playback_rights_id": "primary",
@@ -324,7 +317,7 @@ layout: staging
 
 <div><p>In these steps, we set the video up using the <a href="/cms/">CMS API</a>, but this can also be done in Video Cloud Studio, if you prefer - see the alternative steps below.</p>
 
-<p>If you are using Insomnia or Postman, you will need to set up OAuth2 authentication using your client credentials.</p>
+<p>If you are using Postman, you will need to set up OAuth2 authentication using your client credentials.</p>
 </ul>
 
 <ol class="bcls-tasklist-restart">
@@ -395,7 +388,7 @@ layout: staging
 <section class="bcls-section">
 <h2 id="cURL_commands">cURL commands</h2>
 
-<p>This section provides alternative cURL commands for those who do not use a REST client such as Insomnia or Postman.</p>
+<p>This section provides alternative cURL commands for those who do not use a REST client such as Postman.</p>
 
 <details>
 	<summary>
