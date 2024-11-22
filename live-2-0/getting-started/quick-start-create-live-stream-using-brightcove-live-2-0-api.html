@@ -45,7 +45,7 @@ layout: staging
 <figcaption class="bcls-caption--image">Sharing Relationship Permissions</figcaption>
 </figure>
 
-<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get the proper permissions:</p>
+<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the <a target="_blank" href="https://apis.support.brightcove.com/oauth/index.html">OAuth API</a>, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get the proper permissions:</p>
 
 <pre class="line-numbers"><code class="language-json" translate="No">"operations": [
     "video-cloud/videos/read",
@@ -55,7 +55,8 @@ layout: staging
 	"video-cloud/livev2/jobs/create",
 	"video-cloud/livev2/jobs/update",
 	"video-cloud/livev2/jobs/delete",
-	"video-cloud/livev2/jobs/all"
+	"video-cloud/livev2/jobs/all",
+	"video-cloud/livev2/metrics/read"
 	]</code></pre>
 
 <ul>
@@ -76,7 +77,8 @@ layout: staging
 	<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;account_id&#125;&#125;/jobs</code></pre>
 	<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID.</p>
 	<p>Use the following as the request body:</p>
-
+	<details>
+		<summary>Sample Request Body</summary>
 	<pre class="line-numbers"><code class="language-json" translate="No">{
    "name": "BCLS Job",
    "description": "Blive Job",
@@ -179,6 +181,7 @@ layout: staging
      "day": "MONDAY"
    }
  } </code></pre>
+</details>
 	</li>
 	<li><p>In the <strong>Authorization</strong> tab, set the type to <strong>OAuth 2.0</strong>, then fill in the following fields:</p>
 		<ul>
@@ -341,8 +344,10 @@ layout: staging
 		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;Job_ID&#125;&#125; with the Job ID.</p>
  		</li>
 		 <li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
-		 <li>A successful response will return an HTTP status code of <code translate="no">200 OK</code>, along with a JSON payload containing the job details. Look for the <code translate="no">ingest_endpoints</code> field, which provides the <strong>RTMP URL</strong> to configure your encoder.
-		<p>sample response:</p>
+		 <li><p>A successful response will return an HTTP status code of <code translate="no">200 OK</code>, along with a JSON payload containing the job details. Look for the <code translate="no">ingest_endpoints</code> field, which provides the <strong>RTMP URL</strong> to configure your encoder.</p>
+		
+		<details>
+			<summary>Sample Response</summary>
 		<pre class="line-numbers"><code class="language-json" translate="No">{
    	"id": "1816266131926533508",
    	"account_id": "17526048509001",
@@ -362,6 +367,7 @@ layout: staging
    	},
    	...
  }</code></pre>
+	</details>
 		</li>
 	</ol>
 </section>
@@ -416,7 +422,7 @@ layout: staging
 
 <p>Now that we have the live stream information, we will set up a remote video in Video Cloud so that we can play it in a Brightcove Player.</p>
 
-<div><p>In these steps, we set the video up using the <a href="/cms/">CMS API</a>, but this can also be done in Video Cloud Studio, if you prefer - see the alternative steps below.</p>
+<div><p>In these steps, we set the video up using the <a href="/cms/">CMS API</a>, but this can also be done in Video Cloud Studio, if you prefer - <a href="#studio-create-video">see the alternative steps below</a>.</p>
 
 <p>If you are using Postman, you will need to set up OAuth2 authentication using your client credentials.</p>
 </ul>
@@ -440,7 +446,7 @@ layout: staging
 	<li>
 	<p>To add the HLS stream, you will make another <code translate="No">POST</code> request to:</p>
 
-	<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/assets/hls_manifest</code></pre>
+	<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">job_id</span>/assets/hls_manifest</code></pre>
 	</li>
 	<li>
 	<p>This time, the request body will be:</p>
@@ -486,7 +492,7 @@ layout: staging
 </ol>
 </section>
 
-<section class="bcls-section">
+<!-- <section class="bcls-section">
 <h2 id="cURL_commands">cURL commands</h2>
 
 <p>This section provides alternative cURL commands for those who do not use a REST client such as Postman.</p>
@@ -554,10 +560,10 @@ layout: staging
 </details>
 
 <p>Replace the <code translate="no">{Account_ID}</code> and <code translate="no">{ACCESS_TOKEN}</code> placeholders with your respective Brightcove account ID and your OAuth 2.0 access token.</p>
-</section>
+</section> -->
 
-<section class="bcls-section">
-<h2 id="Use_Studio_to_create_the_video">Use Studio to create the video</h2>
+<!-- <section class="bcls-section">
+<h2 id="studio-create-video">Use Studio to create the video</h2>
 
 <p>Here are alternative steps for creating the video in Studio.</p>
 
@@ -577,7 +583,7 @@ layout: staging
 	<aside class="bcls-aside bcls-aside--information">Note: if you want to stream over HTTPS for a secure stream, simply change <code translate="No">http</code> in the playback_url to <code translate="No">https</code>.</aside>
 	</li>
 </ol>
-</section>
+</section> -->
 
 <section class="bcls-section">
 <h2 id="Use_Wirecast_to_stream_an_event">Use Wirecast to stream an event</h2>
