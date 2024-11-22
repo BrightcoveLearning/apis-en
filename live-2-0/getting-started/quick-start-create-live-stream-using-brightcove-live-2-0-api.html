@@ -18,7 +18,7 @@ layout: staging
 	<!-- <li>An account set up for the Live 2.0 API</li>
 	<li>An api key for the Live 2.0 API (provided to you when the account is set up)</li> -->
 	<li>A Video Cloud account (not required to create the live stream job, but needed to set up playback in the Brightcove Player)</li>
-	<li>If you will be using the <span translate="No">CMS API</span> to create the Video Cloud video rather than Studio and the Live 2.0 API, you will need <a target="_blank" href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">client credentials</a>.</li>
+	<li>You need CMS API and Live 2.0 API <a target="_blank" href="https://studio.support.brightcove.com/admin/managing-api-authentication-credentials.html">client credentials</a>.</li>
 	<li>The ability to make REST API requests either via <a href="/oauth/guides/oauth-create-client-credentials-using-curl.html">cURL</a> or a REST client <a href="/oauth/guides/oauth-create-client-credentials-using-postman.html">Postman</a>.
 	<!-- <p>To help you, we've prepared some Insomnia and Postman imports you can use for the exercise (at Brightcove Learning Services, we prefer and use Insomnia, but Postman will also work if that is what you have):</p>
 
@@ -191,7 +191,7 @@ layout: staging
 			<figure class="bcls-figure"><img class="bcls-image" alt="Publish Video" src="/assets/images/live-v2/configure-token.png" />
 			</figure>
 		</ul>
-		<p>Click <strong>Get New Access Token</strong> to generate the token, select the token as <strong>Access Token</strong>, and then click Use Token to apply it to your request.</p>
+		<p>Click <strong>Get New Access Token</strong> to generate the token, select the token as <strong>Access Token</strong>, and then click <strong>Use Token</strong> to apply it to your request.</p>
 	</li>
 	
 	<li>The response from the API should look similar to this:
@@ -344,7 +344,7 @@ layout: staging
 		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;Job_ID&#125;&#125; with the Job ID.</p>
  		</li>
 		 <li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
-		 <li><p>A successful response will return an HTTP status code of <code translate="no">200 OK</code>, along with a JSON payload containing the job details. Look for the <code translate="no">ingest_endpoints</code> field, which provides the <strong>RTMP URL</strong> to configure your encoder.</p>
+		 <li><p>A successful response will return a status code of <code translate="no">200 OK</code>, along with a JSON payload containing the job details. Look for the <code translate="no">ingest_endpoints</code> field, which provides the <strong>RTMP URL</strong> to configure your encoder.</p>
 		
 		<details>
 			<summary>Sample Response</summary>
@@ -422,29 +422,14 @@ layout: staging
 
 <p>Now that we have the live stream information, we will set up a remote video in Video Cloud so that we can play it in a Brightcove Player.</p>
 
-<div><p>In these steps, we set the video up using the <a href="/cms/">CMS API</a>, but this can also be done in Video Cloud Studio, if you prefer - <a href="#studio-create-video">see the alternative steps below</a>.</p>
+<div>
 
 <p>If you are using Postman, you will need to set up OAuth2 authentication using your client credentials.</p>
 </ul>
 
 <ol class="bcls-tasklist-restart">
 	<li>
-	<p>First, you will need to create a new video by making a <code translate="No">POST</code> request to:</p>
-
-	<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos</code></pre>
-	</li>
-	<li>
-	<p>The request body can include several pieces of metadata (see <a href="/cms/references/reference.html#/Videos/CreateVideo">the API reference</a> for details), but the only thing required is a <code translate="No">name</code>:</p>
-
-	<pre class="line-numbers"><code class="language-json" translate="No">{
-    "name": "<span class="bcls-input">some name for your live stream</span>"
-}</code></pre>
-	</li>
-	<li>
-	<p>The response will contain all the video metadata, but the important field is the <code translate="No">id</code>, which you will need to add the remote asset.</p>
-	</li>
-	<li>
-	<p>To add the HLS stream, you will make another <code translate="No">POST</code> request to:</p>
+	<p>To add the HLS stream, you will make a <code translate="No">POST</code> request to:</p>
 
 	<pre><code class="language-http" translate="No">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">job_id</span>/assets/hls_manifest</code></pre>
 	</li>
@@ -452,7 +437,7 @@ layout: staging
 	<p>This time, the request body will be:</p>
 
 	<pre class="line-numbers"><code class="language-json" translate="No">{
-    "remote_url": "<span class="bcls-input">playback_url for your live stream</span>"
+    "remote_url": "<span class="bcls-input">playback_url for your live stream</span>" //obtained in the previous step
 }</code></pre>
 	</li>
 </ol>
