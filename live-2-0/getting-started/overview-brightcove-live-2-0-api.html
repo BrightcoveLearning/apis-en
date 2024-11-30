@@ -302,8 +302,11 @@ layout: staging
 
         <p>If you use <code translate="No">rtmp</code>, you can specify an <code translate="No">ip_whitelist</code> for the input instead, but this is not required.</p>
       </section>
-
-        <p>Sample payload:</p>
+      <details>
+        <summary>
+          <h3 id="curlCreateLiveJob">Sample payload</h3>
+        </summary>
+        
         <pre class="line-numbers"><code class="language-json" translate="No">{
    "name": "Test Job",
    "description": "Blive Job",
@@ -406,6 +409,7 @@ layout: staging
      "day": "MONDAY"
    }
  }</code></pre>
+</details>
 
  <p>Parameters</p>
  <div class="table-responsive">
@@ -446,7 +450,7 @@ layout: staging
             <td>object (external.Input)</td>
             <td>body</td>
             <td>Yes</td>
-            <td>Configuration for the input stream, including protocol and other details.</td>
+            <td>Configuration for the input stream, including protocol (rtmp, rtp, and srt), whitelist CIDR blocks and whether the ingest IP is fixed.</td>
         </tr>
         <tr>
             <td><code translate="no">live_to_vod</code></td>
@@ -516,7 +520,7 @@ layout: staging
             <td>Array of strings</td>
             <td>body</td>
             <td>No</td>
-            <td>Tags for categorizing or organizing the job.</td>
+            <td>Array of string tags for the job.</td>
         </tr>
         <tr>
             <td><code translate="no">type</code></td>
@@ -538,7 +542,11 @@ layout: staging
 
       <p>This endpoint is used to modify the configuration of an existing live streaming job via a <code translate="No">PUT </code> request. adjust job settings such as video and audio parameters, playback options, and other attributes while the job is in an inactive state. Details of the fields that can be included in the request body are given in the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D/put">API Reference</a></p>
 
-      <p>Sample payload:</p>
+      <details>
+        <summary>
+          <h3 id="curlCreateLiveJob">Sample payload</h3>
+        </summary>
+        
         <pre class="line-numbers"><code class="language-json" translate="No">{
    "input": {
      "audio_pids": [
@@ -648,6 +656,7 @@ layout: staging
    "type": "channel"
  }
         </code></pre>
+      </details>
         <p>Parameters</p>
         <div class="table-responsive">
           <table class="bcls-table">
@@ -680,7 +689,7 @@ layout: staging
                     <td>object (external.Input)</td>
                     <td>body</td>
                     <td>Yes</td>
-                    <td>Configuration for the input stream, including protocol and other details.</td>
+                    <td>Configuration for the input stream, including protocol (rtmp, rtp, and srt), whitelist CIDR blocks and whether the ingest IP is fixed.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">live_to_vod</code></td>
@@ -1265,7 +1274,6 @@ layout: staging
         <table class="bcls-table">
               <thead class="bcls-table__head">
                 <tr>
-                  <th>Name</th>
                   <th>Type</th>
                   <th>In</th>
                   <th>Required</th>

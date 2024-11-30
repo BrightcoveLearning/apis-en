@@ -57,7 +57,7 @@ grandparent: CMS API
       <tr>
         <td><code translate="No">id</code></td>
         <td>String</td>
-        <td>Internal name of the field</td>
+        <td>Internal name of the field. Cannot be updated; any mismatch during update requests will result in rejection.</td>
       </tr>
       <tr>
         <td><code translate="No">description</code></td>
@@ -72,7 +72,7 @@ grandparent: CMS API
       <tr>
         <td><code translate="No">type</code></td>
         <td>String</td>
-        <td>one of 'enum' or 'string' (which translates to 'List' or 'Text' in the UI)</td>
+        <td>One of 'enum', 'string', 'boolean', 'date', or 'numeric' (which translate to 'List', 'Text', 'Toggle', 'Date Picker', or 'Number Input' in the UI)</td>
       </tr>
       <tr>
         <td><code translate="No">enum_values</code></td>
@@ -84,8 +84,18 @@ grandparent: CMS API
         <td>Boolean</td>
         <td>Whether this field must have a value before the video can be activated</td>
       </tr>
+      <tr>
+        <td><code translate="no">numeric_values</code></td>
+        <td>Map</td>
+        <td>Specifies a <code translate="no">max</code> and <code translate="no">min</code> range for numeric fields. The <code translate="no">max</code> and <code translate="no">min</code> values are required for validation but can be omitted if no range validation is needed. Example: { "max": 200, "min": 50 }.</td>
+      </tr>
     </tbody>
   </table>
+  <aside class="bcls-aside bcls-aside--information">Notes: <ul>
+    <li><strong>Boolean</strong>, <strong>Numeric</strong>, and <strong>String</strong> field types are searchable.</li>
+    <li><strong>Date</strong> and <strong>Numeric</strong> field types support range-based searches.</li>
+    <li>The <strong>Boolean</strong>, <strong>Date</strong>, and <strong>Numeric</strong> field types are only available at the video level and are not supported for variants or beacon custom fields.</li>
+  </ul></aside>
   </section>
   </article>
   
