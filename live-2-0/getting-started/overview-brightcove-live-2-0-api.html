@@ -551,109 +551,125 @@ layout: staging
    "input": {
      "audio_pids": [
        {
-         "language_code": "string",
-         "name": "string",
-         "pid": 0
+         "language_code": "eng",
+         "name": "English Audio",
+         "pid": 101
        }
      ],
      "fixed_ingest_ip": true,
      "input_loss_behaviour": {
-       "fill_type": "black_screen"
+       "fill_type": "slate"
      },
-     "protocol": "rtp",
+     "protocol": "rtmp",
      "srt_options": {
-       "ingest_port": 0,
-       "min_latency": 0
+       "ingest_port": 1935,
+       "min_latency": 2000
      },
      "whitelist_cidr_blocks": [
-       "string"
+       "192.168.1.0/24"
      ]
    },
    "live_to_vod": true,
    "maintenance_preferences": {
-     "day": "string",
-     "start_time": "string"
+     "day": "MONDAY",
+     "start_time": "02:00"
    },
    "manifest": {
      "dash": {},
      "dvr": {
-       "playlist_window_seconds": 30
+       "playlist_window_seconds": 300
      },
      "hls": {
-       "playlist_type": "string",
-       "startover_window_seconds": 0
+       "playlist_type": "event",
+       "startover_window_seconds": 300
      },
      "include_iframe_only_stream": true,
      "low_latency": {},
-     "name": "string",
+     "name": "My Live Stream",
      "playlist_groups": [
        {
          "audio_bitrate": {
-           "max": 2147483647,
-           "min": 0
+           "max": 192000,
+           "min": 64000
          },
          "audio_codec": [
            "aac"
          ],
          "language_code": [
-           "string"
+           "eng"
          ],
-         "name": "string",
+         "name": "HD Playlist",
          "video_bitrate": {
-           "max": 2147483647,
-           "min": 0
+           "max": 5000000,
+           "min": 1000000
          },
          "video_codec": [
            "h264"
          ],
          "video_height": {
-           "max": 2160,
-           "min": 1
+           "max": 1080,
+           "min": 360
          }
        }
      ],
-     "playlist_window_seconds": 30,
+     "playlist_window_seconds": 120,
      "segment_container_format": "cmaf",
-     "segment_duration_seconds": 1
+     "segment_duration_seconds": 6
    },
    "notifications": [
      {
-       "subscription_type": "string",
-       "url": "string"
+       "subscription_type": "state_changed",
+       "url": "https://mywebhook.site/notifications"
      }
    ],
    "outputs": {
      "audio": [
        {
-         "bitrate": 0,
+         "bitrate": 128000,
          "codec": "aac",
-         "input_selector_name": "string",
-         "label": "string",
-         "language_code": "string",
-         "sample_rate": 0
+         "input_selector_name": "default",
+         "label": "English Audio",
+         "language_code": "eng",
+         "sample_rate": 48000
        }
      ],
      "video": [
        {
-         "bitrate": 0,
+         "bitrate": 4000000,
          "codec": "h264",
          "codec_options": {
-           "level": "3",
-           "profile": "baseline"
+           "level": "4.2",
+           "profile": "high"
          },
-         "decoder_buffer_size": 0,
-         "framerate": "passthrough",
-         "height": 0,
-         "keyframe_rate": 0,
-         "label": "string",
-         "max_bitrate": 0,
-         "sample_aspect_ratio": "string",
-         "width": 0
+         "decoder_buffer_size": 6000000,
+         "framerate": "30",
+         "height": 1080,
+         "keyframe_rate": 2,
+         "label": "1080p",
+         "max_bitrate": 5000000,
+         "sample_aspect_ratio": "1:1",
+         "width": 1920
+       },
+       {
+         "bitrate": 2000000,
+         "codec": "h264",
+         "codec_options": {
+           "level": "4",
+           "profile": "main"
+         },
+         "decoder_buffer_size": 3000000,
+         "framerate": "30",
+         "height": 720,
+         "keyframe_rate": 2,
+         "label": "720p",
+         "max_bitrate": 2500000,
+         "sample_aspect_ratio": "1:1",
+         "width": 1280
        }
      ]
    },
-   "region": "string",
-   "type": "channel"
+   "region": "us-east-1",
+   "type": "event"
  }
         </code></pre>
       </details>
@@ -1437,7 +1453,7 @@ layout: staging
                   <td>Defines the frame height of the video.</td>
                 </tr>
                 <tr>
-                  <td><b>framerate</b> or <b>frame_rate</b></td>
+                  <td><b>framerate</b></td>
                   <td>Float</td>
                   <td>0 (passthrough)</td>
                   <td>0 (passthrough), 23.976, 24, 25, 29.97, 30, 59.94, 60</td>
@@ -1461,7 +1477,7 @@ layout: staging
                   <td>Sets the color format SDR of the video. Must be consistent across renditions.</td>
                 </tr>
                 <tr>
-                  <td><b>codec</b> or <b>video_codec</b></td>
+                  <td><b>codec</b></td>
                   <td>String</td>
                   <td></td>
                   <td>"h264", "hevc"</td>
@@ -1469,7 +1485,7 @@ layout: staging
                   <td>Specifies the codec used for encoding. Use HEVC for 4K and UHD/HDR content.</td>
                 </tr>
                 <tr>
-                  <td><b>profile</b> or <b>video_codec_profile</b></td>
+                  <td><b>profile</b></td>
                   <td>String</td>
                   <td>H.264: "high"; HEVC / sdr: "main"; HEVC / hdr10: "main10"</td>
                   <td>H.264: "baseline", "main", "high"; HEVC: "main", "main10"</td>
@@ -1477,7 +1493,7 @@ layout: staging
                   <td>Defines the codec profile. Required for compatibility with commercial encoders and ecosystem requirements (e.g., AppleTV, HbbTV).</td>
                 </tr>
                 <tr>
-                  <td><b>tier</b> or <b>video_codec_tier</b></td>
+                  <td><b>tier</b></td>
                   <td>String</td>
                   <td>"main"</td>
                   <td>HEVC only: "main", "high"</td>
@@ -1485,7 +1501,7 @@ layout: staging
                   <td>Specifies the codec tier, applicable only to the HEVC codec. Higher tiers may have limited compatibility on some devices.</td>
                 </tr>
                 <tr>
-                  <td><b>level</b> or <b>video_codec_level</b></td>
+                  <td><b>codec_options.level</b></td>
                   <td>String</td>
                   <td>Automatic determination based on video resolution, framerate, bitrate, bitrate_cap, and decoder_buffer_size</td>
                   <td>H.264: "1", "1.1", "1.2", "1.3", "2", "2.1", "2.2", "3", "3.1", "3.2", "4", "4.1", "4.2", "5", "5.1", "5.2", "auto"; HEVC: "1", "2", "2.1", "3", "3.1", "4", "4.1", "5", "5.1", "6", "6.1", "6.2", "auto"</td>
@@ -1493,7 +1509,7 @@ layout: staging
                   <td>Defines the codec level. Required for compatibility with commercial encoders and to meet ecosystem requirements (e.g., AppleTV, HbbTV). If specified, it will be validated against other parameters like resolution, framerate, and bitrate.</td>
                 </tr>
                 <tr>
-                  <td><b>bitrate</b> or <b>video_bitrate</b></td>
+                  <td><b>bitrate</b></td>
                   <td>Integer (kbps)</td>
                   <td></td>
                   <td>100–20000</td>
@@ -1577,7 +1593,7 @@ layout: staging
               </thead>
               <tbody class="bcls-table__body">
                 <tr>
-                  <td><b>codec</b> or <b>audio_codec</b></td>
+                  <td><b>codec</b></td>
                   <td>String</td>
                   <td>"aac"</td>
                   <td>"aac", "ac3", "eac3"</td>
@@ -1585,7 +1601,7 @@ layout: staging
                   <td>Defines the audio codec to be used.</td>
                 </tr>
                 <tr>
-                  <td><b>profile</b> or <b>audio_codec_profile</b></td>
+                  <td><b>profile</b></td>
                   <td>String</td>
                   <td>"aac-lc"</td>
                   <td>AAC codec: "aac-lc", "he-aac", "he-aac-v2"</td>
@@ -1593,7 +1609,7 @@ layout: staging
                   <td>Defines the audio codec profile. It is important to specify this parameter accurately for precise control over audio quality and compatibility.</td>
                 </tr>
                 <tr>
-                  <td><b>bitrate</b> or <b>audio_bitrate</b></td>
+                  <td><b>bitrate</b></td>
                   <td>Integer (kbps)</td>
                   <td>128 for stereo, 384 for 5.1</td>
                   <td>Range: 32–512</td>
