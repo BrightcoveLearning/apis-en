@@ -1,0 +1,93 @@
+---
+title: 'Packaged Plugins'
+description: 'In this topic, we introduced Packaged Plugins with Brightcove Player version 7.21.0, a new way to manage core player features. This replaces the <a href="https://apis.support.brightcove.com/player-management/guides/plugin-registry.html">Plugin Registry</a>.'
+parent: Guides
+grandparent: Player Management API
+---
+
+<!-- 
+  This content appears on:
+  
+  https://player.support.brightcove.com/plugins/plugin-registry.html
+
+  https://apis.support.brightcove.com/player-management/guides/plugin-registry.html
+
+  If you update in one place, you MUST update it in all!
+ -->
+
+ <h1>{{ page.title }}</h1>
+ <article class="bcls-article">
+  <summary>{{ page.description }}</summary>
+  <section class="bcls-section">
+    <h2 id="What_are_packaged_plugins">What are Packaged Plugins?</h2>
+    
+    <p>Packaged Plugins are player features, including Advertising, Thumbnail Seeking, Playlists, and others, that have historically been handled by a separate service called the <a href="https://apis.support.brightcove.com/player-management/guides/plugin-registry.html">Plugin Registry</a>. The Plugin Registry was designed to make managing web player plugins easy, but over the years, it has led to confusion and mismatches in versions, which in turn has led to problems that could have been avoided.</p>
+    <p>A common problem has been trying to use an old plugin version with a new player version (or vice versa). The plugin relies on specific player functionality that may be different than expected or not present, leading to problems or failures. This was a big problem with advertising as browsers moved to block autoplay with sound by default.</p>
+    <p>By moving features into the player's core, we ensure that the plugin is the correct version for the player because there is no longer a separate version. It's a part of the player tested to function as expected.</p>
+    </section>
+    
+   <section class="bcls-section">
+    <h2 id="configuration">How do I configure my Packaged Plugins?</h2>
+    
+    <p>To use them in the studio, see this guide.</p>
+    <p>To use them via the Player Management API, see this guide.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="player_versions">What if I need to use plugin version X with player version Y?</h2>
+    <p>You do not. The concept of Packaged Plugins is to ensure that the feature you are using is 100% compatible with your player version. Trying to use a different version goes against this.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="how_i_know_use_of_a_plugin">How do I know if I'm using a Packaged Plugin?</h2>
+    <p>The main difference is in the player configuration JSON, you'll see ”is_packaged”: true.</p>
+    <p>Here is the Plugin Registry JSON structure:</p>   
+    <pre class="line-numbers">
+    <code class="language-bash" translate="No">
+          "plugins": [{
+            "injected_version": "2.0.10",
+            "name": "customEndscreen",
+            "registry_id": "@brightcove/videojs-custom-endscreen",
+            "version": "2.x"
+          }],
+          "scripts": [
+            "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.min.js"
+          ],
+          "stylesheets": [
+            "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.css"
+          ],
+        </code>
+          </pre>
+    <p>Here is the new Packaged Plugins JSON structure:</p>
+    <pre class="line-numbers">
+        <code class="language-bash" translate="No">
+            "plugins": [{
+                "injected_version": "2.0.10",
+                "name": "customEndscreen",
+                <span class="bcls-highlight">"is_packaged": true</span>
+              }],
+              {
+                "name": "thumbnails",
+                "is_packaged": true
+              },
+            </code>
+              </pre>
+    <p>In the player information modal, you'll see the plugin version as “Packaged with Player.” If you see a version string, this would be an older, legacy version, which can be updated with the current packaged version instead.</p>
+    <aside class="bcls-aside bcls-aside--information">If you have <strong>Registry Plugins</strong> and upgrade your player to v7.21.0 or above, any of the eligible plugins will be converted automatically to Packaged Plugins.</aside>
+    <aside class="bcls-aside bcls-aside--information">If you have <strong>Packaged Plugins</strong> and downgrade your player below v7.21.0, any of the packaged plugins on your players will be converted back into registry plugins.</aside>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Sideload">What if I must “sideload” a core plugin during player load time?</h2>
+        
+    <p>You should never need to do that. Brightcove's player management system is designed to compile all the features you need and deliver a working player with those features to your users.</p>
+    <p>For example, instead of sideloading the IMA3 plugin, if you need to deliver ads to your users, use a player with the IMA3 feature enabled. If you don’t need ads in other situations, use a different player without the IMA3 feature enabled, or configure ads at runtime in a very similar way than you would have with sideloading — except that you no longer will need to include the plugin separately.</p>
+
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="third_party">What about custom or third-party plugins?</h2>
+
+    <p>We have not changed or removed any functionality for those. These changes only affect plugins managed by the plugin registry.</p>
+    </section>
+    </article>
