@@ -3642,21 +3642,21 @@
   <section class="bcls-section">
     <h2 id="What_are_packaged_plugins">What are Packaged Plugins?</h2>
     
-    <p>Packaged Plugins are player features, including Advertising, Thumbnail Seeking, Playlists, and others, that have historically been handled by a separate service called the <a href="https://apis.support.brightcove.com/player-management/guides/plugin-registry.html">Plugin Registry</a>. The Plugin Registry was designed to make managing web player plugins easy, but over the years, it has led to confusion and mismatches in versions, which in turn has led to problems that could have been avoided.</p>
-    <p>A common problem has been trying to use an old plugin version with a new player version (or vice versa). The plugin relies on specific player functionality that may be different than expected or not present, leading to problems or failures. This was a big problem with advertising as browsers moved to block autoplay with sound by default.</p>
-    <p>By moving features into the player's core, we ensure that the plugin is the correct version for the player because there is no longer a separate version. It's a part of the player tested to function as expected.</p>
+    <p>Player features, including Advertising, Thumbnail Seeking, Playlists, and others, have historically been provided as plugins, and their management handled a separate service called the <a href="https://apis.support.brightcove.com/player-management/guides/plugin-registry.html">Plugin Registry</a>.  The Plugin Registry was initially designed to make managing player plugins efficient without user interaction. Still, over the years, it has led to confusion and mismatches in versions, leading to problems that could have been avoided.</p>
+    <p>A common problem has been trying to use an old plugin version with a new player version (or vice versa), with the plugin relying on specific player functionality that may be different than expected or not present, leading to unexpected behavior or failures. We saw multiple examples of this with advertising as browsers moved to block autoplay with sound by default.</p>
+    <p>By moving features into the player's core, we ensure that the code being used is the right version for the player because there is no longer a separate version. It's a part of the player that's been tested to function as expected.</p>
     </section>
     
-   <section class="bcls-section">
+   <!-- <section class="bcls-section">
     <h2 id="configuration">How do I configure my Packaged Plugins?</h2>
     
     <p>To use them in the studio, see this guide.</p>
     <p>To use them via the Player Management API, see this guide.</p>
-    </section>
+    </section> -->
     
     <section class="bcls-section">
     <h2 id="player_versions">What if I need to use plugin version X with player version Y?</h2>
-    <p>You do not. The concept of Packaged Plugins is to ensure that the feature you are using is 100% compatible with your player version. Trying to use a different version goes against this.</p>
+    <p>You shouldn't have to! The concept of Packaged Plugins is to ensure that the feature you are using is 100% compatible with your player version. Trying to use a different version goes against this.</p>
     </section>
     
     <section class="bcls-section">
@@ -3701,8 +3701,13 @@
     <section class="bcls-section">
     <h2 id="Sideload">What if I must “sideload” a core plugin during player load time?</h2>
         
-    <p>You should never need to do that. Brightcove's player management system is designed to compile all the features you need and deliver a working player with those features to your users.</p>
-    <p>For example, instead of sideloading the IMA3 plugin, if you need to deliver ads to your users, use a player with the IMA3 feature enabled. If you don’t need ads in other situations, use a different player without the IMA3 feature enabled, or configure ads at runtime in a very similar way than you would have with sideloading — except that you no longer will need to include the plugin separately.</p>
+    <p>You should never need to do that, and we recommend against it. Brightcove's player management system is designed to compile all the features you need and deliver a working player with those features to your users.</p>
+    <p>By way of example:</p>
+    <ul>
+        <li>Instead of sideloading the IMA3 plugin to support ads, if you need to deliver ads to your users, use a player with the IMA3 feature enabled.</li>
+        <li>If you don't need ads in other situations, use a different player without the IMA3 feature enabled.</li>
+        <li>To support both scenarios, use an IMA3-enabled player and programmatically configure ads only when needed.</li>
+    </ul>
 
     </section>
     
