@@ -21,9 +21,59 @@ grandparent: Player Management API
   <section class="bcls-section">
     <h2 id="What_are_packaged_plugins">What are Packaged Plugins?</h2>
     
-    <p>Player features, including Advertising, Thumbnail Seeking, Playlists, and others, have historically been provided as plugins, and their management handled a separate service called the <a href="https://apis.support.brightcove.com/player-management/guides/plugin-registry.html">Plugin Registry</a>.  The Plugin Registry was initially designed to make managing player plugins efficient without user interaction. Still, over the years, it has led to confusion and mismatches in versions, leading to problems that could have been avoided.</p>
+    <p>Player features, including Advertising, Thumbnail Seeking, Playlists, and others, have historically been provided as plugins, and their management handled by a separate service called the <a href="https://apis.support.brightcove.com/player-management/guides/plugin-registry.html">Plugin Registry</a>.  The Plugin Registry was initially designed to make managing player plugins efficient without user interaction. Still, over the years, it has led to confusion and mismatches in versions, leading to problems that could have been avoided.</p>
     <p>A common problem has been trying to use an old plugin version with a new player version (or vice versa), with the plugin relying on specific player functionality that may be different than expected or not present, leading to unexpected behavior or failures. We saw multiple examples of this with advertising as browsers moved to block autoplay with sound by default.</p>
     <p>By moving features into the player's core, we ensure that the code being used is the right version for the player because there is no longer a separate version. It's a part of the player that's been tested to function as expected.</p>
+    </section>
+
+    <section class="bcls-section">
+      <h2 id="eligible_plugins">Current Supported Packaged Plugins</h2>
+      <table class="bcls-table">
+        <thead class="bcls-table__head">
+          <tr>
+            <th>Brightcove Plugin</th>
+            <th>Registry ID (Players below v7.21.0)</th>
+            <th>Package Plugin Name (v7.21.0+)</th>
+          </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+          <tr>
+            <td><a href="https://player.support.brightcove.com/plugins/thumbnails-plugin.html">Thumbnail Seeking</a></td>
+            <td>@brightcove/videojs-thumbnails</td>
+            <td>thumbnails</td>
+          </tr>
+          <tr>
+            <td><a href="https://player.support.brightcove.com/plugins/advertising-ima3-plugin.html">IMA3</a></td>
+            <td>@brightcove/videojs-ima3</td>
+            <td>ima3</td>
+          </tr>
+          <tr>
+            <td><a href="https://player.support.brightcove.com/plugins/implementing-server-side-ads-brightcove-player.html">SSAI</a></td>
+            <td>@brightcove/videojs-ssai</td>
+            <td>ssai</td>
+          </tr>
+          <tr>
+            <td><a href="https://player.support.brightcove.com/plugins/custom-endscreen-plugin.html">Custom Endscreen</a></td>
+            <td>@brightcove/videojs-custom-endscreen</td>
+            <td>customEndscreen</td>
+          </tr>
+          <tr>
+            <td><a href="https://player.support.brightcove.com/plugins/social-sharing-plugin.html">Social Sharing</a></td>
+            <td>@brightcove/videojs-social</td>
+            <td>social</td>
+          </tr>
+          <tr>
+            <td><a href="https://player.support.brightcove.com/plugins/quality-selection-plugin.html">Quality Selection</a></td>
+            <td>@brightcove/videojs-quality-menu</td>
+            <td>qualityMenu</td>
+          </tr>
+          <tr>
+            <td><a href="https://player.support.brightcove.com/plugins/playlist-ui-plugin.html">Playlist UI</a></td>
+            <td>@brightcove/videojs-bc-playlist-ui</td>
+            <td>bcPlaylistUi</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
     
    <!-- <section class="bcls-section">
@@ -40,38 +90,31 @@ grandparent: Player Management API
     
     <section class="bcls-section">
     <h2 id="how_i_know_use_of_a_plugin">How do I know if I'm using a Packaged Plugin?</h2>
-    <p>The main difference is in the player configuration JSON, you'll see ”is_packaged”: true.</p>
-    <p>Here is the Plugin Registry JSON structure:</p>   
+    <p>Registry plugin - notice that this JSON has no injected_versions, scripts, or stylesheets. The Registry just made this work:</p>
     <pre class="line-numbers">
     <code class="language-bash" translate="No">
-          "plugins": [{
-            "injected_version": "2.0.10",
-            "name": "customEndscreen",
-            "registry_id": "@brightcove/videojs-custom-endscreen",
-            "version": "2.x"
-          }],
-          "scripts": [
-            "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.min.js"
-          ],
-          "stylesheets": [
-            "//players.brightcove.net/videojs-custom-endscreen/2.0.10/videojs-custom-endscreen.css"
-          ],
+      "plugins": [{
+        "registry_id": "@brightcove/videojs-custom-endscreen",
+        "version": "3.x",
+        "options": {
+          "content": ""
+        }
+  }],
         </code>
           </pre>
-    <p>Here is the new Packaged Plugins JSON structure:</p>
+    <p>Packaged Plugin version of the same feature:</p>
     <pre class="line-numbers">
         <code class="language-bash" translate="No">
-            "plugins": [{
-                "injected_version": "2.0.10",
-                "name": "customEndscreen",
-                <span class="bcls-highlight">"is_packaged": true</span>
-              }],
-              {
-                "name": "thumbnails",
-                "is_packaged": true
-              },
+          "plugins": [{
+            "name": "customEndscreen",
+            "is_packaged": true,
+            "options": {
+              "content": ""
+            }
+      }],
             </code>
               </pre>
+    <p>So, what is new is the replacement of <code translate="No">registry_id</code> with <code translate="No">name</code> and <code translate="No">version</code> with <code translate="No">is_packaged: true</code>.</p>
     <p>In the player information modal, you'll see the plugin version as “Packaged with Player.” If you see a version string, this would be an older, legacy version, which can be updated with the current packaged version instead.</p>
     <aside class="bcls-aside bcls-aside--information">If you have <strong>Registry Plugins</strong> and upgrade your player to v7.21.0 or above, any of the eligible plugins will be converted automatically to Packaged Plugins.</aside>
     <aside class="bcls-aside bcls-aside--information">If you have <strong>Packaged Plugins</strong> and downgrade your player below v7.21.0, any of the packaged plugins on your players will be converted back into registry plugins.</aside>
