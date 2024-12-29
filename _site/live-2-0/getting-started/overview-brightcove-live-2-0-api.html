@@ -3853,7 +3853,7 @@
   <ul>
     <li><p><code translate="no">video-cloud/livev2/jobs/read</code>: Provides read-only access to view job details.</p></li>
     <li><p><code translate="no">video-cloud/livev2/jobs/create</code>: Allows the creation of new live streaming jobs.</p></li>
-    <li><p><code translate="no">video-cloud/livev2/jobs/update</code>: Permits updates to existing live jobs.</p></li>
+    <li><p><code translate="no">video-cloud/livev2/jobs/update</code>: Permits updates to existing live jobs. This scope is required for performing actions like starting or stopping a job.</p></li>
     <li><p><code translate="no">video-cloud/livev2/jobs/delete</code>: Enables the deletion of live jobs.</p></li>
     <li><p><code translate="no">video-cloud/livev2/jobs/all</code>: Grants job admin access to all job-related operations.</p></li>
     <li><p><code translate="no">video-cloud/livev2/metrics/read</code>: Grants access to job's metrics.</p></li>
@@ -4508,6 +4508,12 @@
       <pre><code translate="No"><span class="bcls-highlight">DELETE</span> /v2/accounts/{account_id}/jobs/{id}</code></pre>
 
       <p>Use this endpoint to finalize a live streaming job, permanently. Unlike the "Stop" endpoint, which simply halts the stream, "Finish" ensures that the job is completed. See the <a href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
+      <aside class="bcls-aside bcls-aside--information">Notes
+        <ul>
+          <li>Deleting a job is a permanent action. Ensure that the job is no longer needed before executing this action.</li>
+          <li>If the job is currently running, it needs to be stopped using the <a href="#stop-job">Stop</a> endpoint before deleting it.</li>
+        </ul>
+        </aside>
 
       <p>Parameters</p>
       <div class="table-responsive">
@@ -4540,7 +4546,7 @@
           </table>
         </div>
 
-        <aside class="bcls-aside bcls-aside--information">p</aside>
+        
 
 
         <h3 id="list-all-jobs">List all jobs in an account</h3>
@@ -4629,10 +4635,10 @@
 
       <p>Sample payload:</p>
         <pre class="line-numbers"><code class="language-json" translate="No">{
-     "dvr": true, //filters playlist with dvr
-     "manifest_format": "hls", //filters playlist output type
-     "playlist_name": "playlist", //filters by custom playlsit name
-     "low_latency": true //filters playlist by low latency
+     "dvr": true, //enables playlist with dvr
+     "manifest_format": "hls", //specifies playlist output type
+     "playlist_name": "playlist", //sets a custom playlist name
+     "low_latency": true //requests a low latency playlist
  }</code></pre>
 
  <p>Parameters:</p>
@@ -4973,7 +4979,7 @@
                   <td>H.264</td>
                   <td>4.0</td>
                   <td>1920x1080</td>
-                  <td>passthrough [default], 23.976, 24, 25, 29.97, 30</td>
+                  <td>23.976, 24, 25, 29.97, 30</td>
                   <td>detect[default] /on/off</td>
                   <td>16:9</td>
                 </tr>
@@ -4983,7 +4989,7 @@
                   <td>H.264</td>
                   <td>4.2</td>
                   <td>1920x1080</td>
-                  <td>passthrough [default], 50, 59.94, 60</td>
+                  <td>50, 59.94, 60</td>
                   <td>detect[default] /on/off</td>
                   <td>16:9</td>
                 </tr>
@@ -4993,7 +4999,7 @@
                   <td>H.264</td>
                   <td>3.1</td>
                   <td>1280x720</td>
-                  <td>passthrough [default], 23.976, 24, 25, 29.97, 30</td>
+                  <td>23.976, 24, 25, 29.97, 30</td>
                   <td>detect[default] /on/off</td>
                   <td>16:9</td>
                 </tr>
@@ -5003,7 +5009,7 @@
                   <td>H.264</td>
                   <td>3.2</td>
                   <td>1280x720</td>
-                  <td>passthrough [default], 50, 59.94, 60</td>
+                  <td>50, 59.94, 60</td>
                   <td>detect[default] /on/off</td>
                   <td>16:9</td>
                 </tr>
@@ -5013,7 +5019,7 @@
                   <td>H.264</td>
                   <td>3.1</td>
                   <td>1024x576</td>
-                  <td>passthrough [default], 23.976, 24, 25, 29.97, 30</td>
+                  <td>23.976, 24, 25, 29.97, 30</td>
                   <td>detect[default] /on/off</td>
                   <td>16:9</td>
                 </tr>
@@ -5023,7 +5029,7 @@
                   <td>H.264</td>
                   <td>3.1</td>
                   <td>768x576</td>
-                  <td>passthrough [default], 23.976, 24, 25, 29.97, 30</td>
+                  <td>23.976, 24, 25, 29.97, 30</td>
                   <td>detect[default] /on/off</td>
                   <td>4:3</td>
                 </tr>
@@ -5033,7 +5039,7 @@
                   <td>HEVC</td>
                   <td>4.1</td>
                   <td>1920x1080</td>
-                  <td>passthrough [default], 50, 59.94, 60</td>
+                  <td>50, 59.94, 60</td>
                   <td>off</td>
                   <td>16:9</td>
                 </tr>
@@ -5043,14 +5049,14 @@
                   <td>HEVC</td>
                   <td>5.1</td>
                   <td>3840x2160</td>
-                  <td>passthrough [default], 50, 59.94, 60</td>
+                  <td>50, 59.94, 60</td>
                   <td>off</td>
                   <td>16:9</td>
                 </tr>
               </tbody>
           </table>
         </div>
-        
+        <aside class="bcls-aside bcls-aside--information">Note: Frame Rate is a mandatory parameter and must be explicitly set for all renditions.</aside>
 
     </section>
 
@@ -5088,8 +5094,8 @@
                 <tr>
                   <td><b>framerate</b></td>
                   <td>Float</td>
-                  <td>0 (passthrough)</td>
-                  <td>0 (passthrough), 23.976, 24, 25, 29.97, 30, 59.94, 60</td>
+                  <td></td>
+                  <td>23.976, 24, 25, 29.97, 30, 59.94, 60</td>
                   <td>No</td>
                   <td>Sets the output framerate for encoding. Ensure framerate consistency across outputs.</td>
                 </tr>
@@ -5097,7 +5103,7 @@
                   <td><b>sample_aspect_ratio</b></td>
                   <td>String</td>
                   <td>"1:1"</td>
-                  <td>"passthrough", "1:1", "4:3"</td>
+                  <td>"1:1", "4:3"</td>
                   <td>No</td>
                   <td>Defines the sample aspect ratio for compatibility with players.</td>
                 </tr>
@@ -5253,7 +5259,7 @@
                   <td><b>sample_rate</b></td>
                   <td>String</td>
                   <td>"48000"</td>
-                  <td>"passthrough", "32000", "44100", "48000", "96000"</td>
+                  <td>"32000", "44100", "48000", "96000"</td>
                   <td>No</td>
                   <td>Defines the sample rate of the audio signal to be delivered. It’s important to control this setting carefully, as input mezzanines may have higher sample rates, which can cause issues if lower target bitrates are used.</td>
                 </tr>
@@ -5261,7 +5267,7 @@
                   <td><b>channels</b></td>
                   <td>Number</td>
                   <td>"2"</td>
-                  <td>"passthrough", "1", "2", "6"</td>
+                  <td>"1", "2", "6"</td>
                   <td>No</td>
                   <td>Defines the number of audio channels on the output. For example, setting "6" indicates a 5.1 surround sound configuration. This parameter should be controlled precisely to ensure compatibility with audio output requirements.</td>
                 </tr>
@@ -5302,6 +5308,8 @@
         <li><strong>TS Segment Container Jobs</strong>: The TS segment container is configured to include muxed audio with all video renditions. As a result, any audio-only chunklist generated in the playlist manifest may not load correctly, potentially affecting audio-only playback.</li>
         <li><strong>4K Output Rendition</strong>: Support for 4K output renditions has not been implemented.</li>
       </ul>
+      <li><strong>Dolby Digital Support</strong>: Dolby Digital (AC3/EAC3) is not currently supported.</li>
+      <li><strong>HEVC/H.265 Support</strong>: The HEVC/H.265 codec is not currently supported.</li>
     </section>
 </article>
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
