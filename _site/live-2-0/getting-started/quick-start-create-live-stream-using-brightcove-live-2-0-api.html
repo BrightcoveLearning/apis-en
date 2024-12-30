@@ -3698,8 +3698,9 @@
 
 <section class="bcls-section">
 <h2 id="configure-new-job">Configure a new job</h2>
+<p><a href="#What_you_need">Prerequisites</a></p>
 
-<p>First we will configure a new job using Postman</p>
+<p>First we will configure a new job using Postman. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html">API Reference</a> for more details.</p>
 
 <ol class="bcls-tasklist-restart">
 	<li>For this step, you will submit a <code translate="No">POST </code> request to:
@@ -3941,6 +3942,7 @@
 	</details>
 	</li>
 </ol>
+<aside class="bcls-aside bcls-aside--information">Note: In the Live 2.0 API, the <code translate="no">id</code> for a Live Job corresponds directly to the CMS asset ID created in the Media Module, representing the Live Job.</aside>
 </section>
 
 <section class="bcls-section">
@@ -3950,8 +3952,8 @@
 	<ol class="bcls-tasklist-restart">
 		<li>For this step, you will submit a <code translate="No">PUT</code> request to:
 	
-		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;Account_ID&#125;&#125;/jobs/&#123;&#123;Job_ID&#125;&#125;/start</code></pre>
-		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;Job_ID&#125;&#125; with the Job ID retrieved in the previous step.</p>
+		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;account_id&#125;&#125;/jobs/&#123;&#123;job_id&#125;&#125;/start</code></pre>
+		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;job_id&#125;&#125; with the Job ID retrieved in the previous step.</p>
  		</li>
 		<li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
 		<li>When the request is successful, you will receive a response with a status code of <code translate="no">200 OK</code>. The response body will confirm the job has started and provide the job's unique identifier, like this:
@@ -3965,13 +3967,13 @@
 </section>
 
 <section class="bcls-section">
-	<h2 id="rtmp-address">Obtain the RTMP Address</h2>
-	<p>Now that the job has been started, we can retrieve the RTMP address for the stream, which is required to configure your encoder.</p>
+	<h2 id="rtmp-address">Obtaining the Ingest Endpoints</h2>
+	<p>Now that the job has started, we can use the endpoint below to query job details and retrieve the ingest endpoint, which is required to configure your encoder. While the example below assumes an RTMP job, the process for obtaining the ingest endpoint remains the same for other supported protocols, such as RTP or SRT.</p>
 	<ol class="bcls-tasklist-restart">
 		<li>For this step, you will submit a <code translate="No">GET</code> request to:
 	
-		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;Account_ID&#125;&#125;/jobs/&#123;&#123;Job_ID&#125;&#125;</code></pre>
-		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;Job_ID&#125;&#125; with the Job ID.</p>
+		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;account_id&#125;&#125;/jobs/&#123;&#123;job_id&#125;&#125;</code></pre>
+		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;job_id&#125;&#125; with the Job ID.</p>
  		</li>
 		 <li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
 		 <li><p>A successful response will return a status code of <code translate="no">200 OK</code>, along with a JSON payload containing the job details. Look for the <code translate="no">ingest_endpoints</code> field, which provides the <strong>RTMP URL</strong> to configure your encoder.</p>
@@ -4000,6 +4002,12 @@
 	</details>
 		</li>
 	</ol>
+	<aside class="bcls-aside bcls-aside--tip">Notes
+		<ul>
+			<li>The ingest endpoint can be obtained only when the job had successfully started.</li>
+			<li>We recommend connecting your encoder to the job only after it has successfully started to avoid any configuration issues or stream disruptions.</li>
+		</ul>
+	</aside>
 </section>
 
 <section class="bcls-section">
@@ -4008,8 +4016,8 @@
 	<ol class="bcls-tasklist-restart">
 		<li>For this step, you will submit a <code translate="No">POST</code> request to:
 	
-		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;Account_ID&#125;&#125;/playback/&#123;&#123;Job_ID&#125;&#125;/token</code></pre>
-		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;Job_ID&#125;&#125; with the Job ID.</p>
+		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/accounts/&#123;&#123;account_id&#125;&#125;/playback/&#123;&#123;job_id&#125;&#125;/token</code></pre>
+		<p>Replace &#123;&#123;account_id&#125;&#125; with your Brightcove account ID and the &#123;&#123;job_id&#125;&#125; with the Job ID.</p>
  		</li>
 		 <li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
 		 <li>In the request body, you can specify parameters to customize the token generation.
@@ -4035,8 +4043,8 @@
 	<ol class="bcls-tasklist-restart">
 		<li>For this step, you will submit a <code translate="No">GET</code> request to:
 	
-		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/playback/&#123;&#123;Job_ID&#125;&#125;?pt=&#123;&#123;Job_Token&#125;&#125;</code></pre>
-		<p>Replace &#123;&#123;Job_ID&#125;&#125; with the Job ID and the &#123;&#123;Job_Token&#125;&#125; with the playback token generated in the previous step.</p>
+		<pre class="line-numbers"><code class="language-http" translate="No">https://api.live.brightcove.com/v2/playback/&#123;&#123;job_id&#125;&#125;?pt=&#123;&#123;Job_Token&#125;&#125;</code></pre>
+		<p>Replace &#123;&#123;job_id&#125;&#125; with the Job ID and the &#123;&#123;Job_Token&#125;&#125; with the playback token generated in the previous step.</p>
  		</li>
 		 <li>Ensure you have a valid <strong>OAuth 2.0 Bearer Token</strong>. If the token has expired, refresh it.</li>
 		 <li>A successful response will return an HTTP status code of <code translate="no">200 OK</code> and a JSON payload containing the playback URL.
