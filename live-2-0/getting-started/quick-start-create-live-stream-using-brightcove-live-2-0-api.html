@@ -394,11 +394,17 @@ layout: staging
 		 <li>In the request body, you can specify parameters to customize the token generation.
 			<p>Sample request body:</p>
 			<pre class="line-numbers"><code class="language-json" translate="No">{
- 	"dvr_enabled": false, //filters playlist with dvr
- 	"manifest_format": "hls", //filters playlist output type
- 	"playlist_name": "playlist", //filters by custom playlsit name
- 	"low_latency": true //filters playlist by low latency
+ 	"dvr": false, //enables playlist with dvr
+ 	"manifest_format": "hls", //specifies playlist output type
+ 	"playlist_name": "playlist", //sets a custom playlist name
+ 	"low_latency": true //requests a low latency playlist
  }</code></pre>
+ <aside class="bcls-aside bcls-aside--information">Note: When creating a request payload, you only need to include the attributes required for your specific use case. For example, if your goal is to generate a default HLS playlist, your payload can be as simple as:
+	<pre class="line-numbers"><code class="language-json" translate="No">{
+ 	"manifest_format": "hls"
+ }</code></pre>
+
+ </aside>
 		 </li>
 		 <li>A successful response will return a status code of <code translate="no">200 OK</code>, along with the generated playback token.
 			<p>Example response:</p>
@@ -426,7 +432,7 @@ layout: staging
 		</li>
 </section>
 
-<section class="bcls-section">
+<!-- <section class="bcls-section">
 <h2 id="Set_up_Video_Cloud_video">Set up Video Cloud video</h2>
 
 <p>Now that we have the live stream information, we will set up a remote video in Video Cloud so that we can play it in a Brightcove Player.</p>
@@ -451,7 +457,7 @@ layout: staging
 	</li>
 </ol>
 </div>
-</section>
+</section> -->
 
 <section class="bcls-section">
 <h2 id="Add_video_to_player">Add video to a player</h2>
@@ -478,7 +484,7 @@ layout: staging
 	</figure>
 	</li>
 	<li>Save your html page to a remote or local web server so that you can browse it.</li>
-	<li>Open the page in your web browser. Since we haven't started steaming, you will see a media error:
+	<li>Open the page in your web browser. If streaming is in progress we should get playback else we might see a media error:
 	<figure class="bcls-figure"><img class="bcls-image" alt="Media Error" src="/assets/images/live-v2/error-src.png" />
 	<figcaption class="bcls-caption--image">Media Error</figcaption>
 	</figure>
@@ -603,7 +609,7 @@ layout: staging
 	<li>Click the <strong>Stream</strong> button ( <img alt="" src="/assets/images/get-started/stream-icon.png" />). You will be prompted to configure the output settings.</li>
 	<li>Set the <strong>Destination</strong> to <strong>RTMP Server</strong>. Click <strong>OK</strong>.</li>
 	<li>For the <strong>Address</strong>, use the <strong>stream_url</strong> returned from the Live API (step 3).</li>
-	<li>For the <strong>Stream</strong>, use alive.
+	<li>For the <strong>Stream</strong>, use blive.
 	<figure class="bcls-figure"><img class="bcls-image" alt="Output settings" src="/assets/images/get-started/output-settings.png" />
 	<figcaption class="bcls-caption--image">Wirecast output settings</figcaption>
 	</figure>
