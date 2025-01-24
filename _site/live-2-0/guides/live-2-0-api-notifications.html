@@ -3646,13 +3646,13 @@
 <section class="bcls-section">
 <h2 id="Requesting_notifications">Requesting notifications</h2>
 
-<p>You can request notifications by including one or more <code translate="No">notifications</code> fields in the outputs your <a href="/live-api/references/reference.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> request.</p>
+<p>You can request notifications by including one or more <code translate="No">notifications</code> fields in the outputs your <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">Create Job</a> request.</p>
 
-<p>The value of <code translate="No">notifications</code> is an array of notification destination objects. You can use a simple string with a url: <code translate="No">"https://httpbin.org/post"</code>, or you can use an object with following options: <code translate="No">{"url": "https://httpbin.org/post", "credentials": "reference_to_your_credentials"}</code>. A notification will be sent to the destination you specify when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
+<p>The value of <code translate="No">notifications</code> is an array of notification destination objects. You can use an object with following options: <code translate="No">{"url": "http://callmeonstatechange.com/jobid", "credential_id": "reference_to_your_credentials", "subscription_type": "state_change", "method": "POST"}</code>. A notification will be sent to the destination you specify when the output changes its state.</p>
 
-<aside class="bcls-aside bcls-aside--warning">Please note. Only one notification url per event type ( <code translate="No">first_segment_uploaded</code>, <code translate="No">state_change</code>, etc) is allowed.</aside>
+<!-- <aside class="bcls-aside bcls-aside--warning">Please note. Only one notification url per event type is allowed.</aside> -->
 
-<aside class="bcls-aside bcls-aside--information">The Live API does not return the updated CMS information, even if the video object is updated. For example, if you update the Live Event title, the change will not be reflected in the <code translate="no">videocloud</code> section in the API response, and the Live API will return the original Live Event title.</aside>
+<!-- <aside class="bcls-aside bcls-aside--information">The Live API does not return the updated CMS information, even if the video object is updated. For example, if you update the Live Event title, the change will not be reflected in the <code translate="no">videocloud</code> section in the API response, and the Live API will return the original Live Event title.</aside> -->
 
 <p>Here are some examples:</p>
 
