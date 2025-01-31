@@ -3696,11 +3696,8 @@ PRIVATE_PEM="./$NAME/private.pem"
 PUBLIC_PEM="./$NAME/public.pem"
 PUBLIC_TXT="./$NAME/public_key.txt"
 
-ssh-keygen -t rsa -b 2048 -m PEM -f "$PRIVATE_PEM" -q -N ""
-openssl rsa -in "$PRIVATE_PEM" -pubout -outform PEM -out "$PUBLIC_PEM" 2&gt;/dev/null
-openssl rsa -in "$PRIVATE_PEM" -pubout -outform DER | base64 &gt; "$PUBLIC_TXT"
-
-rm "$PRIVATE_PEM".pub
+openssl genpkey -outform pem -algorithm rsa -out "$PRIVATE_PEM" -outpubkey "$PUBLIC_PEM"
+openssl rsa -in "$PRIVATE_PEM" -pubout --outform DER | base64 > "$PUBLIC_TXT"
 
 echo "Public key to saved in $PUBLIC_TXT"
 </code></pre>
