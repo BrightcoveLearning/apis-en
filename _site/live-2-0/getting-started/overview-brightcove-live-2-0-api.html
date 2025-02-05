@@ -3925,11 +3925,11 @@
           <li><code translate="No">srt</code></li>
         </ul>
 
-        <p>The RTMP protocol is for delivery a stream in FLV format. The other protocols are for delivering MPEG2-TS.</p>
+        <!-- <p>The RTMP protocol is for delivery a stream in FLV format. The other protocols are for delivering MPEG2-TS.</p>
 
         <p>If you use <code translate="No">rtp</code> or <code translate="No">srt</code>, you must also specify a <code translate="No">whitelist_cidr_blocks</code> (see <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">Classless Inter-Domain Routing</a>).</p>
 
-        <p>If you use <code translate="No">rtmp</code>, you can specify an <code translate="No">ip_whitelist</code> for the input instead, but this is not required.</p>
+        <p>If you use <code translate="No">rtmp</code>, you can specify an <code translate="No">ip_whitelist</code> for the input instead, but this is not required.</p> -->
       </section>
       <details>
         <summary>
@@ -4905,18 +4905,53 @@
                   <td>string</td>
                   <td>Query</td>
                   <td>No</td>
-                  <td>Period filter in seconds (e.g., 30s, 60s).</td>
+                  <td>Period filter in seconds. Supported values: <strong>30s, 60s, 300s, 900s, 3600s</strong>.</td>
                 </tr>
                 <tr>
                   <td><code translate="no">range</code></td>
                   <td>string</td>
                   <td>Query</td>
                   <td>No</td>
-                  <td>Range filter in hours (e.g., 1h, 3h).</td>
+                  <td>Range filter in hours. The max range depends on the <code translate="no">period</code> value. See the table below.</td>
                 </tr>
               </tbody>
           </table>
         </div>
+        <h4>Supported Period and Range Mappings</h4>
+<div class="table-responsive">
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Period (seconds)</th>
+        <th>Max Range (hours)</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td>30s</td>
+        <td>1h</td>
+      </tr>
+      <tr>
+        <td>60s</td>
+        <td>3h</td>
+      </tr>
+      <tr>
+        <td>300s</td>
+        <td>24h</td>
+      </tr>
+      <tr>
+        <td>900s</td>
+        <td>24h</td>
+      </tr>
+      <tr>
+        <td>3600s</td>
+        <td>240h</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<aside class="bcls-aside bcls-aside--tip">Note: The <code translate="no">range</code> value must be compatible with the selected <code translate="no">period</code>.</aside>
+
 
 
       <h3 id="job-all-metrics">Get all supported metrics</h3>
