@@ -5829,7 +5829,7 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code></pre>
           </tr>
           <tr>
             <td><code>base_url</code></td>
-            <td>Setting the <code>base_url</code> is a configuration change that should ONLY be changed if IP restrictions are used with Brightcove Players outside of North America. See the <a href="#base_url_details">base_url details</a> content below this table for further information.</td>
+            <td>Setting the <code>base_url</code> is a configuration change that supports IPv6 for enhanced compatibility. However, if IP restrictions are required, do not make this change, as we only support IPv4 addresses for IP restrictions. See the <a href="#base_url_details">base_url details</a> content below this table for further information.</td>
           </tr>
           <tr>
             <td><code>interval_retry</code></td>
@@ -5859,7 +5859,14 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code></pre>
       </table>
 
       <h4 id="base_url_details"><code>base_url</code> details</h4>
-      <p>Problems can occur when using IP restrictions with Brightcove Players used outside North America. When a Brightcove Player is asked to load a video from a Video Cloud account, it connects to the catalog at this address<strong>https://edge.api.brightcove.com/playback/v1/</strong>.</p>
+
+      <p>To enhance global accessibility and ensure compatibility with IPv6, Brightcove now supports the following base URL for video playback:</p>
+      <p><a href="https://playback.brightcovecdn.com">`https://playback.brightcovecdn.com`</a></p>
+      <aside class="bcls-aside bcls-aside--tip">Important consideration: While the new base URL supports IPv6, <strong>IP restriction policies only support IPv4</strong>. If you rely on IP-based restrictions, <strong>do not update the base URL</strong>, as doing so will disable this feature.</aside>
+
+      <p>Configuration Update Example</p>
+      <p>The following command is used to update an existing player to use the new base URL. Replace the environment variables <code>$EMAIL</code>, <code>$ACCOUNT_ID</code>, and <code>$PLAYER_ID</code> with your specific details:</p>
+      <!-- <p>Problems can occur when using IP restrictions with Brightcove Players used outside North America. When a Brightcove Player is asked to load a video from a Video Cloud account, it connects to the catalog at this address<strong>https://edge.api.brightcove.com/playback/v1/</strong>.</p>
 
       <p>That Edge endpoint behaves in a way that can cause problems for IP restriction:</p>
 
@@ -5872,18 +5879,28 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code></pre>
 
       <aside class="bcls-aside bcls-aside--information">There is a downside to this approach. A very slight delay to the retrieval of cached content from outside of the US will be introduced because catalog requests will be going to Virginia rather than through Cloudfront's global network with local servers. It's likely that this will be barely noticeable.</aside>
 
-      <p>The actual configuration change involves setting a value for the Video Cloud <code translate="No">base_url</code>. Remember, this should ONLY be changed if IP restrictions are used with Brightcove Players outside of North America. For an existing player, you would use the following curl command that uses the <code translate="No">PATCH</code> HTTP method (you must substitute your data for the environment variables <code translate="No">$EMAIL</code>, <code translate="No">$ACCOUNT_ID</code> and <code translate="No">$PLAYER_ID</code>):</p>
+      <p>The actual configuration change involves setting a value for the Video Cloud <code translate="No">base_url</code>. Remember, this should ONLY be changed if IP restrictions are used with Brightcove Players outside of North America. For an existing player, you would use the following curl command that uses the <code translate="No">PATCH</code> HTTP method (you must substitute your data for the environment variables <code translate="No">$EMAIL</code>, <code translate="No">$ACCOUNT_ID</code> and <code translate="No">$PLAYER_ID</code>):</p> -->
 
       <pre class="line-numbers"><code class="language-bash" translate="No">curl
   --header "Content-Type: application/json"
-  --user $EMAIL
-  --request PATCH
+  --user $EMAIL \
+  --request PATCH \
   --data '{
       "video_cloud": {
-        "base_url": "https://edge-elb.api.brightcove.com/playback/v1/"
+        "base_url": "https://playback.brightcovecdn.com"
       }
-    }'
-  https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+    }' \
+    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+
+    <aside class="bcls-aside bcls-aside--information">Notes:
+      <ul>
+        <li>The new base URL improves playback performance and ensures alignment with updated infrastructure.
+        </li>
+        <li>If <strong>IP restrictions</strong> are required for your Brightcove players, continue using the IPv4-only base URL. Brightcove does not support IPv6 addresses with IP restrictions.</li>
+        <li>Always test playback after making configuration updates to confirm uninterrupted service.</li>
+      </ul>
+    </aside>
+
 
       <h4 id="Playlist_details">Playlist details</h4>
       <p>There are now two different playlist implementations, detailed in the <a href="https://player.support.brightcove.com/styling/styling-playlists.html">Using Playlists</a> document. The default is version 3. Information for configuring both versions is detailed here.</p>

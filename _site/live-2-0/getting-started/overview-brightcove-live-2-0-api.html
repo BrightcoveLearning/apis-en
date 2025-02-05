@@ -4162,8 +4162,141 @@
     </table>
   </div>
   
-      
+  <h3 id="update-job">Live to VOD</h3>
+      <p>Live to VOD allows you to automatically convert a live stream into a Video-on-Demand (VOD). Enabling this feature will automatically make the recorded media asset available in Video Cloud for playback after the live event has ended.</p>
+      <p>To enable Live to VOD when creating a new live event job, include the <code translate="no">"live_to_vod": true</code> flag in the JSON payload.</p>
 
+      <details>
+        <summary>
+          <h3 id="curlLivetoVOD">Sample payload</h3>
+        </summary>
+
+      <pre class="line-numbers"><code class="language-json" translate="No">{
+    "input": {
+      "audio_pids": [
+        {
+          "language_code": "eng",
+          "name": "English Audio",
+          "pid": 101
+        }
+      ],
+      "fixed_ingest_ip": true,
+      "input_loss_behaviour": {
+        "fill_type": "slate"
+      },
+      "protocol": "rtmp",
+      "srt_options": {
+        "ingest_port": 1935,
+        "min_latency": 2000
+      },
+      "whitelist_cidr_blocks": [
+        "192.168.1.0/24"
+      ]
+    },
+    <span class="bcls-highlight">"live_to_vod": true,</span>
+    "maintenance_preferences": {
+      "day": "MONDAY",
+      "start_time": "02:00"
+    },
+    "manifest": {
+      "dash": {},
+      "dvr": {
+        "playlist_window_seconds": 300
+      },
+      "hls": {
+        "playlist_type": "event",
+        "startover_window_seconds": 300
+      },
+      "include_iframe_only_stream": true,
+      "low_latency": {},
+      "name": "My Live Stream",
+      "playlist_groups": [
+        {
+          "audio_bitrate": {
+            "max": 192000,
+            "min": 64000
+          },
+          "audio_codec": [
+            "aac"
+          ],
+          "language_code": [
+            "eng"
+          ],
+          "name": "HD Playlist",
+          "video_bitrate": {
+            "max": 5000000,
+            "min": 1000000
+          },
+          "video_codec": [
+            "h264"
+          ],
+          "video_height": {
+            "max": 1080,
+            "min": 360
+          }
+        }
+      ],
+      "playlist_window_seconds": 120,
+      "segment_container_format": "cmaf",
+      "segment_duration_seconds": 6
+    },
+    "notifications": [
+      {
+        "subscription_type": "state_changed",
+        "url": "https://mywebhook.site/notifications"
+      }
+    ],
+    "outputs": {
+      "audio": [
+        {
+          "bitrate": 128000,
+          "codec": "aac",
+          "input_selector_name": "default",
+          "label": "English Audio",
+          "language_code": "eng",
+          "sample_rate": 48000
+        }
+      ],
+      "video": [
+        {
+          "bitrate": 4000000,
+          "codec": "h264",
+          "codec_options": {
+            "level": "4.2",
+            "profile": "high"
+          },
+          "decoder_buffer_size": 6000000,
+          "framerate": "30",
+          "height": 1080,
+          "keyframe_rate": 2,
+          "label": "1080p",
+          "max_bitrate": 5000000,
+          "sample_aspect_ratio": "1:1",
+          "width": 1920
+        },
+        {
+          "bitrate": 2000000,
+          "codec": "h264",
+          "codec_options": {
+            "level": "4",
+            "profile": "main"
+          },
+          "decoder_buffer_size": 3000000,
+          "framerate": "30",
+          "height": 720,
+          "keyframe_rate": 2,
+          "label": "720p",
+          "max_bitrate": 2500000,
+          "sample_aspect_ratio": "1:1",
+          "width": 1280
+        }
+      ]
+    },
+    "region": "us-east-1",
+    "type": "event",
+  }
+             </code></pre>
+            </details>
 
       <h3 id="update-job">Update a given job</h3>
 
@@ -4613,6 +4746,8 @@
               </tbody>
           </table>
         </div>
+
+
 
 
       <!-- <h3 id="health">Healthcheck</h3>
