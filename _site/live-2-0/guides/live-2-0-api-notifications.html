@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"> 
     <head>
-        <title>Live API: Notifications</title>
+        <title>Live API 2.0: Notifications</title>
         
         <!-- Meta -->
         <meta charset="utf-8">
         <meta name="robots" content="noindex,nofollow"> 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="This topic show how to set up notifications for Live API jobs.">
+        <meta name="description" content="This topic show how to set up notifications for Live API 2.0 jobs.">
         
         <!-- Google Font -->
         <link href="/assets/s-site-assets-stylesheets/fonts/poppins.css" rel="stylesheet">
@@ -3613,7 +3613,7 @@
             
             
             
-            <li class="breadcrumb-item active" aria-current="page">Live API: Notifications</li>
+            <li class="breadcrumb-item active" aria-current="page">Live API 2.0: Notifications</li>
             
             
           </ol>
@@ -3634,9 +3634,9 @@
       <br>
       
       <h3 style="color:#990000;border:#990000 solid 1px; padding:10px;width: fit-content;">Limited Availability - Do not share this document</h3>
-<h1>Live API: Notifications</h1>
+<h1>Live API 2.0: Notifications</h1>
 <article class="bcls-article">
- <summary>This topic show how to set up notifications for Live API jobs.</summary>
+ <summary>This topic show how to set up notifications for Live API 2.0 jobs.</summary>
 <section class="bcls-section">
 <h2 id="Introduction">Introduction</h2>
 
@@ -3664,12 +3664,10 @@
     "region": "us-west-2",
     "reconnect_time": 20,
     <span class="bcls-highlight">"notifications": [
-      {"url": "https://httpbin.org/post/URLA",
-        "credentials": "reference_to_your_credentials",
-        "event": "first_segment_uploaded"},
       {"url": "https://httpbin.org/post/URLB",
       "credentials": "reference_to_your_credentials",
-      "event": "state_changed"}
+      "event": "state_changed",
+      "method": "POST"}
       ]</span>,
     "outputs": [
     {
@@ -3678,23 +3676,10 @@
         "height": 360,
         "video_bitrate": 650,
         "segment_seconds": 6
-    },
-    {
-        "url":"s3://YOURBUCKET/path/filename.mp4",
-        "credentials": "accConfiguredCredsAWSIdSecret",
-        <span class="bcls-highlight">"notifications":    [
-        {
-            "url": "https://httpbin.org/post?vodStateChange"
-        },
-        {
-            "url": "https://httpbin.org/post?vodFinished",
-            "event": "output_finished"
-        }
-        ]</span>
     }]
 }</code></pre>
 
-<h3>Notifications for Live to VOD (<code translate="No">output_finished</code> event only)</h3>
+<!-- <h3>Notifications for Live to VOD (<code translate="No">output_finished</code> event only)</h3>
 
 <pre class="line-numbers">
 <code class="language-json" translate="No">{
@@ -3723,7 +3708,7 @@
     "url": "https://httpbin.org/post"
   }]
 }</code></pre>
-<aside class="bcls-aside bcls-aside--information">Note: The notifications for Live to VOD are supported if the <code translate="no">“videocloud”</code> object exists within the <code translate="no">“outputs”</code> property without <code translate="no">“live_to_vod”</code> parameter.</aside>
+<aside class="bcls-aside bcls-aside--information">Note: The notifications for Live to VOD are supported if the <code translate="no">“videocloud”</code> object exists within the <code translate="no">“outputs”</code> property without <code translate="no">“live_to_vod”</code> parameter.</aside> -->
 
 <h3>Retry strategy</h3>
 
@@ -3738,12 +3723,12 @@
 <section class="bcls-section">
 <h2 id="Events">Events</h2>
 
-<p>Below are the events of a job lifecycle you can listen for. Note that the event scope is per job, so the event lifecycle for a live job would be separate from the lifecycle for a VOD clipping job based on the same live stream.</p>
+<p>Below are the events of a job lifecycle you can listen for.</p>
 
 <ul>
 	<li><code translate="No">state_changed</code> - the state of the live job changed; see the table below for details</li>
-	<li><code translate="No">first_segment_uploaded</code> - the first segment of the live stream is uploaded to origin</li>
-	<li><code translate="No">output_finished</code> - the live event has ended, and VOD processing has created at least one audio and one video rendition, or one progressive MP4 rendition</li>
+	<!-- <li><code translate="No">first_segment_uploaded</code> - the first segment of the live stream is uploaded to origin</li>
+	<li><code translate="No">output_finished</code> - the live event has ended, and VOD processing has created at least one audio and one video rendition, or one progressive MP4 rendition</li> -->
 </ul>
 
 <p>The <code translate="No">state_changed</code> will notify on the following states described in the table below</p>
@@ -3796,7 +3781,7 @@
 			<td><code translate="No">failed</code></td>
 			<td>The job has stopped as a result of a system error.</td>
 		</tr>
-		<tr>
+		<!-- <tr>
 			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">VOD JOB States (reported in notifications as <code translate="No">jvod_state</code>)</td>
 		</tr>
 		<tr>
@@ -3935,12 +3920,12 @@
 		<tr>
 			<td><code translate="No">finished</code></td>
 			<td>The entry point has completed successfully.</td>
-		</tr>
+		</tr> -->
 	</tbody>
 </table>
 </section>
 
-<section class="bcls-section">
+<!-- <section class="bcls-section">
 <h2 id="sample_notification">Sample notifications</h2>
 
 <h3>Live stream notification</h3>
@@ -4163,13 +4148,14 @@
               "jvod_state": "processing"
           }</code></pre>
 </section>
+-->
 
 <section class="bcls-section">
 <h2 id="handling_notifications">Handling notifications</h2>
 
-<p>To receive notifications, you simply need an app that can receive HTTP/HTTPS <code translate="No">POST</code> requests. The app can then parse the JSON notifications and do whatever you want based on their contents.</p>
+<p>To receive notifications, you simply need an app that can receive HTTP/HTTPS <code translate="No">POST</code> requests. The app can then parse the JSON notifications and do whatever you want based on their contents.</p> 
 
-<p>As a simple example, here is a PHP app we use in Brightcove Learning Services to receive notifications and write them to a text file.</p>
+<!-- <p>As a simple example, here is a PHP app we use in Brightcove Learning Services to receive notifications and write them to a text file.</p>
 
 <pre class="line-numbers">
           <code class="language-php">&lt;?php
@@ -4205,9 +4191,10 @@
 <ul>
 	<li>In certain cases, identical notifications will be sent more than once. If your handler is taking actions (apart from simple logging) based on notifications, you should configure it to check for duplicates (multiple notifications with the same <code translate="No">id</code> and <code translate="No">status</code>) and ignore them.</li>
 </ul>
-</section>
+-->
+</section> 
 
-<section class="bcls-section">
+<!-- <section class="bcls-section">
 <h2 id="notifications_in_live_module">Set up notifications in the Live module</h2>
 
 <p>To set up notifications for a live event created in the Live Module, you will need to do the following:</p>
@@ -4222,7 +4209,7 @@
 	</figure>
 	</li>
 </ol>
-</section>
+</section> -->
 </article>
 
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
