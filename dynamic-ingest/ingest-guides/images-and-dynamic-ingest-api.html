@@ -258,7 +258,28 @@ layout: doc_pages_staging
 
         </aside>
 
-
+        <h3>Adding images without triggering transcoding</h3>
+        <p>When adding or replacing images for an existing video, it’s important to avoid unnecessary transcoding unless you intend to process a new video version.</p>
+        <p>To update images without triggering a new transcode, make sure to omit the <code translate="no">master</code> field from your ingest request.</p>
+        <pre class="line-numbers"><code class="language-json" translate="No">
+          {
+            "images": [
+              {
+                "variant": "poster",
+                "url": "{POSTER_SOURCE_URL}",
+                "height": 360,
+                "width": 640
+              },
+              {
+                "variant": "thumbnail",
+                "url": "{THUMBANIL_SOURCE_URL}",
+                "height": 360,
+                "width": 640
+              }
+            ]
+          }
+        </code>
+        </pre>
 
   </section>
     <h3>Image fields in the request body</h3>
