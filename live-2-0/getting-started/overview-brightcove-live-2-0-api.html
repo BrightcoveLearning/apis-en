@@ -178,7 +178,7 @@ layout: staging
       <ul>
         <li>Use a player that has <a href="https://player.support.brightcove.com/general/playing-live-streams.html">DVR</span> capability</a></li>
         <li>Set the DVR window (e.g., <code translate="no">dvr</code>.<code translate="no">playlist_window_seconds</code>) in the manifest configuration</li>
-        <li>Enable DVR in the playback token by setting <code translate="no">"dvr_enabled": true</code>.</li>
+        <li>Enable DVR in the playback token by setting <code translate="no">"dvr": true</code>.</li>
       </ul>
 
       <p>DVR capability is limited to 86,400 seconds.</p>
@@ -210,7 +210,7 @@ layout: staging
       <pre><code class="language-http" translate="No">https://api.live.brightcove.com</code></pre>
 
       <h3 id="authentication">Authentication</h3>
-      <p>Authentication for requests requires an <span translate="No">Authorization header</span> :</p>
+      <p>Authentication for requests requires an <span translate="No">Authorization header</span>:</p>
   
   <pre class="line-numbers">
         <code class="language-http" translate="No">Authorization: Bearer {access_token}</code></pre>
@@ -256,7 +256,7 @@ layout: staging
 
       <ul>
         <li><a href="#create-playback-token">Create a playback token for a job</a></li>
-        <li><a href="#generate-url">Generate a playback url for a job</a></li>
+        <li><a href="#generate-url">Generate a playback URL for a job</a></li>
         <li><a href="#generate-sources">Generate sources for a job</a></li>
       </ul>
 
@@ -426,106 +426,106 @@ layout: staging
         <tbody class="bcls-table__body">
           <tr>
             <td><code translate="no">account_id</code></td>
-            <td>string</td>
-            <td>path</td>
+            <td>String</td>
+            <td>Path</td>
             <td>Yes</td>
             <td>Account ID associated with the API call.</td>
         </tr>
         <tr>
             <td><code translate="no">custom_fields</code></td>
-            <td>object</td>
-            <td>body</td>
+            <td>Object</td>
+            <td>Body</td>
             <td>No</td>
             <td>Custom metadata fields for the job.</td>
         </tr>
         <tr>
             <td><code translate="no">description</code></td>
-            <td>string</td>
-            <td>body</td>
+            <td>String</td>
+            <td>Body</td>
             <td>No</td>
             <td>A brief description of the job.</td>
         </tr>
         <tr>
             <td><code translate="no">input</code></td>
-            <td>object (external.Input)</td>
-            <td>body</td>
+            <td>Object (external.Input)</td>
+            <td>Body</td>
             <td>Yes</td>
             <td>Configuration for the input stream, including protocol (rtmp, rtp, and srt), whitelist CIDR blocks and whether the ingest IP is fixed.</td>
         </tr>
         <tr>
             <td><code translate="no">live_to_vod</code></td>
-            <td>boolean</td>
-            <td>body</td>
+            <td>Boolean</td>
+            <td>Body</td>
             <td>No</td>
             <td>Determines if the live stream should be converted to Video-on-Demand (VOD).</td>
         </tr>
         <tr>
             <td><code translate="no">long_description</code></td>
-            <td>string</td>
-            <td>body</td>
+            <td>String</td>
+            <td>Body</td>
             <td>No</td>
             <td>Detailed description of the job.</td>
         </tr>
         <tr>
             <td><code translate="no">maintenance_preferences</code></td>
-            <td>object (external.MaintenancePreferences)</td>
-            <td>body</td>
+            <td>Object (external.MaintenancePreferences)</td>
+            <td>Body</td>
             <td>No</td>
             <td>Preferences for maintenance scheduling.</td>
         </tr>
         <tr>
             <td><code translate="no">manifest</code></td>
-            <td>object (external.ManifestOptions)</td>
-            <td>body</td>
+            <td>Object (external.ManifestOptions)</td>
+            <td>Body</td>
             <td>No</td>
             <td>Settings for the manifest, including HLS, DASH, and DVR configurations.</td>
         </tr>
         <tr>
             <td><code translate="no">name</code></td>
-            <td>string</td>
-            <td>body</td>
+            <td>String</td>
+            <td>Body</td>
             <td>No</td>
             <td>Name of the job.</td>
         </tr>
         <tr>
             <td><code translate="no">notifications</code></td>
             <td>Array of objects (external.Notification)</td>
-            <td>body</td>
+            <td>Body</td>
             <td>No</td>
             <td>Notifications to trigger during the job lifecycle.</td>
         </tr>
         <tr>
             <td><code translate="no">outputs</code></td>
-            <td>object (external.OutputVariants)</td>
-            <td>body</td>
+            <td>Object (external.OutputVariants)</td>
+            <td>Body</td>
             <td>Yes</td>
             <td>Configuration for video and audio outputs.</td>
         </tr>
         <tr>
             <td><code translate="no">reference_id</code></td>
-            <td>string</td>
-            <td>body</td>
+            <td>String</td>
+            <td>Body</td>
             <td>No</td>
             <td>An optional unique identifier for the job.</td>
         </tr>
         <tr>
             <td><code translate="no">region</code></td>
-            <td>string</td>
-            <td>body</td>
+            <td>String</td>
+            <td>Body</td>
             <td>Yes</td>
             <td>The region where the job is created.</td>
         </tr>
         <tr>
             <td><code translate="no">tags</code></td>
             <td>Array of strings</td>
-            <td>body</td>
+            <td>Body</td>
             <td>No</td>
             <td>Array of string tags for the job.</td>
         </tr>
         <tr>
             <td><code translate="no">type</code></td>
-            <td>string (Enum: "channel", "event")</td>
-            <td>body</td>
+            <td>String (Enum: "channel", "event")</td>
+            <td>Body</td>
             <td>Yes</td>
             <td>Defines whether the job is a channel or an event.</td>
         </tr>        
@@ -821,71 +821,71 @@ layout: staging
                 <tbody class="bcls-table__body">
                   <tr>
                     <td><code translate="no">id</code></td>
-                    <td>string</td>
-                    <td>path</td>
+                    <td>String</td>
+                    <td>Path</td>
                     <td>Yes</td>
                     <td>Job ID for the job to be updated.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">account_id</code></td>
-                    <td>string</td>
-                    <td>path</td>
+                    <td>String</td>
+                    <td>Path</td>
                     <td>Yes</td>
                     <td>Account ID associated with the API call.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">input</code></td>
-                    <td>object (external.Input)</td>
-                    <td>body</td>
+                    <td>Object (external.Input)</td>
+                    <td>Body</td>
                     <td>Yes</td>
                     <td>Configuration for the input stream, including protocol (rtmp, rtp, and srt), whitelist CIDR blocks and whether the ingest IP is fixed.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">live_to_vod</code></td>
-                    <td>boolean</td>
-                    <td>body</td>
+                    <td>Boolean</td>
+                    <td>Body</td>
                     <td>No</td>
                     <td>Determines if the live stream should be converted to Video-on-Demand (VOD).</td>
                 </tr>
                 <tr>
                     <td><code translate="no">maintenance_preferences</code></td>
-                    <td>object (external.MaintenancePreferences)</td>
-                    <td>body</td>
+                    <td>Object (external.MaintenancePreferences)</td>
+                    <td>Body</td>
                     <td>No</td>
                     <td>Preferences for maintenance scheduling.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">manifest</code></td>
-                    <td>object (external.ManifestOptions)</td>
-                    <td>body</td>
+                    <td>Object (external.ManifestOptions)</td>
+                    <td>Body</td>
                     <td>No</td>
                     <td>Settings for the manifest, including HLS, DASH, and DVR configurations.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">notifications</code></td>
                     <td>Array of objects (external.Notification)</td>
-                    <td>body</td>
+                    <td>Body</td>
                     <td>No</td>
                     <td>Notifications to trigger during the job lifecycle.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">outputs</code></td>
-                    <td>object (external.OutputVariants)</td>
-                    <td>body</td>
+                    <td>Object (external.OutputVariants)</td>
+                    <td>Body</td>
                     <td>Yes</td>
                     <td>Configuration for video and audio outputs.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">region</code></td>
-                    <td>string</td>
-                    <td>body</td>
+                    <td>String</td>
+                    <td>Body</td>
                     <td>Yes</td>
                     <td>The region where the job is created.</td>
                 </tr>
                 <tr>
                     <td><code translate="no">type</code></td>
-                    <td>string (Enum: "channel", "event")</td>
-                    <td>body</td>
+                    <td>String (Enum: "channel", "event")</td>
+                    <td>Body</td>
                     <td>Yes</td>
                     <td>Defines whether the job is a channel or an event.</td>
                 </tr>
@@ -914,15 +914,15 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Job ID for the job to retrieve details for.</td>
               </tr>
               <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Account ID associated with the API call.</td>
               </tr>
@@ -952,15 +952,15 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Job ID for the job to retrieve details for.</td>
               </tr>
               <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Account ID associated with the API call.</td>
               </tr>
@@ -991,15 +991,15 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Job ID for the job to retrieve details for.</td>
               </tr>
               <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Account ID associated with the API call.</td>
               </tr>
@@ -1011,7 +1011,7 @@ layout: staging
 
       <pre><code translate="No"><span class="bcls-highlight">DELETE</span> /v2/accounts/{account_id}/jobs/{id}</code></pre>
 
-      <p>Use this endpoint to finalize a live streaming job, permanently. Unlike the "Stop" endpoint, which simply halts the stream, "Finish" ensures that the job is completed. See the <a href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
+      <p>Use this endpoint to finalize a live streaming job, permanently. Unlike the "Stop" endpoint, which simply halts the stream, "Delete" ensures that the job is completed. See the <a href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs~1%7Bid%7D~1stop/put">API Reference</a> for details.</p>
       <aside class="bcls-aside bcls-aside--information">Notes
         <ul>
           <li>Deleting a job is a permanent action. Ensure that the job is no longer needed before executing this action.</li>
@@ -1034,15 +1034,15 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Job ID for the job to retrieve details for.</td>
               </tr>
               <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Account ID associated with the API call.</td>
               </tr>
@@ -1074,7 +1074,7 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Path</td>
                   <td>Yes</td>
                   <td>The account ID for which to retrieve the jobs.</td>
@@ -1088,28 +1088,28 @@ layout: staging
                 </tr>
                 <tr>
                   <td><code translate="no">modified_at</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Query</td>
                   <td>No</td>
                   <td>Filters jobs modified at a specific time (format: ISO 8601).</td>
                 </tr>
                 <tr>
                   <td><code translate="no">created_at</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Query</td>
                   <td>No</td>
                   <td>Filters jobs created at a specific time (format: ISO 8601).</td>
                 </tr>
                 <tr>
                   <td><code translate="no">processing_state</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Query</td>
                   <td>No</td>
                   <td>Filters jobs by their processing state (e.g., "active", "completed").</td>
                 </tr>
                 <tr>
                   <td><code translate="no">ingest_state</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Query</td>
                   <td>No</td>
                   <td>Filters jobs by their ingest state (e.g., "waiting", "processing").</td>
@@ -1162,43 +1162,43 @@ layout: staging
         <tbody class="bcls-table__body">
           <tr>
             <td><code translate="no">account_id</code></td>
-            <td>string</td>
-            <td>path</td>
+            <td>String</td>
+            <td>Path</td>
             <td>Yes</td>
             <td>Account ID associated with the playback token request.</td>
         </tr>
         <tr>
             <td><code translate="no">id</code></td>
-            <td>string</td>
-            <td>path</td>
+            <td>String</td>
+            <td>Path</td>
             <td>Yes</td>
             <td>Job ID for which the playback token is created.</td>
         </tr>
         <tr>
             <td><code translate="no">dvr</code></td>
-            <td>boolean</td>
-            <td>body</td>
+            <td>Boolean</td>
+            <td>Body</td>
             <td>No</td>
             <td>Indicates whether DVR is enabled for the playback token.</td>
         </tr>
         <tr>
             <td><code translate="no">low_latency</code></td>
-            <td>boolean</td>
-            <td>body</td>
+            <td>Boolean</td>
+            <td>Body</td>
             <td>No</td>
             <td>Indicates if the playback token should support low latency.</td>
         </tr>
         <tr>
             <td><code translate="no">manifest_format</code></td>
-            <td>string</td>
-            <td>body</td>
+            <td>String</td>
+            <td>Body</td>
             <td>No</td>
             <td>Specifies the format of the manifest (e.g., HLS or DASH).</td>
         </tr>
         <tr>
             <td><code translate="no">playlist_name</code></td>
-            <td>string</td>
-            <td>body</td>
+            <td>String</td>
+            <td>Body</td>
             <td>No</td>
             <td>Optional custom name for the playlist.</td>
         </tr>
@@ -1208,7 +1208,7 @@ layout: staging
   
 
 
-      <h3 id="generate-url">Generate a playback url for a job</h3>
+      <h3 id="generate-url">Generate a playback URL for a job</h3>
       <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/playback/{id}</code></pre>
 
       <p>This endpoint provides a direct URL to access the live stream of a specific job, incorporating a playback token for secure, authorized viewing. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/playback/paths/~1playback~1%7Bid%7D/get">API Reference</a> for details.</p>
@@ -1227,21 +1227,21 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Path</td>
                   <td>Yes</td>
                   <td>The account ID associated with the Brightcove Live account.</td>
                 </tr>
                 <tr>
                   <td><code translate="no">id</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Path</td>
                   <td>Yes</td>
                   <td>The ID of the job for which the playback URL is being generated.</td>
                 </tr>
                 <tr>
                   <td><code translate="no">pt</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Query</td>
                   <td>Yes</td>
                   <td>The playback token required for generating the playback URL.</td>
@@ -1271,15 +1271,15 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Job ID for the job to retrieve details for.</td>
               </tr>
               <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Account ID associated with the API call.</td>
               </tr>
@@ -1315,8 +1315,8 @@ layout: staging
               <tbody class="bcls-table__body">
               <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Account ID associated with the API call.</td>
               </tr>
@@ -1345,15 +1345,15 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Job ID for the job.</td>
               </tr>
               <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Account ID associated with the API call.</td>
               </tr>
@@ -1387,35 +1387,35 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Path</td>
                   <td>Yes</td>
                   <td>The account ID associated with the job.</td>
                 </tr>
                 <tr>
                   <td><code translate="no">job_id</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Path</td>
                   <td>Yes</td>
                   <td>The job ID for which metrics are being queried.</td>
                 </tr>
                 <tr>
                   <td><code translate="no">name</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Query</td>
                   <td>Yes</td>
                   <td>Comma-separated metric names to query.</td>
                 </tr>
                 <tr>
                   <td><code translate="no">period</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Query</td>
                   <td>No</td>
                   <td>Period filter in seconds. Supported values: <strong>30s, 60s, 300s, 900s, 3600s</strong>.</td>
                 </tr>
                 <tr>
                   <td><code translate="no">range</code></td>
-                  <td>string</td>
+                  <td>String</td>
                   <td>Query</td>
                   <td>No</td>
                   <td>Range filter in hours. The max range depends on the <code translate="no">period</code> value. See the table below.</td>
@@ -1470,6 +1470,7 @@ layout: staging
         <table class="bcls-table">
               <thead class="bcls-table__head">
                 <tr>
+                  <th>Name</th>
                   <th>Type</th>
                   <th>In</th>
                   <th>Required</th>
@@ -1479,15 +1480,15 @@ layout: staging
               <tbody class="bcls-table__body">
                 <tr>
                   <td><code translate="no">id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Job ID for the job.</td>
               </tr>
               <tr>
                   <td><code translate="no">account_id</code></td>
-                  <td>string</td>
-                  <td>path</td>
+                  <td>String</td>
+                  <td>Path</td>
                   <td>Yes</td>
                   <td>Account ID associated with the API call.</td>
               </tr>
