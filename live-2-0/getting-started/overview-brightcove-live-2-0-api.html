@@ -3,7 +3,7 @@ title: 'Overview: Brightcove Live 2.0 API'
 description: 'In this overview, you will learn what the Live 2.0 API is for and how to use it. Create, configure, and manage high-quality live streams with robust features.'
 parent: Getting Started
 grandparent: Live 2.0 API
-layout: staging
+
 ---
 <h1>{{ page.title }}</h1>
 <article class="bcls-article">
@@ -181,7 +181,7 @@ layout: staging
         <li>Enable DVR in the playback token by setting <code translate="no">"dvr": true</code>.</li>
       </ul>
 
-      <p>DVR capability is limited to 86,400 seconds.</p>
+      <!-- <p>DVR capability is limited to 86,400 seconds.</p> -->
 
       <p>The <span translate="No">DVR</span> stream will remain available for 7 days after the live stream is completed.</p>
     </section>
@@ -328,6 +328,7 @@ layout: staging
          "label": "1080p",
          "height": 1080,
          "width": 1920,
+         "framerate": "30/1",
          "bitrate": 6000000,
          "codec": "h264",
          "codec_options": {
@@ -343,6 +344,7 @@ layout: staging
          "label": "720p",
          "height": 720,
          "width": 1280,
+         "framerate": "30/1",
          "bitrate": 4000000,
          "codec": "h264",
          "codec_options": {
@@ -354,6 +356,7 @@ layout: staging
          "label": "480p",
          "height": 480,
          "width": 640,
+         "framerate": "30/1",
          "bitrate": 2000000,
          "codec": "h264",
          "codec_options": {
@@ -381,7 +384,7 @@ layout: staging
        "startover_window_seconds": 300
      },
      "dvr": {
-       "playlist_window_seconds": 300
+      "playlist_window_seconds": 300
      },
      "dash": {
        "startover_window_seconds": 300
@@ -643,7 +646,8 @@ layout: staging
           "label": "1080p",
           "max_bitrate": 5000000,
           "sample_aspect_ratio": "1:1",
-          "width": 1920
+          "width": 1920,
+          "framerate": "30/1"
         },
         {
           "bitrate": 2000000,
@@ -659,7 +663,8 @@ layout: staging
           "label": "720p",
           "max_bitrate": 2500000,
           "sample_aspect_ratio": "1:1",
-          "width": 1280
+          "width": 1280,
+          "framerate": "30/1",
         }
       ]
     },
@@ -710,7 +715,7 @@ layout: staging
    "manifest": {
      "dash": {},
      "dvr": {
-       "playlist_window_seconds": 300
+      "playlist_window_seconds": 300
      },
      "hls": {
        "playlist_type": "event",
@@ -781,7 +786,8 @@ layout: staging
          "label": "1080p",
          "max_bitrate": 5000000,
          "sample_aspect_ratio": "1:1",
-         "width": 1920
+         "width": 1920,
+         "framerate": "30/1"
        },
        {
          "bitrate": 2000000,
@@ -797,7 +803,8 @@ layout: staging
          "label": "720p",
          "max_bitrate": 2500000,
          "sample_aspect_ratio": "1:1",
-         "width": 1280
+         "width": 1280,
+         "framerate": "30/1"
        }
      ]
    },
@@ -1006,6 +1013,7 @@ layout: staging
               </tbody>
           </table>
         </div>
+        <aside class="bcls-aside bcls-aside--information">Note: A live stream cannot be stopped while it is in a transition state. If you receive an error when attempting to stop a job, please wait a few moments and try again.</aside>
 
       <h3 id="finish-job">Delete a job</h3>
 
@@ -1209,7 +1217,7 @@ layout: staging
 
 
       <h3 id="generate-url">Generate a playback URL for a job</h3>
-      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/playback/{id}</code></pre>
+      <pre><code translate="No"><span class="bcls-highlight">GET</span> /v2/playback/{id}?pt={playback_token}</code></pre>
 
       <p>This endpoint provides a direct URL to access the live stream of a specific job, incorporating a playback token for secure, authorized viewing. See the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/playback/paths/~1playback~1%7Bid%7D/get">API Reference</a> for details.</p>
 
@@ -1635,10 +1643,10 @@ layout: staging
                 </tr>
                 <tr>
                   <td><b>framerate</b></td>
-                  <td>Float</td>
+                  <td>String</td>
                   <td></td>
-                  <td>23.976, 24, 25, 29.97, 30, 59.94, 60</td>
-                  <td>No</td>
+                  <td>"24/1", "25/1", "30/1", "50/1" "60/1"</td>
+                  <td>Yes</td>
                   <td>Sets the output framerate for encoding. Ensure framerate consistency across outputs.</td>
                 </tr>
                 <tr>
