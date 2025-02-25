@@ -288,7 +288,7 @@ grandparent: Live 2.0 API
       <section class="bcls-subsection">
         <h4 id="input_protocol">Input protocol</h4>
 
-        <p>Brightcove Live supports multiple input protocols. Use the <code translate="No">protocol</code> field in the request body when you create the job to specify the one you will use. Supported values are:</p>
+        <p>Brightcove Live supports multiple input protocols. Use the <code translate="No">input.protocol</code> field in the request body when you create the job to specify the one you will use. Supported values are:</p>
 
         <ul>
           <li><code translate="No">rtmp</code> (the default)</li>
@@ -449,11 +449,12 @@ grandparent: Live 2.0 API
             <td>A brief description of the job.</td>
         </tr>
         <tr>
-            <td><code translate="no">input</code></td>
-            <td>Object (external.Input)</td>
+            <td><code translate="no">input.protocol</code></td>
+            <td>String</td>
             <td>Body</td>
             <td>Yes</td>
-            <td>Configuration for the input stream, including protocol (rtmp, rtp, and srt), whitelist CIDR blocks and whether the ingest IP is fixed.</td>
+            <td><p>The ingest protocol for the input stream. Allowed values: <code>rtmp</code>, <code>rtp</code>, <code>srt</code>.</p>  
+              <p>For more details on additional input properties and configurations, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p></td>
         </tr>
         <tr>
             <td><code translate="no">live_to_vod</code></td>
@@ -474,14 +475,15 @@ grandparent: Live 2.0 API
             <td>Object (external.MaintenancePreferences)</td>
             <td>Body</td>
             <td>No</td>
-            <td>Preferences for maintenance scheduling.</td>
+            <td><p>Preferences for maintenance scheduling like <code>day</code> and <code>start_time</code></p><p>For more details, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p>.</td>
         </tr>
         <tr>
             <td><code translate="no">manifest</code></td>
             <td>Object (external.ManifestOptions)</td>
             <td>Body</td>
             <td>No</td>
-            <td>Settings for the manifest, including HLS, DASH, and DVR configurations.</td>
+            <td><p>Configures HLS, DASH, and DVR playback settings, along with playlist options, segment formatting, and output configurations.</p>
+            <p>For more details on manifest properties and configurations, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p></td>
         </tr>
         <tr>
             <td><code translate="no">name</code></td>
@@ -495,14 +497,16 @@ grandparent: Live 2.0 API
             <td>Array of objects (external.Notification)</td>
             <td>Body</td>
             <td>No</td>
-            <td>Notifications to trigger during the job lifecycle.</td>
+            <td><p>Defines job lifecycle notifications, specifying event types and destination URLs.</p>
+            <p>For more details, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p></td>
         </tr>
         <tr>
             <td><code translate="no">outputs</code></td>
             <td>Object (external.OutputVariants)</td>
             <td>Body</td>
             <td>Yes</td>
-            <td>Configuration for video and audio outputs.</td>
+            <td><p>Specifies audio and video output variants, including codec, bitrate, resolution, and framerate.</p>
+            <p>For more details on output properties and configurations, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p></td>
         </tr>
         <tr>
             <td><code translate="no">reference_id</code></td>
@@ -841,12 +845,13 @@ grandparent: Live 2.0 API
                     <td>Account ID associated with the API call.</td>
                 </tr>
                 <tr>
-                    <td><code translate="no">input</code></td>
-                    <td>Object (external.Input)</td>
-                    <td>Body</td>
-                    <td>Yes</td>
-                    <td>Configuration for the input stream, including protocol (rtmp, rtp, and srt), whitelist CIDR blocks and whether the ingest IP is fixed.</td>
-                </tr>
+                  <td><code translate="no">input.protocol</code></td>
+                  <td>String</td>
+                  <td>Body</td>
+                  <td>Yes</td>
+                  <td><p>The ingest protocol for the input stream. Allowed values: <code>rtmp</code>, <code>rtp</code>, <code>srt</code>.</p>  
+                    <p>For more details on additional input properties and configurations, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p></td>
+              </tr>
                 <tr>
                     <td><code translate="no">live_to_vod</code></td>
                     <td>Boolean</td>
@@ -855,33 +860,36 @@ grandparent: Live 2.0 API
                     <td>Determines if the live stream should be converted to Video-on-Demand (VOD).</td>
                 </tr>
                 <tr>
-                    <td><code translate="no">maintenance_preferences</code></td>
-                    <td>Object (external.MaintenancePreferences)</td>
-                    <td>Body</td>
-                    <td>No</td>
-                    <td>Preferences for maintenance scheduling.</td>
-                </tr>
+                  <td><code translate="no">maintenance_preferences</code></td>
+                  <td>Object (external.MaintenancePreferences)</td>
+                  <td>Body</td>
+                  <td>No</td>
+                  <td><p>Preferences for maintenance scheduling like <code>day</code> and <code>start_time</code></p><p>For more details, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p>.</td>
+              </tr>
                 <tr>
-                    <td><code translate="no">manifest</code></td>
-                    <td>Object (external.ManifestOptions)</td>
-                    <td>Body</td>
-                    <td>No</td>
-                    <td>Settings for the manifest, including HLS, DASH, and DVR configurations.</td>
-                </tr>
+                  <td><code translate="no">manifest</code></td>
+                  <td>Object (external.ManifestOptions)</td>
+                  <td>Body</td>
+                  <td>No</td>
+                  <td><p>Configures HLS, DASH, and DVR playback settings, along with playlist options, segment formatting, and output configurations.</p>
+                  <p>For more details on manifest properties and configurations, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p></td>
+              </tr>
                 <tr>
-                    <td><code translate="no">notifications</code></td>
-                    <td>Array of objects (external.Notification)</td>
-                    <td>Body</td>
-                    <td>No</td>
-                    <td>Notifications to trigger during the job lifecycle.</td>
-                </tr>
+                  <td><code translate="no">notifications</code></td>
+                  <td>Array of objects (external.Notification)</td>
+                  <td>Body</td>
+                  <td>No</td>
+                  <td><p>Defines job lifecycle notifications, specifying event types and destination URLs.</p>
+                  <p>For more details, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p></td>
+              </tr>
                 <tr>
-                    <td><code translate="no">outputs</code></td>
-                    <td>Object (external.OutputVariants)</td>
-                    <td>Body</td>
-                    <td>Yes</td>
-                    <td>Configuration for video and audio outputs.</td>
-                </tr>
+                  <td><code translate="no">outputs</code></td>
+                  <td>Object (external.OutputVariants)</td>
+                  <td>Body</td>
+                  <td>Yes</td>
+                  <td><p>Specifies audio and video output variants, including codec, bitrate, resolution, and framerate.</p>
+                  <p>For more details on output properties and configurations, refer to the <a target="_blank" href="https://apis.support.brightcove.com/live-2-0/references/reference.html#tag/jobs/paths/~1accounts~1%7Baccount_id%7D~1jobs/post">API Reference</a>.</p></td>
+              </tr>
                 <tr>
                     <td><code translate="no">region</code></td>
                     <td>String</td>
