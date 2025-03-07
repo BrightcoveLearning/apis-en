@@ -3851,6 +3851,15 @@
 
       <p>The <span translate="No">DVR</span> stream will remain available for 7 days after the live stream is completed.</p>
     </section>
+    <section class="bcls-section">
+      <h2 id="redundancy">In-Region Redundancy</h2>
+      <p>This feature enhances stream reliability by leveraging two independent encoding processes distributed across different hardware and physical locations. The stateless packager seamlessly switches between these encoding pipelines, ensuring uninterrupted streaming across multiple availability zones within a region.</p>
+      <p>To enable <strong>In-Region Redundancy</strong>, simply add the following line to your request payload:</p>
+      <pre class="line-numbers"><code class="language-json" translate="No">"redundancy": {
+     "num_inputs": 2
+ }</code></pre>
+
+    </section>
     <!-- <section class="bcls-section">
       <h2 id="prerequisites">Prerequisite for Live 2.0 API</h2>
       <ul>
@@ -3981,6 +3990,9 @@
    "tags": [
      "sports"
    ],
+   "redundancy": {
+     "num_inputs": 2
+   },
    "input": {
      "protocol": "rtmp",
      "whitelist_cidr_blocks": ["0.0.0.0/0"],
@@ -4356,7 +4368,10 @@
         </summary>
         
         <pre class="line-numbers"><code class="language-json" translate="No">{
-   "input": {
+     "redundancy": {
+        "num_inputs": 2
+     },
+     "input": {
      "audio_pids": [
        {
          "language_code": "eng",
