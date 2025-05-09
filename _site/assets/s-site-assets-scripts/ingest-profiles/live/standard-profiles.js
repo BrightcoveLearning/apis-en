@@ -349,6 +349,12 @@ var BCLS = (function(window, document, profiles_array_cached) {
       section.appendChild(sectionJsonP);
       section.appendChild(profileCode);
       text = document.createTextNode(JSON.stringify(profile, false, "  "));
+      // Convert allowed_frame_rates objects to array of floats
+      profile.renditions.forEach(rendition => {
+      if (Array.isArray(rendition.allowed_frame_rates)) {
+          rendition.allowed_frame_rates = rendition.allowed_frame_rates.map(rate => rate.as_float);
+        }
+      });
       profileCode.appendChild(text);
       fragment.appendChild(section);
       text = document.createTextNode(profile.name);
@@ -363,12 +369,32 @@ var BCLS = (function(window, document, profiles_array_cached) {
       sectionTableHeading.appendChild(text);
       // now do the reditions
       jMax = profile.renditions.length;
+
+      const excludedProps = new Set([
+        "decoder_bitrate_cap",
+        "decoder_buffer_size",
+        "video_bframes",
+        "sample_aspect_ratio",
+        "video_codec_level",
+        "video_reference_frames"
+      ]);
+
+      // get all properties and build the table headers
+      // for (j = 0; j < jMax; j++) {
+      //   var prop;
+      //   rendition = profile.renditions[j];
+      //   for (prop in rendition) {
+      //     headersArray.push(prop);
+      //   }
+      // }
+
       // get all properties and build the table headers
       for (j = 0; j < jMax; j++) {
-        var prop;
-        rendition = profile.renditions[j];
-        for (prop in rendition) {
+      rendition = profile.renditions[j];
+      for (var prop in rendition) {
+        if (!excludedProps.has(prop)) {
           headersArray.push(prop);
+          }
         }
       }
       // dedupe the headers
