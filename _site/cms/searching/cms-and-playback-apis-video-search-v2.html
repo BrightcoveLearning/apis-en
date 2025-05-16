@@ -3674,18 +3674,26 @@
 <h1>CMS API: Video Search v2</h1>
 <article class="bcls-article">
   <summary>This topic explains the syntax for using version 2 of video search, supported by the CMS API.</summary>
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
 
-    <p>Version 2 of the video search used by the <span translate="No">CMS API</span> simplifies the syntax and makes it simpler to use. To see <strong>Version 1</strong>, go to <a href="https://apis.support.brightcove.com/cms/searching/cmsplayback-api-videos-search.html">CMS/Playback API: Videos Search v1</a>.</p>
+    <p>Version 2 of the video search used by the <span translate="No">CMS API</span> simplifies the syntax and makes it
+      simpler to use. To see <strong>Version 1</strong>, go to <a
+        href="https://apis.support.brightcove.com/cms/searching/cmsplayback-api-videos-search.html">CMS/Playback API:
+        Videos Search v1</a>.</p>
 
     <aside class="bcls-aside bcls-aside--warning">
       <strong>Notes:</strong>
       <ul>
-        <li>The v2 search syntax is supported by the <span translate="No">CMS API</span> only - you <strong>cannot use this syntax with the Playback API</strong>.</li>
+        <li>The v2 search syntax is supported by the <span translate="No">CMS API</span> only - you <strong>cannot use
+            this syntax with the Playback API</strong>.</li>
         <li>The original search syntax is still supported by both the CMS and Playback APIs.</li>
-        <li>The CMS API does not support a search by null or empty value in a field, and this is not limited to custom fields but it applies to all video metadata.</li>
-        <li>Some search strings will break URLs and not be received or processed by the CMS API unless they are <strong>URI-encoded</strong>. URI-encoding is always recommended. If you are uncertain how to encode the string, you can use our <a href="/general/utilities/string-encoder.html">String Encoder</a>.</li>
+        <li>The CMS API does not support a search by null or empty value in a field, and this is not limited to custom
+          fields but it applies to all video metadata.</li>
+        <li>Some search strings will break URLs and not be received or processed by the CMS API unless they are
+          <strong>URI-encoded</strong>. URI-encoding is always recommended. If you are uncertain how to encode the
+          string, you can use our <a href="/general/utilities/string-encoder.html">String Encoder</a>.
+        </li>
       </ul>
     </aside>
 
@@ -3693,20 +3701,22 @@
 
     <ul>
       <li>To use the new v2 search:
-      <pre>
+        <pre>
     <code class="language-http" translate="No">.../videos?<span class="bcls-highlight">query</span>={search_string}</code></pre>
       </li>
       <li>To use the original search:
-      <pre>
+        <pre>
     <code class="language-http" translate="No">.../videos?<span class="bcls-highlight">q</span>={search_string}</code></pre>
       </li>
     </ul>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="basics">Basics</h2>
 
-    <p>The basic element of a search string is a <em>search term</em>, which may be prefixed by a field name. If the field name is included, only that metadata field will be searched. Otherwise, several fields (listed below) will be searched.</p>
+    <p>The basic element of a search string is a <em>search term</em>, which may be prefixed by a field name. If the
+      field name is included, only that metadata field will be searched. Otherwise, several fields (listed below) will
+      be searched.</p>
 
     <p>For example:</p>
 
@@ -3725,7 +3735,8 @@
         </tr>
         <tr>
           <td><code translate="No">name:bird</code></td>
-          <td>Videos that have the word "<code translate="No">bird</code>" in the <code translate="No">name</code> (title) will be returned.</td>
+          <td>Videos that have the word "<code translate="No">bird</code>" in the <code translate="No">name</code>
+            (title) will be returned.</td>
         </tr>
       </tbody>
     </table>
@@ -3737,7 +3748,10 @@
       <li><code translate="No">name</code></li>
       <li><code translate="No">description</code></li>
       <li><code translate="No">long_description</code></li>
-      <li><code translate="No">text</code> (not a real metadata field, but a pseudo-field that you can use to search the <code translate="No">name</code>, <code translate="No">description</code>, and <code translate="No">long_description</code> - e.g. <code translate="No">text:bird</code>)</li>
+      <li><code translate="No">text</code> (not a real metadata field, but a pseudo-field that you can use to search the
+        <code translate="No">name</code>, <code translate="No">description</code>, and <code
+          translate="No">long_description</code> - e.g. <code translate="No">text:bird</code>)
+      </li>
       <li><code translate="No">tags</code></li>
       <li><code translate="No">reference_id</code></li>
       <li><code translate="No">custom_fields</code> (searches all custom fields)</li>
@@ -3762,7 +3776,8 @@
         </tr>
         <tr>
           <td><code translate="no">text</code></td>
-          <td>strings or quoted strings (searches the <code translate="No">name</code>, <code translate="No">description</code>, and <code translate="No">long_description</code>)</td>
+          <td>strings or quoted strings (searches the <code translate="No">name</code>, <code
+              translate="No">description</code>, and <code translate="No">long_description</code>)</td>
         </tr>
         <tr>
           <td><code translate="No">tags</code></td>
@@ -3770,7 +3785,9 @@
         </tr>
         <tr>
           <td><code translate="No">custom_fields</code></td>
-          <td>strings or quoted strings (searches all custom fields - you can also use a specific custom field <em>internal</em> name)</td>
+          <td>strings or quoted strings (searches all custom fields - you can also use a specific custom field
+            <em>internal</em> name)
+          </td>
         </tr>
         <tr>
           <td><code translate="No">reference_id</code></td>
@@ -3778,7 +3795,9 @@
         </tr>
         <tr>
           <td><code translate="No">state</code></td>
-          <td><code translate="No">ACTIVE</code>, <code translate="No">INACTIVE</code>, <code translate="No">PENDING</code>, <code translate="No">DELETED</code> (only videos deleted within the past 10 days will be returned)</td>
+          <td><code translate="No">ACTIVE</code>, <code translate="No">INACTIVE</code>, <code
+              translate="No">PENDING</code>, <code translate="No">DELETED</code> (only videos deleted within the past 10
+            days will be returned)</td>
         </tr>
         <tr>
           <td><code translate="No">updated_at</code></td>
@@ -3838,11 +3857,29 @@
         </tr>
         <tr>
           <td><code translate="no">sharing</code></td>
-          <td>string or quoted string<br>sharing.{property}:{value} <br><code>sharing.by_external_acct:true</code></td>
+          <td>string or quoted string<br>sharing.{property}:{value} <br>
+            <code>
+              sharing.by_external_acct:true
+              </code>
+            <br>
+            <code>
+             sharing.source_id:"parent_video_id"
+            </code>
+            <br>
+            <code>
+             sharing.by_id:"shared_from_account_id"
+            </code>
+            <br>
+            <code>
+             sharing.to_external_acct:"shared_to_account_id"
+            </code>
+          </td>
         </tr>
         <tr>
           <td><code translate="no">variants</code></td>
-          <td>string or quoted string<br> variants.{language}.{property}:{value} <br><code>variants.en-US.name:eng</code></td>
+          <td>string or quoted string<br> variants.{language}.{property}:{value}
+            <br><code>variants.en-US.name:eng</code>
+          </td>
         </tr>
         <tr>
           <td><code translate="no">labels</code></td>
@@ -3906,43 +3943,54 @@
         </tr>
         <tr>
           <td><code translate="no">shared_at</code></td>
-          <td>date or range (<a href="#date_times">details below</a>)<br><code>shared_at:[2023-11-02T16:21:34.905Z TO 2024-05-02T16:21:34.908Z]</code></td>
+          <td>date or range (<a href="#date_times">details
+              below</a>)<br><code>shared_at:[2023-11-02T16:21:34.905Z TO 2024-05-02T16:21:34.908Z]</code></td>
         </tr>
       </tbody>
     </table>
 
-    <p>In both the examples shown above, videos that do not have the word "<code translate="No">bird</code>" in any relevant field might still be returned. The next section explains how to limit search results to only videos that have the specified terms.</p>
-    </section>
+    <p>In both the examples shown above, videos that do not have the word "<code translate="No">bird</code>" in any
+      relevant field might still be returned. The next section explains how to limit search results to only videos that
+      have the specified terms.</p>
+  </section>
 
-    <section class="bcls-section">
-      <h2 id="Ignored_words">Ignored words</h2>
-  
-      <p>Certain words are ignored in search strings because they are so common that they are likely to return many results unrelated to what you are actually searching for. Below is a list of words that are ignored by search:</p>
-  
-      <p>"a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with"</p>
-  
-      <p>In addition, non-alphanumeric characters such as hyphens, underscores, line-breaks, "$", "&", "*", etc. are treated as word delimiters. For example, a search string like <code translate="No">small-town</code> will be treated as <code translate="No">small town</code>.</p>
-    </section>
+  <section class="bcls-section">
+    <h2 id="Ignored_words">Ignored words</h2>
 
-    <section class="bcls-section">
-      <h2 id="stemming">What is stemming?</h2>
-      <p>Video fields that support stemming return words that have the stem of the search word in common. In addition, stemming supports entering whole words only, not partial words:</p>
-      <ul>
-        <li>Example 1: Searching on <code translate="No">running</code> will return results containing: <code translate="No">running</code>, <code translate="No">run</code>, <code translate="No">runs</code></li>
-        <li>Example 2: Searching on <code translate="No">vid</code> will not return results containing: <code translate="No">video</code></li>
-      </ul>
-      <p>Search with stemming works in the following fields:</p>
-      <ul>
-        <li><code translate="no">custom_fields</code></li>
-        <li><code translate="no">description</code></li>
-        <li><code translate="no">name</code></li>
-        <li><code translate="no">long_description</code></li>
-        <li><code translate="no">tags</code></li>
-        <li><code translate="no">labels</code></li>
-      </ul>
-    </section>
+    <p>Certain words are ignored in search strings because they are so common that they are likely to return many
+      results unrelated to what you are actually searching for. Below is a list of words that are ignored by search:</p>
 
-    <section class="bcls-section">
+    <p>"a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of",
+      "on", "or", "such", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with"
+    </p>
+
+    <p>In addition, non-alphanumeric characters such as hyphens, underscores, line-breaks, "$", "&", "*", etc. are
+      treated as word delimiters. For example, a search string like <code translate="No">small-town</code> will be
+      treated as <code translate="No">small town</code>.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="stemming">What is stemming?</h2>
+    <p>Video fields that support stemming return words that have the stem of the search word in common. In addition,
+      stemming supports entering whole words only, not partial words:</p>
+    <ul>
+      <li>Example 1: Searching on <code translate="No">running</code> will return results containing: <code
+          translate="No">running</code>, <code translate="No">run</code>, <code translate="No">runs</code></li>
+      <li>Example 2: Searching on <code translate="No">vid</code> will not return results containing: <code
+          translate="No">video</code></li>
+    </ul>
+    <p>Search with stemming works in the following fields:</p>
+    <ul>
+      <li><code translate="no">custom_fields</code></li>
+      <li><code translate="no">description</code></li>
+      <li><code translate="no">name</code></li>
+      <li><code translate="no">long_description</code></li>
+      <li><code translate="no">tags</code></li>
+      <li><code translate="no">labels</code></li>
+    </ul>
+  </section>
+
+  <section class="bcls-section">
     <h2 id="advanced_search">Advanced search</h2>
 
     <p>There are some modifiers that help you limit search results to exactly the videos you want.</p>
@@ -3959,48 +4007,62 @@
       <tbody class="bcls-table__body">
         <tr>
           <td><strong><code translate="No">+</code></strong></td>
-          <td>Prefixing a search term with the plus (+) sign signifies that the returned videos <strong>must</strong> have the specified term</td>
+          <td>Prefixing a search term with the plus (+) sign signifies that the returned videos <strong>must</strong>
+            have the specified term</td>
           <td>
-          <ul>
-            <li><code translate="No">+bird</code> (returns <em>only</em> videos with "<code translate="No">bird</code>" in the fields listed above)</li>
-            <li><code translate="No">+tags:bird</code> (returns <em>only</em> videos with "<code translate="No">bird</code>" in the <code translate="No">tags</code>)</li>
-          </ul>
+            <ul>
+              <li><code translate="No">+bird</code> (returns <em>only</em> videos with "<code
+                  translate="No">bird</code>" in the fields listed above)</li>
+              <li><code translate="No">+tags:bird</code> (returns <em>only</em> videos with "<code
+                  translate="No">bird</code>" in the <code translate="No">tags</code>)</li>
+            </ul>
           </td>
         </tr>
         <tr>
           <td><strong><code translate="No">-</code></strong> or <strong><code translate="No">NOT</code></strong></td>
-          <td>Prefixing a search term with the minus (-) sign or <code translate="No">NOT</code> signifies that the returned videos <strong>must not</strong> have the specified term</td>
+          <td>Prefixing a search term with the minus (-) sign or <code translate="No">NOT</code> signifies that the
+            returned videos <strong>must not</strong> have the specified term</td>
           <td>
-          <ul>
-            <li><code translate="No">-birds</code> or <code translate="No">NOT birds</code> (returns only videos that do <strong>not</strong> have "<code translate="No">bird</code>" in the fields listed above)</li>
-            <li><code translate="No">-name:birds</code> or <code translate="No">NOT name:birds</code> (returns only videos that do <strong>not</strong> have "<code translate="No">bird</code>" in the <code translate="No">name</code>)</li>
-          </ul>
+            <ul>
+              <li><code translate="No">-birds</code> or <code translate="No">NOT birds</code> (returns only videos that
+                do <strong>not</strong> have "<code translate="No">bird</code>" in the fields listed above)</li>
+              <li><code translate="No">-name:birds</code> or <code translate="No">NOT name:birds</code> (returns only
+                videos that do <strong>not</strong> have "<code translate="No">bird</code>" in the <code
+                  translate="No">name</code>)</li>
+            </ul>
           </td>
         </tr>
         <tr>
           <td><strong><code translate="No">(term)&nbsp;AND&nbsp;(term)</code></strong><br />
-          or<br />
-          <strong><code translate="No">(term)&nbsp;OR&nbsp;(term)</code></strong></td>
-          <td>The logical <code translate="No">AND</code> and <code translate="No">OR</code> operators allow you to combine multiple search terms for complex queries</td>
+            or<br />
+            <strong><code translate="No">(term)&nbsp;OR&nbsp;(term)</code></strong>
+          </td>
+          <td>The logical <code translate="No">AND</code> and <code translate="No">OR</code> operators allow you to
+            combine multiple search terms for complex queries</td>
           <td>
-          <ul>
-            <li>
-              <code>(economics:FREE) AND (has_text_tracks:true)</code> (would return videos that have both <strong>"FREE"</strong> in <strong>economics</strong> and <strong>has_text_tracks</strong>)
-            </li>
-            <li>
-              <code>(original_filename:oystercatcher.mp4) OR (duration:[* TO 14500])</code> (would return videos that have either <strong>"oystercatcher.mp4"</strong> in the <strong>original_filename</strong> and <strong>duration</strong> up to 14500 seconds)
-            </li>
-            <li>
-              <code>(variants.en-US.name:"My Variant") AND (has_images:true) AND (NOT labels:"/root/label5")</code> (would return videos that have both <strong>"My Variant"</strong> in the <strong>Variant name</strong> and <strong>has images</strong>, but <strong>not the label "/root/label5"</strong>)
-            </li>
-          </ul>
+            <ul>
+              <li>
+                <code>(economics:FREE) AND (has_text_tracks:true)</code> (would return videos that have both
+                <strong>"FREE"</strong> in <strong>economics</strong> and <strong>has_text_tracks</strong>)
+              </li>
+              <li>
+                <code>(original_filename:oystercatcher.mp4) OR (duration:[* TO 14500])</code> (would return videos that
+                have either <strong>"oystercatcher.mp4"</strong> in the <strong>original_filename</strong> and
+                <strong>duration</strong> up to 14500 seconds)
+              </li>
+              <li>
+                <code>(variants.en-US.name:"My Variant") AND (has_images:true) AND (NOT labels:"/root/label5")</code>
+                (would return videos that have both <strong>"My Variant"</strong> in the <strong>Variant name</strong>
+                and <strong>has images</strong>, but <strong>not the label "/root/label5"</strong>)
+              </li>
+            </ul>
           </td>
         </tr>
       </tbody>
     </table>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="search_for_a_phrase">Phrase search</h2>
 
     <p>You can search for a phrase (rather than a single word) by placing in quotation marks:</p>
@@ -4009,16 +4071,17 @@
       <li><code translate="No">"blue heron"</code></li>
       <li><code translate="No">name:"blue heron"</code></li>
     </ul>
-    </section>
+  </section>
 
-    <section class="bcls-section">
+  <section class="bcls-section">
     <h2 id="date_times">Date/Times and Ranges</h2>
 
     <p>Search on a date-time interval by using:</p>
 
     <p><code translate="No">[{start} TO {end}]</code></p>
 
-    <p>To search on a single date/time, set the <code translate="No">start</code> and <code translate="No">end</code> to the same value:</p>
+    <p>To search on a single date/time, set the <code translate="No">start</code> and <code translate="No">end</code> to
+      the same value:</p>
 
     <p><code translate="No">[2019-09-30T00:00:00.000Z TO 2019-09-30T00:00:00.000Z]</code></p>
 
@@ -4043,12 +4106,12 @@
           <td>Wildcard (can be used for the start or end date/time and ranges)</td>
           <td><code translate="No">*</code></td>
           <td>
-          <ul>
-            <li><code translate="No">2019-09-30T14:24:33.512Z TO *</code></li>
-            <li><code translate="No">* TO 2019-09-30T14:24:33.512-4:00Z</code></li>
-            <li><code translate="No">[500 TO *]</code></li>
-            <li><code translate="No">[* TO 340000]</code></li>
-          </ul>
+            <ul>
+              <li><code translate="No">2019-09-30T14:24:33.512Z TO *</code></li>
+              <li><code translate="No">* TO 2019-09-30T14:24:33.512-4:00Z</code></li>
+              <li><code translate="No">[500 TO *]</code></li>
+              <li><code translate="No">[* TO 340000]</code></li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -4056,12 +4119,16 @@
 
     <aside class="bcls-aside bcls-aside--information">Notes:
       <ul>
-        <li>An incorrect format in Date/Time will return 200 status code with a Blank <code translate="no">[]</code> response.</li>
-        <li>The required <code translate="No">Z</code> in the timezone indicator. Currently the value must be blank (indicating UTC as the timezone).</li>
-        <li><code translate="No">NOW</code> operator and date ranges using <code translate="no">..</code> (including open ended ranges) are not supported in this version.</li>
-        <li>This date syntax does not apply to Date-like beacon fields (end and start dates), which can only be searched as text.</li>
+        <li>An incorrect format in Date/Time will return 200 status code with a Blank <code translate="no">[]</code>
+          response.</li>
+        <li>The required <code translate="No">Z</code> in the timezone indicator. Currently the value must be blank
+          (indicating UTC as the timezone).</li>
+        <li><code translate="No">NOW</code> operator and date ranges using <code translate="no">..</code> (including
+          open ended ranges) are not supported in this version.</li>
+        <li>This date syntax does not apply to Date-like beacon fields (end and start dates), which can only be searched
+          as text.</li>
       </ul>
-      </aside>
+    </aside>
 
     <p>Below are some sample date/time search strings.</p>
 
@@ -4093,25 +4160,31 @@
       </tbody>
     </table>
     <aside class="bcls-aside bcls-aside--information">
-     Note that an incorrect format in <code translate="no">Date/Time</code> will return 200 status code with a Blank [] response.
+      Note that an incorrect format in <code translate="no">Date/Time</code> will return 200 status code with a Blank []
+      response.
     </aside>
-    </section>
-    <section class="bcls-section">
-      <h2 id="Known Issues">Known issues</h2>
-  
-      <ul>
-        <li><strong>Duplicate results:</strong> in certain cases, some items in the search results may appear more than once.
-  
-        <p><strong>Workaround:</strong> to prevent duplicate search results, always use a <code translate="No">sort</code> parameter in your search requests.</p>
-        </li>
-      </ul>
-      <aside class="bcls-aside bcls-aside--information">Note that the default sort order is <code translate="No">updated_at</code>, which can cause the miss of added or updated videos while the app is running. If you want to avoid that, use the sort <code translate="No">created_at</code> instead.</aside>
-    </section>
-    <section class="bcls-section">
-      <p>For general search instructions in Video Cloud, see <a href="https://studio.support.brightcove.com/media/module/how-search-videos-and-playlists-media-module.html">Media Module Search</a>.</p>
-    </section>
-    </article>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Known Issues">Known issues</h2>
 
+    <ul>
+      <li><strong>Duplicate results:</strong> in certain cases, some items in the search results may appear more than
+        once.
+
+        <p><strong>Workaround:</strong> to prevent duplicate search results, always use a <code
+            translate="No">sort</code> parameter in your search requests.</p>
+      </li>
+    </ul>
+    <aside class="bcls-aside bcls-aside--information">Note that the default sort order is <code
+        translate="No">updated_at</code>, which can cause the miss of added or updated videos while the app is running.
+      If you want to avoid that, use the sort <code translate="No">created_at</code> instead.</aside>
+  </section>
+  <section class="bcls-section">
+    <p>For general search instructions in Video Cloud, see <a
+        href="https://studio.support.brightcove.com/media/module/how-search-videos-and-playlists-media-module.html">Media
+        Module Search</a>.</p>
+  </section>
+</article>
 <!-- <div class="col-sm-2 right-side-bar" style="display: inline-block;max-width: 20%;"> -->
   
   <nav class="right-side-nav" id="right_side_nav">
