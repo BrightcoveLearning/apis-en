@@ -1290,46 +1290,6 @@ paths:
       summary: Create a playback token for a job
       tags:
         - playback
-  '/accounts/{account_id}/playback/{job_id}/sources':
-    get:
-      parameters:
-        - description: Account ID
-          in: path
-          name: account_id
-          required: true
-          schema:
-            type: string
-        - description: Job ID
-          in: path
-          name: job_id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                items:
-                  additionalProperties: {}
-                  type: object
-                type: array
-          description: OK
-        '404':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sdk.APIError'
-          description: Not Found
-        '500':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sdk.APIError'
-          description: Internal Server Error
-      summary: Generate sources for a job
-      tags:
-        - playback
   /healthcheck:
     get:
       responses:
